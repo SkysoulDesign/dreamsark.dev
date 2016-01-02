@@ -1,0 +1,34 @@
+/**
+* Mini Header
+*/
+
+@include component(mini-header) {
+
+  @extend .header;
+
+  $header-height: rem-calc(280);
+
+  margin-top: -$top-menu-height;
+  height: $header-height;
+  background: url('/dreamsark-assets/mini-header-bg.jpg') center center;
+  background-size: cover;
+  position: relative;
+
+  div.avatar {
+
+    img {
+      position: absolute;
+      margin-top: -50%;
+    }
+
+  }
+
+  div.cash {
+    position: absolute;
+    top: -$header-bar-height*1.2;
+    font-size: rem-calc(25);
+    color: color(golden);
+    margin-left: 1%;
+  }
+
+}

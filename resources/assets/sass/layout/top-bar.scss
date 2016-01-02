@@ -1,0 +1,297 @@
+/**
+* Settings
+*/
+
+@include component(top-bar) {
+
+  height: $top-menu-height;
+  line-height: $top-menu-height;
+  background: color(black, x-dark, 10);
+
+  position: relative;
+  z-index: 10;
+
+  section.logo {
+    text-align: center;
+  }
+
+  section.menu {
+
+    margin: 0;
+    padding: 0;
+
+    ul {
+      padding: inherit;
+      margin: inherit;
+    }
+
+    li {
+      float: left;
+      list-style: none;
+
+      &.active {
+
+        a {
+          color: color(black) !important;
+          &:hover {
+            color: color(black);
+            background: color(white) !important;
+          }
+        }
+
+        background: color(gray);
+
+      }
+
+      a {
+        width: 100%;
+        display: block;
+        color: color(white);
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        font-weight: 300;
+        padding: 0 15%;
+
+        &:hover {
+          color: color(white, dark);
+          background: color(black, dark, 50);
+        }
+
+      }
+
+    }
+
+  }
+
+  section.settings {
+
+    $right-bar-width: 100px;
+
+    padding: 0;
+    display: table;
+
+    font-family: "Roboto", sans-serif;
+
+    ul {
+
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: table-cell;
+        float: right;
+        width: auto;
+        list-style: none;
+      }
+
+    }
+
+    div.avatar {
+
+      text-align: center;
+      width: $right-bar-width;
+
+      &:hover {
+        background: color(blue, x-dark);
+        cursor: pointer;
+
+        & nav.menu {
+          display: block;
+        }
+
+      }
+
+    }
+
+    nav.menu {
+
+      text-align: left;
+      display: none;
+      position: absolute;
+      right: 0;
+      width: 100%;
+      background: color(blue, dark);
+
+      ul {
+
+        padding-bottom: 5%;
+        font-size: rem-calc(12);
+        line-height: rem-calc(20);
+        color: color(white);
+
+        li {
+          list-style: none;
+          float: none;
+          display: block;
+          padding: 0 5%;
+        }
+
+        li.title {
+          text-transform: uppercase;
+          padding: 5%;
+        }
+
+      }
+
+      .side-menu {
+
+        width: $right-bar-width;
+        height: 100%;
+        background: color(blue, x-dark);
+        float: right;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        ul {
+          padding: 10%;
+        }
+
+      }
+
+      .footer {
+        background: color(blue, x-dark);
+        border-top: 1px solid color(blue, mid-dark);
+        position: absolute;
+        z-index: 5;
+        width: 100%;
+
+        line-height: normal;
+
+        color: color(white);
+        font-size: rem-calc(11);
+        padding: 5%;
+
+      }
+
+    }
+
+  }
+
+  section.extra-container {
+
+    display: none;
+
+    position: absolute;
+    top: $top-menu-height;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+
+    &.show {
+      display: block;
+    }
+
+    div.extra {
+      background: color(white);
+      height: 100%;
+      width: 100%;
+      display: table;
+      left: 0;
+    }
+
+    li.title {
+      text-transform: uppercase;
+      font-weight: bold !important;
+      font-style: rem-calc(10);
+      padding: 7% 10% !important;
+      width: 100%;
+      cursor: auto !important;
+    }
+
+    nav {
+
+      height: 100%;
+      background: color(primary);
+      padding: 0;
+      color: color(white);
+      line-height: normal;
+      display: table-cell;
+
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      li {
+
+        padding: 4% 10%;
+        cursor: pointer;
+        font-weight: 300;
+
+        &.active, &:not(:first-child):hover {
+          background: color(white);
+          color: color(black);
+        }
+
+      }
+
+    }
+
+    div.body {
+
+      background: color(white);
+      height: 100%;
+      display: table-cell;
+      line-height: normal;
+      margin: 0;
+      padding: 0;
+
+      section {
+
+        display: none;
+        height: 100%;
+
+        &.active {
+          display: block !important;
+        }
+
+      }
+
+      div.title {
+        padding-top: 5%;
+        padding-bottom: 5%;
+        text-transform: uppercase;
+      }
+
+    }
+
+    aside {
+      height: 100%;
+      background: color(gray);
+      border-left: 1px solid color(gray, mid-dark);
+      padding: 0;
+      margin: 0;
+      display: table-cell;
+
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        line-height: normal;
+      }
+
+      li {
+        padding: 4% 10%;
+        cursor: pointer;
+
+        &.title {
+          padding-top: 15% !important;
+        }
+
+        &:not(:first-child):hover {
+          background: color(gray, mid-dark);
+          color: color(black);
+        }
+
+      }
+
+    }
+
+  }
+
+}
+

@@ -1,0 +1,156 @@
+/**
+* Button
+*/
+
+button, .button {
+
+  border: none;
+  border-radius: $border-radius;
+  width: 100%;
+  color: color(white);
+
+  line-height: normal;
+
+  appearance: none;
+  box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
+  text-shadow: 0 -0.5px 1px color(black, base, 15);
+
+  padding: rem-calc(20);
+  position: relative;
+
+  text-transform: uppercase ;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  &.short {
+    height: rem-calc(30);
+    padding: 0;
+    font-size: rem-calc(13);
+  }
+
+  svg {
+
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    fill: color(blue, light);
+
+    use {
+      opacity: 0;
+    }
+  }
+
+  &.primary {
+
+    background: color(blue);
+
+    &:hover {
+      background: color(blue, mid-light);
+    }
+
+  }
+
+  &.white {
+    color: color(primary);
+    background: color(white);
+
+    &:hover {
+      color: color(primary, light);
+      background: color(white, light);
+    }
+
+  }
+
+  &.flat {
+    border-radius: 0px;
+    text-transform: uppercase;
+  }
+
+  &.small {
+
+    width: auto;
+    padding: rem-calc(8) rem-calc(13);
+    font-size: rem-calc(12);
+
+    @extend a.uppercase
+
+  }
+
+  &.medium {
+
+    width: auto;
+    padding: rem-calc(10) rem-calc(30);
+    font-size: rem-calc(14);
+
+    @extend a.uppercase
+
+  }
+
+  &.arrow {
+    font-size: rem-calc(20);
+    line-height: rem-calc(18);
+    position: absolute;
+  }
+
+  &.right-arrow {
+
+    &:after {
+      @extend button.arrow;
+
+      content: '\203A';
+      right: 8%;
+
+    }
+
+  }
+
+  &.left-arrow {
+    &:after {
+      @extend button.arrow;
+
+      content: '\2039';
+      left: 8%;
+
+    }
+  }
+
+  &.round {
+    border-radius: 30px;
+  }
+
+  &.outlined {
+
+    box-shadow: none;
+    border: 2px solid color(gray, mid-dark);
+    background: transparent;
+
+    color: color(white) !important;
+
+    @extend a.inverted;
+
+    @extend .colors;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+suites:
+    main:
+        namespace: DreamsArk
+        psr4_prefix: DreamsArk
+        src_path: app
+        spec_prefix: spec

@@ -1,0 +1,43 @@
+/**
+* Advertising
+*/
+
+@include component(advertising) {
+
+  margin: 0;
+  padding: 0.3%;
+
+  border: 1px dashed color(gray, dark, 20);
+  position: relative;
+
+  &:after {
+    padding: 0.4%;
+    margin: 0;
+    content: 'advertising';
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+
+    text-transform: uppercase;
+
+    font-size: rem-calc(10);
+    color: color(gray, dark, 50);
+  }
+
+  img {
+    width: 100%;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+

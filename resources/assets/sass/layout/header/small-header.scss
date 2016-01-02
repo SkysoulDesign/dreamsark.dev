@@ -1,0 +1,17 @@
+/**
+* Small Header
+*/
+
+@include component(small-header) {
+
+  @extend .header;
+
+  $header-height: rem-calc(200);
+
+  height: $header-height;
+  background: url('/dreamsark-assets/mini-header-bg.jpg') center center;
+  background-size: cover;
+
+  margin-bottom: 2%;
+
+}

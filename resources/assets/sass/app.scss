@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+//@import "node_modules/bootstrap-4.0.0-alpha/scss/bootstrap";
+
+/**
+* App
+*/
+@import "../../../bower_components/foundation/scss/foundation/components/grid";
+@import "../../../bower_components/foundation/scss/foundation/components/switches";
+@import "../../../bower_components/foundation/scss/normalize";
+@import '../../../node_modules/csstyle/csstyle';
+
+@import 'app/functions';
+@import 'app/colors';
+@import 'app/variables';
+@import 'app/fonts';
+
+/**
+* Components
+*/
+@import 'components/colors';
+@import 'components/form';
+@import 'components/input';
+@import 'components/button';
+@import 'components/card';
+@import 'components/segment';
+@import 'components/slider';
+@import 'components/banner';
+@import 'components/thumbnail';
+@import 'components/advertising';
+
+/**
+* Layout
+*/
+@import 'layout/global';
+@import 'layout/top-bar';
+@import 'layout/header/header';
+@import 'layout/header/mini-header';
+@import 'layout/header/small-header';
+@import 'layout/header/huge-header';
+@import 'layout/content';
+@import 'layout/footer';
+@import 'layout/start';
+@import 'layout/enter-page';

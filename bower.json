@@ -1,0 +1,22 @@
+{
+  "name": "dreamsark.dev",
+  "version": "0.0.0",
+  "homepage": "https://github.com/SkysoulDesign/Dreamsark",
+  "authors": [
+    "Rafael <rafael@skysoul.com.au>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "foundation": "~5.5.3"
+  }
+}

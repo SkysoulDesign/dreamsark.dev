@@ -1,0 +1,14 @@
+@include component(content) {
+
+  /*
+  * Scope
+  */
+  height: 100%;
+
+  background: color(white);
+  border-top: 1px solid color(gray, mid-dark);
+  border-bottom: 1px solid color(gray, mid-dark);
+
+  padding: 2% 0;
+
+}

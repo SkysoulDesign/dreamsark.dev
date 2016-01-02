@@ -1,0 +1,236 @@
+body {
+  background: color(black, x-dark);
+}
+
+body.main {
+  background: color(white) !important;
+}
+
+@include component(enter-page) {
+
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  user-select: none;
+  top: 0%;
+  //background-position-y: 100%;
+
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
+
+  //background: color(black, x-dark) url('../assets/new-assets/bg.jpg') repeat-x center;
+
+  transition: all 2s;
+
+  @include part(edge) {
+    position: absolute;
+    width: 300%;
+    left: -100%;
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      height: 379px;
+      width: 100%;
+      top: 56%;
+      left: 6%;
+      background: url('../assets/new-assets/edge.png') no-repeat;
+      transform: scale(1.2, 1.2)
+    }
+  }
+
+  @include part(ground) {
+    position: absolute;
+    width: 300%;
+    left: -100%;
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      height: 1044px;
+      width: 100%;
+      left: 9%;
+      background: url('../assets/new-assets/ground.png') no-repeat;
+      transform: scale(1.2, 1.2) translateY(-5%)
+    }
+  }
+
+  @include part(mountains) {
+    position: absolute;
+    width: 300%;
+    left: -100%;
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      height: 1044px;
+      width: 100%;
+      left: 9%;
+      background: url('../assets/new-assets/mountains.png') no-repeat;
+      transform: scale(1.2, 1.2) translateY(15%)
+    }
+  }
+
+  @include part(sun) {
+    position: absolute;
+    width: 300%;
+    left: -100%;
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      height: 826px;
+      width: 100%;
+      left: 5%;
+      background: url('../assets/new-assets/sun.png') no-repeat;
+      transform: scale(1, 1) translateY(0%)
+    }
+  }
+
+  @include part(background) {
+    position: absolute;
+    width: 300%;
+    left: -100%;
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      height: 1200px;
+      width: 100%;
+      left: 8%;
+      background: url('../assets/new-assets/background.jpg') no-repeat;
+      transform: scale(1.2, 1.2) translateY(5%)
+    }
+  }
+
+  @include part(edge) {
+    position: relative;
+    height: 100vh;
+    width: 110%;
+    margin-top: 2%;
+    img {
+      margin-top: 25%;
+      width: 100%;
+    }
+  }
+
+  @include option(exit) {
+    animation: FadeOut 1.2s ease-in forwards;
+  }
+
+  @include part(transition) {
+    display: none;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background: url('../assets/transition-assets/bg.jpg') center;
+    transition: all 1s;
+    z-index: 1;
+    opacity: 0;
+
+    margin: 0;
+    padding: 0;
+
+    @include option(animate) {
+      animation: anim-loop-transistor 10s forwards;
+    }
+
+  }
+
+  @include part(logo) {
+
+    position: absolute;
+    width: 100%;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(0deg) scale(1, 1);
+    z-index: 10;
+    opacity: 1;
+
+    transition: all 1s;
+
+  }
+
+  @include part(controllers) {
+
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    bottom: 8%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    transform: scale(0.8);
+
+    li {
+
+      padding: rem-calc(50);
+
+      a#start:before {
+        position: absolute;
+        content: '';
+        width: 30%;
+        height: 110px;
+        margin-top: -2%;
+        background: url("../assets/new-assets/start-bg.png") center no-repeat;
+        background-size: contain;
+      }
+
+      a#skip:before {
+        position: absolute;
+        content: '';
+        width: 10%;
+        height: 80px;
+        margin-top: -1%;
+        background: url("../assets/new-assets/skip-bg.png") center no-repeat;
+        background-size: contain;
+      }
+
+    }
+
+    img {
+      transition: all .2s ease-out;
+    }
+
+    a:hover img {
+      transform: scale(1.1, 1.1)
+    }
+
+  }
+
+}
+
+.--fade-to-black {
+  background: color(black, x-dark);
+}
+
+/**
+Animation
+*/
+@keyframes FadeOut {
+  100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes LogoSpin {
+  100% {
+    transform: translate(-50%, -50%) rotateY(360deg) scale(0, 0);
+    opacity: 0
+  }
+}
+
+@keyframes anim-loop-transistor {
+  100% {
+    background-position-y: 500%;
+    opacity: 1
+  }
+}
+

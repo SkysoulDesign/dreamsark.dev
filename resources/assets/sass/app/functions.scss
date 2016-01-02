@@ -1,0 +1,17 @@
+@function Color($color) {
+
+  @return (
+          x-dark : darken($color, 25%),
+          dark : darken($color, 15%),
+          mid-dark : darken($color, 5%),
+          base : $color,
+          mid-light : lighten($color, 5%),
+          light : lighten($color, 15%),
+          x-light : lighten($color, 50%),
+  );
+
+}
+
+@function color($palette, $tone: 'base', $alpha: 100) {
+  @return rgba(map-get(map-get($colors, $palette), $tone), $alpha/100);
+}

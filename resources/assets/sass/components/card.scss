@@ -1,0 +1,63 @@
+@include component(card) {
+
+  margin-top: 10%;
+
+  /*
+  * Scope
+  */
+  box-shadow: 0 5px 5px 0 color(black, x-dark, 13);
+  border-radius: $border-radius;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid color(primary, base, 50);
+  }
+
+  /*
+  * Head
+  */
+  section.head {
+
+    margin-bottom: 5%;
+
+    img {
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
+    }
+  }
+
+  section.body {
+
+    padding: 0 5%;
+    line-height: normal;
+
+    div {
+      padding: 10px 0;
+    }
+
+    /*
+    * Tittle
+    */
+    div.title {
+      font-weight: bolder;
+      color: color(black, mid-light);
+    }
+
+    /*
+    * Description
+    */
+    div.description {
+      font-size: rem-calc(13);
+      color: color(black, light);
+    }
+
+    /*
+    * Button
+    */
+    button {
+      margin-bottom: 5%;
+    }
+
+  }
+
+}

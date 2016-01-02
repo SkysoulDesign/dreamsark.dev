@@ -1,0 +1,70 @@
+section.banner {
+
+  height: auto;
+  position: relative;
+  z-index: 5;
+
+  color: color(black);
+  font-size: rem-calc(14);
+
+  padding: 1.5% 0;
+
+  &.basic {
+    padding: 0;
+    color: color(white);
+    text-align: center;
+    height: $banner-basic-height;
+    line-height: $banner-basic-height;
+  }
+
+  &.primary {
+    background: color(blue);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    color: color(black, light);
+  }
+
+  .background-loops {
+    width: 100%;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    height: 500px;
+    border-radius: 0;
+    overflow: hidden;
+
+    &.home-page {
+      background: url('../dreamsark-assets/header-loop.png') repeat-x center;
+      background-size: contain;
+
+    }
+
+  }
+
+}
+
+#canvas-mask {
+  background: color(black);
+  height: 200px;
+  transform: translate(0, 0);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.handle {
+  background: color(black, dark);
+  width: 200%;
+  height: 200%;
+  border-radius: 0;
+  background: url('../dreamsark-assets/explorer.png') no-repeat center center;
+}
+

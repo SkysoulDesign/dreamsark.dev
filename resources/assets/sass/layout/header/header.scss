@@ -1,0 +1,61 @@
+/**
+* Settings
+*/
+
+@include component(header) {
+
+  /** Default Space after Header **/
+  margin-bottom: $header-bar-height + 3;
+
+  section.particles {
+
+    margin: 0;
+    padding: 0;
+
+    canvas {
+      position: absolute;
+      background: transparent;
+      top: 0;
+      border-bottom: $banner-basic-height solid transparent;
+    }
+
+  }
+
+  section.bar {
+
+    background: color(white);
+    position: absolute;
+    bottom: -$header-bar-height;
+    line-height: $header-bar-height;
+    border-bottom: 1px solid color(gray, mid-dark);
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-transform: uppercase;
+      font-size: rem-calc(14);
+
+      li {
+        display: inline-block;
+        height: $header-bar-height;
+
+        a {
+          color: color(black);
+          display: block;
+          padding: 0 20%;
+
+          &:hover {
+            color: color(blue, dark);;
+            border-bottom: 2px solid color(blue, dark);
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

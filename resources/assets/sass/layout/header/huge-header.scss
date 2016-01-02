@@ -1,0 +1,16 @@
+/**
+* Mini Header
+*/
+
+@include component(huge-header) {
+
+  @extend .header;
+
+  padding-top: $top-menu-height + 3;
+  margin-top: -$top-menu-height;
+  height: auto;
+  background: url('/dreamsark-assets/header-bg.jpg');
+  position: relative;
+  z-index: 1;
+
+}

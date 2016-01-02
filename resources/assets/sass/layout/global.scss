@@ -1,0 +1,113 @@
+@include component(container-fluid) {
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: color(gray);
+}
+
+section, .sections {
+  .right {
+    float: right !important;
+    text-align: right;
+  }
+  .left {
+    float: left !important;
+    text-align: left;
+  }
+}
+
+a {
+
+  color: color(white);
+  text-decoration: none;
+
+  &:hover {
+    color: color(white, dark);
+  }
+
+  &.inverted {
+    color: color(black);
+    &:hover {
+      color: color(black, light);
+    }
+  }
+
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
+  &.read-more {
+
+    &:after {
+      content: '\00a0\00bb';
+
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+  }
+
+}
+
+hr {
+  border: none;
+  border-top: 1px solid color(black, x-light);
+  border-bottom: 1px solid color(gray);
+  width: 100%;
+}
+
+div.center {
+  text-align: center !important;
+}
+
+div.row.horizontal-divided {
+
+  .column {
+
+    border-right: 1px dashed color(white, base, 20);
+
+    &:last-child {
+      border-right: none;
+    }
+
+  }
+
+}
+
+.transparent {
+  background: transparent;
+  border: none transparent;
+  box-shadow: none;
+}
+
+.marged {
+  margin: 2% 0;
+}
+
+.padded {
+  padding: 2% 0;
+}
+
+.padded-small {
+  @extend .padded;
+  padding: 0.3% 0;
+}
+
+.centered {
+  text-align: center !important;
+}
+
+.dimmed {
+  background: color(black, x-dark, 10);
+}
+
+.no-margin-button {
+  margin-bottom: 0 !important;
+}
+
+

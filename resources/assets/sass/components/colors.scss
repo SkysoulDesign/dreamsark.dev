@@ -1,0 +1,36 @@
+/**
+* colors
+*/
+
+@include component(colors) {
+
+  &.outlined {
+
+    &.dark {
+
+      &.primary {
+
+        border-color: color(primary, dark);
+
+        &:hover {
+          background-color: color(primary, dark);
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+/**
+* Input
+*/
+
+input {
+
+  width: 100%;
+  padding: 4%;
+
+  color: color(black, light);
+  background: color(gray);
+  border: 1px solid color(gray, mid-dark);
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+}
