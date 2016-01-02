@@ -1,0 +1,1 @@
+[Thu Dec 31 2015 18:13:16 GMT+0800 (China Standard Time)] layer "1024x1024 planet.png1": Invalid quality: 1

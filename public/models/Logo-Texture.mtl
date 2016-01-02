@@ -1,0 +1,22 @@
+# MTL written from /Users/Milewski/Documents/Rafael/Code/dreamsark.dev/public/models/Logo-Texture.obj
+newmtl 07___Default
+Kd 0.153725 0.558431 0.737255
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl Default
+Kd 0.791108 0.782273 0.8
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl Ren
+Kd 0 0.219608 0.44549
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
