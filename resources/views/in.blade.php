@@ -6,6 +6,14 @@
 
     <div id="transistor" class="enter-page__transition --animate"></div>
 
+
+    <div id="reset-controls" class="enter-page__reset-controls">
+        <ul>
+            <li class="skipper">skip</li>
+            <li class="reseter">reset</li>
+        </ul>
+    </div>
+
     <section class="enter-page">
 
         <ul id="scene">
@@ -28,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a id="skip" href="#">
+                <a id="skip" href="#" class="skipper">
                     <img src="{{ asset('assets/new-assets/skip.png') }}" alt="Skip">
                 </a>
             </li>

@@ -26,6 +26,32 @@ body.main {
 
   transition: all 2s;
 
+  @include part(reset-controls) {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    bottom: 0;
+
+    text-align: right;
+    padding-right: 3%;
+    color: color(white);
+
+    ul {
+      li {
+        opacity: 0.3;
+        cursor: pointer;
+        display: inline;
+        &:not(:last-child):after {
+          content: ' | ';
+        }
+        &:hover {
+          opacity: 1
+        }
+      }
+    }
+  }
+
   @include part(edge) {
     position: absolute;
     width: 300%;
@@ -232,5 +258,14 @@ Animation
     background-position-y: 500%;
     opacity: 1
   }
+}
+
+/**
+TempAlign
+
+*/
+
+#scene {
+  left: -5%
 }
 

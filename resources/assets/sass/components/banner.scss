@@ -58,6 +58,13 @@ section.banner {
   transform: translate(0, 0);
   border-radius: 0;
   overflow: hidden;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#121e36+0,121e36+50,1f396c+51,1f396c+100 */
+  background: #121e36; /* Old browsers */
+  background: -moz-linear-gradient(left,  #121e36 0%, #121e36 50%, #1f396c 51%, #1f396c 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  #121e36 0%,#121e36 50%,#1f396c 51%,#1f396c 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  #121e36 0%,#121e36 50%,#1f396c 51%,#1f396c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#121e36', endColorstr='#1f396c',GradientType=1 ); /* IE6-9 */
+
 }
 
 .handle {
@@ -66,5 +73,6 @@ section.banner {
   height: 200%;
   border-radius: 0;
   background: url('../dreamsark-assets/explorer.png') no-repeat center center;
+
 }
 

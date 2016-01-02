@@ -1789,8 +1789,16 @@ var DreamsArk;
                 DreamsArk.start();
                 return true;
             });
+            mouse.click('.skipper', function () {
+                query('form').submit();
+                return true;
+            });
             mouse.click('#skip', function () {
                 query('form').submit();
+                return true;
+            });
+            mouse.click('.reseter', function () {
+                location.reload();
                 return true;
             });
         }
@@ -1875,8 +1883,7 @@ var DreamsArk;
  * Start App
  */
 new DreamsArk.App();
-document.querySelector('body').style.backgroundColor;
-000;
+//document.querySelector('body').style.backgroundColor: #000; 
 var DreamsArk;
 (function (DreamsArk) {
     var Compositions;
@@ -1892,7 +1899,7 @@ var DreamsArk;
             };
             Loading.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), mouse = DreamsArk.module('Mouse');
-                var logo = elements.Logo, ren = elements.Ren, asteroid = elements.Asteroid, particles = elements.Particles, tunnel = elements.Tunnel, skybox = elements.Skybox, domBackground = query('.enter-page'), domTransistor = query('#transistor'), domLogo = query('#logo');
+                var logo = elements.Logo, ren = elements.Ren, asteroid = elements.Asteroid, particles = elements.Particles, tunnel = elements.Tunnel, skybox = elements.Skybox, domBackground = query('.enter-page'), domTransistor = query('#transistor'), domLogo = query('#logo'), domControls = query('#reset-controls');
                 /**
                  * Setups
                  * @type {{init: (function(): void), timer: null, speed: null, update: (function(): void)}}
@@ -1964,6 +1971,7 @@ var DreamsArk;
                         camera.far = params.far;
                         camera.updateProjectionMatrix();
                         scene.fog.far = params.fog;
+                        domControls.style.display = 'block';
                     },
                     complete: function () {
                         var browser = DreamsArk.module('Browser'), renderer = DreamsArk.module('Renderer');

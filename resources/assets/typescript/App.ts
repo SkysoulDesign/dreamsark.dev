@@ -70,9 +70,25 @@ module DreamsArk {
 
             });
 
+            mouse.click('.skipper', function () {
+
+                query('form').submit();
+
+                return true;
+
+            });
+
             mouse.click('#skip', function () {
 
                 query('form').submit();
+
+                return true;
+
+            });
+
+            mouse.click('.reseter', function () {
+
+                location.reload();
 
                 return true;
 
@@ -196,11 +212,9 @@ module DreamsArk {
 
 }
 
-
-
 /**
  * Start App
  */
 new DreamsArk.App();
 
-document.querySelector('body').style.backgroundColor: #000;
+//document.querySelector('body').style.backgroundColor: #000;

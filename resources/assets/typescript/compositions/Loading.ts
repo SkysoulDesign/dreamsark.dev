@@ -29,7 +29,8 @@ module DreamsArk.Compositions {
                 skybox = elements.Skybox,
                 domBackground = query('.enter-page'),
                 domTransistor = query('#transistor'),
-                domLogo = query('#logo');
+                domLogo = query('#logo'),
+                domControls = query('#reset-controls');
 
             /**
              * Setups
@@ -112,6 +113,8 @@ module DreamsArk.Compositions {
                     camera.updateProjectionMatrix();
 
                     scene.fog.far = params.fog;
+
+                    domControls.style.display = 'block'
 
                 },
                 complete(){
