@@ -5,5 +5,5 @@ interface Composable {
     elementsBag?:any[],
     elements():string[];
     setup(scene:Scene, camera:Camera, elements:{}):void;
-    update(scene:Scene, camera:Camera, elements:{}):void;
+    update(scene:Scene, camera:Camera, elements:{}, elapsed?:number):void;
 }

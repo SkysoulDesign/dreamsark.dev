@@ -4,8 +4,11 @@
 /// <reference path="elements/Skybox.ts" />
 /// <reference path="elements/Plexus.ts" />
 /// <reference path="elements/Particles.ts" />
+/// <reference path="elements/HexParticles.ts" />
 /// <reference path="elements/Background.ts" />
 /// <reference path="elements/Logo.ts" />
+/// <reference path="elements/TunnelFX.ts" />
+/// <reference path="elements/LogoFX.ts" />
 /// <reference path="elements/Ren.ts" />
 /// <reference path="elements/Asteroid.ts" />
 /// <reference path="elements/Galaxy.ts" />
@@ -128,10 +131,10 @@ module DreamsArk {
 
     };
 
-    export var render = function () {
+    export var render = function (elapsedTime?:number) {
 
         requestAnimationFrame(render);
-
+        1
         var renderer = <Renderer>module('Renderer'),
             scene = <Scene>module('Scene'),
             camera = <Camera>module('Camera'),
@@ -139,7 +142,7 @@ module DreamsArk {
 
         if (!is.Null(core.active.composition))
             if (core.active.composition.update)
-                core.active.composition.update(scene, camera, core.active.composition.elementsBag)
+                core.active.composition.update(scene, camera, core.active.composition.elementsBag, elapsedTime)
 
         checker.update();
 

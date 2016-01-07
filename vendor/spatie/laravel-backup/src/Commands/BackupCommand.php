@@ -186,7 +186,15 @@ class BackupCommand extends Command
         $backupDirectory = config('laravel-backup.destination.path');
         $backupFilename = $this->getPrefix().date('YmdHis').$this->getSuffix().'.zip';
 
-        return $backupDirectory.'/'.$backupFilename;
+        $destination = $backupDirectory;
+
+        if ($destination != '') {
+            $destination .= '/';
+        }
+
+        $destination .= $backupFilename;
+
+        return $destination;
     }
 
     /**
@@ -288,7 +296,7 @@ class BackupCommand extends Command
     }
 
     /**
-     * Remove temporary files
+     * Remove temporary files.
      */
     protected function removeTemporaryFiles()
     {

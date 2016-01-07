@@ -13,7 +13,7 @@ module DreamsArk.Compositions {
     export class Loading implements Composable {
 
         elements() {
-            return ['Particles', 'Tunnel', 'Skybox', 'Asteroid'];
+            return ['Particles', 'Tunnel', 'TunnelFX', 'Skybox', 'Asteroid'];
         }
 
         setup(scene, camera, elements) {
@@ -26,6 +26,7 @@ module DreamsArk.Compositions {
                 asteroid = elements.Asteroid,
                 particles = elements.Particles,
                 tunnel = elements.Tunnel,
+                tunnelFx = elements.TunnelFX,
                 skybox = elements.Skybox,
                 domBackground = query('.enter-page'),
                 domTransistor = query('#transistor'),
@@ -203,6 +204,9 @@ module DreamsArk.Compositions {
                 autoStart: false,
                 start(){
                     tunnel.userData.init();
+
+                    scene.add(tunnelFx);
+
                     logo.userData.mouse.inverse = true;
                 },
                 update(params){
@@ -407,10 +411,13 @@ module DreamsArk.Compositions {
             /**
              * Tunnel
              */
-            var tunnel = elements.Tunnel;
+            var tunnel = elements.Tunnel,
+                tunnelFx = elements.TunnelFX;
 
             if (tunnel.userData.timer !== null)
                 tunnel.userData.update();
+
+            tunnelFx.userData.update();
 
             /**
              * Controls

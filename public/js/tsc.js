@@ -625,6 +625,82 @@ var DreamsArk;
 (function (DreamsArk) {
     var Elements;
     (function (Elements) {
+        var random = DreamsArk.Helpers.random;
+        var For = DreamsArk.Helpers.For;
+        var HexParticles = (function () {
+            function HexParticles() {
+            }
+            HexParticles.prototype.data = function () {
+                return {
+                    velocity: [],
+                    layers: {}
+                };
+            };
+            HexParticles.prototype.maps = function () {
+                return {
+                    particle: 'lib/hex.png',
+                    particleBlur: 'lib/hex-blur.png',
+                };
+            };
+            HexParticles.prototype.objs = function () {
+                return {
+                    hex: 'models/hex.obj',
+                };
+            };
+            HexParticles.prototype.create = function (maps, objs, data) {
+                var maxParticleCount = 1000, radius = 50;
+                var circleGeometry = new THREE.CircleGeometry(5, 12);
+                var PointMaterial = new THREE.PointsMaterial({
+                    //color: 0x000000,
+                    size: 0.5,
+                    blending: THREE.AdditiveBlending,
+                    map: maps.particle,
+                    transparent: true,
+                    alphaTest: 0.01,
+                    sizeAttenuation: true
+                });
+                var PointMaterialBlur = new THREE.PointsMaterial({
+                    //color: 0x000000,
+                    size: 0.5,
+                    blending: THREE.AdditiveBlending,
+                    map: maps.particleBlur,
+                    transparent: true,
+                    alphaTest: 0.01,
+                    sizeAttenuation: true
+                });
+                var particles = new THREE.BufferGeometry();
+                var particlePositions = new Float32Array(maxParticleCount * 3);
+                /**
+                 * Add Vertices to Points
+                 */
+                For(maxParticleCount, function (i) {
+                    //var vector = random.vector3(0, 0, 0, radius, true);
+                    var vector = circleGeometry.vertices[random.between(1, circleGeometry.vertices.length - 2)];
+                    particlePositions[i * 3] = vector.x + Math.random() * 2;
+                    particlePositions[i * 3 + 1] = vector.y + Math.random() * 2;
+                    particlePositions[i * 3 + 2] = vector.z + Math.random() * 2;
+                    data.velocity.push(new THREE.Vector3(5 * Math.random(), 5 * Math.random(), 5 * Math.random()));
+                });
+                particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
+                data.layers.inner = new THREE.Points(particles, PointMaterial);
+                var inner = new THREE.Points(particles, PointMaterial);
+                var clone = particles.clone();
+                clone.scale(4, 4, 4);
+                data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
+                var clone = particles.clone();
+                clone.scale(8, 8, 8);
+                data.layers.out = new THREE.Points(clone, PointMaterialBlur);
+                return inner;
+            };
+            return HexParticles;
+        })();
+        Elements.HexParticles = HexParticles;
+    })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Elements;
+    (function (Elements) {
         var Background = (function () {
             function Background() {
             }
@@ -680,6 +756,116 @@ var DreamsArk;
             return Logo;
         })();
         Elements.Logo = Logo;
+    })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Elements;
+    (function (Elements) {
+        var deg2rad = DreamsArk.Helpers.deg2rad;
+        var TunnelFX = (function () {
+            function TunnelFX() {
+            }
+            TunnelFX.prototype.create = function (maps, objs, data) {
+                var video = document.createElement('video');
+                video.addEventListener('ended', loop, false);
+                function loop(e) {
+                    video.play();
+                }
+                ;
+                video.src = "assets/elements/EtherealAura.webmhd.webm";
+                video.load(); // must call after setting/changing source
+                video.play();
+                var videoImage = document.createElement('canvas');
+                videoImage.width = 1024;
+                videoImage.height = 1024;
+                var videoImageContext = videoImage.getContext('2d');
+                // background color if no video present
+                videoImageContext.fillStyle = '#000000';
+                videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
+                var videoTexture = new THREE.Texture(videoImage);
+                videoTexture.minFilter = THREE.LinearFilter;
+                videoTexture.magFilter = THREE.LinearFilter;
+                var movieMaterial = new THREE.MeshBasicMaterial({
+                    map: videoTexture,
+                    blending: THREE.AdditiveBlending,
+                    alphaTest: 0.5
+                });
+                var movieGeometry = new THREE.PlaneGeometry(500, 500, 5, 5);
+                data.update = function () {
+                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                        videoImageContext.drawImage(video, 0, 0);
+                        if (videoTexture)
+                            videoTexture.needsUpdate = true;
+                    }
+                };
+                var fx = new THREE.Mesh(movieGeometry, movieMaterial);
+                fx.rotation.x = deg2rad(90);
+                fx.position.y = 50;
+                return fx;
+            };
+            return TunnelFX;
+        })();
+        Elements.TunnelFX = TunnelFX;
+    })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Elements;
+    (function (Elements) {
+        var LogoFX = (function () {
+            function LogoFX() {
+            }
+            LogoFX.prototype.maps = function () {
+                return {
+                    fx: 'assets/elements/LogoFX.png'
+                };
+            };
+            LogoFX.prototype.create = function (maps, objs, data) {
+                var clock = new THREE.Clock();
+                var delta = clock.getDelta();
+                data.animation = new TextureAnimator(maps.fx, 12, 12, 144, 60); // texture, #horiz, #vert, #total, duration.
+                function TextureAnimator(texture, tilesHoriz, tilesVert, numTiles, tileDispDuration) {
+                    // note: texture passed by reference, will be updated by the update function.
+                    this.tilesHorizontal = tilesHoriz;
+                    this.tilesVertical = tilesVert;
+                    // how many images does this spritesheet contain?
+                    //  usually equals tilesHoriz * tilesVert, but not necessarily,
+                    //  if there at blank tiles at the bottom of the spritesheet.
+                    this.numberOfTiles = numTiles;
+                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                    texture.repeat.set(1 / this.tilesHorizontal, 1 / this.tilesVertical);
+                    // how long should each image be displayed?
+                    this.tileDisplayDuration = tileDispDuration;
+                    // how long has the current image been displayed?
+                    this.currentDisplayTime = 0;
+                    // which image is currently being displayed?
+                    this.currentTile = 0;
+                    this.update = function () {
+                        var delta = clock.getDelta();
+                        this.currentDisplayTime += 1000 * delta;
+                        while (this.currentDisplayTime > this.tileDisplayDuration) {
+                            this.currentDisplayTime -= this.tileDisplayDuration;
+                            this.currentTile++;
+                            if (this.currentTile == this.numberOfTiles)
+                                this.currentTile = 0;
+                            var currentColumn = this.currentTile % this.tilesHorizontal;
+                            texture.offset.x = currentColumn / this.tilesHorizontal;
+                            var currentRow = Math.floor(this.currentTile / this.tilesHorizontal);
+                            texture.offset.y = currentRow / this.tilesVertical;
+                        }
+                    };
+                }
+                var material = new THREE.MeshBasicMaterial({
+                    map: maps.fx,
+                    blending: THREE.AdditiveBlending,
+                });
+                var geometry = new THREE.PlaneGeometry(25, 25, 1, 1);
+                return new THREE.Mesh(geometry, material);
+            };
+            return LogoFX;
+        })();
+        Elements.LogoFX = LogoFX;
     })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
 })(DreamsArk || (DreamsArk = {}));
 var DreamsArk;
@@ -1714,11 +1900,12 @@ var DreamsArk;
 (function (DreamsArk) {
     var Compositions;
     (function (Compositions) {
+        var For = DreamsArk.Helpers.For;
         var Landing = (function () {
             function Landing() {
             }
             Landing.prototype.elements = function () {
-                return ['Logo', 'Ren'];
+                return ['Logo', 'Ren', 'HexParticles'];
             };
             Landing.prototype.setup = function (scene, camera, elements) {
                 var logo = elements.Logo, ren = elements.Ren;
@@ -1729,10 +1916,25 @@ var DreamsArk;
                 ren.position.setX(0.5);
                 ren.position.setY(1);
                 ren.position.setZ(0.2);
-                scene.add(logo, ren);
+                scene.add(logo, ren, elements.HexParticles, elements.HexParticles.userData.layers.outer);
                 camera.position.z = 30;
             };
             Landing.prototype.update = function (scene, camera, elements) {
+                var particles = elements.HexParticles, particlesPositions = particles.geometry.attributes.position, particlesBlurPositions = elements.HexParticles.userData.layers.outer.geometry.attributes.position, particlesBlurOutPositions = elements.HexParticles.userData.layers.out.geometry.attributes.position, particlesVelocities = particles.userData.velocity;
+                particles.position.y = camera.position.y;
+                For(particlesPositions.count, function (i) {
+                    if (particlesPositions.array[i * 3 + 2] > 80)
+                        particlesPositions.array[i * 3 + 2] = -80;
+                    if (particlesBlurPositions.array[i * 3 + 2] > 80)
+                        particlesBlurPositions.array[i * 3 + 2] = -80;
+                    if (particlesBlurOutPositions.array[i * 3 + 2] > 80)
+                        particlesBlurOutPositions.array[i * 3 + 2] = -80;
+                    particlesPositions.array[i * 3 + 2] += particlesVelocities[i].z / 2;
+                    particlesBlurPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
+                    particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 20;
+                });
+                particlesPositions.needsUpdate = true;
+                particlesBlurPositions.needsUpdate = true;
             };
             return Landing;
         })();
@@ -1744,8 +1946,11 @@ var DreamsArk;
 /// <reference path="elements/Skybox.ts" />
 /// <reference path="elements/Plexus.ts" />
 /// <reference path="elements/Particles.ts" />
+/// <reference path="elements/HexParticles.ts" />
 /// <reference path="elements/Background.ts" />
 /// <reference path="elements/Logo.ts" />
+/// <reference path="elements/TunnelFX.ts" />
+/// <reference path="elements/LogoFX.ts" />
 /// <reference path="elements/Ren.ts" />
 /// <reference path="elements/Asteroid.ts" />
 /// <reference path="elements/Galaxy.ts" />
@@ -1825,12 +2030,13 @@ var DreamsArk;
         new Composition('Landing');
         DreamsArk.render();
     };
-    DreamsArk.render = function () {
+    DreamsArk.render = function (elapsedTime) {
         requestAnimationFrame(DreamsArk.render);
+        1;
         var renderer = DreamsArk.module('Renderer'), scene = DreamsArk.module('Scene'), camera = DreamsArk.module('Camera'), checker = DreamsArk.module('Checker');
         if (!is.Null(DreamsArk.core.active.composition))
             if (DreamsArk.core.active.composition.update)
-                DreamsArk.core.active.composition.update(scene, camera, DreamsArk.core.active.composition.elementsBag);
+                DreamsArk.core.active.composition.update(scene, camera, DreamsArk.core.active.composition.elementsBag, elapsedTime);
         checker.update();
         renderer.render(scene, camera);
     };
@@ -1895,11 +2101,11 @@ var DreamsArk;
             function Loading() {
             }
             Loading.prototype.elements = function () {
-                return ['Particles', 'Tunnel', 'Skybox', 'Asteroid'];
+                return ['Particles', 'Tunnel', 'TunnelFX', 'Skybox', 'Asteroid'];
             };
             Loading.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), mouse = DreamsArk.module('Mouse');
-                var logo = elements.Logo, ren = elements.Ren, asteroid = elements.Asteroid, particles = elements.Particles, tunnel = elements.Tunnel, skybox = elements.Skybox, domBackground = query('.enter-page'), domTransistor = query('#transistor'), domLogo = query('#logo'), domControls = query('#reset-controls');
+                var logo = elements.Logo, ren = elements.Ren, asteroid = elements.Asteroid, particles = elements.Particles, tunnel = elements.Tunnel, tunnelFx = elements.TunnelFX, skybox = elements.Skybox, domBackground = query('.enter-page'), domTransistor = query('#transistor'), domLogo = query('#logo'), domControls = query('#reset-controls');
                 /**
                  * Setups
                  * @type {{init: (function(): void), timer: null, speed: null, update: (function(): void)}}
@@ -2043,6 +2249,7 @@ var DreamsArk;
                     autoStart: false,
                     start: function () {
                         tunnel.userData.init();
+                        scene.add(tunnelFx);
                         logo.userData.mouse.inverse = true;
                     },
                     update: function (params) {
@@ -2200,9 +2407,10 @@ var DreamsArk;
                 /**
                  * Tunnel
                  */
-                var tunnel = elements.Tunnel;
+                var tunnel = elements.Tunnel, tunnelFx = elements.TunnelFX;
                 if (tunnel.userData.timer !== null)
                     tunnel.userData.update();
+                tunnelFx.userData.update();
                 /**
                  * Controls
                  */
@@ -2297,6 +2505,8 @@ var DreamsArk;
                 if (skybox.userData.controls)
                     skybox.userData.controls.update();
                 var hex = elements.Plexus.userData.hex, hexBag = elements.Plexus.userData.hexBag, hexPositions = hex.geometry.attributes.position, distance = 100, speed = 10;
+                var tunnelFx = elements.TunnelFX;
+                tunnelFx.userData.update();
                 For(hexPositions.count, function (i) {
                     hexPositions.array[i * 3] += hexBag[i].velocity.x / speed;
                     hexPositions.array[i * 3 + 1] += hexBag[i].velocity.y / speed;

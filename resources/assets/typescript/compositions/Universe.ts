@@ -105,6 +105,9 @@ module DreamsArk.Compositions {
                 distance = 100,
                 speed = 10;
 
+            var tunnelFx = elements.TunnelFX;
+            tunnelFx.userData.update();
+
             For(hexPositions.count, function (i) {
 
                 hexPositions.array[i * 3] += hexBag[i].velocity.x / speed;

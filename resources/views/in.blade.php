@@ -6,7 +6,6 @@
 
     <div id="transistor" class="enter-page__transition --animate"></div>
 
-
     <div id="reset-controls" class="enter-page__reset-controls">
         <ul>
             <li class="skipper">skip</li>
@@ -17,11 +16,11 @@
     <section class="enter-page">
 
         <ul id="scene">
-            <li class="layer enter-page__background" data-depth="0.10"></li>
-            <li class="layer enter-page__sun" data-depth="0.20"></li>
-            <li class="layer enter-page__ground" data-depth="0.40"></li>
-            <li class="layer enter-page__mountains" data-depth="0.60"></li>
-            <li class="layer enter-page__edge" data-depth="1"></li>
+            {{--<li class="layer enter-page__background" data-depth="0.10"></li>--}}
+            {{--<li class="layer enter-page__sun" data-depth="0.20"></li>--}}
+            {{--<li class="layer enter-page__ground" data-depth="0.40"></li>--}}
+            {{--<li class="layer enter-page__mountains" data-depth="0.60"></li>--}}
+            {{--<li class="layer enter-page__edge" data-depth="1"></li>--}}
         </ul>
 
         <div id="logo" class="enter-page__logo">
@@ -30,16 +29,16 @@
 
         <ul class="enter-page__controllers">
 
-            <li>
-                <a id="start" href="#">
-                    <img src="{{ asset('assets/new-assets/start.png') }}" alt="Start Journey">
-                </a>
-            </li>
-            <li>
-                <a id="skip" href="#" class="skipper">
-                    <img src="{{ asset('assets/new-assets/skip.png') }}" alt="Skip">
-                </a>
-            </li>
+            {{--<li>--}}
+                {{--<a id="start" href="#">--}}
+                    {{--<img src="{{ asset('assets/new-assets/start.png') }}" alt="Start Journey">--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+                {{--<a id="skip" href="#" class="skipper">--}}
+                    {{--<img src="{{ asset('assets/new-assets/skip.png') }}" alt="Skip">--}}
+                {{--</a>--}}
+            {{--</li>--}}
 
         </ul>
 

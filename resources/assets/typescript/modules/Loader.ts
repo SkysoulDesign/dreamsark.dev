@@ -85,7 +85,6 @@ module DreamsArk.Modules {
              */
             this.textureLoader = new THREE.TextureLoader(manager);
 
-
             /**
              * Init OBJ Loader
              */
@@ -174,7 +173,6 @@ module DreamsArk.Modules {
                 }
 
             }, this);
-
 
         }
 
