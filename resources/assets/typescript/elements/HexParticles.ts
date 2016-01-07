@@ -39,7 +39,7 @@ module DreamsArk.Elements {
 
             var PointMaterial = new THREE.PointsMaterial({
                 color: (new THREE.Color('red')).getHex(),
-                size: 0.5,
+                size: 0.3,
                 blending: THREE.AdditiveBlending,
                 map: maps.particle,
                 transparent: true,
@@ -96,12 +96,12 @@ module DreamsArk.Elements {
             var inner = new THREE.Points(particles, PointMaterial);
 
             var clone = particles.clone();
-            clone.scale(4, 4, 4)
+            clone.scale(4, 4, 4);
             data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
 
 
             var clone = particles.clone();
-            clone.scale(8, 8, 8)
+            clone.scale(8, 8, 8);
 
             data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
 

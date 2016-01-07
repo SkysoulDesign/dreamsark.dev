@@ -653,7 +653,7 @@ var DreamsArk;
                 var circleGeometry = new THREE.CircleGeometry(5, 12);
                 var PointMaterial = new THREE.PointsMaterial({
                     color: (new THREE.Color('red')).getHex(),
-                    size: 0.5,
+                    size: 0.3,
                     blending: THREE.AdditiveBlending,
                     map: maps.particle,
                     transparent: true,
