@@ -20,6 +20,7 @@ module DreamsArk.Elements {
             return {
                 particle: 'lib/hex.png',
                 particleBlur: 'lib/hex-blur.png',
+                particleXBlur: 'lib/hex-x-blur.png'
             }
         }
 
@@ -37,7 +38,7 @@ module DreamsArk.Elements {
             var circleGeometry = new THREE.CircleGeometry(5, 12);
 
             var PointMaterial = new THREE.PointsMaterial({
-                //color: 0x000000,
+                color: (new THREE.Color('red')).getHex(),
                 size: 0.5,
                 blending: THREE.AdditiveBlending,
                 map: maps.particle,
@@ -48,10 +49,20 @@ module DreamsArk.Elements {
             });
 
             var PointMaterialBlur = new THREE.PointsMaterial({
-                //color: 0x000000,
+                color: (new THREE.Color('yellow')).getHex(),
                 size: 0.5,
                 blending: THREE.AdditiveBlending,
                 map: maps.particleBlur,
+                transparent: true,
+                alphaTest: 0.01,
+                sizeAttenuation: true
+            });
+
+            var PointMaterialXBlur = new THREE.PointsMaterial({
+                color: (new THREE.Color('blue')).getHex(),
+                size: 0.5,
+                blending: THREE.AdditiveBlending,
+                map: maps.particleXBlur,
                 transparent: true,
                 alphaTest: 0.01,
                 sizeAttenuation: true
@@ -92,7 +103,7 @@ module DreamsArk.Elements {
             var clone = particles.clone();
             clone.scale(8, 8, 8)
 
-            data.layers.out = new THREE.Points(clone, PointMaterialBlur);
+            data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
 
             return inner;
         }

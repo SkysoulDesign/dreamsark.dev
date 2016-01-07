@@ -26,7 +26,7 @@ module DreamsArk.Compositions {
             ren.position.setY(1);
             ren.position.setZ(0.2);
 
-            scene.add(logo, ren, elements.HexParticles, elements.HexParticles.userData.layers.outer);
+            scene.add(logo, ren, elements.HexParticles, elements.HexParticles.userData.layers.outer, elements.HexParticles.userData.layers.out);
 
             camera.position.z = 30
 
@@ -55,12 +55,13 @@ module DreamsArk.Compositions {
 
                 particlesPositions.array[i * 3 + 2] += particlesVelocities[i].z / 2;
                 particlesBlurPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
-                particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 20;
+                particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
 
             });
 
             particlesPositions.needsUpdate = true;
             particlesBlurPositions.needsUpdate = true;
+            particlesBlurOutPositions.needsUpdate = true;
 
         }
 
