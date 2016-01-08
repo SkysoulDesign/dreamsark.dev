@@ -5,6 +5,7 @@ module DreamsArk.Modules {
     import query = DreamsArk.Helpers.query;
     import where = DreamsArk.Helpers.where;
     import removeById = DreamsArk.Helpers.removeById;
+    import each = DreamsArk.Helpers.each;
 
     export class Mouse implements Initializable {
 
@@ -68,9 +69,19 @@ module DreamsArk.Modules {
              */
             Events.add('window', 'mousemove', callback, this, false);
 
+            /**
+             * Start Raycaster
+             */
+            var checker = <Checker>module('Checker');
+
+            checker.add(function () {
+                Events.update();
+                return false;
+            })
+
         }
 
-        public click(element:string, callback, context:any = this, useCapture:boolean = false):void {
+        public click(element:string|THREE.Object3D, callback, context:any = this, useCapture:boolean = false):void {
             Events.add(element, 'click', callback, context, useCapture)
         }
 
@@ -88,18 +99,38 @@ module DreamsArk.Modules {
 
     }
 
+    class Raycaster {
+
+        constructor(public id:string, public event:string, public element:THREE.Object3D, public callback:Function) {
+
+        }
+
+    }
+
     export class Events implements Initializable {
 
         public instance:this = this;
         public static collection:any[] = [];
 
-        public static add(element:string, event:string, callback:(event:any) => void, context:any = DreamsArk, useCapture:boolean = false):void {
+        public static add(element:string|THREE.Object3D, event:string, callback:(event:any) => void, context:any = DreamsArk, useCapture:boolean = false):void {
             this.assign(event, element, callback, context, useCapture)
         }
 
-        protected static assign(event:string, element:string, callback:(event:any) => void, context:any = DreamsArk, useCapture:boolean = false):void {
+        protected static assign(event:string, element:string|THREE.Object3D, callback:(event:any) => void, context:any = DreamsArk, useCapture:boolean = false):void {
 
-            var domElement = (element === 'window') ? window : query(element),
+            /**
+             * if Element is an three obj then start raycaster instead
+             */
+            if (element instanceof THREE.Object3D) {
+
+                this.collection.push(
+                    new Raycaster(random.id(), event, element, callback)
+                );
+
+                return;
+            }
+
+            var domElement = (element === 'window') ? window : query(<string>element),
                 id = random.id();
 
             var caller:any = function (e) {
@@ -128,6 +159,28 @@ module DreamsArk.Modules {
              * Remove From Collection
              */
             removeById(this.collection, id);
+
+        }
+
+        public static update() {
+
+            var raycaster = module('Raycaster'),
+                mouse = module('Mouse'),
+                camera = module('Camera');
+
+            raycaster.setFromCamera(mouse.normalized, camera);
+
+            each(this.collection, function (element) {
+
+                if (element instanceof Raycaster) {
+
+                    var intersects = raycaster.intersectObject(element.element)
+                    if (intersects.length > 0) {
+                        element.callback()
+                    }
+                }
+
+            });
 
         }
 

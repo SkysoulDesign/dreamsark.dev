@@ -6,7 +6,7 @@ module DreamsArk.Elements {
 
         maps():{} {
             return {
-                logo: 'assets/new-assets/logo-tex.png',
+                logo: 'final/enter-page-assets/logo-tex.png',
             }
         }
 
@@ -25,12 +25,10 @@ module DreamsArk.Elements {
             var logo = objs.logo,
                 texture = maps.logo;
 
-            texture.wrapS = THREE.MirroredRepeatWrapping;
-            texture.wrapT = THREE.MirroredRepeatWrapping;
-            texture.mapping = THREE.CubeRefractionMapping;
-
             logo.rotation.x = Math.PI * 2;
             logo.material = new THREE.MeshBasicMaterial({map: texture, transparent: true});
+
+            logo.scale.subScalar(0.977);
 
             return logo;
 

@@ -2,6 +2,8 @@ module DreamsArk.Compositions {
 
     import For = DreamsArk.Helpers.For;
     import length = DreamsArk.Helpers.length;
+    import each = DreamsArk.Helpers.each;
+    import random = DreamsArk.Helpers.random;
     import deg2rad = DreamsArk.Helpers.deg2rad;
     import Mouse = DreamsArk.Modules.Mouse;
     import Animator = DreamsArk.Modules.Animator;
@@ -9,7 +11,7 @@ module DreamsArk.Compositions {
     export class Landing implements Composable {
 
         elements() {
-            return ['Logo', 'Ren', 'HexParticles'];
+            return ['Logo', 'Ren', 'HexParticles', 'EnterPage', 'SecondaryLogo'];
         }
 
         setup(scene, camera, elements) {
@@ -17,22 +19,37 @@ module DreamsArk.Compositions {
             var logo = <THREE.Object3D>elements.Logo,
                 ren = <THREE.Object3D>elements.Ren;
 
-            logo.scale.subScalar(0.977);
-            logo.position.setX(0.5);
-            logo.position.setY(1);
 
-            ren.scale.subScalar(0.977);
-            ren.position.setX(0.5);
-            ren.position.setY(1);
-            ren.position.setZ(0.2);
+            //logo.position.setX(0.5);
+            //logo.position.setY(1);
+            //
+            //ren.scale.subScalar(0.977);
+            //ren.position.setX(0.5);
+            //ren.position.setY(1);
+            //ren.position.setZ(0.2);
 
-            scene.add(logo, ren, elements.HexParticles, elements.HexParticles.userData.layers.outer, elements.HexParticles.userData.layers.out);
+            scene.add(logo);
+
+            scene.add(elements.EnterPage, elements.SecondaryLogo)
 
             camera.position.z = 30
 
         }
 
-        update(scene, camera, elements) {
+        update(scene, camera, elements, elapsed) {
+
+            var secondaryLogo = elements.SecondaryLogo;
+
+            secondaryLogo.userData.animation.update(elapsed);
+
+            each(secondaryLogo.children, function (element, i) {
+
+                if (element.position.y >= 160)
+                    element.position.set(random.between(-200, 200), -160, 0);
+
+                element.position.y += secondaryLogo.userData.velocity[i];
+
+            });
 
             var particles = elements.HexParticles,
                 particlesPositions = particles.geometry.attributes.position,

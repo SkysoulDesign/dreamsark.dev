@@ -1,5 +1,6 @@
 /// <reference path="Helpers.ts" />
 
+/// <reference path="elements/EnterPage.ts" />
 /// <reference path="elements/Tunnel.ts" />
 /// <reference path="elements/Skybox.ts" />
 /// <reference path="elements/Plexus.ts" />
@@ -15,8 +16,10 @@
 /// <reference path="elements/Overlay1.ts" />
 /// <reference path="elements/Overlay2.ts" />
 /// <reference path="elements/Cube.ts" />
+/// <reference path="elements/SecondaryLogo.ts" />
 
 /// <reference path="modules/Browser.ts" />
+/// <reference path="modules/Raycaster.ts" />
 /// <reference path="modules/Checker.ts" />
 /// <reference path="modules/Animator.ts" />
 /// <reference path="modules/Loader.ts" />
@@ -46,7 +49,7 @@ module DreamsArk {
      */
     export var debug:boolean = false;
 
-    export var elementsBag:{} = {};
+    export var elementsBag:any = {};
 
     export var core:any = {
         active: {
@@ -134,7 +137,7 @@ module DreamsArk {
     export var render = function (elapsedTime?:number) {
 
         requestAnimationFrame(render);
-        1
+
         var renderer = <Renderer>module('Renderer'),
             scene = <Scene>module('Scene'),
             camera = <Camera>module('Camera'),
