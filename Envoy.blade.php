@@ -17,8 +17,8 @@
     cd /home/dreamsark.dev
     git checkout .
     git pull origin master
-    composer self-update
-    composer update
+    {{--composer self-update--}}
+    {{--composer update--}}
 @endtask
 
 @task('config-git')

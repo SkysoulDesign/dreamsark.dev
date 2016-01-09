@@ -28,7 +28,7 @@ module DreamsArk.Elements {
             logo.rotation.x = Math.PI * 2;
             logo.material = new THREE.MeshBasicMaterial({map: texture, transparent: true});
 
-            logo.scale.subScalar(0.977);
+            logo.scale.subScalar(0.6);
 
             return logo;
 

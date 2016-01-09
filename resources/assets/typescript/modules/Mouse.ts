@@ -6,6 +6,7 @@ module DreamsArk.Modules {
     import where = DreamsArk.Helpers.where;
     import removeById = DreamsArk.Helpers.removeById;
     import each = DreamsArk.Helpers.each;
+    import timeout = DreamsArk.Helpers.timeout;
 
     export class Mouse implements Initializable {
 
@@ -16,6 +17,7 @@ module DreamsArk.Modules {
         public normalized:THREE.Vector2;
         public screen:THREE.Vector2;
         public enabled:boolean = true;
+        public clicked:boolean = false;
 
         constructor() {
 
@@ -68,6 +70,15 @@ module DreamsArk.Modules {
              * Manually Create Mouse Movement
              */
             Events.add('window', 'mousemove', callback, this, false);
+
+            var clickCallback = function (event):void {
+                this.clicked = true;
+            };
+
+            /**
+             * Manually Create Mouse Movement
+             */
+            Events.add('window', 'click', clickCallback, this, false);
 
             /**
              * Start Raycaster
@@ -174,13 +185,26 @@ module DreamsArk.Modules {
 
                 if (element instanceof Raycaster) {
 
-                    var intersects = raycaster.intersectObject(element.element)
-                    if (intersects.length > 0) {
-                        element.callback()
+                    /**
+                     * Only Dispatches if it's an click event
+                     */
+                    if (element.event === 'click' && mouse.clicked === true) {
+
+                        var intersects = raycaster.intersectObject(element.element);
+
+                        if (intersects.length > 0)
+                            element.callback()
+
                     }
+
                 }
 
             });
+
+            /**
+             * Set mouse Clicked As False on every update but open doors to processing before it's set
+             */
+            mouse.clicked = false;
 
         }
 

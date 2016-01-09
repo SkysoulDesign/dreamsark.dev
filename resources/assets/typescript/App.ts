@@ -29,7 +29,8 @@
 /// <reference path="modules/Renderer.ts" />
 
 /// <reference path="compositions/Landing.ts" />
-
+/// <reference path="compositions/Loading.ts" />
+/// <reference path="compositions/Universe.ts" />
 
 module DreamsArk {
 

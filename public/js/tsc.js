@@ -278,6 +278,13 @@ var DreamsArk;
                     platform: 'final/enter-page-assets/platform.png',
                     start: 'final/enter-page-assets/start.png',
                     skip: 'final/enter-page-assets/skip.png',
+                    planet: 'final/enter-page-assets/planet.png',
+                };
+            };
+            EnterPage.prototype.data = function () {
+                return {
+                    start: function () {
+                    }
                 };
             };
             EnterPage.prototype.create = function (maps, objs, data) {
@@ -288,17 +295,46 @@ var DreamsArk;
                 var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.background }), background = new THREE.Mesh(geometry, material);
                 background.position.setZ(-200);
                 group.add(background);
+                /**
+                 * Planet
+                 */
+                var geometry = new THREE.PlaneGeometry(10, 10, 1), material = new THREE.MeshBasicMaterial({ map: maps.planet, transparent: true }), planet = new THREE.Mesh(geometry, material);
+                planet.position.set(-30, 10, 0);
+                group.add(planet);
+                /**
+                 * Platform
+                 */
                 var geometry = new THREE.PlaneGeometry(60, 60, 1), material = new THREE.MeshBasicMaterial({ map: maps.platform, transparent: true }), platform = new THREE.Mesh(geometry, material);
                 group.add(platform);
-                var geometry = new THREE.PlaneGeometry(15, 15, 1), material = new THREE.MeshBasicMaterial({ map: maps.start, transparent: true }), start = new THREE.Mesh(geometry, material);
+                /**
+                 * Start
+                 */
+                var geometry = new THREE.PlaneGeometry(1024 / 55, 256 / 55, 1), material = new THREE.MeshBasicMaterial({ map: maps.start, transparent: true }), start = new THREE.Mesh(geometry, material);
+                /**
+                 * Position Fix
+                 */
                 start.position.set(0, -7, 5);
                 mouse.click(start, function () {
-                    console.log('hey');
+                    data.start();
                 });
                 group.add(start);
+                /**
+                 * Skip
+                 */
                 var geometry = new THREE.PlaneGeometry(5, 5, 1), material = new THREE.MeshBasicMaterial({ map: maps.skip, transparent: true }), skip = new THREE.Mesh(geometry, material);
                 skip.position.set(0, -9, 5);
                 group.add(skip);
+                data.parallex = function (logo) {
+                    var x = mouse.normalized.x, y = mouse.normalized.y;
+                    background.position.x = x * 2;
+                    background.position.y = y * 2;
+                    platform.position.x = x * 5;
+                    planet.position.x = -30 + x;
+                    start.position.x = x * 7;
+                    skip.position.x = x * 6;
+                    logo.position.x = x * 10;
+                    logo.position.y = y * 2;
+                };
                 return group;
             };
             return EnterPage;
@@ -666,6 +702,7 @@ var DreamsArk;
 (function (DreamsArk) {
     var Elements;
     (function (Elements) {
+        var deg2rad = DreamsArk.Helpers.deg2rad;
         var random = DreamsArk.Helpers.random;
         var For = DreamsArk.Helpers.For;
         var HexParticles = (function () {
@@ -690,11 +727,11 @@ var DreamsArk;
                 };
             };
             HexParticles.prototype.create = function (maps, objs, data) {
-                var maxParticleCount = 1000, radius = 50;
+                var maxParticleCount = 1000, radius = 50, group = new THREE.Group();
                 var circleGeometry = new THREE.CircleGeometry(5, 12);
                 var PointMaterial = new THREE.PointsMaterial({
-                    color: (new THREE.Color('red')).getHex(),
-                    size: 0.3,
+                    //color: (new THREE.Color('red')).getHex(),
+                    size: 0.5,
                     blending: THREE.AdditiveBlending,
                     map: maps.particle,
                     transparent: true,
@@ -702,8 +739,8 @@ var DreamsArk;
                     sizeAttenuation: true
                 });
                 var PointMaterialBlur = new THREE.PointsMaterial({
-                    color: (new THREE.Color('yellow')).getHex(),
-                    size: 0.5,
+                    //color: (new THREE.Color('yellow')).getHex(),
+                    size: 0.3,
                     blending: THREE.AdditiveBlending,
                     map: maps.particleBlur,
                     transparent: true,
@@ -711,8 +748,8 @@ var DreamsArk;
                     sizeAttenuation: true
                 });
                 var PointMaterialXBlur = new THREE.PointsMaterial({
-                    color: (new THREE.Color('blue')).getHex(),
-                    size: 0.5,
+                    //color: (new THREE.Color('blue')).getHex(),
+                    size: 0.2,
                     blending: THREE.AdditiveBlending,
                     map: maps.particleXBlur,
                     transparent: true,
@@ -734,14 +771,42 @@ var DreamsArk;
                 });
                 particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
                 data.layers.inner = new THREE.Points(particles, PointMaterial);
-                var inner = new THREE.Points(particles, PointMaterial);
                 var clone = particles.clone();
                 clone.scale(4, 4, 4);
                 data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
                 var clone = particles.clone();
                 clone.scale(8, 8, 8);
                 data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
-                return inner;
+                /**
+                 * Rotate Them
+                 */
+                data.layers.inner.rotation.x = data.layers.out.rotation.x = data.layers.outer.rotation.x = deg2rad(90);
+                group.add(data.layers.inner);
+                group.add(data.layers.out);
+                group.add(data.layers.outer);
+                data.update = function () {
+                    /**
+                     * Anim particles
+                     */
+                    var particles = group, //elements.HexParticles,
+                    particlesPositions = data.layers.inner.geometry.attributes.position, particlesBlurPositions = data.layers.outer.geometry.attributes.position, particlesBlurOutPositions = data.layers.out.geometry.attributes.position, particlesVelocities = particles.userData.velocity;
+                    //particles.position.y = camera.position.y;
+                    For(particlesPositions.count, function (i) {
+                        if (particlesPositions.array[i * 3 + 2] > 80)
+                            particlesPositions.array[i * 3 + 2] = -80;
+                        if (particlesBlurPositions.array[i * 3 + 2] > 80)
+                            particlesBlurPositions.array[i * 3 + 2] = -80;
+                        if (particlesBlurOutPositions.array[i * 3 + 2] > 80)
+                            particlesBlurOutPositions.array[i * 3 + 2] = -80;
+                        particlesPositions.array[i * 3 + 2] += particlesVelocities[i].z / 2;
+                        particlesBlurPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
+                        particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
+                    });
+                    particlesPositions.needsUpdate = true;
+                    particlesBlurPositions.needsUpdate = true;
+                    particlesBlurOutPositions.needsUpdate = true;
+                };
+                return group;
             };
             return HexParticles;
         })();
@@ -799,7 +864,7 @@ var DreamsArk;
                 var logo = objs.logo, texture = maps.logo;
                 logo.rotation.x = Math.PI * 2;
                 logo.material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-                logo.scale.subScalar(0.977);
+                logo.scale.subScalar(0.6);
                 return logo;
             };
             return Logo;
@@ -1087,7 +1152,8 @@ var DreamsArk;
             };
             SecondaryLogo.prototype.data = function () {
                 return {
-                    velocity: []
+                    velocity: [],
+                    speed: 0
                 };
             };
             SecondaryLogo.prototype.create = function (maps, objs, data) {
@@ -1869,6 +1935,7 @@ var DreamsArk;
         var Mouse = (function () {
             function Mouse() {
                 this.enabled = true;
+                this.clicked = false;
                 this.x = 0;
                 this.y = 0;
                 this.ratio = new THREE.Vector2(0, 0);
@@ -1903,6 +1970,13 @@ var DreamsArk;
                  * Manually Create Mouse Movement
                  */
                 Events.add('window', 'mousemove', callback, this, false);
+                var clickCallback = function (event) {
+                    this.clicked = true;
+                };
+                /**
+                 * Manually Create Mouse Movement
+                 */
+                Events.add('window', 'click', clickCallback, this, false);
                 /**
                  * Start Raycaster
                  */
@@ -1987,12 +2061,20 @@ var DreamsArk;
                 raycaster.setFromCamera(mouse.normalized, camera);
                 each(this.collection, function (element) {
                     if (element instanceof Raycaster) {
-                        var intersects = raycaster.intersectObject(element.element);
-                        if (intersects.length > 0) {
-                            element.callback();
+                        /**
+                         * Only Dispatches if it's an click event
+                         */
+                        if (element.event === 'click' && mouse.clicked === true) {
+                            var intersects = raycaster.intersectObject(element.element);
+                            if (intersects.length > 0)
+                                element.callback();
                         }
                     }
                 });
+                /**
+                 * Set mouse Clicked As False on every update but open doors to processing before it's set
+                 */
+                mouse.clicked = false;
             };
             Events.collection = [];
             return Events;
@@ -2080,56 +2162,235 @@ var DreamsArk;
 (function (DreamsArk) {
     var Compositions;
     (function (Compositions) {
-        var For = DreamsArk.Helpers.For;
         var each = DreamsArk.Helpers.each;
         var random = DreamsArk.Helpers.random;
         var Landing = (function () {
             function Landing() {
             }
             Landing.prototype.elements = function () {
-                return ['Logo', 'Ren', 'HexParticles', 'EnterPage', 'SecondaryLogo'];
+                return ['Logo', 'EnterPage', 'SecondaryLogo'];
             };
             Landing.prototype.setup = function (scene, camera, elements) {
-                var logo = elements.Logo, ren = elements.Ren;
-                //logo.position.setX(0.5);
-                //logo.position.setY(1);
-                //
-                //ren.scale.subScalar(0.977);
-                //ren.position.setX(0.5);
-                //ren.position.setY(1);
-                //ren.position.setZ(0.2);
-                scene.add(logo);
-                scene.add(elements.EnterPage, elements.SecondaryLogo);
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo;
+                enterPage.userData.start = function () {
+                    new DreamsArk.Composition('Loading');
+                };
+                scene.add(logo, enterPage, secondaryLogo);
                 camera.position.z = 30;
             };
             Landing.prototype.update = function (scene, camera, elements, elapsed) {
-                var secondaryLogo = elements.SecondaryLogo;
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo;
+                enterPage.userData.parallex(logo);
                 secondaryLogo.userData.animation.update(elapsed);
                 each(secondaryLogo.children, function (element, i) {
                     if (element.position.y >= 160)
                         element.position.set(random.between(-200, 200), -160, 0);
                     element.position.y += secondaryLogo.userData.velocity[i];
                 });
-                var particles = elements.HexParticles, particlesPositions = particles.geometry.attributes.position, particlesBlurPositions = elements.HexParticles.userData.layers.outer.geometry.attributes.position, particlesBlurOutPositions = elements.HexParticles.userData.layers.out.geometry.attributes.position, particlesVelocities = particles.userData.velocity;
-                particles.position.y = camera.position.y;
-                For(particlesPositions.count, function (i) {
-                    if (particlesPositions.array[i * 3 + 2] > 80)
-                        particlesPositions.array[i * 3 + 2] = -80;
-                    if (particlesBlurPositions.array[i * 3 + 2] > 80)
-                        particlesBlurPositions.array[i * 3 + 2] = -80;
-                    if (particlesBlurOutPositions.array[i * 3 + 2] > 80)
-                        particlesBlurOutPositions.array[i * 3 + 2] = -80;
-                    particlesPositions.array[i * 3 + 2] += particlesVelocities[i].z / 2;
-                    particlesBlurPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
-                    particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
-                });
-                particlesPositions.needsUpdate = true;
-                particlesBlurPositions.needsUpdate = true;
-                particlesBlurOutPositions.needsUpdate = true;
             };
             return Landing;
         })();
         Compositions.Landing = Landing;
+    })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Compositions;
+    (function (Compositions) {
+        var deg2rad = DreamsArk.Helpers.deg2rad;
+        var timeout = DreamsArk.Helpers.timeout;
+        var each = DreamsArk.Helpers.each;
+        var random = DreamsArk.Helpers.random;
+        var Loading = (function () {
+            function Loading() {
+            }
+            Loading.prototype.elements = function () {
+                return ['Particles', 'HexParticles'];
+            };
+            Loading.prototype.setup = function (scene, camera, elements) {
+                var animator = DreamsArk.module('Animator'), browser = DreamsArk.module('Browser'), mouse = DreamsArk.module('Mouse');
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, hexParticles = elements.HexParticles;
+                /**
+                 * Enter Tunnel
+                 */
+                var animEnterTunnel = animator.backInOut({
+                    destination: {
+                        rotation: new THREE.Vector3(deg2rad(90), 0, 0),
+                        position: new THREE.Vector3(0, 0, 0),
+                        logo: new THREE.Vector3(0, 10, -2),
+                    },
+                    origin: {
+                        rotation: camera.rotation.toVector3(),
+                        position: camera.position,
+                        logo: logo.position,
+                    },
+                    duration: 5,
+                    autoStart: false,
+                    start: function () {
+                        logo.userData.mouse.inverse = true;
+                    },
+                    update: function (params) {
+                        camera.rotation.setFromVector3(params.rotation);
+                        camera.position.copy(params.position);
+                        logo.position.copy(params.logo);
+                        /**
+                         * Enable movement on the way up
+                         */
+                        if (logo.userData.mouse.enabled === true) {
+                            logo.position.z = params.logo.z + -mouse.screen.y * logo.userData.mouse.speed.z;
+                        }
+                    },
+                    complete: function () {
+                        timeout(5, function () {
+                            new DreamsArk.Composition('Universe');
+                        });
+                    }
+                });
+                /**
+                 * Start Throwing Things down
+                 */
+                animator.expoIn({
+                    destination: {
+                        position: new THREE.Vector3(0, -browser.innerHeight, 0),
+                        speed: 10
+                    },
+                    origin: {
+                        position: enterPage.position,
+                        speed: secondaryLogo.userData.speed
+                    },
+                    duration: 5,
+                    start: function () {
+                        timeout(3, function () {
+                            logo.userData.mouse.enabled = true;
+                        });
+                    },
+                    update: function (params) {
+                        enterPage.position.copy(params.position);
+                        secondaryLogo.userData.speed = params.speed;
+                    },
+                    complete: function () {
+                        animEnterTunnel.init();
+                    }
+                });
+                scene.add(hexParticles);
+            };
+            Loading.prototype.update = function (scene, camera, elements, elapsed) {
+                var mouse = DreamsArk.module('Mouse');
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, hexParticles = elements.HexParticles;
+                secondaryLogo.userData.animation.update(elapsed);
+                hexParticles.userData.update();
+                /**
+                 * Anim Ships up
+                 */
+                each(secondaryLogo.children, function (element, i) {
+                    if (element.position.y >= 160)
+                        element.position.set(random.between(-200, 200), -160, 0);
+                    element.position.y += secondaryLogo.userData.velocity[i] + secondaryLogo.userData.speed;
+                });
+                /**
+                 * Logo Follow Mouse
+                 */
+                if (logo.userData.mouse.enabled === true && logo.userData.mouse.inverse === false) {
+                    logo.position.x = mouse.screen.x * logo.userData.mouse.speed.x;
+                    logo.position.y = -mouse.screen.y * logo.userData.mouse.speed.y + camera.position.y;
+                }
+                if (logo.userData.mouse.enabled === true && logo.userData.mouse.inverse === true) {
+                    logo.position.x = mouse.screen.x * logo.userData.mouse.speed.x;
+                    logo.position.z = -mouse.screen.y * logo.userData.mouse.speed.z;
+                }
+            };
+            return Loading;
+        })();
+        Compositions.Loading = Loading;
+    })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Compositions;
+    (function (Compositions) {
+        var For = DreamsArk.Helpers.For;
+        var Universe = (function () {
+            function Universe() {
+            }
+            Universe.prototype.elements = function () {
+                return ['Plexus', 'Skybox'];
+            };
+            Universe.prototype.setup = function (scene, camera, elements) {
+                var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
+                var logo = elements.Logo, plexus = elements.Plexus, skybox = elements.Skybox;
+                skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
+                skybox.userData.controls.target.set(0, browser.innerHeight, -1);
+                //skybox.userData.controls.update();
+                /**
+                 * Center Camera
+                 */
+                animator.circOut({
+                    destination: {
+                        position: new THREE.Vector3(0, 0, 50),
+                        rotation: new THREE.Vector3(0, 0, 0)
+                    },
+                    origin: {
+                        position: camera.position,
+                        rotation: camera.rotation.toVector3()
+                    },
+                    duration: 3,
+                    update: function (params) {
+                        //camera.position.copy(params.position);
+                        //camera.rotation.setFromVector3(params.rotation);
+                    }
+                });
+                /**
+                 * Speed up Logo
+                 */
+                animator.expoIn({
+                    destination: new THREE.Vector3(0, 0, -800),
+                    origin: logo.position,
+                    duration: 5,
+                    update: function (params) {
+                        //logo.position.copy(params)
+                    }
+                });
+                /**
+                 * Go to Target
+                 */
+                animator.expoIn({
+                    destination: {
+                        target: new THREE.Vector3(0, 0, 0)
+                    },
+                    origin: {
+                        target: skybox.userData.controls.target
+                    },
+                    duration: 2,
+                    update: function (params) {
+                        skybox.userData.controls.target.copy(params.target);
+                    }
+                });
+                scene.add(plexus);
+            };
+            Universe.prototype.update = function (scene, camera, elements) {
+                var skybox = elements.Skybox;
+                /**
+                 * Controls
+                 */
+                if (skybox.userData.controls)
+                    skybox.userData.controls.update();
+                var hex = elements.Plexus.userData.hex, hexBag = elements.Plexus.userData.hexBag, hexPositions = hex.geometry.attributes.position, distance = 100, speed = 10;
+                For(hexPositions.count, function (i) {
+                    hexPositions.array[i * 3] += hexBag[i].velocity.x / speed;
+                    hexPositions.array[i * 3 + 1] += hexBag[i].velocity.y / speed;
+                    hexPositions.array[i * 3 + 2] += hexBag[i].velocity.z / speed;
+                    if (hexPositions.array[i * 3 + 1] < -distance || hexPositions.array[i * 3 + 1] > distance)
+                        hexBag[i].velocity.y = -hexBag[i].velocity.y;
+                    if (hexPositions.array[i * 3] < -distance || hexPositions.array[i * 3] > distance)
+                        hexBag[i].velocity.x = -hexBag[i].velocity.x;
+                    if (hexPositions.array[i * 3 + 2] < -distance || hexPositions.array[i * 3 + 2] > distance)
+                        hexBag[i].velocity.z = -hexBag[i].velocity.z;
+                });
+                hexPositions.needsUpdate = true;
+            };
+            return Universe;
+        })();
+        Compositions.Universe = Universe;
     })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
 })(DreamsArk || (DreamsArk = {}));
 /// <reference path="Helpers.ts" />
@@ -2160,6 +2421,8 @@ var DreamsArk;
 /// <reference path="modules/Scene.ts" />
 /// <reference path="modules/Renderer.ts" />
 /// <reference path="compositions/Landing.ts" />
+/// <reference path="compositions/Loading.ts" />
+/// <reference path="compositions/Universe.ts" />
 var DreamsArk;
 (function (DreamsArk) {
     var is = DreamsArk.Helpers.is;
@@ -2290,13 +2553,13 @@ var DreamsArk;
         var For = DreamsArk.Helpers.For;
         var deg2rad = DreamsArk.Helpers.deg2rad;
         var query = DreamsArk.Helpers.query;
-        var Loading = (function () {
-            function Loading() {
+        var LoadingTest = (function () {
+            function LoadingTest() {
             }
-            Loading.prototype.elements = function () {
+            LoadingTest.prototype.elements = function () {
                 return ['Particles', 'Tunnel', 'TunnelFX', 'Skybox', 'Asteroid'];
             };
-            Loading.prototype.setup = function (scene, camera, elements) {
+            LoadingTest.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), mouse = DreamsArk.module('Mouse');
                 var logo = elements.Logo, ren = elements.Ren, asteroid = elements.Asteroid, particles = elements.Particles, tunnel = elements.Tunnel, tunnelFx = elements.TunnelFX, skybox = elements.Skybox, domBackground = query('.enter-page'), domTransistor = query('#transistor'), domLogo = query('#logo'), domControls = query('#reset-controls');
                 /**
@@ -2577,7 +2840,7 @@ var DreamsArk;
                 });
                 scene.add(particles, tunnel, skybox);
             };
-            Loading.prototype.update = function (scene, camera, elements) {
+            LoadingTest.prototype.update = function (scene, camera, elements) {
                 var mouse = DreamsArk.module('Mouse');
                 var particles = elements.Particles, particlesPositions = particles.geometry.attributes.position, particlesVelocities = particles.userData.velocity;
                 particles.position.y = camera.position.y;
@@ -2611,9 +2874,9 @@ var DreamsArk;
                 if (skybox.userData.controls)
                     skybox.userData.controls.update();
             };
-            return Loading;
+            return LoadingTest;
         })();
-        Compositions.Loading = Loading;
+        Compositions.LoadingTest = LoadingTest;
     })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
 })(DreamsArk || (DreamsArk = {}));
 var DreamsArk;
@@ -2621,13 +2884,13 @@ var DreamsArk;
     var Compositions;
     (function (Compositions) {
         var For = DreamsArk.Helpers.For;
-        var Universe = (function () {
-            function Universe() {
+        var UniverseOld = (function () {
+            function UniverseOld() {
             }
-            Universe.prototype.elements = function () {
+            UniverseOld.prototype.elements = function () {
                 return ['Plexus'];
             };
-            Universe.prototype.setup = function (scene, camera, elements) {
+            UniverseOld.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
                 var logo = elements.Logo, tunnel = elements.Tunnel, plexus = elements.Plexus, skybox = elements.Skybox;
                 skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
@@ -2690,7 +2953,7 @@ var DreamsArk;
                 });
                 scene.add(plexus);
             };
-            Universe.prototype.update = function (scene, camera, elements) {
+            UniverseOld.prototype.update = function (scene, camera, elements) {
                 var skybox = elements.Skybox;
                 /**
                  * Controls
@@ -2713,9 +2976,9 @@ var DreamsArk;
                 });
                 hexPositions.needsUpdate = true;
             };
-            return Universe;
+            return UniverseOld;
         })();
-        Compositions.Universe = Universe;
+        Compositions.UniverseOld = UniverseOld;
     })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
 })(DreamsArk || (DreamsArk = {}));
 var DreamsArk;

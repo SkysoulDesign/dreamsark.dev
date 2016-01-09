@@ -33,13 +33,14 @@ module DreamsArk.Elements {
         create(maps, objs, data) {
 
             var maxParticleCount = 1000,
-                radius = 50;
+                radius = 50,
+                group = new THREE.Group();
 
             var circleGeometry = new THREE.CircleGeometry(5, 12);
 
             var PointMaterial = new THREE.PointsMaterial({
-                color: (new THREE.Color('red')).getHex(),
-                size: 0.3,
+                //color: (new THREE.Color('red')).getHex(),
+                size: 0.5,
                 blending: THREE.AdditiveBlending,
                 map: maps.particle,
                 transparent: true,
@@ -49,8 +50,8 @@ module DreamsArk.Elements {
             });
 
             var PointMaterialBlur = new THREE.PointsMaterial({
-                color: (new THREE.Color('yellow')).getHex(),
-                size: 0.5,
+                //color: (new THREE.Color('yellow')).getHex(),
+                size: 0.3,
                 blending: THREE.AdditiveBlending,
                 map: maps.particleBlur,
                 transparent: true,
@@ -59,8 +60,8 @@ module DreamsArk.Elements {
             });
 
             var PointMaterialXBlur = new THREE.PointsMaterial({
-                color: (new THREE.Color('blue')).getHex(),
-                size: 0.5,
+                //color: (new THREE.Color('blue')).getHex(),
+                size: 0.2,
                 blending: THREE.AdditiveBlending,
                 map: maps.particleXBlur,
                 transparent: true,
@@ -93,19 +94,62 @@ module DreamsArk.Elements {
 
             data.layers.inner = new THREE.Points(particles, PointMaterial);
 
-            var inner = new THREE.Points(particles, PointMaterial);
-
             var clone = particles.clone();
             clone.scale(4, 4, 4);
             data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
-
 
             var clone = particles.clone();
             clone.scale(8, 8, 8);
 
             data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
 
-            return inner;
+            /**
+             * Rotate Them
+             */
+            data.layers.inner.rotation.x = data.layers.out.rotation.x = data.layers.outer.rotation.x = deg2rad(90);
+
+            group.add(data.layers.inner);
+            group.add(data.layers.out);
+            group.add(data.layers.outer);
+
+            data.update = function () {
+
+                /**
+                 * Anim particles
+                 */
+                var particles = group,//elements.HexParticles,
+                    particlesPositions = data.layers.inner.geometry.attributes.position,
+                    particlesBlurPositions = data.layers.outer.geometry.attributes.position,
+                    particlesBlurOutPositions = data.layers.out.geometry.attributes.position,
+                    particlesVelocities = particles.userData.velocity;
+
+                //particles.position.y = camera.position.y;
+
+                For(particlesPositions.count, function (i) {
+
+                    if (particlesPositions.array[i * 3 + 2] > 80)
+                        particlesPositions.array[i * 3 + 2] = -80;
+
+                    if (particlesBlurPositions.array[i * 3 + 2] > 80)
+                        particlesBlurPositions.array[i * 3 + 2] = -80;
+
+                    if (particlesBlurOutPositions.array[i * 3 + 2] > 80)
+                        particlesBlurOutPositions.array[i * 3 + 2] = -80;
+
+                    particlesPositions.array[i * 3 + 2] += particlesVelocities[i].z / 2;
+                    particlesBlurPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
+                    particlesBlurOutPositions.array[i * 3 + 2] += particlesVelocities[i].z / 10;
+
+                });
+
+                particlesPositions.needsUpdate = true;
+                particlesBlurPositions.needsUpdate = true;
+                particlesBlurOutPositions.needsUpdate = true;
+
+            };
+
+            return group;
+
         }
 
     }

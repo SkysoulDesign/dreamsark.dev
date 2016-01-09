@@ -5,10 +5,10 @@ module DreamsArk.Compositions {
     import Browser = DreamsArk.Modules.Browser;
     import For = DreamsArk.Helpers.For;
 
-    export class Universe implements Composable {
+    export class UniverseOld implements Composable {
 
         elements() {
-            return ['Plexus', 'Skybox'];
+            return ['Plexus'];
         }
 
         setup(scene, camera, elements) {
@@ -18,6 +18,7 @@ module DreamsArk.Compositions {
                 browser = <Browser>module('Browser');
 
             var logo = elements.Logo,
+                tunnel = elements.Tunnel,
                 plexus = elements.Plexus,
                 skybox = elements.Skybox;
 
@@ -57,6 +58,18 @@ module DreamsArk.Compositions {
             });
 
             /**
+             * Remove Tunnel
+             */
+            animator.expoIn({
+                destination: new THREE.Vector3(0, 0, 800),
+                origin: tunnel.position,
+                duration: 5,
+                update: function (params) {
+                    //tunnel.position.copy(params)
+                }
+            });
+
+            /**
              * Go to Target
              */
             animator.expoIn({
@@ -91,6 +104,9 @@ module DreamsArk.Compositions {
                 hexPositions = hex.geometry.attributes.position,
                 distance = 100,
                 speed = 10;
+
+            var tunnelFx = elements.TunnelFX;
+            tunnelFx.userData.update();
 
             For(hexPositions.count, function (i) {
 

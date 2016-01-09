@@ -16,7 +16,8 @@ module DreamsArk.Elements {
 
         data() {
             return {
-                velocity: []
+                velocity: [],
+                speed: 0
             }
         }
 
