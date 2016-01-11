@@ -72,7 +72,7 @@ module DreamsArk.Elements {
                 };
             }
 
-            var geometry = new THREE.PlaneGeometry(11 / 8, 128 / 8, 1),
+            var geometry = new THREE.PlaneGeometry(11 / 8, 128 / 3, 1),
                 material = new THREE.MeshBasicMaterial({map: texture, transparent: true});
 
             For(10, function (i) {
@@ -80,12 +80,13 @@ module DreamsArk.Elements {
                 var gro = new THREE.Group(),
                     logo = DreamsArk.elementsBag.Logo.clone(),
                     vector = new THREE.Vector3();
+
                 vector.setX(random.between(-100, 100));
                 vector.setY(random.between(0, 20));
                 vector.setZ(random.between(-10, -199));
 
                 logo.position.copy(vector);
-                logo.position.y += 5;
+                logo.position.y += 15;
 
                 var fx = new THREE.Mesh(geometry.clone(), material);
                 fx.position.copy(vector);

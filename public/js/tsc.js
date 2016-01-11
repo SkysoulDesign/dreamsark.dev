@@ -269,12 +269,16 @@ var DreamsArk;
 (function (DreamsArk) {
     var Elements;
     (function (Elements) {
+        var deg2rad = DreamsArk.Helpers.deg2rad;
         var EnterPage = (function () {
             function EnterPage() {
             }
             EnterPage.prototype.maps = function () {
                 return {
                     background: 'final/enter-page-assets/background.jpg',
+                    transition: 'final/enter-page-assets/transition.jpg',
+                    galaxy: 'final/enter-page-assets/galaxy.jpg',
+                    tunnelBG: 'final/enter-page-assets/tunnelBG.jpg',
                     platform: 'final/enter-page-assets/platform.png',
                     start: 'final/enter-page-assets/start.png',
                     skip: 'final/enter-page-assets/skip.png',
@@ -284,7 +288,8 @@ var DreamsArk;
             EnterPage.prototype.data = function () {
                 return {
                     start: function () {
-                    }
+                    },
+                    layers: {}
                 };
             };
             EnterPage.prototype.create = function (maps, objs, data) {
@@ -292,24 +297,43 @@ var DreamsArk;
                 /**
                  * Background
                  */
-                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.background }), background = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.background }), background = data.layers.background = new THREE.Mesh(geometry, material);
                 background.position.setZ(-200);
                 group.add(background);
                 /**
+                 * Transition
+                 */
+                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.transition }), transition = data.layers.transition = new THREE.Mesh(geometry, material);
+                transition.position.set(0, browser.innerHeight - 160, -200);
+                group.add(transition);
+                /**
+                 * Galaxy
+                 */
+                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.galaxy }), galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
+                galaxy.position.set(0, transition.position.y * 2, -200);
+                group.add(galaxy);
+                /**
+                 * TunnelBG
+                 */
+                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.tunnelBG, side: THREE.DoubleSide }), tunnelBG = data.layers.tunnelBG = new THREE.Mesh(geometry, material);
+                tunnelBG.position.set(0, galaxy.position.y + browser.innerHeight / 2, 100);
+                tunnelBG.rotation.x = deg2rad(90);
+                group.add(tunnelBG);
+                /**
                  * Planet
                  */
-                var geometry = new THREE.PlaneGeometry(10, 10, 1), material = new THREE.MeshBasicMaterial({ map: maps.planet, transparent: true }), planet = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(10, 10, 1), material = new THREE.MeshBasicMaterial({ map: maps.planet, transparent: true, alphaTest: 0.01 }), planet = data.layers.planet = new THREE.Mesh(geometry, material);
                 planet.position.set(-30, 10, 0);
                 group.add(planet);
                 /**
                  * Platform
                  */
-                var geometry = new THREE.PlaneGeometry(60, 60, 1), material = new THREE.MeshBasicMaterial({ map: maps.platform, transparent: true }), platform = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(60, 60, 1), material = new THREE.MeshBasicMaterial({ map: maps.platform, transparent: true, alphaTest: 0.01 }), platform = data.layers.platform = new THREE.Mesh(geometry, material);
                 group.add(platform);
                 /**
                  * Start
                  */
-                var geometry = new THREE.PlaneGeometry(1024 / 55, 256 / 55, 1), material = new THREE.MeshBasicMaterial({ map: maps.start, transparent: true }), start = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(1024 / 55, 256 / 55, 1), material = new THREE.MeshBasicMaterial({ map: maps.start, transparent: true }), start = data.layers.start = new THREE.Mesh(geometry, material);
                 /**
                  * Position Fix
                  */
@@ -321,7 +345,7 @@ var DreamsArk;
                 /**
                  * Skip
                  */
-                var geometry = new THREE.PlaneGeometry(5, 5, 1), material = new THREE.MeshBasicMaterial({ map: maps.skip, transparent: true }), skip = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(5, 5, 1), material = new THREE.MeshBasicMaterial({ map: maps.skip, transparent: true }), skip = data.layers.skip = new THREE.Mesh(geometry, material);
                 skip.position.set(0, -9, 5);
                 group.add(skip);
                 data.parallex = function (logo) {
@@ -340,6 +364,130 @@ var DreamsArk;
             return EnterPage;
         })();
         Elements.EnterPage = EnterPage;
+    })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
+})(DreamsArk || (DreamsArk = {}));
+var DreamsArk;
+(function (DreamsArk) {
+    var Elements;
+    (function (Elements) {
+        var random = DreamsArk.Helpers.random;
+        var For = DreamsArk.Helpers.For;
+        var ChaosParticles = (function () {
+            function ChaosParticles() {
+            }
+            ChaosParticles.prototype.data = function () {
+                return {
+                    velocity: [],
+                    layers: {
+                        purple: { velocity: [] },
+                        pink: { velocity: [] },
+                        lilas: { velocity: [] }
+                    }
+                };
+            };
+            ChaosParticles.prototype.maps = function () {
+                return {
+                    particle: 'lib/hex.png',
+                };
+            };
+            ChaosParticles.prototype.create = function (maps, objs, data) {
+                var maxParticleCount = 200, radius = 200, group = new THREE.Group();
+                var PointPurpleMaterial = new THREE.PointsMaterial({
+                    color: 0x351c41,
+                    size: 2,
+                    blending: THREE.AdditiveBlending,
+                    map: maps.particle,
+                    transparent: true,
+                    alphaTest: 0.01,
+                    sizeAttenuation: true,
+                    vertexColors: THREE.VertexColors,
+                }), PointPinkMaterial = PointPurpleMaterial.clone(), PointLilasMaterial = PointPurpleMaterial.clone();
+                PointPinkMaterial.color.setHex(0x7a1762);
+                PointLilasMaterial.color.setHex(0xb505ce);
+                var particles = new THREE.BufferGeometry(), particlePositions = new Float32Array(maxParticleCount * 3), colors = new Float32Array(maxParticleCount * 3);
+                /**
+                 * Add Vertices to Points
+                 */
+                For(maxParticleCount, function (i) {
+                    var vector = random.vector3(0, 0, 0, radius, false);
+                    particlePositions[i * 3] = vector.x + Math.random();
+                    particlePositions[i * 3 + 1] = vector.y + Math.random();
+                    particlePositions[i * 3 + 2] = random.between(-100, 200);
+                    /**
+                     * Randomize Opacity
+                     */
+                    colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = random.between(1, 100) * 0.01;
+                    data.layers.purple.velocity.push(new THREE.Vector3(5 * Math.random(), 5 * Math.random(), 5 * Math.random()));
+                    data.layers.pink.velocity.push(new THREE.Vector3(5 * Math.random(), 5 * Math.random(), 5 * Math.random()));
+                    data.layers.lilas.velocity.push(new THREE.Vector3(5 * Math.random(), 5 * Math.random(), 5 * Math.random()));
+                });
+                particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
+                particles.addAttribute('color', new THREE.BufferAttribute(colors, 3).setDynamic(true));
+                data.layers.purple.particles = new THREE.Points(particles, PointPurpleMaterial);
+                var clone = particles.clone();
+                clone.scale(4, 4, 4);
+                data.layers.pink.particles = new THREE.Points(clone, PointPinkMaterial);
+                var clone = particles.clone();
+                clone.scale(8, 8, 8);
+                data.layers.lilas.particles = new THREE.Points(clone, PointLilasMaterial);
+                group.add(data.layers.purple.particles);
+                group.add(data.layers.pink.particles);
+                group.add(data.layers.lilas.particles);
+                data.update = function () {
+                    var particles = group, speed = 50, distance = 50, 
+                    /**
+                     * Purple
+                     */
+                    purplePositions = data.layers.purple.particles.geometry.attributes.position, purpleVelocities = data.layers.purple.velocity, 
+                    /**
+                     * Pink
+                     */
+                    pinkPositions = data.layers.pink.particles.geometry.attributes.position, pinkVelocities = data.layers.pink.velocity, 
+                    /**
+                     * Lilas
+                     */
+                    lilasPositions = data.layers.lilas.particles.geometry.attributes.position, lilasVelocities = data.layers.lilas.velocity;
+                    For(purplePositions.count, function (i) {
+                        /**
+                         * Purple
+                         * @type {number}
+                         */
+                        purplePositions.array[i * 3] += purpleVelocities[i].x / speed;
+                        purplePositions.array[i * 3 + 1] += purpleVelocities[i].y / speed;
+                        if (purplePositions.array[i * 3 + 1] < -distance || purplePositions.array[i * 3 + 1] > distance)
+                            purpleVelocities[i].y = -purpleVelocities[i].y;
+                        if (purplePositions.array[i * 3] < -distance || purplePositions.array[i * 3] > distance)
+                            purpleVelocities[i].x = -purpleVelocities[i].x;
+                        /**
+                         * Pink
+                         * @type {number}
+                         */
+                        pinkPositions.array[i * 3] += pinkVelocities[i].x / speed;
+                        pinkPositions.array[i * 3 + 1] += pinkVelocities[i].y / speed;
+                        if (pinkPositions.array[i * 3 + 1] < -distance || pinkPositions.array[i * 3 + 1] > distance)
+                            pinkVelocities[i].y = -pinkVelocities[i].y;
+                        if (pinkPositions.array[i * 3] < -distance || pinkPositions.array[i * 3] > distance)
+                            pinkVelocities[i].x = -pinkVelocities[i].x;
+                        /**
+                         * Lilas
+                         * @type {number}
+                         */
+                        lilasPositions.array[i * 3] += lilasVelocities[i].x / speed;
+                        lilasPositions.array[i * 3 + 1] += lilasVelocities[i].y / speed;
+                        if (lilasPositions.array[i * 3 + 1] < -distance || lilasPositions.array[i * 3 + 1] > distance)
+                            lilasVelocities[i].y = -lilasVelocities[i].y;
+                        if (lilasPositions.array[i * 3] < -distance || lilasPositions.array[i * 3] > distance)
+                            lilasVelocities[i].x = -lilasVelocities[i].x;
+                    });
+                    purplePositions.needsUpdate = true;
+                    pinkPositions.needsUpdate = true;
+                    lilasPositions.needsUpdate = true;
+                };
+                return group;
+            };
+            return ChaosParticles;
+        })();
+        Elements.ChaosParticles = ChaosParticles;
     })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
 })(DreamsArk || (DreamsArk = {}));
 var DreamsArk;
@@ -419,7 +567,7 @@ var DreamsArk;
             }
             Skybox.prototype.maps = function () {
                 return {
-                    skybox: 'lib/background-sphere.jpg'
+                    skybox: 'final/universe-assets/background-sphere.jpg'
                 };
             };
             Skybox.prototype.create = function (maps, objs, data) {
@@ -770,12 +918,13 @@ var DreamsArk;
                     data.velocity.push(new THREE.Vector3(5 * Math.random(), 5 * Math.random(), 5 * Math.random()));
                 });
                 particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
+                particles.scale(2, 2, 2);
                 data.layers.inner = new THREE.Points(particles, PointMaterial);
                 var clone = particles.clone();
-                clone.scale(4, 4, 4);
+                clone.scale(2, 2, 2);
                 data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
                 var clone = particles.clone();
-                clone.scale(8, 8, 8);
+                clone.scale(4, 4, 4);
                 data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
                 /**
                  * Rotate Them
@@ -1019,12 +1168,17 @@ var DreamsArk;
             }
             Asteroid.prototype.maps = function () {
                 return {
-                    rocks: 'assets/transition-assets/rocks.png'
+                    rocks: 'final/enter-page-assets/asteroid.png'
                 };
             };
             Asteroid.prototype.create = function (maps, objs, data) {
-                var geometry = new THREE.PlaneGeometry(1024 / 20, 1024 / 20, 1);
-                var material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: maps.rocks, transparent: true });
+                var geometry = new THREE.PlaneGeometry(512 / 2, 512 / 2, 1);
+                var material = new THREE.MeshBasicMaterial({
+                    side: THREE.DoubleSide,
+                    map: maps.rocks,
+                    transparent: true,
+                    alphaTest: 0.1
+                });
                 return new THREE.Mesh(geometry, material);
             };
             return Asteroid;
@@ -1192,14 +1346,14 @@ var DreamsArk;
                         }
                     };
                 }
-                var geometry = new THREE.PlaneGeometry(11 / 8, 128 / 8, 1), material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+                var geometry = new THREE.PlaneGeometry(11 / 8, 128 / 3, 1), material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
                 For(10, function (i) {
                     var gro = new THREE.Group(), logo = DreamsArk.elementsBag.Logo.clone(), vector = new THREE.Vector3();
                     vector.setX(random.between(-100, 100));
                     vector.setY(random.between(0, 20));
                     vector.setZ(random.between(-10, -199));
                     logo.position.copy(vector);
-                    logo.position.y += 5;
+                    logo.position.y += 15;
                     var fx = new THREE.Mesh(geometry.clone(), material);
                     fx.position.copy(vector);
                     gro.add(logo);
@@ -2168,20 +2322,21 @@ var DreamsArk;
             function Landing() {
             }
             Landing.prototype.elements = function () {
-                return ['Logo', 'EnterPage', 'SecondaryLogo'];
+                return ['Logo', 'EnterPage', 'SecondaryLogo', 'ChaosParticles'];
             };
             Landing.prototype.setup = function (scene, camera, elements) {
-                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo;
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, ChaosParticles = elements.ChaosParticles;
                 enterPage.userData.start = function () {
                     new DreamsArk.Composition('Loading');
                 };
-                scene.add(logo, enterPage, secondaryLogo);
+                scene.add(logo, enterPage, secondaryLogo, ChaosParticles);
                 camera.position.z = 30;
             };
             Landing.prototype.update = function (scene, camera, elements, elapsed) {
-                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo;
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, ChaosParticles = elements.ChaosParticles;
                 enterPage.userData.parallex(logo);
                 secondaryLogo.userData.animation.update(elapsed);
+                ChaosParticles.userData.update();
                 each(secondaryLogo.children, function (element, i) {
                     if (element.position.y >= 160)
                         element.position.set(random.between(-200, 200), -160, 0);
@@ -2205,24 +2360,55 @@ var DreamsArk;
             function Loading() {
             }
             Loading.prototype.elements = function () {
-                return ['Particles', 'HexParticles'];
+                return ['Particles', 'HexParticles', 'Asteroid'];
             };
             Loading.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), browser = DreamsArk.module('Browser'), mouse = DreamsArk.module('Mouse');
-                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, hexParticles = elements.HexParticles;
+                var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, hexParticles = elements.HexParticles, chaosParticles = elements.ChaosParticles, asteroid = elements.Asteroid;
+                /**
+                 * Speed Up to Light Speed
+                 */
+                var animLightSpeed = animator.expoOut({
+                    destination: {
+                        zoom: 0.3,
+                        scale: new THREE.Vector3(4, 3, 1),
+                        inner: 0.3
+                    },
+                    origin: {
+                        zoom: 2,
+                        scale: enterPage.userData.layers.tunnelBG.scale,
+                        inner: hexParticles.userData.layers.inner.material.size
+                    },
+                    duration: 5,
+                    delay: 2,
+                    autoStart: false,
+                    start: function () {
+                        enterPage.remove(enterPage.userData.layers.galaxy);
+                    },
+                    update: function (params) {
+                        camera.zoom = params.zoom;
+                        camera.updateProjectionMatrix();
+                        hexParticles.userData.layers.inner.material.size = params.inner;
+                        enterPage.userData.layers.tunnelBG.scale.copy(params.scale);
+                    }
+                });
                 /**
                  * Enter Tunnel
                  */
-                var animEnterTunnel = animator.backInOut({
+                var animEnterTunnel = animator.expoInOut({
                     destination: {
-                        rotation: new THREE.Vector3(deg2rad(90), 0, 0),
+                        rotation: new THREE.Vector3(deg2rad(90), 0, deg2rad(360)),
                         position: new THREE.Vector3(0, 0, 0),
                         logo: new THREE.Vector3(0, 10, -2),
+                        inner: new THREE.Vector3(0, 0, 0),
+                        zoom: 2
                     },
                     origin: {
                         rotation: camera.rotation.toVector3(),
                         position: camera.position,
                         logo: logo.position,
+                        inner: hexParticles.userData.layers.inner.position,
+                        zoom: camera.zoom
                     },
                     duration: 5,
                     autoStart: false,
@@ -2232,7 +2418,13 @@ var DreamsArk;
                     update: function (params) {
                         camera.rotation.setFromVector3(params.rotation);
                         camera.position.copy(params.position);
+                        camera.zoom = params.zoom;
+                        camera.updateProjectionMatrix();
                         logo.position.copy(params.logo);
+                        /**
+                         * Enter Inner Particles
+                         */
+                        hexParticles.userData.layers.inner.position.copy(params.inner);
                         /**
                          * Enable movement on the way up
                          */
@@ -2241,35 +2433,67 @@ var DreamsArk;
                         }
                     },
                     complete: function () {
+                        animLightSpeed.init();
                         timeout(5, function () {
                             new DreamsArk.Composition('Universe');
                         });
                     }
                 });
+                var animAsteroid = animator.sineInOut({
+                    destination: {
+                        position: -browser.innerHeight * 1.9,
+                        asteroid: new THREE.Vector3(-100, -250, -150)
+                    },
+                    origin: {
+                        position: -browser.innerHeight * 1.5,
+                        asteroid: asteroid.position.set(-100, 220, -150)
+                    },
+                    duration: 10,
+                    autoStart: false,
+                    start: function () {
+                        scene.add(asteroid);
+                    },
+                    update: function (params) {
+                        enterPage.position.setY(params.position);
+                        asteroid.position.copy(params.asteroid);
+                    },
+                    complete: function () {
+                        animEnterTunnel.init();
+                    }
+                });
+                /**
+                 * Hide Inner particles and enter smoothly into transition
+                 */
+                hexParticles.position.setY(200);
+                hexParticles.userData.layers.inner.position.setY(500);
                 /**
                  * Start Throwing Things down
                  */
-                animator.expoIn({
+                animator.expoInOut({
                     destination: {
-                        position: new THREE.Vector3(0, -browser.innerHeight, 0),
-                        speed: 10
+                        position: new THREE.Vector3(0, -browser.innerHeight * 1.5, 0),
+                        speed: 10,
+                        hexParticles: new THREE.Vector3(0, 0, 0)
                     },
                     origin: {
                         position: enterPage.position,
-                        speed: secondaryLogo.userData.speed
+                        speed: secondaryLogo.userData.speed,
+                        hexParticles: hexParticles.position
                     },
-                    duration: 5,
+                    duration: 10,
                     start: function () {
-                        timeout(3, function () {
+                        timeout(1, function () {
                             logo.userData.mouse.enabled = true;
                         });
                     },
                     update: function (params) {
                         enterPage.position.copy(params.position);
                         secondaryLogo.userData.speed = params.speed;
+                        chaosParticles.position.setY(params.position.y);
+                        hexParticles.position.setY(params.hexParticles.y);
                     },
                     complete: function () {
-                        animEnterTunnel.init();
+                        animAsteroid.init();
                     }
                 });
                 scene.add(hexParticles);
@@ -2317,63 +2541,83 @@ var DreamsArk;
             };
             Universe.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
-                var logo = elements.Logo, plexus = elements.Plexus, skybox = elements.Skybox;
+                var logo = elements.Logo, plexus = elements.Plexus, hexParticles = elements.HexParticles, skybox = elements.Skybox, enterPage = elements.EnterPage;
                 skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
                 skybox.userData.controls.target.set(0, browser.innerHeight, -1);
                 //skybox.userData.controls.update();
                 /**
                  * Center Camera
                  */
-                animator.circOut({
-                    destination: {
-                        position: new THREE.Vector3(0, 0, 50),
-                        rotation: new THREE.Vector3(0, 0, 0)
-                    },
-                    origin: {
-                        position: camera.position,
-                        rotation: camera.rotation.toVector3()
-                    },
-                    duration: 3,
-                    update: function (params) {
-                        //camera.position.copy(params.position);
-                        //camera.rotation.setFromVector3(params.rotation);
-                    }
-                });
+                //animator.circOut({
+                //    destination: {
+                //        position: new THREE.Vector3(0, 0, 50),
+                //        rotation: new THREE.Vector3(0, 0, 0)
+                //    },
+                //    origin: {
+                //        position: camera.position,
+                //        rotation: camera.rotation.toVector3()
+                //    },
+                //    duration: 3,
+                //    update: function (params) {
+                //        //camera.position.copy(params.position);
+                //        //camera.rotation.setFromVector3(params.rotation);
+                //    }
+                //});
                 /**
                  * Speed up Logo
                  */
-                animator.expoIn({
-                    destination: new THREE.Vector3(0, 0, -800),
-                    origin: logo.position,
-                    duration: 5,
+                animator.expoInOut({
+                    destination: {
+                        logo: new THREE.Vector3(0, 300, 0),
+                        hexParticles: new THREE.Vector3(0, -200, 0),
+                        plexus: new THREE.Vector3(0, 0, 0),
+                        opacity: 0
+                    },
+                    origin: {
+                        logo: logo.position,
+                        hexParticles: hexParticles.position,
+                        plexus: plexus.position.set(0, 800, 0),
+                        opacity: enterPage.userData.layers.tunnelBG.material.opacity
+                    },
+                    duration: 10,
+                    start: function () {
+                        scene.add(plexus);
+                    },
                     update: function (params) {
-                        //logo.position.copy(params)
+                        logo.position.copy(params.logo);
+                        hexParticles.position.copy(params.hexParticles);
+                        plexus.position.copy(params.plexus);
+                        enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
                     }
                 });
                 /**
                  * Go to Target
                  */
-                animator.expoIn({
-                    destination: {
-                        target: new THREE.Vector3(0, 0, 0)
-                    },
-                    origin: {
-                        target: skybox.userData.controls.target
-                    },
-                    duration: 2,
-                    update: function (params) {
-                        skybox.userData.controls.target.copy(params.target);
-                    }
-                });
-                scene.add(plexus);
+                //animator.expoIn({
+                //    destination: {
+                //        target: new THREE.Vector3(0, 0, 0)
+                //    },
+                //    origin: {
+                //        target: skybox.userData.controls.target
+                //    },
+                //    duration: 2,
+                //    update: function (params) {
+                //        skybox.userData.controls.target.copy(params.target)
+                //    }
+                //});
+                //scene.add(plexus);
             };
             Universe.prototype.update = function (scene, camera, elements) {
-                var skybox = elements.Skybox;
+                var mouse = DreamsArk.module('Mouse');
+                var logo = elements.Logo, hexParticles = elements.HexParticles, skybox = elements.Skybox;
+                hexParticles.userData.update();
                 /**
                  * Controls
                  */
                 if (skybox.userData.controls)
                     skybox.userData.controls.update();
+                return;
+                var skybox = elements.Skybox;
                 var hex = elements.Plexus.userData.hex, hexBag = elements.Plexus.userData.hexBag, hexPositions = hex.geometry.attributes.position, distance = 100, speed = 10;
                 For(hexPositions.count, function (i) {
                     hexPositions.array[i * 3] += hexBag[i].velocity.x / speed;
@@ -2395,6 +2639,7 @@ var DreamsArk;
 })(DreamsArk || (DreamsArk = {}));
 /// <reference path="Helpers.ts" />
 /// <reference path="elements/EnterPage.ts" />
+/// <reference path="elements/ChaosParticles.ts" />
 /// <reference path="elements/Tunnel.ts" />
 /// <reference path="elements/Skybox.ts" />
 /// <reference path="elements/Plexus.ts" />

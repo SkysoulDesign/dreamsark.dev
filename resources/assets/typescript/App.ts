@@ -1,6 +1,7 @@
 /// <reference path="Helpers.ts" />
 
 /// <reference path="elements/EnterPage.ts" />
+/// <reference path="elements/ChaosParticles.ts" />
 /// <reference path="elements/Tunnel.ts" />
 /// <reference path="elements/Skybox.ts" />
 /// <reference path="elements/Plexus.ts" />

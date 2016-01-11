@@ -92,14 +92,15 @@ module DreamsArk.Elements {
 
             particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
 
+            particles.scale(2, 2, 2);
             data.layers.inner = new THREE.Points(particles, PointMaterial);
 
             var clone = particles.clone();
-            clone.scale(4, 4, 4);
+            clone.scale(2, 2, 2);
             data.layers.outer = new THREE.Points(clone, PointMaterialBlur);
 
             var clone = particles.clone();
-            clone.scale(8, 8, 8);
+            clone.scale(4, 4, 4);
 
             data.layers.out = new THREE.Points(clone, PointMaterialXBlur);
 

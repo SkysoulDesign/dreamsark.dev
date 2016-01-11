@@ -6,7 +6,7 @@ module DreamsArk.Elements {
 
         maps() {
             return {
-                skybox: 'lib/background-sphere.jpg'
+                skybox: 'final/universe-assets/background-sphere.jpg'
             }
         }
 

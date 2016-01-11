@@ -11,20 +11,21 @@ module DreamsArk.Compositions {
     export class Landing implements Composable {
 
         elements() {
-            return ['Logo', 'EnterPage', 'SecondaryLogo'];
+            return ['Logo', 'EnterPage', 'SecondaryLogo', 'ChaosParticles'];
         }
 
         setup(scene, camera, elements) {
 
             var logo = <THREE.Object3D>elements.Logo,
                 enterPage = elements.EnterPage,
-                secondaryLogo = elements.SecondaryLogo;
+                secondaryLogo = elements.SecondaryLogo,
+                ChaosParticles = elements.ChaosParticles;
 
             enterPage.userData.start = function () {
                 new Composition('Loading');
             };
 
-            scene.add(logo, enterPage, secondaryLogo);
+            scene.add(logo, enterPage, secondaryLogo, ChaosParticles);
 
             camera.position.z = 30
 
@@ -34,11 +35,13 @@ module DreamsArk.Compositions {
 
             var logo = elements.Logo,
                 enterPage = elements.EnterPage,
-                secondaryLogo = elements.SecondaryLogo;
+                secondaryLogo = elements.SecondaryLogo,
+                ChaosParticles = elements.ChaosParticles;
 
             enterPage.userData.parallex(logo);
 
             secondaryLogo.userData.animation.update(elapsed);
+            ChaosParticles.userData.update();
 
             each(secondaryLogo.children, function (element, i) {
 
