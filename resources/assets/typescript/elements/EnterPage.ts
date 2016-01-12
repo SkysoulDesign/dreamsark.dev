@@ -38,7 +38,7 @@ module DreamsArk.Elements {
             /**
              * Background
              */
-            var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1),
+            var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1),
                 material = new THREE.MeshBasicMaterial({map: maps.background}),
                 background = data.layers.background = new THREE.Mesh(geometry, material);
 
@@ -49,33 +49,33 @@ module DreamsArk.Elements {
             /**
              * Transition
              */
-            var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1),
+            var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1),
                 material = new THREE.MeshBasicMaterial({map: maps.transition}),
                 transition = data.layers.transition = new THREE.Mesh(geometry, material);
 
-            transition.position.set(0, browser.innerHeight - 160, -200);
+            transition.position.set(0, geometry.parameters.height, -200);
 
             group.add(transition);
 
             /**
              * Galaxy
              */
-            var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1),
+            var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1),
                 material = new THREE.MeshBasicMaterial({map: maps.galaxy}),
                 galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
 
-            galaxy.position.set(0, transition.position.y * 2, -200);
+            galaxy.position.set(0, geometry.parameters.height * 2, -200);
 
             group.add(galaxy);
 
             /**
              * TunnelBG
              */
-            var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1),
+            var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1),
                 material = new THREE.MeshBasicMaterial({map: maps.tunnelBG, transparent: true, side: THREE.DoubleSide}),
                 tunnelBG = data.layers.tunnelBG = new THREE.Mesh(geometry, material);
 
-            tunnelBG.position.set(0, galaxy.position.y + browser.innerHeight / 2, 100);
+            tunnelBG.position.set(0, geometry.parameters.height * 3 - geometry.parameters.height / 2, 0);
             tunnelBG.rotation.x = deg2rad(90);
 
             group.add(tunnelBG);

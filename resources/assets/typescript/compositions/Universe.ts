@@ -55,14 +55,15 @@ module DreamsArk.Compositions {
              */
             animator.expoInOut({
                 destination: {
-                    logo: new THREE.Vector3(0, 300, 0),
+                    logo: new THREE.Vector3(0, 1000, 0),
                     hexParticles: new THREE.Vector3(0, -200, 0),
                     plexus: new THREE.Vector3(),
                     opacity: 0,
                     controls: new THREE.Vector3(),
                     far: 6000,
                     fog: 6500,
-                    zoom: 1
+                    zoom: 1,
+                    secondaryLogo: new THREE.Vector3(0, 1000, 0)
                 },
                 origin: {
                     logo: logo.position,
@@ -72,7 +73,8 @@ module DreamsArk.Compositions {
                     controls: skybox.userData.controls.target,
                     far: camera.far,
                     fog: scene.fog.far,
-                    zoom: camera.zoom
+                    zoom: camera.zoom,
+                    secondaryLogo: secondaryLogo.position
                 },
                 duration: 10,
                 start(){
@@ -86,6 +88,7 @@ module DreamsArk.Compositions {
                     enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
 
                     skybox.userData.controls.target.copy(params.controls);
+                    secondaryLogo.position.copy(params.secondaryLogo);
 
                     camera.far = params.far;
                     camera.zoom = params.zoom;

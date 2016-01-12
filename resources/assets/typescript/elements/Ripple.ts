@@ -4,13 +4,13 @@ module DreamsArk.Elements {
     import random = DreamsArk.Helpers.random;
     import Browser = DreamsArk.Modules.Browser;
 
-    export class SecondaryLogo implements Loadable {
+    export class Ripple implements Loadable {
 
         public instance:THREE.Object3D;
 
         maps():{} {
             return {
-                beam: 'final/fxs/up-beam.png'
+                beam: 'final/fxs/ripple.png'
             }
         }
 
@@ -25,12 +25,9 @@ module DreamsArk.Elements {
 
             var browser = <Browser>module('Browser');
 
-            var group = new THREE.Group(),
-                texture = maps.beam;
-
             var clock = new THREE.Clock();
 
-            data.animation = new TextureAnimator(maps.beam, 2, 4, 6, 60); // texture, #horiz, #vert, #total, duration.
+            data.animation = new TextureAnimator(maps.beam, 4, 4, 16, 60); // texture, #horiz, #vert, #total, duration.
 
             function TextureAnimator(texture:THREE.Texture, tilesHoriz, tilesVert, numTiles, tileDispDuration) {
 
@@ -45,8 +42,14 @@ module DreamsArk.Elements {
                 this.tileDisplayDuration = tileDispDuration;
                 this.currentDisplayTime = 0;
                 this.currentTile = 0;
+                this.finished = false;
 
                 this.update = function () {
+
+                    if (this.finished) {
+                        texture.repeat.set(0.01, 0.01)
+                        return;
+                    }
 
                     var delta = clock.getDelta();
 
@@ -57,8 +60,10 @@ module DreamsArk.Elements {
                         this.currentDisplayTime -= this.tileDisplayDuration;
                         this.currentTile++;
 
-                        if (this.currentTile == this.numberOfTiles)
+                        if (this.currentTile == this.numberOfTiles) {
                             this.currentTile = 0;
+                            this.finished = true;
+                        }
 
                         var currentColumn = this.currentTile % this.tilesHorizontal;
 
@@ -72,47 +77,20 @@ module DreamsArk.Elements {
                 };
             }
 
-            var geometry = new THREE.PlaneGeometry(11 / 8, 128 / 3, 1),
+            var geometry = new THREE.PlaneGeometry(512 / 8, 128 / 8, 1),
                 material = new THREE.MeshBasicMaterial({
-                    map: texture,
+                    map: maps.beam,
                     transparent: true,
                     side: THREE.DoubleSide,
                     alphaTest: 0.1,
-                    blending: THREE.AdditiveBlending
-                }),
-                beam = data.beam = new THREE.Mesh(geometry.clone(), material);
+                    blending: THREE.AdditiveBlending,
+                    opacity: 0.5
+                });
 
-            For(10, function (i) {
+            var ripple = new THREE.Mesh(geometry, material);
+            ripple.scale.set(0.6, 0.6, 0.6);
 
-                var container = new THREE.Group(),
-                    logo = DreamsArk.elementsBag.Logo.clone(),
-                    vector = new THREE.Vector3(),
-                    fx = beam.clone();
-
-                vector.setX(random.between(-100, 100));
-                vector.setY(random.between(0, 20));
-                vector.setZ(random.between(-10, -199));
-
-                logo.position.copy(vector);
-                logo.position.y += 10;
-
-                fx.position.copy(vector);
-
-                container.add(logo);
-                container.add(fx);
-
-                //var scale = random.between(10, 50) * 0.01;
-                //gro.scale.set(scale, scale, scale);
-
-                group.add(container);
-
-                data.velocity.push(
-                    random.between(10, 50) * 0.01
-                );
-
-            });
-
-            return group;
+            return ripple;
 
         }
 

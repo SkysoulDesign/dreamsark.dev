@@ -15,7 +15,7 @@ module DreamsArk.Compositions {
     export class Loading implements Composable {
 
         elements() {
-            return ['Particles', 'HexParticles', 'Asteroid'];
+            return ['Particles', 'HexParticles', 'Asteroid', 'Ripple'];
         }
 
         setup(scene, camera, elements) {
@@ -26,10 +26,13 @@ module DreamsArk.Compositions {
 
             var logo = elements.Logo,
                 enterPage = elements.EnterPage,
+                geometryHeight = enterPage.userData.layers.background.geometry.parameters.height,
                 secondaryLogo = elements.SecondaryLogo,
+                beam = secondaryLogo.userData.beam,
                 hexParticles = elements.HexParticles,
                 chaosParticles = elements.ChaosParticles,
-                asteroid = elements.Asteroid;
+                asteroid = elements.Asteroid,
+                ripple = elements.Ripple;
 
             /**
              * Speed Up to Light Speed
@@ -118,11 +121,11 @@ module DreamsArk.Compositions {
 
             var animAsteroid = animator.sineInOut({
                 destination: {
-                    position: -browser.innerHeight * 1.9,
+                    position: -geometryHeight * 2,
                     asteroid: new THREE.Vector3(-100, -250, -150)
                 },
                 origin: {
-                    position: -browser.innerHeight * 1.5,
+                    position: -geometryHeight,
                     asteroid: asteroid.position.set(-100, 230, -150)
                 },
                 duration: 10,
@@ -151,26 +154,39 @@ module DreamsArk.Compositions {
              */
             animator.expoInOut({
                 destination: {
-                    position: new THREE.Vector3(0, -browser.innerHeight * 1.5, 0),
+                    position: new THREE.Vector3(0, -geometryHeight, 0),
                     speed: 10,
-                    hexParticles: new THREE.Vector3(0, 0, 0)
+                    hexParticles: new THREE.Vector3(0, 0, 0),
+                    scale: new THREE.Vector3(3.5, 2.2, 1)
                 },
                 origin: {
                     position: enterPage.position,
                     speed: secondaryLogo.userData.speed,
-                    hexParticles: hexParticles.position
+                    hexParticles: hexParticles.position,
+                    scale: beam.scale.set(1, 0.2, 1)
                 },
                 duration: 10,
                 start: function () {
+
+                    beam.position.y -= 11;
+
+                    ripple.position.copy(logo.position);
+                    ripple.position.y -= 7;
+
+                    logo.add(beam);
+                    enterPage.add(ripple);
+
                     timeout(1, function () {
                         logo.userData.mouse.enabled = true;
                     });
                 },
-                update: function (params) {
+                update: function (params, progress, on) {
+
                     enterPage.position.copy(params.position);
                     secondaryLogo.userData.speed = params.speed;
                     chaosParticles.position.setY(params.position.y);
-                    hexParticles.position.setY(params.hexParticles.y)
+                    hexParticles.position.setY(params.hexParticles.y);
+                    beam.scale.copy(params.scale)
                 },
                 complete: function () {
                     animAsteroid.init();
@@ -190,9 +206,12 @@ module DreamsArk.Compositions {
             var logo = elements.Logo,
                 enterPage = elements.EnterPage,
                 secondaryLogo = elements.SecondaryLogo,
-                hexParticles = elements.HexParticles;
+                hexParticles = elements.HexParticles,
+                ripple = elements.Ripple;
 
             secondaryLogo.userData.animation.update(elapsed);
+            ripple.userData.animation.update(elapsed);
+
             hexParticles.userData.update();
 
             /**

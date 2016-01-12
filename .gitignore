@@ -4,5 +4,6 @@
 .DS_Store
 /**/*.psd
 /**/*.ai
+/**/*.aep
 /**/*.zip
 /**/*.mov
