@@ -123,7 +123,7 @@ module DreamsArk.Compositions {
                 },
                 origin: {
                     position: -browser.innerHeight * 1.5,
-                    asteroid: asteroid.position.set(-100, 220, -150)
+                    asteroid: asteroid.position.set(-100, 230, -150)
                 },
                 duration: 10,
                 autoStart: false,

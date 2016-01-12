@@ -12,7 +12,7 @@ module DreamsArk.Elements {
 
         create(maps, objs, data) {
 
-            var geometry = new THREE.PlaneGeometry(512 / 2, 512 / 2, 1);
+            var geometry = new THREE.PlaneGeometry(512 / 1.5, 512 / 1.5, 1);
             var material = new THREE.MeshBasicMaterial({
                 side: THREE.DoubleSide,
                 map: maps.rocks,
