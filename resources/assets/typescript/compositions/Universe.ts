@@ -22,7 +22,9 @@ module DreamsArk.Compositions {
                 plexus = elements.Plexus,
                 hexParticles = elements.HexParticles,
                 skybox = elements.Skybox,
-                enterPage = elements.EnterPage;
+                enterPage = elements.EnterPage,
+                hexParticles = elements.HexParticles,
+                secondaryLogo = elements.SecondaryLogo;
 
             skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
             skybox.userData.controls.target.set(0, browser.innerHeight, -1);
@@ -55,27 +57,47 @@ module DreamsArk.Compositions {
                 destination: {
                     logo: new THREE.Vector3(0, 300, 0),
                     hexParticles: new THREE.Vector3(0, -200, 0),
-                    plexus: new THREE.Vector3(0, 0, 0),
-                    opacity: 0
+                    plexus: new THREE.Vector3(),
+                    opacity: 0,
+                    controls: new THREE.Vector3(),
+                    far: 6000,
+                    fog: 6500,
+                    zoom: 1
                 },
                 origin: {
                     logo: logo.position,
                     hexParticles: hexParticles.position,
                     plexus: plexus.position.set(0, 800, 0),
-                    opacity: enterPage.userData.layers.tunnelBG.material.opacity
+                    opacity: enterPage.userData.layers.tunnelBG.material.opacity,
+                    controls: skybox.userData.controls.target,
+                    far: camera.far,
+                    fog: scene.fog.far,
+                    zoom: camera.zoom
                 },
                 duration: 10,
                 start(){
-                    scene.add(plexus)
+                    scene.add(plexus, skybox)
                 },
                 update: function (params) {
                     logo.position.copy(params.logo);
                     hexParticles.position.copy(params.hexParticles);
 
                     plexus.position.copy(params.plexus);
-                    enterPage.userData.layers.tunnelBG.material.opacity = params.opacity
+                    enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
 
+                    skybox.userData.controls.target.copy(params.controls);
+
+                    camera.far = params.far;
+                    camera.zoom = params.zoom;
+                    camera.updateProjectionMatrix();
+
+                    scene.fog.far = params.fog;
+
+                },
+                complete(){
+                    scene.remove(hexParticles, secondaryLogo, enterPage)
                 }
+
             });
 
             /**
@@ -113,10 +135,6 @@ module DreamsArk.Compositions {
              */
             if (skybox.userData.controls)
                 skybox.userData.controls.update();
-
-
-            return;
-            var skybox = elements.Skybox;
 
             var hex = elements.Plexus.userData.hex,
                 hexBag = elements.Plexus.userData.hexBag,

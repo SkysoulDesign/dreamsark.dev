@@ -72,7 +72,7 @@ module DreamsArk.Elements {
              * TunnelBG
              */
             var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1),
-                material = new THREE.MeshBasicMaterial({map: maps.tunnelBG, side: THREE.DoubleSide}),
+                material = new THREE.MeshBasicMaterial({map: maps.tunnelBG, transparent: true, side: THREE.DoubleSide}),
                 tunnelBG = data.layers.tunnelBG = new THREE.Mesh(geometry, material);
 
             tunnelBG.position.set(0, galaxy.position.y + browser.innerHeight / 2, 100);
@@ -138,7 +138,7 @@ module DreamsArk.Elements {
                 background.position.y = y * 2;
 
                 platform.position.x = x * 5;
-                planet.position.x = -30 + x;
+                planet.position.x = -30 + x / 2;
                 start.position.x = x * 7;
                 skip.position.x = x * 6;
                 logo.position.x = x * 10;

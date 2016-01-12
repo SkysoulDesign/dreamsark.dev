@@ -135,7 +135,8 @@ module DreamsArk.Compositions {
                     asteroid.position.copy(params.asteroid)
                 },
                 complete(){
-                    animEnterTunnel.init()
+                    animEnterTunnel.init();
+                    scene.remove(asteroid)
                 }
             });
 
@@ -172,7 +173,8 @@ module DreamsArk.Compositions {
                     hexParticles.position.setY(params.hexParticles.y)
                 },
                 complete: function () {
-                    animAsteroid.init()
+                    animAsteroid.init();
+                    scene.remove(chaosParticles);
                 }
 
             });

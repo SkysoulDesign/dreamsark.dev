@@ -12,9 +12,9 @@ module DreamsArk.Elements {
 
         create(maps, objs, data) {
 
-            var geometry = new THREE.SphereGeometry(50000, 50, 50);
+            var geometry = new THREE.SphereGeometry(5000, 50, 50);
             geometry.scale(-1, 1, 1);
-            var material = new THREE.MeshBasicMaterial({map: maps.skybox, transparent: true, opacity: 0});
+            var material = new THREE.MeshBasicMaterial({map: maps.skybox, transparent: true});
             return new THREE.Mesh(geometry, material);
 
         }

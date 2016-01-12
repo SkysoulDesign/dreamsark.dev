@@ -32,7 +32,7 @@ module DreamsArk.Elements {
 
         create(maps, objs, data) {
 
-            var maxParticleCount = 1000,
+            var maxParticleCount = 2000,
                 radius = 50,
                 group = new THREE.Group();
 

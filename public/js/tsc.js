@@ -315,7 +315,7 @@ var DreamsArk;
                 /**
                  * TunnelBG
                  */
-                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.tunnelBG, side: THREE.DoubleSide }), tunnelBG = data.layers.tunnelBG = new THREE.Mesh(geometry, material);
+                var geometry = new THREE.PlaneGeometry(100 * 8, 100 * 8, 1), material = new THREE.MeshBasicMaterial({ map: maps.tunnelBG, transparent: true, side: THREE.DoubleSide }), tunnelBG = data.layers.tunnelBG = new THREE.Mesh(geometry, material);
                 tunnelBG.position.set(0, galaxy.position.y + browser.innerHeight / 2, 100);
                 tunnelBG.rotation.x = deg2rad(90);
                 group.add(tunnelBG);
@@ -353,7 +353,7 @@ var DreamsArk;
                     background.position.x = x * 2;
                     background.position.y = y * 2;
                     platform.position.x = x * 5;
-                    planet.position.x = -30 + x;
+                    planet.position.x = -30 + x / 2;
                     start.position.x = x * 7;
                     skip.position.x = x * 6;
                     logo.position.x = x * 10;
@@ -571,9 +571,9 @@ var DreamsArk;
                 };
             };
             Skybox.prototype.create = function (maps, objs, data) {
-                var geometry = new THREE.SphereGeometry(50000, 50, 50);
+                var geometry = new THREE.SphereGeometry(5000, 50, 50);
                 geometry.scale(-1, 1, 1);
-                var material = new THREE.MeshBasicMaterial({ map: maps.skybox, transparent: true, opacity: 0 });
+                var material = new THREE.MeshBasicMaterial({ map: maps.skybox, transparent: true });
                 return new THREE.Mesh(geometry, material);
             };
             return Skybox;
@@ -875,7 +875,7 @@ var DreamsArk;
                 };
             };
             HexParticles.prototype.create = function (maps, objs, data) {
-                var maxParticleCount = 1000, radius = 50, group = new THREE.Group();
+                var maxParticleCount = 2000, radius = 50, group = new THREE.Group();
                 var circleGeometry = new THREE.CircleGeometry(5, 12);
                 var PointMaterial = new THREE.PointsMaterial({
                     //color: (new THREE.Color('red')).getHex(),
@@ -2459,6 +2459,7 @@ var DreamsArk;
                     },
                     complete: function () {
                         animEnterTunnel.init();
+                        scene.remove(asteroid);
                     }
                 });
                 /**
@@ -2494,6 +2495,7 @@ var DreamsArk;
                     },
                     complete: function () {
                         animAsteroid.init();
+                        scene.remove(chaosParticles);
                     }
                 });
                 scene.add(hexParticles);
@@ -2541,7 +2543,7 @@ var DreamsArk;
             };
             Universe.prototype.setup = function (scene, camera, elements) {
                 var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
-                var logo = elements.Logo, plexus = elements.Plexus, hexParticles = elements.HexParticles, skybox = elements.Skybox, enterPage = elements.EnterPage;
+                var logo = elements.Logo, plexus = elements.Plexus, hexParticles = elements.HexParticles, skybox = elements.Skybox, enterPage = elements.EnterPage, hexParticles = elements.HexParticles, secondaryLogo = elements.SecondaryLogo;
                 skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
                 skybox.userData.controls.target.set(0, browser.innerHeight, -1);
                 //skybox.userData.controls.update();
@@ -2570,24 +2572,40 @@ var DreamsArk;
                     destination: {
                         logo: new THREE.Vector3(0, 300, 0),
                         hexParticles: new THREE.Vector3(0, -200, 0),
-                        plexus: new THREE.Vector3(0, 0, 0),
-                        opacity: 0
+                        plexus: new THREE.Vector3(),
+                        opacity: 0,
+                        controls: new THREE.Vector3(),
+                        far: 6000,
+                        fog: 6500,
+                        zoom: 1
                     },
                     origin: {
                         logo: logo.position,
                         hexParticles: hexParticles.position,
                         plexus: plexus.position.set(0, 800, 0),
-                        opacity: enterPage.userData.layers.tunnelBG.material.opacity
+                        opacity: enterPage.userData.layers.tunnelBG.material.opacity,
+                        controls: skybox.userData.controls.target,
+                        far: camera.far,
+                        fog: scene.fog.far,
+                        zoom: camera.zoom
                     },
                     duration: 10,
                     start: function () {
-                        scene.add(plexus);
+                        scene.add(plexus, skybox);
                     },
                     update: function (params) {
                         logo.position.copy(params.logo);
                         hexParticles.position.copy(params.hexParticles);
                         plexus.position.copy(params.plexus);
                         enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
+                        skybox.userData.controls.target.copy(params.controls);
+                        camera.far = params.far;
+                        camera.zoom = params.zoom;
+                        camera.updateProjectionMatrix();
+                        scene.fog.far = params.fog;
+                    },
+                    complete: function () {
+                        scene.remove(hexParticles, secondaryLogo, enterPage);
                     }
                 });
                 /**
@@ -2616,8 +2634,6 @@ var DreamsArk;
                  */
                 if (skybox.userData.controls)
                     skybox.userData.controls.update();
-                return;
-                var skybox = elements.Skybox;
                 var hex = elements.Plexus.userData.hex, hexBag = elements.Plexus.userData.hexBag, hexPositions = hex.geometry.attributes.position, distance = 100, speed = 10;
                 For(hexPositions.count, function (i) {
                     hexPositions.array[i * 3] += hexBag[i].velocity.x / speed;
