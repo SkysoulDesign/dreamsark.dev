@@ -275,10 +275,10 @@ var DreamsArk;
             }
             EnterPage.prototype.maps = function () {
                 return {
-                    background: 'final/enter-page-assets/background.jpg',
-                    transition: 'final/enter-page-assets/transition.jpg',
-                    galaxy: 'final/enter-page-assets/galaxy.jpg',
-                    tunnelBG: 'final/enter-page-assets/tunnelBG.jpg',
+                    background: 'final/enter-page-assets/background.png',
+                    transition: 'final/enter-page-assets/transition.png',
+                    galaxy: 'final/enter-page-assets/galaxy.png',
+                    tunnelBG: 'final/enter-page-assets/tunnelBG.png',
                     platform: 'final/enter-page-assets/platform.png',
                     start: 'final/enter-page-assets/start.png',
                     skip: 'final/enter-page-assets/skip.png',
@@ -304,13 +304,13 @@ var DreamsArk;
                  * Transition
                  */
                 var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1), material = new THREE.MeshBasicMaterial({ map: maps.transition }), transition = data.layers.transition = new THREE.Mesh(geometry, material);
-                transition.position.set(0, geometry.parameters.height, -200);
+                transition.position.set(0, geometry.parameters.height - 0.5, -200);
                 group.add(transition);
                 /**
                  * Galaxy
                  */
                 var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1), material = new THREE.MeshBasicMaterial({ map: maps.galaxy }), galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
-                galaxy.position.set(0, geometry.parameters.height * 2, -200);
+                galaxy.position.set(0, (geometry.parameters.height * 2) - 0.5, -200);
                 group.add(galaxy);
                 /**
                  * TunnelBG
@@ -2319,7 +2319,7 @@ var DreamsArk;
                 this.instance.fov = 75;
                 this.instance.aspect = browser.innerWidth / browser.innerHeight;
                 this.instance.near = 0.1;
-                this.instance.far = 1000;
+                this.instance.far = 5000;
                 this.instance.updateProjectionMatrix();
             };
             Camera.swing = function (target) {
@@ -2347,7 +2347,7 @@ var DreamsArk;
                 this.instance = new THREE.Scene();
             }
             Scene.prototype.configure = function () {
-                this.instance.fog = new THREE.Fog(0x000000, 1, 500);
+                this.instance.fog = new THREE.Fog(0x19020d, 1, 1000);
             };
             return Scene;
         })();
@@ -2624,6 +2624,9 @@ var DreamsArk;
                 var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
                 var logo = elements.Logo, plexus = elements.Plexus, hexParticles = elements.HexParticles, skybox = elements.Skybox, enterPage = elements.EnterPage, hexParticles = elements.HexParticles, secondaryLogo = elements.SecondaryLogo;
                 skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
+                skybox.userData.controls.dynamicDampingFactor = 0.1;
+                skybox.userData.controls.minDistance = 10;
+                skybox.userData.controls.maxDistance = 5000;
                 skybox.userData.controls.target.set(0, browser.innerHeight, -1);
                 //skybox.userData.controls.update();
                 /**
@@ -2653,7 +2656,9 @@ var DreamsArk;
                         hexParticles: new THREE.Vector3(0, -200, 0),
                         plexus: new THREE.Vector3(),
                         opacity: 0,
+                        tunnelBG: new THREE.Vector3(0, 0, 0),
                         controls: new THREE.Vector3(),
+                        maxDistance: 200,
                         far: 6000,
                         fog: 6500,
                         zoom: 1,
@@ -2664,11 +2669,13 @@ var DreamsArk;
                         hexParticles: hexParticles.position,
                         plexus: plexus.position.set(0, 800, 0),
                         opacity: enterPage.userData.layers.tunnelBG.material.opacity,
+                        tunnelBG: enterPage.userData.layers.tunnelBG.position,
                         controls: skybox.userData.controls.target,
+                        maxDistance: skybox.userData.controls.maxDistance,
                         far: camera.far,
                         fog: scene.fog.far,
                         zoom: camera.zoom,
-                        secondaryLogo: secondaryLogo.position
+                        secondaryLogo: secondaryLogo.position,
                     },
                     duration: 10,
                     start: function () {
@@ -2679,7 +2686,9 @@ var DreamsArk;
                         hexParticles.position.copy(params.hexParticles);
                         plexus.position.copy(params.plexus);
                         enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
+                        enterPage.userData.layers.tunnelBG.position.copy(params.tunnelBG);
                         skybox.userData.controls.target.copy(params.controls);
+                        skybox.userData.controls.maxDistance = params.maxDistance;
                         secondaryLogo.position.copy(params.secondaryLogo);
                         camera.far = params.far;
                         camera.zoom = params.zoom;

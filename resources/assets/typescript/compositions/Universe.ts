@@ -27,6 +27,9 @@ module DreamsArk.Compositions {
                 secondaryLogo = elements.SecondaryLogo;
 
             skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
+            skybox.userData.controls.dynamicDampingFactor = 0.1;
+            skybox.userData.controls.minDistance = 10;
+            skybox.userData.controls.maxDistance = 5000;
             skybox.userData.controls.target.set(0, browser.innerHeight, -1);
             //skybox.userData.controls.update();
 
@@ -59,7 +62,9 @@ module DreamsArk.Compositions {
                     hexParticles: new THREE.Vector3(0, -200, 0),
                     plexus: new THREE.Vector3(),
                     opacity: 0,
+                    tunnelBG: new THREE.Vector3(0, 0, 0), // review
                     controls: new THREE.Vector3(),
+                    maxDistance: 200,
                     far: 6000,
                     fog: 6500,
                     zoom: 1,
@@ -70,11 +75,14 @@ module DreamsArk.Compositions {
                     hexParticles: hexParticles.position,
                     plexus: plexus.position.set(0, 800, 0),
                     opacity: enterPage.userData.layers.tunnelBG.material.opacity,
+                    tunnelBG: enterPage.userData.layers.tunnelBG.position,
                     controls: skybox.userData.controls.target,
+                    maxDistance: skybox.userData.controls.maxDistance,
                     far: camera.far,
                     fog: scene.fog.far,
                     zoom: camera.zoom,
-                    secondaryLogo: secondaryLogo.position
+                    secondaryLogo: secondaryLogo.position,
+
                 },
                 duration: 10,
                 start(){
@@ -86,8 +94,10 @@ module DreamsArk.Compositions {
 
                     plexus.position.copy(params.plexus);
                     enterPage.userData.layers.tunnelBG.material.opacity = params.opacity;
+                    enterPage.userData.layers.tunnelBG.position.copy(params.tunnelBG);
 
                     skybox.userData.controls.target.copy(params.controls);
+                    skybox.userData.controls.maxDistance = params.maxDistance;
                     secondaryLogo.position.copy(params.secondaryLogo);
 
                     camera.far = params.far;

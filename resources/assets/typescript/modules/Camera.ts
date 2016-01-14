@@ -15,7 +15,7 @@ module DreamsArk.Modules {
             this.instance.fov = 75;
             this.instance.aspect = browser.innerWidth / browser.innerHeight;
             this.instance.near = 0.1;
-            this.instance.far = 1000;
+            this.instance.far = 5000;
 
             this.instance.updateProjectionMatrix();
 

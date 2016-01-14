@@ -10,10 +10,10 @@ module DreamsArk.Elements {
 
         maps() {
             return {
-                background: 'final/enter-page-assets/background.jpg',
-                transition: 'final/enter-page-assets/transition.jpg',
-                galaxy: 'final/enter-page-assets/galaxy.jpg',
-                tunnelBG: 'final/enter-page-assets/tunnelBG.jpg',
+                background: 'final/enter-page-assets/background.png',
+                transition: 'final/enter-page-assets/transition.png',
+                galaxy: 'final/enter-page-assets/galaxy.png',
+                tunnelBG: 'final/enter-page-assets/tunnelBG.png',
                 platform: 'final/enter-page-assets/platform.png',
                 start: 'final/enter-page-assets/start.png',
                 skip: 'final/enter-page-assets/skip.png',
@@ -53,7 +53,7 @@ module DreamsArk.Elements {
                 material = new THREE.MeshBasicMaterial({map: maps.transition}),
                 transition = data.layers.transition = new THREE.Mesh(geometry, material);
 
-            transition.position.set(0, geometry.parameters.height, -200);
+            transition.position.set(0, geometry.parameters.height - 0.5, -200);
 
             group.add(transition);
 
@@ -64,7 +64,7 @@ module DreamsArk.Elements {
                 material = new THREE.MeshBasicMaterial({map: maps.galaxy}),
                 galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
 
-            galaxy.position.set(0, geometry.parameters.height * 2, -200);
+            galaxy.position.set(0, (geometry.parameters.height * 2) - 0.5, -200);
 
             group.add(galaxy);
 
