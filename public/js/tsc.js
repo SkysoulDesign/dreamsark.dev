@@ -2347,7 +2347,7 @@ var DreamsArk;
                 this.instance = new THREE.Scene();
             }
             Scene.prototype.configure = function () {
-                this.instance.fog = new THREE.Fog(0x19020d, 1, 1000);
+                this.instance.fog = new THREE.Fog(0x19020d, 1, 500);
             };
             return Scene;
         })();
