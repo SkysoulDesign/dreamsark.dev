@@ -53,7 +53,7 @@ module DreamsArk.Elements {
                 material = new THREE.MeshBasicMaterial({map: maps.transition}),
                 transition = data.layers.transition = new THREE.Mesh(geometry, material);
 
-            transition.position.set(0, geometry.parameters.height - 0.5, -200);
+            transition.position.set(0, geometry.parameters.height - 0.9, -200);
 
             group.add(transition);
 
@@ -64,7 +64,7 @@ module DreamsArk.Elements {
                 material = new THREE.MeshBasicMaterial({map: maps.galaxy}),
                 galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
 
-            galaxy.position.set(0, (geometry.parameters.height * 2) - 0.5, -200);
+            galaxy.position.set(0, (geometry.parameters.height * 2) - 0.9, -200);
 
             group.add(galaxy);
 

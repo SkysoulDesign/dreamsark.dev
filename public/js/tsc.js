@@ -304,13 +304,13 @@ var DreamsArk;
                  * Transition
                  */
                 var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1), material = new THREE.MeshBasicMaterial({ map: maps.transition }), transition = data.layers.transition = new THREE.Mesh(geometry, material);
-                transition.position.set(0, geometry.parameters.height - 0.5, -200);
+                transition.position.set(0, geometry.parameters.height - 0.9, -200);
                 group.add(transition);
                 /**
                  * Galaxy
                  */
                 var geometry = new THREE.PlaneGeometry(2048 / 1.5, 1024 / 1.5, 1), material = new THREE.MeshBasicMaterial({ map: maps.galaxy }), galaxy = data.layers.galaxy = new THREE.Mesh(geometry, material);
-                galaxy.position.set(0, (geometry.parameters.height * 2) - 0.5, -200);
+                galaxy.position.set(0, (geometry.parameters.height * 2) - 0.9, -200);
                 group.add(galaxy);
                 /**
                  * TunnelBG
