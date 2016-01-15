@@ -2624,7 +2624,7 @@ var DreamsArk;
                 var animator = DreamsArk.module('Animator'), renderer = DreamsArk.module('Renderer'), browser = DreamsArk.module('Browser');
                 var logo = elements.Logo, plexus = elements.Plexus, hexParticles = elements.HexParticles, skybox = elements.Skybox, enterPage = elements.EnterPage, hexParticles = elements.HexParticles, secondaryLogo = elements.SecondaryLogo;
                 skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
-                skybox.userData.controls.dynamicDampingFactor = 0.1;
+                //skybox.userData.controls.dynamicDampingFactor = 0.1;
                 skybox.userData.controls.minDistance = 10;
                 skybox.userData.controls.maxDistance = 5000;
                 skybox.userData.controls.target.set(0, browser.innerHeight, -1);

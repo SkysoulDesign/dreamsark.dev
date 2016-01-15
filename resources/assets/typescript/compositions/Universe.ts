@@ -27,12 +27,11 @@ module DreamsArk.Compositions {
                 secondaryLogo = elements.SecondaryLogo;
 
             skybox.userData.controls = new THREE.TrackballControls(camera, renderer.domElement);
-            skybox.userData.controls.dynamicDampingFactor = 0.1;
+            //skybox.userData.controls.dynamicDampingFactor = 0.1;
             skybox.userData.controls.minDistance = 10;
             skybox.userData.controls.maxDistance = 5000;
             skybox.userData.controls.target.set(0, browser.innerHeight, -1);
             //skybox.userData.controls.update();
-
 
             /**
              * Center Camera
