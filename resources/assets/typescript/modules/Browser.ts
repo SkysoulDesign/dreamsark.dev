@@ -1,5 +1,8 @@
 module DreamsArk.Modules {
 
+    /**
+     * Collect and manage important data referent to the user browser data, OS.
+     */
     export class Browser implements Initializable {
 
         public instance;

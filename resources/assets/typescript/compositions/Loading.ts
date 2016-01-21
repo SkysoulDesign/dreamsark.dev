@@ -12,6 +12,9 @@ module DreamsArk.Compositions {
     import Browser = DreamsArk.Modules.Browser;
     import Renderer = DreamsArk.Modules.Renderer;
 
+    /**
+     * Loading Page Composition
+     */
     export class Loading implements Composable {
 
         elements() {
@@ -87,6 +90,25 @@ module DreamsArk.Compositions {
                 autoStart: false,
                 start(){
                     logo.userData.mouse.inverse = true;
+
+                    /**
+                     * Frog
+                     */
+                    enterPage.userData.layers.tunnelBG.userData.shader = {
+                        runtime: null,
+                        click: null,
+                        init(){
+                            //var runtime = this.runtime = new ShaderFrogRuntime();
+                            //this.clock = new THREE.Clock();
+                            //runtime.registerCamera(camera);
+                            //runtime.load('shaders/universe.json', function (shaderData) {
+                            //    enterPage.userData.layers.tunnelBG.material = runtime.get(shaderData.name);
+                            //});
+                        }
+                    };
+
+                    enterPage.userData.layers.tunnelBG.userData.shader.init()
+
                 },
                 update(params){
 
@@ -208,6 +230,12 @@ module DreamsArk.Compositions {
                 secondaryLogo = elements.SecondaryLogo,
                 hexParticles = elements.HexParticles,
                 ripple = elements.Ripple;
+
+            /**
+             * Frog
+             */
+            if (enterPage.userData.layers.tunnelBG.userData.shader)
+                enterPage.userData.layers.tunnelBG.userData.shader.runtime.updateShaders(enterPage.userData.layers.tunnelBG.userData.shader.clock.getElapsedTime());
 
             secondaryLogo.userData.animation.update(elapsed);
             ripple.userData.animation.update(elapsed);

@@ -1,5 +1,8 @@
 module DreamsArk.Modules {
 
+    /**
+     * Creates an instance of THREE.js Camera
+     */
     export class Camera implements Initializable {
 
         public instance:THREE.PerspectiveCamera;
@@ -8,6 +11,9 @@ module DreamsArk.Modules {
             this.instance = new THREE.PerspectiveCamera()
         }
 
+        /**
+         * Configure camera's default values
+         */
         configure():void {
 
             var browser = <Browser>module('Browser');
@@ -21,6 +27,10 @@ module DreamsArk.Modules {
 
         }
 
+        /**
+         * Swing camera upon a target
+         * @param target instance of THREE.Vector3
+         */
         static swing(target:THREE.Vector3):void {
 
             var mouse = <Mouse>module('Mouse'),

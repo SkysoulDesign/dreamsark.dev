@@ -4,6 +4,9 @@ module DreamsArk.Modules {
     import is = DreamsArk.Helpers.is;
     import filter = DreamsArk.Helpers.filter;
 
+    /**
+     * Manager for Loader
+     */
     export class Manager implements Initializable {
 
         public instance:any;
@@ -65,8 +68,14 @@ module DreamsArk.Modules {
 
     }
 
+    /**
+     * Handle dynamic load of any external asset
+     */
     export class Loader implements Initializable {
 
+        /**
+         * Loading Progress
+         */
         public progress:number = 0;
         public complete:boolean = false;
         public failed:boolean = false;
@@ -95,6 +104,9 @@ module DreamsArk.Modules {
         configure():void {
         }
 
+        /**
+         * Start Loader
+         */
         private start(elements:any = Elements, callback:any):void {
 
             var maps = {},
@@ -176,6 +188,9 @@ module DreamsArk.Modules {
 
         }
 
+        /**
+         * load elements
+         */
         private load(items:any[], callback) {
 
             each(items, function (path, name) {
@@ -196,6 +211,9 @@ module DreamsArk.Modules {
 
         }
 
+        /**
+         * Load Public method
+         */
         public Load(items:string[], callback, elements:any = Elements) {
             this.start(filter(elements, items), callback);
         }

@@ -1,7 +1,16 @@
+var Scene = DreamsArk.Modules.Scene;
+var Camera = DreamsArk.Modules.Camera;
+/**
+ * Helpful functions designed to assist on optimization and less duplication of code
+ */
 var DreamsArk;
 (function (DreamsArk) {
     var Helpers;
     (function (Helpers) {
+        /**
+         * Init components in mass
+         * @param items - items to be initialized
+         */
         Helpers.init = function (items) {
             if (items === void 0) { items = []; }
             /**
@@ -14,9 +23,20 @@ var DreamsArk;
                 item.instance = instance ? instance : component;
             });
         };
+        /**
+         * Get DOM Element
+         * @param element - a full qualified DOM element selector (#element, .element, tag)
+         * @returns Element
+         */
         Helpers.query = function (element) {
             return document.querySelector(element);
         };
+        /**
+         * Loop trough items and call callbacks for each
+         * @param items - array of elements to be looped
+         * @param callback - callback to be call on each element
+         * @param context - context for this inside the callback
+         */
         Helpers.each = function (items, callback, context) {
             if (items === void 0) { items = []; }
             if (context === void 0) { context = DreamsArk; }
@@ -27,6 +47,13 @@ var DreamsArk;
                     callback.call(context, items[name], name);
                 });
         };
+        /**
+         * Loop with a designated amount of interactions
+         * @param max - max number of loops to me performed can be (number|array)
+         * @param callback - function to be call on each interaction
+         * @param context - context for this inside the callback
+         * @param reverse - if the loop should be backwards
+         */
         Helpers.For = function (max, callback, context, reverse) {
             if (context === void 0) { context = DreamsArk; }
             if (reverse === void 0) { reverse = false; }
@@ -49,6 +76,12 @@ var DreamsArk;
                     break;
             }
         };
+        /**
+         * Check length of a given item
+         *
+         * @param item - can be (array|object)
+         * @returns result
+         */
         Helpers.length = function (item) {
             if (item === void 0) { item = []; }
             if (is.Array(item))
@@ -61,6 +94,12 @@ var DreamsArk;
                 return length;
             }
         };
+        /**
+         * Check if a given items contains an element on it's hierarchy
+         *
+         * @param items - can be (array|object)
+         * @param element - element to be matched
+         */
         Helpers.contains = function (items, element) {
             if (is.Array(items))
                 return items.indexOf(element) > -1;
@@ -68,6 +107,10 @@ var DreamsArk;
                 console.log('is Object Please finish implementing this function');
             return false;
         };
+        /**
+         * Reverse an array
+         * @param items - array to be reversed
+         */
         Helpers.reverse = function (items) {
             return items.sort(function (a, b) {
                 return b - a;
@@ -82,21 +125,42 @@ var DreamsArk;
             return result;
         };
         /**
-         * Dom Utils
+         * Append element to an DOM element
+         *
+         * @param element - DOM element to be Appended To
+         * @param domElement - DOM element to receive the element
          */
         Helpers.appendTo = function (element, domElement) {
             document.querySelector(element).appendChild(domElement);
         };
+        /**
+         * Remove items by id
+         * @param collection - items to be checked
+         * @param id of element to be removed
+         */
         Helpers.removeById = function (collection, id) {
             Helpers.For(collection, function (index) {
                 if (collection[index].id === id)
                     collection.splice(index, 1);
             });
         };
+        /**
+         * Create a timeout to a designed function be executed
+         *
+         * @param time in milliseconds
+         * @param callback - function to be called on a timeout
+         * @param context - context of this inside the callback
+         */
         Helpers.timeout = function (time, callback, context) {
             if (context === void 0) { context = DreamsArk; }
             return window.setTimeout(callback.bind(context), time * 1000);
         };
+        /**
+         * Clone an object
+         *
+         * @param obj - object to be cloned
+         * @param skip - an array of strings to represent properties to be skipped
+         */
         Helpers.clone = function (obj, skip) {
             if (!is.Object(obj))
                 return obj;
@@ -111,6 +175,13 @@ var DreamsArk;
             }, this);
             return temp;
         };
+        /**
+         * Map every property of an object
+         *
+         * @param obj - to be checked
+         * @param callback - callback to be call on every property
+         * @param context - context to be applied on the callback
+         */
         Helpers.map = function (obj, callback, context) {
             if (context === void 0) { context = DreamsArk; }
             var instance = {};
@@ -133,31 +204,52 @@ var DreamsArk;
             }, this);
             return instance;
         };
+        /**
+         * Convert degrees to radians
+         */
         Helpers.deg2rad = function (degrees) {
             return (degrees * Math.PI / 180);
         };
         /**
-         * Checker if obj is X type
+         * Checker if obj is of a X type
          */
         var is = (function () {
             function is() {
             }
+            /**
+             * Check if it's an Array
+             */
             is.Array = function (item) {
                 return Array.isArray(item);
             };
+            /**
+             * Check if it's an Object
+             */
             is.Object = function (item) {
                 return (typeof item === "object" && !Array.isArray(item) && item !== null);
             };
+            /**
+             * Check if it's Null
+             */
             is.Null = function (item) {
                 return (item === null || item === undefined || item === 0 || item === '0');
             };
+            /**
+             * Check if it's a Function
+             */
             is.Function = function (item) {
                 return !!(item && item.constructor && item.call && item.apply);
             };
+            /**
+             * Check if it's an Image
+             */
             is.Image = function (item) {
                 var ext = item.split('.').pop();
                 return (ext === 'jpg' || ext === 'png');
             };
+            /**
+             * Check if it's an Obj
+             */
             is.OBJ = function (item) {
                 var ext = item.split('.').pop();
                 return (ext === 'obj');
@@ -165,17 +257,34 @@ var DreamsArk;
             return is;
         })();
         Helpers.is = is;
+        /**
+         * Generate random elements
+         */
         var random = (function () {
             function random() {
             }
+            /**
+             * Generate random number between a given min abd nax
+             */
             random.between = function (min, max) {
                 return Math.floor((Math.random() * ((max + 1) - min)) + min);
             };
+            /**
+             * Generate a random 7 length long random Strings
+             */
             random.id = function (length, radix) {
                 if (length === void 0) { length = 27; }
                 if (radix === void 0) { radix = 36; }
                 return (Math.random() + 1).toString(radix).substring(2, length + 2);
             };
+            /**
+             * Generate Random Vector3 object
+             * @param x - number
+             * @param y - number
+             * @param z - number
+             * @param distance or radius
+             * @param stick - stick to a surface or get free-style
+             */
             random.vector3 = function (x, y, z, distance, stick) {
                 if (x === void 0) { x = 0; }
                 if (y === void 0) { y = 0; }
@@ -192,9 +301,15 @@ var DreamsArk;
             return random;
         })();
         Helpers.random = random;
+        /**
+         * Get items where X = Y
+         */
         var where = (function () {
             function where() {
             }
+            /**
+             * Get item where Item = an given id
+             */
             where.id = function (collection, id) {
                 var occurrence = [];
                 Helpers.each(collection, function (element) {
@@ -203,6 +318,9 @@ var DreamsArk;
                 });
                 return occurrence;
             };
+            /**
+             * Get item where Item = an given name
+             */
             where.name = function (collection, id) {
                 var occurrences = [];
                 Helpers.each(collection, function (element) {
@@ -214,8 +332,14 @@ var DreamsArk;
             return where;
         })();
         Helpers.where = where;
+        /**
+         * Math Helper Classes
+         */
         var math = (function () {
             function math() {
+                /**
+                 * Execute basic math logic on objects properties recursively
+                 */
                 this.calculator = function (origin, obj, operator) {
                     var temp = {}, operators = {
                         '-': function (a, b) {
@@ -248,15 +372,27 @@ var DreamsArk;
                     return operators[operator](origin, obj);
                 };
             }
+            /**
+             * Subtraction
+             */
             math.sub = function (origin, obj) {
                 return (new math).calculator(origin, obj, '-');
             };
+            /**
+             * Addition
+             */
             math.add = function (origin, obj) {
                 return (new math).calculator(origin, obj, '+');
             };
+            /**
+             * Multiplication
+             */
             math.multiply = function (origin, obj) {
                 return (new math).calculator(origin, obj, '*');
             };
+            /**
+             * Division
+             */
             math.divide = function (origin, obj) {
                 return (new math).calculator(origin, obj, '/');
             };
@@ -1444,6 +1580,9 @@ var DreamsArk;
 (function (DreamsArk) {
     var Modules;
     (function (Modules) {
+        /**
+         * Collect and manage important data referent to the user browser data, OS.
+         */
         var Browser = (function () {
             function Browser() {
                 this.instance = this;
@@ -1462,6 +1601,9 @@ var DreamsArk;
 (function (DreamsArk) {
     var Modules;
     (function (Modules) {
+        /**
+         * Detect events on THREE.Object3D
+         */
         var Raycaster = (function () {
             function Raycaster() {
                 this.instance = new THREE.Raycaster();
@@ -1480,14 +1622,23 @@ var DreamsArk;
         var length = DreamsArk.Helpers.length;
         var each = DreamsArk.Helpers.each;
         var reverse = DreamsArk.Helpers.reverse;
+        /**
+         * Handles any events that must to be updated every frame.
+         */
         var Checker = (function () {
             function Checker() {
                 this.collection = [];
             }
+            /**
+             * Add Event to collection
+             */
             Checker.prototype.add = function (callback, context) {
                 if (context === void 0) { context = DreamsArk; }
                 this.collection.push({ callback: callback.bind(context), time: +new Date() });
             };
+            /**
+             * Check on every update against its collection
+             */
             Checker.prototype.update = function () {
                 if (length(this.collection) > 0) {
                     var removeBag = [];
@@ -1499,6 +1650,9 @@ var DreamsArk;
                         this.remove(removeBag);
                 }
             };
+            /**
+             * Remove Event from Collection
+             */
             Checker.prototype.remove = function (items) {
                 each(reverse(items), function (item) {
                     this.collection.splice(item, 1);
@@ -1518,6 +1672,9 @@ var DreamsArk;
         var math = DreamsArk.Helpers.math;
         var timeout = DreamsArk.Helpers.timeout;
         var clone = DreamsArk.Helpers.clone;
+        /**
+         * Handle a series of easing mathematical calculations to make smooth animations from point A to point B
+         */
         var Animator = (function () {
             function Animator() {
             }
@@ -1663,7 +1820,16 @@ var DreamsArk;
             return Animator;
         })();
         Modules.Animator = Animator;
+        /**
+         * Heavy uses Animator to execute animations
+         */
         var Tween = (function () {
+            /**
+             * Initialize a new instance of Tween
+             * @param equation is one of animator's method
+             * @param parameters is a series of configurations to be set
+             * @param context context inside the (update, start, complete) callbacks
+             */
             function Tween(equation, parameters, context) {
                 if (context === void 0) { context = DreamsArk; }
                 this.equation = equation;
@@ -1889,6 +2055,9 @@ var DreamsArk;
                 this.delay = parameters.delay;
                 this.overshoot = parameters.overshoot;
             }
+            /**
+             * Init the Tween
+             */
             Tween.prototype.init = function () {
                 /**
                  * if Delay is set, delay this function execution
@@ -2014,6 +2183,9 @@ var DreamsArk;
         var each = DreamsArk.Helpers.each;
         var is = DreamsArk.Helpers.is;
         var filter = DreamsArk.Helpers.filter;
+        /**
+         * Manager for Loader
+         */
         var Manager = (function () {
             function Manager() {
                 this.on = {
@@ -2053,8 +2225,14 @@ var DreamsArk;
             return Manager;
         })();
         Modules.Manager = Manager;
+        /**
+         * Handle dynamic load of any external asset
+         */
         var Loader = (function () {
             function Loader() {
+                /**
+                 * Loading Progress
+                 */
                 this.progress = 0;
                 this.complete = false;
                 this.failed = false;
@@ -2072,6 +2250,9 @@ var DreamsArk;
             }
             Loader.prototype.configure = function () {
             };
+            /**
+             * Start Loader
+             */
             Loader.prototype.start = function (elements, callback) {
                 if (elements === void 0) { elements = DreamsArk.Elements; }
                 var maps = {}, objs = {};
@@ -2125,6 +2306,9 @@ var DreamsArk;
                     }
                 }, this);
             };
+            /**
+             * load elements
+             */
             Loader.prototype.load = function (items, callback) {
                 each(items, function (path, name) {
                     /**
@@ -2138,6 +2322,9 @@ var DreamsArk;
                         this.objLoader.load(path, callback.bind(this, name));
                 }, this);
             };
+            /**
+             * Load Public method
+             */
             Loader.prototype.Load = function (items, callback, elements) {
                 if (elements === void 0) { elements = DreamsArk.Elements; }
                 this.start(filter(elements, items), callback);
@@ -2156,6 +2343,9 @@ var DreamsArk;
         var where = DreamsArk.Helpers.where;
         var removeById = DreamsArk.Helpers.removeById;
         var each = DreamsArk.Helpers.each;
+        /**
+         * Track every interaction with mouse
+         */
         var Mouse = (function () {
             function Mouse() {
                 this.enabled = true;
@@ -2223,6 +2413,9 @@ var DreamsArk;
             return Mouse;
         })();
         Modules.Mouse = Mouse;
+        /**
+         * Responsible to handle events
+         */
         var Event = (function () {
             function Event(id, event, domElement, callback, useCapture) {
                 this.id = id;
@@ -2233,6 +2426,9 @@ var DreamsArk;
             }
             return Event;
         })();
+        /**
+         * Handle Interactions within mouse and 3D objects on the scene
+         */
         var Raycaster = (function () {
             function Raycaster(id, event, element, callback) {
                 this.id = id;
@@ -2242,6 +2438,9 @@ var DreamsArk;
             }
             return Raycaster;
         })();
+        /**
+         * Append events to a collection where get checked on every update
+         */
         var Events = (function () {
             function Events() {
                 this.instance = this;
@@ -2310,10 +2509,16 @@ var DreamsArk;
 (function (DreamsArk) {
     var Modules;
     (function (Modules) {
+        /**
+         * Creates an instance of THREE.js Camera
+         */
         var Camera = (function () {
             function Camera() {
                 this.instance = new THREE.PerspectiveCamera();
             }
+            /**
+             * Configure camera's default values
+             */
             Camera.prototype.configure = function () {
                 var browser = DreamsArk.module('Browser');
                 this.instance.fov = 75;
@@ -2322,6 +2527,10 @@ var DreamsArk;
                 this.instance.far = 5000;
                 this.instance.updateProjectionMatrix();
             };
+            /**
+             * Swing camera upon a target
+             * @param target instance of THREE.Vector3
+             */
             Camera.swing = function (target) {
                 var mouse = DreamsArk.module('Mouse'), browser = DreamsArk.module('Browser'), checker = DreamsArk.module('Checker'), camera = DreamsArk.module('Camera');
                 var origin = new THREE.Vector3(0, 0, 0);
@@ -2342,6 +2551,9 @@ var DreamsArk;
 (function (DreamsArk) {
     var Modules;
     (function (Modules) {
+        /**
+         * Creates an instance of THREE.js Scene
+         */
         var Scene = (function () {
             function Scene() {
                 this.instance = new THREE.Scene();
@@ -2358,6 +2570,9 @@ var DreamsArk;
 (function (DreamsArk) {
     var Modules;
     (function (Modules) {
+        /**
+         * Creates an instance of THREE.js Renderer
+         */
         var Renderer = (function () {
             function Renderer() {
                 this.instance = new THREE.WebGLRenderer({
@@ -2388,6 +2603,9 @@ var DreamsArk;
     (function (Compositions) {
         var each = DreamsArk.Helpers.each;
         var random = DreamsArk.Helpers.random;
+        /**
+         * Landing Page Composition
+         */
         var Landing = (function () {
             function Landing() {
             }
@@ -2426,6 +2644,9 @@ var DreamsArk;
         var timeout = DreamsArk.Helpers.timeout;
         var each = DreamsArk.Helpers.each;
         var random = DreamsArk.Helpers.random;
+        /**
+         * Loading Page Composition
+         */
         var Loading = (function () {
             function Loading() {
             }
@@ -2484,6 +2705,22 @@ var DreamsArk;
                     autoStart: false,
                     start: function () {
                         logo.userData.mouse.inverse = true;
+                        /**
+                         * Frog
+                         */
+                        enterPage.userData.layers.tunnelBG.userData.shader = {
+                            runtime: null,
+                            click: null,
+                            init: function () {
+                                //var runtime = this.runtime = new ShaderFrogRuntime();
+                                //this.clock = new THREE.Clock();
+                                //runtime.registerCamera(camera);
+                                //runtime.load('shaders/universe.json', function (shaderData) {
+                                //    enterPage.userData.layers.tunnelBG.material = runtime.get(shaderData.name);
+                                //});
+                            }
+                        };
+                        enterPage.userData.layers.tunnelBG.userData.shader.init();
                     },
                     update: function (params) {
                         camera.rotation.setFromVector3(params.rotation);
@@ -2581,6 +2818,11 @@ var DreamsArk;
             Loading.prototype.update = function (scene, camera, elements, elapsed) {
                 var mouse = DreamsArk.module('Mouse');
                 var logo = elements.Logo, enterPage = elements.EnterPage, secondaryLogo = elements.SecondaryLogo, hexParticles = elements.HexParticles, ripple = elements.Ripple;
+                /**
+                 * Frog
+                 */
+                if (enterPage.userData.layers.tunnelBG.userData.shader)
+                    enterPage.userData.layers.tunnelBG.userData.shader.runtime.updateShaders(enterPage.userData.layers.tunnelBG.userData.shader.clock.getElapsedTime());
                 secondaryLogo.userData.animation.update(elapsed);
                 ripple.userData.animation.update(elapsed);
                 hexParticles.userData.update();
@@ -2614,6 +2856,9 @@ var DreamsArk;
     var Compositions;
     (function (Compositions) {
         var For = DreamsArk.Helpers.For;
+        /**
+         * Universe Composition
+         */
         var Universe = (function () {
             function Universe() {
             }
@@ -2744,6 +2989,14 @@ var DreamsArk;
         Compositions.Universe = Universe;
     })(Compositions = DreamsArk.Compositions || (DreamsArk.Compositions = {}));
 })(DreamsArk || (DreamsArk = {}));
+/// <reference path="interfaces/Initializable.ts" />
+/// <reference path="interfaces/Tweenable.ts" />
+/// <reference path="interfaces/Loadable.ts" />
+/// <reference path="interfaces/Composable.ts" />
+/// <reference path="interfaces/Configurable.ts" />
+/// <reference path="typings/three.d.ts" />
+/// <reference path="typings/parallax.d.ts" />
+/// <reference path="typings/three.OBJLoader.d.ts" />
 /// <reference path="Helpers.ts" />
 /// <reference path="elements/EnterPage.ts" />
 /// <reference path="elements/ChaosParticles.ts" />
@@ -2784,16 +3037,34 @@ var DreamsArk;
     var Loader = DreamsArk.Modules.Loader;
     /**
      * Debug Mode
-     * @type {boolean}
      */
     DreamsArk.debug = false;
+    /**
+     * Stores all elements that has been loaded on the application
+     */
     DreamsArk.elementsBag = {};
+    /**
+     * Stores some trivial variables to be checked on render loop
+     */
     DreamsArk.core = {
+        /**
+         * List of active objects
+         * @todo inset components such as Camera, Scene, Renderer
+         */
         active: {
+            /**
+             * Active Composition
+             */
             composition: null
         }
     };
+    /**
+     * Defines the main application CORE
+     */
     var App = (function () {
+        /**
+         * Initialize the main APP
+         */
         function App() {
             var mouse = DreamsArk.module('Mouse');
             /**
@@ -2820,6 +3091,9 @@ var DreamsArk;
         return App;
     })();
     DreamsArk.App = App;
+    /**
+     * Start the Application
+     */
     DreamsArk.start = function () {
         /**
          * Remove logo
@@ -2829,6 +3103,9 @@ var DreamsArk;
         var composition = new Composition('Loading');
         DreamsArk.render();
     };
+    /**
+     * Start the Application
+     */
     DreamsArk.load = function () {
         /**
          * Parallax
@@ -2840,6 +3117,10 @@ var DreamsArk;
         new Composition('Landing');
         DreamsArk.render();
     };
+    /**
+     * Render Loop Logic
+     * @param elapsedTime Time elapsed since the last call
+     */
     DreamsArk.render = function (elapsedTime) {
         requestAnimationFrame(DreamsArk.render);
         var renderer = DreamsArk.module('Renderer'), scene = DreamsArk.module('Scene'), camera = DreamsArk.module('Camera'), checker = DreamsArk.module('Checker');
@@ -2851,7 +3132,7 @@ var DreamsArk;
     };
     /**
      * Get Initializable and initialize it if is not initialized before
-     * @param module
+     * @param module - a module to be initialized
      * @returns {*}
      */
     DreamsArk.module = function (module) {
@@ -2867,6 +3148,11 @@ var DreamsArk;
             init([DreamsArk.Modules[module]]);
         return DreamsArk.Modules[module].instance;
     };
+    /**
+     * Get an element by it's name
+     * @param name - name of the element to be retrieven
+     * @returns {*}
+     */
     DreamsArk.element = function (name) {
         if (is.Null(DreamsArk.elementsBag[name])) {
             console.log('Element ' + name + ' doesn\'t exist or it wasn\'t loaded.');
@@ -2874,7 +3160,14 @@ var DreamsArk;
         }
         return DreamsArk.elementsBag[name];
     };
+    /**
+     * An Element composed of several components to compose a Scene
+     */
     var Composition = (function () {
+        /**
+         * Initiate the process of starting a new composition
+         * @param name - Composition name to be started
+         */
         function Composition(name) {
             this.name = name;
             if (is.Null(DreamsArk.Compositions[name])) {
@@ -3463,6 +3756,4 @@ var DreamsArk;
         Elements.Plexus2 = Plexus2;
     })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
 })(DreamsArk || (DreamsArk = {}));
-var Scene = DreamsArk.Modules.Scene;
-var Camera = DreamsArk.Modules.Camera;
 //# sourceMappingURL=tsc.js.map

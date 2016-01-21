@@ -8,6 +8,9 @@ module DreamsArk.Compositions {
     import Mouse = DreamsArk.Modules.Mouse;
     import Animator = DreamsArk.Modules.Animator;
 
+    /**
+     * Landing Page Composition
+     */
     export class Landing implements Composable {
 
         elements() {
@@ -16,7 +19,7 @@ module DreamsArk.Compositions {
 
         setup(scene, camera, elements) {
 
-            var logo = <THREE.Object3D>elements.Logo,
+            var logo = <THREE.Mesh>elements.Logo,
                 enterPage = elements.EnterPage,
                 secondaryLogo = elements.SecondaryLogo,
                 ChaosParticles = elements.ChaosParticles;

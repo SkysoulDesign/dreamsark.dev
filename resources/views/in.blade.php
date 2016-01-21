@@ -114,6 +114,7 @@
     {{--<script type="text/javascript" src="{{ asset('js/intro.js') }}"></script>--}}
     <script type="text/javascript" src="{{ asset('js/parallax.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/three.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/shaderfrog-runtime.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/EffectComposer.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/Detector.js') }}"></script>
 

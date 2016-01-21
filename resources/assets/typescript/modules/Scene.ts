@@ -1,5 +1,8 @@
 module DreamsArk.Modules {
 
+    /**
+     * Creates an instance of THREE.js Scene
+     */
     export class Scene implements Initializable {
 
         public instance:THREE.Scene;

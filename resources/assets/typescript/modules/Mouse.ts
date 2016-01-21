@@ -8,6 +8,9 @@ module DreamsArk.Modules {
     import each = DreamsArk.Helpers.each;
     import timeout = DreamsArk.Helpers.timeout;
 
+    /**
+     * Track every interaction with mouse
+     */
     export class Mouse implements Initializable {
 
         //public instance:this = this;
@@ -102,6 +105,9 @@ module DreamsArk.Modules {
 
     }
 
+    /**
+     * Responsible to handle events
+     */
     class Event {
 
         constructor(public id:string, public event:string, public domElement:any, public callback:Function, public useCapture:boolean) {
@@ -110,6 +116,9 @@ module DreamsArk.Modules {
 
     }
 
+    /**
+     * Handle Interactions within mouse and 3D objects on the scene
+     */
     class Raycaster {
 
         constructor(public id:string, public event:string, public element:THREE.Object3D, public callback:Function) {
@@ -118,9 +127,12 @@ module DreamsArk.Modules {
 
     }
 
+    /**
+     * Append events to a collection where get checked on every update
+     */
     export class Events implements Initializable {
 
-        public instance:this = this;
+        public instance:any = this;
         public static collection:any[] = [];
 
         public static add(element:string|THREE.Object3D, event:string, callback:(event:any) => void, context:any = DreamsArk, useCapture:boolean = false):void {

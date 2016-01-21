@@ -1,5 +1,8 @@
 module DreamsArk.Modules {
 
+    /**
+     * Creates an instance of THREE.js Renderer
+     */
     export class Renderer implements Initializable {
 
         public instance:THREE.WebGLRenderer;

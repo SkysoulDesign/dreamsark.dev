@@ -6,6 +6,9 @@ module DreamsArk.Compositions {
     import Browser = DreamsArk.Modules.Browser;
     import For = DreamsArk.Helpers.For;
 
+    /**
+     * Universe Composition
+     */
     export class Universe implements Composable {
 
         elements() {

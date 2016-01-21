@@ -6,6 +6,9 @@ module DreamsArk.Modules {
     import timeout = DreamsArk.Helpers.timeout;
     import clone = DreamsArk.Helpers.clone;
 
+    /**
+     * Handle a series of easing mathematical calculations to make smooth animations from point A to point B
+     */
     export class Animator implements Initializable {
 
         private init(name:string, parameters:Tweenable, context?:any) {
@@ -153,8 +156,14 @@ module DreamsArk.Modules {
 
     }
 
+    /**
+     * Heavy uses Animator to execute animations
+     */
     export class Tween implements Initializable, Tweenable {
 
+        /**
+         * Length of animation duration in seconds
+         */
         public duration:number;
         public destination:any;
         public origin:any;
@@ -162,8 +171,14 @@ module DreamsArk.Modules {
         public complete:()=>void;
         public start:()=>void;
         public delay;
-        public overshoot:number
+        public overshoot:number;
 
+        /**
+         * Initialize a new instance of Tween
+         * @param equation is one of animator's method
+         * @param parameters is a series of configurations to be set
+         * @param context context inside the (update, start, complete) callbacks
+         */
         constructor(public equation:string, parameters:Tweenable, public context = DreamsArk) {
 
             this.duration = parameters.duration * 1000;
@@ -177,6 +192,9 @@ module DreamsArk.Modules {
 
         }
 
+        /**
+         * Init the Tween
+         */
         init():void {
 
             /**

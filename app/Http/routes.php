@@ -228,3 +228,10 @@ Route::get('temp', ['as' => 'temp', 'uses' => function () {
 Route::get('old', ['as' => 'old', 'uses' => function () {
     return view('old');
 }]);
+
+//Route::get('doc', ['as' => 'documentation', 'uses' => function () {
+//    $file = file(base_path() . '/documentation/index.html');
+//    $response = response($file, 200);
+//    $response->header('Content-Type', 'application/text');
+//    return $response;
+//}]);

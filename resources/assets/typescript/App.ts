@@ -1,3 +1,12 @@
+/// <reference path="interfaces/Initializable.ts" />
+/// <reference path="interfaces/Tweenable.ts" />
+/// <reference path="interfaces/Loadable.ts" />
+/// <reference path="interfaces/Composable.ts" />
+/// <reference path="interfaces/Configurable.ts" />
+/// <reference path="typings/three.d.ts" />
+/// <reference path="typings/parallax.d.ts" />
+/// <reference path="typings/three.OBJLoader.d.ts" />
+
 /// <reference path="Helpers.ts" />
 
 /// <reference path="elements/EnterPage.ts" />
@@ -48,20 +57,40 @@ module DreamsArk {
 
     /**
      * Debug Mode
-     * @type {boolean}
      */
     export var debug:boolean = false;
 
+    /**
+     * Stores all elements that has been loaded on the application
+     */
     export var elementsBag:any = {};
 
+    /**
+     * Stores some trivial variables to be checked on render loop
+     */
     export var core:any = {
+
+        /**
+         * List of active objects
+         * @todo inset components such as Camera, Scene, Renderer
+         */
         active: {
+
+            /**
+             * Active Composition
+             */
             composition: null
         }
     };
 
+    /**
+     * Defines the main application CORE
+     */
     export class App {
 
+        /**
+         * Initialize the main APP
+         */
         constructor() {
 
             var mouse = <Mouse>module('Mouse');
@@ -107,6 +136,9 @@ module DreamsArk {
 
     }
 
+    /**
+     * Start the Application
+     */
     export var start = function () {
 
         /**
@@ -121,6 +153,9 @@ module DreamsArk {
 
     };
 
+    /**
+     * Start the Application
+     */
     export var load = function () {
 
         /**
@@ -137,6 +172,10 @@ module DreamsArk {
 
     };
 
+    /**
+     * Render Loop Logic
+     * @param elapsedTime Time elapsed since the last call
+     */
     export var render = function (elapsedTime?:number) {
 
         requestAnimationFrame(render);
@@ -158,7 +197,7 @@ module DreamsArk {
 
     /**
      * Get Initializable and initialize it if is not initialized before
-     * @param module
+     * @param module - a module to be initialized
      * @returns {*}
      */
     export var module = function (module) {
@@ -179,6 +218,11 @@ module DreamsArk {
 
     };
 
+    /**
+     * Get an element by it's name
+     * @param name - name of the element to be retrieven
+     * @returns {*}
+     */
     export var element = function (name) {
 
         if (is.Null(elementsBag[name])) {
@@ -192,8 +236,15 @@ module DreamsArk {
 
     };
 
+    /**
+     * An Element composed of several components to compose a Scene
+     */
     export class Composition {
 
+        /**
+         * Initiate the process of starting a new composition
+         * @param name - Composition name to be started
+         */
         constructor(public name:string) {
 
             if (is.Null(Compositions[name])) {
