@@ -9,12 +9,10 @@
   "type": "project",
   "require": {
     "php": ">=5.5.9",
-    "laravel/framework": "5.2.*",
-    "adamwathan/bootforms": "^0.7.0",
-    "pda/pheanstalk": "^3.1",
-    "spatie/laravel-backup": "^2.7"
+    "laravel/framework": "5.2.*"
   },
   "require-dev": {
+    "f2m2/apidocs": "dev-master",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
     "phpunit/phpunit": "~4.0",
@@ -25,7 +23,11 @@
     "ptrofimov/beanstalk_console": "1.*",
     "laravel/envoy": "~1.0",
     "symfony/dom-crawler": "~3.0",
-    "symfony/css-selector": "~3.0"
+    "symfony/css-selector": "~3.0",
+    "spatie/laravel-backup": "^2.7",
+    "adamwathan/bootforms": "^0.7.0",
+    "pda/pheanstalk": "^3.1"
+
   },
   "autoload": {
     "classmap": [

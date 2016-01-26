@@ -5,7 +5,6 @@
  * @param {Object} options User options
  * @returns {Object} Merged values of defaults and options
  */
-
 module.exports = function ( defaults, options ) {
     var extended = {};
     var prop;

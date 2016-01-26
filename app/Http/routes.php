@@ -229,6 +229,11 @@ Route::get('old', ['as' => 'old', 'uses' => function () {
     return view('old');
 }]);
 
+Route::get('docs', function () {
+    return View::make('docs.api.v1.index');
+});
+
+
 //Route::get('doc', ['as' => 'documentation', 'uses' => function () {
 //    $file = file(base_path() . '/documentation/index.html');
 //    $response = response($file, 200);

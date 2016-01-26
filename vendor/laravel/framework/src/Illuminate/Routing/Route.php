@@ -230,7 +230,7 @@ class Route
      * Get or set the middlewares attached to the route.
      *
      * @param  array|string|null $middleware
-     * @return array
+     * @return $this|array
      */
     public function middleware($middleware = null)
     {
@@ -485,11 +485,11 @@ class Route
      */
     protected function matchToKeys(array $matches)
     {
-        if (count($this->parameterNames()) == 0) {
+        if (empty($parameterNames = $this->parameterNames())) {
             return [];
         }
 
-        $parameters = array_intersect_key($matches, array_flip($this->parameterNames()));
+        $parameters = array_intersect_key($matches, array_flip($parameterNames));
 
         return array_filter($parameters, function ($value) {
             return is_string($value) && strlen($value) > 0;
