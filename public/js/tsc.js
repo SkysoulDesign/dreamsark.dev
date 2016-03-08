@@ -1,5 +1,3 @@
-var Scene = DreamsArk.Modules.Scene;
-var Camera = DreamsArk.Modules.Camera;
 /**
  * Helpful functions designed to assist on optimization and less duplication of code
  */
@@ -3756,4 +3754,3 @@ var DreamsArk;
         Elements.Plexus2 = Plexus2;
     })(Elements = DreamsArk.Elements || (DreamsArk.Elements = {}));
 })(DreamsArk || (DreamsArk = {}));
-//# sourceMappingURL=tsc.js.map

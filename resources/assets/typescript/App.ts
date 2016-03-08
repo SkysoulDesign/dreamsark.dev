@@ -207,7 +207,7 @@ module DreamsArk {
          * Return Null if doesn't exist
          */
         if (is.Null(Modules[module]))
-            return console.log('module ' + module + ' couldn\'t be found')
+            return console.log('module ' + module + ' couldn\'t be found');
 
         /**
          * if Module is not initialized then init it

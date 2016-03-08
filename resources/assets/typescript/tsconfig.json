@@ -2,8 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
-    "out": "public/js/tsc.js"
+    "sourceMap": false,
+    "out": "../../../public/js/tsc.js"
   },
   "exclude": [
     "node_modules",

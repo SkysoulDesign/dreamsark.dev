@@ -1,9 +1,6 @@
-import Scene = DreamsArk.Modules.Scene;
-import Camera = DreamsArk.Modules.Camera;
-
 interface Composable {
     elementsBag?:any[],
     elements():string[];
-    setup(scene:Scene, camera:Camera, elements:{}):void;
-    update(scene:Scene, camera:Camera, elements:{}, elapsed?:number):void;
+    setup(scene:DreamsArk.Modules.Scene, camera:DreamsArk.Modules.Camera, elements:{}):void;
+    update(scene:DreamsArk.Modules.Scene, camera:DreamsArk.Modules.Camera, elements:{}, elapsed?:number):void;
 }
