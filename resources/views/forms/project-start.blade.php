@@ -17,20 +17,30 @@
     </div>
 
     <div class="ui segment">
-        <div class="field">
-            <label>{{ trans('forms.due-date') }}</label>
+        {{--<div class="field">--}}
+            {{--<label>{{ trans('forms.due-date') }}</label>--}}
 
-            <div class="field">
-                <input id="datetime" name="voting_date" type="text"
-                       data-lang="{{ auth()->user()->settings->language == 'cn' ? 'ch' : 'en' }}">
-            </div>
+            {{--<div class="field">--}}
+                {{--<input id="datetime" name="voting_date" type="text"--}}
+                       {{--data-lang="{{ auth()->user()->settings->language == 'cn' ? 'ch' : 'en' }}">--}}
+            {{--</div>--}}
 
-        </div>
+        {{--</div>--}}
+        @include('partials.field-multiple', array(
+        'label' => trans('forms.due-date'),
+        'fields' => [
+                ['name' => 'voting_date', 'placeholder' => trans('forms.first-name'), 'type' => 'date']/*,
+                ['name' => 'vote_time', 'placeholder' => trans('forms.last-name'), 'type' => 'time']*/
+            ],
+        'class' => 'two'
+        ))
     </div>
 
-    <button class="ui primary button" type="submit">@lang('forms.save-draft')</button>
+    <button class="ui primary button" name="save_draft" value="d" type="submit">@lang('forms.save-draft')</button>
 
-    <a id="publish" href="#" class="ui olive button">@lang('forms.publish')</a>
+    <button class="ui olive button" name="save_publish" value="p" type="submit">@lang('forms.publish')</button>
+
+    {{--<a id="publish" href="#" class="ui olive button">@lang('forms.publish')</a>--}}
 
     <script>
         document.getElementById('publish').addEventListener('click', function () {

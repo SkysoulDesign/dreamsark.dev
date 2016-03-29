@@ -2,11 +2,7 @@
 
 namespace DreamsArk\Commands\Project;
 
-use Carbon\Carbon;
 use DreamsArk\Commands\Command;
-use DreamsArk\Commands\Project\Stages\Idea\CreateIdeaCommand;
-use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
-use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
 use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
@@ -16,6 +12,10 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 
+/**
+ * Class CreateProjectCommand
+ * @package DreamsArk\Commands\Project
+ */
 class CreateProjectCommand extends Command implements SelfHandling
 {
 
@@ -32,8 +32,7 @@ class CreateProjectCommand extends Command implements SelfHandling
     private $user;
 
     /**
-     * Create a new command instance.
-     *
+     * CreateProjectCommand constructor.
      * @param User $user
      * @param array $fields
      */

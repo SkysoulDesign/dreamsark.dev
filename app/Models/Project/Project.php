@@ -14,6 +14,7 @@ use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ProjectPresenter;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class Project extends Model
 {
@@ -170,5 +171,22 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'project_backer')->withPivot('amount')->withTimestamps();
     }
+
+    /**
+     * @param Builder $query
+     * @param Boolean $activeCond
+     */
+    public function scopeActives($query, $activeCond)
+    {
+        $query->whereHas('synapse', function ($query) use ($activeCond) {
+            $query->where('active', '=', $activeCond);
+        })->orWhereHas('idea', function ($query) use ($activeCond) {
+            $query->where('active', '=', $activeCond);
+        })->orWhereHas('script', function ($query) use ($activeCond) {
+            $query->where('active', '=', $activeCond);
+        });
+
+    }
+
 
 }

@@ -26,7 +26,7 @@ class Localization
          * if locate is set, override user language
          */
         if ($locate = session('locate')) {
-//            app()->setLocale($locate);
+            app()->setLocale($locate);
         }
 
         return $next($request);

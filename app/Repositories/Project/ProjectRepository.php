@@ -64,7 +64,7 @@ class ProjectRepository implements ProjectRepositoryInterface
      */
     public function publishedBy($user_id)
     {
-        return $this->model->where(compact('user_id'))->get();
+        return $this->model->where(compact('user_id'));
     }
 
     /**

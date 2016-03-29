@@ -2,12 +2,14 @@
 
 namespace DreamsArk\Http\Controllers\User;
 
+use DreamsArk\Commands\Project\CreateProjectCommand;
 use DreamsArk\Commands\User\Project\CreateDraftCommand;
 use DreamsArk\Commands\User\Project\PublishProjectCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\User\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Models\Project\Stages\Draft;
+use DreamsArk\Repositories\Project\ProjectRepository;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
@@ -19,7 +21,7 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      *
      * @param UserRepositoryInterface $userRepository
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param ProjectRepository|ProjectRepositoryInterface $projectRepository
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
@@ -27,8 +29,10 @@ class ProjectController extends Controller
     {
 
         $projects = $userRepository->drafts($request->user()->id);
-        $publishedProjects = $userRepository->published($request->user()->id);
-        $failedProjects = $userRepository->failed($request->user()->id);
+//        $publishedProjects = $userRepository->published($request->user()->id);
+        $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
+//        $failedProjects = $userRepository->failed($request->user()->id);
+        $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
 
         return view('user.project.index', compact('projects', 'publishedProjects', 'failedProjects'));
 
@@ -42,7 +46,11 @@ class ProjectController extends Controller
      */
     public function store(ProjectCreation $request)
     {
-        $command = new CreateDraftCommand(null, $request->user(), $request->all(), $request->get('type'));
+        if($request->has('save_draft')) {
+            $command = new CreateDraftCommand(null, $request->user(), $request->all(), $request->get('type'));
+        } else if($request->has('save_publish')){
+            $command = new CreateProjectCommand($request->user(), $request->all());
+        }
         $this->dispatch($command);
 
         return redirect()->route('user.projects')->with('message', trans('response.save-to-draft-s'));

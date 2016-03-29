@@ -16,7 +16,9 @@
                 </div>
 
                 <ul>
-                    <li><a href="#">Profile</a></li>
+                    {{--<li><a href="#">Profile</a></li>--}}
+                    <li><a href="{{ route('projects') }}">@lang('navbar.discover-project')</a></li>
+                    <li><a href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a></li>
                     <li><a href="#">Account</a></li>
                     <li><a href="#">Settings</a></li>
                 </ul>

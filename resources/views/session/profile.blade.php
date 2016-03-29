@@ -51,7 +51,7 @@
 
                 <div class="title modern">Account Settings</div>
 
-                <form action="{{ route('register.store') }}" method="post">
+                <form action="{{ route('register.update') }}" method="post">
 
                     {{ csrf_field() }}
 
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="form-item">
-                        <input name="email" type="email" placeholder="e-mail">
+                        <input disabled name="email" type="email" placeholder="e-mail" value="{{ auth()->user()->email }}">
                     </div>
 
                     <div class="title">Linked Accounts</div>
