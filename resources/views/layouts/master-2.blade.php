@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" media="all" href="{{ asset('css/semantic.min.css') }}">
     <link rel="stylesheet" media="all" href="{{ asset('css/grid.css') }}">
-{{--    {{  }}--}}
 
 </head>
 <body class="main">
