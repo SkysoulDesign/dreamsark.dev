@@ -11,9 +11,13 @@ $(document).ready(function () {
      * prompt user to confirm onDelete event
      */
     $('.button.delete-item').on('click', function () {
-        if (confirm("Are you sure to delete this item?"))
-            return true;
-        else
+        if (confirm("Are you sure to delete this item?")) {
+            var deleteForm = $('<form />').html('<input type="hidden" name="_method" value="delete" />');
+            deleteForm.attr('action', $(this).attr('href'));
+            deleteForm.attr('method', 'POST');
+            deleteForm.append('body').submit();
+            return false;
+        } else
             return false;
     });
 });
