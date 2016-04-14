@@ -112,4 +112,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     }
 
+    /**
+     * @param $roleName
+     * @return bool
+     */
+    public function is($roleName)
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->name == $roleName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

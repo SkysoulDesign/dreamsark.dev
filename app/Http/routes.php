@@ -14,229 +14,266 @@
 /**
  * Artisan Commands
  */
-Route::get('artisan/{mode?}/{queue?}', ['as' => 'artisan', 'uses' => function ($mode = 'refresh', $queue = 'default') {
 
-//    if (Gate::denies('execute-artisan-commands', auth()->user())) {
-//        return redirect()->route('home');
-//    }
+use DreamsArk\Http\Controllers\Admin\AdminHomeController;
+use DreamsArk\Http\Controllers\Admin\QuestionController;
+use DreamsArk\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use DreamsArk\Http\Controllers\Auth\AuthController;
+use DreamsArk\Http\Controllers\Bag\CoinController;
+use DreamsArk\Http\Controllers\Committee\Project\CastController;
+use DreamsArk\Http\Controllers\Committee\Project\CrewController;
+use DreamsArk\Http\Controllers\Committee\Project\ExpenditureController;
+use DreamsArk\Http\Controllers\Committee\Project\ExpenseController;
+use DreamsArk\Http\Controllers\Committee\Project\StaffController;
+use DreamsArk\Http\Controllers\Dashboard\DashboardController;
+use DreamsArk\Http\Controllers\Home\HomeController;
+use DreamsArk\Http\Controllers\Project\EnrollController;
+use DreamsArk\Http\Controllers\Project\FundController;
+use DreamsArk\Http\Controllers\Project\ProjectController;
+use DreamsArk\Http\Controllers\Report\ReportController;
+use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
+//use DreamsArk\Http\Controllers\Project\ProjectPledgeController;
+use DreamsArk\Http\Controllers\Project\Script\ScriptController;
+use DreamsArk\Http\Controllers\User\Project\ScriptController as UserScriptController;
+use DreamsArk\Http\Controllers\Project\SubmissionController;
+use DreamsArk\Http\Controllers\Project\Idea\SubmissionController as SubmissionIdeaController;
+use DreamsArk\Http\Controllers\Project\Synapse\SynapseController;
+use DreamsArk\Http\Controllers\User\Project\SynapseController as UserSynapseController;
 
-    switch ($mode) {
-        case "queue" :
-            Artisan::call('queue:work', ['--queue' => $queue]);
-            break;
-        case "backup":
-            Artisan::call('backup:run', ['--only-db' => true]);
-            break;
-        case "refresh" :
-            Artisan::call('migrate:refresh', ['--seed' => true]);
-            break;
-        case "migrate":
-            Artisan::call('migrate');
-            break;
-        case "seed":
-            Artisan::call('db:seed');
-            break;
-        case "reset":
-            Artisan::call('migrate:reset');
-            break;
-        case "rollback":
-            Artisan::call('migrate:rollback');
-            break;
-    }
+//use DreamsArk\Http\Controllers\Project\TakeController;
+use DreamsArk\Http\Controllers\Project\VoteController;
+use DreamsArk\Http\Controllers\Session\SessionController;
+use DreamsArk\Http\Controllers\Setting\SettingController;
+use DreamsArk\Http\Controllers\Translation\TranslationController;
+use DreamsArk\Http\Controllers\User\Application\ActorController;
+use DreamsArk\Http\Controllers\User\ProfileController;
 
-    return redirect()->route('home');
+/** @var $app \Illuminate\Routing\Router */
 
-}]);
+$app->group([], function () use ($app) {
+    $app->get('/', HomeController::class . '@index')->name('home');
 
-Route::get('/', ['as' => 'home', 'uses' => 'Home\HomeController@index']);
+    /**
+     * Dashboard Controller
+     */
+    $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
 
-//app()->setLocale('cn');
+    /**
+     * Auth Controller
+     */
+    $app->get('login', AuthController::class . '@login')->name('login');
+    $app->post('login/store', AuthController::class . '@store')->name('login.store');
+    $app->get('logout', AuthController::class . '@logout')->name('logout');
 
-/**
- * Dashboard Controller
- */
-Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'Dashboard\DashboardController@index']);
+    /**
+     * Translation Controller
+     */
 
-/**
- * Auth Controller
- */
-Route::get('login', ['as' => 'login', 'uses' => 'Auth\AuthController@login']);
-Route::post('login/store', ['as' => 'login.store', 'uses' => 'Auth\AuthController@store']);
-Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
-
-/**
- * Translation Controller
- */
-Route::get('translation/import', ['as' => 'translation.import', 'uses' => 'Translation\TranslationController@import']);
-Route::get('translation/export', ['as' => 'translation.export', 'uses' => 'Translation\TranslationController@export']);
-Route::get('translation/sync', ['as' => 'translation.sync', 'uses' => 'Translation\TranslationController@sync']);
-Route::post('translation/language/store', ['as' => 'translation.newLanguage', 'uses' => 'Translation\TranslationController@newLanguage']);
-Route::post('translation/group/store', ['as' => 'translation.newGroup', 'uses' => 'Translation\TranslationController@newGroup']);
-Route::post('translation/translation/store', ['as' => 'translation.newTranslation', 'uses' => 'Translation\TranslationController@newTranslation']);
-Route::post('translation/update/{translation}', ['as' => 'translation.update', 'uses' => 'Translation\TranslationController@update']);
-Route::get('translation/{language?}/{group?}', ['as' => 'translation', 'uses' => 'Translation\TranslationController@index']);
-
-/**
- * Session Controller
- */
-Route::get('profile', ['as' => 'profile', 'uses' => 'Session\SessionController@index']);
-Route::get('register', ['as' => 'register', 'uses' => 'Session\SessionController@create']);
-Route::post('register/update', ['as' => 'register.update', 'uses' => 'Session\SessionController@update']);
-Route::post('register', ['as' => 'register.store', 'uses' => 'Session\SessionController@store']);
+    $app->group(['prefix' => 'translation', 'as' => 'translation.'], function () use ($app) {
+        $app->get('import', TranslationController::class . '@import')->name('import');
+        $app->get('export', TranslationController::class . '@export')->name('export');
+        $app->get('sync', TranslationController::class . '@sync')->name('sync');
+        $app->post('language/store', TranslationController::class . '@newLanguage')->name('newLanguage');
+        $app->post('group/store', TranslationController::class . '@newGroup')->name('newGroup');
+        $app->post('translation/store', TranslationController::class . '@newTranslation')->name('newTranslation');
+        $app->post('update/{translation}', TranslationController::class . '@update')->name('update');
+    });
 
 
-/**
- * Settings Controller
- */
-Route::post('settings/update/{setting}', ['as' => 'settings.update', 'uses' => 'Setting\SettingController@update']);
+    $app->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');
 
-/**
- * Vote Controller
- */
-Route::get('votes', ['as' => 'votes', 'uses' => 'Project\VoteController@index']);
-Route::get('vote/show/{vote}', ['as' => 'vote.show', 'uses' => 'Project\VoteController@show']);
-
-/**
- * Idea Controller
- */
-//Route::get('ideas', ['as' => 'project.ideas', 'uses' => 'Project\Idea\IdeaController@index']);
-//Route::get('idea/show/{idea}', ['as' => 'project.idea.show', 'uses' => 'Project\Idea\IdeaController@show']);
-
-/**
- * Submission Controller
- */
-Route::post('idea/submission/store/{project}', ['as' => 'project.submission.store', 'uses' => 'Project\SubmissionController@store']);
-Route::post('idea/submission/vote/{submission}/store', ['as' => 'project.idea.submission.vote.store', 'uses' => 'Project\Idea\SubmissionController@vote']);
-
-/**
- * Project Controller
- */
-Route::get('projects', ['as' => 'projects', 'uses' => 'Project\ProjectController@index']);
-Route::get('project/create', ['as' => 'project.create', 'uses' => 'Project\ProjectController@create']);
-Route::get('project/show/{project}', ['as' => 'project.show', 'uses' => 'Project\ProjectController@show']);
-Route::post('project/store', ['as' => 'project.store', 'uses' => 'Project\ProjectController@store']);
-Route::get('project/next/create/{project}', ['as' => 'project.next.create', 'uses' => 'Project\ProjectController@next']);
-
-Route::post('project/{project}/store', ['as' => 'project.project.store', 'uses' => 'Project\ProjectController@projectStore']);
-
-/**
- * Fund Controller
- */
-Route::get('project/fund/create/{project}', ['as' => 'project.fund.create', 'uses' => 'Project\FundController@create']);
-Route::post('project/fund/store/{project}', ['as' => 'project.fund.store', 'uses' => 'Project\FundController@store']);
-Route::post('project/fund/vote/store/{enroller}', ['as' => 'project.fund.vote.store', 'uses' => 'Project\FundController@vote']);
-
-/**
- * Fund Controller
- */
-Route::get('project/enroll/create/{project}', ['as' => 'project.enroll.create', 'uses' => 'Project\EnrollController@create']);
-Route::post('project/enroll/store/{expenditure}', ['as' => 'project.enroll.store', 'uses' => 'Project\EnrollController@store']);
-Route::post('project/unroll/store/{expenditure}', ['as' => 'project.unroll.store', 'uses' => 'Project\EnrollController@unroll']);
-
-/**
- * Project Synapse Controller
- */
-Route::post('project/synapse/store/{project}', ['as' => 'project.synapse.store', 'uses' => 'Project\Synapse\SynapseController@store']);
-Route::get('project/synapse/show/{project}', ['as' => 'project.synapse.show', 'uses' => 'Project\Synapse\SynapseController@show']);
-
-/**
- * Committee Staff Controller
- */
-Route::get('committee/create/staff/{review}', ['as' => 'committee.project.staff.create', 'uses' => 'Committee\Project\StaffController@create']);
-Route::post('committee/create/staff/{project}', ['as' => 'committee.project.staff.store', 'uses' => 'Committee\Project\StaffController@store']);
-
-Route::post('committee/project/cast/store/{project}', ['as' => 'committee.project.cast.store', 'uses' => 'Committee\Project\CastController@store']);
-Route::post('committee/project/crew/store/{project}', ['as' => 'committee.project.crew.store', 'uses' => 'Committee\Project\CrewController@store']);
-Route::post('committee/project/expense/store/{project}', ['as' => 'committee.project.expense.store', 'uses' => 'Committee\Project\ExpenseController@store']);
-
-Route::post('committee/project/expense/destroy/{expenditure}', ['as' => 'committee.project.expenditure.destroy', 'uses' => 'Committee\Project\ExpenditureController@destroy']);
-
-Route::post('committee/project/publish/{review}', ['as' => 'committee.project.publish', 'uses' => 'Committee\Project\StaffController@publish']);
+    /**
+     * Session Controller
+     */
+    $app->get('profile', SessionController::class . '@index')->name('profile');
+    $app->get('register', SessionController::class . '@create')->name('register');
+    $app->post('register/update', SessionController::class . '@update')->name('register.update');
+    $app->post('register', SessionController::class . '@store')->name('register.store');
 
 
-/**
- * Project Script Controller
- */
-Route::post('project/script/store/{project}', ['as' => 'project.script.store', 'uses' => 'Project\Script\ScriptController@store']);
-Route::get('project/script/show/{project}', ['as' => 'project.script.show', 'uses' => 'Project\Script\ScriptController@show']);
+    /**
+     * Settings Controller
+     */
+    $app->get('user/settings', SessionController::class . '@setting')->name('user.settings');
+    $app->post('settings/update/{setting}', SettingController::class . '@update')->name('settings.update');
 
-/**
- * Project Take Controller
- */
-Route::post('project/take/store/{script}', ['as' => 'project.take.store', 'uses' => 'Project\TakeController@store']);
+    /**
+     * Profile Controller
+     */
+    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
 
-/**
- * Project Cast Controller
- */
-Route::post('project/cast/store/{project}', ['as' => 'project.cast.store', 'uses' => 'Project\CastController@store']);
+    /**
+     * Vote Controller
+     */
+    $app->get('votes', VoteController::class . '@index')->name('votes');
+    $app->get('vote/show/{vote}', VoteController::class . '@show')->name('vote.show');
 
-/**
- * Project Crew Controller
- */
-Route::post('project/crew/store/{project}', ['as' => 'project.crew.store', 'uses' => 'Project\CrewController@store']);
+    /**
+     * Submission Controller
+     */
+    $app->post('idea/submission/store/{project}', SubmissionController::class . '@store')->name('project.submission.store');
+    $app->post('idea/submission/vote/{submission}/store', SubmissionIdeaController::class . '@vote')->name('project.idea.submission.vote.store');
 
-/**
- * Project Pledge Controller
- */
-Route::get('project/pledge/create/{project}', ['as' => 'project.pledge.create', 'uses' => 'Project\ProjectPledgeController@create']);
-Route::post('project/pledge/store/{project}', ['as' => 'project.pledge.store', 'uses' => 'Project\ProjectPledgeController@store']);
+    /**
+     * Project Controller
+     */
+    $app->get('projects', ProjectController::class . '@index')->name('projects');
+    $app->get('project/create', ProjectController::class . '@create')->name('project.create');
+    $app->get('project/show/{project}', ProjectController::class . '@show')->name('project.show');
+    $app->post('project/store', ProjectController::class . '@store')->name('project.store');
+    $app->get('project/next/create/{project}', ProjectController::class . '@next')->name('project.next.create');
 
-/**
- * Coin Controller
- */
-Route::get('purchase/coins/create', ['as' => 'coin.create', 'uses' => 'Bag\CoinController@create']);
-Route::post('purchase/coins/store', ['as' => 'coin.store', 'uses' => 'Bag\CoinController@store']);
+    $app->post('project/{project}/store', ProjectController::class . '@projectStore')->name('project.project.store');
+
+    /**
+     * Fund Controller
+     */
+    $app->group(['prefix' => 'project/fund', 'as' => 'project.fund.'], function () use ($app) {
+        $app->get('create/{project}', FundController::class . '@create')->name('create');
+        $app->post('store/{project}', FundController::class . '@store')->name('store');
+        $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
+    });
+
+    /**
+     * Fund Controller
+     */
+    $app->get('project/enroll/create/{project}', EnrollController::class . '@create')->name('project.enroll.create');
+    $app->post('project/enroll/store/{expenditure}', EnrollController::class . '@store')->name('project.enroll.store');
+    $app->post('project/unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('project.unroll.store');
+
+    /**
+     * Project Synapse Controller
+     */
+    $app->post('project/synapse/store/{project}', SynapseController::class . '@store')->name('project.synapse.store');
+    $app->get('project/synapse/show/{project}', SynapseController::class . '@show')->name('project.synapse.show');
+
+    $app->group(['prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
+        /**
+         * Committee Staff Controller
+         */
+        $app->get('create/staff/{review}', StaffController::class . '@create')->name('project.staff.create');
+        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
+
+        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
+        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
+        $app->post('project/expense/store/{project}', ExpenseController::class . '@store')->name('project.expense.store');
+
+        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
+
+        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
+    });
 
 
-/**
- * User Applications
- */
-Route::get('user/application', ['as' => 'user.application.actor', 'uses' => 'User\Application\ActorController@create']);
+    $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+        /**
+         * Project Script Controller
+         */
+        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+        $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
 
-/**
- * User Projects Controller
- */
-Route::get('user/projects', ['as' => 'user.projects', 'uses' => 'User\ProjectController@index']);
-Route::get('user/project/publish/{draft}', ['as' => 'user.project.publish', 'uses' => 'User\ProjectController@publish']);
-Route::get('user/project/edit/{draft}', ['as' => 'user.project.edit', 'uses' => 'User\ProjectController@edit']);
-Route::post('user/project/store', ['as' => 'user.project.store', 'uses' => 'User\ProjectController@store']);
+        /**
+         * Project Take Controller
+         */
+//        $app->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
 
-Route::post('user/project/synapse/store/{project}', ['as' => 'user.project.synapse.store', 'uses' => 'User\Project\SynapseController@store']);
-Route::post('user/project/script/store/{project}', ['as' => 'user.project.script.store', 'uses' => 'User\Project\ScriptController@store']);
+        /**
+         * Project Cast Controller
+         */
+        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
+
+        /**
+         * Project Crew Controller
+         */
+        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
+
+        /**
+         * Project Pledge Controller
+         */
+//        $app->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
+//        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
+    });
+
+    /**
+     * Coin Controller
+     */
+    $app->group(['prefix' => 'purchase/coins', 'as' => 'coin.'], function () use ($app) {
+        $app->get('create', CoinController::class . '@create')->name('create');
+        $app->post('store', CoinController::class . '@store')->name('store');
+    });
 
 
-/**
- * Report Controller
- */
-Route::get('reports', ['as' => 'reports', 'uses' => 'Report\ReportController@index']);
-Route::post('report/store', ['as' => 'report.store', 'uses' => 'Report\ReportController@store']);
+    /**
+     * User Applications
+     */
+    $app->get('user/application', ActorController::class . '@create')->name('user.application.actor');
 
-//Route::get('intro', ['as' => 'intro', 'uses' => function () {
-//    return view('intro-new');
-//}]);
+    /**
+     * User Projects Controller
+     */
+    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+        $app->get('projects', UserProjectController::class . '@index')->name('projects');
+        $app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
+        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
+        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
 
-Route::post('homepage', ['as' => 'intro.skip', 'uses' => 'Home\HomeController@skip']);;
+        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
+        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');
 
-Route::get('in', ['as' => 'in', 'uses' => function () {
-    return view('in');
-}]);
+    });
 
-Route::get('temp', ['as' => 'temp', 'uses' => function () {
-    return view('testing');
-}]);
 
-Route::get('old', ['as' => 'old', 'uses' => function () {
-    return view('old');
-}]);
+    /**
+     * Report Controller
+     */
+    $app->get('reports', ReportController::class . '@index')->name('reports');
+    $app->post('report/store', ReportController::class . '@store')->name('report.store');
 
-Route::get('docs', function () {
-    return View::make('docs.api.v1.index');
+    $app->post('homepage', HomeController::class . '@skip')->name('intro.skip');
+
+    $app->get('in', function () {
+        return view('in');
+    })->name('in');
+
+    $app->get('temp', function () {
+        return view('testing');
+    })->name('temp');
+
+    $app->get('old', function () {
+        return view('old');
+    })->name('old');
+
+    $app->get('docs', function () {
+        return View::make('docs.api.v1.index');
+    });
 });
 
+/**
+ * Admin Section Routes
+ */
+$app->group(['middleware' => ['auth', 'role:!user'], 'prefix' => 'admin'], function () use ($app) {
+    $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
+    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
 
-//Route::get('doc', ['as' => 'documentation', 'uses' => function () {
-//    $file = file(base_path() . '/documentation/index.html');
-//    $response = response($file, 200);
-//    $response->header('Content-Type', 'application/text');
-//    return $response;
-//}]);
+    /*$app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
+        $app->get('index', QuestionController::class . '@index')->name('index');
+        $app->get('create', QuestionController::class . '@create')->name('create');
+        $app->post('post', QuestionController::class . '@post')->name('create.post');
+        $app->get('{questionnaire}/edit', QuestionController::class . '@edit')->name('edit');
+        $app->post('{questionnaire}/update', QuestionController::class . '@update')->name('edit.update');
+        $app->get('{questionnaire}/delete', QuestionController::class . '@delete')->name('delete');
+
+    });*/
+    $app->resource('question', QuestionController::class, ['except' => ['show']]);
+    $app->resource('profile', AdminProfileController::class, ['prefix' => 'profile']);
+
+    /*$app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+        $app->get('index', AdminProfileController::class . '@index')->name('index');
+        $app->get('create', AdminProfileController::class . '@create')->name('create');
+        $app->post('post', AdminProfileController::class . '@post')->name('create.post');
+        $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
+        $app->post('{profile}/update', AdminProfileController::class . '@update')->name('edit.update');
+        $app->get('{profile}/delete', AdminProfileController::class . '@delete')->name('delete');
+    });*/
+
+});
+

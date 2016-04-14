@@ -11,6 +11,8 @@
 |
 */
 
+use DreamsArk\Models\Master\Profile;
+
 $factory->define(DreamsArk\Models\User\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -19,3 +21,14 @@ $factory->define(DreamsArk\Models\User\User::class, function (Faker\Generator $f
         'remember_token' => str_random(10),
     ];
 });
+/**
+ * create Dynamic data for Profiles
+$factory->define(Profile::class, function (Faker\Generator $faker) {
+    $name = $faker->name;
+    return [
+        'name' => $name,
+        'display_name' => ucwords($name),
+        'description' => $faker->paragraph(1),
+    ];
+});
+ */

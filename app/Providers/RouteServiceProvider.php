@@ -39,21 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot($router);
 
-        /**
-         * Route Model Binding
-         */
-        $router->model('user', User::class);
-        $router->model('setting', Setting::class);
-        $router->model('idea', Idea::class);
-        $router->model('submission', Submission::class);
-        $router->model('project', Project::class);
-        $router->model('expenditure', Expenditure::class);
-        $router->model('enroller', Enroller::class);
-        $router->model('draft', Draft::class);
-        $router->model('vote', Vote::class);
-        $router->model('cast', Cast::class);
-        $router->model('crew', Crew::class);
-        $router->model('review', Review::class);
+
 
     }
 
@@ -65,7 +51,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $router->group(['namespace' => $this->namespace], function ($router) {
+        // 'namespace' => $this->namespace
+        $router->group([], function ($app) {
             require app_path('Http/routes.php');
         });
     }

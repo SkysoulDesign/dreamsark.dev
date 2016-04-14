@@ -1,4 +1,4 @@
-<div class="field">
+<div class="field {{ $parent_class or '' }}">
 
     <label>{{ $label or trans('forms.'.str_replace('_', ' ', $fields[0]['name'])) }}</label>
 

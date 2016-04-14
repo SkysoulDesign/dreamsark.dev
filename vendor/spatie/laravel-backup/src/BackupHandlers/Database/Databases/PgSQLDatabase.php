@@ -21,7 +21,7 @@ class PgSQLDatabase implements DatabaseInterface
      * @param string $username
      * @param $password
      * @param string string $host
-     * @param int $port
+     * @param int           $port
      */
     public function __construct(Console $console, $database, $schema, $username, $password, $host, $port)
     {
@@ -77,7 +77,15 @@ class PgSQLDatabase implements DatabaseInterface
      */
     protected function getDumpCommandPath()
     {
-        return config('laravel-backup.pgsql.dump_command_path');
+        $path = config('laravel-backup.pgsql.dump_command_path');
+
+        if ($path != '') {
+            $path = str_finish($path, '/');
+        }
+
+        return $path;
+
+        return $path;
     }
 
     /**

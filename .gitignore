@@ -9,6 +9,11 @@
 *.rar
 *.mov
 /vendor
+.env
+.gitignore
+_ide_helper.php
+composer.lock
+
 
 /resources/assets/typescript/**/*.js
 .map

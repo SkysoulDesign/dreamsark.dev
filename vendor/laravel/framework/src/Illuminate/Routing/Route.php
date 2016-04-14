@@ -102,7 +102,7 @@ class Route
     /**
      * Create a new Route instance.
      *
-     * @param  array   $methods
+     * @param  array|string  $methods
      * @param  string  $uri
      * @param  \Closure|array  $action
      * @return void
@@ -209,7 +209,7 @@ class Route
 
         $uri = preg_replace('/\{(\w+?)\?\}/', '{$1}', $this->uri);
 
-        $this->compiled = with(
+        $this->compiled = (
             new SymfonyRoute($uri, $optionals, $this->wheres, [], $this->domain() ?: '')
         )->compile();
     }
@@ -242,11 +242,26 @@ class Route
             $middleware = [$middleware];
         }
 
-        $this->action['middleware'] = array_merge(
+        $this->action['middleware'] = array_unique(array_merge(
             (array) Arr::get($this->action, 'middleware', []), $middleware
-        );
+        ));
 
         return $this;
+    }
+
+    /**
+     * Get the controller middleware for the route.
+     *
+     * @return array
+     */
+    protected function controllerMiddleware()
+    {
+        list($class, $method) = explode('@', $this->action['uses']);
+
+        $controller = $this->container->make($class);
+
+        return (new ControllerDispatcher($this->router, $this->container))
+            ->getMiddleware($controller, $method);
     }
 
     /**
@@ -508,19 +523,34 @@ class Route
             $value = isset($value) ? $value : Arr::get($this->defaults, $key);
         }
 
+        foreach ($this->defaults as $key => $value) {
+            if (! isset($parameters[$key])) {
+                $parameters[$key] = $value;
+            }
+        }
+
         return $parameters;
     }
 
     /**
      * Parse the route action into a standard array.
      *
-     * @param  callable|array  $action
+     * @param  callable|array|null  $action
      * @return array
      *
      * @throws \UnexpectedValueException
      */
     protected function parseAction($action)
     {
+        // If no action is passed in right away, we assume the user will make use of
+        // fluent routing. In that case, we set a default closure, to be executed
+        // if the user never explicitly sets an action to handle the given uri.
+        if (is_null($action)) {
+            return ['uses' => function () {
+                throw new LogicException("Route for [{$this->uri}] has no action.");
+            }];
+        }
+
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
@@ -743,7 +773,7 @@ class Route
      * Set the URI that the route responds to.
      *
      * @param  string  $uri
-     * @return \Illuminate\Routing\Route
+     * @return $this
      */
     public function setUri($uri)
     {
@@ -783,6 +813,17 @@ class Route
         $this->action['as'] = isset($this->action['as']) ? $this->action['as'].$name : $name;
 
         return $this;
+    }
+
+    /**
+     * Set the handler for the route.
+     *
+     * @param  \Closure|string  $action
+     * @return $this
+     */
+    public function uses($action)
+    {
+        return $this->setAction(array_merge($this->action, $this->parseAction($action)));
     }
 
     /**

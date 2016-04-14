@@ -65,4 +65,11 @@ class SessionController extends Controller
         return redirect()->back();
     }
 
+    /**
+     *
+     */
+    public function setting(){
+        return view('user.settings');
+    }
+
 }

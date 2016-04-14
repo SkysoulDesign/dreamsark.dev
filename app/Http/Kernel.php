@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Http;
 
+use DreamsArk\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -29,6 +30,10 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth'       => \DreamsArk\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest'      => \DreamsArk\Http\Middleware\RedirectIfAuthenticated::class
+        'guest'      => \DreamsArk\Http\Middleware\RedirectIfAuthenticated::class,
+        /**
+         * Custom
+         */
+        'role'       => RoleMiddleware::class,
     ];
 }

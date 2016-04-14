@@ -3,9 +3,10 @@
   "dependencies": {
     "classie": "^1.0.0",
     "dat-gui": "^0.5.0",
+    "foundation-grid": "^0.1.0",
     "gsap": "^1.18.0",
     "howler": "^1.1.28",
-    "jquery": "^2.1.4",
+    "jquery": "^2.2.1",
     "particles.js": "^2.0.0",
     "requirejs": "^2.1.22",
     "snapsvg": "^0.4.0",

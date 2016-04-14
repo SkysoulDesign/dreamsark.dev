@@ -51,12 +51,15 @@ class AuthController extends Controller
         $request->merge([$field => $request->get('login')]);
 
         $this->validate($request, [
-            'login'    => 'required',
+            'login' => 'required',
             'password' => 'required'
         ]);
 
         if ($this->auth->attempt($request->only($field, 'password'))) {
-            return redirect()->intended(route('home'));
+            if ($this->auth->user()->is('user'))
+                return redirect()->intended(route('home'));
+
+            return redirect()->route('admin.index');
         }
 
         return redirect()->route('login')->withInput()->withErrors('These credentials do not match our records.');
