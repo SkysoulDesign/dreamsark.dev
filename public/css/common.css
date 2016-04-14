@@ -1,0 +1,13 @@
+.ui.inverted.transparent.menu {
+    background: rgba(27, 28, 29, 0.1);
+}
+.ui.table thead th{
+    background: none transparent;
+    border-bottom: none;
+}
+.ui[class*="right aligned"].segment {
+    background: none transparent;
+}
+.ui.button, .ui.buttons .button, .ui.buttons .or {
+    width: auto;
+}

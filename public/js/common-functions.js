@@ -20,6 +20,82 @@ $(document).ready(function () {
         } else
             return false;
     });
+
+    if ($('#idea-submit-modal').length > 0)
+        $('#idea-submit-modal')
+            .modal({
+                blurring: true,
+                closable: false,
+                onApprove: function () {
+                    $('#idea-submit-form').submit();
+                }
+            })
+            .modal('attach events', '#idea-submit-open', 'show');
+
+    if ($('#project-take-modal').length > 0)
+        $('#project-take-modal')
+            .modal({
+                blurring: true,
+                closable: false,
+                onApprove: function () {
+                    $('#project-take-form').submit();
+                }
+            })
+            .modal('attach events', '#project-add-take', 'show');
+
+    if ($('#project-cast-modal').length > 0)
+        $('#project-cast-modal')
+            .modal({
+                blurring: true,
+                closable: false,
+                onApprove: function () {
+                    $('#project-cast-form').submit();
+                }
+            })
+            .modal('attach events', '#project-add-cast', 'show');
+
+    if ($('#project-crew-modal').length > 0)
+        $('#project-crew-modal')
+            .modal({
+                blurring: true,
+                closable: false,
+                onApprove: function () {
+                    $('#project-crew-form').submit();
+                }
+            })
+            .modal('attach events', '#project-add-crew', 'show');
+
+    if ($('#project-expense-modal').length > 0)
+        $('#project-expense-modal')
+            .modal({
+                blurring: true,
+                closable: false,
+                onApprove: function () {
+                    $('#project-expense-form').submit();
+                }
+            })
+            .modal('attach events', '#project-add-expense', 'show');
+
+    if ($('#project-idea-show-modal').length > 0)
+        $('#project-idea-show-modal')
+            .modal({
+                blurring: true,
+            })
+            .modal('attach events', '#project-idea-show', 'show');
+
+    if ($('#project-synapse-show-modal').length > 0)
+        $('#project-synapse-show-modal')
+            .modal({
+                blurring: true,
+            })
+            .modal('attach events', '#project-synapse-show', 'show');
+
+    if ($('#project-script-show-modal').length > 0)
+        $('#project-script-show-modal')
+            .modal({
+                blurring: true,
+            })
+            .modal('attach events', '#project-script-show', 'show');
 });
 function validateDataIsNull(input) {
     if (input != undefined && input != '')
