@@ -16,8 +16,8 @@
  */
 
 use DreamsArk\Http\Controllers\Admin\AdminHomeController;
-use DreamsArk\Http\Controllers\Admin\QuestionController;
 use DreamsArk\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use DreamsArk\Http\Controllers\Admin\QuestionController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
 use DreamsArk\Http\Controllers\Bag\CoinController;
 use DreamsArk\Http\Controllers\Committee\Project\CastController;
@@ -29,24 +29,25 @@ use DreamsArk\Http\Controllers\Dashboard\DashboardController;
 use DreamsArk\Http\Controllers\Home\HomeController;
 use DreamsArk\Http\Controllers\Project\EnrollController;
 use DreamsArk\Http\Controllers\Project\FundController;
-use DreamsArk\Http\Controllers\Project\ProjectController;
-use DreamsArk\Http\Controllers\Report\ReportController;
-use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
-//use DreamsArk\Http\Controllers\Project\ProjectPledgeController;
-use DreamsArk\Http\Controllers\Project\Script\ScriptController;
-use DreamsArk\Http\Controllers\User\Project\ScriptController as UserScriptController;
-use DreamsArk\Http\Controllers\Project\SubmissionController;
 use DreamsArk\Http\Controllers\Project\Idea\SubmissionController as SubmissionIdeaController;
+use DreamsArk\Http\Controllers\Project\ProjectController;
+use DreamsArk\Http\Controllers\Project\Script\ScriptController;
+use DreamsArk\Http\Controllers\Project\SubmissionController;
 use DreamsArk\Http\Controllers\Project\Synapse\SynapseController;
-use DreamsArk\Http\Controllers\User\Project\SynapseController as UserSynapseController;
-
-//use DreamsArk\Http\Controllers\Project\TakeController;
 use DreamsArk\Http\Controllers\Project\VoteController;
+use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
 use DreamsArk\Http\Controllers\Setting\SettingController;
 use DreamsArk\Http\Controllers\Translation\TranslationController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\ProfileController;
+use DreamsArk\Http\Controllers\User\Project\ScriptController as UserScriptController;
+use DreamsArk\Http\Controllers\User\Project\SynapseController as UserSynapseController;
+use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
+
+//use DreamsArk\Http\Controllers\Project\ProjectPledgeController;
+
+//use DreamsArk\Http\Controllers\Project\TakeController;
 
 /** @var $app \Illuminate\Routing\Router */
 

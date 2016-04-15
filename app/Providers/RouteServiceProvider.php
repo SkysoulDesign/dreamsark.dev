@@ -2,26 +2,19 @@
 
 namespace DreamsArk\Providers;
 
-use DreamsArk\Models\Project\Expenditures\Cast;
-use DreamsArk\Models\Project\Expenditures\Crew;
-use DreamsArk\Models\Project\Expenditures\Enroller;
-use DreamsArk\Models\Project\Expenditures\Expenditure;
-use DreamsArk\Models\Project\Project;
-use DreamsArk\Models\Project\Stages\Draft;
-use DreamsArk\Models\Project\Stages\Idea;
-use DreamsArk\Models\Project\Stages\Review;
-use DreamsArk\Models\Project\Stages\Vote;
-use DreamsArk\Models\Project\Submission;
-use DreamsArk\Models\User\Setting;
-use DreamsArk\Models\User\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 
+/**
+ * Class RouteServiceProvider
+ *
+ * @package DreamsArk\Providers
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
      * This namespace is applied to the controller routes in your routes file.
-     *
      * In addition, it is set as the URL generator's root namespace.
      *
      * @var string
@@ -36,24 +29,31 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-
         parent::boot($router);
-
-
-
     }
 
     /**
      * Define the routes for the application.
+
      *
-     * @param  \Illuminate\Routing\Router $router
-     * @return void
+*@param  \Illuminate\Routing\Router $router
+     * @param Request $request
      */
-    public function map(Router $router)
+    public function map(Router $router, Request $request)
     {
-        // 'namespace' => $this->namespace
-        $router->group([], function ($app) {
-            require app_path('Http/routes.php');
+
+        /**
+         * Generates Api or Web Routes
+         */
+        $route = $request->wantsJson() ? 'api' : 'web';
+
+        /**
+         * Web Router
+         */
+        $router->group([], function ($app) use ($route) {
+            require app_path("Http/routes.$route.php");
         });
+
     }
+
 }
