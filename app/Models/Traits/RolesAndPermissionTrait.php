@@ -40,9 +40,8 @@ trait RolesAndPermissionTrait
     /**
      * Check if this model has a given role
      * Usage hasRole(user, admin) will be read like has role user or admin?
-
      *
-*@param string $name
+     * @param string $name
      * @return bool
      */
     public function hasRole($name)
