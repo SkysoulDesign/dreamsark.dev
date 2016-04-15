@@ -20,24 +20,6 @@ trait RolesAndPermissionTrait
     }
 
     /**
-     * Check if user has multiple roles
-     *
-     * @param array $roles
-     * @return bool
-     */
-    public function hasRoles(array $roles)
-    {
-
-        $result = [];
-
-        foreach ($roles as $role)
-            array_push($result, $this->hasRole($role));
-
-        return count($roles) === count(array_filter($result));
-
-    }
-
-    /**
      * Check if this model has a given role
      * Usage hasRole(user, admin) will be read like has role user or admin?
      *
@@ -63,6 +45,27 @@ trait RolesAndPermissionTrait
             if ($role->name == strtolower($name)) return true;
 
         return false;
+
+    }
+
+
+    /**
+     * Check if user has multiple roles
+     *
+     * @param array $roles
+     * @return bool
+     */
+    public function hasRoles($roles)
+    {
+
+        $result = [];
+
+        foreach (func_get_args() as $role) {
+            $function = "call_user_func" . (is_array($role) ? '_array' : null);
+            array_push($result, $function([$this, 'hasRole'], $role));
+        }
+
+        return count(func_get_args()) === count(array_filter($result));
 
     }
 
