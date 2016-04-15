@@ -16,6 +16,7 @@
  */
 
 use DreamsArk\Http\Controllers\Admin\AdminHomeController;
+use DreamsArk\Http\Controllers\Admin\AdminUserController;
 use DreamsArk\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\QuestionController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
@@ -251,30 +252,14 @@ $app->group([], function () use ($app) {
 /**
  * Admin Section Routes
  */
-$app->group(['middleware' => ['auth', 'role:!user'], 'prefix' => 'admin'], function () use ($app) {
+$app->group(['middleware' => ['auth', 'role:admin|committee'], 'prefix' => 'admin'], function () use ($app) {
     $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
-    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
+//    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
 
-    /*$app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
-        $app->get('index', QuestionController::class . '@index')->name('index');
-        $app->get('create', QuestionController::class . '@create')->name('create');
-        $app->post('post', QuestionController::class . '@post')->name('create.post');
-        $app->get('{questionnaire}/edit', QuestionController::class . '@edit')->name('edit');
-        $app->post('{questionnaire}/update', QuestionController::class . '@update')->name('edit.update');
-        $app->get('{questionnaire}/delete', QuestionController::class . '@delete')->name('delete');
-
-    });*/
     $app->resource('question', QuestionController::class, ['except' => ['show']]);
+    $app->resource('user', AdminUserController::class, ['except' => ['show']]);
     $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
 
-    /*$app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
-        $app->get('index', AdminProfileController::class . '@index')->name('index');
-        $app->get('create', AdminProfileController::class . '@create')->name('create');
-        $app->post('post', AdminProfileController::class . '@post')->name('create.post');
-        $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
-        $app->post('{profile}/update', AdminProfileController::class . '@update')->name('edit.update');
-        $app->get('{profile}/delete', AdminProfileController::class . '@delete')->name('delete');
-    });*/
 
 });
 

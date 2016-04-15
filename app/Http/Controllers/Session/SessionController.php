@@ -2,12 +2,12 @@
 
 namespace DreamsArk\Http\Controllers\Session;
 
-use DreamsArk\Commands\Session\CreateUserCommand;
-use DreamsArk\Commands\Session\UpdateUserCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Session\UserCreation;
 use DreamsArk\Http\Requests\Session\UserEdition;
+use DreamsArk\Jobs\Session\CreateUserJob;
+use DreamsArk\Jobs\Session\UpdateUserJob;
 
 class SessionController extends Controller
 {
@@ -47,7 +47,7 @@ class SessionController extends Controller
      */
     public function store(UserCreation $request)
     {
-        $command = new CreateUserCommand($request->all());
+        $command = new CreateUserJob($request->all());
         $this->dispatch($command);
         return redirect()->route('home');
     }
@@ -60,7 +60,7 @@ class SessionController extends Controller
      */
     public function update(UserEdition $request)
     {
-        $command = new UpdateUserCommand($request->user(), $request->all());
+        $command = new UpdateUserJob($request->user(), $request->all());
         $this->dispatch($command);
         return redirect()->back();
     }

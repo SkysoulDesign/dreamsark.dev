@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            @include('partials.field', ['name' => 'order', 'label' => trans('forms.order'), 'value' => old('order', $question->order)])
+            @include('partials.field', ['name' => 'order', 'value' => old('order', $question->order)])
 
             <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 

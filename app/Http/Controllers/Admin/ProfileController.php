@@ -52,7 +52,7 @@ class ProfileController extends Controller
     {
         $response = dispatch(new CreateProfileJob($request->all()));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile created successfully');
     }
 
@@ -78,7 +78,7 @@ class ProfileController extends Controller
     {
         $response = dispatch(new UpdateProfileJob($profile, $request->all()));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile updated successfully');
     }
 
@@ -90,7 +90,7 @@ class ProfileController extends Controller
     {
         $response = dispatch(new DeleteItemByObjectJob($profile));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to delete record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to delete record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile deleted successfully');
     }
 }

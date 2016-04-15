@@ -29,7 +29,8 @@ class LogUserIn
      */
     public function handle(UserWasCreated $event)
     {
-        $this->auth->login($event->user);
+        if ($event->event_type == 'user')
+            $this->auth->login($event->user);
     }
 
 }

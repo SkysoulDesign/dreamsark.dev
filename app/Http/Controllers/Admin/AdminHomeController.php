@@ -4,7 +4,6 @@ namespace DreamsArk\Http\Controllers\Admin;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Models\User\User;
 
 /**
  * Class AdminHomeController
@@ -19,14 +18,5 @@ class AdminHomeController extends Controller
     public function index()
     {
         return view('admin.index');
-    }
-
-    /**
-     * @param User $user
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function user(User $user)
-    {
-        return view('admin.users.index')->with('users', $user->all());
     }
 }

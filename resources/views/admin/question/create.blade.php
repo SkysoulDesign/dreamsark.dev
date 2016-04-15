@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            @include('partials.field', ['name' => 'order', 'label' => trans('forms.order'), 'value' => old('order', 1)])
+            @include('partials.field', ['name' => 'order', 'value' => old('order', 1)])
 
             <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
 

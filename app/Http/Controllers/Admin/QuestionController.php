@@ -65,7 +65,7 @@ class QuestionController extends Controller
 
         $response = dispatch(new CreateQuestionJob($request->all()));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Question created successfully');
 
     }
@@ -92,7 +92,7 @@ class QuestionController extends Controller
 
         $response = dispatch(new UpdateQuestionJob($question, $request->all()));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Question updated successfully');
 
     }
@@ -106,7 +106,7 @@ class QuestionController extends Controller
     {
         $response = dispatch(new DeleteItemByObjectJob($question));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withEerrors('Unable to delete record');
+            return redirect()->route($this->defaultRoute)->withErrors('Unable to delete record');
         return redirect()->route($this->defaultRoute)->withSuccess('Question deleted successfully');
     }
 }

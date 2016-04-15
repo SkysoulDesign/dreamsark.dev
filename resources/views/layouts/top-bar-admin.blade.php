@@ -20,7 +20,7 @@
             <div class="header"></div>
             <a class="item" href="{{ route('admin.question.index') }}">@lang('navbar.questionnaire')</a>
             <a class="item" href="{{ route('admin.profile.index') }}">@lang('navbar.profile')</a>
-            <a class="item" href="{{ route('admin.users') }}">@lang('navbar.users')</a>
+            <a class="item" href="{{ route('admin.user.index') }}">@lang('navbar.users')</a>
         </div>
     </div>
     <div class="ui dropdown right item">
