@@ -40,7 +40,11 @@ class UpdateProfileJob extends Job
      */
     public function handle()
     {
+        $questions = $this->request['question'];
+//        dd($questions);
         $this->profile->update($this->request);
+        if (!empty($questions))
+            $this->profile->questions()->sync($questions);
         return true;
     }
 }

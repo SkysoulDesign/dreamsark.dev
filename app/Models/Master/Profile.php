@@ -28,4 +28,12 @@ class Profile extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function questions()
+    {
+        return $this->belongsToMany(Questionnaire::class, 'profile_questionnaire');
+    }
 }

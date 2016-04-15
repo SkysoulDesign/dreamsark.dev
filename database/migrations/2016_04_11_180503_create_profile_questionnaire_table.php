@@ -16,8 +16,8 @@ class CreateProfileQuestionnaireTable extends Migration
             $table->increments('id');
             $table->integer('profile_id')->unsigned()->index();
             $table->foreign('profile_id')->references('id')->on('profile')->onDelete('cascade');
-            $table->integer('question_id')->unsigned()->index();
-            $table->foreign('question_id')->references('id')->on('questionnaire')->onDelete('cascade');
+            $table->integer('questionnaire_id')->unsigned()->index();
+            $table->foreign('questionnaire_id')->references('id')->on('questionnaire')->onDelete('cascade');
         });
     }
 

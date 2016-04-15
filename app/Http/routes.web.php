@@ -265,7 +265,7 @@ $app->group(['middleware' => ['auth', 'role:!user'], 'prefix' => 'admin'], funct
 
     });*/
     $app->resource('question', QuestionController::class, ['except' => ['show']]);
-    $app->resource('profile', AdminProfileController::class, ['prefix' => 'profile']);
+    $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
 
     /*$app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
         $app->get('index', AdminProfileController::class . '@index')->name('index');

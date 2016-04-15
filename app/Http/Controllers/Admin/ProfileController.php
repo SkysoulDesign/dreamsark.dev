@@ -37,6 +37,7 @@ class ProfileController extends Controller
     /**
      * @param Questionnaire $questionnaire
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @internal param Collection $selectedQuestions
      */
     public function create(Questionnaire $questionnaire)
     {
@@ -50,18 +51,22 @@ class ProfileController extends Controller
     public function store(ProfileRequest $request)
     {
         $response = dispatch(new CreateProfileJob($request->all()));
-        if(!$response)
+        if (!$response)
             return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile created successfully');
     }
 
     /**
      * @param Profile $profile
+     * @param Questionnaire $questionnaire
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Profile $profile)
+    public function edit(Profile $profile, Questionnaire $questionnaire)
     {
-        return view('admin.profile.edit', compact('profile'));
+        $profileQuestions = $profile->questions()->get(['questionnaire_id']);
+        foreach ($profileQuestions->toArray() as $question)
+            $selectedQuestions[] = $question['questionnaire_id'];
+        return view('admin.profile.edit', compact('profile', 'selectedQuestions'))->with('questions', $questionnaire->all());
     }
 
     /**
@@ -72,7 +77,7 @@ class ProfileController extends Controller
     public function update(Profile $profile, ProfileRequest $request)
     {
         $response = dispatch(new UpdateProfileJob($profile, $request->all()));
-        if(!$response)
+        if (!$response)
             return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile updated successfully');
     }
@@ -87,10 +92,5 @@ class ProfileController extends Controller
         if (!$response)
             return redirect()->route($this->defaultRoute)->withEerrors('Unable to delete record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile deleted successfully');
-    }
-
-    public function show($id)
-    {
-        //
     }
 }

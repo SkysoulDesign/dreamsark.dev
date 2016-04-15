@@ -39,8 +39,8 @@ class QuestionnaireRequest extends Request
                 $this->request->set('options', $newOptionArr);
             }
         }
-        if($this->request->get('is_primary')=='on')
-            $this->request->set('is_primary', 1);
+        /*if($this->request->get('is_primary')=='on')
+            $this->request->set('is_primary', 1);*/
 
         return [
             'question' => 'required',

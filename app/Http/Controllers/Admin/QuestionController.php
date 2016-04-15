@@ -71,24 +71,26 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param Questionnaire $questionnaire
+     * @param Questionnaire $question
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @internal param Questionnaire $questionnaire
      */
-    public function edit(Questionnaire $questionnaire)
+    public function edit(Questionnaire $question)
     {
-        return view('admin.question.edit')->with('question', $questionnaire)
+        return view('admin.question.edit')->with('question', $question)
             ->with('masterData', $this->getMasterData());
     }
 
     /**
-     * @param Questionnaire $questionnaire
+     * @param Questionnaire $question
      * @param QuestionnaireRequest|Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @internal param Questionnaire $questionnaire
      */
-    public function update(Questionnaire $questionnaire, QuestionnaireRequest $request)
+    public function update(Questionnaire $question, QuestionnaireRequest $request)
     {
 
-        $response = dispatch(new UpdateQuestionJob($questionnaire, $request->all()));
+        $response = dispatch(new UpdateQuestionJob($question, $request->all()));
         if (!$response)
             return redirect()->route($this->defaultRoute)->withEerrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Question updated successfully');
@@ -96,12 +98,13 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param Questionnaire $questionnaire
+     * @param Questionnaire $question
      * @return mixed
+     * @internal param Questionnaire $questionnaire
      */
-    public function destroy(Questionnaire $questionnaire)
+    public function destroy(Questionnaire $question)
     {
-        $response = dispatch(new DeleteItemByObjectJob($questionnaire));
+        $response = dispatch(new DeleteItemByObjectJob($question));
         if (!$response)
             return redirect()->route($this->defaultRoute)->withEerrors('Unable to delete record');
         return redirect()->route($this->defaultRoute)->withSuccess('Question deleted successfully');

@@ -1,14 +1,14 @@
-<div class="inline fields {{ $parent_class or '' }}">
-    <div class="field @if($errors->has($name)) error @endif">
-        <label>{{ $label or trans('forms.'.str_replace('_', '-', $name)) }}</label>
-        @foreach($options as $key => $value)
-            {{--*/ $checked = (@$default!='' && $default == $key ? ' checked' : '') /*--}}
+<div class="fields {{ $parent_class or '' }}">
+    <label>{{ $label or trans('forms.'.str_replace('_', '-', $name)) }}</label>
+    @foreach($options as $key => $value)
+        <div class="field">
+            {{--*/ $checked = (@$default!='' && in_array($key, $default) ? ' checked' : '') /*--}}
             <div class="ui{{ $checked }} checkbox">
                 <input type="checkbox"
                        {{ $checked!='' ? $checked.'=""' : '' }} id="{{ $name.'_'.$key }}"
-                       name="{{ $name }}">
+                       name="{{ $name }}" value="{{ $key }}">
                 <label for="{{ $name.'_'.$key }}">{{ $value }}</label>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
 </div>

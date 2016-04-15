@@ -19,6 +19,8 @@
                 <input type="text" name="display_name" placeholder="@lang('forms.profile-name')" value="{{ old('display_name', $profile->display_name) }}">
             </div>
 
+            @include('admin.profile.form-question')
+
             <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 
             <a href="{{ route('admin.profile.index') }}" class="ui button ui-icon-cancel">
