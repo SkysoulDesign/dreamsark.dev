@@ -1,4 +1,0 @@
-                        
-
-                        {section-header}
-                        {section-details}
