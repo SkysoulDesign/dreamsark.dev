@@ -29,8 +29,12 @@ class LogUserIn
      */
     public function handle(UserWasCreated $event)
     {
-        if ($event->event_type == 'user')
+        /**
+         * Skip if user is already logged in
+         */
+        if ($this->auth->guest())
             $this->auth->login($event->user);
+        
     }
 
 }

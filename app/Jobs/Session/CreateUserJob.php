@@ -5,11 +5,11 @@ namespace DreamsArk\Jobs\Session;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
-use Illuminate\Contracts\Events\Dispatcher;
 
 /**
  * Class CreateUserJob
- * @package DreamsArk\Jobs\Session
+ * 
+*@package DreamsArk\Jobs\Session
  */
 class CreateUserJob extends Job
 {
@@ -17,37 +17,32 @@ class CreateUserJob extends Job
      * @var array
      */
     private $fields;
+
     /**
      * @var string
      */
     private $role;
-    /**
-     * @var string
-     */
-    private $event_type;
 
     /**
      * Create a new job instance.
      *
      * @param array $fields
      * @param string $role
-     * @param string $event_type
      */
-    public function __construct(array $fields, $role = 'user', $event_type = 'user')
+    public function __construct(array $fields, $role = 'user')
     {
-        //
         $this->fields = $fields;
         $this->role = $role;
-        $this->event_type = $event_type;
     }
 
     /**
      * Execute the job.
-     *
-     * @param UserRepositoryInterface $repository
-     * @param Dispatcher $event
+     
+     * 
+*@param UserRepositoryInterface $repository
+     * @return \DreamsArk\Models\User\User
      */
-    public function handle(UserRepositoryInterface $repository, Dispatcher $event)
+    public function handle(UserRepositoryInterface $repository)
     {
         /**
          * Create User
@@ -57,6 +52,10 @@ class CreateUserJob extends Job
         /**
          * Announce UserWasCreated
          */
-        $event->fire(new UserWasCreated($user, $this->role, $this->event_type));
+        event(new UserWasCreated($user, $this->role));
+
+        return $user;
+
     }
+
 }

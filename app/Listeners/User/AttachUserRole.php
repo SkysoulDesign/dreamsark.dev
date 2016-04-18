@@ -5,6 +5,11 @@ namespace DreamsArk\Listeners\User;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Repositories\User\Role\RoleRepositoryInterface;
 
+/**
+ * Class AttachUserRole
+ *
+ * @package DreamsArk\Listeners\User
+ */
 class AttachUserRole
 {
     /**
@@ -30,14 +35,18 @@ class AttachUserRole
      */
     public function handle(UserWasCreated $event)
     {
-        $role_id = $event->role;
 
+        /**
+         * if role is string fetch it as a Model
+         */
         if (is_string($event->role))
-            $role_id = $this->repository->find($event->role)->id;
+            $event->role = $this->repository->find($event->role);
 
         /**
          * Attach Role To User
          */
-        $this->repository->attach($event->user->id, $role_id);
+        $this->repository->attach($event->user->getAuthIdentifier(), $event->role);
+
     }
+
 }

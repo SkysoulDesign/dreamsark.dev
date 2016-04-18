@@ -6,18 +6,25 @@ use DreamsArk\Events\Session\UserWasUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
-use Illuminate\Contracts\Events\Dispatcher;
 
+/**
+ * Class UpdateUserJob
+ *
+ * @package DreamsArk\Jobs\Session
+ */
 class UpdateUserJob extends Job
 {
+
     /**
      * @var User
      */
     private $user;
+
     /**
      * @var array
      */
     private $fields;
+
     /**
      * @var string
      */
@@ -32,7 +39,6 @@ class UpdateUserJob extends Job
      */
     public function __construct(User $user, array $fields, $role = 'user')
     {
-        //
         $this->user = $user;
         $this->fields = $fields;
         $this->role = $role;
@@ -42,9 +48,8 @@ class UpdateUserJob extends Job
      * Execute the job.
      *
      * @param UserRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(UserRepositoryInterface $repository, Dispatcher $event)
+    public function handle(UserRepositoryInterface $repository)
     {
         $status = $repository->update($this->user->getAttribute('id'), $this->fields);
 
@@ -52,6 +57,11 @@ class UpdateUserJob extends Job
             dd('user wasnt updated somehow');
         }
 
-        $event->fire(new UserWasUpdated($this->user));
+        /**
+         * Announce UserWasUpdated
+         */
+        event(new UserWasUpdated($this->user));
+
     }
+
 }

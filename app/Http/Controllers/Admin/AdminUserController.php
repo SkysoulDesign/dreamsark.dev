@@ -53,7 +53,7 @@ class AdminUserController extends Controller
      */
     public function store(AdminUserRequest $request)
     {
-        $command = new CreateUserJob($request->except('role_id'), $request->get('role_id'), 'admin');
+        $command = new CreateUserJob($request->except('role_id'), $request->get('role_id'));
         $this->dispatch($command);
         return redirect()->route($this->defaultRoute);
     }
@@ -93,7 +93,7 @@ class AdminUserController extends Controller
      */
     public function update(AdminUserRequest $request, User $user)
     {
-        $command = new UpdateUserJob($user, $request->except('role_id'), $request->get('role_id'), 'admin');
+        $command = new UpdateUserJob($user, $request->except('role_id'), $request->get('role_id'));
         $this->dispatch($command);
         return redirect()->back();
     }
