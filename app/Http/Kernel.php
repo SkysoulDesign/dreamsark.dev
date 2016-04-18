@@ -3,8 +3,18 @@
 namespace DreamsArk\Http;
 
 use DreamsArk\Http\Middleware\AjaxMiddleware;
+use DreamsArk\Http\Middleware\Authenticate;
+use DreamsArk\Http\Middleware\EncryptCookies;
+use DreamsArk\Http\Middleware\Localization;
+use DreamsArk\Http\Middleware\RedirectIfAuthenticated;
 use DreamsArk\Http\Middleware\RoleMiddleware;
+use DreamsArk\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
@@ -14,13 +24,30 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \DreamsArk\Http\Middleware\EncryptCookies::class,
-        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-//        \DreamsArk\Http\Middleware\VerifyCsrfToken::class,
-        \DreamsArk\Http\Middleware\Localization::class
+        CheckForMaintenanceMode::class,
+        Localization::class
+    ];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+        ],
+
+        'api' => [
+        ],
+
+        'ajax' => [
+            AjaxMiddleware::class,
+        ],
     ];
 
     /**
@@ -29,13 +56,12 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => \DreamsArk\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest'      => \DreamsArk\Http\Middleware\RedirectIfAuthenticated::class,
+        'auth' => Authenticate::class,
+        'auth.basic' => AuthenticateWithBasicAuth::class,
+        'guest' => RedirectIfAuthenticated::class,
         /**
          * Custom
          */
-        'role'       => RoleMiddleware::class,
-        'ajax'       => AjaxMiddleware::class,
+        'role' => RoleMiddleware::class,
     ];
 }
