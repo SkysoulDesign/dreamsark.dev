@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Http;
 
+use DreamsArk\Http\Middleware\AjaxMiddleware;
 use DreamsArk\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -35,5 +36,6 @@ class Kernel extends HttpKernel
          * Custom
          */
         'role'       => RoleMiddleware::class,
+        'ajax'       => AjaxMiddleware::class,
     ];
 }
