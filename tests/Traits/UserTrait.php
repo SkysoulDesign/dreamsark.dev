@@ -15,13 +15,16 @@ trait UserTrait
      */
     public function createUser($role = 'user')
     {
+
+        $faker = app(Faker\Generator::class);
+
         $data = [
-            'username' => 'TestUserName',
-            'email'    => 'test@test.com',
-            'password' => '123456',
+            'username' => $faker->userName,
+            'email'    => $faker->email,
+            'password' => $faker->password(6, 6),
         ];
 
-        return $this->dispatchNow(new CreateUserJob($data, $role));
+        return dispatch(new CreateUserJob($data, $role));
 
     }
 

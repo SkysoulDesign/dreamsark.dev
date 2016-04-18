@@ -8,8 +8,8 @@ use DreamsArk\Repositories\User\UserRepositoryInterface;
 
 /**
  * Class CreateUserJob
- * 
-*@package DreamsArk\Jobs\Session
+ *
+ * @package DreamsArk\Jobs\Session
  */
 class CreateUserJob extends Job
 {
@@ -37,9 +37,8 @@ class CreateUserJob extends Job
 
     /**
      * Execute the job.
-     
-     * 
-*@param UserRepositoryInterface $repository
+     *
+     * @param UserRepositoryInterface $repository
      * @return \DreamsArk\Models\User\User
      */
     public function handle(UserRepositoryInterface $repository)

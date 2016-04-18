@@ -3,7 +3,6 @@
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Models\User\Role;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
@@ -12,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class CreateUserJobTest extends TestCase
 {
 
-    use DatabaseTransactions, DispatchesJobs, FakerTrait;
+    use DatabaseTransactions, FakerTrait, UserTrait;
 
     /**
      * Check if user has the role $user
@@ -27,7 +26,7 @@ class CreateUserJobTest extends TestCase
 
         $roles->each(function ($role) {
             /** @var \DreamsArk\Models\User\User $user */
-            $user = $this->it_creates_a_new_user_on_the_database($role->name);
+            $user = $this->createUser($role);
             $this->assertNotEmpty($user->settings);
         });
 
@@ -37,10 +36,9 @@ class CreateUserJobTest extends TestCase
      * Test if user is created
      *
      * @test
-     * @param string $role
      * @return \DreamsArk\Models\User\User
      */
-    public function it_creates_a_new_user_on_the_database($role = 'user')
+    public function it_creates_a_new_user_on_the_database()
     {
 
         $data = [
@@ -50,11 +48,9 @@ class CreateUserJobTest extends TestCase
         ];
 
         /** @var DreamsArk\Models\User\User $user */
-        $user = $this->dispatch(new CreateUserJob($data, $role));
+        dispatch(new CreateUserJob($data, 'user'));
 
         $this->seeInDatabase('users', array_except($data, 'password', 'role'));
-
-        return $user;
 
     }
 
@@ -70,7 +66,7 @@ class CreateUserJobTest extends TestCase
         $roles = app(Role::class)->all();
 
         $roles->each(function ($role) {
-            $user = $this->it_creates_a_new_user_on_the_database($role->name);
+            $user = $this->createUser($role);
             $this->assertTrue($user->hasRole($role->name));
         });
 
@@ -84,7 +80,7 @@ class CreateUserJobTest extends TestCase
     public function it_expects_events_to_be_triggered()
     {
         $this->expectsEvents(UserWasCreated::class);
-        $this->it_creates_a_new_user_on_the_database();
+        $this->createUser();
     }
 
 }
