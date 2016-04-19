@@ -33,13 +33,6 @@ class Profile extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    
-    
-    
-    
-    
-    
-    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -47,6 +40,14 @@ class Profile extends Model
     public function questions()
     {
         return $this->belongsToMany(Question::class, 'questionnaires');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function answer()
+    {
+        return $this->hasOne(Answer::class);
     }
 
 //    /**

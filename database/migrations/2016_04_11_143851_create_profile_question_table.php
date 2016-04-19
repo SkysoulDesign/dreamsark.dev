@@ -3,7 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateQuestionnairesTable extends Migration
+/**
+ * Class CreateProfileQuestionTable
+ */
+class CreateProfileQuestionTable extends Migration
 {
 
     use SchemaTrait;
@@ -15,13 +18,12 @@ class CreateQuestionnairesTable extends Migration
      */
     public function up()
     {
-        $this->schema->create('questionnaires', function (Blueprint $table) {
+        $this->schema->create('profile_question', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('profile_id')->unsigned()->index();
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->integer('question_id')->unsigned()->index();
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -32,6 +34,6 @@ class CreateQuestionnairesTable extends Migration
      */
     public function down()
     {
-        $this->schema->drop('questionnaires');
+        $this->schema->drop('profile_question');
     }
 }

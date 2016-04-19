@@ -21,7 +21,7 @@ class Question extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id'];
+    protected $fillable = ['question', 'category', 'description', 'type', 'options', 'order', 'is_primary'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany

@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateUserProfileQuestionnaireTable
  */
-class CreateUserProfileQuestionnairesTable extends Migration
+class CreateAnswersQuestionTable extends Migration
 {
     use SchemaTrait;
 
@@ -17,12 +17,10 @@ class CreateUserProfileQuestionnairesTable extends Migration
      */
     public function up()
     {
-        $this->schema->create('profile_user_answer', function (Blueprint $table) {
+        $this->schema->create('answer_question', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('profile_id')->unsigned()->index();
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->integer('answer_id')->unsigned()->index();
+            $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade');
             $table->integer('question_id')->unsigned()->index();
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->longText('content');
@@ -37,6 +35,6 @@ class CreateUserProfileQuestionnairesTable extends Migration
      */
     public function down()
     {
-        $this->schema->drop('profile_user_answer');
+        $this->schema->drop('answer_question');
     }
 }

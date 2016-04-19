@@ -3,10 +3,9 @@
 namespace DreamsArk\Jobs\User\Profile;
 
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Master\Question;
 use DreamsArk\Models\User\User;
-use Illuminate\Support\Collection;
 
 class CreateProfileJob extends Job
 {
@@ -14,6 +13,11 @@ class CreateProfileJob extends Job
      * @var array
      */
     private $request;
+
+    /**
+     * @var \DreamsArk\Models\User\User
+     */
+    private $user;
 
     /**
      * @var \DreamsArk\Models\Master\Profile
@@ -24,43 +28,39 @@ class CreateProfileJob extends Job
      * Create a new job instance.
      *
      * @param array $request
+     * @param \DreamsArk\Models\User\User $user
      * @param \DreamsArk\Models\Master\Profile $profile
      */
-    public function __construct(array $request, Profile $profile)
+    public function __construct(array $request, User $user, Profile $profile)
     {
         $this->request = $request;
+        $this->user = $user;
         $this->profile = $profile;
     }
 
     /**
      * Execute the job.
      *
-     * @param \DreamsArk\Models\Master\Profile $profile
+     * @param \DreamsArk\Models\Master\Answer $answer
      */
-    public function handle(User $user)
+    public function handle(Answer $answer)
     {
 
-        /** @var Collection $questions */
-        $questions = $this->profile->questions;
+        /** @var Answer $answer */
+        $answer = $answer->create([]);
 
-        /** @var User $user */
-        $user = $user->first();
+        foreach ($this->request['questions'] as $id => $reply) {
 
-        foreach ($this->request['questions'] as $id => $answer) {
-
-            /** @var Question $question */
-            $question = $questions->where('id', $id)->first();
-
-            $user->profiles()->attach($this->profile->id, [
-                'question_id' => $id,
-                'content'     => $answer
+            $answer->questions()->attach($id, [
+                'content' => $reply
             ]);
 
         }
 
-//        $user->profile[0]->questions->answers
+        $this->user->profiles()->attach($this->profile->id, [
+            'answer_id' => $answer->id
+        ]);
 
-//        $this->profile->questions[0]->answer();
     }
 
 }

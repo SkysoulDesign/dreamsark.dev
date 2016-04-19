@@ -18,13 +18,17 @@ class CreateProfileUserTable extends Migration
      */
     public function up()
     {
+
         $this->schema->create('profile_user', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('profile_id')->unsigned()->index();
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->integer('answer_id')->unsigned()->index();
+            $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade');
         });
+
     }
 
     /**
