@@ -34,9 +34,8 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the routes for the application.
-
      *
-*@param  \Illuminate\Routing\Router $router
+     * @param  \Illuminate\Routing\Router $router
      * @param Request $request
      */
     public function map(Router $router, Request $request)
@@ -52,6 +51,8 @@ class RouteServiceProvider extends ServiceProvider
          */
         $router->group([], function ($app) use ($route) {
             require app_path("Http/routes.$route.php");
+            if ($route == 'web')
+                require app_path("Http/routes.ajax.php");
         });
 
     }
