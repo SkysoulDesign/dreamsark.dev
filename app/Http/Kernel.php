@@ -25,7 +25,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         CheckForMaintenanceMode::class,
-        Localization::class
+        Localization::class,
     ];
 
     /**

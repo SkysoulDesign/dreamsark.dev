@@ -52,7 +52,7 @@ use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 
 /** @var $app \Illuminate\Routing\Router */
 
-$app->group([], function () use ($app) {
+$app->group(['middleware' => ['web']], function () use ($app) {
     $app->get('/', HomeController::class . '@index')->name('home');
 
     /**
@@ -87,7 +87,7 @@ $app->group([], function () use ($app) {
     /**
      * Session Controller
      */
-    $app->get('profile', SessionController::class . '@index')->name('profile');
+    $app->get('dashboard', SessionController::class . '@index')->name('profile');
     $app->get('register', SessionController::class . '@create')->name('register');
     $app->post('register/update', SessionController::class . '@update')->name('register.update');
     $app->post('register', SessionController::class . '@store')->name('register.store');
@@ -102,6 +102,7 @@ $app->group([], function () use ($app) {
     /**
      * Profile Controller
      */
+    //$app->resource('profiles', ProfileController::class, ['prefix' => 'user', 'as' => 'user', 'except' => ['destroy']]);
     $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
 
     /**
@@ -247,19 +248,19 @@ $app->group([], function () use ($app) {
     $app->get('docs', function () {
         return View::make('docs.api.v1.index');
     });
-});
-
-/**
- * Admin Section Routes
- */
-$app->group(['middleware' => ['auth', 'role:admin|committee'], 'prefix' => 'admin'], function () use ($app) {
-    $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
+    /**
+     * Admin Section Routes
+     */
+    $app->group(['middleware' => ['auth', 'role:admin|committee'], 'prefix' => 'admin'], function () use ($app) {
+        $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
 //    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
 
-    $app->resource('question', QuestionController::class, ['except' => ['show']]);
-    $app->resource('user', AdminUserController::class, ['except' => ['show']]);
-    $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
+        $app->resource('question', QuestionController::class, ['except' => ['show']]);
+        $app->resource('user', AdminUserController::class, ['except' => ['show']]);
+        $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
 
+
+    });
 
 });
 
