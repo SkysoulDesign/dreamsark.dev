@@ -19,6 +19,8 @@ class CreateAnswersTable extends Migration
     {
         $this->schema->create('answers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('profile_id')->unsigned()->index();
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Jobs\User\Profile;
 
+use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
@@ -15,12 +16,12 @@ class CreateProfileJob extends Job
     private $request;
 
     /**
-     * @var \DreamsArk\Models\User\User
+     * @var User
      */
     private $user;
 
     /**
-     * @var \DreamsArk\Models\Master\Profile
+     * @var Profile
      */
     private $profile;
 
@@ -28,10 +29,10 @@ class CreateProfileJob extends Job
      * Create a new job instance.
      *
      * @param array $request
-     * @param \DreamsArk\Models\User\User $user
-     * @param \DreamsArk\Models\Master\Profile $profile
+     * @param User|int $user
+     * @param Profile|int $profile
      */
-    public function __construct(array $request, User $user, Profile $profile)
+    public function __construct(array $request, $user, $profile)
     {
         $this->request = $request;
         $this->user = $user;
@@ -42,12 +43,27 @@ class CreateProfileJob extends Job
      * Execute the job.
      *
      * @param \DreamsArk\Models\Master\Answer $answer
+     * @param User $user
+     * @param Profile $profile
+     * @return User
      */
-    public function handle(Answer $answer)
+    public function handle(Answer $answer, User $user, Profile $profile)
     {
 
+        /**
+         * Retrieve Model
+         */
+        if (!is_object($this->user))
+            $this->user = $user->findOrFail($this->user);
+
+        /**
+         * Retrieve Model
+         */
+        if (!is_object($this->profile))
+            $this->profile = $profile->findOrFail($this->profile);
+
         /** @var Answer $answer */
-        $answer = $answer->create([]);
+        $answer = $answer->create(['profile_id' => $this->profile->id]);
 
         foreach ($this->request['questions'] as $id => $reply) {
 
@@ -60,6 +76,13 @@ class CreateProfileJob extends Job
         $this->user->profiles()->attach($this->profile->id, [
             'answer_id' => $answer->id
         ]);
+
+        /**
+         * Announce UserProfileWasCreated
+         */
+        event(new UserProfileWasCreated($this->user, $this->profile));
+
+        return $this->user;
 
     }
 
