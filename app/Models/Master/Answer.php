@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\Model;
  * Class Questionnaire
  * @package DreamsArk\Models\Master
  */
-class Questionnaire extends Model
+class Answer extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'questionnaires';
+    protected $table = 'answers';
 
     /**
      * @var array
      */
-    protected $fillable = ['user_id'];
+    protected $fillable = ['question', 'type', 'options', 'order', 'category', 'is_primary'];
 
     /**
      * @var array

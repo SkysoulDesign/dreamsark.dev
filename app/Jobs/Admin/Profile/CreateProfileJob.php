@@ -2,13 +2,12 @@
 
 namespace DreamsArk\Jobs\Admin\Profile;
 
-use DreamsArk\Http\Requests\Request;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Master\Questionnaire;
 
 /**
  * Class CreateProfileJob
+ *
  * @package DreamsArk\Jobs\Admin\Profile
  */
 class CreateProfileJob extends Job
@@ -19,33 +18,48 @@ class CreateProfileJob extends Job
     private $request;
 
     /**
-     * Create a new job instance.
-     * @param array|Request $request
+     * @var array
      */
-    public function __construct(array $request)
+    private $questions;
+
+    /**
+     * Create a new job instance.
+     *
+     * @param array $request
+     * @param array $questions
+     */
+    public function __construct(array $request, array $questions = [])
     {
         $this->request = $request;
+        $this->questions = $questions;
     }
 
     /**
      * Execute the job.
      *
      * @param Profile $profile
-     * @param Questionnaire $questionnaire
-     * @return bool
+     * @return \DreamsArk\Models\Master\Profile
      */
-    public function handle(Profile $profile, Questionnaire $questionnaire)
+    public function handle(Profile $profile)
     {
-        $questions = '';
-        if (@$this->request['question'])
-            $questions = $questionnaire->whereIn('id', $this->request['question'])->get();
-//        dd($questions);
-        $object = $profile->create($this->request);
-        if ($object->id) {
-            if ($questions)
-                $object->questions()->attach($questions);
-            return true;
-        }
-        return false;
+
+        $profile = $profile->create($this->request);
+        $profile->questions()->sync($this->questions);
+
+        return $profile;
+
+        /**
+         * $questions = '';
+         * if (@$this->request['question'])
+         * $questions = $questionnaire->whereIn('id', $this->request['question'])->get();
+         * //        dd($questions);
+         * $object =
+         * if ($object->id) {
+         * if ($questions)
+         * $object->questions()->attach($questions);
+         * return true;
+         * }
+         * return false;
+         * */
     }
 }

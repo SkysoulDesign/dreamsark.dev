@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Profile
+ *
  * @package DreamsArk\Models\Profile
  */
 class Profile extends Model
 {
     /**
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $table = 'profile';
+    protected $table = 'profiles';
 
     /**
      * @var array
@@ -34,6 +37,20 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Questionnaire::class, 'profile_questionnaire');
+        return $this->belongsToMany(Question::class, 'questionnaires');
     }
+
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+//     */
+//    public function questionnaire()
+//    {
+//        return $this->questions();
+//    }
+
+//    public function answers()
+//    {
+//        return $this->belongsToMany(Questionnaire::class, User::class, 'user_profile_questionnaire');
+//    }
+
 }

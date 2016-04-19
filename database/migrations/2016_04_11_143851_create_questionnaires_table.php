@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateQuestionnairesTable extends Migration
+{
+
+    use SchemaTrait;
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $this->schema->create('questionnaires', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('profile_id')->unsigned()->index();
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->integer('question_id')->unsigned()->index();
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $this->schema->drop('questionnaires');
+    }
+}

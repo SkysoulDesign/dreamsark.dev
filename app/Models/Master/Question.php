@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Questionnaire
+ *
  * @package DreamsArk\Models\Master
  */
-class Questionnaire extends Model
+class Question extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'questionnaires';
+    protected $table = 'questions';
 
     /**
      * @var array
@@ -23,9 +24,11 @@ class Questionnaire extends Model
     protected $fillable = ['user_id'];
 
     /**
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    protected $casts = ['options' => 'array'];
-
+    public function answer()
+    {
+        return $this->belongsToMany(Answer::class);
+    }
 
 }

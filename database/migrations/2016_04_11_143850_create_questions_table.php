@@ -3,8 +3,14 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateQuestionnaireTable extends Migration
+/**
+ * Class CreateQuestionsTable
+ */
+class CreateQuestionsTable extends Migration
 {
+
+    use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -12,7 +18,8 @@ class CreateQuestionnaireTable extends Migration
      */
     public function up()
     {
-        Schema::create('questionnaire', function (Blueprint $table) {
+
+        $this->schema->create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
             $table->string('category')->nullable();
@@ -21,9 +28,9 @@ class CreateQuestionnaireTable extends Migration
             $table->longText('options')->nullable();
             $table->integer('order')->unsigned();
             $table->boolean('is_primary')->default(0);
-
             $table->timestamps();
         });
+
     }
 
     /**
@@ -33,6 +40,6 @@ class CreateQuestionnaireTable extends Migration
      */
     public function down()
     {
-        Schema::drop('questionnaire');
+        $this->schema->drop('questions');
     }
 }

@@ -138,5 +138,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /*public function profileQuestions(){
         return $this->belongsToMany(Questionnaire::class, 'user_profile_questionnaire', 'id', 'questionnaire_id');
     }*/
-
+    
 }

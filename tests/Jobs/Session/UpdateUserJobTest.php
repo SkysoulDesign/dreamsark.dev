@@ -1,5 +1,6 @@
 <?php
 
+use DreamsArk\Events\Session\UserWasUpdated;
 use DreamsArk\Jobs\Session\UpdateUserJob;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,15 +21,23 @@ class UpdateUserJobTest extends TestCase
     public function user_should_be_able_to_update_his_basic_information()
     {
 
-        $user = $this->createUser();
-        $status = dispatch(new UpdateUserJob($user, [
-            'email' => 'hello@world.com'
+        $user = dispatch(new UpdateUserJob($this->createUser(), [
+            'email' => $email = 'hello@world.com'
         ]));
 
-        $this->assertTrue($status);
+        $this->assertEquals($email, $user->getAttribute('email'));
 
-        return $user;
+    }
 
+    /**
+     * Expects Events to be fired
+     *
+     * @test
+     */
+    public function it_expects_events_to_be_triggered()
+    {
+        $this->expectsEvents(UserWasUpdated::class);
+        $this->user_should_be_able_to_update_his_basic_information();
     }
 
 }

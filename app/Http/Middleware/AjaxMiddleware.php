@@ -15,7 +15,7 @@ class AjaxMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->ajax() || $request->pjax())
+//        if ($request->ajax() || $request->pjax())
             return $next($request);
         return response()->json(['error' => 'Access denied']);
     }

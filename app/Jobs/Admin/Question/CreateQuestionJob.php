@@ -3,10 +3,11 @@
 namespace DreamsArk\Jobs\Admin\Question;
 
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Master\Questionnaire;
+use DreamsArk\Models\Master\Question;
 
 /**
  * Class CreateQuestionJob
+ *
  * @package DreamsArk\Jobs\Admin\Question
  */
 class CreateQuestionJob extends Job
@@ -23,21 +24,18 @@ class CreateQuestionJob extends Job
      */
     public function __construct(array $request)
     {
-        //
         $this->request = $request;
     }
 
     /**
      * Execute the job.
      *
-     * @param Questionnaire $questionnaire
-     * @return bool
+     * @param Question $question
+     * @return Question
      */
-    public function handle(Questionnaire $questionnaire)
+    public function handle(Question $question)
     {
-        $object = $questionnaire->create($this->request);
-        if ($object->id)
-            return true;
-        return false;
+        return $question->create($this->request);
     }
+
 }

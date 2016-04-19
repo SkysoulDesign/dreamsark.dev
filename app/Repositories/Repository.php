@@ -3,7 +3,6 @@
 namespace DreamsArk\Repositories;
 
 
-use DreamsArk\Repositories\Project\ProjectRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -62,11 +61,14 @@ abstract class Repository
      *
      * @param Int $model_id
      * @param array $fields
-     * @return bool
+     * @return Model
      */
     public function update($model_id, array $fields)
     {
-        return $this->model($model_id)->update($fields);
+        $model = $this->model($model_id);
+        $model->update($fields);
+
+        return $model->fresh();
     }
 
     /**

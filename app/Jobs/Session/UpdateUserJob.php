@@ -40,20 +40,20 @@ class UpdateUserJob extends Job
     /**
      * Execute the job.
      *
-     * @param UserRepositoryInterface $repository
-     * @return boolean
+     * @param \DreamsArk\Repositories\User\UserRepository|UserRepositoryInterface $repository
+     * @return User
      */
     public function handle(UserRepositoryInterface $repository)
     {
 
-        $status = $repository->update($this->user->getAuthIdentifier(), $this->fields);
+        $user = $repository->update($this->user->getAuthIdentifier(), $this->fields);
 
         /**
          * Announce UserWasUpdated
          */
         event(new UserWasUpdated($this->user));
 
-        return $status;
+        return $user;
 
     }
 
