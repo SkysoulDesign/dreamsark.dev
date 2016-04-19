@@ -92,6 +92,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Project::class);
     }
 
+    /**
+     * User Profile
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
+
     public function __get($name)
     {
 
@@ -124,19 +134,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                 return true;
             }
         }
-        return false;
-    }
 
-    /**
-     * Project Relationship
-     */
-    public function profiles()
-    {
-        return $this->belongsToMany(Profile::class);
+        return false;
     }
 
     /*public function profileQuestions(){
         return $this->belongsToMany(Questionnaire::class, 'user_profile_questionnaire', 'id', 'questionnaire_id');
     }*/
-    
+
 }

@@ -17,12 +17,14 @@ class CreateUserProfileQuestionnairesTable extends Migration
      */
     public function up()
     {
-        $this->schema->create('answers', function (Blueprint $table) {
+        $this->schema->create('profile_user_answer', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('questionnaire_id')->unsigned()->index();
-            $table->foreign('questionnaire_id')->references('id')->on('questionnaires')->onDelete('cascade');
+            $table->integer('profile_id')->unsigned()->index();
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->integer('question_id')->unsigned()->index();
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->longText('content');
             $table->timestamps();
         });
@@ -35,6 +37,6 @@ class CreateUserProfileQuestionnairesTable extends Migration
      */
     public function down()
     {
-        $this->schema->drop('answers');
+        $this->schema->drop('profile_user_answer');
     }
 }

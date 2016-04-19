@@ -5,6 +5,7 @@ namespace DreamsArk\Jobs\User\Profile;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question;
+use DreamsArk\Models\User\User;
 use Illuminate\Support\Collection;
 
 class CreateProfileJob extends Job
@@ -36,26 +37,30 @@ class CreateProfileJob extends Job
      *
      * @param \DreamsArk\Models\Master\Profile $profile
      */
-    public function handle()
+    public function handle(User $user)
     {
 
         /** @var Collection $questions */
         $questions = $this->profile->questions;
+
+        /** @var User $user */
+        $user = $user->first();
 
         foreach ($this->request['questions'] as $id => $answer) {
 
             /** @var Question $question */
             $question = $questions->where('id', $id)->first();
 
-            dd($question->answer()->create(['user_id' => 1]));
-
-            dd($question->answer()->attach(1, ['content' => 'hello world']));
+            $user->profiles()->attach($this->profile->id, [
+                'question_id' => $id,
+                'content'     => $answer
+            ]);
 
         }
 
 //        $user->profile[0]->questions->answers
 
-        $this->profile->questions[0]->answer();
+//        $this->profile->questions[0]->answer();
     }
 
 }

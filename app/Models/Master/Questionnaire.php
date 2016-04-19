@@ -27,5 +27,8 @@ class Questionnaire extends Model
      */
     protected $casts = ['options' => 'array'];
 
+    public function answer(){
+        return $this->belongsTo(Answer::class);
+    }
 
 }
