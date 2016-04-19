@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Jobs\Admin\Question;
 
+use DreamsArk\Events\Admin\Question\QuestionWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Question;
 
@@ -35,7 +36,14 @@ class CreateQuestionJob extends Job
      */
     public function handle(Question $question)
     {
-        return $question->create($this->request);
+        $question = $question->create($this->request);
+
+        /**
+         * Announce QuestionWasCreated
+         */
+        event(new QuestionWasCreated($question));
+
+        return $question;
     }
 
 }

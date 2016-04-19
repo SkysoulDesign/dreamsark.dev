@@ -23,11 +23,8 @@ class UserCreateProfileJobTest extends TestCase
     {
 
         $data = [
-            'profile'   => 1,
             'questions' => [
                 1 => 'Question 1 Answer',
-                4 => 'Question 4 Answer',
-                5 => 'Question 5 Answer'
             ]
         ];
 
