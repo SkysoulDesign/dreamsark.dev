@@ -26,41 +26,34 @@ class UpdateUserJob extends Job
     private $fields;
 
     /**
-     * @var string
-     */
-    private $role;
-
-    /**
      * Create a new job instance.
      *
      * @param User $user
      * @param array $fields
-     * @param string $role
      */
-    public function __construct(User $user, array $fields, $role = 'user')
+    public function __construct(User $user, array $fields)
     {
         $this->user = $user;
         $this->fields = $fields;
-        $this->role = $role;
     }
 
     /**
      * Execute the job.
      *
      * @param UserRepositoryInterface $repository
+     * @return boolean
      */
     public function handle(UserRepositoryInterface $repository)
     {
-        $status = $repository->update($this->user->getAttribute('id'), $this->fields);
 
-        if (!$status) {
-            dd('user wasnt updated somehow');
-        }
+        $status = $repository->update($this->user->getAuthIdentifier(), $this->fields);
 
         /**
          * Announce UserWasUpdated
          */
         event(new UserWasUpdated($this->user));
+
+        return $status;
 
     }
 
