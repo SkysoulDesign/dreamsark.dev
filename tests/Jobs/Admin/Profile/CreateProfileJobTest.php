@@ -1,5 +1,6 @@
 <?php
 
+use DreamsArk\Events\Admin\Profile\ProfileWasCreated;
 use DreamsArk\Jobs\Admin\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -28,6 +29,17 @@ class CreateProfileJobTest extends TestCase
 
         $this->assertInstanceOf(Profile::class, $profile);
 
+    }
+
+    /**
+     * Expects Events to be fired
+     *
+     * @test
+     */
+    public function it_expects_events_to_be_triggered()
+    {
+        $this->expectsEvents(ProfileWasCreated::class);
+        $this->it_creates_a_profile_in_the_database();
     }
 
 }

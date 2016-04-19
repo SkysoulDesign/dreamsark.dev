@@ -62,8 +62,6 @@ class CreateUserJobTest extends TestCase
     public function user_should_have_a_role_assigned_to_his_account()
     {
         
-        $test = new CreateUserJob(['label', 'required']);
-
         /** @var \Illuminate\Support\Collection $roles */
         $roles = app(Role::class)->all();
 

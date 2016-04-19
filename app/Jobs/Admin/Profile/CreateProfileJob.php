@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Jobs\Admin\Profile;
 
+use DreamsArk\Events\Admin\Profile\ProfileWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Profile;
 
@@ -46,20 +47,13 @@ class CreateProfileJob extends Job
         $profile = $profile->create($this->request);
         $profile->questions()->sync($this->questions);
 
+        /**
+         * Announce
+         */
+        event(new ProfileWasCreated($profile));
+
         return $profile;
 
-        /**
-         * $questions = '';
-         * if (@$this->request['question'])
-         * $questions = $questionnaire->whereIn('id', $this->request['question'])->get();
-         * //        dd($questions);
-         * $object =
-         * if ($object->id) {
-         * if ($questions)
-         * $object->questions()->attach($questions);
-         * return true;
-         * }
-         * return false;
-         * */
     }
+
 }

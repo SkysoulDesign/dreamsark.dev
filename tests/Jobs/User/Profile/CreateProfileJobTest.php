@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class UserCreateProfileJobTest extends TestCase
 {
 
-    use DatabaseTransactions, UserTrait;
+    use DatabaseTransactions, UserTrait, ProfileTrait;
 
     /**
      * A basic test example.
@@ -49,8 +49,10 @@ class UserCreateProfileJobTest extends TestCase
             ]
         ];
 
+        $profile = $this->createProfile();
+
         /** @var User $user */
-        $user = dispatch(new CreateProfileJob($data, 1, 2));
+        $user = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
 
         $this->assertCount(3, $user->profiles->first()->answer->questions);
 
