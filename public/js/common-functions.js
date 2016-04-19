@@ -5,7 +5,7 @@
  */
 $(document).ready(function () {
     $('.ui.dropdown').dropdown(); // to trigger sub-menu events on click of parent item
-    if ($('.tabular.menu').length > 0)// to trigger tabbed content in page;; initially added for user/projects page
+    if ($('.tabular.menu:not(.customCall)').length > 0)// to trigger tabbed content in page;; initially added for user/projects page
         $('.tabular.menu .item').tab();
     /**
      * prompt user to confirm onDelete event

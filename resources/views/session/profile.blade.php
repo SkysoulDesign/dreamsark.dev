@@ -55,10 +55,9 @@
                         <div class="column">17</div>
                         <div class="column">Director</div>
                         <div class="column">20</div>
+                        <div class="column">&nbsp;</div>
                         <div class="column"><a class="ui primary button"
-                                               href="{{ route('user.application.actor') }}">@lang('profile.create-profile')</a></div>
-                        <div class="column"><a class="ui primary button"
-                                               href="{{ route('user.profiles') }}">@lang('profile.view-all')</a>
+                                               href="{{ route('user.profiles.index') }}">@lang('profile.view-all')</a>
                         </div>
                     </div>
 

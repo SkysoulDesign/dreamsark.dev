@@ -25,4 +25,12 @@ class Questionnaire extends Model
      */
     protected $casts = ['options' => 'array'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class, 'profile_questionnaire');
+    }
+
 }

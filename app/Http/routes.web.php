@@ -102,8 +102,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Profile Controller
      */
-    //$app->resource('profiles', ProfileController::class, ['prefix' => 'user', 'as' => 'user', 'except' => ['destroy']]);
-    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
+    $app->resource('profiles', ProfileController::class, ['prefix' => 'user', 'as' => 'user', 'except' => ['destroy']]);
+//    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
 
     /**
      * Vote Controller
@@ -213,7 +213,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * User Projects Controller
      */
-    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
         $app->get('projects', UserProjectController::class . '@index')->name('projects');
         $app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
         $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');

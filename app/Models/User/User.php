@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\User;
 
+use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Traits\RolesAndPermissionTrait;
@@ -125,5 +126,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return false;
     }
+
+    /**
+     * Project Relationship
+     */
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
+
+    /*public function profileQuestions(){
+        return $this->belongsToMany(Questionnaire::class, 'user_profile_questionnaire', 'id', 'questionnaire_id');
+    }*/
 
 }

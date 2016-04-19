@@ -41,6 +41,7 @@ class ProfileController extends Controller
      */
     public function create(Questionnaire $questionnaire)
     {
+//        dd($questionnaire->users());
         return view('admin.profile.create')->with('questions', $questionnaire->all());
     }
 
@@ -78,8 +79,8 @@ class ProfileController extends Controller
     {
         $response = dispatch(new UpdateProfileJob($profile, $request->all()));
         if (!$response)
-            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
-        return redirect()->route($this->defaultRoute)->withSuccess('Profile updated successfully');
+            return redirect()->back()->withErrors('Unable to save record');
+        return redirect()->back()->withSuccess('Profile updated successfully');
     }
 
     /**

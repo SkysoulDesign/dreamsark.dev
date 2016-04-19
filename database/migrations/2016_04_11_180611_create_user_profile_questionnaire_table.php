@@ -16,10 +16,12 @@ class CreateUserProfileQuestionnaireTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('profile_id')->unsigned()->index();
+            $table->integer('profile_question_id')->unsigned()->index();
+            $table->foreign('profile_question_id')->references('id')->on('profile_questionnaire')->onDelete('cascade');
+            /*$table->integer('profile_id')->unsigned()->index();
             $table->foreign('profile_id')->references('id')->on('profile')->onDelete('cascade');
             $table->integer('questionnaire_id')->unsigned()->index();
-            $table->foreign('questionnaire_id')->references('id')->on('questionnaire')->onDelete('cascade');
+            $table->foreign('questionnaire_id')->references('id')->on('questionnaire')->onDelete('cascade');*/
             $table->longText('content');
             $table->timestamps();
         });

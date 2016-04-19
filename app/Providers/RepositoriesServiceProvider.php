@@ -32,6 +32,8 @@ use DreamsArk\Repositories\Translation\TranslationRepository;
 use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
 use DreamsArk\Repositories\User\Role\RoleRepository;
 use DreamsArk\Repositories\User\Role\RoleRepositoryInterface;
+use DreamsArk\Repositories\User\UserProfileRepository;
+use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepository;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -181,6 +183,14 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(
             FundRepositoryInterface::class,
             FundRepository::class
+        );
+
+        /**
+         * User Profile
+         */
+        $this->app->bind(
+            UserProfileRepositoryInterface::class,
+            UserProfileRepository::class
         );
 
     }
