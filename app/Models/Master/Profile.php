@@ -39,7 +39,7 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'questionnaires');
+        return $this->belongsToMany(Question::class);
     }
 
     /**
