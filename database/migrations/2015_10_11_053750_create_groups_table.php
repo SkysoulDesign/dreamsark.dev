@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateGroupsTable extends Migration
@@ -12,11 +11,11 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql-translation')->create('groups', function (Blueprint $table) {
+        /*Schema::connection('mysql-translation')->create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -26,6 +25,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql-translation')->drop('groups');
+//        Schema::connection('mysql-translation')->drop('groups');
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateReportsTable extends Migration
@@ -12,13 +11,13 @@ class CreateReportsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql-report')->create('reports', function (Blueprint $table) {
+        /*Schema::connection('mysql-report')->create('reports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
             $table->string('feedback');
             $table->string('type');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -28,6 +27,6 @@ class CreateReportsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql-report')->drop('reports');
+//        Schema::connection('mysql-report')->drop('reports');
     }
 }
