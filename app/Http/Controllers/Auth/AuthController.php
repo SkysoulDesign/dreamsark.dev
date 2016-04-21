@@ -8,6 +8,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 
+/**
+ * Class AuthController
+ *
+ * @package DreamsArk\Http\Controllers\Auth
+ */
 class AuthController extends Controller
 {
 

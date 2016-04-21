@@ -17,6 +17,11 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
+/**
+ * Class User
+ *
+ * @package DreamsArk\Models\User
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
 
@@ -99,7 +104,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function profiles()
     {
-        return $this->belongsToMany(Profile::class);
+        return $this->belongsToMany(Profile::class)->withPivot('answer_id');
     }
 
     public function __get($name)
@@ -137,9 +142,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         return false;
     }
-
-    /*public function profileQuestions(){
-        return $this->belongsToMany(Questionnaire::class, 'user_profile_questionnaire', 'id', 'questionnaire_id');
-    }*/
 
 }

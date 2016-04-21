@@ -59,6 +59,39 @@ class UserCreateProfileJobTest extends TestCase
     }
 
     /**
+     * When Creating an user if it has two or more profiles and another user was also assigned with one of that profile
+     * it should get the right answer for the profile
+     * Main problem was relating the tables, because the answer_id was not being considered in the relationship
+     *
+     * @test
+     */
+    public function answer_id_should_match_answer_id_on_profiles_user()
+    {
+
+        $profile = $this->createProfile();
+
+        $data = [
+            'questions' => [
+                1 => 'Question 1 Answer',
+            ]
+        ];
+
+        /** @var User $userOne */
+        /** @var User $userTwo */
+        $userOne = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
+        $userTwo = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
+
+        /**
+         * Two User having the same profile, fetching answer for each profiles should be respective to user
+         */
+        $this->assertNotEquals(
+            $userOne->profiles->first()->answer->id,
+            $userTwo->profiles->first()->answer->id
+        );
+
+    }
+
+    /**
      * Expects Events to be fired
      *
      * @test

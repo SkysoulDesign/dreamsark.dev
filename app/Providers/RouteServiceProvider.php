@@ -50,9 +50,12 @@ class RouteServiceProvider extends ServiceProvider
          * Web Router
          */
         $router->group([], function ($app) use ($route) {
+
             require app_path("Http/routes.$route.php");
+
             if ($route == 'web')
                 require app_path("Http/routes.ajax.php");
+
         });
 
     }

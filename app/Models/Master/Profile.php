@@ -47,20 +47,7 @@ class Profile extends Model
      */
     public function answer()
     {
-        return $this->hasOne(Answer::class);
+        return $this->hasOne(Answer::class)->where('answers.id', $this->pivot->answer_id);
     }
-
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-//     */
-//    public function questionnaire()
-//    {
-//        return $this->questions();
-//    }
-
-//    public function answers()
-//    {
-//        return $this->belongsToMany(Questionnaire::class, User::class, 'user_profile_questionnaire');
-//    }
 
 }

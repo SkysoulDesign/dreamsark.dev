@@ -12,10 +12,16 @@ use DreamsArk\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\Authorize;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+/**
+ * Class Kernel
+ *
+ * @package DreamsArk\Http
+ */
 class Kernel extends HttpKernel
 {
     /**
@@ -56,12 +62,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => Authenticate::class,
+        'auth'       => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
-        'guest' => RedirectIfAuthenticated::class,
+        'guest'      => RedirectIfAuthenticated::class,
+        'can'        => Authorize::class,
+
         /**
          * Custom
          */
-        'role' => RoleMiddleware::class,
+        'role'       => RoleMiddleware::class,
     ];
 }
