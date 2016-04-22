@@ -24,7 +24,7 @@ class SettingEdition extends Request
     public function rules()
     {
         return [
-            'language' => 'in:cn,en'
+            'language' => 'in:' . implode(',', config('app')['supported_languages'])
         ];
     }
 }

@@ -4,6 +4,11 @@ namespace DreamsArk\Http\Requests\Session;
 
 use DreamsArk\Http\Requests\Request;
 
+/**
+ * Class UserEdition
+ *
+ * @package DreamsArk\Http\Requests\Session
+ */
 class UserEdition extends Request
 {
     /**
@@ -24,9 +29,9 @@ class UserEdition extends Request
     public function rules()
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'gender' => 'required|in:male,female'
+            'name'     => 'required',
+            'password' => 'min:6'
         ];
     }
+
 }

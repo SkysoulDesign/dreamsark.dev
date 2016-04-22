@@ -59,16 +59,23 @@ abstract class Repository
     /**
      * Update Settings
      *
-     * @param Int $model_id
+     * @param Model|Int $model
      * @param array $fields
      * @return Model
      */
-    public function update($model_id, array $fields)
+    public function update($model, array $fields)
     {
-        $model = $this->model($model_id);
+
+        /**
+         * If not instance of model, find it and recall this function
+         */
+        if (!$model instanceof Model)
+            return $this->update($this->model($model), $fields);
+
         $model->update($fields);
 
         return $model->fresh();
+
     }
 
     /**

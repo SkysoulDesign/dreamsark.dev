@@ -16,7 +16,6 @@ class UpdateUserJobTest extends TestCase
      * Test if user is created
      *
      * @test
-     * @return \DreamsArk\Models\User\User
      */
     public function user_should_be_able_to_update_his_basic_information()
     {

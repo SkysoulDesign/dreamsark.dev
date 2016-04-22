@@ -1,6 +1,6 @@
 <?php
 
-use DreamsArk\Commands\Setting\UpdateSettingCommand;
+use DreamsArk\Jobs\Setting\UpdateSettingJob;
 use DreamsArk\Models\User\Setting;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -27,7 +27,7 @@ class SetLanguageToEnglish extends Seeder
              */
 //            if ($setting->id == 2) return;
 
-            $this->dispatch(new UpdateSettingCommand($setting->id, $fields));
+            $this->dispatch(new UpdateSettingJob($setting->id, $fields));
         });
 
     }

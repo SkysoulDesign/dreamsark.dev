@@ -9,6 +9,11 @@ use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
 
+/**
+ * Class SessionController
+ *
+ * @package DreamsArk\Http\Controllers\Session
+ */
 class SessionController extends Controller
 {
     /**
@@ -47,9 +52,13 @@ class SessionController extends Controller
      */
     public function store(UserCreation $request)
     {
-        $command = new CreateUserJob($request->all());
-        $this->dispatch($command);
-        return redirect()->route('home');
+        /**
+         * Create User
+         */
+        $user = $this->dispatch(new CreateUserJob($request->all()));
+
+        return redirect()->route('user.account');
+
     }
 
     /**
@@ -60,16 +69,9 @@ class SessionController extends Controller
      */
     public function update(UserEdition $request)
     {
-        $command = new UpdateUserJob($request->user(), $request->all());
-        $this->dispatch($command);
-        return redirect()->back();
-    }
+        $this->dispatch(new UpdateUserJob($request->user(), $request->all()));
 
-    /**
-     *
-     */
-    public function setting(){
-        return view('user.settings');
+        return redirect()->back();
     }
 
 }

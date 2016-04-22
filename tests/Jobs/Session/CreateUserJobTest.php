@@ -2,7 +2,6 @@
 
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Session\CreateUserJob;
-use DreamsArk\Models\User\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
@@ -11,24 +10,36 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class CreateUserJobTest extends TestCase
 {
 
-    use DatabaseTransactions, FakerTrait, UserTrait;
+    use DatabaseTransactions, FakerTrait, UserTrait, RoleTrait;
 
     /**
-     * Check if user has the role $user
+     * Every user should have a default
+     * settings table linked to his account
      *
      * @test
      */
     public function user_should_comes_with_default_settings()
     {
 
-        /** @var \Illuminate\Support\Collection $roles */
-        $roles = app(Role::class)->all();
+        $roles = $this->allRoles();
 
         $roles->each(function ($role) {
-            /** @var \DreamsArk\Models\User\User $user */
             $user = $this->createUser([], $role);
             $this->assertNotEmpty($user->settings);
         });
+
+    }
+
+    /**
+     * After Creation an empty bag should be assigned to the user
+     *
+     * @test
+     */
+    public function user_should_comes_with_a_bag()
+    {
+
+        $user = $this->createUser();
+        $this->assertEquals(0, $user->bag->coins);
 
     }
 
@@ -62,8 +73,7 @@ class CreateUserJobTest extends TestCase
     public function user_should_have_a_role_assigned_to_his_account()
     {
 
-        /** @var \Illuminate\Support\Collection $roles */
-        $roles = app(Role::class)->all();
+        $roles = $this->allRoles();
 
         $roles->each(function ($role) {
             $user = $this->createUser([], $role);

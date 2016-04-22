@@ -44,7 +44,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function login()
+    public function create()
     {
         return view("auth.login");
     }

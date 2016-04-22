@@ -8,7 +8,7 @@
 
                 <div class="title modern">Account Settings</div>
 
-                <form action="{{ route('register.update') }}" method="post">
+                <form action="{{ route('user.settings.update') }}" method="post">
 
                     {{ csrf_field() }}
 

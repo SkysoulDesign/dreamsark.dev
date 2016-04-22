@@ -26,10 +26,7 @@ class CreateUserJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $fields {
-     * @var string $required
-     * @var string $label
-     * }
+     * @param array $fields
      * @param string $role
      */
     public function __construct(array $fields, $role = 'user')

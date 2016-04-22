@@ -1,5 +1,6 @@
 <?php
 use DreamsArk\Jobs\User\Role\CreateRoleJob;
+use DreamsArk\Models\User\Role;
 
 /**
  * Class UserTrait
@@ -27,6 +28,16 @@ trait RoleTrait
 
         return dispatch(new CreateRoleJob($data));
 
+    }
+
+    /**
+     * Return All Roles
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function allRoles()
+    {
+        return Role::all();
     }
 
 }

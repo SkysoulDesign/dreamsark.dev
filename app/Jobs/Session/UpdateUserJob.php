@@ -16,7 +16,7 @@ class UpdateUserJob extends Job
 {
 
     /**
-     * @var User
+     * @var User|int
      */
     private $user;
 
@@ -28,10 +28,10 @@ class UpdateUserJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param User $user
+     * @param User|int $user
      * @param array $fields
      */
-    public function __construct(User $user, array $fields)
+    public function __construct($user, array $fields)
     {
         $this->user = $user;
         $this->fields = $fields;
@@ -46,12 +46,15 @@ class UpdateUserJob extends Job
     public function handle(UserRepositoryInterface $repository)
     {
 
+        /**
+         * Update User
+         */
         $user = $repository->update($this->user->getAuthIdentifier(), $this->fields);
 
         /**
          * Announce UserWasUpdated
          */
-        event(new UserWasUpdated($this->user));
+        event(new UserWasUpdated($user));
 
         return $user;
 

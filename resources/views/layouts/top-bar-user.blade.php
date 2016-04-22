@@ -21,7 +21,7 @@
             <img src="{{ asset('dreamsark-assets/avatar.png') }}" alt="Avatar">
             <div class="menu">
                 <div class="header"></div>
-                <a class="item" href="{{ route('profile') }}">@lang('navbar.profile'): {{ auth()->user()->username }}</a>
+                <a class="item" href="{{ route('user.account') }}">@lang('navbar.profile'): {{ auth()->user()->username }}</a>
                 <a class="item" href="{{ route('user.settings') }}">@lang('profile.settings')</a>
                 <a class="item" href="{{ route('logout') }}">@lang('navbar.logout')</a>
             </div>

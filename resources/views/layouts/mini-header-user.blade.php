@@ -5,7 +5,7 @@
         <div class="row">
 
             <div class="medium-2 column avatar">
-                <a href="{{ auth()->check()?route('profile'):'javascript:;' }}">
+                <a href="{{ auth()->check()?route('user.account'):'javascript:;' }}">
                     <img src="{{ asset('dreamsark-assets/avatar-huge.png') }}">
                 </a>
             </div>

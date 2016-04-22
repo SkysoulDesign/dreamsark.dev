@@ -29,4 +29,5 @@ class UserCreation extends Request
             'password' => 'required|min:6',
         ];
     }
+    
 }

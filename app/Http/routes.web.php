@@ -38,13 +38,13 @@ use DreamsArk\Http\Controllers\Project\Synapse\SynapseController;
 use DreamsArk\Http\Controllers\Project\VoteController;
 use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
-use DreamsArk\Http\Controllers\Setting\SettingController;
 use DreamsArk\Http\Controllers\Translation\TranslationController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\Project\ScriptController as UserScriptController;
 use DreamsArk\Http\Controllers\User\Project\SynapseController as UserSynapseController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
+use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
 //use DreamsArk\Http\Controllers\Project\ProjectPledgeController;
 
@@ -60,12 +60,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
 
-    /**
-     * Auth Controller
-     */
-    $app->get('login', AuthController::class . '@login')->name('login');
-    $app->post('login/store', AuthController::class . '@store')->name('login.store');
-    $app->get('logout', AuthController::class . '@logout')->name('logout');
 
     /**
      * Translation Controller
@@ -81,23 +75,36 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->post('update/{translation}', TranslationController::class . '@update')->name('update');
     });
 
-
     $app->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');
 
     /**
-     * Session Controller
+     * Registration
      */
-    $app->get('dashboard', SessionController::class . '@index')->name('profile');
     $app->get('register', SessionController::class . '@create')->name('register');
-    $app->post('register/update', SessionController::class . '@update')->name('register.update');
     $app->post('register', SessionController::class . '@store')->name('register.store');
 
-
     /**
-     * Settings Controller
+     * Login
      */
-    $app->get('user/settings', SessionController::class . '@setting')->name('user.settings');
-    $app->post('settings/update/{setting}', SettingController::class . '@update')->name('settings.update');
+    $app->get('login', AuthController::class . '@create')->name('login');
+    $app->post('login/store', AuthController::class . '@store')->name('login.store');
+    $app->get('logout', AuthController::class . '@logout')->name('logout');
+
+    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+
+        /**
+         * Session Controller
+         */
+        $app->get('account', SessionController::class . '@index')->name('account');
+        $app->patch('account/update', SessionController::class . '@update')->name('account.update');
+
+        /**
+         * Settings Controller
+         */
+        $app->get('settings', SettingController::class . '@index')->name('settings');
+        $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
+
+    });
 
     /**
      * Profile Controller
