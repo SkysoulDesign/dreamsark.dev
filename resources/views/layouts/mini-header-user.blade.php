@@ -17,11 +17,11 @@
                         {{ auth()->user()->bag->coins }}
                     </div>
 
-                    <ul>
-                        <li><a href="{{ route('projects') }}">@lang('navbar.discover-project')</a></li>
-                        <li><a href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a></li>
-                        <li><a href="{{ route('user.settings') }}">@lang('profile.settings')</a></li>
-                    </ul>
+                    <div class="ui transparent menu">
+                        <a class="item" href="{{ route('user.profile.index') }}">@lang('navbar.profiles')</a>
+                        <a class="item" href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a>
+                        <a class="item" href="{{ route('user.settings') }}">@lang('profile.settings')</a>
+                    </div>
                 @endif
             </div>
 

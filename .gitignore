@@ -13,6 +13,7 @@
 .gitignore
 _ide_helper.php
 composer.lock
+/public/user-profiles
 
 
 /resources/assets/typescript/**/*.js

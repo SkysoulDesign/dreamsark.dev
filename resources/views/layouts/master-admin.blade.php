@@ -22,6 +22,8 @@
 
     @include('errors.errors')
 
+    <input type="hidden" name="app_token" value="{{ csrf_token() }}">
+
     @yield('content')
     @yield('footer')
 </div>

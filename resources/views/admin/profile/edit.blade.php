@@ -21,7 +21,7 @@
 
             @include('admin.profile.form-question')
 
-            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.save')</button>
 
             <a href="{{ route('admin.profile.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

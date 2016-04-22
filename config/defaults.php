@@ -27,5 +27,10 @@ return [
         'script'  => [
             'minimum_of_submissions' => 1
         ]
+    ],
+    'profile' => [
+        'image' => 'user-profiles/images/',
+        'video' => 'user-profiles/videos/',
+        'file' => 'user-profiles/files/',
     ]
 ];

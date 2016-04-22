@@ -69,4 +69,24 @@ trait RolesAndPermissionTrait
 
     }
 
+    /**
+     * Method to check User have profile with $name (Ex: actor)
+     * @param $name
+     * @return bool
+     */
+    public function hasProfile($name){
+        /**
+         * if function has more than one argument then loop
+         */
+        if (func_num_args() > 1) {
+            foreach (func_get_args() as $profile)
+                if ($this->hasProfile($profile)) return true;
+            return false;
+        }
+
+        foreach ($this->profiles as $profile)
+            if ($profile->name == strtolower($name)) return true;
+        return false;
+    }
+
 }

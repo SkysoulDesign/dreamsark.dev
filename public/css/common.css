@@ -1,6 +1,12 @@
 .ui.inverted.transparent.menu {
     background: rgba(27, 28, 29, 0.1);
 }
+.ui.transparent.menu, .ui.transparent.menu .item {
+    background: none transparent;
+    border: 0px;
+    box-shadow: none;
+}
+
 .ui.table thead th{
     background: none transparent;
     border-bottom: none;

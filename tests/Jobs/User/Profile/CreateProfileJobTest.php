@@ -24,7 +24,19 @@ class UserCreateProfileJobTest extends TestCase
 
         $data = [
             'questions' => [
-                1 => 'Question 1 Answer',
+                'required' => [
+                    'text' => [
+                        1 => 'Question 1 Answer',
+                    ],
+                    'select' => [
+                        9 => 'Question 9 Answer',
+                    ],
+                ],
+                'general' => [
+                    'file' => [
+                        2 => 'image/test.jpg',
+                    ],
+                ]
             ]
         ];
 

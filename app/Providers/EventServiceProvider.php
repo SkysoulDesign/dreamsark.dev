@@ -25,6 +25,8 @@ use DreamsArk\Events\Project\Vote\VotingHasFinished;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Events\Session\UserWasUpdated;
 use DreamsArk\Events\Translation\TranslationsWasCreated;
+use DreamsArk\Events\User\Profile\UserProfileWasCreated;
+use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateVote;
@@ -139,6 +141,10 @@ class EventServiceProvider extends ServiceProvider
         TranslationsWasCreated::class        => [],
         UserCoinsWasDeducted::class          => [],
         ExpenditurePositionWasCreated::class => [],
+
+        /** User Profiles related */
+        UserProfileWasCreated::class => [],
+        UserProfileWasUpdated::class => [],
 
 
     ];

@@ -90,7 +90,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
 
-    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+    $app->group( ['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
 
         /**
          * Session Controller
@@ -109,7 +109,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Profile Controller
      */
-    $app->resource('profiles', ProfileController::class, ['prefix' => 'user', 'as' => 'user', 'except' => ['destroy']]);
+    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
+//        $app->get('profile/{profile}/edit', ProfileController::class . '@edit')->name('profile.edit');
 //    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
 
     /**
@@ -258,7 +260,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Admin Section Routes
      */
-    $app->group(['middleware' => ['auth', 'role:admin|committee'], 'prefix' => 'admin'], function () use ($app) {
+    $app->group(['middleware' => ['auth'], 'prefix' => 'admin'], function () use ($app) {
         $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
 //    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
 

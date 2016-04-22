@@ -57,7 +57,7 @@
                         <div class="column">20</div>
                         <div class="column">&nbsp;</div>
                         <div class="column"><a class="ui primary button"
-                                               href="{{ route('user.profiles.index') }}">@lang('profile.view-all')</a>
+                                               href="{{ route('user.profile.index') }}">@lang('profile.view-all')</a>
                         </div>
                     </div>
 

@@ -6,10 +6,11 @@
 
         @foreach($fields as $field)
 
-            <div class="field @if($errors->has($field['name'])) error @endif">
-                <input @if(isset($id)) id="{{ $id }}" @endif type="{{ $field['type'] or 'text' }}" name="{{ $field['name'] }}"
+            <div class="field @if(@$errors && $errors->has($field['name'])) error @endif{{ @$field['required']?' required':'' }}">
+                <input {{ @$attributes }} {{ @$field['attributes'] }} @if(isset($id)) id="{{ $id }}"
+                       @endif type="{{ $field['type'] or 'text' }}" name="{{ $field['name'] }}"
                        placeholder="{{ $field['placeholder'] or  trans('forms.'.str_replace(' ','-',str_replace('_', ' ', $field['name']))) }}"
-                       value="{{ (auth()->check() ? auth()->user()->{$field['name']} : old($field['name'])) }}">
+                       value="{{ @$field['value'] }}">
             </div>
 
         @endforeach

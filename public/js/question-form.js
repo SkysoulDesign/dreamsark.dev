@@ -26,11 +26,11 @@ $(document).ready(function () {
  */
 function toggleOptionBlock() {
     var typeVal = $('#question_type').val();
-    var skipOptionsArr = ['text', 'file', 'textarea', 'date'];
+    var skipOptionsArr = ['select', 'radio', 'checkbox'];
     if (skipOptionsArr.indexOf(typeVal) !== -1) {
-        $('.options_block').hide();
-    } else
         $('.options_block').show();
+    } else
+        $('.options_block').hide();
 }
 /**
  *

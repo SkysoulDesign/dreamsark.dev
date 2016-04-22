@@ -9,7 +9,7 @@ use DreamsArk\Jobs\Admin\Profile\CreateProfileJob;
 use DreamsArk\Jobs\Admin\Profile\UpdateProfileJob;
 use DreamsArk\Jobs\DeleteItemByObjectJob;
 use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Master\Questionnaire;
+use DreamsArk\Models\Master\Question;
 use Illuminate\Http\Request;
 
 /**
@@ -35,14 +35,14 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param Questionnaire $questionnaire
+     * @param Question $question
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @internal param Collection $selectedQuestions
      */
-    public function create(Questionnaire $questionnaire)
+    public function create(Question $question)
     {
 //        dd($questionnaire->users());
-        return view('admin.profile.create')->with('questions', $questionnaire->all());
+        return view('admin.profile.create')->with('questions', $question->all());
     }
 
     /**
@@ -51,7 +51,7 @@ class ProfileController extends Controller
      */
     public function store(ProfileRequest $request)
     {
-        $response = dispatch(new CreateProfileJob($request->all()));
+        $response = dispatch(new CreateProfileJob($request->except('question'), $request->get('question')));
         if (!$response)
             return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
         return redirect()->route($this->defaultRoute)->withSuccess('Profile created successfully');
@@ -59,15 +59,15 @@ class ProfileController extends Controller
 
     /**
      * @param Profile $profile
-     * @param Questionnaire $questionnaire
+     * @param Question $question
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Profile $profile, Questionnaire $questionnaire)
+    public function edit(Profile $profile, Question $question)
     {
-        $profileQuestions = $profile->questions()->get(['questionnaire_id']);
-        foreach ($profileQuestions->toArray() as $question)
-            $selectedQuestions[] = $question['questionnaire_id'];
-        return view('admin.profile.edit', compact('profile', 'selectedQuestions'))->with('questions', $questionnaire->all());
+        $profileQuestions = $profile->questions()->get(['question_id']);
+        foreach ($profileQuestions->toArray() as $questions)
+            $selectedQuestions[] = $questions['question_id'];
+        return view('admin.profile.edit', compact('profile', 'selectedQuestions'))->with('questions', $question->all());
     }
 
     /**

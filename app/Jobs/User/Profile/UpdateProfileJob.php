@@ -2,46 +2,53 @@
 
 namespace DreamsArk\Jobs\User\Profile;
 
-use DreamsArk\Events\User\Profile\UserProfileWasCreated;
+use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\User\Traits\ProfileTrait;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
+use Symfony\Component\HttpFoundation\FileBag;
 
 /**
- * Class CreateProfileJob
+ * Class UpdateProfileJob
  *
  * @package DreamsArk\Jobs\User\Profile
  */
-class CreateProfileJob extends Job
+class UpdateProfileJob extends Job
 {
     use ProfileTrait;
     /**
      * @var array
      */
+    protected $dataArr = [];
+    /**
+     * @var array
+     */
     private $request;
-
     /**
      * @var User
      */
     private $user;
-
     /**
-     * @var Profile
+     * @var
      */
     private $profile;
     /**
      * @var
      */
     private $answer;
+    /**
+     * @var FileBag
+     */
+    private $file;
 
     /**
      * Create a new job instance.
      *
      * @param array $request
-     * @param User|int $user
-     * @param Profile|int $profile
+     * @param User $user
+     * @param $profile
      */
     public function __construct(array $request, User $user, $profile)
     {
@@ -53,40 +60,27 @@ class CreateProfileJob extends Job
     /**
      * Execute the job.
      *
-     * @param \DreamsArk\Models\Master\Answer $answer
+     * @param Answer $answer
      * @param User $user
      * @param Profile $profile
      * @return User
      */
     public function handle(Answer $answer, User $user, Profile $profile)
     {
-
         $this->createObjectIfNotExists($user, $profile);
-
-        /** @var Answer $answer */
-        $this->answer = $answer->create(['profile_id' => $this->profile->id]);
-
-        /*foreach ($this->request['questions'] as $id => $reply) {
-
-            $answer->questions()->attach($id, [
-                'content' => $reply
-            ]);
-
-        }*/
-        $this->doInsertQuestions('required');
-        $this->doInsertQuestions('general');
-
-        $this->user->profiles()->attach($this->profile->id, [
-            'answer_id' => $this->answer->id
-        ]);
+//        dd($this->profile);
+        $answer = $answer->find($this->profile->pivot->answer_id);
+//        dd($answer);
+        $this->buildDataArrForUpdate('required');
+        $this->buildDataArrForUpdate('general');
+        $answer->questions()->sync($this->dataArr);
 
         /**
-         * Announce UserProfileWasCreated
+         * Announce UserProfileWasUpdated
          */
-        event(new UserProfileWasCreated($this->user, $this->profile));
+        event(new UserProfileWasUpdated($this->user, $this->profile));
 
         return $this->user;
-
     }
 
 }

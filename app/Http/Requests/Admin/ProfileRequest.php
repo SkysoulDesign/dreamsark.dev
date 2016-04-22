@@ -29,7 +29,7 @@ class ProfileRequest extends Request
     {
         $update = ($this->profile && $this->profile->name === $this->get('name')) ? ',id,' . $this->profile->id : '';
         return [
-            'name' => 'required|unique:profile' . $update,
+            'name' => 'required|unique:profiles' . $update,
             'display_name' => 'required'
         ];
     }

@@ -22,6 +22,8 @@
 @include('layouts.mini-header-user')
 
 <div class="ui container">
+    @include('errors.errors')
+    <input type="hidden" name="app_token" value="{{ csrf_token() }}">
     <div class="ui one column stackable grid">
         @yield('content')
     </div>

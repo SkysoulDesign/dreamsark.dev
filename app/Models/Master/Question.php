@@ -24,6 +24,13 @@ class Question extends Model
     protected $fillable = ['question', 'category', 'description', 'type', 'options', 'order', 'is_primary'];
 
     /**
+     * @var $casts array
+     */
+    protected $casts = [
+        'options' => 'array'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function answer()

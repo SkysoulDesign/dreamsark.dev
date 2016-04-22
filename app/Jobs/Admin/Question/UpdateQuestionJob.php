@@ -3,6 +3,7 @@
 namespace DreamsArk\Jobs\Admin\Question;
 
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Master\Question;
 use DreamsArk\Models\Master\Questionnaire;
 
 /**
@@ -14,7 +15,7 @@ class UpdateQuestionJob extends Job
     /**
      * @var Questionnaire
      */
-    private $questionnaire;
+    private $question;
     /**
      * @var array
      */
@@ -23,13 +24,13 @@ class UpdateQuestionJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param Questionnaire $questionnaire
+     * @param Question $question
      * @param array $request
      */
-    public function __construct(Questionnaire $questionnaire, array $request)
+    public function __construct(Question $question, array $request)
     {
         //
-        $this->questionnaire = $questionnaire;
+        $this->question = $question;
         $this->request = $request;
     }
 
@@ -41,7 +42,7 @@ class UpdateQuestionJob extends Job
     public function handle()
     {
 //        dd($this->request);
-        $this->questionnaire->update($this->request);
+        $this->question->update($this->request);
         return true;
     }
 }

@@ -4,6 +4,10 @@ namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Http\Requests\User\Profile\ProfileRequest;
+use DreamsArk\Jobs\User\Profile\CreateProfileJob;
+use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
+use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
@@ -31,129 +35,89 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param User $user
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index(User $user)
-    {
-        return view('user.profile.index')->with('profiles', $user->profiles()->get());
-    }
-
-    /**
-     *
-     */
-    public function create()
-    {
-        $questions = [];
-
-        return view('user.profile.create', compact('questions'));
-    }
-
-    /**
      * @param Request $request
      * @param UserProfileRepositoryInterface $profile
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @internal param $step
+     * @internal param User $user
      */
-    public function getProfileForm(Request $request, UserProfileRepositoryInterface $profile)
+    public function index(Request $request, UserProfileRepositoryInterface $profile)
     {
-        $stepArr = array_unique(explode('/', $request->get('step', '')));
-        if (empty($stepArr))
-            return 'invalid data';
-
-        return $this->$stepArr[0]($profile, $request);
-    }
-
-    /**
-     * @param UserProfileRepositoryInterface $profile
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function step1(UserProfileRepositoryInterface $profile, Request $request)
-    {
-
-        $request->initialize([
-            'profile'   => 1,
-            'questions' => [
-                200 => 'question one content',
-                201 => 'question two content'
-            ]
-        ]);
-
+        $profiles = $profile->all();
         /** @var User $user */
-        $user = User::first();
-        $profile = Profile::first();
+        $user = $request->user();
 
-//        $user->profiles()->attach($request->get('profile'));
+        return view('user.profile.index', compact('profiles'))->with('user_profiles', $user->profiles->pluck('id')->toArray());
+    }
 
-        $collection = collect();
-
-       dd( $user->profiles[0]->answers);
-
-//        foreach ($request->get('questions') as $id => $question) {
-//
-////            $user->profiles()->create
-//
-//        }
-//        dd($request->get('questions'));
-
-//        $user->profiles()->saveMany(
-//            []
-//        );
-
-
-        dd();
-
-
-        $res = $profile->all();
-        foreach ($res as $profile) {
-            echo $profile->display_name;
-
-            dd($profile->questionnaire);
-
-        }
-
-        return view('partials.profile.step-1');
+    public function getCategories(Profile $profile)
+    {
+        return $profile->questions->keyBy('category')->pluck('category');
     }
 
     /**
+     * @param Profile $profile
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function step2()
+    public function create(Profile $profile, Request $request)
     {
-        return view('partials.profile.step-2');
+        if ($request->user()->hasProfile($profile->name))
+            return redirect()->route($this->defaultRoute)->withErrors('Profile already exists');
+        $categories = $this->getCategories($profile);
+
+        return view('user.profile.create', compact('profile', 'categories'));
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function step3()
-    {
-        return view('partials.profile.step-3');
-    }
-
-    /**
+     * @param ProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store()
+    public function store(ProfileRequest $request)
     {
+        $user = dispatch(new CreateProfileJob($request->except('profile_id'), $request->user(), request('profile_id')));
+
         return redirect()->route($this->defaultRoute);
     }
 
     /**
-     * @param $id
+     * @param Profile $profile
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function edit($id)
+    public function edit(Profile $profile, Request $request)
     {
-        return view('user.profile.edit');
+        $user = $request->user();
+
+        $categories = $this->getCategories($profile);
+
+        /** @var Profile|User Profile $profile */
+        $profile = $user->profiles->find($profile->id);
+        /** @var Answer $questionsWithAnswer */
+        $questionsWithAnswer = $profile->answers;
+
+        /** @var array $answers */
+        foreach ($questionsWithAnswer as $question) {
+            /** pivot contains answer */
+            $answers[$question->id] = $question->pivot->toArray();
+        }
+
+        return view('user.profile.edit', compact('profile', 'categories', 'answers'));
     }
 
     /**
-     * @param $id
+     * @param Profile $profile
+     * @param ProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
+     * @internal param Profile $profile
      */
-    public function update($id)
+    public function update(Profile $profile, ProfileRequest $request)
     {
+        $user = $request->user();
+        /** @var Profile|User Profile $profile */
+        $profile = $user->profiles->find($profile->id);
+        // $request->files to collect all input[type="file"] as FilesBag
+        $user = dispatch(new UpdateProfileJob($request->except('profile_id'), $request->user(), $profile));
+
         return redirect()->route($this->defaultRoute);
     }
 

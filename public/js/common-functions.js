@@ -6,20 +6,25 @@
 $(document).ready(function () {
     $('.ui.dropdown').dropdown(); // to trigger sub-menu events on click of parent item
     if ($('.tabular.menu:not(.customCall)').length > 0)// to trigger tabbed content in page;; initially added for user/projects page
-        $('.tabular.menu .item').tab();
+        $('.tabular.menu:not(.customCall) .item').tab();
     /**
      * prompt user to confirm onDelete event
      */
     $('.button.delete-item').on('click', function () {
         if (confirm("Are you sure to delete this item?")) {
-            var deleteForm = $('<form />').html('<input type="hidden" name="_method" value="delete" />');
+            var deleteForm = $('<form />').html('<input type="hidden" name="_method" value="delete" />' +
+                '<input type="hidden" name="_token" value="' + $('input[name="app_token"]').val() + '" />'
+            );
             deleteForm.attr('action', $(this).attr('href'));
             deleteForm.attr('method', 'POST');
-            deleteForm.append('body').submit();
+            deleteForm.appendTo('body').submit();
             return false;
         } else
             return false;
     });
+
+    if ($('.ui.progress').length > 0)
+        $('.ui.progress').progress();
 
     if ($('#idea-submit-modal').length > 0)
         $('#idea-submit-modal')
@@ -101,4 +106,9 @@ function validateDataIsNull(input) {
     if (input != undefined && input != '')
         return false;
     return true;
+}
+function validateDataAndReturn(input) {
+    if (validateDataIsNull(input) == true)
+        return '';
+    return input;
 }

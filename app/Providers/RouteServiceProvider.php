@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Providers;
 
+use DreamsArk\Models\Master\Profile;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -29,7 +30,16 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
+
         parent::boot($router);
+
+
+        $router->model('profile', Profile::class, function ($name) {
+            if (is_string($name))
+                return app(Profile::class)->whereName($name)->first();
+        });
+
+
     }
 
     /**

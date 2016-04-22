@@ -8,8 +8,8 @@
         <thead>
         <tr>
             <th>@lang('forms.question')</th>
-            <th>@lang('forms.type')</th>
             <th>@lang('forms.category')</th>
+            <th>@lang('forms.type')</th>
             <th>@lang('forms.action')</th>
         </tr>
         </thead>
@@ -17,8 +17,10 @@
         @foreach($questions as $question)
             <tr>
                 <td>{{ $question->question }}</td>
-                <td>{{ $masterData['category'][$question->category] }}</td>
-                <td>{{ $masterData['type'][$question->type] }}</td>
+                <td>@lang('forms.'.$question->category)</td>
+                <td>@lang('forms.'.$question->type)</td>
+                {{--<td>{{ $masterData['category'][$question->category] }}</td>--}}
+                {{--<td>{{ $masterData['type'][$question->type] }}</td>--}}
 
                 <td class="">
                     <div class="ui small basic icon buttons">

@@ -36,4 +36,10 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
+    public function seeAdminSection(User $user)
+    {
+        return $user->hasRoles(['admin', 'committee']);
+    }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Http;
 
+use DreamsArk\Http\Middleware\AdminUserMiddleware;
 use DreamsArk\Http\Middleware\AjaxMiddleware;
 use DreamsArk\Http\Middleware\Authenticate;
 use DreamsArk\Http\Middleware\EncryptCookies;

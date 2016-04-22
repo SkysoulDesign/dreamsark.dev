@@ -31,7 +31,7 @@
 
             @include('partials.field', ['name' => 'order', 'value' => old('order', $question->order)])
 
-            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.save')</button>
 
             <a href="{{ route('admin.question.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

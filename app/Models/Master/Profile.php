@@ -4,6 +4,7 @@ namespace DreamsArk\Models\Master;
 
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations;
 
 /**
  * Class Profile
@@ -39,15 +40,23 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class)->orderBy('category')->orderBy('order');
     }
 
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return mixed
      */
     public function answer()
     {
         return $this->hasOne(Answer::class)->where('answers.id', $this->pivot->answer_id);
+    }
+    /**
+     * @return
+     */
+    public function answers()
+    {
+        return $this->answer->questions();
     }
 
 }
