@@ -40,10 +40,10 @@ class CreateProfileJob extends Job
      * Create a new job instance.
      *
      * @param array $request
-     * @param User|int $user
+     * @param int $user
      * @param Profile|int $profile
      */
-    public function __construct(array $request, User $user, $profile)
+    public function __construct(array $request, $user, $profile)
     {
         $this->request = $request;
         $this->user = $user;

@@ -50,7 +50,7 @@ class UpdateProfileJob extends Job
      * @param User $user
      * @param $profile
      */
-    public function __construct(array $request, User $user, $profile)
+    public function __construct(array $request, $user, $profile)
     {
         $this->request = $request;
         $this->user = $user;
