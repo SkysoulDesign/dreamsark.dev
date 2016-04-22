@@ -19,6 +19,16 @@ class AuthController extends Controller
     use ThrottlesLogins;
 
     /**
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * @var AuthManager
+     */
+    protected $auth;
+
+    /**
      * @param Application $app
      * @param AuthManager $auth
      */
@@ -56,16 +66,19 @@ class AuthController extends Controller
         $request->merge([$field => $request->get('login')]);
 
         $this->validate($request, [
-            'login' => 'required',
+            'login'    => 'required',
             'password' => 'required'
         ]);
 
         if ($this->auth->attempt($request->only($field, 'password'))) {
-            if ($this->auth->user()->is('user'))
-                return redirect()->intended(route('home'));
 
-            return redirect()->route('admin.index');
+            if ($this->auth->user()->is('admin'))
+                return redirect()->intended(route('admin.index'));
+
+            return redirect()->intended(route('home'));
+
         }
+
 
         return redirect()->route('login')->withInput()->withErrors('These credentials do not match our records.');
 
@@ -73,11 +86,13 @@ class AuthController extends Controller
 
     /**
      * Log the User out of the system
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function logout()
     {
         $this->auth->logout();
+
         return redirect()->route('login');
     }
 

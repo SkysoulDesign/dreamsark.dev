@@ -1,6 +1,6 @@
 <?php
 
-use DreamsArk\Commands\User\Role\CreateRoleCommand;
+use DreamsArk\Jobs\User\Role\CreateRoleJob;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -16,8 +16,8 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->dispatch(new CreateRoleCommand('admin', 'Administrator'));
-        $this->dispatch(new CreateRoleCommand('user', 'User'));
-        $this->dispatch(new CreateRoleCommand('committee', 'DreamsArk Committee'));
+        $this->dispatch(new CreateRoleJob('admin', 'Administrator'));
+        $this->dispatch(new CreateRoleJob('user', 'User'));
+        $this->dispatch(new CreateRoleJob('committee', 'DreamsArk Committee'));
     }
 }

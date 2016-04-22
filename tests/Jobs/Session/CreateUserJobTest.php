@@ -26,7 +26,7 @@ class CreateUserJobTest extends TestCase
 
         $roles->each(function ($role) {
             /** @var \DreamsArk\Models\User\User $user */
-            $user = $this->createUser($role);
+            $user = $this->createUser([], $role);
             $this->assertNotEmpty($user->settings);
         });
 
@@ -61,12 +61,12 @@ class CreateUserJobTest extends TestCase
      */
     public function user_should_have_a_role_assigned_to_his_account()
     {
-        
+
         /** @var \Illuminate\Support\Collection $roles */
         $roles = app(Role::class)->all();
 
         $roles->each(function ($role) {
-            $user = $this->createUser($role);
+            $user = $this->createUser([], $role);
             $this->assertTrue($user->hasRole($role->name));
         });
 
