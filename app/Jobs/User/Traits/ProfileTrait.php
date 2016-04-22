@@ -43,18 +43,19 @@ trait ProfileTrait
      */
     protected function buildDataArrForUpdate($index)
     {
-        foreach ($this->request['questions'][$index] as $type => $data) {
-            foreach ($data as $id => $reply) {
-                $doUpdate = true;
-                if (in_array($type, ['file', 'image', 'video'])) {
-                    $reply = $this->doFileUpload($reply, $type);
-                    if ($reply == '')
-                        $doUpdate = false;
+        if (isset($this->request['questions'][$index]))
+            foreach ($this->request['questions'][$index] as $type => $data) {
+                foreach ($data as $id => $reply) {
+                    $doUpdate = true;
+                    if (in_array($type, ['file', 'image', 'video'])) {
+                        $reply = $this->doFileUpload($reply, $type);
+                        if ($reply == '')
+                            $doUpdate = false;
+                    }
+                    if ($doUpdate)
+                        $this->dataArr[] = ['question_id' => $id, 'content' => $reply];
                 }
-                if ($doUpdate)
-                    $this->dataArr[] = ['question_id' => $id, 'content' => $reply];
             }
-        }
     }
 
     /**
@@ -62,16 +63,17 @@ trait ProfileTrait
      */
     protected function doInsertQuestions($index)
     {
-        foreach ($this->request['questions'][$index] as $type => $data) {
-            foreach ($data as $id => $reply) {
-                if (in_array($type, ['file', 'image', 'video'])) {
-                    $reply = $this->doFileUpload($reply, $type);
+        if (isset($this->request['questions'][$index]))
+            foreach ($this->request['questions'][$index] as $type => $data) {
+                foreach ($data as $id => $reply) {
+                    if (in_array($type, ['file', 'image', 'video'])) {
+                        $reply = $this->doFileUpload($reply, $type);
+                    }
+                    $this->answer->questions()->attach($id, [
+                        'content' => $reply
+                    ]);
                 }
-                $this->answer->questions()->attach($id, [
-                    'content' => $reply
-                ]);
             }
-        }
     }
 
     protected function doFileUpload(UploadedFile $file = null, $type)

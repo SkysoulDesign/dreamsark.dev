@@ -29,12 +29,12 @@ class UserCreateProfileJobTest extends TestCase
                         1 => 'Question 1 Answer',
                     ],
                     'select' => [
-                        9 => 'Question 9 Answer',
+                        3 => 'Question 9 Answer',
                     ],
                 ],
                 'general' => [
-                    'file' => [
-                        2 => 'image/test.jpg',
+                    'date' => [
+                        3 => '2014-06-05',
                     ],
                 ]
             ]
@@ -55,9 +55,17 @@ class UserCreateProfileJobTest extends TestCase
 
         $data = [
             'questions' => [
-                1 => 'Question 1 Answer',
-                4 => 'Question 4 Answer',
-                5 => 'Question 5 Answer'
+                'required' => [
+                    'text' => [
+                        1 => 'Question 1 Answer',
+                    ],
+                    'select' => [
+                        3 => 'Question 9 Answer',
+                    ],
+                    'textarea' => [
+                        5 => 'Question 9 Answer',
+                    ],
+                ],
             ]
         ];
 
@@ -84,7 +92,17 @@ class UserCreateProfileJobTest extends TestCase
 
         $data = [
             'questions' => [
-                1 => 'Question 1 Answer',
+                'required' => [
+                    'text' => [
+                        1 => 'Question 1 Answer',
+                    ],
+                    'select' => [
+                        3 => 'Question 9 Answer',
+                    ],
+                    'textarea' => [
+                        5 => 'Question 9 Answer',
+                    ],
+                ],
             ]
         ];
 
