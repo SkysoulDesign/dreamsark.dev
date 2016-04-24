@@ -2,11 +2,13 @@
 
 namespace DreamsArk\Jobs\Admin\Profile;
 
+use DreamsArk\Events\Admin\Profile\ProfileWasUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Profile;
 
 /**
  * Class UpdateProfileJob
+ *
  * @package DreamsArk\Jobs\Admin\Profile
  */
 class UpdateProfileJob extends Job
@@ -15,36 +17,43 @@ class UpdateProfileJob extends Job
      * @var Profile
      */
     private $profile;
+
     /**
      * @var array
      */
-    private $request;
-
+    private $fields;
 
     /**
      * Create a new job instance.
+     *
      * @param Profile $profile
-     * @param array $request
+     * @param array $fields
      */
-    public function __construct(Profile $profile, array $request)
+    public function __construct(Profile $profile, array $fields)
     {
-
         $this->profile = $profile;
-        $this->request = $request;
+        $this->fields = $fields;
     }
 
     /**
      * Execute the job.
      *
-     * @return void
+     * @todo Implement Repository
+     * @return Profile
      */
     public function handle()
     {
-        $questions = $this->request['question'];
-//        dd($questions);
-        $this->profile->update($this->request);
-        if (!empty($questions))
-            $this->profile->questions()->sync($questions);
-        return true;
+
+        $this->profile->questions()->sync(array_get($this->fields, 'questions', []));
+        $this->profile->update($this->fields);
+
+        /**
+         * Announce Profile was Updated
+         */
+        event(new ProfileWasUpdated($this->profile));
+
+        return $this->profile;
+
     }
+
 }

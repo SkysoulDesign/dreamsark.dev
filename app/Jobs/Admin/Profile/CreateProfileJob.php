@@ -16,7 +16,7 @@ class CreateProfileJob extends Job
     /**
      * @var array
      */
-    private $request;
+    private $fields;
 
     /**
      * @var array
@@ -26,12 +26,12 @@ class CreateProfileJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $request
+     * @param array $fields
      * @param array $questions
      */
-    public function __construct(array $request, array $questions = [])
+    public function __construct(array $fields, array $questions)
     {
-        $this->request = $request;
+        $this->fields = $fields;
         $this->questions = $questions;
     }
 
@@ -39,16 +39,27 @@ class CreateProfileJob extends Job
      * Execute the job.
      *
      * @param Profile $profile
-     * @return \DreamsArk\Models\Master\Profile
+     * @return Profile
      */
     public function handle(Profile $profile)
     {
 
-        $profile = $profile->create($this->request);
+        /**
+         * Create Profile
+         *
+         * @todo Implement Repositories
+         */
+        $profile = $profile->create($this->fields);
+
+        /**
+         * Sync Questions
+         *
+         * @todo Implement Repositories
+         */
         $profile->questions()->sync($this->questions);
 
         /**
-         * Announce
+         * Announce ProfileWasCreated
          */
         event(new ProfileWasCreated($profile));
 

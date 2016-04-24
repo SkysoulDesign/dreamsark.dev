@@ -15,10 +15,10 @@
  * Artisan Commands
  */
 
-use DreamsArk\Http\Controllers\Admin\AdminHomeController;
-use DreamsArk\Http\Controllers\Admin\AdminUserController;
-use DreamsArk\Http\Controllers\Admin\ProfileController as AdminProfileController;
-use DreamsArk\Http\Controllers\Admin\QuestionController;
+use DreamsArk\Http\Controllers\Admin\AdminController;
+use DreamsArk\Http\Controllers\Admin\User\UserController;
+use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
+use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
 use DreamsArk\Http\Controllers\Bag\CoinController;
 use DreamsArk\Http\Controllers\Committee\Project\CastController;
@@ -90,7 +90,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
 
-    $app->group( ['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
 
         /**
          * Session Controller
@@ -109,7 +109,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Profile Controller
      */
-    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
     $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
 //        $app->get('profile/{profile}/edit', ProfileController::class . '@edit')->name('profile.edit');
 //    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
@@ -257,16 +257,58 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->get('docs', function () {
         return View::make('docs.api.v1.index');
     });
+
+
     /**
      * Admin Section Routes
      */
-    $app->group(['middleware' => ['auth'], 'prefix' => 'admin'], function () use ($app) {
-        $app->get('index', AdminHomeController::class . '@index')->name('admin.index');
+    $app->group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
+
+        $app->get('/', AdminController::class . '@index')->name('index');
+
+        /**
+         * Profile Controller
+         */
+        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            $app->get('/', AdminProfileController::class . '@index')->name('index');
+            $app->get('create', AdminProfileController::class . '@create')->name('create');
+            $app->post('store', AdminProfileController::class . '@store')->name('store');
+            $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
+            $app->patch('{profile}/update', AdminProfileController::class . '@update')->name('update');
+            $app->delete('{profile}/destroy', AdminProfileController::class . '@destroy')->name('destroy');
+        });
+
+        /**
+         * Questions Controller
+         */
+        $app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
+            $app->get('/', QuestionController::class . '@index')->name('index');
+            $app->get('create', QuestionController::class . '@create')->name('create');
+            $app->post('store', QuestionController::class . '@store')->name('store');
+            $app->get('{profile}/edit', QuestionController::class . '@edit')->name('edit');
+            $app->patch('{profile}/update', QuestionController::class . '@update')->name('update');
+            $app->delete('{profile}/destroy', QuestionController::class . '@destroy')->name('destroy');
+        });
+
+        /**
+         * Users Controller
+         */
+        $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+            $app->get('/', UserController::class . '@index')->name('index');
+            $app->get('create', UserController::class . '@create')->name('create');
+            $app->post('store', UserController::class . '@store')->name('store');
+            $app->get('{user}/edit', UserController::class . '@edit')->name('edit');
+            $app->patch('{user}/update', UserController::class . '@update')->name('update');
+            $app->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
+        });
+
+//        $app->resource('question', QuestionController::class, ['except' => ['show']]);
+
+
 //    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
 
-        $app->resource('question', QuestionController::class, ['except' => ['show']]);
-        $app->resource('user', AdminUserController::class, ['except' => ['show']]);
-        $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
+//        $app->resource('user', AdminUserController::class, ['except' => ['show']]);
+//        $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
 
 
     });

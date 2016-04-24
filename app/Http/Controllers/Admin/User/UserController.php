@@ -1,10 +1,12 @@
 <?php
 
-namespace DreamsArk\Http\Controllers\Admin;
+namespace DreamsArk\Http\Controllers\Admin\User;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Http\Requests\Admin\AdminUserRequest;
+use DreamsArk\Http\Requests\Admin\User\StoreUserRequest;
+use DreamsArk\Http\Requests\Admin\User\UpdateUserRequest;
+use DreamsArk\Jobs\Admin\User\DeleteUserJob;
 use DreamsArk\Jobs\DeleteItemByObjectJob;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
@@ -14,20 +16,18 @@ use Illuminate\Http\Request;
 
 /**
  * Class AdminUserController
+ *
  * @package DreamsArk\Http\Controllers\Admin
  */
-class AdminUserController extends Controller
+class UserController extends Controller
 {
-    /**
-     * @var string
-     */
-    private $defaultRoute = 'admin.user.index';
 
     /**
      * Display a listing of the resource.
      *
      * @param User $user
      * @return \Illuminate\Http\Response
+     * @todo Implement repository
      */
     public function index(User $user)
     {
@@ -39,6 +39,7 @@ class AdminUserController extends Controller
      *
      * @param Role $role
      * @return \Illuminate\Http\Response
+     * @todo Implements Repository
      */
     public function create(Role $role)
     {
@@ -48,14 +49,22 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param AdminUserRequest|Request $request
+     * @param StoreUserRequest|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminUserRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        $command = new CreateUserJob($request->except('role_id'), $request->get('role_id'));
-        $this->dispatch($command);
-        return redirect()->route($this->defaultRoute);
+
+        /**
+         * Create User
+         */
+        $user = $this->dispatch(new CreateUserJob(
+            $request->except('role_id'),
+            $request->get('role_id')
+        ));
+
+        return redirect()->route('admin.user.index')->withSuccess("User: $user->username created successfully.");
+
     }
 
     /**
@@ -67,7 +76,7 @@ class AdminUserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        //@todo implement show method
     }
 
     /**
@@ -76,7 +85,7 @@ class AdminUserController extends Controller
      * @param User $user
      * @param Role $role
      * @return \Illuminate\Http\Response
-     * @internal param int $id
+     * @todo implement repository
      */
     public function edit(User $user, Role $role)
     {
@@ -86,30 +95,45 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param AdminUserRequest|Request $request
+     * @param UpdateUserRequest $request
      * @param User $user
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
-    public function update(AdminUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $command = new UpdateUserJob($user, $request->except('role_id'), $request->get('role_id'));
-        $this->dispatch($command);
-        return redirect()->back();
+        /**
+         * Update User
+         */
+        $user = $this->dispatch(new UpdateUserJob($user,
+            $request->except('role_id'),
+            $request->get('role_id')
+        ));
+
+        return redirect()->route('admin.user.index')->withSuccess("User: $user->username updated successfully.");
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param User $user
      * @return \Illuminate\Http\Response
-     * @internal param int $id
+     * @todo Make the job returns the deleted $profile instead of grabbing it from the function parameters
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
-        $response = dispatch(new DeleteItemByObjectJob($user));
-        if (!$response)
-            return redirect()->route($this->defaultRoute)->withErrors('Unable to delete record');
-        return redirect()->route($this->defaultRoute)->withSuccess('Profile deleted successfully');
+
+        /**
+         * Determines if user is authorized to perform this action
+         */
+        $this->authorize('delete-profile', $request->user());
+
+        /**
+         * Delete Profile
+         */
+        $this->dispatch(new DeleteUserJob($user));
+
+        return redirect()->route('admin.user.index')->withSuccess("User: $user->username was deleted successfully");
     }
+
 }

@@ -2,12 +2,79 @@
 
 namespace DreamsArk\Policies;
 
+use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * Create Profile
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function createProfile(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Update Profile
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function updateProfile(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Delete Profile
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function deleteProfile(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Create User
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function createUser(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Update User
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function updateUser(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Delete User
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function deleteUser(User $user)
+    {
+        return $user->hasRole('admin');
+    }
 
     /**
      * @param User $user

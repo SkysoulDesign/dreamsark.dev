@@ -7,6 +7,11 @@ use DreamsArk\Policies\UserPolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+/**
+ * Class AuthServiceProvider
+ *
+ * @package DreamsArk\Providers
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -28,4 +33,5 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
     }
+
 }

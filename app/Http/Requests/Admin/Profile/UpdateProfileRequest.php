@@ -1,14 +1,15 @@
 <?php
 
-namespace DreamsArk\Http\Requests\Admin;
+namespace DreamsArk\Http\Requests\Admin\Profile;
 
 use DreamsArk\Http\Requests\Request;
 
 /**
- * Class ProfileRequest
+ * Class UpdateProfileRequest
+ *
  * @package DreamsArk\Http\Requests\Admin
  */
-class ProfileRequest extends Request
+class UpdateProfileRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +18,7 @@ class ProfileRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('update-profile', $this->user());
     }
 
     /**
@@ -27,10 +28,10 @@ class ProfileRequest extends Request
      */
     public function rules()
     {
-        $update = ($this->profile && $this->profile->name === $this->get('name')) ? ',id,' . $this->profile->id : '';
         return [
-            'name' => 'required|unique:profiles' . $update,
+            'name' => "required|unique:profiles,name,{$this->profile->id}",
             'display_name' => 'required'
         ];
     }
+
 }

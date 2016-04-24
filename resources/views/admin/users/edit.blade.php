@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            @include('partials.field', ['name' => 'username', 'attributes' => 'readonly', 'value' => old('username', $user->username)])
+            @include('partials.field', ['name' => 'username', 'value' => old('username', $user->username)])
 
             @include('partials.field', ['type'=>'password', 'placeholder'=>'Leave blank if don\'t want to change password', 'name' => 'password', 'value' => old('password')])
 
@@ -34,11 +34,9 @@
 
             @include('partials.field', ['name' => 'email', 'value' => old('email', $user->email)])
 
-            @include('partials.field', ['name' => 'first_name', 'value' => old('first_name', $user->first_name)])
+            @include('partials.field', ['name' => 'name', 'value' => old('name', $user->name)])
 
-            @include('partials.field', ['name' => 'last_name', 'value' => old('last_name', $user->last_name)])
-
-            <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
+            <button class="ui submit button primary" type="submit">Update</button>
 
             <a href="{{ route('admin.user.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

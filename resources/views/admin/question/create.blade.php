@@ -7,29 +7,25 @@
         <form class="ui form warning error" action="{{ route('admin.question.store') }}" method="POST">
 
             {{ csrf_field() }}
-            <h3>@lang('forms.create-questionnaire')</h3>
+            <h3>Create Question</h3>
 
-            @include('admin.question.form-top')
-
-            <div class="ui segment options_block" style="display: none;">
-                {{--*/ $options = old('options') /*--}}
-                @if($options)
-                    @foreach($options as $key => $value)
-                        @include('partials.field', ['name' => 'options['.$key.']', 'parent_class' => 'option', 'placeholder' => trans('forms.options'), 'label' => trans('forms.options'), 'value' => $value])
-                    @endforeach
-                @else
-                    @include('partials.field', ['name' => 'options[]', 'parent_class' => 'option', 'placeholder' => trans('forms.options'), 'label' => trans('forms.options'), 'value' => ''])
-                @endif
-                <div class="ui small menu">
-                    <a href="javascript:;" class="item add-icon"><i class="add icon"></i>@lang('forms.add-option')</a>
-                    <a href="javascript:;" class="item delete-icon"><i class="delete icon"></i>@lang('forms.delete-option')
-                    </a>
-                </div>
+            <div class="field">
+                <label>Question</label>
+                <input type="text" name="question" placeholder="e.g. what is your nickname?">
             </div>
 
-            @include('partials.field', ['name' => 'order', 'value' => old('order', 1)])
+            <div class="field">
+                <label>Type</label>
+                <select id="category" class="ui dropdown " name="category">
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="File">File</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+            </div>
 
-            <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
+            <button class="ui submit button primary" type="submit">Create</button>
 
             <a href="{{ route('admin.question.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

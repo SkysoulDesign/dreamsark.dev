@@ -33,12 +33,10 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot($router);
 
-
         $router->model('profile', Profile::class, function ($name) {
             if (is_string($name))
                 return app(Profile::class)->whereName($name)->first();
         });
-
 
     }
 

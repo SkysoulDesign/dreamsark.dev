@@ -7,9 +7,10 @@ use DreamsArk\Http\Requests;
 
 /**
  * Class AdminHomeController
+ *
  * @package DreamsArk\Http\Controllers\Admin
  */
-class AdminHomeController extends Controller
+class AdminController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -19,4 +20,5 @@ class AdminHomeController extends Controller
     {
         return view('admin.index');
     }
+
 }

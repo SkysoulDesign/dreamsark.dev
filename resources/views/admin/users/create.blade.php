@@ -33,9 +33,7 @@
 
             @include('partials.field', ['name' => 'email', 'value' => old('email')])
 
-            @include('partials.field', ['name' => 'first_name', 'value' => old('first_name')])
-
-            @include('partials.field', ['name' => 'last_name', 'value' => old('last_name')])
+            @include('partials.field', ['name' => 'name', 'value' => old('name')])
 
             <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
 

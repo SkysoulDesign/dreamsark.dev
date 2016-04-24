@@ -18,11 +18,11 @@
 
                 <td class="">
                     <div class="ui small basic icon buttons">
-                        <a class="ui button" href="{{ route('admin.profile.edit', $profile->id) }}">
+                        <a class="ui button" href="{{ route('admin.profile.edit', $profile->name) }}">
                             <i class="edit icon"></i>
                             @lang('forms.edit')
                         </a>
-                        <a class="ui button delete-item" href="{{ route('admin.profile.destroy', $profile->id) }}">
+                        <a class="ui button delete-item" href="{{ route('admin.profile.destroy', $profile->name) }}">
                             <i class="delete icon"></i>
                             @lang('forms.delete')
                         </a>

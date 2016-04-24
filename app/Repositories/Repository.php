@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Repositories;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 

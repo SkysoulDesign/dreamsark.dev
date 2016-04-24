@@ -1,6 +1,6 @@
 <?php
 
-namespace DreamsArk\Http\Controllers\Admin;
+namespace DreamsArk\Http\Controllers\Admin\Question;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class QuestionController
+ *
  * @package DreamsArk\Http\Controllers\Admin
  */
 class QuestionController extends Controller
@@ -30,11 +31,26 @@ class QuestionController extends Controller
     {
         return [
             'type' => [
-                'text' => 'Text', 'number' => 'Number', 'email' => 'Email', 'tel' => 'Telephone', 'url' => 'URL', 'select' => 'Dropdown', 'radio' => 'Choose One',
-                'checkbox' => 'Choose Multiple', 'file' => 'Upload File', 'image' => 'Image', 'video' => 'Video', 'textarea' => 'textarea', 'date' => 'Date'
+                'text' => 'Text',
+                'number' => 'Number',
+                'email' => 'Email',
+                'tel' => 'Telephone',
+                'url' => 'URL',
+                'select' => 'Dropdown',
+                'radio' => 'Choose One',
+                'checkbox' => 'Choose Multiple',
+                'file' => 'Upload File',
+                'image' => 'Image',
+                'video' => 'Video',
+                'textarea' => 'textarea',
+                'date' => 'Date'
             ],
             'category' => [
-                'general' => 'General', 'image-gallery' => 'Image Gallery', 'video-gallery' => 'Video Gallery', 'task' => 'Tasks', 'refer' => 'References'
+                'general' => 'General',
+                'image-gallery' => 'Image Gallery',
+                'video-gallery' => 'Video Gallery',
+                'task' => 'Tasks',
+                'refer' => 'References'
             ]
         ];
     }
@@ -42,21 +58,22 @@ class QuestionController extends Controller
     /**
      * @param Question $question
      * @return $this
-     * @internal param Questionnaire $questionnaire
+     * @todo Implement Repository
      */
     public function index(Question $question)
     {
-        return view('admin.question.index')->with('questions', $question->all())
-            ->with('masterData', $this->getMasterData());
+        return view('admin.question.index')->with('questions', $question->all());
     }
 
     /**
+     * Show the form for creating a new resource.
      *
+     * @return \Illuminate\Http\Response
+     * @todo Implements Repository
      */
     public function create()
     {
-        return view('admin.question.create')
-            ->with('masterData', $this->getMasterData());
+        return view('admin.question.create')->with('masterData', $this->getMasterData());
     }
 
     /**
