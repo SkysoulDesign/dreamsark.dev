@@ -7,6 +7,7 @@
         <form class="ui form warning error" action="{{ route('admin.question.store') }}" method="POST">
 
             {{ csrf_field() }}
+
             <h3>Create Question</h3>
 
             <div class="field">
@@ -16,12 +17,10 @@
 
             <div class="field">
                 <label>Type</label>
-                <select id="category" class="ui dropdown " name="category">
-                    <option value="text">Text</option>
-                    <option value="number">Number</option>
-                    <option value="date">Date</option>
-                    <option value="File">File</option>
-                    <option value="checkbox">Checkbox</option>
+                <select id="category" class="ui dropdown " name="type">
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}">{{ $type->display_name }}</option>
+                    @endforeach
                 </select>
             </div>
 

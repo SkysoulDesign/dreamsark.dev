@@ -2,47 +2,76 @@
 
 namespace DreamsArk\Jobs\Admin\Question;
 
+use DreamsArk\Events\Admin\Question\QuestionWasUpdated;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Master\Question;
+use DreamsArk\Models\Master\Question\Question;
+use DreamsArk\Models\Master\Question\Type;
 use DreamsArk\Models\Master\Questionnaire;
 
 /**
  * Class UpdateQuestionJob
+ *
  * @package DreamsArk\Jobs\Admin\Question
  */
 class UpdateQuestionJob extends Job
 {
     /**
-     * @var Questionnaire
+     * @var Question
      */
     private $question;
+
     /**
      * @var array
      */
-    private $request;
+    private $fields;
+
+    /**
+     * @var Type|int|string
+     */
+    private $type;
 
     /**
      * Create a new job instance.
      *
      * @param Question $question
-     * @param array $request
+     * @param array $fields
+     * @param Type|int|string $type
      */
-    public function __construct(Question $question, array $request)
+    public function __construct(Question $question, array $fields, $type)
     {
-        //
         $this->question = $question;
-        $this->request = $request;
+        $this->fields = $fields;
+        $this->type = $type;
     }
 
     /**
      * Execute the job.
      *
-     * @return void
+     * @param Type $type
+     * @return Question
+     * @todo Broke, its not updating the type
+     * @todo Implement Repository
      */
-    public function handle()
+    public function handle(Type $type)
     {
-//        dd($this->request);
-        $this->question->update($this->request);
-        return true;
+        /**
+         * @todo Allow ID or Name to be passed in a cleaner way
+         */
+        if (is_string($this->type))
+            $this->type = $type->whereId($this->type)->first();
+
+        $this->type->questions()->update($this->fields);
+
+        /** @var Question $question */
+        $question = $this->question->fresh();
+
+        /**
+         * Announce QuestionWasCreated
+         */
+        event(new QuestionWasUpdated($question));
+
+        return $question;
+
     }
+
 }

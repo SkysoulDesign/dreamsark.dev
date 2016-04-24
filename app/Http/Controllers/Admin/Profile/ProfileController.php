@@ -10,7 +10,7 @@ use DreamsArk\Jobs\Admin\Profile\CreateProfileJob;
 use DreamsArk\Jobs\Admin\Profile\DeleteProfileJob;
 use DreamsArk\Jobs\Admin\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Master\Question;
+use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Http\Request;
 
 /**
@@ -38,7 +38,7 @@ class ProfileController extends Controller
     /**
      * Displays form for creating a new Profile
      *
-     * @param Question $question
+     * @param \DreamsArk\Models\Master\Question\Question $question
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\
      * @todo Implement Repository
      */
@@ -61,7 +61,8 @@ class ProfileController extends Controller
          */
         $profile = dispatch(new CreateProfileJob(
             $request->except('question'),
-            $request->get('question', [])
+            $request->get('questions', []),
+            $request->get('required', [])
         ));
 
         return redirect()

@@ -35,6 +35,16 @@
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox"
+                                   id="{{ "required_$question->id" }}"
+                                   name="questions[]"
+                                   @if($question->selected) checked @endif
+                                   value="{{ $question->id }}">
+                            <label for="{{ "required_$question->id" }}">
+                                Required
+                            </label>
+                        </div>
+                        <div class="ui checkbox">
+                            <input type="checkbox"
                                    id="{{ "question_$question->id" }}"
                                    name="questions[]"
                                    @if($question->selected) checked @endif

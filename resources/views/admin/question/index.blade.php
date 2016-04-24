@@ -7,28 +7,26 @@
     <table class="ui selectable celled table">
         <thead>
         <tr>
-            <th>@lang('forms.question')</th>
-            <th>@lang('forms.category')</th>
-            <th>@lang('forms.type')</th>
-            <th>@lang('forms.action')</th>
+            <th>Question</th>
+            <th>Type</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
         @foreach($questions as $question)
             <tr>
                 <td>{{ $question->question }}</td>
-                <td>@lang('forms.'.$question->category)</td>
-                <td>@lang('forms.'.$question->type)</td>
+                <td>{{ $question->type->present()->name }}</td>
 
-                <td class="">
+                <td>
                     <div class="ui small basic icon buttons">
                         <a class="ui button" href="{{ route('admin.question.edit', $question->id) }}">
                             <i class="edit icon"></i>
-                            @lang('forms.edit')
+                            Edit
                         </a>
                         <a class="ui button delete-item" href="{{ route('admin.question.destroy', $question->id) }}">
                             <i class="delete icon"></i>
-                            @lang('forms.delete')
+                            Delete
                         </a>
                     </div>
                 </td>

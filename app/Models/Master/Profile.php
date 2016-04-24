@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Master;
 
+use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +40,7 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class)->orderBy('category')->orderBy('order');
+        return $this->belongsToMany(Question::class);
     }
 
     /**

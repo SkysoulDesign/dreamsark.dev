@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Master;
 
+use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Database\Eloquent\Model;
 
 /**

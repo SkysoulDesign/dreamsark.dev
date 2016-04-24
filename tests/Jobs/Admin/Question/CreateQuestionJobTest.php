@@ -2,7 +2,7 @@
 
 use DreamsArk\Events\Admin\Question\QuestionWasCreated;
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
-use DreamsArk\Models\Master\Question;
+use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateQuestionJobTest extends TestCase

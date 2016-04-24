@@ -4,12 +4,14 @@ namespace DreamsArk\Http\Controllers\Admin\Question;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Http\Requests\Admin\QuestionnaireRequest;
+use DreamsArk\Http\Requests\Admin\Question\StoreQuestionRequest;
+use DreamsArk\Http\Requests\Admin\Question\UpdateQuestionRequest;
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
+use DreamsArk\Jobs\Admin\Question\DeleteQuestionJob;
 use DreamsArk\Jobs\Admin\Question\UpdateQuestionJob;
-use DreamsArk\Jobs\DeleteItemByObjectJob;
-use DreamsArk\Models\Master\Question;
-use DreamsArk\Models\Master\Questionnaire;
+use DreamsArk\Models\Master\Question\Question;
+use DreamsArk\Models\Master\Question\Type;
+use DreamsArk\Models\Master;
 use Illuminate\Http\Request;
 
 /**
@@ -19,41 +21,6 @@ use Illuminate\Http\Request;
  */
 class QuestionController extends Controller
 {
-    /**
-     * @var string
-     */
-    private $defaultRoute = 'admin.question.index';
-
-    /**
-     *
-     */
-    protected function getMasterData()
-    {
-        return [
-            'type' => [
-                'text' => 'Text',
-                'number' => 'Number',
-                'email' => 'Email',
-                'tel' => 'Telephone',
-                'url' => 'URL',
-                'select' => 'Dropdown',
-                'radio' => 'Choose One',
-                'checkbox' => 'Choose Multiple',
-                'file' => 'Upload File',
-                'image' => 'Image',
-                'video' => 'Video',
-                'textarea' => 'textarea',
-                'date' => 'Date'
-            ],
-            'category' => [
-                'general' => 'General',
-                'image-gallery' => 'Image Gallery',
-                'video-gallery' => 'Video Gallery',
-                'task' => 'Tasks',
-                'refer' => 'References'
-            ]
-        ];
-    }
 
     /**
      * @param Question $question
@@ -68,65 +35,79 @@ class QuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Type $type
      * @return \Illuminate\Http\Response
      * @todo Implements Repository
      */
-    public function create()
+    public function create(Type $type)
     {
-        return view('admin.question.create')->with('masterData', $this->getMasterData());
+        return view('admin.question.create')->with('types', $type->all());
     }
 
     /**
-     * @param QuestionnaireRequest|Request $request
+     * @param StoreQuestionRequest|Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(QuestionnaireRequest $request)
+    public function store(StoreQuestionRequest $request)
     {
 
-        $response = dispatch(new CreateQuestionJob($request->all()));
-        if (!$response)
-            return redirect()->route($this->defaultRoute)->withErrors('Unable to save record');
-        return redirect()->route($this->defaultRoute)->withSuccess('Question created successfully');
+        /**
+         * Create Question
+         */
+        $question = $this->dispatch(new CreateQuestionJob(
+            $request->all(),
+            $request->get('type')
+        ));
+
+        return redirect()->route('admin.question.index')->withSuccess('Question created successfully');
 
     }
 
     /**
      * @param Question $question
+     * @param Type $type
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @internal param Questionnaire $questionnaire
+     * @todo Implement Repository
      */
-    public function edit(Question $question)
+    public function edit(Question $question, Type $type)
     {
-        return view('admin.question.edit')->with('question', $question)
-            ->with('masterData', $this->getMasterData());
+        return view('admin.question.edit', compact('question'))->with('types', $type->all());
     }
 
     /**
-     * @param Question|Questionnaire $question
-     * @param QuestionnaireRequest|Request $request
+     * @param Question $question
+     * @param UpdateQuestionRequest $request
      * @return \Illuminate\Http\RedirectResponse
-     * @internal param Questionnaire $questionnaire
      */
-    public function update(Question $question, QuestionnaireRequest $request)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
 
-        $response = dispatch(new UpdateQuestionJob($question, $request->all()));
-        if (!$response)
-            return redirect()->back()->withErrors('Unable to save record');
+        $question = dispatch(new UpdateQuestionJob(
+            $question,
+            $request->only('question'),
+            $request->get('type')
+        ));
+
         return redirect()->back()->withSuccess('Question updated successfully');
 
     }
 
     /**
+     * @param Request $request
      * @param Question $question
      * @return mixed
-     * @internal param Questionnaire $questionnaire
      */
-    public function destroy(Question $question)
+    public function destroy(Request $request, Question $question)
     {
-        $response = dispatch(new DeleteItemByObjectJob($question));
-        if (!$response)
-            return redirect()->route($this->defaultRoute)->withErrors('Unable to delete record');
-        return redirect()->route($this->defaultRoute)->withSuccess('Question deleted successfully');
+
+        /**
+         * Determines if user is authorized to perform this action
+         */
+        $this->authorize('delete-question', $request->user());
+
+        $this->dispatch(new DeleteQuestionJob($question));
+
+        return redirect()->route('admin.question.index')->withSuccess('Question deleted successfully');
     }
+
 }

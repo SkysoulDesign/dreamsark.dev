@@ -5,13 +5,14 @@ namespace DreamsArk\Events\Admin\Question;
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Class QuestionWasCreated
+ * Class QuestionWasUpdated
  *
  * @package DreamsArk\Events\Admin\Question
  */
-class QuestionWasCreated extends Event
+class QuestionWasUpdated extends Event
 {
     use SerializesModels;
 

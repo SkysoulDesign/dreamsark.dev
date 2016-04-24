@@ -1,15 +1,16 @@
 <?php
 
-namespace DreamsArk\Http\Requests\Admin\Profile;
+namespace DreamsArk\Http\Requests\Admin\Question;
 
 use DreamsArk\Http\Requests\Request;
+use DreamsArk\Models\Master\Question\Type;
 
 /**
- * Class ProfileRequest
+ * Class QuestionnaireRequest
  *
  * @package DreamsArk\Http\Requests\Admin
  */
-class StoreProfileRequest extends Request
+class StoreQuestionRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,20 +19,20 @@ class StoreProfileRequest extends Request
      */
     public function authorize()
     {
-        return $this->user()->can('create-profile', $this->user());
+        return $this->user()->can('create-question', $this->user());
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param Type $type
      * @return array
      */
-    public function rules()
+    public function rules(Type $type)
     {
-
         return [
-            'name' => 'required|unique:profiles',
-            'display_name' => 'required',
+            'question' => 'required',
+            'type' => "required|exists:{$type->getTable()},id"
         ];
 
     }

@@ -285,9 +285,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->get('/', QuestionController::class . '@index')->name('index');
             $app->get('create', QuestionController::class . '@create')->name('create');
             $app->post('store', QuestionController::class . '@store')->name('store');
-            $app->get('{profile}/edit', QuestionController::class . '@edit')->name('edit');
-            $app->patch('{profile}/update', QuestionController::class . '@update')->name('update');
-            $app->delete('{profile}/destroy', QuestionController::class . '@destroy')->name('destroy');
+            $app->get('{question}/edit', QuestionController::class . '@edit')->name('edit');
+            $app->patch('{question}/update', QuestionController::class . '@update')->name('update');
+            $app->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
         });
 
         /**

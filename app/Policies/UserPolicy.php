@@ -3,6 +3,7 @@
 namespace DreamsArk\Policies;
 
 use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -72,6 +73,39 @@ class UserPolicy
      * @return bool
      */
     public function deleteUser(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Create Question
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function createQuestion(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Update Question
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function updateQuestion(User $user)
+    {
+        return $user->hasRole('admin');
+    }
+
+    /**
+     * Delete Question
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function deleteQuestion(User $user)
     {
         return $user->hasRole('admin');
     }
