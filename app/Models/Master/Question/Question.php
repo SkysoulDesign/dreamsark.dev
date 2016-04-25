@@ -37,13 +37,6 @@ class Question extends Model
     ];
 
     /**
-     * Presenter for this class
-     *
-     * @var QuestionPresenter
-     */
-    protected $presenter = QuestionPresenter::class;
-
-    /**
      * Answer Relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany

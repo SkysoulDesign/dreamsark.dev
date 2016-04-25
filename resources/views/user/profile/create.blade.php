@@ -11,10 +11,11 @@
 
             <div class="ui tabular menu create-profile">
                 {{--*/ $active=true /*--}}
-                @foreach($categories as $category)
-                    <div class="@if($active){!! 'active ' !!}{{--*/ $active=false /*--}}@endif{!! 'item' !!}"
+                {{--@foreach($categories as $category)
+                    <div class="@if($active){!! 'active ' !!}--}}{{--*/ $active=false /*--}}{{--@endif{!! 'item' !!}"
                          data-tab="{{ $category }}">@lang('forms.'.$category)</div>
-                @endforeach
+                @endforeach--}}
+                <div class="active  item" data-tab="general">@lang('forms.general')</div>
             </div>
             @php
             $category=''; $active=true;
@@ -22,6 +23,7 @@
             $formValidateArr = [];
             @endphp
 
+            <div class="ui active tab segment" data-tab="general" style="min-height: 350px;">
             @foreach($profile->questions as $question)
                 @if($question->category!=$category)
                     @if($category!='')
@@ -32,14 +34,14 @@
                     {{--*/ $category = $question->category /*--}}
                 @endif
                 @php
-                $type = $question->type or '';
+                $type = $question->type->name or '';
                 $required = $question->is_primary or false;
 
                 $questionIndex = $required ? 'required' : 'general';
                 @endphp
 
                 @php
-                $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($question->type=='checkbox'?'[]':'');
+                $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($type=='checkbox'?'[]':'');
                 $label = $question->question;
                 $value = @$valueArr[$questionIndex][$type][$question->id];
                 if($required && !in_array($type, ['radio', 'checkbox']))

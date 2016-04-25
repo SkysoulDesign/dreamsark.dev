@@ -22,6 +22,7 @@ class CreateQuestionsTable extends Migration
         $this->schema->create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
+            $table->longText('options')->nullable();
             $table->integer('type_id')->unsigned()->index();
             $table->foreign('type_id')->references('id')->on('question_types')->onDelete('cascade');
             $table->timestamps();
