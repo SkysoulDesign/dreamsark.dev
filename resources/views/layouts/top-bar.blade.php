@@ -29,7 +29,7 @@
                             <nav class="menu">
                                 <ul>
                                     <li class="title">我的东西</li>
-                                    <li><a href="{{ route('profile') }}">轮廓</a></li>
+                                    <li><a href="{{ route('user.account') }}">轮廓</a></li>
                                     <li><a href="#">消息</a></li>
                                     <li><a href="#">活动</a></li>
                                     <li class="title">支持的项目</li>
@@ -40,7 +40,7 @@
 
                                 <div class="side-menu">
                                     <ul>
-                                        <li><a href="{{ route('profile') }}">简介</a></li>
+                                        <li><a href="{{ route('user.account') }}">简介</a></li>
                                         <li><a href="#">设置</a></li>
                                         <li><a href="#">帐户</a></li>
                                         <li><a href="#">通知</a></li>
@@ -50,7 +50,7 @@
                                 <div class="footer">
                                     <div class="left">
                                         你登录为
-                                        <a href="{{ route('profile') }}">
+                                        <a href="{{ route('user.account') }}">
                                             <b>{{ auth()->user()->username }}</b>
                                         </a>
                                     </div>

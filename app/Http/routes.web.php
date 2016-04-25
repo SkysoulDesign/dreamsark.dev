@@ -16,9 +16,9 @@
  */
 
 use DreamsArk\Http\Controllers\Admin\AdminController;
-use DreamsArk\Http\Controllers\Admin\User\UserController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
+use DreamsArk\Http\Controllers\Admin\User\UserController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
 use DreamsArk\Http\Controllers\Bag\CoinController;
 use DreamsArk\Http\Controllers\Committee\Project\CastController;
@@ -109,7 +109,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Profile Controller
      */
-//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
     $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
 //        $app->get('profile/{profile}/edit', ProfileController::class . '@edit')->name('profile.edit');
 //    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
