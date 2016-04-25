@@ -4,7 +4,6 @@ namespace DreamsArk\Models\Master\Question;
 
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Presenters\PresentableTrait;
-use DreamsArk\Presenters\Presenter\QuestionPresenter;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -54,6 +53,16 @@ class Question extends Model
     public function type()
     {
         return $this->belongsTo(Type::class);
+    }
+
+    /**
+     * Options Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'question_option');
     }
 
 }

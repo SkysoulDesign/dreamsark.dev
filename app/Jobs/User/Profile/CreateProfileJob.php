@@ -8,6 +8,7 @@ use DreamsArk\Jobs\User\Traits\ProfileTrait;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
+use DreamsArk\Repositories\Profile\Answer\AnswerRepositoryInterface;
 
 /**
  * Class CreateProfileJob
@@ -17,10 +18,11 @@ use DreamsArk\Models\User\User;
 class CreateProfileJob extends Job
 {
     use ProfileTrait;
+
     /**
      * @var array
      */
-    private $request;
+    private $fields;
 
     /**
      * @var User
@@ -31,21 +33,17 @@ class CreateProfileJob extends Job
      * @var Profile
      */
     private $profile;
-    /**
-     * @var
-     */
-    private $answer;
 
     /**
      * Create a new job instance.
      *
-     * @param array $request
-     * @param int $user
+     * @param array $fields
+     * @param User|int $user
      * @param Profile|int $profile
      */
-    public function __construct(array $request, $user, $profile)
+    public function __construct(array $fields, $user, $profile)
     {
-        $this->request = $request;
+        $this->fields = $fields;
         $this->user = $user;
         $this->profile = $profile;
     }
@@ -53,18 +51,18 @@ class CreateProfileJob extends Job
     /**
      * Execute the job.
      *
-     * @param \DreamsArk\Models\Master\Answer $answer
+     * @param AnswerRepositoryInterface $answer
      * @param User $user
      * @param Profile $profile
      * @return User
      */
-    public function handle(Answer $answer, User $user, Profile $profile)
+    public function handle(AnswerRepositoryInterface $answer, User $user, Profile $profile)
     {
 
         $this->createObjectIfNotExists($user, $profile);
 
         /** @var Answer $answer */
-        $this->answer = $answer->create(['profile_id' => $this->profile->id]);
+        $answer = $answer->create(['profile_id' => $this->profile->id]);
 
         /*foreach ($this->request['questions'] as $id => $reply) {
 
@@ -77,7 +75,7 @@ class CreateProfileJob extends Job
         $this->doInsertQuestions('general');
 
         $this->user->profiles()->attach($this->profile->id, [
-            'answer_id' => $this->answer->id
+            'answer_id' => $answer->id
         ]);
 
         /**

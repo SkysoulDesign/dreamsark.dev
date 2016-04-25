@@ -4,6 +4,8 @@ namespace DreamsArk\Providers;
 
 use DreamsArk\Repositories\Bag\BagRepository;
 use DreamsArk\Repositories\Bag\BagRepositoryInterface;
+use DreamsArk\Repositories\Profile\Answer\AnswerRepository;
+use DreamsArk\Repositories\Profile\Answer\AnswerRepositoryInterface;
 use DreamsArk\Repositories\Project\Draft\DraftRepository;
 use DreamsArk\Repositories\Project\Draft\DraftRepositoryInterface;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepository;
@@ -38,6 +40,11 @@ use DreamsArk\Repositories\User\UserRepository;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class RepositoriesServiceProvider
+ *
+ * @package DreamsArk\Providers
+ */
 class RepositoriesServiceProvider extends ServiceProvider
 {
     /**
@@ -191,6 +198,14 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(
             UserProfileRepositoryInterface::class,
             UserProfileRepository::class
+        );
+
+        /**
+         * Answer Repository
+         */
+        $this->app->bind(
+            AnswerRepositoryInterface::class,
+            AnswerRepository::class
         );
 
     }

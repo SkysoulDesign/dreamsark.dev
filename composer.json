@@ -27,7 +27,6 @@
     "spatie/laravel-backup": "^2.7",
     "adamwathan/bootforms": "^0.7.0",
     "pda/pheanstalk": "^3.1"
-
   },
   "autoload": {
     "classmap": [

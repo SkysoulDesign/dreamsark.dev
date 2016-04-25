@@ -3,8 +3,12 @@
 namespace DreamsArk\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
+/**
+ * Class Repository
+ *
+ * @package DreamsArk\Repositories
+ */
 abstract class Repository
 {
 
@@ -14,10 +18,10 @@ abstract class Repository
     protected $model;
 
     /**
-     * Get all Model from the DB
+     * Get all of the models from the database.
      *
-     * @param array $columns
-     * @return mixed
+     * @param  array|mixed $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function all(array $columns = ['*'])
     {
@@ -29,7 +33,7 @@ abstract class Repository
      * Best Usage with compact('value1', 'value2')
      *
      * @param $args
-     * @return Collection|mixed
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function where($args)
     {
@@ -45,33 +49,33 @@ abstract class Repository
     }
 
     /**
-     * Create a new entry on the Database
+     * Save a new model and return the instance.
      *
-     * @param array $fields
+     * @param  array $attributes
      * @return Model
      */
-    public function create(array $fields)
+    public function create(array $attributes)
     {
-        return $this->model->create($fields);
+        return $this->model->create($attributes);
     }
 
     /**
      * Update Settings
      *
      * @param Model|Int $model
-     * @param array $fields
+     * @param array $attributes
      * @return Model
      */
-    public function update($model, array $fields)
+    public function update($model, array $attributes)
     {
 
         /**
          * If not instance of model, find it and recall this function
          */
         if (!$model instanceof Model)
-            return $this->update($this->model($model), $fields);
+            return $this->update($this->model($model), $attributes);
 
-        $model->update($fields);
+        $model->update($attributes);
 
         return $model->fresh();
 

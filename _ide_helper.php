@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.29 on 2016-04-11.
+ * Generated for Laravel 5.2.30 on 2016-04-25.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -1122,6 +1122,18 @@ namespace {
         public static function terminate($input, $status){
             //Method inherited from \Illuminate\Foundation\Console\Kernel            
             \DreamsArk\Console\Kernel::terminate($input, $status);
+        }
+        
+        /**
+         * Register the given command with the console application.
+         *
+         * @param \Symfony\Component\Console\Command\Command $command
+         * @return void 
+         * @static 
+         */
+        public static function registerCommand($command){
+            //Method inherited from \Illuminate\Foundation\Console\Kernel            
+            \DreamsArk\Console\Kernel::registerCommand($command);
         }
         
         /**
@@ -3452,7 +3464,7 @@ namespace {
         }
         
         /**
-         * Find a model by its primary key.
+         * Find multiple models by their primary keys.
          *
          * @param array $ids
          * @param array $columns
@@ -4063,11 +4075,14 @@ namespace {
          * Add a "cross join" clause to the query.
          *
          * @param string $table
+         * @param string $first
+         * @param string $operator
+         * @param string $second
          * @return \Illuminate\Database\Query\Builder|static 
          * @static 
          */
-        public static function crossJoin($table){
-            return \Illuminate\Database\Query\Builder::crossJoin($table);
+        public static function crossJoin($table, $first = null, $operator = null, $second = null){
+            return \Illuminate\Database\Query\Builder::crossJoin($table, $first, $operator, $second);
         }
         
         /**
@@ -5957,6 +5972,17 @@ namespace {
          */
         public static function except($keys){
             return \Illuminate\Http\Request::except($keys);
+        }
+        
+        /**
+         * Intersect an array of items with the input data.
+         *
+         * @param array|mixed $keys
+         * @return array 
+         * @static 
+         */
+        public static function intersect($keys){
+            return \Illuminate\Http\Request::intersect($keys);
         }
         
         /**
@@ -8744,6 +8770,17 @@ namespace {
         }
         
         /**
+         * Intersect an array of items with the input data.
+         *
+         * @param array|mixed $keys
+         * @return array 
+         * @static 
+         */
+        public static function intersect($keys){
+            return \Illuminate\Http\Request::intersect($keys);
+        }
+        
+        /**
          * Retrieve a query string item from the request.
          *
          * @param string $key
@@ -10770,7 +10807,7 @@ namespace {
         }
         
         /**
-         * Alias for the "currentRouteNamed" method.
+         * Alias for the "currentRouteName" method.
          *
          * @param mixed  string
          * @return bool 
