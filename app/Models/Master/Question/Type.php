@@ -28,7 +28,7 @@ class Type extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'display_name'];
+    protected $fillable = ['name'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -43,6 +43,16 @@ class Type extends Model
      * @var TypePresenter
      */
     protected $presenter = TypePresenter::class;
+
+    /**
+     * Hash the Password Before Saving
+     *
+     * @param $name
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = snake_case($name);
+    }
 
     /**
      * Question Relationship

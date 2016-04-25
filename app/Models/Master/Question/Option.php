@@ -22,7 +22,7 @@ class Option extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'display_name'];
+    protected $fillable = ['name'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -30,6 +30,16 @@ class Option extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Hash the Password Before Saving
+     *
+     * @param $name
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = snake_case($name);
+    }
 
     /**
      * Questions Relationship
