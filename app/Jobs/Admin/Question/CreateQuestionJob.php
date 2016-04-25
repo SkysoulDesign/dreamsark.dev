@@ -54,8 +54,8 @@ class CreateQuestionJob extends Job
         $original = array_get($this->fields, 'options', []);
 
         /** @var Collection $options */
-        $options = $option->whereIn('name', $original)->get();
-        $flattened = array_flatten($options->toArray());
+        $options = $option->whereIn('name', $original)->get(['id', 'name']);
+        $flattened = array_flatten($options->pluck('name')->toArray());
 
         /**
          * For each new Key create a new Object
@@ -75,6 +75,7 @@ class CreateQuestionJob extends Job
          *
          * @var Question $question
          */
+
         $question = $this->type->questions()->create($this->fields);
         $question->options()->sync($options->pluck('id')->toArray());
 
