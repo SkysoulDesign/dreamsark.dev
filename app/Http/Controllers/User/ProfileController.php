@@ -50,6 +50,10 @@ class ProfileController extends Controller
         return view('user.profile.index', compact('profiles'))->with('user_profiles', $user->profiles);
     }
 
+    /**
+     * @param Profile $profile
+     * @return mixed
+     */
     public function getCategories(Profile $profile)
     {
         return $profile->questions->pluck('pivot')->pluck('category')->unique()->toArray();
@@ -87,12 +91,20 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile, Request $request)
     {
-        $user = $request->user();
-
         $categories = $this->getCategories($profile);
+        $answers = $this->getProfileAnswers($request->user(), $profile->id);
+        return view('user.profile.edit', compact('profile', 'categories', 'answers'));
+    }
 
+    /**
+     * @param $user
+     * @param $profileId
+     * @return array
+     * @internal param Profile $profile
+     */
+    private function getProfileAnswers($user, $profileId){
         /** @var Profile|User Profile $profile */
-        $profile = $user->profiles->find($profile->id);
+        $profile = $user->profiles->find($profileId);
         /** @var Answer $questionsWithAnswer */
         $questionsWithAnswer = $profile->answers;
 
@@ -101,8 +113,7 @@ class ProfileController extends Controller
             /** pivot contains answer */
             $answers[$question->id] = $question->pivot->toArray();
         }
-
-        return view('user.profile.edit', compact('profile', 'categories', 'answers'));
+        return $answers;
     }
 
     /**
@@ -122,12 +133,14 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Profile $profile
+     * @param Request $request
      */
-    public function show($id)
+    public function show(Profile $profile, Request $request)
     {
-        return view('user.profile.show');
+        $categories = $this->getCategories($profile);
+        $answers = $this->getProfileAnswers($request->user(), $profile->id);
+        return view('user.profile.show', compact('profile', 'categories', 'answers'));
     }
 
 }

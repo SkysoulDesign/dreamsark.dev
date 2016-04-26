@@ -36,3 +36,4 @@ input[type="color"] {
     color: #9f3a38;
     box-shadow: none;
 }
+.ui.tab { width: 100%; }
