@@ -46,7 +46,7 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        return view('user.profile.index', compact('profiles'))->with('user_profiles', $user->profiles->pluck('id')->toArray());
+        return view('user.profile.index', compact('profiles'))->with('user_profiles', $user->profiles);
     }
 
     public function getCategories(Profile $profile)

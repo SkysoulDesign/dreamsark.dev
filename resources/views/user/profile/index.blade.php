@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <section class="column">
+    <div class="column">
 
         {{--<div class="ui right aligned segment">--}}
         {{--<a href="{{ route('user.profiles.create') }}" class="ui primary button">--}}
@@ -15,15 +15,19 @@
                     <div class="column">Type</div>
                     <div class="column">Status</div>
                     <div class="column">Actions</div>
+                    @php
+                        $userProfileArr = $user_profiles->pluck('id')->toArray();
+                    @endphp
 
                     @foreach($profiles as $profile)
                         <div class="column">
                             {{ $profile->display_name }}
                             <i class="icon profile-{{ $profile->name }}"></i>
                         </div>
-                        @if(in_array($profile->id, $user_profiles))
+                        @if(in_array($profile->id, $userProfileArr))
+
                             <div class="column">
-                                <div class="ui indicating progress success" data-percent="30">
+                                <div class="ui indicating progress success" data-percent="{{ ($user_profiles->find($profile->id)->answerCount * 100 / $profile->questionCount) }}">
                                     <div class="bar">
                                         <div class="progress"></div>
                                     </div>

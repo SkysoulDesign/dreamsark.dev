@@ -26,6 +26,9 @@ class ProfileController extends Controller
      */
     private $defaultRoute = 'admin.profile.index';
 
+    /**
+     * @var array
+     */
     private $category = [
         'general' => 'General', 'image-gallery' => 'Image Gallery', 'video-gallery' => 'Video Gallery', 'task' => 'Tasks', 'refer' => 'References'
     ];

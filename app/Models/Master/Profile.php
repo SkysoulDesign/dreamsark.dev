@@ -59,4 +59,14 @@ class Profile extends Model
         return $this->answer->questions();
     }
 
+    public function getAnswerCountAttribute()
+    {
+        return $this->answer->questions()->count();
+    }
+
+    public function getQuestionCountAttribute()
+    {
+        return $this->questions()->count();
+    }
+
 }

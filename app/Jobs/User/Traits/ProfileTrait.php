@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 trait ProfileTrait
 {
 
+    /**
+     * @var string
+     */
     private $uploadType = 'user-profiles';
 
     /**
@@ -55,7 +58,7 @@ trait ProfileTrait
 //                        if ($reply == '')
 //                            $doUpdate = false;
                     }
-                    if ($reply!='')
+                    if ($reply != '')
                         $this->dataArr[] = ['question_id' => $id, 'content' => $reply];
                 }
             }
@@ -73,13 +76,20 @@ trait ProfileTrait
                     if (in_array($type, ['file', 'image', 'video'])) {
                         $reply = $this->doFileUpload($reply, $type, $id);
                     }
-                    $answer->questions()->attach($id, [
-                        'content' => $reply
-                    ]);
+                    if ($reply != '')
+                        $answer->questions()->attach($id, [
+                            'content' => $reply
+                        ]);
                 }
             }
     }
 
+    /**
+     * @param UploadedFile|null $file
+     * @param $type
+     * @param $question_id
+     * @return mixed|UploadedFile
+     */
     protected function doFileUpload(UploadedFile $file = null, $type, $question_id)
     {
         if ($file) {
