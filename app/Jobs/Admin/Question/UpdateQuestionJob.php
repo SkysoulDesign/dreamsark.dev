@@ -3,10 +3,12 @@
 namespace DreamsArk\Jobs\Admin\Question;
 
 use DreamsArk\Events\Admin\Question\QuestionWasUpdated;
+use DreamsArk\Jobs\Admin\Question\Traits\QuestionTrait;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\Master\Question\Type;
-use DreamsArk\Models\Master\Questionnaire;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class UpdateQuestionJob
@@ -15,6 +17,7 @@ use DreamsArk\Models\Master\Questionnaire;
  */
 class UpdateQuestionJob extends Job
 {
+    use QuestionTrait;
     /**
      * @var Question
      */
@@ -29,6 +32,10 @@ class UpdateQuestionJob extends Job
      * @var Type|int|string
      */
     private $type;
+    /**
+     * @var array
+     */
+    private $options;
 
     /**
      * Create a new job instance.
@@ -36,41 +43,53 @@ class UpdateQuestionJob extends Job
      * @param Question $question
      * @param array $fields
      * @param Type|int|string $type
+     * @param array $options
      */
-    public function __construct(Question $question, array $fields, $type)
+    public function __construct(Question $question, array $fields, $type, array $options)
     {
         $this->question = $question;
         $this->fields = $fields;
         $this->type = $type;
+        $this->options = $options['options'];
     }
 
     /**
      * Execute the job.
      *
      * @param Type $type
+     * @param Option $option
      * @return Question
      * @todo Broke, its not updating the type
      * @todo Implement Repository
      */
-    public function handle(Type $type)
+    public function handle(Type $type, Option $option)
     {
         /**
-         * @todo Allow ID or Name to be passed in a cleaner way
+         * Check if Type is initialized otherwise init it
          */
-        if (is_string($this->type))
-            $this->type = $type->whereId($this->type)->first();
+        if (!$this->type instanceof Model)
+            $this->type = $type->where(((int)$this->type ? 'id' : 'name'), $this->type)->firstOrFail();
+//        dd($this->type);
 
-        $this->type->questions()->update($this->fields);
+        $this->question->update($this->fields);
+
+        $this->question->type()->associate($this->type)->save();
+
+        /**
+         * Check if Type is radio/checkbox/select
+         * sync options
+         */
+        $this->doOptionUpdate($option);
 
         /** @var Question $question */
-        $question = $this->question->fresh();
+        $this->question = $this->question->fresh();
 
         /**
          * Announce QuestionWasCreated
          */
-        event(new QuestionWasUpdated($question));
+        event(new QuestionWasUpdated($this->question));
 
-        return $question;
+        return $this->question;
 
     }
 

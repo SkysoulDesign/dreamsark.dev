@@ -3,7 +3,7 @@
 namespace DreamsArk\Jobs\Admin\Question;
 
 use DreamsArk\Events\Admin\Question\QuestionWasCreated;
-use DreamsArk\Jobs\Admin\Question\Option\CreateOptionJob;
+use DreamsArk\Jobs\Admin\Question\Traits\QuestionTrait;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
  */
 class CreateQuestionJob extends Job
 {
+    use QuestionTrait;
     /**
      * @var array
      */
@@ -27,27 +28,36 @@ class CreateQuestionJob extends Job
      * @var Type
      */
     private $type;
+    /**
+     * @var
+     */
+    private $question;
+    /**
+     * @var array
+     */
+    private $options;
 
     /**
      * Create a new job instance.
      *
      * @param array $fields
      * @param Type|int|string $type
+     * @param array $options
      */
-    public function __construct(array $fields, $type)
+    public function __construct(array $fields, $type, array $options = [])
     {
         $this->fields = $fields;
         $this->type = $type;
+        $this->options = $options;
     }
 
     /**
      * Execute the job.
      *
      * @param Type $type
-     * @param Option $option
+     * @return Question
      * @todo Implement Repository
      * @todo change the is_string part to a better and cleaner way of doing it
-     * @return Question
      */
     public function handle(Type $type, Option $option)
     {
@@ -63,58 +73,22 @@ class CreateQuestionJob extends Job
          *
          * @var Question $question
          */
-        $question = $this->type->questions()->create($this->fields);
+        $this->question = $this->type->questions()->create($this->fields);
 
         /**
          * Check if Type is radio/checkbox/select
          * sync options
          */
-        if (in_array($this->type->getAttribute('name'), ['radio', 'checkbox', 'select'])) {
-
-            /**
-             * Get Final Options
-             */
-            $options = $this->getOptions($option);
-
-            /**
-             * Sync Options
-             */
-            $question->options()->sync($options->pluck('id')->toArray());
-
-        }
+        $this->doOptionUpdate($option);
 
         /**
          * Announce QuestionWasCreated
          */
-        event(new QuestionWasCreated($question));
+        event(new QuestionWasCreated($this->question));
 
-        return $question;
-
-    }
-
-    /**
-     * Diff the Request Options from the Options in database
-     *
-     * @param Option $option
-     * @return Collection
-     */
-    private function getOptions(Option $option)
-    {
-
-        $original = array_get($this->fields, 'options', []);
-
-        /** @var Collection $options */
-        $options = $option->whereIn('name', $original)->get(['id', 'name']);
-
-        /**
-         * For each new Key create a new Object
-         */
-        foreach (array_diff($original, $options->pluck('name')->toArray()) as $option) {
-            $options->push(dispatch(new CreateOptionJob($option)));
-        }
-
-        return $options;
+        return $this->question;
 
     }
+
 
 }

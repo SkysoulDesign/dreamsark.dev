@@ -32,7 +32,7 @@ class StoreQuestionRequest extends Request
     {
         return [
             'question' => 'required',
-            'type' => "required|exists:{$type->getTable()},id"
+            'type' => "required|exists:{$type->getTable()},name"
         ];
 
     }

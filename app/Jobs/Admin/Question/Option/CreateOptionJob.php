@@ -37,8 +37,7 @@ class CreateOptionJob extends Job
     public function handle(Option $option)
     {
         return $option->create([
-            'name'         => strtolower($this->name),
-            'display_name' => studly_case($this->name)
+            'name'         => ($this->name),
         ]);
     }
 

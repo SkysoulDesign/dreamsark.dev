@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Master\Question;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class Option
@@ -38,7 +39,17 @@ class Option extends Model
      */
     public function setNameAttribute($name)
     {
-        $this->attributes['name'] = snake_case($name);
+        $this->attributes['name'] = snake_case(studly_case($name));
+    }
+
+    /**
+     * Return Clean Name
+     *
+     * @return string
+     */
+    public function getCleanNameAttribute()
+    {
+        return Str::title(str_replace(['-', '_'], ' ' , $this->name));
     }
 
     /**

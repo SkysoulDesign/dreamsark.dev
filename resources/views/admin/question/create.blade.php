@@ -17,9 +17,17 @@
 
             <div class="field">
                 <label>Type</label>
-                <select id="category" class="ui dropdown " name="type">
+                <select id="question_type" class="ui dropdown " name="type">
                     @foreach($types as $type)
-                        <option value="{{ $type->id }}">{{ $type->display_name }}</option>
+                        <option value="{{ $type->name }}">{{ $type->display_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field options_block">
+                <label>Options</label>
+                <select id="options" class="ui dropdown " name="options[]" multiple>
+                    @foreach($options as $option)
+                        <option value="{{ $option->name }}">{{ $option->cleanName }}</option>
                     @endforeach
                 </select>
             </div>
@@ -35,5 +43,5 @@
 @endsection
 
 @section('pos-scripts')
-    <script type="text/javascript" src="{{ asset('js/question-form.js') }}"></script>
+    @include('admin.question.scripts')
 @endsection

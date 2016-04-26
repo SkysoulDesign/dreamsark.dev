@@ -21,7 +21,6 @@ class CreateQuestionOptionsTable extends Migration
         $this->schema->create('question_options', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('display_name');
         });
 
     }

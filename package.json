@@ -7,13 +7,14 @@
     "gsap": "^1.18.0",
     "howler": "^1.1.28",
     "jquery": "^2.2.1",
+    "laravel-elixir": "^5.0.0",
     "particles.js": "^2.0.0",
     "requirejs": "^2.1.22",
+    "select2": "^4.0.2",
     "snapsvg": "^0.4.0",
     "stats.js": "^1.0.0",
     "three": "^0.73.0",
-    "typescript": "^1.7.5",
-    "laravel-elixir": "^5.0.0"
+    "typescript": "^1.7.5"
   },
   "browserify": {
     "transform": [

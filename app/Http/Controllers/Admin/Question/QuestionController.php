@@ -9,9 +9,10 @@ use DreamsArk\Http\Requests\Admin\Question\UpdateQuestionRequest;
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 use DreamsArk\Jobs\Admin\Question\DeleteQuestionJob;
 use DreamsArk\Jobs\Admin\Question\UpdateQuestionJob;
+use DreamsArk\Models\Master;
+use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\Master\Question\Type;
-use DreamsArk\Models\Master;
 use Illuminate\Http\Request;
 
 /**
@@ -36,12 +37,13 @@ class QuestionController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Type $type
+     * @param Option $option
      * @return \Illuminate\Http\Response
      * @todo Implements Repository
      */
-    public function create(Type $type)
+    public function create(Type $type, Option $option)
     {
-        return view('admin.question.create')->with('types', $type->all());
+        return view('admin.question.create')->with('types', $type->all())->with('options', $option->all());
     }
 
     /**
@@ -66,12 +68,14 @@ class QuestionController extends Controller
     /**
      * @param Question $question
      * @param Type $type
+     * @param Option $option
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @todo Implement Repository
      */
-    public function edit(Question $question, Type $type)
+    public function edit(Question $question, Type $type, Option $option)
     {
-        return view('admin.question.edit', compact('question'))->with('types', $type->all());
+        $questionOptions = $question->options->pluck('id')->toArray();
+        return view('admin.question.edit', compact('question', 'questionOptions'))->with('types', $type->all())->with('options', $option->all());
     }
 
     /**
@@ -85,7 +89,8 @@ class QuestionController extends Controller
         $question = dispatch(new UpdateQuestionJob(
             $question,
             $request->only('question'),
-            $request->get('type')
+            $request->get('type'),
+            $request->only('options')
         ));
 
         return redirect()->back()->withSuccess('Question updated successfully');

@@ -63,7 +63,7 @@
                     @include('partials.field', [])
                 @endif
             @endforeach
-            {!! '</div>' !!}
+            </div>
 
             <div class="ui actions">
                 <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
