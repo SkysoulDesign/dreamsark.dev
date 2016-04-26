@@ -9,6 +9,7 @@
                 <div class="title modern">Account Settings</div>
 
                 <form action="{{ route('user.settings.update') }}" method="post">
+                    {{ method_field('patch') }}√
 
                     {{ csrf_field() }}
 
@@ -19,6 +20,16 @@
                     <div class="form-item">
                         <input disabled name="email" type="email" placeholder="e-mail"
                                value="{{ auth()->user()->email }}">
+                    </div>
+
+                    <div class="form-item">
+                        <input name="password" type="password"
+                               placeholder="Leave blank if don't want to change password"
+                               value="">
+                    </div>
+
+                    <div class="form-item">
+                        <input name="password_confirmation" type="password" value="">
                     </div>
 
                     <div class="title">Linked Accounts</div>

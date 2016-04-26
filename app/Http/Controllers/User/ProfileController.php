@@ -76,7 +76,7 @@ class ProfileController extends Controller
     {
         $user = dispatch(new CreateProfileJob($request->except('profile_id'), $request->user(), request('profile_id')));
 
-        return redirect()->route($this->defaultRoute);
+        return redirect()->route($this->defaultRoute)->withSuccess('Profile created successfully');
     }
 
     /**
@@ -118,7 +118,7 @@ class ProfileController extends Controller
         // $request->files to collect all input[type="file"] as FilesBag
         $user = dispatch(new UpdateProfileJob($request->except('profile_id'), $request->user(), $profile));
 
-        return redirect()->route($this->defaultRoute);
+        return redirect()->back()->withSuccess($profile->display_name.' profile updated successfully');
     }
 
     /**

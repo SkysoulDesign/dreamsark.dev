@@ -1,19 +1,31 @@
 .ui.inverted.transparent.menu {
     background: rgba(27, 28, 29, 0.1);
 }
+
 .ui.transparent.menu, .ui.transparent.menu .item {
     background: none transparent;
     border: 0px;
     box-shadow: none;
 }
 
-.ui.table thead th{
+.ui.table thead th {
     background: none transparent;
     border-bottom: none;
 }
+
 .ui[class*="right aligned"].segment {
     background: none transparent;
 }
+
 .ui.button, .ui.buttons .button, .ui.buttons .or {
     width: auto;
+}
+
+input[type="color"] {
+    -webkit-appearance: square-button;
+    width: 44px;
+    height: 23px;
+    background-color: buttonface;
+    border: 1px solid rgb(169, 169, 169);
+    padding: 1px 2px;
 }
