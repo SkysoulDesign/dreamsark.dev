@@ -40,7 +40,7 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class)->withPivot(['required', 'category'])->orderBy('category');
     }
 
     /**

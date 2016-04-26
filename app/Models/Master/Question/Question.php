@@ -29,13 +29,6 @@ class Question extends Model
     protected $fillable = ['question'];
 
     /**
-     * @var $casts array
-     */
-    protected $casts = [
-        'options' => 'array'
-    ];
-
-    /**
      * Answer Relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany

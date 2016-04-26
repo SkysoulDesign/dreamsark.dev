@@ -11,59 +11,63 @@
 
             <div class="ui tabular menu create-profile">
                 {{--*/ $active=true /*--}}
-                {{--@foreach($categories as $category)
-                    <div class="@if($active){!! 'active ' !!}--}}{{--*/ $active=false /*--}}{{--@endif{!! 'item' !!}"
+                @foreach($categories as $category)
+                    <div class="@if($active){!! 'active ' !!}{{--*/ $active=false /*--}} @endif{!! 'item' !!}"
                          data-tab="{{ $category }}">@lang('forms.'.$category)</div>
-                @endforeach--}}
-                <div class="active  item" data-tab="general">@lang('forms.general')</div>
+                @endforeach
             </div>
             @php
-            $category=''; $active=true;
-            $valueArr = old('questions', '');
-            $formValidateArr = [];
+                $category=''; $active=true;
+                $valueArr = old('questions', '');
+                $formValidateArr = [];
             @endphp
 
-            <div class="ui active tab segment" data-tab="general" style="min-height: 350px;">
             @foreach($profile->questions as $question)
-                @if($question->category!=$category)
+                @if($question->pivot->category!=$category)
                     @if($category!='')
                         {{--*/ $active=false /*--}}
                         {!! '</div>' !!}
                     @endif
-                    {!! '<div class="ui'.($active?' active':'').' tab segment" data-tab="'. $question->category .'" style="min-height: 350px;">' !!}
-                    {{--*/ $category = $question->category /*--}}
+                    {{--*/ $category = $question->pivot->category /*--}}
+                    {!! '<div class="ui'.($active?' active':'').' tab segment" data-tab="'. $category .'" style="min-height: 350px;">' !!}
                 @endif
                 @php
-                $type = $question->type->name or '';
-                $required = $question->is_primary or false;
-
-                $questionIndex = $required ? 'required' : 'general';
-                @endphp
-
-                @php
-                $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($type=='checkbox'?'[]':'');
-                $label = $question->question;
-                $value = @$valueArr[$questionIndex][$type][$question->id];
-                if($required && !in_array($type, ['radio', 'checkbox']))
-                $formValidateArr[$name]='empty';
+                    $attributes = '';
+                    $type = $question->type->name or 'text';
+                    $required = $question->pivot->required or false;
+                    $questionIndex = $required ? 'required' : 'general';
+                    $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($type=='checkbox'?'[]':'');
+                    $label = $question->question;
+                    $value = @$valueArr[$questionIndex][$type][$question->id];
+                    if($required && $type!='checkbox')
+                        $formValidateArr[$name] = in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty';
+                    $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
                 @endphp
 
                 @if($type=='select')
-                    @include( 'partials.select', ['default' => $value, 'collection' => $question->options] )
+                    <div class="field {{ @$required?' required':'' }}">
+                        <label>{{ $label }}</label>
+                        <select class="ui dropdown" name="{{ $name }}">
+                            <option value="">{{ $placeholder or $label }}</option>
+                            @foreach($optionsArr as $key => $value)
+                                <option {{ @$value!='' && $value == $key ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 @elseif(in_array($type, ['radio', 'checkbox']))
-                    @include('partials.checkbox', ['parent_class' => 'grouped', 'options' => $question->options])
+                    @include('partials.checkbox', ['parent_class' => 'grouped', 'options' => $optionsArr])
                 @elseif($type=='textarea')
                     @include('partials.textarea', [])
                 @elseif(in_array($type, ['file', 'image', 'video']))
                     @php $attributes = ($type!='file' ? 'accept="'.$type.'/*"' : ''); @endphp
                     @include('partials.field-multiple', ['label' => $label, 'fields' => [
-                                ['name' => $name, 'type' => 'file'],
+                                ['name' => $name, 'type' => 'file', 'required' => boolval($required)],
                             ], 'class' => 'two'])
                 @else
                     @include('partials.field', [])
                 @endif
             @endforeach
-            </div>
+            {!! '</div>' !!}
 
             <div class="ui actions">
                 <button class="ui submit button primary" type="submit">@lang('forms.create')</button>

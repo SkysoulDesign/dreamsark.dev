@@ -25,6 +25,7 @@ class CreateProfileQuestionTable extends Migration
             $table->integer('question_id')->unsigned()->index();
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->boolean('required');
+            $table->string('category', 50)->nullable()->default('general');
 
         });
     }

@@ -51,7 +51,7 @@ class ProfileController extends Controller
 
     public function getCategories(Profile $profile)
     {
-        return $profile->questions->keyBy('category')->pluck('category');
+        return $profile->questions->pluck('pivot')->pluck('category')->unique()->toArray();
     }
 
     /**

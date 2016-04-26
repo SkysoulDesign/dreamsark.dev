@@ -5,6 +5,7 @@ namespace DreamsArk\Jobs\User\Traits;
 
 use Config;
 use DreamsArk\Jobs\General\UploadFilesJob;
+use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,45 +42,48 @@ trait ProfileTrait
     /**
      * @param $index
      */
-    protected function buildDataArrForUpdate($index)
+    protected function buildDataArrForUpdate(array $currentAnswers, $index)
     {
-        if (isset($this->request['questions'][$index]))
-            foreach ($this->request['questions'][$index] as $type => $data) {
+        if (isset($this->fields['questions'][$index]))
+            foreach ($this->fields['questions'][$index] as $type => $data) {
                 foreach ($data as $id => $reply) {
-                    $doUpdate = true;
+//                    $doUpdate = true;
                     if (in_array($type, ['file', 'image', 'video'])) {
-                        $reply = $this->doFileUpload($reply, $type);
+                        $reply = $this->doFileUpload($reply, $type, $id);
                         if ($reply == '')
-                            $doUpdate = false;
+                            $reply = @$currentAnswers[$id]['content'];
+//                        if ($reply == '')
+//                            $doUpdate = false;
                     }
-                    if ($doUpdate)
+                    if ($reply!='')
                         $this->dataArr[] = ['question_id' => $id, 'content' => $reply];
                 }
             }
     }
 
     /**
+     * @param Answer $answer
      * @param $index
      */
-    protected function doInsertQuestions($index)
+    protected function doInsertQuestions(Answer $answer, $index)
     {
-        if (isset($this->request['questions'][$index]))
-            foreach ($this->request['questions'][$index] as $type => $data) {
+        if (isset($this->fields['questions'][$index]))
+            foreach ($this->fields['questions'][$index] as $type => $data) {
                 foreach ($data as $id => $reply) {
                     if (in_array($type, ['file', 'image', 'video'])) {
-                        $reply = $this->doFileUpload($reply, $type);
+                        $reply = $this->doFileUpload($reply, $type, $id);
                     }
-                    $this->answer->questions()->attach($id, [
+                    $answer->questions()->attach($id, [
                         'content' => $reply
                     ]);
                 }
             }
     }
 
-    protected function doFileUpload(UploadedFile $file = null, $type)
+    protected function doFileUpload(UploadedFile $file = null, $type, $question_id)
     {
         if ($file) {
-            $filePrefix = $this->user->username . '-' . $this->profile->name . '-';
+            $filePrefix = $this->user->username . '-' . $this->profile->name . crypt($question_id) . '-';
             $file = dispatch(new UploadFilesJob($file, Config::get('defaults.profile.' . $type), $filePrefix));
         }
 

@@ -28,7 +28,7 @@ class Type extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'display_name'];
 
     /**
      * Indicates if the model should be timestamped.

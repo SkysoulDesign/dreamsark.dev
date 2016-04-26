@@ -14,7 +14,7 @@
                 <label>@lang('forms.name')</label>
                 <input type="text"
                        name="name"
-                       placeholder="@lang('forms.profile-name-lower')"
+                       placeholder="@lang('forms.profile-name-lower')" readonly
                        value="{{ old('name', $profile->name) }}">
             </div>
             <div class="required field">
@@ -34,14 +34,12 @@
                 @foreach($questions as $question)
                     <div class="field">
                         <div class="ui checkbox">
-                            <input type="checkbox"
-                                   id="{{ "required_$question->id" }}"
-                                   name="questions[]"
-                                   @if($question->selected) checked @endif
-                                   value="{{ $question->id }}">
-                            <label for="{{ "required_$question->id" }}">
-                                Required
-                            </label>
+                            <select name="category[{{ $question->id }}]">
+                                <option value="general">Category</option>
+                                @foreach($category as $key => $value)
+                                    <option value="{{ $key }}"{{ $question->category!=$key?:' selected' }}>{{ $value }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="ui checkbox">
                             <input type="checkbox"
@@ -51,6 +49,16 @@
                                    value="{{ $question->id }}">
                             <label for="{{ "question_$question->id" }}">
                                 {{ $question->question }}
+                            </label>
+                        </div>
+                        <div class="ui checkbox">
+                            <input type="checkbox"
+                                   id="{{ "required_$question->id" }}"
+                                   name="required[]"
+                                   @if($question->required) checked @endif
+                                   value="{{ $question->id }}">
+                            <label for="{{ "required_$question->id" }}">
+                                Required
                             </label>
                         </div>
                     </div>

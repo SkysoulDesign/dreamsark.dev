@@ -29,17 +29,14 @@
 
                 @foreach($questions as $question)
                     <div class="field">
-
                         <div class="ui checkbox">
-                            <input type="checkbox"
-                                   id="{{ "required_$question->id" }}"
-                                   name="required[]"
-                                   value="{{ $question->id }}">
-                            <label for="{{ "required_$question->id" }}">
-                                Required
-                            </label>
+                            <select name="category[{{ $question->id }}]">
+                                <option value="general">Category</option>
+                                @foreach($category as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
                         </div>
-
                         <div class="ui checkbox">
                             <input type="checkbox"
                                    id="{{ "question_$question->id" }}"
@@ -47,6 +44,15 @@
                                    value="{{ $question->id }}">
                             <label for="{{ "question_$question->id" }}">
                                 {{ $question->question }}
+                            </label>
+                        </div>
+                        <div class="ui checkbox">
+                            <input type="checkbox"
+                                   id="{{ "required_$question->id" }}"
+                                   name="required[]"
+                                   value="{{ $question->id }}">
+                            <label for="{{ "required_$question->id" }}">
+                                Required
                             </label>
                         </div>
                     </div>

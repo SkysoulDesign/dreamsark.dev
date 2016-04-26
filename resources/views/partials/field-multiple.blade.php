@@ -1,5 +1,5 @@
-<div class="field {{ $parent_class or '' }}">
-
+{{--*/ $isRequired = @$required && $required?' required':'' /*--}}
+<div class="field {{ $parent_class or '' }}{{ $isRequired }}">
     <label>{{ $label or trans('forms.'.str_replace('_', ' ', $fields[0]['name'])) }}</label>
 
     <div class="{{ $class }} fields">

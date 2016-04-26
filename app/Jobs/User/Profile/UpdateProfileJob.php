@@ -25,7 +25,7 @@ class UpdateProfileJob extends Job
     /**
      * @var array
      */
-    private $request;
+    private $fields;
     /**
      * @var User
      */
@@ -46,13 +46,13 @@ class UpdateProfileJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $request
+     * @param array $fields
      * @param User $user
      * @param $profile
      */
-    public function __construct(array $request, $user, $profile)
+    public function __construct(array $fields, $user, $profile)
     {
-        $this->request = $request;
+        $this->fields = $fields;
         $this->user = $user;
         $this->profile = $profile;
     }
@@ -68,11 +68,12 @@ class UpdateProfileJob extends Job
     public function handle(Answer $answer, User $user, Profile $profile)
     {
         $this->createObjectIfNotExists($user, $profile);
-//        dd($this->profile);
         $answer = $answer->find($this->profile->pivot->answer_id);
-//        dd($answer);
-        $this->buildDataArrForUpdate('required');
-        $this->buildDataArrForUpdate('general');
+        /** @var array $currentAnswers */
+        $currentAnswers = $this->profile->answers->pluck('pivot')->keyBy('question_id')->toArray();
+        $answer->questions()->sync([]);
+        $this->buildDataArrForUpdate($currentAnswers, 'required');
+        $this->buildDataArrForUpdate($currentAnswers, 'general');
         $answer->questions()->sync($this->dataArr);
 
         /**

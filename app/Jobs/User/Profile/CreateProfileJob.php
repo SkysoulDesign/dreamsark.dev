@@ -64,15 +64,8 @@ class CreateProfileJob extends Job
         /** @var Answer $answer */
         $answer = $answer->create(['profile_id' => $this->profile->id]);
 
-        /*foreach ($this->request['questions'] as $id => $reply) {
-
-            $answer->questions()->attach($id, [
-                'content' => $reply
-            ]);
-
-        }*/
-        $this->doInsertQuestions('required');
-        $this->doInsertQuestions('general');
+        $this->doInsertQuestions($answer, 'required');
+        $this->doInsertQuestions($answer, 'general');
 
         $this->user->profiles()->attach($this->profile->id, [
             'answer_id' => $answer->id

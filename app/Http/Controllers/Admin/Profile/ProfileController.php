@@ -11,6 +11,7 @@ use DreamsArk\Jobs\Admin\Profile\DeleteProfileJob;
 use DreamsArk\Jobs\Admin\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Question;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 /**
@@ -24,6 +25,10 @@ class ProfileController extends Controller
      * @var string
      */
     private $defaultRoute = 'admin.profile.index';
+
+    private $category = [
+        'general' => 'General', 'image-gallery' => 'Image Gallery', 'video-gallery' => 'Video Gallery', 'task' => 'Tasks', 'refer' => 'References'
+    ];
 
     /**
      * @param Profile $profile
@@ -44,7 +49,7 @@ class ProfileController extends Controller
      */
     public function create(Question $question)
     {
-        return view('admin.profile.create')->with('questions', $question->all());
+        return view('admin.profile.create')->with('questions', $question->all())->with('category', $this->category);
     }
 
     /**
@@ -60,9 +65,10 @@ class ProfileController extends Controller
          * Create Profile Job
          */
         $profile = dispatch(new CreateProfileJob(
-            $request->except('question'),
+            $request->except(['questions', 'required', 'category']),
             $request->get('questions', []),
-            $request->get('required', [])
+            $request->get('required', []),
+            $request->get('category', [])
         ));
 
         return redirect()
@@ -84,18 +90,23 @@ class ProfileController extends Controller
          * Append ->selected = true to all matching pairs
          */
         $profileQuestions = $profile->questions()->get(['question_id']);
-        $profileQuestions = $profileQuestions->pluck('question_id')->toArray();
+        /** @var Collection $profileQuestions */
+        $profileQuestions = $profileQuestions->pluck('pivot')->keyBy('question_id')->toArray();
+//        $profileQuestions = $profileQuestions->pluck('question_id')->toArray();
 
         $questions = $question->all()->map(function ($question) use ($profileQuestions) {
 
-            if (in_array($question->id, $profileQuestions))
+            if (isset($profileQuestions[$question->id])) {
                 $question->selected = true;
+                $question->required = $profileQuestions[$question->id]['required'];
+                $question->category = $profileQuestions[$question->id]['category'];
+            }
 
             return $question;
 
         });
 
-        return view('admin.profile.edit', compact('profile', 'questions'));
+        return view('admin.profile.edit', compact('profile', 'questions'))->with('category', $this->category);
 
     }
 
@@ -109,7 +120,13 @@ class ProfileController extends Controller
         /**
          * Update Profile Job
          */
-        $profile = $this->dispatch(new UpdateProfileJob($profile, $request->all()));
+        $profile = $this->dispatch(new UpdateProfileJob(
+            $profile,
+            $request->only(['name', 'display_name']),
+            $request->get('questions', []),
+            $request->get('required', []),
+            $request->get('category', [])
+        ));
 
         return redirect()->back()->withSuccess("Profile: $profile->display_name updated successfully");
     }
