@@ -4,7 +4,8 @@ namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Http\Requests\User\Profile\ProfileRequest;
+use DreamsArk\Http\Requests\User\Profile\StoreProfileRequest;
+use DreamsArk\Http\Requests\User\Profile\UpdateProfileRequest;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Answer;
@@ -69,10 +70,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param ProfileRequest $request
+     * @param StoreProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(ProfileRequest $request)
+    public function store(StoreProfileRequest $request)
     {
         $user = dispatch(new CreateProfileJob($request->except('profile_id'), $request->user(), request('profile_id')));
 
@@ -106,16 +107,15 @@ class ProfileController extends Controller
 
     /**
      * @param Profile $profile
-     * @param ProfileRequest $request
+     * @param UpdateProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      * @internal param Profile $profile
      */
-    public function update(Profile $profile, ProfileRequest $request)
+    public function update(Profile $profile, UpdateProfileRequest $request)
     {
         $user = $request->user();
         /** @var Profile|User Profile $profile */
         $profile = $user->profiles->find($profile->id);
-        // $request->files to collect all input[type="file"] as FilesBag
         $user = dispatch(new UpdateProfileJob($request->except('profile_id'), $request->user(), $profile));
 
         return redirect()->back()->withSuccess($profile->display_name.' profile updated successfully');

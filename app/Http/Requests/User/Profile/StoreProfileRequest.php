@@ -9,7 +9,7 @@ use DreamsArk\Models\Master\Profile;
  * Class ProfileRequest
  * @package DreamsArk\Http\Requests\User\Profile
  */
-class ProfileRequest extends Request
+class StoreProfileRequest extends Request
 {
     /**
      * @var
@@ -64,8 +64,8 @@ class ProfileRequest extends Request
         $attributes = [];
         $this->buildProfileObj();
         foreach ($this->profile->questions as $question) {
-            $index = $question->is_primary ? 'required' : 'general';
-            $attributes['questions.' . $index . '.' . $question->type . '.' . $question->id] = $question->question;
+            $index = $question->pivot->required ? 'required' : 'general';
+            $attributes['questions.' . $index . '.' . $question->type->name . '.' . $question->id] = $question->question;
         }
 //        dd($attributes);
         return $attributes;

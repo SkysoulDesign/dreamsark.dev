@@ -35,13 +35,21 @@
                 @php
                     $attributes = '';
                     $type = $question->type->name or 'text';
-                    $required = $question->is_primary or false;
+                    $required = $question->pivot->required or false;
                     $questionIndex = $required ? 'required' : 'general';
-                    $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($type=='checkbox'?'[]':'');
-                    $label = $question->question;
+                    $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']';
                     $value = @$valueArr[$questionIndex][$type][$question->id]?:@$answers[$question->id]['content'];
-                    if($required && !in_array($type, ['radio', 'checkbox']))
-                    $formValidateArr[$name]='empty';
+                    if($type=='checkbox'){
+                        $name .= '[]';
+                        if(!is_array($value))
+                            $value = json_decode($value);
+                    }
+                    $label = $question->question;
+                    if($required && $type!='checkbox'){
+                        $formValidateArr[$name] = ['identifier' => $name, 'rules' => [['type' => in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty']]];
+                        if(in_array($type, ['file', 'image', 'video']))
+                            $formValidateArr[$name]['optional'] = true;
+                    }
                     $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
                 @endphp
 
@@ -56,13 +64,13 @@
                         </select>
                     </div>
                 @elseif(in_array($type, ['radio', 'checkbox']))
-                    @include('partials.checkbox', ['parent_class' => 'grouped', 'default' => [$value], 'options' => $optionsArr])
+                    @include('partials.checkbox', ['parent_class' => 'grouped', 'default' => (is_array($value)?$value:[$value]), 'options' => $optionsArr])
                 @elseif($type=='textarea')
                     @include('partials.textarea', [])
                 @elseif(in_array($type, ['file', 'image', 'video']))
                     @php $attributes = ($type!='file' ? 'accept="'.$type.'/*"' : ''); @endphp
                     @include('partials.field-multiple', ['label' => $label, 'fields' => [
-                                ['name' => $name, 'type' => 'file', 'value' => $value],
+                                ['name' => $name, 'type' => 'file', 'value' => $value, 'required' => boolval($required)],
                             ], 'class' => 'two'])
                 @else
                     @include('partials.field', [])

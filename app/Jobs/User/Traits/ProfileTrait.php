@@ -57,7 +57,8 @@ trait ProfileTrait
                             $reply = @$currentAnswers[$id]['content'];
 //                        if ($reply == '')
 //                            $doUpdate = false;
-                    }
+                    } else if(in_array($type, ['checkbox']))
+                        $reply = json_encode($reply);
                     if ($reply != '')
                         $this->dataArr[] = ['question_id' => $id, 'content' => $reply];
                 }
@@ -75,7 +76,8 @@ trait ProfileTrait
                 foreach ($data as $id => $reply) {
                     if (in_array($type, ['file', 'image', 'video'])) {
                         $reply = $this->doFileUpload($reply, $type, $id);
-                    }
+                    } else if(in_array($type, ['checkbox']))
+                        $reply = json_encode($reply);
                     if ($reply != '')
                         $answer->questions()->attach($id, [
                             'content' => $reply
