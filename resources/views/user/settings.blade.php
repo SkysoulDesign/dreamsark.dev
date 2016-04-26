@@ -9,7 +9,7 @@
                 <div class="title modern">Account Settings</div>
 
                 <form action="{{ route('user.settings.update') }}" method="post">
-                    {{ method_field('patch') }}√
+                    {{ method_field('patch') }}
 
                     {{ csrf_field() }}
 
