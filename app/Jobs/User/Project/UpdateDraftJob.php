@@ -9,7 +9,7 @@ use DreamsArk\Models\User\User;
 
 /**
  * Class UpdateDraftJob
- *
+ * 
  * @package DreamsArk\Jobs\User\Project
  */
 class UpdateDraftJob extends Job
