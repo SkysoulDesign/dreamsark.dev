@@ -55,7 +55,7 @@
 
         @if($project->stage->active && !$project->stage->vote->active && !$project->stage->submission)
             <div class="ui segment">
-                <a id="idea-submit-open" href="#" class="ui primary button">
+                <a id="idea-submit-open" href="javascript:;" class="ui primary button">
                     @lang('idea.submit-your-idea')
                 </a>
             </div>

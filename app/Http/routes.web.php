@@ -226,6 +226,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('projects', UserProjectController::class . '@index')->name('projects');
         $app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
         $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
+        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
         $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
 
         $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');

@@ -2,11 +2,11 @@
 
 namespace DreamsArk\Http\Controllers\Project;
 
-use DreamsArk\Commands\Project\CreateProjectCommand;
 use DreamsArk\Commands\Project\Stages\Review\CreateReviewCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
+use DreamsArk\Jobs\User\Project\CreateProjectJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
@@ -50,7 +50,7 @@ class ProjectController extends Controller
     public function store(ProjectCreation $request)
     {
 
-        $command = new CreateProjectCommand($request->user(), $request->all());
+        $command = new CreateProjectJob($request->user(), $request->all());
         $this->dispatch($command);
 
         return redirect()->route('projects');

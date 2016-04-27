@@ -1,33 +1,30 @@
-<form class="ui form warning error" action="{{ route('user.project.store') }}" method="post">
+<form class="ui form warning error" action="{{ route('user.project.update', $project->id) }}" method="post">
 
     {!! csrf_field() !!}
 
-    @include('partials.field', ['name' => 'name', 'label' => trans('forms.project-name'), 'value' => $project->name])
+    @include('partials.field', ['name' => 'name', 'label' => trans('forms.project-name'), 'value' => old('name', $project->name)])
 
-    @include('partials.select', ['name' => 'type', 'default' => $project->type, 'collection' => ['idea' => 'seeking-idea', 'synapse' => 'seeking-synapse', 'script' => 'seeking-script']])
-
-    @include('partials.textarea', ['name' => 'content', 'label' => trans('forms.description'), 'value' => $project->content])
+    @include('partials.textarea', ['name' => 'content', 'label' => trans('forms.description'), 'value' => old('content', $project->content)])
 
     <div class="ui segments">
 
         <div class="ui segment">
-            @include('partials.field', ['name' => 'reward', 'label' => trans('forms.reward'), 'value' => $project->reward])
+            @include('partials.field', ['name' => 'reward', 'type' => 'number', 'value' => old('reward', $project->reward)])
         </div>
 
     </div>
 
     <div class="ui segment">
-        <?php $dateTimeArr = explode(' ', $project->voting_date); ?>
+        @php $dateTimeArr = explode(' ', $project->voting_date); @endphp
         @include('partials.field-multiple', array(
         'label' => trans('forms.due-date'),
         'fields' => [
-                ['name' => 'voting_date', 'placeholder' => trans('forms.first-name'), 'type' => 'date', 'value' => @$dateTimeArr[0]],
-                ['name' => 'vote_time', 'placeholder' => trans('forms.last-name'), 'type' => 'time', 'value' => @$dateTimeArr[1]]
+                ['name' => 'voting_date', 'placeholder' => trans('forms.first-name'), 'type' => 'date', 'value' => old('voting_date', @$dateTimeArr[0])]
             ],
         'class' => 'two'
         ))
     </div>
 
-    <button class="ui primary button" type="submit">@lang('forms.save')</button>
+    <button class="ui primary button" type="submit" name="save_draft" value="d">@lang('forms.save')</button>
 
 </form>

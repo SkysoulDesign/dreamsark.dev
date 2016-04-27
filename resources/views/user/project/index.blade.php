@@ -23,7 +23,6 @@
                 <thead>
                 <tr>
                     <th>@lang('project.name')</th>
-                    <th>@lang('project.description')</th>
                     <th>@lang('project.reward')</th>
                     <th>@lang('project.vote-date')</th>
                     <th class="right aligned">@lang('project.action')</th>
@@ -33,7 +32,6 @@
                 @foreach($projects as $project)
                     <tr>
                         <td class="collapsing">{{ $project->name }}</td>
-                        <td>{{ $project->content or '-' }}</td>
                         <td>${{ $project->reward or '-' }}</td>
                         <td>{{ $project->voting_date or '-' }}</td>
 
@@ -61,7 +59,6 @@
                 <tr>
                     <th>@lang('project.name')</th>
                     <th>@lang('project.stage')</th>
-                    <th>@lang('project.description')</th>
                     <th>@lang('project.reward')</th>
                     <th>@lang('project.vote-date')</th>
                     <th>@lang('project.status')</th>
@@ -74,7 +71,6 @@
                     <tr>
                         <td class="collapsing">{{ $project->name }}</td>
                         <td>@lang('project.' . $project->type)</td>
-                        <td>{{ $project->stage->content or '-' }}</td>
                         <td>{{ $project->stage->reward or '-'}}</td>
                         <td>{{ $project->stage->vote->open_date or '-' }}</td>
                         <td>{{ $project->stage->submission ? 'Finished' : 'Waiting' }}</td>

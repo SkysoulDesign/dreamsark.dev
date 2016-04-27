@@ -2,12 +2,13 @@
 
 namespace DreamsArk\Http\Controllers\User;
 
-use DreamsArk\Commands\Project\CreateProjectCommand;
-use DreamsArk\Commands\User\Project\CreateDraftCommand;
-use DreamsArk\Commands\User\Project\PublishProjectCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\User\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
+use DreamsArk\Jobs\User\Project\CreateDraftJob;
+use DreamsArk\Jobs\User\Project\CreateProjectJob;
+use DreamsArk\Jobs\User\Project\PublishProjectJob;
+use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Repositories\Project\ProjectRepository;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
@@ -29,9 +30,7 @@ class ProjectController extends Controller
     {
 
         $projects = $userRepository->drafts($request->user()->id);
-//        $publishedProjects = $userRepository->published($request->user()->id);
         $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
-//        $failedProjects = $userRepository->failed($request->user()->id);
         $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
 
         return view('user.project.index', compact('projects', 'publishedProjects', 'failedProjects'));
@@ -46,10 +45,10 @@ class ProjectController extends Controller
      */
     public function store(ProjectCreation $request)
     {
-        if($request->has('save_draft')) {
-            $command = new CreateDraftCommand(null, $request->user(), $request->all(), $request->get('type'));
-        } else if($request->has('save_publish')){
-            $command = new CreateProjectCommand($request->user(), $request->all());
+        if ($request->has('save_draft')) {
+            $command = new CreateDraftJob(null, $request->user(), $request->all());
+        } else if ($request->has('save_publish')) {
+            $command = new CreateProjectJob($request->user(), $request->all());
         }
         $this->dispatch($command);
 
@@ -69,6 +68,20 @@ class ProjectController extends Controller
     }
 
     /**
+     * Draft Update
+     *
+     * @param ProjectCreation $request
+     * @param Draft $draft
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ProjectCreation $request, Draft $draft)
+    {
+        dispatch(new UpdateDraftJob($draft, $request->user(), $request->all()));
+
+        return redirect()->back()->withSuccess('Updated successfully');
+    }
+
+    /**
      * Publish Project
      *
      * @param ProjectPublication $request
@@ -79,7 +92,7 @@ class ProjectController extends Controller
     public function publish(ProjectPublication $request, Draft $draft)
     {
 
-        $command = new PublishProjectCommand($draft);
+        $command = new PublishProjectJob($draft);
         $this->dispatch($command);
 
         return redirect()->back()->with('message', trans('response.project-was-published'));

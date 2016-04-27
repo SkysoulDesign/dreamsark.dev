@@ -2,34 +2,23 @@
 
     {!! csrf_field() !!}
 
-    @include('partials.field', ['name' => 'name', 'label' => trans('forms.project-name')])
+    @include('partials.field', ['name' => 'name', 'label' => trans('forms.project-name'), 'value' => old('name')])
 
-    @include('partials.select', ['name' => 'type', 'collection' => ['idea' => 'seeking-idea', 'synapse' => 'seeking-synapse', 'script' => 'seeking-script']])
-
-    @include('partials.textarea', ['name' => 'content', 'label' => trans('forms.description')])
+    @include('partials.textarea', ['name' => 'content', 'label' => trans('forms.description'), 'value' => old('content')])
 
     <div class="ui segments">
 
         <div class="ui segment">
-            @include('partials.field', ['name' => 'reward', 'type' => 'text'])
+            @include('partials.field', ['name' => 'reward', 'type' => 'number', 'value' => old('reward', 1)])
         </div>
 
     </div>
 
     <div class="ui segment">
-        {{--<div class="field">--}}
-            {{--<label>{{ trans('forms.due-date') }}</label>--}}
-
-            {{--<div class="field">--}}
-                {{--<input id="datetime" name="voting_date" type="text"--}}
-                       {{--data-lang="{{ auth()->user()->settings->language == 'cn' ? 'ch' : 'en' }}">--}}
-            {{--</div>--}}
-
-        {{--</div>--}}
         @include('partials.field-multiple', array(
         'label' => trans('forms.due-date'),
         'fields' => [
-                ['name' => 'voting_date', 'placeholder' => trans('forms.first-name'), 'type' => 'date']/*,
+                ['name' => 'voting_date', 'placeholder' => trans('forms.first-name'), 'type' => 'date', 'value' => old('voting_date')]/*,
                 ['name' => 'vote_time', 'placeholder' => trans('forms.last-name'), 'type' => 'time']*/
             ],
         'class' => 'two'
@@ -44,7 +33,7 @@
 
     <script>
         document.getElementById('publish').addEventListener('click', function () {
-            $form = this.parentElement;
+            $form        = this.parentElement;
             $form.action = '{{ route('project.store')  }}';
             $form.submit();
         })

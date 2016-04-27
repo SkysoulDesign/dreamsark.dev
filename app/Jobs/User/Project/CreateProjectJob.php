@@ -1,25 +1,21 @@
 <?php
 
-namespace DreamsArk\Commands\Project;
+namespace DreamsArk\Jobs\User\Project;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
 
 /**
- * Class CreateProjectCommand
+ * Class CreateProjectJob
  * @package DreamsArk\Commands\Project
  */
-class CreateProjectCommand extends Command implements SelfHandling
+class CreateProjectJob extends Job
 {
 
-    use DispatchesJobs;
 
     /**
      * @var array
@@ -32,7 +28,7 @@ class CreateProjectCommand extends Command implements SelfHandling
     private $user;
 
     /**
-     * CreateProjectCommand constructor.
+     * CreateProjectJob constructor.
      * @param User $user
      * @param array $fields
      */
@@ -46,13 +42,12 @@ class CreateProjectCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ProjectRepositoryInterface $repository
-     * @param Dispatcher $event
      * @return Project
      */
-    public function handle(ProjectRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ProjectRepositoryInterface $repository)
     {
 
-        $type = $this->fields->get('type', 'idea');
+        $type = 'idea';
 
         /**
          * Create Project
@@ -62,7 +57,7 @@ class CreateProjectCommand extends Command implements SelfHandling
         /**
          * Announce ProjectWasCreated
          */
-        $event->fire(new ProjectWasCreated($this->user, $project, $this->fields));
+        event(new ProjectWasCreated($this->user, $project, $this->fields));
 
     }
 }

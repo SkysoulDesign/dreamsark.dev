@@ -1,21 +1,17 @@
 <?php
 
-namespace DreamsArk\Commands\User\Project;
+namespace DreamsArk\Jobs\User\Project;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Commands\Project\CreateProjectCommand;
 use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
 use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
+use DreamsArk\Commands\User\Project\DeleteDraftCommand;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
-class PublishProjectCommand extends Command implements SelfHandling
+class PublishProjectJob extends Job
 {
 
-    use DispatchesJobs;
 
     /**
      * @var Draft
@@ -36,9 +32,8 @@ class PublishProjectCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ProjectRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(ProjectRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ProjectRepositoryInterface $repository)
     {
 
         /**
@@ -51,10 +46,10 @@ class PublishProjectCommand extends Command implements SelfHandling
              */
             switch ($this->draft->type) {
                 case 'synapse':
-                    $this->dispatch(new CreateSynapseCommand($project->id, $this->draft->toArray()));
+                    dispatch(new CreateSynapseCommand($project->id, $this->draft->toArray()));
                     break;
                 case 'script':
-                    $this->dispatch(new CreateScriptCommand($project->id, $this->draft->toArray()));
+                    dispatch(new CreateScriptCommand($project->id, $this->draft->toArray()));
                     break;
             }
 
@@ -63,8 +58,8 @@ class PublishProjectCommand extends Command implements SelfHandling
             /**
              * Create Project
              */
-            $command = new CreateProjectCommand($this->draft->user, $this->draft->toArray());
-            $this->dispatch($command);
+            $command = new CreateProjectJob($this->draft->user, $this->draft->toArray());
+            dispatch($command);
 
         }
 
@@ -72,7 +67,7 @@ class PublishProjectCommand extends Command implements SelfHandling
          * Delete Draft
          */
         $command = new DeleteDraftCommand($this->draft);
-        $this->dispatch($command);
+        dispatch($command);
 
     }
 }

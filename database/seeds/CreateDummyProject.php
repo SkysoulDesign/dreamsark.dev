@@ -1,7 +1,6 @@
 <?php
 
 use DreamsArk\Commands\Committee\Project\PublishProjectCommand;
-use DreamsArk\Commands\Project\CreateProjectCommand;
 use DreamsArk\Commands\Project\Expenditure\BackProjectCommand;
 use DreamsArk\Commands\Project\Expenditure\EnrollProjectCommand;
 use DreamsArk\Commands\Project\Review\ReviewCreateCast;
@@ -14,6 +13,7 @@ use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\SubmitCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
+use DreamsArk\Jobs\User\Project\CreateProjectJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Expenditures\Position;
 use DreamsArk\Models\Project\Project;
@@ -48,7 +48,7 @@ class CreateDummyProject extends Seeder
             'reward'  => '5'
         );
 
-        $this->dispatch(new CreateProjectCommand($user, $fields));
+        $this->dispatch(new CreateProjectJob($user, $fields));
 
         /**
          * Get Project

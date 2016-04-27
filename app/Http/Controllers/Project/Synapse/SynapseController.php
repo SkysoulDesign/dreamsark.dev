@@ -2,13 +2,12 @@
 
 namespace DreamsArk\Http\Controllers\Project\Synapse;
 
-use DreamsArk\Commands\Project\CreateProjectCommand;
 use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
+use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
-use DreamsArk\Http\Requests;
-use DreamsArk\Http\Controllers\Controller;
 
 class SynapseController extends Controller
 {

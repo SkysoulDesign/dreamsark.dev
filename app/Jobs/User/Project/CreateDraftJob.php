@@ -1,15 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\User\Project;
+namespace DreamsArk\Jobs\User\Project;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\User\Project\DraftWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\Draft\DraftRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class CreateDraftCommand extends Command implements SelfHandling
+class CreateDraftJob extends Job
 {
 
     /**
@@ -52,9 +50,8 @@ class CreateDraftCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param DraftRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(DraftRepositoryInterface $repository, Dispatcher $event)
+    public function handle(DraftRepositoryInterface $repository)
     {
         /**
          * Create Idea Draft
@@ -64,7 +61,7 @@ class CreateDraftCommand extends Command implements SelfHandling
         /**
          * Announce DraftWasCreated
          */
-        $event->fire(new DraftWasCreated($draft));
+        event(new DraftWasCreated($draft));
 
     }
 }
