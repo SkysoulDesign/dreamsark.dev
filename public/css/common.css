@@ -36,4 +36,11 @@ input[type="color"] {
     color: #9f3a38;
     box-shadow: none;
 }
-.ui.tab { width: 100%; }
+
+.ui.tab {
+    width: 100%;
+}
+
+.ui.modal video::-webkit-media-controls-fullscreen-button {
+    display: none !important;
+}

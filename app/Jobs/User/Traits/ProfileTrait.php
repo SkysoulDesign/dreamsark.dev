@@ -53,8 +53,8 @@ trait ProfileTrait
                 foreach ($data as $id => $reply) {
                     if (in_array($type, ['file', 'image', 'video'])) {
                         $reply = $this->doFileUpload($reply, $type, $id);
-                        if ($reply == '')
-                            $reply = $currentAnswers[$id]['content'] or '';
+                        if ($reply == '' && isset($currentAnswers[$id]))
+                            $reply = $currentAnswers[$id]['content'];
                     } else if(in_array($type, ['checkbox']))
                         $reply = json_encode($reply);
                     if ($reply != '')
@@ -93,7 +93,7 @@ trait ProfileTrait
     protected function doFileUpload(UploadedFile $file = null, $type, $question_id)
     {
         if ($file) {
-            $filePrefix = $this->user->username . '-' . $this->profile->name . crypt($question_id) . '-';
+            $filePrefix = $this->user->username . '-' . $this->profile->name . str_replace(['/', '\/'], '', crypt($question_id)) . '-';
             $file = dispatch(new UploadFilesJob($file, Config::get('defaults.profile.' . $type), $filePrefix));
         }
 
