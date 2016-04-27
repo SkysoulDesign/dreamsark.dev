@@ -8,7 +8,6 @@ use DreamsArk\Jobs\User\Traits\ProfileTrait;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
-use Symfony\Component\HttpFoundation\FileBag;
 
 /**
  * Class UpdateProfileJob
@@ -34,14 +33,6 @@ class UpdateProfileJob extends Job
      * @var
      */
     private $profile;
-    /**
-     * @var
-     */
-    private $answer;
-    /**
-     * @var FileBag
-     */
-    private $file;
 
     /**
      * Create a new job instance.

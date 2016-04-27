@@ -43,6 +43,7 @@ trait ProfileTrait
     }
 
     /**
+     * @param array $currentAnswers
      * @param $index
      */
     protected function buildDataArrForUpdate(array $currentAnswers, $index)
@@ -50,13 +51,10 @@ trait ProfileTrait
         if (isset($this->fields['questions'][$index]))
             foreach ($this->fields['questions'][$index] as $type => $data) {
                 foreach ($data as $id => $reply) {
-//                    $doUpdate = true;
                     if (in_array($type, ['file', 'image', 'video'])) {
                         $reply = $this->doFileUpload($reply, $type, $id);
                         if ($reply == '')
-                            $reply = @$currentAnswers[$id]['content'];
-//                        if ($reply == '')
-//                            $doUpdate = false;
+                            $reply = $currentAnswers[$id]['content'] or '';
                     } else if(in_array($type, ['checkbox']))
                         $reply = json_encode($reply);
                     if ($reply != '')
