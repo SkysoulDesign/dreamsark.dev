@@ -47,13 +47,29 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="ui primary button" target="question-{{ $question->id }}">
-                            <i class="play icon"></i>
+                        <div class="ui button modalLink" target="question-{{ $question->id }}">
+                            <i class="{!! $question->type->name=='image'?'photo':'film' !!} icon"></i>
                             View
                         </div>
                     @elseif($question->type->name=='file')
-                        <a class="ui primary button" target="_blank" href="/{{ Config::get('defaults.profile.file').$content }}">
-                            <i class="external icon"></i>View File</a>
+                        <a class="ui button" target="_blank"
+                           href="/{{ Config::get('defaults.profile.file').$content }}">
+                            <i class="file icon"></i>View File</a>
+                    @elseif($question->type->name=='color')
+                        <input type="color" value="{{ $content }}" disabled />
+                    @elseif(in_array($question->type->name, ['checkbox', 'radio', 'select']))
+                        @php
+                            if($question->type->name == 'checkbox')
+                                $value = json_decode($content);
+                            else
+                                $value = [$content];
+                            $options =  $option->getDataByType($value, ['name']);
+                        @endphp
+                        <ul class="ui list">
+                            @foreach($options as $opt)
+                                <li class="item">{{ $opt->cleanName }}</li>
+                            @endforeach
+                        </ul>
                     @else
                         {{ $content }}
                     @endif
@@ -70,7 +86,7 @@
 @section('pos-scripts')
     <script>
         $(document).ready(function () {
-            $(document.body).on('click', '.ui.primary.button', function () {
+            $(document.body).on('click', '.ui.button.modalLink', function () {
                 $('.ui.modal.' + $(this).attr('target'))
                         .modal('setting', 'transition', 'fade up').modal('show')
                 ;

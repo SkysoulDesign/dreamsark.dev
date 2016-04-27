@@ -10,6 +10,7 @@ use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use Illuminate\Http\Request;
@@ -135,12 +136,14 @@ class ProfileController extends Controller
     /**
      * @param Profile $profile
      * @param Request $request
+     * @param Option $option
+     * @return
      */
-    public function show(Profile $profile, Request $request)
+    public function show(Profile $profile, Request $request, Option $option)
     {
         $categories = $this->getCategories($profile);
         $answers = $this->getProfileAnswers($request->user(), $profile->id);
-        return view('user.profile.show', compact('profile', 'categories', 'answers'));
+        return view('user.profile.show', compact('profile', 'categories', 'answers', 'option'));
     }
 
 }

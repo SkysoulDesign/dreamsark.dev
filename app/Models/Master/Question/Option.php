@@ -49,7 +49,7 @@ class Option extends Model
      */
     public function getCleanNameAttribute()
     {
-        return Str::title(str_replace(['-', '_'], ' ' , $this->name));
+        return Str::title(str_replace(['-', '_'], ' ', $this->name));
     }
 
     /**
@@ -60,6 +60,18 @@ class Option extends Model
     public function questions()
     {
         return $this->belongsToMany(Question::class, 'question_option');
+    }
+
+    /**
+     * Can be used in Blade files
+     * @param array $data
+     * @param array $fetchColumns
+     * @param string $type
+     * @return mixed
+     */
+    public function getDataByType(array $data, array $fetchColumns = ['*'], $type = 'id')
+    {
+        return $this->whereIn($type, $data)->get($fetchColumns);
     }
 
 }
