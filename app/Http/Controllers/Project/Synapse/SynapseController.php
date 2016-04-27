@@ -9,6 +9,11 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
+/**
+ * Class SynapseController
+ *
+ * @package DreamsArk\Http\Controllers\Project\Synapse
+ */
 class SynapseController extends Controller
 {
 

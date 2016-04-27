@@ -8,6 +8,11 @@ use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Http\Request;
 
+/**
+ * Class SynapseController
+ *
+ * @package DreamsArk\Http\Controllers\User\Project
+ */
 class SynapseController extends Controller
 {
 

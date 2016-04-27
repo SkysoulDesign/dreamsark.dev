@@ -8,6 +8,11 @@ use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Http\Request;
 
+/**
+ * Class ScriptController
+ *
+ * @package DreamsArk\Http\Controllers\User\Project
+ */
 class ScriptController extends Controller
 {
 

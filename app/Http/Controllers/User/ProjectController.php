@@ -15,6 +15,11 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
+/**
+ * Class ProjectController
+ *
+ * @package DreamsArk\Http\Controllers\User
+ */
 class ProjectController extends Controller
 {
 

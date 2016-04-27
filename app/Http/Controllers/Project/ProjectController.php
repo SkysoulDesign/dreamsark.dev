@@ -13,6 +13,11 @@ use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
+/**
+ * Class ProjectController
+ *
+ * @package DreamsArk\Http\Controllers\Project
+ */
 class ProjectController extends Controller
 {
     public function __construct()

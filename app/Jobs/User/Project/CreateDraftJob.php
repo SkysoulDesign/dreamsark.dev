@@ -7,6 +7,11 @@ use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\Draft\DraftRepositoryInterface;
 
+/**
+ * Class CreateDraftJob
+ *
+ * @package DreamsArk\Jobs\User\Project
+ */
 class CreateDraftJob extends Job
 {
 

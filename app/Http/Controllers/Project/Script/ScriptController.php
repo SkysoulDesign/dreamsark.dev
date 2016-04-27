@@ -9,6 +9,11 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
+/**
+ * Class ScriptController
+ *
+ * @package DreamsArk\Http\Controllers\Project\Script
+ */
 class ScriptController extends Controller
 {
     /**

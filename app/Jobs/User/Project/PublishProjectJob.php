@@ -9,6 +9,11 @@ use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 
+/**
+ * Class PublishProjectJob
+ *
+ * @package DreamsArk\Jobs\User\Project
+ */
 class PublishProjectJob extends Job
 {
 
