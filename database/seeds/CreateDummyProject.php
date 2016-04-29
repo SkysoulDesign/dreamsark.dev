@@ -6,14 +6,14 @@ use DreamsArk\Commands\Project\Expenditure\EnrollProjectCommand;
 use DreamsArk\Commands\Project\Review\ReviewCreateCast;
 use DreamsArk\Commands\Project\Review\ReviewCreateCrew;
 use DreamsArk\Commands\Project\Review\ReviewCreateExpense;
-use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
-use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
 use DreamsArk\Commands\Project\Stages\Voting\CloseVotingCommand;
 use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\SubmitCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
-use DreamsArk\Jobs\User\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
+use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Expenditures\Position;
 use DreamsArk\Models\Project\Project;
@@ -67,7 +67,7 @@ class CreateDummyProject extends Seeder
             'content' => 'Now i will become a Synapse',
             'reward'  => '15'
         );
-        $this->dispatch(new CreateSynapseCommand($project->id, $fields));
+        $this->dispatch(new CreateSynapseJob($project->id, $fields));
 
         /**
          * Get Project
@@ -86,7 +86,7 @@ class CreateDummyProject extends Seeder
             'content' => 'Now i will become a Synapse',
             'reward'  => '500'
         );
-        $this->dispatch(new CreateScriptCommand($project->id, $fields));
+        $this->dispatch(new CreateScriptJob($project->id, $fields));
 
         /**
          * Get Project

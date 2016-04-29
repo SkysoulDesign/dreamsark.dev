@@ -3,9 +3,9 @@
 namespace DreamsArk\Commands\Project\Stages\Voting;
 
 use DreamsArk\Commands\Command;
-use DreamsArk\Commands\Project\FailIdeaSynapseScriptStageCommand;
 use DreamsArk\Events\Project\Vote\VotingHasFailed;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
+use DreamsArk\Jobs\Project\FailIdeaSynapseScriptStageJob;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
@@ -67,7 +67,7 @@ class CloseVotingCommand extends Command implements SelfHandling
             /**
              * Fail The project stage
              */
-            $this->dispatch(new FailIdeaSynapseScriptStageCommand($this->vote->votable));
+            $this->dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
 
             /**
              * Announce Vote has Failed

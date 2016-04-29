@@ -14,6 +14,7 @@ use DreamsArk\Events\Project\CrewWasAdded;
 use DreamsArk\Events\Project\IdeaWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Events\Project\RewardStageWasUpdated;
 use DreamsArk\Events\Project\Script\ScriptWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
@@ -30,6 +31,7 @@ use DreamsArk\Events\Translation\TranslationsWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
+use DreamsArk\Listeners\Project\ChargeRewardFromUser;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateVote;
@@ -38,6 +40,7 @@ use DreamsArk\Listeners\Project\RefundCreator;
 use DreamsArk\Listeners\Project\RefundUsers;
 use DreamsArk\Listeners\Project\RegisterVotingWinner;
 use DreamsArk\Listeners\Project\UpdateProjectStage;
+use DreamsArk\Listeners\Project\UpdateRewardForStage;
 use DreamsArk\Listeners\Project\Vote\AutomaticallySendReviewToCommittee;
 use DreamsArk\Listeners\Project\Vote\DeactivateVoting;
 use DreamsArk\Listeners\Project\Vote\QueueCloseVotingCommand;
@@ -62,6 +65,7 @@ class EventServiceProvider extends ServiceProvider
          * Project
          */
         ProjectWasCreated::class => [
+            ChargeRewardFromUser::class,
             CreateProjectStage::class
         ],
 
@@ -70,21 +74,25 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         IdeaWasCreated::class => [
-            ChargeUser::class,
+            UpdateRewardForStage::class,
             CreateVote::class,
             UpdateProjectStage::class
         ],
 
         SynapseWasCreated::class => [
-            ChargeUser::class,
+            UpdateRewardForStage::class,
             CreateVote::class,
             UpdateProjectStage::class
         ],
 
         ScriptWasCreated::class => [
-            ChargeUser::class,
+            UpdateRewardForStage::class,
             CreateVote::class,
             UpdateProjectStage::class
+        ],
+
+        RewardStageWasUpdated::class => [
+            ChargeUser::class,
         ],
 
         FundWasCreated::class => [

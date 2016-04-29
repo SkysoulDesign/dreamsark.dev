@@ -13,12 +13,12 @@
         </div>
 
         <div class="ui pointing secondary tabular menu">
-            <a class="item active" data-tab="unpublished">@lang('project.unpublished')</a>
-            <a class="item" data-tab="published">@lang('project.published')</a>
+            <a class="item" data-tab="unpublished" style="display: none;">@lang('project.unpublished')</a>
+            <a class="active item" data-tab="published">@lang('project.published')</a>
             <a class="item" data-tab="failed">@lang('project.failed')</a>
         </div>
 
-        <div class="ui tab active" data-tab="unpublished">
+        <div class="ui tab" data-tab="unpublished" style="display: none;">
             <table class="ui unstackable table">
                 <thead>
                 <tr>
@@ -36,8 +36,8 @@
                         <td>{{ $project->voting_date or '-' }}</td>
 
                         <td class="right aligned">
-                            <form action="{{ route('user.project.publish', $project->id) }}">
-                                <a href="{{ route('user.project.edit', $project->id) }}" class="ui primary button">
+                            <form action="{{ route('project.publish', $project->id) }}">
+                                <a href="{{ route('project.edit', $project->id) }}" class="ui primary button">
                                     @lang('project.edit')
                                 </a>
                                 <button type="submit" class="ui olive button">
@@ -53,7 +53,7 @@
             </table>
         </div>
 
-        <div class="ui tab" data-tab="published">
+        <div class="ui active tab" data-tab="published">
             <table class="ui unstackable table">
                 <thead>
                 <tr>
@@ -71,7 +71,7 @@
                     <tr>
                         <td class="collapsing">{{ $project->name }}</td>
                         <td>@lang('project.' . $project->type)</td>
-                        <td>{{ $project->stage->reward or '-'}}</td>
+                        <td>{{ $project->stage->reward->amount or '-'}}</td>
                         <td>{{ $project->stage->vote->open_date or '-' }}</td>
                         <td>{{ $project->stage->submission ? 'Finished' : 'Waiting' }}</td>
 

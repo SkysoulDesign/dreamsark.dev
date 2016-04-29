@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateScriptsTable extends Migration
 {
@@ -14,7 +14,7 @@ class CreateScriptsTable extends Migration
     {
         Schema::create('scripts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id')->unsigned()->index();
+            $table->integer('project_id')->unsigned()->index()->unique();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('content');
             $table->string('reward');

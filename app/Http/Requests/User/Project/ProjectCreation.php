@@ -24,10 +24,20 @@ class ProjectCreation extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'reward' => 'required|integer|min:1',
-            'content' => 'required',
+            'name'        => 'required',
+            'reward.*'    => 'sometimes|integer|min:1',
+            'reward.idea' => 'required',
+            'content'     => 'required',
             'voting_date' => 'required|date|after:today',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'reward.idea'    => 'Reward for Idea',
+            'reward.synapse' => 'Reward for Synapse',
+            'reward.script'  => 'Reward for Script',
         ];
     }
 }

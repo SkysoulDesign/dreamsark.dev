@@ -10,7 +10,7 @@
 //
 //use Carbon\Carbon;
 //use DreamsArk\Commands\Project\ChargeUserCommand;
-//use DreamsArk\Commands\Project\Stages\Idea\CreateIdeaCommand;
+//use DreamsArk\Jobs\Project\Stages\Idea\CreateIdeaJob;
 //use DreamsArk\Commands\Project\Stages\Voting\CreateVotingCommand;
 //use DreamsArk\Events\Project\IdeaWasCreated;
 //use DreamsArk\Models\Project\Stages\Idea;
@@ -33,9 +33,9 @@
 //    public function it_creates_a_new_idea()
 //    {
 //
-//        $this->dispatch(new CreateIdeaCommand(1, []));
+//        $this->dispatch(new CreateIdeaJob(1, []));
 //
-////        $command = new CreateIdeaCommand(1, [['user' => 'hello world']]);
+////        $command = new CreateIdeaJob(1, [['user' => 'hello world']]);
 //
 ////        $this->expectsJobs(ChargeUserCommand::class);
 ////        $this->expectsJobs(CreateVotingCommand::class);

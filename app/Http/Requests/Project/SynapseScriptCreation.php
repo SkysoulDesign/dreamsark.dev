@@ -3,13 +3,14 @@
 namespace DreamsArk\Http\Requests\Project;
 
 use DreamsArk\Http\Requests\Request;
+use DreamsArk\Models\Project\Project;
 
 /**
- * Class ProjectCreation
+ * Class SynapseScriptCreation
  *
  * @package DreamsArk\Http\Requests\Project
  */
-class ProjectCreation extends Request
+class SynapseScriptCreation extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,24 +29,16 @@ class ProjectCreation extends Request
      */
     public function rules()
     {
-        return [
-            'name'        => 'required',
-            'reward.*'    => 'sometimes|integer|min:1',
-            'reward.idea' => 'required',
-            'content'     => 'required',
-            'voting_date' => 'required|date',// |after:today
-        ];
-    }
+        /** @var Project $project */
+        $project = $this->project;
+        $minValue = 1;
+        if (isset($project->getNextStageReward[0]))
+            $minValue = $project->getNextStageReward[0]->amount;
 
-    /**
-     * @return array
-     */
-    public function attributes()
-    {
         return [
-            'reward.idea'    => 'Reward for Idea',
-            'reward.synapse' => 'Reward for Synapse',
-            'reward.script'  => 'Reward for Script',
+            'content'     => 'required',
+            'reward'      => 'required|integer|min:' . $minValue,
+            'voting_date' => 'required|date',// |after:today
         ];
     }
 }

@@ -5,7 +5,7 @@
     <div class="column">
 
         <div class="ui segment">
-            @include('forms.script-creation', $project)
+            @include('forms.project-edition', $project)
         </div>
 
     </div>

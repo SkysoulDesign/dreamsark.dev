@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Project\Stages;
 
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\RewardableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
 use DreamsArk\Models\Traits\VotableTrait;
 use DreamsArk\Repositories\Project\Script\ScriptRepositoryInterface;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Script extends Model
 {
 
-    use ProjectableTrait, VotableTrait, SubmissibleTrait;
+    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait;
 
     /**
      * Defines the minimum of submission this model

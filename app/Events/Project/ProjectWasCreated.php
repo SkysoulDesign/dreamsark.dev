@@ -28,17 +28,24 @@ class ProjectWasCreated extends Event
     public $fields;
 
     /**
+     * @var array
+     */
+    public $rewards;
+
+    /**
      * Create a new event instance.
      *
      * @param User $user
      * @param Project $project
      * @param Collection $fields
+     * @param array $rewards
      */
-    public function __construct(User $user, Project $project, Collection $fields)
+    public function __construct(User $user, Project $project, Collection $fields, array $rewards)
     {
         $this->user = $user;
         $this->project = $project;
         $this->fields = $fields;
+        $this->rewards = $rewards;
     }
 
     /**

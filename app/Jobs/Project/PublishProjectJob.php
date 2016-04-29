@@ -1,11 +1,11 @@
 <?php
 
-namespace DreamsArk\Jobs\User\Project;
+namespace DreamsArk\Jobs\Project;
 
-use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
-use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
 use DreamsArk\Commands\User\Project\DeleteDraftCommand;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
+use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 
@@ -51,10 +51,10 @@ class PublishProjectJob extends Job
              */
             switch ($this->draft->type) {
                 case 'synapse':
-                    dispatch(new CreateSynapseCommand($project->id, $this->draft->toArray()));
+                    dispatch(new CreateSynapseJob($project->id, $this->draft->toArray()));
                     break;
                 case 'script':
-                    dispatch(new CreateScriptCommand($project->id, $this->draft->toArray()));
+                    dispatch(new CreateScriptJob($project->id, $this->draft->toArray()));
                     break;
             }
 
@@ -63,7 +63,7 @@ class PublishProjectJob extends Job
             /**
              * Create Project
              */
-            $command = new CreateProjectJob($this->draft->user, $this->draft->toArray());
+            $command = new CreateProjectJob($this->draft->user, $this->draft->toArray(), ['idea' => $this->draft->reward]);
             dispatch($command);
 
         }

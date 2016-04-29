@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Project\Stages;
 
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\RewardableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
 use DreamsArk\Models\Traits\VotableTrait;
 use DreamsArk\Presenters\Presenter;
@@ -10,9 +11,14 @@ use DreamsArk\Presenters\Presenter\IdeaPresenter;
 use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Idea
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Idea extends Model
 {
-    use ProjectableTrait, VotableTrait, SubmissibleTrait;
+    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait;
 
     /**
      * Defines the minimum of submission this model

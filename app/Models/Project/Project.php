@@ -16,6 +16,11 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
+/**
+ * Class Project
+ *
+ * @package DreamsArk\Models\Project
+ */
 class Project extends Model
 {
     use PresentableTrait;
@@ -56,6 +61,13 @@ class Project extends Model
      */
     public function scopeActive($query)
     {
+        $query->whereHas('synapse', function ($query) {
+            $query->select('id')->where('active', '=', true);
+        })->orWhereHas('idea', function ($query) {
+            $query->select('id')->where('active', '=', true);
+        })->orWhereHas('script', function ($query) {
+            $query->select('id')->where('active', '=', true);
+        });
         return $query->where('active', true);
     }
 
@@ -86,6 +98,22 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get Reward Relation of Next Stage
+     * @return mixed
+     */
+    public function getNextStageReward($type = ''){
+        return $this->rewards()->where('rewardable_type', ($type?:get_class($this->stage->next())) );
+    }
+
+    /**
+     * Relation to ProjectReward Table
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rewards(){
+        return $this->hasMany(Reward::class);
     }
 
     /**

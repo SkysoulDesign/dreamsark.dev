@@ -1,15 +1,18 @@
 <?php
 
-namespace DreamsArk\Commands\Project;
+namespace DreamsArk\Jobs\Project;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\StageHasFailed;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
+use DreamsArk\Jobs\Job;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 
-class FailIdeaSynapseScriptStageCommand extends Command implements SelfHandling
+/**
+ * Class FailIdeaSynapseScriptStageJob
+ *
+ * @package DreamsArk\Jobs\Project
+ */
+class FailIdeaSynapseScriptStageJob extends Job
 {
     /**
      * @var Model
@@ -29,10 +32,9 @@ class FailIdeaSynapseScriptStageCommand extends Command implements SelfHandling
     /**
      * Execute the command.
      *
-     * @param Dispatcher $event
      * @param Application $app
      */
-    public function handle(Dispatcher $event, Application $app)
+    public function handle(Application $app)
     {
 
         /**
@@ -43,7 +45,7 @@ class FailIdeaSynapseScriptStageCommand extends Command implements SelfHandling
         /**
          * Announce StageHasFailed
          */
-        $event->fire(new StageHasFailed($this->model, $this->model->user, $this->model->reward));
+        event(new StageHasFailed($this->model, $this->model->user, $this->model->reward->amount));
 
     }
 }

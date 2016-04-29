@@ -8,7 +8,7 @@
         </div>
 
         <div class="ui  segment">
-            @lang('vote.reward'): {{ $model->reward }}
+            @lang('vote.reward'): {{ $model->reward->amount }}
         </div>
 
         <div class="ui center aligned segment">

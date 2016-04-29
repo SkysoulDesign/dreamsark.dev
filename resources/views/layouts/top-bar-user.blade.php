@@ -12,6 +12,7 @@
         <div class="menu">
             <div class="header"></div>
             <a class="item" href="{{ route('projects') }}">@lang('navbar.discover-project')</a>
+            <a class="item" href="{{ route('votes') }}">@lang('navbar.vote')</a>
             <a class="item" href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a>
             <a class="item" href="{{ route('project.create') }}">@lang('navbar.create-project')</a>
         </div>

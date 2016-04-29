@@ -5,9 +5,9 @@ namespace DreamsArk\Http\Controllers\User;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\User\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
+use DreamsArk\Jobs\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\User\Project\CreateDraftJob;
-use DreamsArk\Jobs\User\Project\CreateProjectJob;
-use DreamsArk\Jobs\User\Project\PublishProjectJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Repositories\Project\ProjectRepository;
@@ -34,7 +34,7 @@ class ProjectController extends Controller
     public function index(UserRepositoryInterface $userRepository, ProjectRepositoryInterface $projectRepository, Request $request)
     {
 
-        $projects = $userRepository->drafts($request->user()->id);
+        $projects = [];// $userRepository->drafts($request->user()->id);
         $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
         $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
 
@@ -51,9 +51,10 @@ class ProjectController extends Controller
     public function store(ProjectCreation $request)
     {
         if ($request->has('save_draft')) {
+            // TODO: Temporarily disabled feature of Save Draft;
             $command = new CreateDraftJob(null, $request->user(), $request->all());
         } else if ($request->has('save_publish')) {
-            $command = new CreateProjectJob($request->user(), $request->all());
+            $command = new CreateProjectJob($request->user(), $request->except('reward'), $request->get('reward'));
         }
         $this->dispatch($command);
 

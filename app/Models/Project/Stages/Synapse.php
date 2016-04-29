@@ -3,15 +3,21 @@
 namespace DreamsArk\Models\Project\Stages;
 
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\RewardableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
 use DreamsArk\Models\Traits\VotableTrait;
 use DreamsArk\Repositories\Project\Synapse\SynapseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Synapse
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Synapse extends Model
 {
 
-    use ProjectableTrait, VotableTrait, SubmissibleTrait;
+    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait;
 
     /**
      * Defines the minimum of submission this model

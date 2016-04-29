@@ -41,8 +41,6 @@ use DreamsArk\Http\Controllers\Session\SessionController;
 use DreamsArk\Http\Controllers\Translation\TranslationController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\ProfileController;
-use DreamsArk\Http\Controllers\User\Project\ScriptController as UserScriptController;
-use DreamsArk\Http\Controllers\User\Project\SynapseController as UserSynapseController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
@@ -130,12 +128,14 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Project Controller
      */
     $app->get('projects', ProjectController::class . '@index')->name('projects');
-    $app->get('project/create', ProjectController::class . '@create')->name('project.create');
+    /*$app->get('project/create', ProjectController::class . '@create')->name('project.create');
     $app->get('project/show/{project}', ProjectController::class . '@show')->name('project.show');
     $app->post('project/store', ProjectController::class . '@store')->name('project.store');
     $app->get('project/next/create/{project}', ProjectController::class . '@next')->name('project.next.create');
-
     $app->post('project/{project}/store', ProjectController::class . '@projectStore')->name('project.project.store');
+    $app->get('project/edit/{draft}', ProjectController::class . '@edit')->name('project.edit');
+    $app->post('project/update/{draft}', ProjectController::class . '@update')->name('project.update');
+    $app->get('project/publish/{draft}', ProjectController::class . '@publish')->name('project.publish');*/
 
     /**
      * Fund Controller
@@ -153,11 +153,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->post('project/enroll/store/{expenditure}', EnrollController::class . '@store')->name('project.enroll.store');
     $app->post('project/unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('project.unroll.store');
 
-    /**
-     * Project Synapse Controller
-     */
-    $app->post('project/synapse/store/{project}', SynapseController::class . '@store')->name('project.synapse.store');
-    $app->get('project/synapse/show/{project}', SynapseController::class . '@show')->name('project.synapse.show');
+
 
     $app->group(['prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
         /**
@@ -177,10 +173,24 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
 
     $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+        $app->get('create', ProjectController::class . '@create')->name('create');
+        $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+        $app->post('store', ProjectController::class . '@store')->name('store');
+        $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
+        $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
+        $app->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
+        $app->post('update/{draft}', ProjectController::class . '@update')->name('update');
+        $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+        /**
+         * Project Synapse Controller
+         */
+        $app->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
+        $app->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
+        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
         /**
          * Project Script Controller
          */
-        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+//        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
         $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
 
         /**
@@ -224,13 +234,13 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
         $app->get('projects', UserProjectController::class . '@index')->name('projects');
-        $app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
+        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
         $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
         $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
         $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
 
         $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
-        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');
+        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
 
     });
 

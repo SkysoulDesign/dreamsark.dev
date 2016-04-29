@@ -21,7 +21,7 @@
             @if(!$project->stage->submission)
 
                 <div class="ui secondary segment">
-                    <h3>@lang('idea.reward') ${{ $project->stage->reward }}</h3>
+                    <h3>@lang('idea.reward') ${{ $project->stage->reward->amount }}</h3>
                 </div>
 
                 <div class="ui segment">

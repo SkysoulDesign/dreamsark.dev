@@ -22,6 +22,8 @@ class ChargeUser
         /**
          * Deduct Coins from the user
          */
-        $this->dispatch(new ChargeUserCommand($event->model->user, $event->model->reward));
+//        $this->dispatch(new ChargeUserCommand($event->model->user, $event->model->reward));
+        if ($event->reward > 0)
+            $this->dispatch(new ChargeUserCommand($event->user, $event->reward));
     }
 }

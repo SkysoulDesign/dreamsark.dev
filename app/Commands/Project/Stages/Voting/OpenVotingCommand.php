@@ -4,8 +4,8 @@ namespace DreamsArk\Commands\Project\Stages\Voting;
 
 use DreamsArk\Commands\Command;
 use DreamsArk\Commands\Project\FailFundingStageCommand;
-use DreamsArk\Commands\Project\FailIdeaSynapseScriptStageCommand;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
+use DreamsArk\Jobs\Project\FailIdeaSynapseScriptStageJob;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
@@ -59,7 +59,7 @@ class OpenVotingCommand extends Command implements SelfHandling
             /**
              * Fail this project
              */
-            $this->dispatch(new FailIdeaSynapseScriptStageCommand($this->vote->votable));
+            $this->dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
 
             return;
         }

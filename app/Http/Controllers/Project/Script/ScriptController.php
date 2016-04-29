@@ -2,9 +2,10 @@
 
 namespace DreamsArk\Http\Controllers\Project\Script;
 
-use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Http\Requests\Project\SynapseScriptCreation;
+use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
@@ -33,12 +34,12 @@ class ScriptController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Project $project
-     * @param  \Illuminate\Http\Request $request
+     * @param SynapseScriptCreation|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Project $project, Request $request)
+    public function store(Project $project, SynapseScriptCreation $request)
     {
-        $this->dispatch(new CreateScriptCommand($project->id, $request->all()));
+        $this->dispatch(new CreateScriptJob($project->id, $request->all()));
         return redirect()->route('projects');
     }
 }

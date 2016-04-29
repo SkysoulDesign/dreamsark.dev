@@ -3,44 +3,33 @@
 namespace DreamsArk\Events\Project;
 
 use DreamsArk\Events\Event;
-use DreamsArk\Models\Project\Stages\Idea;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * Class IdeaWasCreated
- *
- * @package DreamsArk\Events\Project
- */
-class IdeaWasCreated extends Event
+class RewardStageWasUpdated extends Event
 {
     use SerializesModels;
-
     /**
-     * @var Idea
+     * @var Model
      */
-    public $model;
-
-    /**
-     * @var string
-     */
-    public $voting_date;
+    private $model;
     /**
      * @var
      */
-    public $chargeAmount;
+    private $chargeAmount;
 
     /**
      * Create a new event instance.
      *
-     * @param Idea $idea
-     * @param string $voting_date
+     * @param Model $model
      * @param $chargeAmount
      */
-    public function __construct(Idea $idea, $voting_date, $chargeAmount)
+    public function __construct(Model $model, $chargeAmount)
     {
-        $this->model = $idea;
-        $this->voting_date = $voting_date;
+        $this->model = $model;
+        $this->user = $this->model->user;
         $this->chargeAmount = $chargeAmount;
+        $this->reward = $chargeAmount;
     }
 
     /**

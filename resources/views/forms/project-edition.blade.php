@@ -1,4 +1,4 @@
-<form class="ui form warning error" action="{{ route('user.project.update', $project->id) }}" method="post">
+<form class="ui form warning error" action="{{ route('project.update', $project->id) }}" method="post">
 
     {!! csrf_field() !!}
 
@@ -9,7 +9,7 @@
     <div class="ui segments">
 
         <div class="ui segment">
-            @include('partials.field', ['name' => 'reward', 'type' => 'number', 'value' => old('reward', $project->reward)])
+            @include('partials.field', ['name' => 'reward[idea]', 'type' => 'number', 'value' => old('reward', $project->reward)])
         </div>
 
     </div>

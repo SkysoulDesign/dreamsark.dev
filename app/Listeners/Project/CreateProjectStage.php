@@ -2,13 +2,9 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Project\Stages\Idea\CreateIdeaCommand;
-use DreamsArk\Commands\Project\Stages\Script\CreateScriptCommand;
-use DreamsArk\Commands\Project\Stages\Synapse\CreateSynapseCommand;
 use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Jobs\Project\Stages\Idea\CreateIdeaJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CreateProjectStage
 {
@@ -26,22 +22,22 @@ class CreateProjectStage
          * Create Project Idea
          */
         if ($event->project->type == 'idea') {
-            $this->dispatch(new CreateIdeaCommand($event->project->id, $event->fields->all()));
+            $this->dispatch(new CreateIdeaJob($event->project->id, $event->fields->all(), $event->rewards['idea']));
         }
 
         /**
          * Create Project Synapse
          */
-        if ($event->project->type == 'synapse') {
-            $this->dispatch(new CreateSynapseCommand($event->project->id, $event->fields->all()));
-        }
+        /*if ($event->project->type == 'synapse') {
+            $this->dispatch(new CreateSynapseJob($event->project->id, $event->fields->all()));
+        }*/
 
         /**
          * Create Project Script
          */
-        if ($event->project->type == 'script') {
-            $this->dispatch(new CreateScriptCommand($event->project->id, $event->fields->all()));
-        }
+        /*if ($event->project->type == 'script') {
+            $this->dispatch(new CreateScriptJob($event->project->id, $event->fields->all()));
+        }*/
 
     }
 }
