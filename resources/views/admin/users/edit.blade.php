@@ -13,7 +13,7 @@
             <div class="required field">
                 <label>Role</label>
                 <div class="ui fluid search selection dropdown">
-                    <input type="hidden" name="role_id" value="{{ old('role_id', 'user') }}">
+                    <input type="hidden" name="role_id" value="{{ old('role_id', $user->roles[0]->name) }}">
                     <i class="dropdown icon"></i>
                     <div class="default text">Select User Role</div>
                     <div class="menu">

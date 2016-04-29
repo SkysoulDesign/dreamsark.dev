@@ -7,7 +7,6 @@ use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Admin\User\StoreUserRequest;
 use DreamsArk\Http\Requests\Admin\User\UpdateUserRequest;
 use DreamsArk\Jobs\Admin\User\DeleteUserJob;
-use DreamsArk\Jobs\DeleteItemByObjectJob;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
 use DreamsArk\Models\User\Role;
@@ -89,7 +88,7 @@ class UserController extends Controller
      */
     public function edit(User $user, Role $role)
     {
-        return view('admin.users.edit', compact('user'))->with('roles', $role->all());
+        return view('admin.users.edit')->with('user', $user)->with('roles', $role->all());
     }
 
     /**
@@ -101,6 +100,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+
         /**
          * Update User
          */
@@ -110,6 +110,7 @@ class UserController extends Controller
         ));
 
         return redirect()->route('admin.user.index')->withSuccess("User: $user->username updated successfully.");
+
     }
 
     /**
@@ -134,6 +135,7 @@ class UserController extends Controller
         $this->dispatch(new DeleteUserJob($user));
 
         return redirect()->route('admin.user.index')->withSuccess("User: $user->username was deleted successfully");
+
     }
 
 }

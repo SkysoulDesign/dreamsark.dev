@@ -118,12 +118,6 @@ class EventServiceProvider extends ServiceProvider
             AutomaticallySendReviewToCommittee::class,
         ],
 
-        UserWasCreated::class => [
-            AppendDefaultSettings::class,
-            GiveUserAnEmptyBag::class,
-            AttachUserRole::class,
-            LogUserIn::class,
-        ],
 
         ReviewWasCreated::class => [
             UpdateProjectStage::class
@@ -133,7 +127,19 @@ class EventServiceProvider extends ServiceProvider
             DeductUserCoins::class
         ],
 
-        UserWasUpdated::class => [],
+        /**
+         * User Create Job
+         */
+        UserWasCreated::class          => [
+            AppendDefaultSettings::class,
+            GiveUserAnEmptyBag::class,
+            AttachUserRole::class,
+            LogUserIn::class,
+        ],
+
+        UserWasUpdated::class => [
+            AttachUserRole::class
+        ],
 
         IdeaWasSubmitted::class    => [],
         UserHasBiddenAnIdea::class => [],

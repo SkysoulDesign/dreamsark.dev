@@ -2,6 +2,7 @@
 
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Session\CreateUserJob;
+use DreamsArk\Models\User\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
@@ -21,7 +22,7 @@ class CreateUserJobTest extends TestCase
     public function user_should_comes_with_default_settings()
     {
 
-        $roles = $this->allRoles();
+        $roles = Role::all();
 
         $roles->each(function ($role) {
             $user = $this->createUser([], $role);
@@ -73,7 +74,7 @@ class CreateUserJobTest extends TestCase
     public function user_should_have_a_role_assigned_to_his_account()
     {
 
-        $roles = $this->allRoles();
+        $roles = Role::all();
 
         $roles->each(function ($role) {
             $user = $this->createUser([], $role);

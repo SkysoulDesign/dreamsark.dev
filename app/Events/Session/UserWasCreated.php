@@ -7,6 +7,11 @@ use DreamsArk\Models\User\Role;
 use DreamsArk\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class UserWasCreated
+ *
+ * @package DreamsArk\Events\Session
+ */
 class UserWasCreated extends Event
 {
     use SerializesModels;
@@ -17,16 +22,15 @@ class UserWasCreated extends Event
     public $user;
 
     /**
-     * @var string|Role
+     * @var Role|int|string
      */
     public $role;
 
     /**
      * Create a new event instance.
-     
-     * 
-*@param User $user
-     * @param string|Role $role
+     *
+     * @param User $user
+     * @param Role|int|string $role
      */
     public function __construct(User $user, $role)
     {

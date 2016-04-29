@@ -5,10 +5,13 @@ use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * Class CreateQuestionJobTest
+ */
 class CreateQuestionJobTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, TypeTrait;
 
     /**
      * A basic test example.
@@ -18,14 +21,9 @@ class CreateQuestionJobTest extends TestCase
     public function it_creates_a_new_question()
     {
 
-        $data = [
-            'question'   => 'Whats your nickname?',
-            'category'   => 'general',
-            'type'       => 'text',
-            'is_primary' => 1
-        ];
+        $type = $this->createType();
 
-        $question = dispatch(new CreateQuestionJob($data));
+        $question = dispatch(new CreateQuestionJob('What is your name?', $type));
 
         $this->assertInstanceOf(Question::class, $question);
 

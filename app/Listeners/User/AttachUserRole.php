@@ -2,7 +2,10 @@
 
 namespace DreamsArk\Listeners\User;
 
+use DreamsArk\Events\Event;
 use DreamsArk\Events\Session\UserWasCreated;
+use DreamsArk\Events\Session\UserWasUpdated;
+use DreamsArk\Models\User\Role;
 use DreamsArk\Repositories\User\Role\RoleRepositoryInterface;
 
 /**
@@ -18,34 +21,59 @@ class AttachUserRole
     private $repository;
 
     /**
+     * @var Role
+     */
+    private $role;
+
+    /**
      * Create the event listener.
      *
      * @param RoleRepositoryInterface $repository
+     * @param Role $role
      */
-    public function __construct(RoleRepositoryInterface $repository)
+    public function __construct(RoleRepositoryInterface $repository, Role $role)
     {
         $this->repository = $repository;
+        $this->role = $role;
     }
 
     /**
      * Handle the event.
      *
-     * @param  UserWasCreated $event
+     * @param UserWasCreated|UserWasUpdated|Event $event
      * @return void
      */
-    public function handle(UserWasCreated $event)
+    public function handle(Event $event)
     {
 
         /**
-         * if role is string fetch it as a Model
+         * if role is string or int fetch it as a Model
          */
-        if (is_string($event->role))
-            $event->role = $this->repository->find($event->role);
+        $role = $this->getRole($event);
 
         /**
          * Attach Role To User
          */
-        $this->repository->attach($event->user->getAuthIdentifier(), $event->role);
+        $event->user->roles()->sync([$role->id]);
+
+    }
+
+    /**
+     * @param UserWasCreated|UserWasUpdated|Event $event
+     * @return Role
+     */
+    public function getRole(Event $event)
+    {
+
+        /**
+         * If Instance of Role, Return it
+         */
+        if ($event->role instanceof Role)
+            return $event->role;
+
+        $field = (int)$event->role ? 'id' : 'name';
+
+        return $this->role->where($field, $event->role)->firstOrFail();
 
     }
 

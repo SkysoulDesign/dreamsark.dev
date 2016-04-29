@@ -1,6 +1,5 @@
 <?php
 use DreamsArk\Jobs\User\Role\CreateRoleJob;
-use DreamsArk\Models\User\Role;
 
 /**
  * Class UserTrait
@@ -12,21 +11,20 @@ trait RoleTrait
      * Create a user
      *
      * @param array $params
-     * @param string $role
      * @return \DreamsArk\Models\User\User $user
      */
-    public function createRole($role = null, $params = [])
+    public function createRole($params = [])
     {
 
         $faker = app(Faker\Generator::class);
 
         $data = array_merge([
-            'username'     => $role ?: $faker->userAgent,
-            'display_name' => studly_case($role ?: $faker->userAgent),
+            'name'         => $name = $faker->word,
+            'display_name' => studly_case($name),
             'description'  => $faker->sentence,
         ], $params);
 
-        return dispatch(new CreateRoleJob($data));
+        return dispatch(new CreateRoleJob($data['name'], $data['display_name'], $data['description']));
 
     }
 
@@ -35,9 +33,9 @@ trait RoleTrait
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function allRoles()
-    {
-        return Role::all();
-    }
+//    public function allRoles()
+//    {
+//        return Role::all();
+//    }
 
 }

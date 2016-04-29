@@ -4,6 +4,7 @@ namespace DreamsArk\Jobs\Session;
 
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\User\Role;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 
 /**
@@ -19,7 +20,7 @@ class CreateUserJob extends Job
     private $fields;
 
     /**
-     * @var string
+     * @var Role|int|string
      */
     private $role;
 
@@ -27,7 +28,7 @@ class CreateUserJob extends Job
      * Create a new job instance.
      *
      * @param array $fields
-     * @param string $role
+     * @param Role|int|string $role
      */
     public function __construct(array $fields, $role = 'user')
     {

@@ -31,7 +31,7 @@ class StoreUserRequest extends Request
 
         return [
             'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
+            'email'    => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
         ];
 

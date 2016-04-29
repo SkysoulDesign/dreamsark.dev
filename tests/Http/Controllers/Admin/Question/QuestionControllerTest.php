@@ -14,6 +14,8 @@ class QuestionControllerTest extends TestCase
     use DatabaseTransactions, UserTrait, TypeTrait, OptionTrait, QuestionTrait;
 
     /**
+     * It Displays the Index page
+     *
      * @test
      */
     public function it_displays_the_index_page()
