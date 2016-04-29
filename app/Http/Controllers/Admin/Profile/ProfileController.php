@@ -21,10 +21,6 @@ use Illuminate\Http\Request;
  */
 class ProfileController extends Controller
 {
-    /**
-     * @var string
-     */
-    private $defaultRoute = 'admin.profile.index';
 
     /**
      * @var array

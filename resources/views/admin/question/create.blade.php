@@ -19,7 +19,7 @@
                 <label>Type</label>
                 <select id="question_type" class="ui dropdown " name="type">
                     @foreach($types as $type)
-                        <option value="{{ $type->name }}">{{ $type->display_name }}</option>
+                        <option value="{{ $type->id }}">{{ $type->display_name }}</option>
                     @endforeach
                 </select>
             </div>

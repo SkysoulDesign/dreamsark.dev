@@ -12,11 +12,14 @@
     });
     /**
      * show or hide Options Block depends on Question Type
+     * @todo fix sending values of options
      */
     function toggleOptionBlock() {
-        var typeVal        = $('#question_type').val();
-        var skipOptionsArr = ['select', 'radio', 'checkbox'];
-        if (skipOptionsArr.indexOf(typeVal) !== -1) {
+
+        let selectedValue = document.querySelector("#question_type").selectedOptions[0].text.toLowerCase(),
+            options       = ['select', 'radio', 'checkbox'];
+
+        if (options.indexOf(selectedValue) !== -1) {
             $('.options_block').show();
         } else
             $('.options_block').hide();

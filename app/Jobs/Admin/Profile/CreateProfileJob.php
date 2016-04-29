@@ -27,6 +27,7 @@ class CreateProfileJob extends Job
      * @var array
      */
     private $required;
+
     /**
      * @var array
      */
@@ -57,7 +58,6 @@ class CreateProfileJob extends Job
     public function handle(Profile $profile)
     {
 
-
         /**
          * FLip keys and append required pivot if key is find in the required params
          * Example: [1=> [required=>true]] translates to question $id 1 is required
@@ -68,7 +68,7 @@ class CreateProfileJob extends Job
 
         foreach (array_flip($this->questions) as $id => $index) {
             $questions[$id] = ['required' => (in_array($id, $this->required) ? true : false)];
-            $questions[$id]['category'] = @$this->category[$id];
+            $questions[$id]['category'] = $this->category[$id];
         }
 
         /**

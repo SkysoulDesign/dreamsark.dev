@@ -3,13 +3,9 @@
 namespace DreamsArk\Jobs\Admin\Question;
 
 use DreamsArk\Events\Admin\Question\QuestionWasCreated;
-use DreamsArk\Jobs\Admin\Question\Traits\QuestionTrait;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\Master\Question\Type;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
  * Class CreateQuestionJob
@@ -18,20 +14,17 @@ use Illuminate\Support\Collection;
  */
 class CreateQuestionJob extends Job
 {
-    use QuestionTrait;
-    /**
-     * @var array
-     */
-    private $fields;
 
     /**
-     * @var Type
+     * @var string
+     */
+    private $field;
+
+    /**
+     * @var Type|int
      */
     private $type;
-    /**
-     * @var
-     */
-    private $question;
+
     /**
      * @var array
      */
@@ -40,13 +33,13 @@ class CreateQuestionJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $fields
-     * @param Type|int|string $type
+     * @param string $field
+     * @param Type|int $type
      * @param array $options
      */
-    public function __construct(array $fields, $type, array $options = [])
+    public function __construct($field, $type, $options = [])
     {
-        $this->fields = $fields;
+        $this->field = $field;
         $this->type = $type;
         $this->options = $options;
     }
@@ -54,41 +47,33 @@ class CreateQuestionJob extends Job
     /**
      * Execute the job.
      *
-     * @param Type $type
+     * @param Question $question
      * @return Question
      * @todo Implement Repository
-     * @todo change the is_string part to a better and cleaner way of doing it
      */
-    public function handle(Type $type, Option $option)
+    public function handle(Question $question)
     {
-
-        /**
-         * Check if Type is initialized otherwise init it
-         */
-        if (!$this->type instanceof Model)
-            $this->type = $type->where(((int)$this->type ? 'id' : 'name'), $this->type)->firstOrFail();
 
         /**
          * Create Question
          *
          * @var Question $question
          */
-        $this->question = $this->type->questions()->create($this->fields);
+        $question = $question->type()
+            ->associate($this->type)
+            ->fill([
+                'question' => $this->field
+            ]);
 
-        /**
-         * Check if Type is radio/checkbox/select
-         * sync options
-         */
-        $this->doOptionUpdate($option);
+        $question->save();
 
         /**
          * Announce QuestionWasCreated
          */
-        event(new QuestionWasCreated($this->question));
+        event(new QuestionWasCreated($question, $this->type, $this->options));
 
-        return $this->question;
+        return $question;
 
     }
-
 
 }

@@ -2,6 +2,8 @@
 
 namespace DreamsArk\Providers;
 
+use DreamsArk\Events\Admin\Question\QuestionWasCreated;
+use DreamsArk\Events\Admin\Question\QuestionWasUpdated;
 use DreamsArk\Events\Bag\UserCoinsWasDeducted;
 use DreamsArk\Events\Committee\Project\FundWasCreated;
 use DreamsArk\Events\Idea\IdeaWasSubmitted;
@@ -27,6 +29,7 @@ use DreamsArk\Events\Session\UserWasUpdated;
 use DreamsArk\Events\Translation\TranslationsWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
+use DreamsArk\Listeners\Admin\Question\SyncOptions;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateVote;
@@ -143,9 +146,20 @@ class EventServiceProvider extends ServiceProvider
         ExpenditurePositionWasCreated::class => [],
 
         /** User Profiles related */
-        UserProfileWasCreated::class => [],
-        UserProfileWasUpdated::class => [],
+        UserProfileWasCreated::class         => [],
+        UserProfileWasUpdated::class         => [],
 
+
+        /**
+         * Questions
+         */
+        QuestionWasCreated::class            => [
+            SyncOptions::class
+        ],
+
+        QuestionWasUpdated::class => [
+            SyncOptions::class
+        ]
 
     ];
 

@@ -18,7 +18,7 @@
                 <label>Type</label>
                 <select id="question_type" class="ui dropdown" name="type">
                     @foreach($types as $type)
-                        <option {{ $question->type->id !== $type->id ? : 'selected' }} value="{{ $type->name }}">
+                        <option {{ $question->type->id !== $type->id ? : 'selected' }} value="{{ $type->id }}">
                             {{ $type->present()->name }}
                         </option>
                     @endforeach
@@ -29,7 +29,10 @@
                 <label>Options</label>
                 <select id="options" class="ui dropdown " name="options[]" multiple>
                     @foreach($options as $option)
-                        <option {{ !in_array($option->id,$questionOptions) ? : 'selected' }} value="{{ $option->name }}">{{ $option->cleanName }}</option>
+
+                        <option {{ !in_array($option->id,$question->options->pluck('id')->toArray()) ? : 'selected' }} value="{{ $option->name }}">
+                            {{ $option->cleanName }}
+                        </option>
                     @endforeach
                 </select>
             </div>

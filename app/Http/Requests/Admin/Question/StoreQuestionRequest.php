@@ -27,12 +27,13 @@ class StoreQuestionRequest extends Request
      *
      * @param Type $type
      * @return array
+     * @todo include validation of the options
      */
     public function rules(Type $type)
     {
         return [
             'question' => 'required',
-            'type' => "required|exists:{$type->getTable()},name"
+            'type' => "required|exists:{$type->getTable()},id"
         ];
 
     }

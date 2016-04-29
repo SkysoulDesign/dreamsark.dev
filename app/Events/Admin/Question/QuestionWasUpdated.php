@@ -4,8 +4,8 @@ namespace DreamsArk\Events\Admin\Question;
 
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Master\Question\Question;
+use DreamsArk\Models\Master\Question\Type;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
  * Class QuestionWasUpdated
@@ -22,13 +22,27 @@ class QuestionWasUpdated extends Event
     public $question;
 
     /**
+     * @var Type|int
+     */
+    public $type;
+
+    /**
+     * @var array
+     */
+    public $options;
+
+    /**
      * Create a new event instance.
      *
      * @param Question $question
+     * @param Type|int $type
+     * @param array $options
      */
-    public function __construct(Question $question)
+    public function __construct(Question $question, $type, array $options)
     {
         $this->question = $question;
+        $this->type = $type;
+        $this->options = $options;
     }
 
     /**

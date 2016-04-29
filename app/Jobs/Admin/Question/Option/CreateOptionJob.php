@@ -37,7 +37,7 @@ class CreateOptionJob extends Job
     public function handle(Option $option)
     {
         return $option->create([
-            'name'         => ($this->name),
+            'name' => $this->name,
         ]);
     }
 

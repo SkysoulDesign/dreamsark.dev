@@ -30,7 +30,7 @@ class QuestionController extends Controller
      */
     public function index(Question $question)
     {
-        return view('admin.question.index')->with('questions', $question->all());
+        return view('admin.question.index')->with('questions', $question->all()->load('type'));
     }
 
     /**
@@ -43,7 +43,9 @@ class QuestionController extends Controller
      */
     public function create(Type $type, Option $option)
     {
-        return view('admin.question.create')->with('types', $type->all())->with('options', $option->all());
+        return view('admin.question.create')
+            ->with('types', $type->all())
+            ->with('options', $option->all());
     }
 
     /**
@@ -56,9 +58,10 @@ class QuestionController extends Controller
         /**
          * Create Question
          */
-        $question = $this->dispatch(new CreateQuestionJob(
-            $request->all(),
-            $request->get('type')
+        $this->dispatch(new CreateQuestionJob(
+            $request->get('question'),
+            $request->get('type'),
+            $request->get('options', [])
         ));
 
         return redirect()->route('admin.question.index')->withSuccess('Question created successfully');
@@ -74,8 +77,10 @@ class QuestionController extends Controller
      */
     public function edit(Question $question, Type $type, Option $option)
     {
-        $questionOptions = $question->options->pluck('id')->toArray();
-        return view('admin.question.edit', compact('question', 'questionOptions'))->with('types', $type->all())->with('options', $option->all());
+        return view('admin.question.edit')
+            ->with('question', $question->load('options'))
+            ->with('types', $type->all())
+            ->with('options', $option->all());
     }
 
     /**
@@ -86,11 +91,14 @@ class QuestionController extends Controller
     public function update(UpdateQuestionRequest $request, Question $question)
     {
 
-        $question = dispatch(new UpdateQuestionJob(
+        /**
+         * Update Job
+         */
+        $this->dispatch(new UpdateQuestionJob(
             $question,
-            $request->only('question'),
+            $request->get('question'),
             $request->get('type'),
-            $request->only('options')
+            $request->get('options')
         ));
 
         return redirect()->back()->withSuccess('Question updated successfully');
@@ -110,9 +118,13 @@ class QuestionController extends Controller
          */
         $this->authorize('delete-question', $request->user());
 
+        /**
+         * Delete Question
+         */
         $this->dispatch(new DeleteQuestionJob($question));
 
         return redirect()->route('admin.question.index')->withSuccess('Question deleted successfully');
+    
     }
 
 }
