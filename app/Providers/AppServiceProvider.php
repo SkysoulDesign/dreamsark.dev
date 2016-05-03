@@ -4,6 +4,11 @@ namespace DreamsArk\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class AppServiceProvider
+ *
+ * @package DreamsArk\Providers
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,4 +30,5 @@ class AppServiceProvider extends ServiceProvider
     {
 
     }
+    
 }
