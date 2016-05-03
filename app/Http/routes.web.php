@@ -21,6 +21,7 @@ use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
 use DreamsArk\Http\Controllers\Bag\CoinController;
+use DreamsArk\Http\Controllers\Committee\CommitteeController;
 use DreamsArk\Http\Controllers\Committee\Project\CastController;
 use DreamsArk\Http\Controllers\Committee\Project\CrewController;
 use DreamsArk\Http\Controllers\Committee\Project\ExpenditureController;
@@ -156,19 +157,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
 
     $app->group(['prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
-        /**
-         * Committee Staff Controller
-         */
-        $app->get('create/staff/{review}', StaffController::class . '@create')->name('project.staff.create');
-        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
 
-        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
-        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
-        $app->post('project/expense/store/{project}', ExpenseController::class . '@store')->name('project.expense.store');
-
-        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
-
-        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
     });
 
 
@@ -197,16 +186,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
          * Project Take Controller
          */
 //        $app->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
-
-        /**
-         * Project Cast Controller
-         */
-        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
-
-        /**
-         * Project Crew Controller
-         */
-        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
 
         /**
          * Project Pledge Controller
@@ -273,7 +252,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Admin Section Routes
      */
-    $app->group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
+    $app->group(['middleware' => ['auth', 'can:see-admin-section'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
 
         $app->get('/', AdminController::class . '@index')->name('index');
 
@@ -322,6 +301,37 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 //        $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
 
 
+    });
+
+    /**
+     * Committee Section Routes
+     */
+    $app->group(['middleware' => ['auth', 'can:see-committee-section'], 'prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
+        $app->get('/', CommitteeController::class . '@index')->name('index')->middleware();
+        $app->get('project/review', CommitteeController::class . '@projectsInReviewStage')->name('project.review.list');
+        /**
+         * Committee Staff Controller
+         */
+        $app->get('create/staff/{review}', StaffController::class . '@create')->name('project.staff.create');
+        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
+
+        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
+        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
+        $app->post('project/expense/store/{project}', ExpenseController::class . '@store')->name('project.expense.store');
+
+        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
+
+        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
+
+        /**
+         * Project Cast Controller
+         */
+        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
+
+        /**
+         * Project Crew Controller
+         */
+        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
     });
 
 });

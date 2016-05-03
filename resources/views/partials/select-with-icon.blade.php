@@ -1,5 +1,5 @@
 <div class="field {{ $parent_class or '' }} @if(@$errors && $errors->has($name)) error @endif{{ @$required?' required':'' }}">
-    {{--*/ $label = $label?:trans('forms.'.str_replace('_', ' ', $name)) /*--}}
+    {{--*/ $label = isset($label)?$label:trans('forms.'.str_replace('_', ' ', $name)) /*--}}
     <label>{{ $label }}</label>
 
     <div class="ui fluid search selection dropdown">

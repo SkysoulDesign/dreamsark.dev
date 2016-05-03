@@ -8,12 +8,20 @@
         @lang('navbar.home')
     </a>
     <div class="ui dropdown item">
-        Projects
+        @lang('navbar.discover-project')
         <div class="menu">
             <div class="header"></div>
             <a class="item" href="javascript:;">@lang('navbar.discover-project')</a>
         </div>
     </div>
+    <div class="ui dropdown item">
+        @lang('navbar.committee')
+        <div class="menu">
+            <div class="header"></div>
+            <a class="item" href="{{ route('committee.project.review.list') }}">@lang('navbar.project-in-review')</a>
+        </div>
+    </div>
+
     <div class="ui dropdown item">
         Configurations
         <div class="menu">

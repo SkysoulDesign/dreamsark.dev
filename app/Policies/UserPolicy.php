@@ -2,8 +2,6 @@
 
 namespace DreamsArk\Policies;
 
-use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -138,6 +136,11 @@ class UserPolicy
     }
 
     public function seeAdminSection(User $user)
+    {
+        return $user->hasRoles(['admin']);
+    }
+
+    public function seeCommitteeSection(User $user)
     {
         return $user->hasRoles(['admin', 'committee']);
     }

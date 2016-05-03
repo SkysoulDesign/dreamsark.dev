@@ -12,9 +12,7 @@
 
                 <p class="ui sub header ">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus autem est ex labore laudantium
-                    mollitia nihil possimus, provident. Alias at laborum odio odit possimus ratione, repellat velit.
-                    Fugiat, laborum perspiciatis?</p>
+                <p>@if($project->script) {{ substr($project->script->content, 0, 100).'...' }} @endif</p>
 
                 <div class="ui segments">
                     <div class="ui segment">
@@ -48,11 +46,13 @@
                         @if($project->script) @include('modals.project-script-show-modal') @endif
 
                     </div>
-                </div>
 
-                <div class="ui two inverted green item menu">
-                    <a href="#" class="item disabled">@lang('project.back-this-project')</a>
-                    <a href="#" class="item disabled">@lang('project.enroll')</a>
+                    <div class="ui segment">
+                        <div class="ui two inverted green item menu">
+                            <a href="#" class="item disabled">@lang('project.back-this-project')</a>
+                            <a href="#" class="item disabled">@lang('project.enroll')</a>
+                        </div>
+                    </div>
                 </div>
 
             </div>

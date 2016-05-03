@@ -48,59 +48,6 @@ $(document).ready(function () {
             })
             .modal('attach events', '#project-add-take', 'show');
 
-    if ($('#project-cast-modal').length > 0)
-        $('#project-cast-modal')
-            .modal({
-                blurring: true,
-                closable: false,
-                onApprove: function () {
-                    $('#project-cast-form').submit();
-                }
-            })
-            .modal('attach events', '#project-add-cast', 'show');
-
-    if ($('#project-crew-modal').length > 0)
-        $('#project-crew-modal')
-            .modal({
-                blurring: true,
-                closable: false,
-                onApprove: function () {
-                    $('#project-crew-form').submit();
-                }
-            })
-            .modal('attach events', '#project-add-crew', 'show');
-
-    if ($('#project-expense-modal').length > 0)
-        $('#project-expense-modal')
-            .modal({
-                blurring: true,
-                closable: false,
-                onApprove: function () {
-                    $('#project-expense-form').submit();
-                }
-            })
-            .modal('attach events', '#project-add-expense', 'show');
-
-    if ($('#project-idea-show-modal').length > 0)
-        $('#project-idea-show-modal')
-            .modal({
-                blurring: true,
-            })
-            .modal('attach events', '#project-idea-show', 'show');
-
-    if ($('#project-synapse-show-modal').length > 0)
-        $('#project-synapse-show-modal')
-            .modal({
-                blurring: true,
-            })
-            .modal('attach events', '#project-synapse-show', 'show');
-
-    if ($('#project-script-show-modal').length > 0)
-        $('#project-script-show-modal')
-            .modal({
-                blurring: true,
-            })
-            .modal('attach events', '#project-script-show', 'show');
 });
 function validateDataIsNull(input) {
     if (input != undefined && input != '')

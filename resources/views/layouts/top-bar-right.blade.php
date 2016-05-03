@@ -9,6 +9,10 @@
                 <a class="item" href="{{ route('admin.index') }}">@lang('navbar.admin')</a>
             @endcan
 
+            @can('see-committee-section', auth()->user())
+                <a class="item" href="{{ route('committee.index') }}">@lang('navbar.committee')</a>
+            @endcan
+
             <a class="item" href="{{ route('user.settings') }}">@lang('profile.settings')</a>
             <a class="item" href="{{ route('logout') }}">@lang('navbar.logout')</a>
         </div>
