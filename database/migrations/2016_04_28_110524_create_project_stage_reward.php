@@ -9,6 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateProjectStageReward extends Migration
 {
     use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -33,6 +34,6 @@ class CreateProjectStageReward extends Migration
      */
     public function down()
     {
-        //
+        $this->schema->drop('project_reward');
     }
 }

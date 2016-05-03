@@ -143,7 +143,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        F2m2\Apidocs\ApidocsServiceProvider::class,
 
         /**
          * Downloaded Packages
@@ -155,7 +154,6 @@ return [
         /**
          * Developed
          */
-
         \SkysoulDesign\Form\FormServiceProvider::class,
 
         /**
@@ -224,7 +222,6 @@ return [
         /**
          * Developed
          */
-
         'Form' => \SkysoulDesign\Form\Facade::class,
 
     ],

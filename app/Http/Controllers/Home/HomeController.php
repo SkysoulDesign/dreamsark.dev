@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Home;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,12 +13,22 @@ class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @param Request $request
      * @return Response
      * @internal param Request $request
      */
     public function index(Request $request)
     {
+
+        $data = [
+            "question" => "New Question",
+            "options"  => ['male', 'female', 'gay'],
+        ];
+
+        $this->dispatch(new CreateQuestionJob($data, "6"));
+
+        dd('finished');
 
         /**
          * Check if intro cookie is set
