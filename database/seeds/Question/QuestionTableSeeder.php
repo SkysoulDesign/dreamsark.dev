@@ -20,12 +20,12 @@ class QuestionTableSeeder extends Seeder
     {
 
         $questions = [
-            ['question' => 'whats your nickname?'],
-            ['question' => 'How old are you?'],
-            ['question' => 'What is your nationality?'],
-            ['question' => 'What is your occupation?'],
-            ['question' => 'What is your Gender?'],
-            ['question' => 'How Could i call you?'],
+            'whats your nickname?',
+            'How old are you?',
+            'What is your nationality?',
+            'What is your occupation?',
+            'What is your Gender?',
+            'How Could i call you?',
         ];
 
         foreach ($questions as $question) {
