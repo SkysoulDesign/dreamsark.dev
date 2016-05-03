@@ -20,9 +20,9 @@ class ProfileTableSeeder extends Seeder
 
         foreach ($profiles as $profile) {
             $request = ['name' => $profile, 'display_name' => ucwords($profile), 'description' => $profile];
-            $this->dispatch(new CreateProfileJob($request, range(1, 5), range(1, 5)));
+            $this->dispatch(new CreateProfileJob($request, range(1, 5), range(1, 5), array_flip(range(1, 5))));
         }
-        
+
     }
 
 }
