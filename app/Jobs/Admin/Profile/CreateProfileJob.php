@@ -68,7 +68,7 @@ class CreateProfileJob extends Job
 
         foreach (array_flip($this->questions) as $id => $index) {
             $questions[$id] = ['required' => (in_array($id, $this->required) ? true : false)];
-            $questions[$id]['category'] = $this->category[$id];
+            $questions[$id]['category'] = isset($this->category[$id])?$this->category[$id]:'general';
         }
 
         /**
