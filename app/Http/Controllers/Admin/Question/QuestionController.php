@@ -30,7 +30,7 @@ class QuestionController extends Controller
      */
     public function index(Question $question)
     {
-        return view('admin.question.index')->with('questions', $question->all()->load('type'));
+        return view('admin.question.index')->with('questions', $question->load('type')->paginate(config('defaults.settings.pagination.per_page')));
     }
 
     /**
@@ -124,7 +124,7 @@ class QuestionController extends Controller
         $this->dispatch(new DeleteQuestionJob($question));
 
         return redirect()->route('admin.question.index')->withSuccess('Question deleted successfully');
-    
+
     }
 
 }

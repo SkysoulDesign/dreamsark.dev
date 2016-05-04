@@ -2,15 +2,20 @@
 
 namespace DreamsArk\Http\Controllers\Project;
 
-use DreamsArk\Commands\Project\Expenditure\BackProjectCommand;
 use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\VotingOnUserEnrollment;
+use DreamsArk\Jobs\Project\Expenditure\BackProjectJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Http\Request;
 
+/**
+ * Class FundController
+ *
+ * @package DreamsArk\Http\Controllers\Project
+ */
 class FundController extends Controller
 {
 
@@ -34,7 +39,8 @@ class FundController extends Controller
      */
     public function store(Project $project, Request $request)
     {
-        $this->dispatch(new BackProjectCommand($project, $request->user(), $request->get('amount')));
+        $this->dispatch(new BackProjectJob($project, $request->user(), $request->get('amount')));
+
         return redirect()->route('project.show', $project->id);
     }
 
@@ -48,6 +54,7 @@ class FundController extends Controller
     public function vote(Enroller $enroller, VotingOnUserEnrollment $request)
     {
         $this->dispatch(new VoteOnEnrollablePositionCommand($enroller, $request->user()));
+
         return redirect()->back();
     }
 

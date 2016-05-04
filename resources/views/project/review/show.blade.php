@@ -22,7 +22,6 @@
 
                                 <div class="content">
                                     <h4 class="ui  header"><b>{{ $project->creator->present()->name }}</b></h4>
-                                    Lorem ipsum dolor sit amet.
                                 </div>
 
                             </div>
@@ -46,13 +45,10 @@
                         @if($project->script) @include('modals.project-script-show-modal') @endif
 
                     </div>
-
-                    <div class="ui segment">
-                        <div class="ui two inverted green item menu">
-                            <a href="#" class="item disabled">@lang('project.back-this-project')</a>
-                            <a href="#" class="item disabled">@lang('project.enroll')</a>
-                        </div>
-                    </div>
+                </div>
+                <div class="ui two inverted green item menu">
+                    <a href="javascript:;" class="item disabled">@lang('project.back-this-project')</a>
+                    <a href="javascript:;" class="item disabled">@lang('project.enroll')</a>
                 </div>
 
             </div>
@@ -60,18 +56,18 @@
 
         <div class="ui stacked segments">
             <div class="ui segment">
-
-                <div class="ui one wide column statistics">
-                    <div class="olive statistic">
-                        <div class="value">
-                            Processing
-                        </div>
-                    </div>
+                <div class="ui indicating progress active olive statistic" data-percent="0">
+                    <div class="bar"></div>
+                    <div class="label">@lang('project.processing')</div>
                 </div>
-
             </div>
 
         </div>
 
     </div>
 </div>
+<style>
+    .segment div.menu, .attached div.menu {
+        position: static;
+    }
+</style>

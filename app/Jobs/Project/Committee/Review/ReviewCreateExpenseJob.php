@@ -1,15 +1,18 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Review;
+namespace DreamsArk\Jobs\Project\Committee\Review;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\Expenditure\ExpenditureWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\Review\ReviewRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class ReviewCreateExpense extends Command implements SelfHandling
+/**
+ * Class ReviewCreateExpenseJob
+ *
+ * @package DreamsArk\Jobs\Project\Committee\Review
+ */
+class ReviewCreateExpenseJob extends Job
 {
     /**
      * @var Project
@@ -37,20 +40,19 @@ class ReviewCreateExpense extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ReviewRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(ReviewRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ReviewRepositoryInterface $repository)
     {
 
         /**
          * Add Expense
          */
-        $expenditure = $repository->createExpense($this->project->id, $this->fields->pull('position'), $this->fields->all());
+        $expenditure = $repository->createExpense($this->project->id, $this->fields->all());
 
         /**
          * Announce ExpenditureWasCreated
          */
-        $event->fire(new ExpenditureWasCreated($expenditure));
+        event(new ExpenditureWasCreated($expenditure));
 
     }
 }

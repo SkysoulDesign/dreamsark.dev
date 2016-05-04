@@ -27,6 +27,6 @@ class CommitteeController extends Controller
      */
     public function projectsInReviewStage(Review $review)
     {
-        return view('committee.project.index')->with('reviews', $review->all());
+        return view('committee.project.index')->with('reviews', $review->pending()->orderBy('updated_at', 'desc')->get());
     }
 }

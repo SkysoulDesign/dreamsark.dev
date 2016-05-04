@@ -1,17 +1,17 @@
 <?php
 
-use DreamsArk\Commands\Committee\Project\PublishProjectCommand;
-use DreamsArk\Commands\Project\Expenditure\BackProjectCommand;
-use DreamsArk\Commands\Project\Expenditure\EnrollProjectCommand;
 use DreamsArk\Commands\Project\Review\ReviewCreateCast;
-use DreamsArk\Commands\Project\Review\ReviewCreateCrew;
-use DreamsArk\Commands\Project\Review\ReviewCreateExpense;
 use DreamsArk\Commands\Project\Stages\Voting\CloseVotingCommand;
 use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\SubmitCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
+use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
+use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateCrewJob;
+use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateExpenseJob;
 use DreamsArk\Jobs\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\Expenditure\BackProjectJob;
+use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
@@ -117,13 +117,13 @@ class CreateDummyProject extends Seeder
          * Release the Project Back
          */
         $review = Review::first();
-        $this->dispatch(new PublishProjectCommand($review));
+        $this->dispatch(new PublishProjectReviewJob($review));
 
         /**
          * Back The Project
          */
         collect(range(1, 20))->each(function () use ($project) {
-            $this->dispatch(new BackProjectCommand($project, User::all()->random(), rand(1, 5000)));
+            $this->dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 5000)));
         });
 
         /**
@@ -131,7 +131,7 @@ class CreateDummyProject extends Seeder
          */
         $expenditures = $project->enrollable;
         $expenditures->each(function ($expenditure) {
-            $this->dispatch(new EnrollProjectCommand($expenditure, User::all()->random()));
+            $this->dispatch(new EnrollProjectJob($expenditure, User::all()->random()));
         });
 
         /**
@@ -237,7 +237,7 @@ class CreateDummyProject extends Seeder
                 'description' => 'He will do everything.'
             ]
         ])->each(function ($crew) use ($project) {
-            $this->dispatch(new ReviewCreateCrew($project, $crew));
+            $this->dispatch(new ReviewCreateCrewJob($project, $crew));
         });
     }
 
@@ -264,7 +264,7 @@ class CreateDummyProject extends Seeder
                 'description' => 'Cheap thing.'
             ]
         ])->each(function ($expanse) use ($project) {
-            $this->dispatch(new ReviewCreateExpense($project, $expanse));
+            $this->dispatch(new ReviewCreateExpenseJob($project, $expanse));
         });
     }
 

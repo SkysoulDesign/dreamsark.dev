@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index(User $user)
     {
-        return view('admin.users.index')->with('users', $user->all());
+        return view('admin.users.index')->with('users', $user->paginate(config('defaults.settings.pagination.per_page')));
     }
 
     /**

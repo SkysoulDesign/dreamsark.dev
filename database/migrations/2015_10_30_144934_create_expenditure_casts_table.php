@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateExpenditureCastsTable extends Migration
@@ -12,7 +11,7 @@ class CreateExpenditureCastsTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenditure_casts', function (Blueprint $table) {
+        /*Schema::create('expenditure_casts', function (Blueprint $table) {
 
             $table->increments('id');
 
@@ -28,7 +27,7 @@ class CreateExpenditureCastsTable extends Migration
 
             $table->timestamps();
 
-        });
+        });*/
     }
 
     /**
@@ -38,6 +37,6 @@ class CreateExpenditureCastsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('expenditure_casts');
+//        Schema::drop('expenditure_casts');
     }
 }

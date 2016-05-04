@@ -17,13 +17,13 @@
                 <td>{{ $review->project->user->name ?:$review->project->user->username }}</td>
                 <td>
                     <a href="{{ route('project.show', $review->project_id) }}" class="ui button">
+                        <i class="unhide icon"></i>
                         @lang('project.view')
                     </a>
-                    <a href="{{ route('committee.project.staff.create', $review->id) }}" class="ui button">
-                        <i class="add icon"></i>
+                    <a href="{{ route('committee.project.planning.manage', $review->id) }}" class="ui button">
+                        <i class="settings icon"></i>
                         @lang('project.review-and-plan')
                     </a>
-
                 </td>
             </tr>
         @endforeach

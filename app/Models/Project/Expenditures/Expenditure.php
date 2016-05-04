@@ -30,7 +30,7 @@ class Expenditure extends Model
      */
     public function scopeEnrollable($query)
     {
-        return $query->whereIn('expenditurable_type', array(Cast::class, Crew::class));
+        return $query->whereIn('expenditurable_type', array(Crew::class));// Cast::class, 
     }
 
     /**

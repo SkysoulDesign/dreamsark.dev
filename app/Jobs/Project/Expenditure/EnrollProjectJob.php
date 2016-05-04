@@ -1,27 +1,34 @@
 <?php
 
-namespace DreamsArk\Commands\Committee\Project;
+namespace DreamsArk\Jobs\Project\Expenditure;
 
-use DreamsArk\Commands\Command;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
+use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 
-class DestroyExpenditureCommand extends Command implements SelfHandling
+class EnrollProjectJob extends Job
 {
     /**
-     * @var Expenditure|int
+     * @var Expenditure
      */
     private $expenditure;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * Create a new command instance.
      *
-     * @param $expenditure
+     * @param Expenditure $expenditure
+     * @param User $user
      */
-    public function __construct($expenditure)
+    public function __construct(Expenditure $expenditure, User $user)
     {
         $this->expenditure = $expenditure;
+        $this->user = $user;
     }
 
     /**
@@ -32,13 +39,8 @@ class DestroyExpenditureCommand extends Command implements SelfHandling
     public function handle(ExpenditureRepositoryInterface $repository)
     {
         /**
-         * Get The ID
+         * Enroll into a Expenditure
          */
-        $id = is_numeric($this->expenditure) ? $this->expenditure : $this->expenditure->id;
-
-        /**
-         * Delete Expenditure
-         */
-        $repository->delete($id);
+        $repository->enroll($this->expenditure->id, $this->user->id);
     }
 }

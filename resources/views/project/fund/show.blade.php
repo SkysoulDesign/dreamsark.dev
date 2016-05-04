@@ -12,9 +12,9 @@
 
                 <p class="ui sub header ">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus autem est ex labore laudantium
-                    mollitia nihil possimus, provident. Alias at laborum odio odit possimus ratione, repellat velit.
-                    Fugiat, laborum perspiciatis?</p>
+                <p>
+                    @if($project->script) {{ substr($project->script->content, 0, 100).'...' }} @endif
+                </p>
 
                 <div class="ui segments">
                     <div class="ui segment">
@@ -24,7 +24,6 @@
 
                                 <div class="content">
                                     <h4 class="ui  header"><b>{{ $project->creator->present()->name }}</b></h4>
-                                    Lorem ipsum dolor sit amet.
                                 </div>
 
                             </div>
@@ -64,7 +63,6 @@
 
                     </div>
                 </div>
-
                 @if(!$project->stage->vote->active)
                     <div class="ui two inverted green item menu">
                         <a href="{{ route('project.fund.create', $project->id) }}"
@@ -83,7 +81,7 @@
         </div>
 
         <div class="ui stacked segments">
-            <div class="ui segment">
+            <div class="ui segment" style="min-height: 100px;">
 
                 <div class="ui four wide column statistics">
                     <div class="olive statistic">
@@ -131,3 +129,6 @@
 
     </div>
 </div>
+<style>
+    .segment div.menu, .attached div.menu { position: static; }
+</style>

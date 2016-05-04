@@ -103,6 +103,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('settings', SettingController::class . '@index')->name('settings');
         $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
 
+        $app->get('projects', UserProjectController::class . '@index')->name('projects')->middleware(['auth']);
+
     });
 
     /**
@@ -110,8 +112,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
     $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
-//        $app->get('profile/{profile}/edit', ProfileController::class . '@edit')->name('profile.edit');
-//    $app->get('user/profile/index', ProfileController::class . '@index')->name('user.profiles');
 
     /**
      * Vote Controller
@@ -129,36 +129,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Project Controller
      */
     $app->get('projects', ProjectController::class . '@index')->name('projects');
-    /*$app->get('project/create', ProjectController::class . '@create')->name('project.create');
-    $app->get('project/show/{project}', ProjectController::class . '@show')->name('project.show');
-    $app->post('project/store', ProjectController::class . '@store')->name('project.store');
-    $app->get('project/next/create/{project}', ProjectController::class . '@next')->name('project.next.create');
-    $app->post('project/{project}/store', ProjectController::class . '@projectStore')->name('project.project.store');
-    $app->get('project/edit/{draft}', ProjectController::class . '@edit')->name('project.edit');
-    $app->post('project/update/{draft}', ProjectController::class . '@update')->name('project.update');
-    $app->get('project/publish/{draft}', ProjectController::class . '@publish')->name('project.publish');*/
-
-    /**
-     * Fund Controller
-     */
-    $app->group(['prefix' => 'project/fund', 'as' => 'project.fund.'], function () use ($app) {
-        $app->get('create/{project}', FundController::class . '@create')->name('create');
-        $app->post('store/{project}', FundController::class . '@store')->name('store');
-        $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
-    });
-
-    /**
-     * Fund Controller
-     */
-    $app->get('project/enroll/create/{project}', EnrollController::class . '@create')->name('project.enroll.create');
-    $app->post('project/enroll/store/{expenditure}', EnrollController::class . '@store')->name('project.enroll.store');
-    $app->post('project/unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('project.unroll.store');
 
 
 
-    $app->group(['prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
-
-    });
 
 
     $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
@@ -181,6 +154,22 @@ $app->group(['middleware' => ['web']], function () use ($app) {
          */
 //        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
         $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
+
+        /**
+         * Enroll Controller
+         */
+        $app->get('enroll/create/{project}', EnrollController::class . '@create')->name('enroll.create');
+        $app->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
+        $app->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
+
+        /**
+         * Fund Controller
+         */
+        $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+            $app->get('create/{project}', FundController::class . '@create')->name('create');
+            $app->post('store/{project}', FundController::class . '@store')->name('store');
+            $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
+        });
 
         /**
          * Project Take Controller
@@ -207,22 +196,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * User Applications
      */
     $app->get('user/application', ActorController::class . '@create')->name('user.application.actor');
-
-    /**
-     * User Projects Controller
-     */
-    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
-        $app->get('projects', UserProjectController::class . '@index')->name('projects');
-        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
-        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
-        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
-        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
-
-        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
-        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
-
-    });
-
 
     /**
      * Report Controller
@@ -292,6 +265,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
         });
 
+        /** Admin projects */
+        $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
+
 //        $app->resource('question', QuestionController::class, ['except' => ['show']]);
 
 
@@ -312,22 +288,18 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         /**
          * Committee Staff Controller
          */
-        $app->get('create/staff/{review}', StaffController::class . '@create')->name('project.staff.create');
-        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
-
-        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
-        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
+        $app->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
         $app->post('project/expense/store/{project}', ExpenseController::class . '@store')->name('project.expense.store');
+        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
 
+        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
+        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
         $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
-
         $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
-
         /**
          * Project Cast Controller
          */
         $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
-
         /**
          * Project Crew Controller
          */

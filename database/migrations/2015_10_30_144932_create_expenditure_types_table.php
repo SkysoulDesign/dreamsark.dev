@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateExpenditureTypesTable extends Migration
@@ -12,13 +11,13 @@ class CreateExpenditureTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenditure_types', function (Blueprint $table) {
+        /*Schema::create('expenditure_types', function (Blueprint $table) {
 
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
 
-        });
+        });*/
     }
 
     /**
@@ -28,6 +27,6 @@ class CreateExpenditureTypesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('expenditure_types');
+//        Schema::drop('expenditure_types');
     }
 }

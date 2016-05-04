@@ -2,13 +2,17 @@
 
 namespace DreamsArk\Http\Controllers\Committee\Project;
 
-use DreamsArk\Commands\Committee\Project\PublishProjectCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Models\Project\Project;
+use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
 
+/**
+ * Class StaffController
+ *
+ * @package DreamsArk\Http\Controllers\Committee\Project
+ */
 class StaffController extends Controller
 {
 
@@ -21,8 +25,10 @@ class StaffController extends Controller
      */
     public function create(Review $review, ExpenditureRepositoryInterface $repository)
     {
+        $this->redirectIfActive($review);
         $review = $review->load('project.expenditures.expenditurable');
-        return view('committee.project.staff.create')->with('review', $review)->with('positions', $repository->positions());
+
+        return view('committee.project.staff.create')->with('review', $review)->with('profiles', $repository->profiles());
     }
 
     /**
@@ -33,8 +39,21 @@ class StaffController extends Controller
      */
     public function publish(Review $review)
     {
-        $this->dispatch(new PublishProjectCommand($review));
-        return redirect()->route('dashboard');
+        $this->redirectIfActive($review);
+        $this->dispatch(new PublishProjectReviewJob($review));
+
+        return redirect()->route('committee.project.review.list');// dashboard
+    }
+
+    /**
+     * Redirect if a Review is already Published
+     * @param Review $review
+     * @return $this
+     */
+    protected function redirectIfActive(Review $review)
+    {
+        if ($review->active)
+            return redirect()->back()->withErrors('Project: "' . $review->project->name . '" is already reviewed and published');
     }
 
 }

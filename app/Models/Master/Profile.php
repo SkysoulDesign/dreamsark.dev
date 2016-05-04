@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Master;
 
 use DreamsArk\Models\Master\Question\Question;
+use DreamsArk\Models\Project\Expenditures\Crew;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,14 +60,30 @@ class Profile extends Model
         return $this->answer->questions();
     }
 
+    /**
+     * @return mixed
+     */
     public function getAnswerCountAttribute()
     {
         return $this->answer->questions()->count();
     }
 
+    /**
+     * @return mixed
+     */
     public function getQuestionCountAttribute()
     {
         return $this->questions()->count();
+    }
+
+    /**
+     * Crew Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function crew()
+    {
+        return $this->hasMany(Crew::class, 'expenditure_profile_id');
     }
 
 }

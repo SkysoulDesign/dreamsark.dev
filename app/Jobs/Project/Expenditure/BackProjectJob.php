@@ -1,17 +1,15 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Expenditure;
+namespace DreamsArk\Jobs\Project\Expenditure;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\ProjectWasBacked;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class BackProjectCommand extends Command implements SelfHandling
+class BackProjectJob extends Job
 {
     /**
      * @var Expenditure
@@ -46,9 +44,8 @@ class BackProjectCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ProjectRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(ProjectRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ProjectRepositoryInterface $repository)
     {
         /**
          * Back Expenditure
@@ -58,6 +55,6 @@ class BackProjectCommand extends Command implements SelfHandling
         /**
          * Announce ProjectWasBacked
          */
-        $event->fire(new ProjectWasBacked($this->project, $this->user, $this->amount));
+        event(new ProjectWasBacked($this->project, $this->user, $this->amount));
     }
 }

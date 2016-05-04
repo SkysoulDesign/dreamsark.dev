@@ -5,6 +5,11 @@ namespace DreamsArk\Policies;
 use DreamsArk\Models\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Class UserPolicy
+ *
+ * @package DreamsArk\Policies
+ */
 class UserPolicy
 {
     use HandlesAuthorization;
@@ -135,15 +140,35 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
+    /**
+     * Allow user when Admin
+     *
+     * @param User $user
+     * @return bool
+     */
     public function seeAdminSection(User $user)
     {
-        return $user->hasRoles(['admin']);
+        return $user->hasRoles(['admin', 'committee']);
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function seeCommitteeSection(User $user)
     {
         return $user->hasRoles(['admin', 'committee']);
     }
 
+    /**
+     * can use "check()"
+     * @param User $user
+     * @param User $targetUser
+     * @return bool
+     */
+    public function isOwner(User $user, User $targetUser)
+    {
+        return ($user->id == $targetUser->id);
+    }
 
 }

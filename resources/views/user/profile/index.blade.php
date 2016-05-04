@@ -4,11 +4,6 @@
 @section('content')
     <div class="column">
 
-        {{--<div class="ui right aligned segment">--}}
-        {{--<a href="{{ route('user.profiles.create') }}" class="ui primary button">--}}
-        {{--@lang('profile.create-profile')--}}
-        {{--</a>--}}
-        {{--</div>--}}
         <section>
             @if(!empty($profiles->toArray()))
                 <div class="ui grid three column">
@@ -36,7 +31,7 @@
                             </div>
                             <div class="column">
                                 <a href="{{ route('user.profile.show', $profile->name) }}" class="ui green button">
-                                    <i class="icon view"></i>
+                                    <i class="icon unhide"></i>
                                     @lang('forms.view')
                                 </a>
                                 <a href="{{ route('user.profile.edit', $profile->name) }}" class="ui button">

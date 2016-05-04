@@ -2,13 +2,17 @@
 
 namespace DreamsArk\Http\Controllers\Committee\Project;
 
-use DreamsArk\Commands\Project\Review\ReviewCreateExpense;
+use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
+use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateExpenseJob;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Http\Request;
 
-use DreamsArk\Http\Requests;
-use DreamsArk\Http\Controllers\Controller;
-
+/**
+ * Class ExpenseController
+ *
+ * @package DreamsArk\Http\Controllers\Committee\Project
+ */
 class ExpenseController extends Controller
 {
     /**
@@ -20,7 +24,7 @@ class ExpenseController extends Controller
      */
     public function store(Project $project, Request $request)
     {
-        $this->dispatch(new ReviewCreateExpense($project, $request->all()));
+        $this->dispatch(new ReviewCreateExpenseJob($project, $request->all()));
         return redirect()->back();
     }
 }

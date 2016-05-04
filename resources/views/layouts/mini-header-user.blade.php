@@ -3,15 +3,14 @@
     <section class="medium-12 medium-centered column bar">
 
         <div class="row">
+            @if(auth()->check())
+                <div class="medium-2 column avatar">
+                    <a href="{{ route('user.account') }}">
+                        <img src="{{ asset('dreamsark-assets/avatar-huge.png') }}">
+                    </a>
+                </div>
 
-            <div class="medium-2 column avatar">
-                <a href="{{ auth()->check()?route('user.account'):'javascript:;' }}">
-                    <img src="{{ asset('dreamsark-assets/avatar-huge.png') }}">
-                </a>
-            </div>
-
-            <div class="medium-10 column">
-                @if(auth()->check())
+                <div class="medium-10 column">
                     <div class="cash">
                         <img src="{{ asset('dreamsark-assets/coin.png') }}">
                         {{ auth()->user()->bag->coins }}
@@ -22,8 +21,8 @@
                         <a class="item" href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a>
                         <a class="item" href="{{ route('user.settings') }}">@lang('profile.settings')</a>
                     </div>
-                @endif
-            </div>
+                </div>
+            @endif
 
         </div>
     </section>

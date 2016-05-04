@@ -9,6 +9,11 @@ use DreamsArk\Repositories\Traits\RepositoryHelperTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+/**
+ * Class ProjectRepository
+ *
+ * @package DreamsArk\Repositories\Project
+ */
 class ProjectRepository implements ProjectRepositoryInterface
 {
 
@@ -53,6 +58,7 @@ class ProjectRepository implements ProjectRepositoryInterface
             ->setAttribute('type', $type)
             ->fill($fields);
         $project->save();
+
         return $project;
     }
 
@@ -148,6 +154,15 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function back($project_id, $user_id, $amount)
     {
         return $this->model($project_id)->backers()->attach($user_id, compact('amount'));
+    }
+
+    /**
+     * get SimplePagination
+     * @return mixed
+     */
+    public function paginate()
+    {
+        return $this->model->orderBy('updated_at', 'desc')->paginate(config('defaults.settings.pagination.per_page'));
     }
 
 }

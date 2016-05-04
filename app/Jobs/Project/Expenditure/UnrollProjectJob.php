@@ -1,14 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Expenditure;
+namespace DreamsArk\Jobs\Project\Expenditure;
 
-use DreamsArk\Commands\Command;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 
-class EnrollProjectCommand extends Command implements SelfHandling
+class UnrollProjectJob extends Job
 {
     /**
      * @var Expenditure
@@ -42,6 +41,6 @@ class EnrollProjectCommand extends Command implements SelfHandling
         /**
          * Enroll into a Expenditure
          */
-        $repository->enroll($this->expenditure->id, $this->user->id);
+        $repository->unroll($this->expenditure->id, $this->user->id);
     }
 }

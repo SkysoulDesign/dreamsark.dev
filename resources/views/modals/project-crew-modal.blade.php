@@ -8,12 +8,13 @@
 
             {{ csrf_field() }}
 
+            @include('partials.field', ['name' => 'name', 'type' => 'text'])
             @include('partials.select',
             [
-                'name' => 'position',
-                'placeholder' => trans('forms.position'),
-                'translation' => 'positions',
-                'collection' => $positions->where('type.name', 'crew')->lists('name', 'id')
+                'name' => 'profile_id',
+                'placeholder' => trans('forms.profile'),
+                'translation' => 'profile',
+                'collection' => $profiles->lists('display_name', 'id')
 
             ])
 

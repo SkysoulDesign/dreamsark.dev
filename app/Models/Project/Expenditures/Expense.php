@@ -18,7 +18,7 @@ class Expense extends Model
      *
      * @var array
      */
-    protected $fillable = ['cost', 'description'];
+    protected $fillable = ['cost', 'description', 'name'];
 
     /**
      * Expenditure Relationship
@@ -31,9 +31,9 @@ class Expense extends Model
     /**
      * Position Relationship
      */
-    public function position()
+    /*public function position()
     {
         return $this->belongsTo(Position::class, 'expenditure_position_id');
-    }
+    }*/
 
 }

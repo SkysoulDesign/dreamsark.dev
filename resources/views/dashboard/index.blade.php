@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master-admin')
 
 @section('content')
 
@@ -37,21 +37,21 @@
                                 <div class="ui three fluid small steps">
                                     <div class="@if(!$review->project->idea) disabled @endif step">
 
-                                        <a id="project-idea-show" class="content">
+                                        <a id="project-idea-show" href="javascript:;" class="content">
                                             <div class="title">@lang('project.idea')</div>
                                         </a>
 
                                     </div>
                                     <div class="@if(!$review->project->synapse) disabled @endif step">
 
-                                        <a id="project-synapse-show" href="" class="content">
+                                        <a id="project-synapse-show" href="javascript:;" class="content">
                                             <div class="title">@lang('project.synapse')</div>
                                         </a>
 
                                     </div>
                                     <div class="@if(!$review->project->script) disabled @endif step">
 
-                                        <a id="project-script-show" href="#" class="content">
+                                        <a id="project-script-show" href="javascript:;" class="content">
                                             <div class="title">@lang('project.script')</div>
                                         </a>
 
@@ -67,7 +67,7 @@
                                 <form method="post" action="{{ route('committee.project.publish', $review->id) }}"
                                       class="ui form">
 
-                                    <a href="{{ route('committee.project.staff.create', $review->id) }}"
+                                    <a href="{{ route('committee.project.planning.manage', $review->id) }}"
                                        class="ui primary button">
                                         @lang('project.review')
                                     </a>

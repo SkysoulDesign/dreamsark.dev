@@ -8,13 +8,7 @@
 
             {{ csrf_field() }}
 
-            @include('partials.select',
-            [
-                'name' => 'position',
-                'translation' => 'positions',
-                'collection' => $positions->where('type.name', 'expense')->lists('name', 'id')
-
-            ])
+            @include('partials.field', ['name' => 'name', 'type' => 'text'])
 
             @include('partials.field', ['name' => 'cost', 'type' => 'text'])
 

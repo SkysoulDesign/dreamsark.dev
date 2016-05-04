@@ -2,9 +2,9 @@
 
 namespace DreamsArk\Repositories\Project\Expenditure;
 
+use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
-use DreamsArk\Models\Project\Expenditures\Position;
 use DreamsArk\Models\Project\Expenditures\Type;
 use DreamsArk\Repositories\Traits\CRUDTrait;
 use DreamsArk\Repositories\Traits\RepositoryHelperTrait;
@@ -51,14 +51,13 @@ class ExpenditureRepository implements ExpenditureRepositoryInterface
     }
 
     /**
-     * Get All Positions
+     * Get All Profiles
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      * @throws \DreamsArk\Repositories\Exceptions\RepositoryException
      */
-    public function positions()
-    {
-        return $this->newInstance(Position::class)->model->all()->load('type');
+    public function profiles(){
+        return $this->newInstance(Profile::class)->model->all();
     }
 
     /**

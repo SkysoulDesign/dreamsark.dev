@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateExpenditurePositionsTable extends Migration
@@ -12,7 +11,7 @@ class CreateExpenditurePositionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenditure_positions', function (Blueprint $table) {
+        /*Schema::create('expenditure_positions', function (Blueprint $table) {
 
             $table->increments('id');
             $table->string('name');
@@ -22,7 +21,7 @@ class CreateExpenditurePositionsTable extends Migration
 
             $table->timestamps();
 
-        });
+        });*/
     }
 
     /**
@@ -32,6 +31,6 @@ class CreateExpenditurePositionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('expenditure_positions');
+//        Schema::drop('expenditure_positions');
     }
 }

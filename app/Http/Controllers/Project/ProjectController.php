@@ -27,7 +27,7 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware('auth', ['except' => ['show', 'index']]);
     }
 
     /**
@@ -39,6 +39,11 @@ class ProjectController extends Controller
     public function index(ProjectRepositoryInterface $repository)
     {
         return view('project.index')->with('projects', $repository->actives());
+    }
+
+    public function adminIndex(ProjectRepositoryInterface $repository)
+    {
+        return view('admin.project.index')->with('projects', $repository->paginate())->with('project_count', $repository->all()->count());
     }
 
     /**
@@ -104,6 +109,7 @@ class ProjectController extends Controller
 
         if (!$project->stage instanceof Fund) {
             $submissions = $repository->submissions($project->id)->load('user');
+
             return view('project.show', compact('project'))->with('submissions', $submissions);
         }
 

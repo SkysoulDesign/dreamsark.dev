@@ -1,15 +1,18 @@
 <?php
 
-namespace DreamsArk\Commands\Committee\Project;
+namespace DreamsArk\Jobs\Project\Committee\Review;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Committee\Project\FundWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\Fund\FundRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class PublishProjectCommand extends Command implements SelfHandling
+/**
+ * Class PublishProjectReviewJob
+ *
+ * @package DreamsArk\Jobs\Project\Committee\Review
+ */
+class PublishProjectReviewJob extends Job
 {
     /**
      * @var Review
@@ -30,10 +33,11 @@ class PublishProjectCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param FundRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(FundRepositoryInterface $repository, Dispatcher $event)
+    public function handle(FundRepositoryInterface $repository)
     {
+        $this->review->setAttribute('active', 1)->save();
+        $this->review->fresh();
         /**
          * Create Fund
          */
@@ -42,6 +46,6 @@ class PublishProjectCommand extends Command implements SelfHandling
         /**
          * Announce FundWasCreated
          */
-        $event->fire(new FundWasCreated($fund));
+        event(new FundWasCreated($fund));
     }
 }

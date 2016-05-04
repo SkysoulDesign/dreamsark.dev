@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Expenditures;
 
+use DreamsArk\Models\Master\Profile;
 use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ExpenditurePresenter;
@@ -44,9 +45,9 @@ class Crew extends Model
     /**
      * Cast Relationship
      */
-    public function position()
+    public function profile()
     {
-        return $this->belongsTo(Position::class, 'expenditure_position_id');
+        return $this->belongsTo(Profile::class, 'expenditure_profile_id');
     }
 
 }

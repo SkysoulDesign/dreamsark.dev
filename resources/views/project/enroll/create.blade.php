@@ -1,10 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.master-user')
 
 @section('content')
 
     <div class="column">
 
         <div class="ui segment">
+            <h2>{{ $expenditures[0]->project->name }}</h2>
+            <h3>@lang('project.crew')</h3>
             <table class="ui celled table">
                 <thead>
                 <tr>
@@ -26,7 +28,9 @@
 
                                 <div class="content">
                                     {{ $expenditure->expenditurable->name }}
-                                    <div class="sub header">{{ $expenditure->expenditurable->position->name }}</div>
+                                    <div class="sub header">
+                                        {{ (is_object($expenditure->expenditurable->profile) ? $expenditure->expenditurable->profile->display_name : '') }}
+                                    </div>
                                 </div>
                             </h4>
                         </td>
@@ -59,6 +63,16 @@
                     </tr>
                 @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <a class="ui grey button" href="{{ route('project.show', $expenditures[0]->project_id) }}">
+                                <i class="reply icon"></i>
+                                @lang('project.back-to-view')
+                            </a>
+                        </td>
+                    </tr>
+                </tfoot>
 
             </table>
         </div>

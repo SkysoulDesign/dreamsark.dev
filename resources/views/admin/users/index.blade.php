@@ -31,5 +31,6 @@
             </tr>
         @endforeach
         </tbody>
+        @include('admin.partials.paginate-links', ['resultSet' => $users, 'colSpan' => 3])
     </table>
 @endsection

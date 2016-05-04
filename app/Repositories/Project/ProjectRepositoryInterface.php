@@ -7,6 +7,11 @@ use DreamsArk\Models\Project\Stages\Draft;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+/**
+ * Interface ProjectRepositoryInterface
+ *
+ * @package DreamsArk\Repositories\Project
+ */
 interface ProjectRepositoryInterface
 {
 
@@ -92,4 +97,9 @@ interface ProjectRepositoryInterface
      * @throws \DreamsArk\Repositories\Exceptions\RepositoryException
      */
     public function back($project_id, $user_id, $amount);
+
+    /** Do SimplePagination
+     * @return mixed
+     */
+    public function paginate();
 }

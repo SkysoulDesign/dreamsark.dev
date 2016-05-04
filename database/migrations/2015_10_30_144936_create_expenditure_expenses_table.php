@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateExpenditureExpensesTable extends Migration
 {
@@ -16,12 +16,10 @@ class CreateExpenditureExpensesTable extends Migration
 
             $table->increments('id');
 
+            $table->string('name')->nullable();
             $table->string('cost');
-            $table->string('description');
-
-            $table->integer('expenditure_position_id')->unsigned()->index();
-            $table->foreign('expenditure_position_id')->references('id')->on('expenditure_positions')->onDelete('cascade');
-
+            $table->string('description')->nullable();
+            
             $table->timestamps();
 
         });

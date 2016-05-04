@@ -33,4 +33,9 @@ class Review extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function scopePending($query)
+    {
+        return $query->where('active', false);
+    }
+
 }

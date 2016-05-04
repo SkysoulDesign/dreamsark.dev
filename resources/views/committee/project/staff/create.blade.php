@@ -47,6 +47,14 @@
                             }
                         })
                         .modal('attach events', '#project-add-expense', 'show');
+
+            $('.publish-review.button').on('click', function () {
+                if (confirm("Are you sure to publish this project?"))
+                    return true;
+                else
+                    return false;
+            });
         });
     </script>
+    @include('forms.project-stage-script')
 @endsection

@@ -2,7 +2,9 @@
 
 namespace DreamsArk\Repositories\Project\Review;
 
+use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
+use DreamsArk\Models\Project\Expenditures\Expense;
 use DreamsArk\Models\Project\Expenditures\Position;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Exceptions\RepositoryException;
@@ -42,7 +44,7 @@ class ReviewRepository implements ReviewRepositoryInterface
     }
 
     /**
-     * Create a Review
+     * Create a Review :: Not In Use
      *
      * @param int $project_id
      * @param int $expenditure_position_id
@@ -72,29 +74,29 @@ class ReviewRepository implements ReviewRepositoryInterface
      * Create a Review
      *
      * @param int $project_id
-     * @param int $expenditure_position_id
+     * @param int $expenditure_profile_id
      * @param array $fields
      * @return Expenditure
      * @throws RepositoryException
      */
-    public function createCrew($project_id, $expenditure_position_id, array $fields)
+    public function createCrew($project_id, $expenditure_profile_id, array $fields)
     {
-        $crew = $this->newInstance($expenditure_position_id, Position::class)->model->crew()->create($fields);
+        $crew = $this->newInstance($expenditure_profile_id, Profile::class)->model->crew()->create($fields);
         return $this->createExpenditure($crew, $project_id);
     }
 
     /**
-     * Create a Review
+     * Create an Expense Entry
      *
      * @param int $project_id
-     * @param int $expenditure_position_id
      * @param array $fields
      * @return Expenditure
      * @throws RepositoryException
      */
-    public function createExpense($project_id, $expenditure_position_id, array $fields)
+    public function createExpense($project_id, array $fields)
     {
-        $expense = $this->newInstance($expenditure_position_id, Position::class)->model->expense()->create($fields);
+        $expense = $this->newInstance(Expense::class)->model->create($fields);
+
         return $this->createExpenditure($expense, $project_id);
     }
 

@@ -54,6 +54,17 @@ class Project extends Model
     protected $presenter = ProjectPresenter::class;
 
     /**
+     * Add "ORDER BY" to query object
+     * @param $query
+     * @param string $orderBy
+     * @return mixed
+     */
+    public function addOrderBy($query, $orderBy = '')
+    {
+        return $query->orderBy('updated_at', ($orderBy?:'desc'));
+    }
+
+    /**
      * Scope a query to only show active entries.
      *
      * @param $query
@@ -68,7 +79,8 @@ class Project extends Model
         })->orWhereHas('script', function ($query) {
             $query->select('id')->where('active', '=', true);
         });
-        return $query->where('active', true);
+
+        return $this->addOrderBy($query->where('active', true));
     }
 
     /**
@@ -79,7 +91,7 @@ class Project extends Model
      */
     public function scopeFailed($query)
     {
-        return $query->where('active', false);
+        return $this->addOrderBy($query->where('active', false));
     }
 
     /**
@@ -102,17 +114,21 @@ class Project extends Model
 
     /**
      * Get Reward Relation of Next Stage
+     *
      * @return mixed
      */
-    public function getNextStageReward($type = ''){
-        return $this->rewards()->where('rewardable_type', ($type?:get_class($this->stage->next())) );
+    public function getNextStageReward($type = '')
+    {
+        return $this->rewards()->where('rewardable_type', ($type ?: get_class($this->stage->next())));
     }
 
     /**
      * Relation to ProjectReward Table
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rewards(){
+    public function rewards()
+    {
         return $this->hasMany(Reward::class);
     }
 

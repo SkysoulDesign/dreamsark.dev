@@ -25,7 +25,7 @@
                     <th>@lang('project.name')</th>
                     <th>@lang('project.reward')</th>
                     <th>@lang('project.vote-date')</th>
-                    <th class="right aligned">@lang('project.action')</th>
+                    <th class="">@lang('project.action')</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                         <td>${{ $project->reward or '-' }}</td>
                         <td>{{ $project->voting_date or '-' }}</td>
 
-                        <td class="right aligned">
+                        <td class="">
                             <form action="{{ route('project.publish', $project->id) }}">
                                 <a href="{{ route('project.edit', $project->id) }}" class="ui primary button">
                                     @lang('project.edit')
@@ -57,25 +57,37 @@
             <table class="ui unstackable table">
                 <thead>
                 <tr>
-                    <th>@lang('project.name')</th>
                     <th>@lang('project.stage')</th>
+                    <th>@lang('project.name')</th>
                     <th>@lang('project.reward')</th>
                     <th>@lang('project.vote-date')</th>
                     <th>@lang('project.status')</th>
-                    <th class="right aligned">@lang('project.action')</th>
+                    <th class="">@lang('project.action')</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($publishedProjects as $project)
 
                     <tr>
+                        <td>
+                            @if($project->type=='fund')
+                                <a href="javascript:;" class="ui orange ribbon label">
+                                    @lang('project.' . $project->type)
+                                </a>
+                            @elseif($project->type=='review')
+                                <a href="javascript:;" class="ui pink ribbon label">
+                                    @lang('project.' . $project->type)
+                                </a>
+                            @else
+                                @lang('project.' . $project->type)
+                            @endif
+                        </td>
                         <td class="collapsing">{{ $project->name }}</td>
-                        <td>@lang('project.' . $project->type)</td>
                         <td>{{ $project->stage->reward->amount or '-'}}</td>
                         <td>{{ $project->stage->vote->open_date or '-' }}</td>
                         <td>{{ $project->stage->submission ? 'Finished' : 'Waiting' }}</td>
 
-                        <td class="right aligned">
+                        <td class="">
                             @if($project->stage->submission)
                                 <a href="{{ route('project.next.create', $project->id) }}" class="ui olive button">
                                     @lang('project.start-next-stage')
@@ -96,17 +108,29 @@
             <table class="ui unstackable table">
                 <thead>
                 <tr>
-                    <th>@lang('project.name')</th>
                     <th>@lang('project.stage')</th>
-                    <th class="right aligned">@lang('project.action')</th>
+                    <th>@lang('project.name')</th>
+                    <th class="">@lang('project.action')</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($failedProjects as $project)
                     <tr>
+                        <td>
+                            @if($project->type=='fund')
+                                <a href="javascript:;" class="ui orange ribbon label">
+                                    @lang('project.' . $project->type)
+                                </a>
+                            @elseif($project->type=='review')
+                                <a href="javascript:;" class="ui pink ribbon label">
+                                    @lang('project.' . $project->type)
+                                </a>
+                            @else
+                                @lang('project.' . $project->type)
+                            @endif
+                        </td>
                         <td>{{ $project->name }}</td>
-                        <td>@lang('project.'.$project->type)</td>
-                        <td class="right aligned">
+                        <td class="">
                             <a href="{{ route('project.show', $project->id) }}" class="ui primary button">
                                 @lang('project.view')
                             </a>
