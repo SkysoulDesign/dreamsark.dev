@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.30 on 2016-04-27.
+ * Generated for Laravel 5.2.31 on 2016-05-03.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -5524,6 +5524,18 @@ namespace {
     class Gate extends \Illuminate\Support\Facades\Gate{
         
         /**
+         * Determine if the given ability should be granted for the current user.
+         *
+         * @param string $ability
+         * @param array|mixed $arguments
+         * @return bool 
+         * @static 
+         */
+        public static function check($ability, $arguments = array()){
+            return \DreamsArk\Services\Gate::check($ability, $arguments);
+        }
+        
+        /**
          * Determine if a given ability has been defined.
          *
          * @param string $ability
@@ -5531,7 +5543,8 @@ namespace {
          * @static 
          */
         public static function has($ability){
-            return \Illuminate\Auth\Access\Gate::has($ability);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::has($ability);
         }
         
         /**
@@ -5544,7 +5557,8 @@ namespace {
          * @static 
          */
         public static function define($ability, $callback){
-            return \Illuminate\Auth\Access\Gate::define($ability, $callback);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::define($ability, $callback);
         }
         
         /**
@@ -5556,7 +5570,8 @@ namespace {
          * @static 
          */
         public static function policy($class, $policy){
-            return \Illuminate\Auth\Access\Gate::policy($class, $policy);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::policy($class, $policy);
         }
         
         /**
@@ -5567,7 +5582,8 @@ namespace {
          * @static 
          */
         public static function before($callback){
-            return \Illuminate\Auth\Access\Gate::before($callback);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::before($callback);
         }
         
         /**
@@ -5578,7 +5594,8 @@ namespace {
          * @static 
          */
         public static function after($callback){
-            return \Illuminate\Auth\Access\Gate::after($callback);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::after($callback);
         }
         
         /**
@@ -5590,7 +5607,8 @@ namespace {
          * @static 
          */
         public static function allows($ability, $arguments = array()){
-            return \Illuminate\Auth\Access\Gate::allows($ability, $arguments);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::allows($ability, $arguments);
         }
         
         /**
@@ -5602,19 +5620,8 @@ namespace {
          * @static 
          */
         public static function denies($ability, $arguments = array()){
-            return \Illuminate\Auth\Access\Gate::denies($ability, $arguments);
-        }
-        
-        /**
-         * Determine if the given ability should be granted for the current user.
-         *
-         * @param string $ability
-         * @param array|mixed $arguments
-         * @return bool 
-         * @static 
-         */
-        public static function check($ability, $arguments = array()){
-            return \Illuminate\Auth\Access\Gate::check($ability, $arguments);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::denies($ability, $arguments);
         }
         
         /**
@@ -5627,7 +5634,8 @@ namespace {
          * @static 
          */
         public static function authorize($ability, $arguments = array()){
-            return \Illuminate\Auth\Access\Gate::authorize($ability, $arguments);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::authorize($ability, $arguments);
         }
         
         /**
@@ -5639,7 +5647,8 @@ namespace {
          * @static 
          */
         public static function getPolicyFor($class){
-            return \Illuminate\Auth\Access\Gate::getPolicyFor($class);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::getPolicyFor($class);
         }
         
         /**
@@ -5650,7 +5659,8 @@ namespace {
          * @static 
          */
         public static function resolvePolicy($class){
-            return \Illuminate\Auth\Access\Gate::resolvePolicy($class);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::resolvePolicy($class);
         }
         
         /**
@@ -5661,7 +5671,8 @@ namespace {
          * @static 
          */
         public static function forUser($user){
-            return \Illuminate\Auth\Access\Gate::forUser($user);
+            //Method inherited from \Illuminate\Auth\Access\Gate            
+            return \DreamsArk\Services\Gate::forUser($user);
         }
         
     }
@@ -6051,6 +6062,17 @@ namespace {
          */
         public static function hasFile($key){
             return \Illuminate\Http\Request::hasFile($key);
+        }
+        
+        /**
+         * Determine if a header is set on the request.
+         *
+         * @param string $key
+         * @return bool 
+         * @static 
+         */
+        public static function hasHeader($key){
+            return \Illuminate\Http\Request::hasHeader($key);
         }
         
         /**
@@ -6646,7 +6668,7 @@ namespace {
          * Order of precedence: PATH (routing placeholders or custom attributes), GET, BODY
          *
          * @param string $key the key
-         * @param mixed $default the default value
+         * @param mixed $default the default value if the parameter key does not exist
          * @return mixed 
          * @static 
          */
@@ -7098,7 +7120,7 @@ namespace {
          * Here is the process to determine the format:
          * 
          *  * format defined by the user (with setRequestFormat())
-         *  * _format request parameter
+         *  * _format request attribute
          *  * $default
          *
          * @param string $default The default format
@@ -8849,6 +8871,17 @@ namespace {
         }
         
         /**
+         * Determine if a header is set on the request.
+         *
+         * @param string $key
+         * @return bool 
+         * @static 
+         */
+        public static function hasHeader($key){
+            return \Illuminate\Http\Request::hasHeader($key);
+        }
+        
+        /**
          * Retrieve a header from the request.
          *
          * @param string $key
@@ -9441,7 +9474,7 @@ namespace {
          * Order of precedence: PATH (routing placeholders or custom attributes), GET, BODY
          *
          * @param string $key the key
-         * @param mixed $default the default value
+         * @param mixed $default the default value if the parameter key does not exist
          * @return mixed 
          * @static 
          */
@@ -9893,7 +9926,7 @@ namespace {
          * Here is the process to determine the format:
          * 
          *  * format defined by the user (with setRequestFormat())
-         *  * _format request parameter
+         *  * _format request attribute
          *  * $default
          *
          * @param string $default The default format

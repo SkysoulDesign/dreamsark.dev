@@ -98,7 +98,7 @@ class QuestionController extends Controller
             $question,
             $request->get('question'),
             $request->get('type'),
-            $request->get('options')
+            $request->get('options', [])
         ));
 
         return redirect()->back()->withSuccess('Question updated successfully');

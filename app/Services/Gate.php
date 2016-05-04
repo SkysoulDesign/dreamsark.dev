@@ -5,6 +5,11 @@ namespace DreamsArk\Services;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Gate as ServiceProvider;
 
+/**
+ * Class Gate
+ *
+ * @package DreamsArk\Services
+ */
 class Gate extends ServiceProvider
 {
 

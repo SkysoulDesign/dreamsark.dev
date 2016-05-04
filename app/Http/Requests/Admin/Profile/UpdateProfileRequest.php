@@ -18,7 +18,7 @@ class UpdateProfileRequest extends Request
      */
     public function authorize()
     {
-        return $this->user()->can('update-profile', $this->user());
+        return $this->user()->can('update-profile');
     }
 
     /**

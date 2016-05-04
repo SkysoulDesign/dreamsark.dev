@@ -3,7 +3,7 @@
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 
 /**
- * Class UserTrait
+ * Class QuestionTrait
  */
 trait QuestionTrait
 {

@@ -11,7 +11,7 @@ use DreamsArk\Jobs\Admin\Profile\DeleteProfileJob;
 use DreamsArk\Jobs\Admin\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Question;
-use Illuminate\Database\Eloquent\Collection;
+use DreamsArk\Models\Master\Question\Section;
 use Illuminate\Http\Request;
 
 /**
@@ -21,13 +21,6 @@ use Illuminate\Http\Request;
  */
 class ProfileController extends Controller
 {
-
-    /**
-     * @var array
-     */
-    private $category = [
-        'general' => 'General', 'image-gallery' => 'Image Gallery', 'video-gallery' => 'Video Gallery', 'task' => 'Tasks', 'refer' => 'References'
-    ];
 
     /**
      * @param Profile $profile
@@ -43,12 +36,15 @@ class ProfileController extends Controller
      * Displays form for creating a new Profile
      *
      * @param \DreamsArk\Models\Master\Question\Question $question
+     * @param Section $section
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\
      * @todo Implement Repository
      */
-    public function create(Question $question)
+    public function create(Question $question, Section $section)
     {
-        return view('admin.profile.create')->with('questions', $question->all())->with('category', $this->category);
+        return view('admin.profile.create')
+            ->with('questions', $question->all())
+            ->with('sections', $section->all());
     }
 
     /**
@@ -67,7 +63,7 @@ class ProfileController extends Controller
             $request->except(['questions', 'required', 'category']),
             $request->get('questions', []),
             $request->get('required', []),
-            $request->get('category', [])
+            $request->get('sections', [])
         ));
 
         return redirect()
@@ -79,33 +75,32 @@ class ProfileController extends Controller
     /**
      * @param Profile $profile
      * @param Question $question
+     * @param Section $section
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @todo implement Repository
      */
-    public function edit(Profile $profile, Question $question)
+    public function edit(Profile $profile, Question $question, Section $section)
     {
 
         /**
          * Append ->selected = true to all matching pairs
+         *        ->required = true|false
+         *        ->section_id = id
          */
-        $profileQuestions = $profile->questions()->get(['question_id']);
-        /** @var Collection $profileQuestions */
-        $profileQuestions = $profileQuestions->pluck('pivot')->keyBy('question_id')->toArray();
-//        $profileQuestions = $profileQuestions->pluck('question_id')->toArray();
+        $questions = $profile->questions->map(function ($question) {
 
-        $questions = $question->all()->map(function ($question) use ($profileQuestions) {
-
-            if (isset($profileQuestions[$question->id])) {
-                $question->selected = true;
-                $question->required = $profileQuestions[$question->id]['required'];
-                $question->category = $profileQuestions[$question->id]['category'];
-            }
+            $question->selected = true;
+            $question->required = filter_var($question->pivot->required, FILTER_VALIDATE_BOOLEAN);
+            $question->section_id = $question->pivot->section_id;
 
             return $question;
 
         });
 
-        return view('admin.profile.edit', compact('profile', 'questions'))->with('category', $this->category);
+        return view('admin.profile.edit')
+            ->with('questions', $question->all()->merge($questions))
+            ->with('profile', $profile)
+            ->with('sections', $section->all());
 
     }
 
@@ -116,6 +111,7 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
+
         /**
          * Update Profile Job
          */
@@ -123,11 +119,13 @@ class ProfileController extends Controller
             $profile,
             $request->only(['name', 'display_name']),
             $request->get('questions', []),
-            $request->get('required', []),
-            $request->get('category', [])
+            $request->get('sections', []),
+            $request->get('required', [])
         ));
 
-        return redirect()->back()->withSuccess("Profile: $profile->display_name updated successfully");
+        return redirect()
+            ->route('admin.profile.edit', $profile->name)
+            ->withSuccess("Profile: $profile->display_name updated successfully");
     }
 
     /**

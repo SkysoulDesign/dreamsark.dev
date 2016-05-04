@@ -62,7 +62,7 @@
   "config": {
     "preferred-install": "dist",
     "secure-http": false,
-    "optimize-autoloader": true,
+    "optimize-autoloader": false,
     "sort-packages": true
   }
 }

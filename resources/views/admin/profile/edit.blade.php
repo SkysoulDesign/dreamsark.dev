@@ -14,7 +14,7 @@
                 <label>@lang('forms.name')</label>
                 <input type="text"
                        name="name"
-                       placeholder="@lang('forms.profile-name-lower')" readonly
+                       placeholder="@lang('forms.profile-name-lower')"
                        value="{{ old('name', $profile->name) }}">
             </div>
             <div class="required field">
@@ -32,12 +32,15 @@
                 <label>@lang('forms.select-questions')</label>
 
                 @foreach($questions as $question)
+
                     <div class="field">
                         <div class="ui checkbox">
-                            <select name="category[{{ $question->id }}]">
+                            <select name="sections[{{ $question->id }}]">
                                 <option value="general">Category</option>
-                                @foreach($category as $key => $value)
-                                    <option value="{{ $key }}"{{ $question->category!=$key?:' selected' }}>{{ $value }}</option>
+                                @foreach($sections as $section)
+                                    <option value="{{ $section->id }}" {{ $question->section_id != $section->id ?: 'selected' }}>
+                                        {{ $section->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

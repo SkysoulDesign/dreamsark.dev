@@ -18,7 +18,7 @@ class StoreProfileRequest extends Request
      */
     public function authorize()
     {
-        return $this->user()->can('create-profile', $this->user());
+        return $this->user()->can('create-profile');
     }
 
     /**

@@ -8,13 +8,15 @@ use DreamsArk\Jobs\Admin\Profile\CreateProfileJob;
 trait ProfileTrait
 {
 
+    use QuestionTrait, SectionTrait;
+
     /**
      * Create a user
      *
      * @param array $fields
      * @return \DreamsArk\Models\Master\Profile
      */
-    public function createProfile(array $fields = [])
+    public function createProfile(array $fields = [], $numberOfQuestions = 5)
     {
 
         /** @var Faker\Generator $faker */
@@ -23,10 +25,28 @@ trait ProfileTrait
         $fields = array_merge($fields, $data = [
             'name'         => $faker->name,
             'display_name' => $faker->name,
-            'description'  => $faker->sentence
         ]);
 
-        return dispatch(new CreateProfileJob($fields));
+        /**
+         * Create Questions
+         */
+        $questions = [];
+        foreach (range(1, $numberOfQuestions) as $index) {
+            array_push($questions, $this->createQuestion()->id);
+        }
+
+        /**
+         * Create Section
+         * Randomly creates required questions
+         */
+        $sections = [];
+        $required = [];
+        foreach ($questions as $id) {
+            array_set($sections, $id, $this->createSection()->id);
+            (boolean)rand(0, 1) ?: array_push($required, $id);
+        }
+
+        return dispatch(new CreateProfileJob($fields, $questions, $sections, $required));
 
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateSectionsTable
  */
-class CreateSectionsTable extends Migration
+class CreateQuestionSectionsTable extends Migration
 {
 
     use SchemaTrait;

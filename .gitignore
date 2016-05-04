@@ -12,7 +12,7 @@
 .env
 .gitignore
 _ide_helper.php
-composer.lock
+*.lock
 /public/user-profiles
 
 

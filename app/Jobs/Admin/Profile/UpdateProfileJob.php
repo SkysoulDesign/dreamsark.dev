@@ -22,18 +22,21 @@ class UpdateProfileJob extends Job
      * @var array
      */
     private $fields;
+
     /**
      * @var array
      */
     private $questions;
+
+    /**
+     * @var array
+     */
+    private $sections;
+
     /**
      * @var array
      */
     private $required;
-    /**
-     * @var array
-     */
-    private $category;
 
     /**
      * Create a new job instance.
@@ -41,16 +44,16 @@ class UpdateProfileJob extends Job
      * @param Profile $profile
      * @param array $fields
      * @param array $questions
+     * @param array $sections
      * @param array $required
-     * @param array $category
      */
-    public function __construct(Profile $profile, array $fields, array $questions, array $required, array $category)
+    public function __construct(Profile $profile, array $fields, array $questions, array $sections, array $required)
     {
         $this->profile = $profile;
         $this->fields = $fields;
         $this->questions = $questions;
+        $this->sections = $sections;
         $this->required = $required;
-        $this->category = $category;
     }
 
     /**
@@ -62,7 +65,6 @@ class UpdateProfileJob extends Job
     public function handle()
     {
 
-//        $this->profile->questions()->sync(array_get($this->fields, 'questions', []));
         /**
          * FLip keys and append required pivot if key is find in the required params
          * Example: [1=> [required=>true]] translates to question $id 1 is required
@@ -71,10 +73,16 @@ class UpdateProfileJob extends Job
          */
         $questions = [];
 
-        foreach (array_flip($this->questions) as $id => $index) {
-            $questions[$id] = ['required' => (in_array($id, $this->required) ? true : false)];
-            $questions[$id]['category'] = isset($this->category[$id])?$this->category[$id]:'general';
+        foreach ($this->questions as $id) {
+
+            $data = [
+                'required'   => in_array($id, $this->required),
+                'section_id' => array_get($this->sections, $id, 1)
+            ];
+
+            array_set($questions, $id, $data);
         }
+
         $this->profile->questions()->sync($questions);
 
         $this->profile->update($this->fields);

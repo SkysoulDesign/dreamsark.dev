@@ -30,10 +30,9 @@
                 @foreach($questions as $question)
                     <div class="field">
                         <div class="ui checkbox">
-                            <select name="category[{{ $question->id }}]">
-                                <option value="general">Category</option>
-                                @foreach($category as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
+                            <select name="sections[{{ $question->id }}]">
+                                @foreach($sections as $section)
+                                    <option value="{{ $section->id }}">{{ $section->name }}</option>
                                 @endforeach
                             </select>
                         </div>

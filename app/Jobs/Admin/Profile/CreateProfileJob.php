@@ -26,27 +26,27 @@ class CreateProfileJob extends Job
     /**
      * @var array
      */
-    private $required;
+    private $sections;
 
     /**
      * @var array
      */
-    private $category;
+    private $required;
 
     /**
      * Create a new job instance.
      *
      * @param array $fields
      * @param array $questions
+     * @param array $sections
      * @param array $required
-     * @param array $category
      */
-    public function __construct(array $fields, array $questions, array $required, array $category)
+    public function __construct(array $fields, array $questions, array $sections, array $required)
     {
         $this->fields = $fields;
         $this->questions = $questions;
+        $this->sections = $sections;
         $this->required = $required;
-        $this->category = $category;
     }
 
     /**
@@ -66,9 +66,14 @@ class CreateProfileJob extends Job
          */
         $questions = [];
 
-        foreach (array_flip($this->questions) as $id => $index) {
-            $questions[$id] = ['required' => (in_array($id, $this->required) ? true : false)];
-            $questions[$id]['category'] = isset($this->category[$id])?$this->category[$id]:'general';
+        foreach ($this->questions as $id) {
+
+            $data = [
+                'required'   => in_array($id, $this->required),
+                'section_id' => array_get($this->sections, $id, 1)
+            ];
+
+            array_set($questions, $id, $data);
         }
 
         /**
