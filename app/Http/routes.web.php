@@ -165,7 +165,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         /**
          * Fund Controller
          */
-        $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+        $app->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
             $app->get('create/{project}', FundController::class . '@create')->name('create');
             $app->post('store/{project}', FundController::class . '@store')->name('store');
             $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');

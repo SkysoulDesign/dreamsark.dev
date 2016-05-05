@@ -13,7 +13,7 @@
                 <p class="ui sub header ">
 
                 <p>
-                    @if($project->script) {{ substr($project->script->content, 0, 100).'...' }} @endif
+                    @if($project->script) {{ substr($project->script->submission->content, 0, 100).'...' }} @endif
                 </p>
 
                 <div class="ui segments">
