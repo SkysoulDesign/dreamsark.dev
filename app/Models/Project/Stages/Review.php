@@ -6,6 +6,11 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Review
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Review extends Model
 {
 
@@ -33,9 +38,22 @@ class Review extends Model
         return $this->belongsTo(Project::class);
     }
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function scopePending($query)
     {
         return $query->where('active', false);
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeActives($query)
+    {
+        return $query->where('active', true);
     }
 
 }

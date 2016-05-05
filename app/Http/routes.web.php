@@ -305,6 +305,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
          * Project Crew Controller
          */
         $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
+
+        $app->get('project/fund', CommitteeController::class . '@projectsInFundStage')->name('project.fund.list');
     });
 
 });

@@ -65,22 +65,12 @@
                         </td>
 
                         <td class="">
-                            @if($project->stage->submission)
+                            {{--@if($project->stage->submission)
                                 <a href="{{ route('project.next.create', $project->id) }}" class="ui olive button">
                                     @lang('project.start-next-stage')
                                 </a>
-                            @endif
-                            <a href="javascript:;" class="ui primary button view-modal"
-                               id="view-modal-{{ $project->id }}" data-modal="project-view-modal-{{ $project->id }}">
-                                @lang('project.view')
-                            </a>
-                            <div id="project-view-modal-{{ $project->id }}" class="ui fullscreen modal">
-                                <i class="close icon"></i>
-                                <div class="ui embed" data-url="{{ route('project.show.iframe', $project->id) }}"
-                                     data-placeholder="{{ asset('dreamsark-assets/mini-header-bg.jpg') }}"
-                                     data-icon="right circle arrow">
-                                </div>
-                            </div>
+                            @endif--}}
+                            @include('admin.partials.project.view-project-button', ['project_id' => $project->id])
                         </td>
 
                     </tr>
