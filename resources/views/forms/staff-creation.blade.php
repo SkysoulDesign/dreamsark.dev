@@ -8,10 +8,18 @@
     <a id="project-add-expense" class="item"> @lang('project.add-expense') </a>
 
     <div class="right menu">
-        <a href="{{ route('project.show', $review->project_id) }}" class="item ui primary button">
+        <a href="javascript:;" class="item ui button view-modal"
+           id="view-modal-{{ $review->project_id }}" data-modal="project-view-modal-{{ $review->project_id }}">
             <i class="unhide icon"></i>
             @lang('project.view')
         </a>
+        <div id="project-view-modal-{{ $review->project_id }}" class="ui fullscreen modal">
+            <i class="close icon"></i>
+            <div class="ui embed" data-url="{{ route('project.show.iframe', $review->project_id) }}"
+                 data-placeholder="{{ asset('dreamsark-assets/mini-header-bg.jpg') }}"
+                 data-icon="right circle arrow">
+            </div>
+        </div>
         <div class="item">
             <form method="post" action="{{ route('committee.project.publish', $review->id) }}" class="ui form">
                 {{ csrf_field() }}

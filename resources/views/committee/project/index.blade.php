@@ -16,10 +16,19 @@
                 <td>{{ $review->project->name }}</td>
                 <td>{{ $review->project->user->name ?:$review->project->user->username }}</td>
                 <td>
-                    <a href="{{ route('project.show', $review->project_id) }}" class="ui button">
+                    <a href="javascript:;" class="ui button view-modal"
+                       id="view-modal-{{ $review->project_id }}"
+                       data-modal="project-view-modal-{{ $review->project_id }}">
                         <i class="unhide icon"></i>
                         @lang('project.view')
                     </a>
+                    <div id="project-view-modal-{{ $review->project_id }}" class="ui fullscreen modal">
+                        <i class="close icon"></i>
+                        <div class="ui embed" data-url="{{ route('project.show.iframe', $review->project_id) }}"
+                             data-placeholder="{{ asset('dreamsark-assets/mini-header-bg.jpg') }}"
+                             data-icon="right circle arrow">
+                        </div>
+                    </div>
                     <a href="{{ route('committee.project.planning.manage', $review->id) }}" class="ui button">
                         <i class="settings icon"></i>
                         @lang('project.review-and-plan')
@@ -29,4 +38,7 @@
         @endforeach
         </tbody>
     </table>
+@endsection
+@section('pos-scripts')
+    @include('partials.embed-show-project-script')
 @endsection

@@ -8,6 +8,8 @@ use DreamsArk\Http\Requests\Session\UserCreation;
 use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
+use DreamsArk\Models\User\User;
+use Illuminate\Http\Request;
 
 /**
  * Class SessionController
@@ -27,11 +29,14 @@ class SessionController extends Controller
     /**
      * Display Profile Page.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('session.profile');
+        /** @var User $user */
+        $user = $request->user()->load('backers');
+        return view('session.profile', compact('user'));
     }
 
     /**

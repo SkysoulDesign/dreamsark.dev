@@ -137,6 +137,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
         $app->get('create', ProjectController::class . '@create')->name('create');
         $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+        $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
         $app->post('store', ProjectController::class . '@store')->name('store');
         $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
         $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');

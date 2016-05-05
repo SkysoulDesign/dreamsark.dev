@@ -57,4 +57,5 @@
         });
     </script>
     @include('forms.project-stage-script')
+    @include('partials.embed-show-project-script')
 @endsection

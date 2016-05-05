@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
  */
 class ProjectController extends Controller
 {
+    private $isIFrameCall = false;
+
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['show', 'index']]);
@@ -93,6 +95,10 @@ class ProjectController extends Controller
 
     }
 
+    public function showIframe(Project $project, ProjectRepositoryInterface $repository){
+        $this->isIFrameCall = true;
+        return $this->show($project, $repository);
+    }
     /**
      * Show a specific project.
      *
@@ -102,18 +108,19 @@ class ProjectController extends Controller
      */
     public function show(Project $project, ProjectRepositoryInterface $repository)
     {
+        $isIFrameCall = $this->isIFrameCall;
 
         if ($project->stage instanceof Review) {
-            return view('project.show', compact('project'));
+            return view('project.show', compact('project', 'isIFrameCall'));
         }
 
         if (!$project->stage instanceof Fund) {
             $submissions = $repository->submissions($project->id)->load('user');
 
-            return view('project.show', compact('project'))->with('submissions', $submissions);
+            return view('project.show', compact('project', 'isIFrameCall'))->with('submissions', $submissions);
         }
 
-        return view('project.show')->with('project', $project->load('expenditures.expenditurable', 'backers'));
+        return view('project.show', compact('isIFrameCall'))->with('project', $project->load('expenditures.expenditurable', 'backers'));
 
     }
 

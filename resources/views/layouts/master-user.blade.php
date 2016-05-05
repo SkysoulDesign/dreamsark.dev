@@ -14,12 +14,15 @@
 </head>
 <body class="main">
 
-@if(isset($topBar) ? $topBar : true)
-    @include('layouts.top-bar-user')
-@endif
+@if(isset($isIFrameCall) && $isIFrameCall)
+@else
+    @if(isset($topBar) ? $topBar : true)
+        @include('layouts.top-bar-user')
+    @endif
 
-@yield('header')
-@include('layouts.mini-header-user')
+    @yield('header')
+    @include('layouts.mini-header-user')
+@endif
 
 <div class="ui container">
     @include('errors.errors')

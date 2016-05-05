@@ -20,7 +20,10 @@
 
         @include('project.' . strtolower(class_basename($project->stage)) . '.show')
 
-        @include('partials.comments')
+        @if(isset($isIFrameCall) && $isIFrameCall)
+        @else
+            @include('partials.comments')
+        @endif
 
     </div>
 

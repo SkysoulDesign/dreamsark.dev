@@ -70,9 +70,17 @@
                                     @lang('project.start-next-stage')
                                 </a>
                             @endif
-                            <a href="{{ route('project.show', $project->id) }}" class="ui primary button">
+                            <a href="javascript:;" class="ui primary button view-modal"
+                               id="view-modal-{{ $project->id }}" data-modal="project-view-modal-{{ $project->id }}">
                                 @lang('project.view')
                             </a>
+                            <div id="project-view-modal-{{ $project->id }}" class="ui fullscreen modal">
+                                <i class="close icon"></i>
+                                <div class="ui embed" data-url="{{ route('project.show.iframe', $project->id) }}"
+                                     data-placeholder="{{ asset('dreamsark-assets/mini-header-bg.jpg') }}"
+                                     data-icon="right circle arrow">
+                                </div>
+                            </div>
                         </td>
 
                     </tr>
@@ -84,4 +92,7 @@
 
     </div>
 
+@endsection
+@section('pos-scripts')
+    @include('partials.embed-show-project-script')
 @endsection

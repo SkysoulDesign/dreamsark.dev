@@ -143,4 +143,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return false;
     }
 
+    /**
+     * Backers Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function backers()
+    {
+        return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
+    }
+
 }
