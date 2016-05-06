@@ -3,7 +3,7 @@
         $(document).ready(function () {
             $('.ui.form')
                     .form({
-                        fields: {!! json_encode($formValidateArr) !!}
+                        {{--fields: {!! json_encode($formValidateArr) !!}--}}
                     })
             ;
         });

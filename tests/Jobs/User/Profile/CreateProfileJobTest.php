@@ -40,8 +40,11 @@ class UserCreateProfileJobTest extends TestCase
             ]
         ];
 
+        $user = $this->createUser();
+        $profile = $this->createProfile();
+
         /** @var User $user */
-        $user = dispatch(new CreateProfileJob($data, 1, 1));
+        $user = dispatch(new CreateProfileJob($data, $user, $profile));
 
         $this->assertInstanceOf(Profile::class, $user->profiles->where('id', 1)->first());
 

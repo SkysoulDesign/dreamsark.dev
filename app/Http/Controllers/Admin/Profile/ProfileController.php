@@ -90,7 +90,7 @@ class ProfileController extends Controller
         $questions = $profile->questions->map(function ($question) {
 
             $question->selected = true;
-            $question->required = filter_var($question->pivot->required, FILTER_VALIDATE_BOOLEAN);
+            $question->required = $question->pivot->required;
             $question->section_id = $question->pivot->section_id;
 
             return $question;

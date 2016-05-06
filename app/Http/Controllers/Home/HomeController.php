@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Home;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Jobs\GetUniqueCharacters;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,6 +20,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
+        return $this->dispatch(new GetUniqueCharacters());
 
         /**
          * Check if intro cookie is set

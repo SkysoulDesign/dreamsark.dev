@@ -3,6 +3,8 @@
 namespace DreamsArk\Models\Master\Question;
 
 use DreamsArk\Models\Master\Answer;
+use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Master\Question\Pivot\ProfileQuestionPivot;
 use DreamsArk\Presenters\PresentableTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +29,30 @@ class Question extends Model
      * @var array
      */
     protected $fillable = ['question'];
+
+    /**
+     * Create a new pivot model instance.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $parent
+     * @param  array $attributes
+     * @param  string $table
+     * @param  bool $exists
+     * @return \Illuminate\Database\Eloquent\Relations\Pivot
+     */
+    public function newPivot(Model $parent, array $attributes, $table, $exists)
+    {
+
+        /**
+         * Construct this Pivot with instance of ProfileQuestionPivot
+         * Also Load Section along
+         */
+        if ($parent instanceof Profile) {
+            return (new ProfileQuestionPivot($parent, $attributes, $table, $exists))->load('section');
+        }
+
+        return parent::newPivot($parent, $attributes, $table, $exists);
+
+    }
 
     /**
      * Answer Relationship

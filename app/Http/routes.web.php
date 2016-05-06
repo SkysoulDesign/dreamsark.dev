@@ -199,6 +199,33 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->get('user/application', ActorController::class . '@create')->name('user.application.actor');
 
     /**
+     * User Projects Controller
+     */
+//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+//    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
+
+    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
+
+        $app->get('projects', UserProjectController::class . '@index')->name('projects');
+
+        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            $app->get('/', ProfileController::class . '@index')->name('index');
+            $app->get('{profile}/create', ProfileController::class . '@create')->name('create');
+            $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
+        });
+
+        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
+        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
+        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
+        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
+
+        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
+        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
+
+    });
+
+
+    /**
      * Report Controller
      */
     $app->get('reports', ReportController::class . '@index')->name('reports');

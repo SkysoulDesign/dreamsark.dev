@@ -1,73 +1,65 @@
 @extends('layouts.master-user')
 
 @section('content')
+
     <div class="column">
 
-        <form class="ui form @if($errors->any()) warning error @endif" action="{{ route('user.profile.store') }}"
+        <form class="ui form {{ !$errors->any() or "warning error" }}"
+              action="{{ route('user.profile.store', $profile->name) }}"
               method="POST" enctype="multipart/form-data">
 
             {{ csrf_field() }}
-            <input type="hidden" name="profile_id" value="{{ $profile->id }}"/>
 
             <div class="ui tabular menu create-profile">
-                {{--*/ $active=true /*--}}
-                @foreach($categories as $category)
-                    <div class="@if($active){!! 'active ' !!}{{--*/ $active=false /*--}} @endif{!! 'item' !!}"
-                         data-tab="{{ $category }}">@lang('forms.'.$category)</div>
+                @foreach($sections as $index => $section)
+                    <div class="{{ $index != 0 ?: "active" }} item" data-tab="tab-{{ $section->name }}">
+                        {{ $section->name }}
+                    </div>
                 @endforeach
             </div>
-            @php
-                $category=''; $active=true;
-                $valueArr = old('questions', '');
-                $formValidateArr = [];
-            @endphp
 
-            @foreach($profile->questions as $question)
-                @if($question->pivot->category!=$category)
-                    @if($category!='')
-                        {{--*/ $active=false /*--}}
-                        {!! '</div>' !!}
-                    @endif
-                    {{--*/ $category = $question->pivot->category /*--}}
-                    {!! '<div class="ui'.($active?' active':'').' tab segment" data-tab="'. $category .'" style="min-height: 350px;">' !!}
-                @endif
-                @php
-                    $attributes = '';
-                    $type = $question->type->name or 'text';
-                    $required = $question->pivot->required or false;
-                    $questionIndex = $required ? 'required' : 'general';
-                    $name = 'questions['.$questionIndex.']['.$type.']['.$question->id.']'.($type=='checkbox'?'[]':'');
-                    $label = $question->question;
-                    $value = @$valueArr[$questionIndex][$type][$question->id];
-                    if($required && $type!='checkbox')
-                        $formValidateArr[$name] = in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty';
-                    $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
-                @endphp
+            @foreach($group = $profile->questions->groupBy('pivot.section.name') as $section => $questions)
 
-                @if($type=='select')
-                    <div class="field {{ @$required?' required':'' }}">
-                        <label>{{ $label }}</label>
-                        <select class="ui dropdown" name="{{ $name }}">
-                            <option value="">{{ $placeholder or $label }}</option>
-                            @foreach($optionsArr as $key => $value)
-                                <option {{ @$value!='' && $value == $key ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                @elseif(in_array($type, ['radio', 'checkbox']))
-                    @include('partials.checkbox', ['parent_class' => 'grouped', 'options' => $optionsArr])
-                @elseif($type=='textarea')
-                    @include('partials.textarea', [])
-                @elseif(in_array($type, ['file', 'image', 'video']))
-                    @php $attributes = ($type!='file' ? 'accept="'.$type.'/*"' : ''); @endphp
-                    @include('partials.field-multiple', ['label' => $label, 'fields' => [
-                                ['name' => $name, 'type' => 'file', 'required' => boolval($required)],
-                            ], 'class' => 'two'])
-                @else
-                    @include('partials.field', [])
-                @endif
+                <div class="ui bottom attached tab segment {{ $group->keys()[0] != $section ?:'active' }}"
+                     data-tab="tab-{{ $section }}">
+
+                    @foreach($questions as $question)
+
+                        @if(in_array($question->type->name, ['text', 'url', 'number', 'tel', 'search', 'email', 'range']))
+
+                            <div class="field">
+                                <label>{{ $question->question }}</label>
+                                <input type="{{ $question->type->name }}"
+                                       name="question_{{ $question->id }}"
+                                       placeholder="{{ $question->question }}"
+                                        {{ !$question->pivot->required ?: "required" }} >
+                            </div>
+
+                        @endif
+
+                        @if(in_array($question->type->name, ['checkbox']))
+                            <div class="field">
+
+                                @foreach($question->options as $option)
+                                    <div class="ui checkbox">
+
+                                        <input id="{{ $option->name }}"
+                                               name="question_{{$question->id}}[{{ $option->id }}]"
+                                               type="checkbox">
+                                        <label for="{{ $option->name }}">{{ $option->name }}</label>
+
+                                    </div>
+
+                                @endforeach
+
+                            </div>
+                        @endif
+
+                    @endforeach
+
+                </div>
+
             @endforeach
-            {!! '</div>' !!}
 
             <div class="ui actions">
                 <button class="ui submit button primary" type="submit">@lang('forms.create')</button>

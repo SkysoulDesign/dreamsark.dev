@@ -11,6 +11,7 @@ use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
+use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use Illuminate\Http\Request;
@@ -65,13 +66,15 @@ class ProfileController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(Profile $profile, Request $request)
+    public function create(Profile $profile, Request $request, Question $question)
     {
-        if ($request->user()->hasProfile($profile->name))
-            return redirect()->route($this->defaultRoute)->withErrors('Profile already exists');
-        $categories = $this->getCategories($profile);
+//        if ($request->user()->hasProfile($profile->name))
+//            return redirect()->route($this->defaultRoute)->withErrors('Profile already exists');
+//        $categories = $this->getCategories($profile);
 
-        return view('user.profile.create', compact('profile', 'categories'));
+        return view('user.profile.create')
+            ->with('profile', $profile)
+            ->with('sections', $profile->questions->pluck('pivot.section'));
     }
 
     /**
@@ -80,6 +83,9 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request)
     {
+
+        dd($request->all());
+
         $user = dispatch(new CreateProfileJob($request->except('profile_id'), $request->user(), request('profile_id')));
 
         return redirect()->route($this->defaultRoute)->withSuccess('Profile created successfully');
@@ -94,6 +100,7 @@ class ProfileController extends Controller
     {
         $categories = $this->getCategories($profile);
         $answers = $this->getProfileAnswers($request->user(), $profile->id);
+
         return view('user.profile.edit', compact('profile', 'categories', 'answers'));
     }
 
@@ -103,7 +110,8 @@ class ProfileController extends Controller
      * @return array
      * @internal param Profile $profile
      */
-    private function getProfileAnswers($user, $profileId){
+    private function getProfileAnswers($user, $profileId)
+    {
         /** @var Profile|User Profile $profile */
         $profile = $user->profiles->find($profileId);
         /** @var Answer $questionsWithAnswer */
@@ -114,6 +122,7 @@ class ProfileController extends Controller
             /** pivot contains answer */
             $answers[$question->id] = $question->pivot->toArray();
         }
+
         return $answers;
     }
 
@@ -130,7 +139,7 @@ class ProfileController extends Controller
         $profile = $user->profiles->find($profile->id);
         $user = dispatch(new UpdateProfileJob($request->except('profile_id'), $request->user(), $profile));
 
-        return redirect()->back()->withSuccess($profile->display_name.' profile updated successfully');
+        return redirect()->back()->withSuccess($profile->display_name . ' profile updated successfully');
     }
 
     /**
@@ -143,6 +152,7 @@ class ProfileController extends Controller
     {
         $categories = $this->getCategories($profile);
         $answers = $this->getProfileAnswers($request->user(), $profile->id);
+
         return view('user.profile.show', compact('profile', 'categories', 'answers', 'option'));
     }
 
