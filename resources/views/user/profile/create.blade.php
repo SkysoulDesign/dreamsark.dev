@@ -9,6 +9,7 @@
               method="POST" enctype="multipart/form-data">
 
             {{ csrf_field() }}
+            <input type="hidden" name="profile_id" value="{{ $profile->id }}"/>
 
             <div class="ui tabular menu create-profile">
                 @foreach($sections as $index => $section)
@@ -25,7 +26,52 @@
 
                     @foreach($questions as $question)
 
-                        @if(in_array($question->type->name, ['text', 'url', 'number', 'tel', 'search', 'email', 'range']))
+                        @php
+                            $attributes = '';
+                            $type = $question->type->name or 'text';
+                            $required = $question->pivot->required or false;
+                            $questionIndex = $required ? 'required' : 'general';
+                            $name = 'question_'.$question->id.'';
+                            $value = old($name);
+                            if($type=='checkbox'){
+                                $name .= '[]';
+                                $value = old($name);
+                                if(!is_array($value))
+                                    $value = json_decode($value);
+                            }
+                            $label = $question->question;
+                            if($required && $type!='checkbox'){
+                                $formValidateArr[$name] = ['identifier' => $name, 'rules' => [['type' => in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty']]];
+                                if(in_array($type, ['file', 'image', 'video']))
+                                    $formValidateArr[$name]['optional'] = true;
+                            }
+                            $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
+                        @endphp
+
+                        @if($type=='select')
+                            <div class="field {{ @$required?' required':'' }}">
+                                <label>{{ $label }}</label>
+                                <select class="ui dropdown" name="{{ $name }}">
+                                    <option value="">{{ $placeholder or $label }}</option>
+                                    @foreach($optionsArr as $key => $value)
+                                        <option {{ @$value!='' && $value == $key ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @elseif(in_array($type, ['radio', 'checkbox']))
+                            @include('partials.checkbox', ['parent_class' => 'grouped', 'default' => (is_array($value)?$value:[$value]), 'options' => $optionsArr])
+                        @elseif($type=='textarea')
+                            @include('partials.textarea', [])
+                        @elseif(in_array($type, ['file', 'image', 'video']))
+                            @php $attributes = ($type!='file' ? 'accept="'.$type.'/*"' : ''); @endphp
+                            @include('partials.field-multiple', ['label' => $label, 'fields' => [
+                                        ['name' => $name, 'type' => 'file', 'value' => $value, 'required' => boolval($required)],
+                                    ], 'class' => 'two'])
+                        @else
+                            @include('partials.field', [])
+                        @endif
+
+                        {{--@if(in_array($question->type->name, ['text', 'url', 'number', 'tel', 'search', 'email', 'range']))
 
                             <div class="field">
                                 <label>{{ $question->question }}</label>
@@ -53,7 +99,7 @@
                                 @endforeach
 
                             </div>
-                        @endif
+                        @endif--}}
 
                     @endforeach
 

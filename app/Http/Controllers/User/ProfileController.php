@@ -68,13 +68,13 @@ class ProfileController extends Controller
      */
     public function create(Profile $profile, Request $request, Question $question)
     {
-//        if ($request->user()->hasProfile($profile->name))
-//            return redirect()->route($this->defaultRoute)->withErrors('Profile already exists');
+        if ($request->user()->hasProfile($profile->name))
+            return redirect()->route($this->defaultRoute)->withErrors('Profile already exists');
 //        $categories = $this->getCategories($profile);
 
         return view('user.profile.create')
             ->with('profile', $profile)
-            ->with('sections', $profile->questions->pluck('pivot.section'));
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
     /**
@@ -84,7 +84,7 @@ class ProfileController extends Controller
     public function store(StoreProfileRequest $request)
     {
 
-        dd($request->all());
+//        dd($request->all());
 
         $user = dispatch(new CreateProfileJob($request->except('profile_id'), $request->user(), request('profile_id')));
 
@@ -98,10 +98,11 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile, Request $request)
     {
-        $categories = $this->getCategories($profile);
+//        $categories = $this->getCategories($profile);
         $answers = $this->getProfileAnswers($request->user(), $profile->id);
 
-        return view('user.profile.edit', compact('profile', 'categories', 'answers'));
+        return view('user.profile.edit', compact('profile', 'answers'))
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
     /**
@@ -150,10 +151,23 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile, Request $request, Option $option)
     {
-        $categories = $this->getCategories($profile);
+        $isPublicProfile = false;
+//        $categories = $this->getCategories($profile);
         $answers = $this->getProfileAnswers($request->user(), $profile->id);
 
-        return view('user.profile.show', compact('profile', 'categories', 'answers', 'option'));
+        return view('user.profile.show', compact('profile', 'answers', 'option', 'isPublicProfile'))
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
+    }
+
+    public function showPublicProfile(Profile $profile, Request $request, Option $option){
+        $isPublicProfile = true;
+        /** @var User $user */
+        $user = User::with('profiles')->where('username', $request->username)->get();
+        if (!$user[0]->hasProfile($profile->name))
+            return redirect()->route($this->defaultRoute)->withErrors('Profile not exists');
+        $answers = $this->getProfileAnswers($user[0], $profile->id);
+        return view('user.profile.show', compact('profile', 'answers', 'option', 'isPublicProfile'))
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
 }

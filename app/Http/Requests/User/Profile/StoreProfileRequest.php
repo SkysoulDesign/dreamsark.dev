@@ -42,7 +42,8 @@ class StoreProfileRequest extends Request
             array_set($rules, "question_$question->id", $this->getRules($question));
         }
 
-        dd($this->all());
+//        print_r($this->all());
+//        dd($rules);
 
         return $rules;
 
@@ -66,8 +67,7 @@ class StoreProfileRequest extends Request
 
         $rules = [];
 
-        if ($question->pivot->required)
-            array_push($rules, 'required');
+        array_push($rules, ($question->pivot->required?'required':'sometimes'));
 
         switch ($question->type->name) {
             case "text":
@@ -76,6 +76,24 @@ class StoreProfileRequest extends Request
             case "email":
                 array_push($rules, 'email');
                 break;
+            case "video":
+                array_push($rules, 'mimes:mp4');
+                break;
+            case "image":
+                array_push($rules, 'image');
+                break;
+            case "number":
+                array_push($rules, 'numeric');
+                break;
+            case "date":
+                array_push($rules, 'date_format:Y-m-d');
+                break;
+            case "url":
+                array_push($rules, 'url');
+                break;
+            default:
+                break;
+
         }
 
         return implode("|", $rules);

@@ -112,6 +112,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
     $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
+    $app->get('public/profile/{profile}/{username}', ProfileController::class . '@showPublicProfile')->name('user.profile.public');
 
     /**
      * Vote Controller

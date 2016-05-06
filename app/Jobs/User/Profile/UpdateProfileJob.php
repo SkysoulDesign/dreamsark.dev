@@ -63,8 +63,28 @@ class UpdateProfileJob extends Job
         /** @var array $currentAnswers */
         $currentAnswers = $this->profile->answers->pluck('pivot')->keyBy('question_id')->toArray();
         $answer->questions()->sync([]);
-        $this->buildDataArrForUpdate($currentAnswers, 'required');
-        $this->buildDataArrForUpdate($currentAnswers, 'general');
+
+        foreach ($this->profile->questions as $question) {
+            $type = $question->type->name;
+            $questionId = "question_$question->id";
+            if (isset($this->fields[$questionId])) {
+                $content = '';
+                if (in_array($type, ['file', 'image', 'video'])) {
+                    $content = $this->doFileUpload($this->fields[$questionId], $type, $question->id);
+                    if ($content == '' && isset($currentAnswers[$question->id]))
+                        $content = $currentAnswers[$question->id]['content'];
+                } else {
+                    $content = $this->fields[$questionId];
+                    if (in_array($type, ['checkbox']))
+                        $content = json_encode($content);
+                }
+                if ($content != '')
+                    $this->dataArr[] = ['question_id' => $question->id, 'content' => $content];
+            }
+        }
+
+//        $this->buildDataArrForUpdate($currentAnswers, 'required');
+//        $this->buildDataArrForUpdate($currentAnswers, 'general');
         $answer->questions()->sync($this->dataArr);
 
         /**

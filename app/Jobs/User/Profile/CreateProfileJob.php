@@ -64,8 +64,30 @@ class CreateProfileJob extends Job
         /** @var Answer $answer */
         $answer = $answer->create(['profile_id' => $this->profile->id]);
 
-        $this->doInsertQuestions($answer, 'required');
-        $this->doInsertQuestions($answer, 'general');
+        foreach ($this->profile->questions as $question) {
+            $type = $question->type->name;
+            $questionId = "question_$question->id";
+            if (isset($this->fields[$questionId])) {
+                $content = '';
+                if (in_array($type, ['file', 'image', 'video'])) {
+                    $content = $this->doFileUpload($this->fields[$questionId], $type, $question->id);
+                } else {
+                    $content = $this->fields[$questionId];
+                    if (in_array($type, ['checkbox']))
+                        $content = json_encode($content);
+                }
+                $answer->questions()->attach($question->id, [
+                    'content' => $content
+                ]);
+//                echo $questionId . ' -- ' . $content . '<br/>';
+            }
+        }
+
+//        dd('');
+
+
+//        $this->doInsertQuestions($answer, 'required');
+//        $this->doInsertQuestions($answer, 'general');
 
         $this->user->profiles()->attach($this->profile->id, [
             'answer_id' => $answer->id
