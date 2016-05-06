@@ -26,7 +26,7 @@ class QuestionControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertViewHasAll([
-            'questions' => Question::all()->load('type'),
+            'questions' => Question::with('type')->paginate(10),
         ]);
     }
 
