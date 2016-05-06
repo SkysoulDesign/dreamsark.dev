@@ -37,7 +37,7 @@ class CommitteeController extends Controller
      */
     public function projectsInFundStage(Fund $fund)
     {
-        return view('committee.project.fund-index')->with('funds', $this->getListWithPagination($fund));
+        return view('committee.project.fund.index')->with('funds', $this->getListWithPagination($fund));
     }
 
     /**
@@ -47,5 +47,17 @@ class CommitteeController extends Controller
     protected function getListWithPagination($object)
     {
         return $object->pending()->orderBy('updated_at', 'desc')->paginate(config('defaults.settings.pagination.per_page'));
+    }
+
+    /**
+     * @param Fund $fund
+     * @return mixed
+     */
+    public function ViewFundProcess(Fund $fund)
+    {
+        $fund = $fund->load(['project', 'project.enrollable', 'project.enrollable.enrollers', 'project.expensable', 'project.backers']);
+//        dd($fund);
+
+        return view('committee.project.fund.view', compact('fund'));
     }
 }

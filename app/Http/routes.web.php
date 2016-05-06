@@ -306,7 +306,10 @@ $app->group(['middleware' => ['web']], function () use ($app) {
          */
         $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
 
-        $app->get('project/fund', CommitteeController::class . '@projectsInFundStage')->name('project.fund.list');
+        $app->group(['prefix' => 'project/fund', 'as' => 'project.fund.'], function () use ($app) {
+            $app->get('/', CommitteeController::class . '@projectsInFundStage')->name('list');
+            $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
+        });
     });
 
 });

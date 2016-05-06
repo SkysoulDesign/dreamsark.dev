@@ -2,8 +2,8 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Project\ChargeUserCommand;
 use DreamsArk\Events\Event;
+use DreamsArk\Jobs\User\Coins\ChargeUserJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class ChargeUser
@@ -22,8 +22,8 @@ class ChargeUser
         /**
          * Deduct Coins from the user
          */
-//        $this->dispatch(new ChargeUserCommand($event->model->user, $event->model->reward));
+//        $this->dispatch(new ChargeUserJob($event->model->user, $event->model->reward));
         if ($event->reward > 0)
-            $this->dispatch(new ChargeUserCommand($event->user, $event->reward));
+            $this->dispatch(new ChargeUserJob($event->user, $event->reward));
     }
 }

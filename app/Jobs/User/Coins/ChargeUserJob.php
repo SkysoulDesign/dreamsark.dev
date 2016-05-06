@@ -1,15 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\Project;
+namespace DreamsArk\Jobs\User\Coins;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Bag\UserCoinsWasDeducted;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Bag\BagRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class ChargeUserCommand extends Command implements SelfHandling
+class ChargeUserJob extends Job
 {
     /**
      * @var
@@ -38,9 +36,8 @@ class ChargeUserCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param BagRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(BagRepositoryInterface $repository, Dispatcher $event)
+    public function handle(BagRepositoryInterface $repository)
     {
         /**
          * Deduct User Coins
@@ -50,7 +47,7 @@ class ChargeUserCommand extends Command implements SelfHandling
         /**
          * Announce UserCoinsWasDeducted
          */
-        $event->fire(new UserCoinsWasDeducted($this->user, $this->amount));
+        event(new UserCoinsWasDeducted($this->user, $this->amount));
 
     }
 }

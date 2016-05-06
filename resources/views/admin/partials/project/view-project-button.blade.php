@@ -1,4 +1,4 @@
-<a href="javascript:;" class="ui button view-modal"
+<a href="javascript:;" class="ui{{ isset($class)?$class:'' }} button view-modal"
    id="view-modal-{{ $project_id }}"
    data-modal="project-view-modal-{{ $project_id }}">
     <i class="unhide icon"></i>

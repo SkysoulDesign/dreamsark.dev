@@ -8,7 +8,7 @@
     <a id="project-add-expense" class="item"> @lang('project.add-expense') </a>
 
     <div class="right menu">
-        @include('admin.partials.project.view-project-button', ['project_id' => $review->project_id])
+        @include('admin.partials.project.view-project-button', ['project_id' => $review->project_id, 'class' => ' item'])
         <div class="item">
             <form method="post" action="{{ route('committee.project.publish', $review->id) }}" class="ui form">
                 {{ csrf_field() }}
@@ -19,7 +19,7 @@
 
 </div>
 @php $project = $review->project; @endphp
-<div class="ui three item menu">
+{{--<div class="ui three item menu">
     <a id="project-idea-show" class="item @if(!$project->idea) disabled @endif">
         <i class="icon mail"></i> @lang('project.idea')
     </a>
@@ -29,12 +29,12 @@
     <a id="project-script-show" class="item @if(!$project->script) disabled @endif">
         <i class="icon users"></i> @lang('project.script')
     </a>
-</div>
+</div>--}}
 
 <table class="ui celled table">
     <thead>
     <tr>
-        <th>@lang('project.name')</th>
+        <th>@lang('forms.name')</th>
         <th>@lang('project.type')</th>
         <th>@lang('project.cost')</th>
         <th>@lang('project.description')</th>
@@ -99,6 +99,6 @@
     </tfoot>
 </table>
 
-@if($project->idea) @include('modals.project-idea-show-modal') @endif
+{{--@if($project->idea) @include('modals.project-idea-show-modal') @endif
 @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
-@if($project->script) @include('modals.project-script-show-modal') @endif
+@if($project->script) @include('modals.project-script-show-modal') @endif--}}

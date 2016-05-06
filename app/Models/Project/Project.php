@@ -199,6 +199,16 @@ class Project extends Model
     }
 
     /**
+     * Alias - Returns all Expensable Expenditures
+     *
+     * @return mixed
+     */
+    public function expensable()
+    {
+        return $this->expenditures()->expensable();
+    }
+
+    /**
      * Expenditure Relationship
      */
     public function expenditures()
@@ -213,7 +223,9 @@ class Project extends Model
      */
     public function backers()
     {
-        return $this->belongsToMany(User::class, 'project_backer')->withPivot('amount')->withTimestamps();
+        return $this->belongsToMany(User::class, 'project_backer')
+                ->withPivot('amount')->withTimestamps()
+                ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
     }
 
     /**

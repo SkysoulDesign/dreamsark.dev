@@ -5,6 +5,11 @@ namespace DreamsArk\Models\Project\Expenditures;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Enroller
+ *
+ * @package DreamsArk\Models\Project\Expenditures
+ */
 class Enroller extends Model
 {
     /**
@@ -45,6 +50,6 @@ class Enroller extends Model
      */
     public function votes()
     {
-        return $this->belongsToMany(User::class, 'expenditure_enroller_vote');
+        return $this->belongsToMany(User::class, 'expenditure_enroller_vote')->withTimestamps();
     }
 }

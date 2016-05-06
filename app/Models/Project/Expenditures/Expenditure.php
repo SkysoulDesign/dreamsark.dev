@@ -6,6 +6,11 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Expenditure
+ *
+ * @package DreamsArk\Models\Project\Expenditures
+ */
 class Expenditure extends Model
 {
     /**
@@ -31,6 +36,14 @@ class Expenditure extends Model
     public function scopeEnrollable($query)
     {
         return $query->whereIn('expenditurable_type', array(Crew::class));// Cast::class, 
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeExpensable($query){
+        return $query->whereIn('expenditurable_type', array(Expense::class));
     }
 
     /**
@@ -68,7 +81,7 @@ class Expenditure extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'expenditure_enrollers');
+        return $this->belongsToMany(User::class, 'expenditure_enrollers')->withTimestamps();
     }
 
     /**

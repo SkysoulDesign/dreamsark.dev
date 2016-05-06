@@ -9,7 +9,7 @@
 //namespace Commands\Project\Idea;
 //
 //use Carbon\Carbon;
-//use DreamsArk\Commands\Project\ChargeUserCommand;
+//use DreamsArk\Commands\Project\ChargeUserJob;
 //use DreamsArk\Jobs\Project\Stages\Idea\CreateIdeaJob;
 //use DreamsArk\Commands\Project\Stages\Voting\CreateVotingCommand;
 //use DreamsArk\Events\Project\IdeaWasCreated;
@@ -37,7 +37,7 @@
 //
 ////        $command = new CreateIdeaJob(1, [['user' => 'hello world']]);
 //
-////        $this->expectsJobs(ChargeUserCommand::class);
+////        $this->expectsJobs(ChargeUserJob::class);
 ////        $this->expectsJobs(CreateVotingCommand::class);
 ////        $this->expectsEvents(IdeaWasCreated::class);
 //

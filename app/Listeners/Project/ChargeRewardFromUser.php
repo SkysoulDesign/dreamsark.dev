@@ -2,8 +2,8 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Project\ChargeUserCommand;
 use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Jobs\User\Coins\ChargeUserJob;
 
 class ChargeRewardFromUser
 {
@@ -27,7 +27,7 @@ class ChargeRewardFromUser
     {
         foreach ($event->rewards as $type => $amount) {
             if ((int)$amount > 0)
-                dispatch(new ChargeUserCommand($event->user, (int)$amount));
+                dispatch(new ChargeUserJob($event->user, (int)$amount));
         }
     }
 }
