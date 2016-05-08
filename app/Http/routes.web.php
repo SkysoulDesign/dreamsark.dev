@@ -11,10 +11,6 @@
 |
 */
 
-/**
- * Artisan Commands
- */
-
 use DreamsArk\Http\Controllers\Admin\AdminController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
@@ -45,13 +41,13 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
-//use DreamsArk\Http\Controllers\Project\ProjectPledgeController;
-
-//use DreamsArk\Http\Controllers\Project\TakeController;
-
 /** @var $app \Illuminate\Routing\Router */
 
 $app->group(['middleware' => ['web']], function () use ($app) {
+
+    /**
+     * Home Controller
+     */
     $app->get('/', HomeController::class . '@index')->name('home');
 
     /**
@@ -63,7 +59,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Translation Controller
      */
-
     $app->group(['prefix' => 'translation', 'as' => 'translation.'], function () use ($app) {
         $app->get('import', TranslationController::class . '@import')->name('import');
         $app->get('export', TranslationController::class . '@export')->name('export');
@@ -89,7 +84,15 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
 
-    $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+    /*
+    |--------------------------------------------------------------------------
+    | User Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is listed all routes prefixed with user.
+    |
+    */
+    $app->group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth'], function () use ($app) {
 
         /**
          * Session Controller
@@ -103,16 +106,32 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('settings', SettingController::class . '@index')->name('settings');
         $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
 
-        $app->get('projects', UserProjectController::class . '@index')->name('projects')->middleware(['auth']);
+        $app->get('projects', UserProjectController::class . '@index')->name('projects');
+
+        /**
+         * Profile Controller
+         */
+        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            $app->get('/', ProfileController::class . '@index')->name('index');
+            $app->get('{profile}/create', ProfileController::class . '@create')->name('create');
+            $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
+            $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
+            $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
+            $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
+            /**
+             * Test.. what is this?
+             */
+            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
+        });
 
     });
 
     /**
      * Profile Controller
      */
-    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
-    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
-    $app->get('public/profile/{profile}/{username}', ProfileController::class . '@showPublicProfile')->name('user.profile.public');
+//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+//    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
+//    $app->get('public/profile/{profile}/{username}', ProfileController::class . '@showPublicProfile')->name('user.profile.public');
 
     /**
      * Vote Controller
@@ -130,9 +149,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Project Controller
      */
     $app->get('projects', ProjectController::class . '@index')->name('projects');
-
-
-
 
 
     $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
@@ -202,28 +218,20 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * User Projects Controller
      */
-//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
-//    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
 
-    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
-
-        $app->get('projects', UserProjectController::class . '@index')->name('projects');
-
-        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
-            $app->get('/', ProfileController::class . '@index')->name('index');
-            $app->get('{profile}/create', ProfileController::class . '@create')->name('create');
-            $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
-        });
-
-        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
-        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
-        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
-        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
-
-        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
-        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
-
-    });
+//    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
+//
+//
+//
+//        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
+//        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
+//        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
+//        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
+//
+//        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
+//        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
+//
+//    });
 
 
     /**

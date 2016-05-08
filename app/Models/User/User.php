@@ -5,7 +5,7 @@ namespace DreamsArk\Models\User;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
-use DreamsArk\Models\Traits\RolesAndPermissionTrait;
+use DreamsArk\Models\Traits\ModelDetentionTrait;
 use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\UserPresenter;
@@ -25,7 +25,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
 
-    use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RolesAndPermissionTrait;
+    use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, ModelDetentionTrait;
 
     /**
      * The database table used by the model.
@@ -97,16 +97,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Project::class);
     }
 
-    /**
-     * User Profile
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function profiles()
-    {
-        return $this->belongsToMany(Profile::class)->withPivot('answer_id');
-    }
-
     public function __get($name)
     {
 
@@ -151,6 +141,26 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function backers()
     {
         return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
+    }
+
+    /**
+     * Profile Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class)->withPivot('answer_id');
+    }
+
+    /**
+     * Role Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 
 }

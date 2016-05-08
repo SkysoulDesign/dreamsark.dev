@@ -5,12 +5,11 @@ return [
     /**
      * Defaults for Settings
      */
-
     'settings' => [
         'language' => 'cn',
-        'pagination' => [
-            'per_page' => 10
-        ],
+//        'pagination' => [
+//            'per_page' => 10
+//        ],
     ],
 
     'project'  => [

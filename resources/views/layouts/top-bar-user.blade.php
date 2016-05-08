@@ -5,16 +5,16 @@
         </a>
     </div>
     <a class="active item" href="{{ route('home') }}">
-        @lang('navbar.home')
+        Home
     </a>
     <div class="ui dropdown item">
-        @lang('navbar.discover-project')
+        Discover Project
         <div class="menu">
             <div class="header"></div>
-            <a class="item" href="{{ route('projects') }}">@lang('navbar.discover-project')</a>
-            <a class="item" href="{{ route('votes') }}">@lang('navbar.vote')</a>
-            <a class="item" href="{{ route('user.projects') }}">@lang('navbar.my-projects')</a>
-            <a class="item" href="{{ route('project.create') }}">@lang('navbar.create-project')</a>
+            <a class="item" href="{{ route('projects') }}">Discover Project</a>
+            <a class="item" href="{{ route('votes') }}">Vote</a>
+            <a class="item" href="{{ route('user.projects') }}">My Projects</a>
+            <a class="item" href="{{ route('project.create') }}">Create Project</a>
         </div>
     </div>
     @include('layouts.top-bar-right')

@@ -150,6 +150,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+//        Intervention\Image\ImageServiceProvider::class,
 
         /**
          * Developed
@@ -218,6 +219,7 @@ return [
          * Downloaded Packages
          */
         'Debugbar'  => Barryvdh\Debugbar\Facade::class,
+//        'Image'     => Intervention\Image\Facades\Image::class,
 
         /**
          * Developed

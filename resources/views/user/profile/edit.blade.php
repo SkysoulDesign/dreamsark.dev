@@ -37,10 +37,10 @@
                             $required = $question->pivot->required or false;
                             $questionIndex = $required ? 'required' : 'general';
                             $name = 'question_'.$question->id.'';
-                            $value = old($name, @$answers[$question->id]['content']);
+                        $value = old($name, @$answers->first()->content);
                             if($type=='checkbox'){
                                 $name .= '[]';
-                                $value = old($name, @$answers[$question->id]['content']);
+                        $value = old($name, @$answers->first()->content);
                                 if(!is_array($value))
                                     $value = json_decode($value);
                             }

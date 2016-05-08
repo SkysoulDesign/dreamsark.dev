@@ -4,7 +4,7 @@ namespace DreamsArk\Jobs\User\Traits;
 
 
 use Config;
-use DreamsArk\Jobs\General\UploadFilesJob;
+use DreamsArk\Jobs\General\UploadUserContentJob;
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
@@ -94,7 +94,7 @@ trait ProfileTrait
     {
         if ($file) {
             $filePrefix = $this->user->username . '-' . $this->profile->name . str_replace(['/', '\/'], '', crypt($question_id)) . '-';
-            $file = dispatch(new UploadFilesJob($file, Config::get('defaults.profile.' . $type), $filePrefix));
+            $file = dispatch(new UploadUserContentJob($file, Config::get('defaults.profile.' . $type), $filePrefix));
         }
 
         return $file;

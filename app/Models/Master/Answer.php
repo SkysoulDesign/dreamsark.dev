@@ -2,11 +2,12 @@
 
 namespace DreamsArk\Models\Master;
 
+use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Questionnaire
+ * Class Answer
  *
  * @package DreamsArk\Models\Master
  */
@@ -22,15 +23,11 @@ class Answer extends Model
     /**
      * @var array
      */
-    protected $fillable = ['question', 'type', 'options', 'order', 'category', 'is_primary', 'user_id', 'profile_id', 'question_id'];
-
-    /**
-     * @var array
-     */
-    protected $casts = ['options' => 'array'];
+    protected $fillable = ['profile_id'];
 
     /**
      * Question relationship
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions()
@@ -46,5 +43,14 @@ class Answer extends Model
         return $this->belongsTo(Profile::class);
     }
 
+    /**
+     * Option Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'answer_question_option');
+    }
 
 }

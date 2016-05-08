@@ -1,45 +1,50 @@
 @extends('layouts.master-user')
 
-
 @section('content')
-    <div class="column">
 
+    <div class="column">
         <section>
-            @if(!empty($profiles->toArray()))
+
+            @if(!$profiles->isEmpty())
+
                 <div class="ui grid three column">
+
                     <div class="column">Type</div>
                     <div class="column">Status</div>
                     <div class="column">Actions</div>
-                    @php
-                        $userProfileArr = $user_profiles->pluck('id')->toArray();
-                    @endphp
 
                     @foreach($profiles as $profile)
+
                         <div class="column">
                             {{ $profile->display_name }}
                             <i class="icon profile-{{ $profile->name }}"></i>
                         </div>
-                        @if(in_array($profile->id, $userProfileArr))
+
+                        @if($user->hasProfile($profile))
 
                             <div class="column">
-                                <div class="ui indicating progress success" data-percent="{{ ($user_profiles->find($profile->id)->answerCount * 100 / $profile->questionCount) }}">
+                                <div class="ui indicating progress success"
+                                     data-percent="{{ $user->present()->profileCompletion($profile) }}">
                                     <div class="bar">
                                         <div class="progress"></div>
                                     </div>
-                                    <div class="label">@lang('profile.completed-status')</div>
+                                    <div class="label">Completion</div>
                                 </div>
                             </div>
+
                             <div class="column">
                                 <a href="{{ route('user.profile.show', $profile->name) }}" class="ui green button">
                                     <i class="icon unhide"></i>
-                                    @lang('forms.view')
+                                    View
                                 </a>
                                 <a href="{{ route('user.profile.edit', $profile->name) }}" class="ui button">
                                     <i class="icon edit"></i>
-                                    @lang('forms.edit')
+                                    Edit
                                 </a>
                             </div>
+
                         @else
+
                             <div class="column">
                                 <div class="ui indicating disabled progress warning" data-percent="0">
                                     <div class="bar"></div>
@@ -48,16 +53,18 @@
                             <div class="column">
                                 <a href="{{ route('user.profile.create', $profile->name) }}" class="ui primary button">
                                     <i class="icon add"></i>
-                                    @lang('profile.create-profile')
+                                    Create Profile
                                 </a>
                             </div>
+
                         @endif
                     @endforeach
 
                 </div>
             @else
-                <h3>@lang('profile.no-profile-available')</h3>
+                <h3>No Profiles Available</h3>
             @endif
+
         </section>
     </div>
 @endsection

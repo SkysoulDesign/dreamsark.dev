@@ -4,6 +4,7 @@ namespace DreamsArk\Models\Master\Question;
 
 use DreamsArk\Models\Master\Answer;
 use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Master\Question\Pivot\AnswerQuestionPivot;
 use DreamsArk\Models\Master\Question\Pivot\ProfileQuestionPivot;
 use DreamsArk\Presenters\PresentableTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -50,6 +51,13 @@ class Question extends Model
             return (new ProfileQuestionPivot($parent, $attributes, $table, $exists))->load('section');
         }
 
+        /**
+         * Construct this Pivot with instance of AnswerQuestionPivot when its instance of Answer
+         */
+        if ($parent instanceof Answer) {
+            return new AnswerQuestionPivot($parent, $attributes, $table, $exists);
+        }
+
         return parent::newPivot($parent, $attributes, $table, $exists);
 
     }
@@ -81,7 +89,28 @@ class Question extends Model
      */
     public function options()
     {
-        return $this->belongsToMany(Option::class, 'question_option');
+
+        /**
+         * Check if Pivot relationship has been started
+         * otherwise it might be a directly call from the Model
+         */
+        if ($this->relationLoaded('pivot')) {
+
+            $pivot = $this->getRelation('pivot');
+
+            /**
+             * if its instance of AnswerQuestionPivot swap the table,
+             * allowing it to get only answered options instead of all
+             */
+            if ($pivot instanceof AnswerQuestionPivot) {
+                return $this->belongsToMany(Option::class, "answer_question_option")
+                    ->wherePivot('answer_id', '=', $pivot->getAttribute('answer_id'));
+            }
+
+        }
+
+        return $this->belongsToMany(Option::class, "question_option");
+
     }
 
 }

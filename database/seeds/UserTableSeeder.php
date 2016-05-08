@@ -4,6 +4,9 @@ use DreamsArk\Jobs\Session\CreateUserJob;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class UserTableSeeder
+ */
 class UserTableSeeder extends Seeder
 {
 
@@ -30,7 +33,7 @@ class UserTableSeeder extends Seeder
             'email'    => 'dreamsark@dreamsark.com'
         ];
 
-        $this->dispatch(new CreateUserJob($dreamsark, 'committee'));
+//        $this->dispatch(new CreateUserJob($dreamsark, 'committee'));
 
         $justin = [
             'username' => 'Justin',
@@ -38,7 +41,7 @@ class UserTableSeeder extends Seeder
             'email'    => 'skysoul@skysoul.com.au'
         ];
 
-        $this->dispatch(new CreateUserJob($justin, 'admin'));
+//        $this->dispatch(new CreateUserJob($justin, 'admin'));
 
     }
 

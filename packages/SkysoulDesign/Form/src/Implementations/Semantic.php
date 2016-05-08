@@ -2,190 +2,106 @@
 
 namespace SkysoulDesign\Form\Implementations;
 
-use Illuminate\Support\Collection;
 use SkysoulDesign\Form\FormBuilder;
-use SkysoulDesign\Form\FormBuilderInterface;
+use SkysoulDesign\Form\Tag;
 
-class Semantic extends FormBuilder implements FormBuilderInterface
+/**
+ * Class Semantic
+ *
+ * @package SkysoulDesign\Form\Implementations
+ */
+class Semantic extends FormBuilder
 {
 
     /**
      * Form Class
+     *
      * @var string
      */
     protected $formClass = 'ui form';
 
     /**
      * Wrapper Class
+     *
      * @var string
      */
     protected $wrapperClass = 'field';
 
     /**
-     * Button Class
+     * Checkbox Class
+     *
      * @var string
      */
-    protected $buttonClass = 'ui button';
+    protected $checkboxClass = 'ui checkbox';
 
     /**
-     * Select Class
-     * @var string
-     */
-    protected $selectClass = 'ui dropdown';
-
-    /**
-     * Wrapper error Class
-     * @var string
-     */
-    protected $errorClass = 'error';
-
-    /**
-     * Error Message Box Class
-     * @var string
-     */
-    protected $errorMessageClass = 'ui error message';
-
-    /**
-     * Error Class
-     * <div class="..."> ... </div>
+     * Make Form Tag
      *
+     * @param Tag $tag
      * @return string
      */
-    public function getErrorMessageClass()
+    public function makeForm(Tag $tag)
     {
-        return $this->errorMessageClass;
-    }
-
-    /**
-     * Error Class
-     * <div class="..."> ... </div>
-     *
-     * @return string
-     */
-    public function getErrorClass()
-    {
-        return $this->errorClass;
-    }
-
-    /**
-     * Wrapper Class
-     * <div class="..."> ... </div>
-     *
-     * @return string
-     */
-    public function getWrapperClass()
-    {
-        return $this->wrapperClass;
-    }
-
-    /**
-     * Form Class
-     * <div class="..."> ... </div>
-     *
-     * @return string
-     */
-    public function getFormClass()
-    {
-        return $this->formClass;
-    }
-
-    /**
-     * Button Class
-     * <button class="..."> ... </button>
-     *
-     * @return string
-     */
-    public function getButtonClass()
-    {
-        return $this->buttonClass;
-    }
-
-    /**
-     * Select Class
-     * <select class="..."> ... </select>
-     *
-     * @return string
-     */
-    public function getSelectClass()
-    {
-        return $this->selectClass;
-    }
-
-    /**
-     * Create Label
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function makeLabel($name)
-    {
-        return '<label>' . $name . '</label>';
-    }
-
-    public function makeErrorMessage($attributes = null, $errors = null, $title = null)
-    {
-        return '<div ' . $this->map($attributes) . '><div class="header">' . $title . '</div>' . $this->mapUl($errors, "list") . '</div>';
-    }
-
-    /**
-     * Create Label
-     *
-     * @param $attributes
-     * @param $collection
-     * @param $placeholder
-     * @param $label
-     * @return $this
-     */
-    public function makeSelect($attributes, $collection, $placeholder, $label)
-    {
-        return $label . '<select ' . $this->map($attributes) . '><option value="">' . $placeholder . '</option>' . $this->options($collection, true) . '</select>';
+        return $tag->toHTML();
     }
 
     /**
      * Make Form Tag
      *
-     * @param Collection $attributes
-     * @param string $label
+     * @param Tag $tag
      * @return string
      */
-    public function makeForm($attributes, $label)
+    public function makeInput(Tag $tag)
     {
-        return '<form ' . $this->map($attributes) . '>';
+        return $tag->toHTML();
     }
 
     /**
-     * Make Input
+     * Make Form Tag
      *
-     * @param Collection $attributes
-     * @param string $label
+     * @param Tag $tag
      * @return string
      */
-    public function makeInput($attributes, $label)
+    public function makeCheckbox(Tag $tag)
     {
-        return $label . '<input ' . $this->map($attributes) . '>';
+        dd("hi");
+        return 'hi';
     }
 
     /**
-     * Make Input
+     * Create Label
      *
-     * @param Collection $attributes
-     * @return string
+     * @param Tag $tag
+     * @return $this
      */
-    public function makeButton($attributes, $text)
+    public function makeLabel(Tag $tag)
     {
-        return '<button ' . $this->map($attributes) . '>' . $text . '</button>';
+        $parent = $tag->getParent();
+        return $tag->toHTML(
+            $tag->getContent() ?: $parent->getAttribute('placeholder', $parent->getName())
+        );
     }
 
     /**
      * Make Wrapper Class
      *
-     * @param $class
+     * @param Tag $tag
+     * @return string
+     */
+    public function makeDiv(Tag $tag)
+    {
+        return $tag->toHTML();
+    }
+
+    /**
+     * Make Wrapper Class
+     *
      * @param $content
      * @return string
      */
-    public function makeWrapper($class, $content)
+    public function makeWrapper(Tag $tag, $content)
     {
-        return '<div class="' . $class . '">' . $content . '</div>';
+        return $tag->toHTML($content);
     }
 
 }

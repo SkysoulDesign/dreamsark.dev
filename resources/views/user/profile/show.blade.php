@@ -3,16 +3,17 @@
 
 @section('content')
     <div class="column">
-        @if($isPublicProfile)
+        @if($profile->isPublic)
             <h2>{{ $profile->display_name }} @lang('user.profile')</h2>
         @else
             <h3>@lang('user.view-profile')</h3>
-        <div class="ui right aligned menu">
-            <a class="ui purple button" href="{{ route('user.profile.public', [$profile->name, auth()->user()->username]) }}">
-                <i class="world icon" style="font-size: 1.5em;"></i>
-                @lang('user.view-public-profile')
-            </a>
-        </div>
+            <div class="ui right aligned menu">
+                <a class="ui purple button"
+                   href="{{ route('user.profile.public', [$profile->name, auth()->user()->username]) }}">
+                    <i class="world icon" style="font-size: 1.5em;"></i>
+                    @lang('user.view-public-profile')
+                </a>
+            </div>
 
         @endif
 
@@ -36,7 +37,7 @@
                         <td width="30%">{{ $question->question }}</td>
                         <td width="70%">
                             @php
-                                $content = isset($answers[$question->id])?$answers[$question->id]['content'] : '';
+                            $content = isset($answers[$question->id])?$answers[$question->id]['content'] : '';
                             @endphp
                             @if($content)
                                 @if(in_array($question->type->name, ['image', 'video']))
@@ -67,11 +68,11 @@
                                     <input type="color" value="{{ $content }}" disabled/>
                                 @elseif(in_array($question->type->name, ['checkbox', 'radio', 'select']))
                                     @php
-                                        if($question->type->name == 'checkbox')
-                                            $value = json_decode($content);
-                                        else
-                                            $value = [$content];
-                                        $options =  $option->getDataByType($value, ['name']);
+                                    if($question->type->name == 'checkbox')
+                                    $value = json_decode($content);
+                                    else
+                                    $value = [$content];
+                                    $options =  $option->getDataByType($value, ['name']);
                                     @endphp
                                     <ul class="ui list">
                                         @foreach($options as $opt)

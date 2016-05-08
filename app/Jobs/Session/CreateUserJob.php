@@ -44,6 +44,7 @@ class CreateUserJob extends Job
      */
     public function handle(UserRepositoryInterface $repository)
     {
+
         /**
          * Create User
          */

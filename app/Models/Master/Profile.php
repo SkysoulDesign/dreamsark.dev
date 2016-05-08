@@ -60,13 +60,13 @@ class Profile extends Model
         return $this->answer->questions();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAnswerCountAttribute()
-    {
-        return $this->answer->questions()->count();
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getAnswerCountAttribute()
+//    {
+//        return $this->answer->questions()->count();
+//    }
 
     /**
      * @return mixed
