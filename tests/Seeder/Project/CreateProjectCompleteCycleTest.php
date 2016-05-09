@@ -16,35 +16,45 @@ use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\User\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CreateDummyProject extends Seeder
+class CreateProjectCompleteCycleTest extends TestCase
 {
-
-    use DispatchesJobs;
+    use DatabaseTransactions;
+    private $project;
 
     /**
-     * Run the database seeds.
+     * This is TestCase for Create Project With Complete Cycle Till Funding Stage enabled.
      *
-     * @return void
+     * @test
      */
-    public function run()
+    public function it_creates_complete_cycle_of_project()
     {
+        $this->createProjectEvent(User::find(2));
+
+        $this->assertEquals(Fund::class, get_class($this->project->stage), 'Project Not in Fund Stage');
+
+        $this->assertTrue(true);
+    }
+
+    protected function createProjectEvent($user = '')
+    {
+
+        if (!$user instanceof User)
+            $user = User::all()->random();
 
         /**
          * Create Project in Idea Stage
          */
-        $user = User::find(2);
         $fields = array(
             'name'    => 'My Supper Project',
             'content' => 'This is a Script',
         );
         $reward = ['idea' => 50];
-
 
         /** @var Project $project */
         $project = dispatch(new CreateProjectJob($user, $fields, $reward));
@@ -133,12 +143,15 @@ class CreateDummyProject extends Seeder
         /**
          * Process Project
          */
-        dispatch(new OpenVotingCommand(Project::first()->stage->vote));
+        $project = Project::find($projectId);
+        dispatch(new OpenVotingCommand($project->stage->vote));
 
         $enrollers = Enroller::all();
         $enrollers->each(function ($enroller) {
             dispatch(new VoteOnEnrollablePositionCommand($enroller, User::all()->random()));
         });
+
+        $this->project = Project::find($projectId);
 
     }
 
@@ -161,13 +174,13 @@ class CreateDummyProject extends Seeder
         );
 
         collect(range(1, 10))->each(function () use ($project, $user, $fields) {
-            $this->dispatch(new SubmitCommand($project, $user, $fields));
+            dispatch(new SubmitCommand($project, $user, $fields));
         });
 
         /**
          * Open project Voting
          */
-        $this->dispatch(new OpenVotingCommand($vote));
+        dispatch(new OpenVotingCommand($vote));
 
         /**
          * Vote on Some Submissions
@@ -175,13 +188,13 @@ class CreateDummyProject extends Seeder
         $submissions = Submission::all();
 
         collect(range(1, 10))->each(function () use ($submissions, $user) {
-            $this->dispatch(new VoteOnSubmissionCommand(rand(1, 50), $submissions->random(), $user));
+            dispatch(new VoteOnSubmissionCommand(rand(1, 50), $submissions->random(), $user));
         });
 
         /**
          * Close the Voting
          */
-        $this->dispatch(new CloseVotingCommand($vote));
+        dispatch(new CloseVotingCommand($vote));
 
     }
 
@@ -206,7 +219,7 @@ class CreateDummyProject extends Seeder
                 'description' => 'He will do everything.'
             ]
         ])->each(function ($crew) use ($project) {
-            $this->dispatch(new ReviewCreateCrewJob($project, $crew));
+            dispatch(new ReviewCreateCrewJob($project, $crew));
         });
     }
 
@@ -234,8 +247,7 @@ class CreateDummyProject extends Seeder
                 'description' => 'Cheap thing.'
             ]
         ])->each(function ($expanse) use ($project) {
-            $this->dispatch(new ReviewCreateExpenseJob($project, $expanse));
+            dispatch(new ReviewCreateExpenseJob($project, $expanse));
         });
     }
-
 }

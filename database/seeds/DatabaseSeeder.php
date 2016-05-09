@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
 
         Model::reguard();
         $this->call(GiveCoinsToUsers::Class);
-//        $this->call(CreateDummyProject::class);
         $this->call(SetLanguageToEnglish::Class);
         Model::unguard();
 
@@ -30,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSectionTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
+        $this->call(CreateDummyProject::class);
     }
 }

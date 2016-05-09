@@ -89,5 +89,7 @@ class CreateProjectJob extends Job
          */
         event(new ProjectWasCreated($this->user, $project, $this->fields, $this->rewards));
 
+        return $project->fresh();
+
     }
 }
