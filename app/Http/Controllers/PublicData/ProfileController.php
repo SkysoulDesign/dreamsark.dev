@@ -20,6 +20,7 @@ class ProfileController extends Controller
             return redirect()->route('user.account')->withErrors('Profile not exists');
 
         return view('user.profile.public-view')
+            ->with('user', $user[0])
             ->with('option', $option)
             ->with('answers', $this->getProfileAnswers($user[0]->profiles->find($profile)))
             ->with('profile', $profile)

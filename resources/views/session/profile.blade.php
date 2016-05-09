@@ -41,12 +41,14 @@
                                 </thead>
                                 <tbody>
                                 @foreach($user->backers as $backer)
-                                    <td>{{ $backer->name }}</td>
-                                    <td>{{ $backer->pivot->amount }}</td>
+                                    <tr>
+                                        <td>{{ $backer->name }}</td>
+                                        <td>{{ $backer->pivot->amount.' ('.($backer->pivot->updated_at->format('m/d/Y H:i:a')).')' }}</td>
+                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                        @else
+                    @else
                         @lang('project.no-backed-projects')
                     @endif
                 </div>
@@ -61,31 +63,31 @@
 
                 <div class="title modern">@lang('navbar.profiles')</div>
                 <div class="body">
-                <table class="ui selectable celled table">
-                    <thead>
-                    <tr>
-                        <th>@lang('profile.type')</th>
-                        <th>@lang('profile.page-views')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($user->profiles as $profile)
+                    <table class="ui selectable celled table">
+                        <thead>
                         <tr>
-                            <td>{{ $profile->display_name }}</td>
-                            <td>{{ $profile->display_name }}</td>
+                            <th>@lang('profile.type')</th>
+                            <th>@lang('profile.page-views')</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="2" align="right">
-                            <a class="ui orange button right aligned"
-                               href="{{ route('user.profile.index') }}">@lang('profile.view-all')</a>
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
-                    </div>
+                        </thead>
+                        <tbody>
+                        @foreach($user->profiles as $profile)
+                            <tr>
+                                <td>{{ $profile->display_name }}</td>
+                                <td>{{ $profile->display_name }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <a class="ui orange button right aligned"
+                                   href="{{ route('user.profile.index') }}">@lang('profile.view-all')</a>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
 
         </section>

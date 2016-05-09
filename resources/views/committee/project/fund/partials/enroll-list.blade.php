@@ -23,7 +23,7 @@
                     <td>@if($enroller->created_at) {{ $enroller->created_at->format('m/d/Y H:i') }} @endif</td>
                     <td>
                         <div class="ui small basic icon buttons">
-                            <a class="ui button" href="{{ route('user.profile.show', $profile) }}">
+                            <a target="_blank" class="ui button" href="{{ route('public.profile.show', [$profile, $enroller->user->username]) }}">
                                 <i class="info icon"></i>
                             </a>
                             <a class="ui button" href="javascript:;">

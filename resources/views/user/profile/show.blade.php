@@ -48,13 +48,13 @@
                                         @if($type=='video')
                                             <div class="image content">
                                                 <video class="video"
-                                                       src="/{{ Config::get('defaults.profile.video').$content }}"
+                                                       src="/{{ $content }}"
                                                        width="100%" controls></video>
                                             </div>
                                         @elseif($type=='image')
                                             <div class="image content">
                                                 <img class="image"
-                                                     src="/{{ Config::get('defaults.profile.image').$content }}">
+                                                     src="/{{ $content }}">
                                             </div>
                                         @endif
                                     </div>
@@ -64,7 +64,7 @@
                                     </div>
                                 @elseif($type=='file')
                                     <a class="ui button" target="_blank"
-                                       href="/{{ Config::get('defaults.profile.file').$content }}">
+                                       href="/{{ $content }}">
                                         <i class="file icon"></i>View File</a>
                                 @elseif(in_array($type, ['color', 'time', 'week', 'datetime-local']))
                                     <input type="{{ $type }}" value="{{ $content }}" disabled/>
