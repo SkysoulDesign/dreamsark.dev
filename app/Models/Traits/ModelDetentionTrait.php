@@ -30,7 +30,7 @@ trait ModelDetentionTrait
             return call_user_func_array([$this, 'has'], $parameters);
         }
 
-        return $this;
+        return parent::__call($method, $parameters);
 
     }
 
@@ -54,6 +54,8 @@ trait ModelDetentionTrait
          */
         if ($name instanceof Model xor is_array($name)) {
             $identifier = 'name';
+
+
         } else {
             $identifier = (int)$name ? "id" : "name";
         }
