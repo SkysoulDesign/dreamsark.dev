@@ -26,6 +26,7 @@ trait ModelDetentionTrait
 
         if (str_contains($method, 'has')) {
             array_push($parameters, substr($method, 3));
+
             return call_user_func_array([$this, 'has'], $parameters);
         }
 
@@ -46,7 +47,16 @@ trait ModelDetentionTrait
         /**
          * Try tp cast to int, if it is not possible then assume there is a field called name
          */
-        $identifier = $name instanceof Model ? "name" : (int)$name ? "id" : "name";
+//        $identifier = $name instanceof Model ? "name" : (int)$name ? "id" : "name";
+
+        /**
+         * @todo accept array with mixed values [Profile, name, id]
+         */
+        if ($name instanceof Model xor is_array($name)) {
+            $identifier = 'name';
+        } else {
+            $identifier = (int)$name ? "id" : "name";
+        }
 
         /**
          * Get attribute from model
