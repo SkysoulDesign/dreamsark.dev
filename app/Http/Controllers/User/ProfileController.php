@@ -55,7 +55,7 @@ class ProfileController extends Controller
     {
         return view('user.profile.create')
             ->with('profile', $profile)
-            ->with('sections', $profile->questions->pluck('pivot.section'));
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
     /**

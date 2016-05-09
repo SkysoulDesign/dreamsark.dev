@@ -41,7 +41,7 @@ class Profile extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class)->withPivot(['required', 'section_id']);
+        return $this->belongsToMany(Question::class)->withPivot(['required', 'section_id'])->orderBy('section_id');
     }
 
     /**
