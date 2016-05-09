@@ -24,7 +24,7 @@ class UserControllerTest extends TestCase
         $this->route('GET', 'admin.user.index');
         $this->assertResponseOk();
         $this->assertViewHasAll([
-            'users' => User::paginate(10),
+            'users' => User::orderBy('updated_at', 'desc')->paginate(10),
         ]);
 
     }

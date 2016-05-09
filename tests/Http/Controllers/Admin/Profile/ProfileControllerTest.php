@@ -127,7 +127,7 @@ class ProfileControllerTest extends TestCase
         $profile = $this->createProfile([], 25);
 
         $data = [
-            'name'         => $name = 'NewProfileName',
+            'name'         => $name = 'new_profile_name',
             'display_name' => 'Beta Test',
             'questions'    => $profile->questions->pluck('id')->toArray(),
         ];

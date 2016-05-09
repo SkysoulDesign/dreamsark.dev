@@ -2,7 +2,6 @@
 
 use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
-use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -22,31 +21,21 @@ class UserCreateProfileJobTest extends TestCase
     public function it_creates_the_user_profile()
     {
 
-        $data = [
-            'questions' => [
-                'required' => [
-                    'text' => [
-                        1 => 'Question 1 Answer',
-                    ],
-                    'select' => [
-                        3 => 'Question 9 Answer',
-                    ],
-                ],
-                'general' => [
-                    'date' => [
-                        3 => '2014-06-05',
-                    ],
-                ]
-            ]
-        ];
+        $this->actingAs($user = $this->createUser());
+        $profile = $this->createProfile([
+            'name' => 'Scientist'
+        ]);
 
-        $user = $this->createUser();
-        $profile = $this->createProfile();
+        $answers = [];
+
+        foreach ($profile->questions as $question) {
+            array_set($answers, "question_$question->id", 'hi');
+        }
 
         /** @var User $user */
-        $user = dispatch(new CreateProfileJob($data, $user, $profile));
+        $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
 
-        $this->assertInstanceOf(Profile::class, $user->profiles->where('id', 1)->first());
+        $this->assertTrue($user->hasProfile($profile));
 
     }
 
@@ -56,28 +45,17 @@ class UserCreateProfileJobTest extends TestCase
     public function it_answer_some_questions()
     {
 
-        $data = [
-            'questions' => [
-                'required' => [
-                    'text' => [
-                        1 => 'Question 1 Answer',
-                    ],
-                    'select' => [
-                        3 => 'Question 9 Answer',
-                    ],
-                    'textarea' => [
-                        5 => 'Question 9 Answer',
-                    ],
-                ],
-            ]
-        ];
-
         $profile = $this->createProfile();
+        $answers = [];
+
+        foreach ($profile->questions as $question) {
+            array_set($answers, "question_$question->id", 'hello world');
+        };
 
         /** @var User $user */
-        $user = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
+        $user = dispatch(new CreateProfileJob($answers,  $this->createUser(), $profile));
 
-        $this->assertCount(3, $user->profiles->first()->answer->questions);
+        $this->assertCount(5, $user->profiles->find($profile)->answers);
 
     }
 
@@ -93,26 +71,10 @@ class UserCreateProfileJobTest extends TestCase
 
         $profile = $this->createProfile();
 
-        $data = [
-            'questions' => [
-                'required' => [
-                    'text' => [
-                        1 => 'Question 1 Answer',
-                    ],
-                    'select' => [
-                        3 => 'Question 9 Answer',
-                    ],
-                    'textarea' => [
-                        5 => 'Question 9 Answer',
-                    ],
-                ],
-            ]
-        ];
-
         /** @var User $userOne */
         /** @var User $userTwo */
-        $userOne = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
-        $userTwo = dispatch(new CreateProfileJob($data, $this->createUser(), $profile));
+        $userOne = dispatch(new CreateProfileJob([], $this->createUser(), $profile));
+        $userTwo = dispatch(new CreateProfileJob([], $this->createUser(), $profile));
 
         /**
          * Two User having the same profile, fetching answer for each profiles should be respective to user

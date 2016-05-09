@@ -27,6 +27,16 @@ class Profile extends Model
     protected $fillable = ['name', 'display_name', 'description'];
 
     /**
+     * Lower case name on saving
+     *
+     * @param $name
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = strtolower($name);
+    }
+
+    /**
      * Users Relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -64,15 +74,7 @@ class Profile extends Model
     {
         return $this->answer->options();
     }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getAnswerCountAttribute()
-//    {
-//        return $this->answer->questions()->count();
-//    }
-
+    
     /**
      * @return mixed
      */
