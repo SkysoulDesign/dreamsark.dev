@@ -11,6 +11,7 @@ use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 /**
@@ -86,10 +87,13 @@ class ProfileController extends Controller
     public function edit(Profile $profile, Request $request)
     {
 
+        /** @var Collection $answers */
+        $answers = $request->user()->profiles->find($profile)->answers;
+
         return view('user.profile.edit')
             ->with('profile', $profile)
-            ->with('answers', $request->user()->profiles->find($profile)->answers)
-            ->with('sections', $profile->questions->pluck('pivot.section'));
+            ->with('answers', $answers)
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
 
     }
 

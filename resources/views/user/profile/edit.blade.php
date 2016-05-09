@@ -37,12 +37,18 @@
                             $required = $question->pivot->required or false;
                             $questionIndex = $required ? 'required' : 'general';
                             $name = 'question_'.$question->id.'';
-                        $value = old($name, @$answers->first()->content);
+                            $answer = $answers->find($question->id);
+                            $content = '';
+                            echo $answer->pivot->content;
+                            if($answer->pivot)
+                                $content = $answer->pivot->content;
+                            $value = old($name, $content);
                             if($type=='checkbox'){
                                 $name .= '[]';
-                        $value = old($name, @$answers->first()->content);
-                                if(!is_array($value))
-                                    $value = json_decode($value);
+                                $value = $content = [];
+                                /*$value = old($name, $content);
+                                if(!is_array($value) && $value !='')
+                                    $value = json_decode($value);*/
                             }
                             $label = $question->question;
                             if($required && $type!='checkbox'){
@@ -53,6 +59,7 @@
                             $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
                         @endphp
 
+                        {{ $question->id }}
                         @if($type=='select')
                             <div class="field {{ @$required?' required':'' }}">
                                 <label>{{ $label }}</label>
