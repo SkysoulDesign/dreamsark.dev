@@ -46,7 +46,7 @@ class CommitteeController extends Controller
      */
     protected function getListWithPagination($object)
     {
-        return $object->pending()->orderBy('updated_at', 'desc')->paginate(config('defaults.settings.pagination.per_page'));
+        return $object->pending()->orderBy('updated_at', 'desc')->paginate(config('defaults.general.pagination.per_page'));
     }
 
     /**

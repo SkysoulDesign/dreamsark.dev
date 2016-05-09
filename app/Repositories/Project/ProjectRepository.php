@@ -162,7 +162,7 @@ class ProjectRepository implements ProjectRepositoryInterface
      */
     public function paginate()
     {
-        return $this->model->orderBy('updated_at', 'desc')->paginate(config('defaults.settings.pagination.per_page'));
+        return $this->model->orderBy('updated_at', 'desc')->paginate(config('defaults.general.pagination.per_page'));
     }
 
 }
