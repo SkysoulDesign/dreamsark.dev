@@ -7,9 +7,11 @@ return [
      */
     'settings' => [
         'language' => 'cn',
-//        'pagination' => [
-//            'per_page' => 10
-//        ],
+    ],
+    'general' => [
+        'pagination' => [
+            'per_page' => 10
+        ],
     ],
 
     'project'  => [

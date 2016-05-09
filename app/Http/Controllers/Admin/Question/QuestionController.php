@@ -30,7 +30,7 @@ class QuestionController extends Controller
      */
     public function index(Question $question)
     {
-        return view('admin.question.index')->with('questions', $question->load('type')->paginate(config('defaults.settings.pagination.per_page')));
+        return view('admin.question.index')->with('questions', $question->load('type')->paginate(config('defaults.general.pagination.per_page')));
     }
 
     /**

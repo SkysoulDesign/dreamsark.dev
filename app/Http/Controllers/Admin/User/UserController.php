@@ -30,7 +30,9 @@ class UserController extends Controller
      */
     public function index(User $user)
     {
-        return view('admin.users.index')->with('users', $user->paginate(config('defaults.settings.pagination.per_page')));
+        $users = $user->orderBy('updated_at', 'desc')->paginate(config('defaults.general.pagination.per_page'));
+
+        return view('admin.users.index')->with('users', $users);
     }
 
     /**
