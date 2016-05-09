@@ -94,7 +94,8 @@ class UpdateProfileJob extends Job
                 /**
                  * Override the reply with the file path
                  */
-                array_set($replies, $id, $content);
+//                array_set($replies, $id, $content);
+                array_push($replies, $content);
 
             }
 
@@ -104,8 +105,12 @@ class UpdateProfileJob extends Job
                  * for each reply as option $ID
                  */
                 foreach ($content as $option) {
-                    array_set($options, $option, [
-                        'option_id' => $option,
+                    /*array_set($options, $option, [
+                        'option_id'   => $option,
+                        'question_id' => $id
+                    ]);*/
+                    array_push($options, [
+                        'option_id'   => $option,
                         'question_id' => $id
                     ]);
                 }
@@ -121,7 +126,6 @@ class UpdateProfileJob extends Job
              * if there is a reply, add it to content
              */
             return compact('content');
-
 
         });
 

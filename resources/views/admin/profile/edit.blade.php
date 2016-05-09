@@ -36,10 +36,9 @@
                     <div class="field">
                         <div class="ui checkbox">
                             <select name="sections[{{ $question->id }}]">
-                                <option value="general">Category</option>
                                 @foreach($sections as $section)
                                     <option value="{{ $section->id }}" {{ $question->section_id != $section->id ?: 'selected' }}>
-                                        {{ $section->name }}
+                                        {{ ucwords($section->name) }}
                                     </option>
                                 @endforeach
                             </select>

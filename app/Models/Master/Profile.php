@@ -60,6 +60,11 @@ class Profile extends Model
         return $this->answer->questions();
     }
 
+    public function answersOptions()
+    {
+        return $this->answer->options();
+    }
+
 //    /**
 //     * @return mixed
 //     */

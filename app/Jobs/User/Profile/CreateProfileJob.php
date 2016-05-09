@@ -98,7 +98,8 @@ class CreateProfileJob extends Job
                 /**
                  * Override the reply with the file path
                  */
-                array_set($replies, $id, $content);
+//                array_set($replies, $id, $content);
+                array_push($replies, $content);
 
             }
 
@@ -108,8 +109,8 @@ class CreateProfileJob extends Job
                  * for each reply as option $ID
                  */
                 foreach ($content as $option) {
-                    array_set($options, $option, [
-                        'option_id' => $option,
+                    array_push($options, [
+                        'option_id'   => $option,
                         'question_id' => $id
                     ]);
                 }

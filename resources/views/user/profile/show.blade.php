@@ -28,8 +28,8 @@
 
     @foreach($group = $profile->questions->groupBy('pivot.section.name') as $section => $questions)
 
-        <div class="ui bottom attached tab segment {{ $group->keys()[0] != $section ?:'active' }}"
-             data-tab="tab-{{ $section }}">
+        <div class="ui profile-tab bottom attached tab segment {{ $group->keys()[0] != $section ?:'active' }}"
+             data-tab="tab-{{ $section }}" style="min-height: 350px;">
             @foreach($questions as $question)
                 <table class="ui celled table">
                     <tbody>
@@ -37,19 +37,27 @@
                         <td width="30%">{{ $question->question }}</td>
                         <td width="70%">
                             @php
-                            $content = isset($answers[$question->id])?$answers[$question->id]['content'] : '';
+                                $type = $question->type->name;
+                                $answer = isset($answers[$question->id])?$answers[$question->id]:[];
+                                $content = '';
+                                if($answer && $answer[0]){
+                                    if(sizeof($answer)>1 || in_array($type, ['select', 'radio']))
+                                        $content = $answer->pluck('option_id')->toArray();
+                                    else
+                                        $content = $answer[0]->content;
+                                }
                             @endphp
                             @if($content)
-                                @if(in_array($question->type->name, ['image', 'video']))
+                                @if(in_array($type, ['image', 'video']))
                                     <div class="ui modal question-{{ $question->id }}">
                                         <div class="header">{{ $question->question }}</div>
-                                        @if($question->type->name=='video')
+                                        @if($type=='video')
                                             <div class="image content">
                                                 <video class="video"
                                                        src="/{{ Config::get('defaults.profile.video').$content }}"
                                                        width="100%" controls></video>
                                             </div>
-                                        @elseif($question->type->name=='image')
+                                        @elseif($type=='image')
                                             <div class="image content">
                                                 <img class="image"
                                                      src="/{{ Config::get('defaults.profile.image').$content }}">
@@ -57,22 +65,18 @@
                                         @endif
                                     </div>
                                     <div class="ui button modalLink" target="question-{{ $question->id }}">
-                                        <i class="{!! $question->type->name=='image'?'photo':'film' !!} icon"></i>
+                                        <i class="{!! $type=='image'?'photo':'film' !!} icon"></i>
                                         View
                                     </div>
-                                @elseif($question->type->name=='file')
+                                @elseif($type=='file')
                                     <a class="ui button" target="_blank"
                                        href="/{{ Config::get('defaults.profile.file').$content }}">
                                         <i class="file icon"></i>View File</a>
-                                @elseif($question->type->name=='color')
-                                    <input type="color" value="{{ $content }}" disabled/>
-                                @elseif(in_array($question->type->name, ['checkbox', 'radio', 'select']))
+                                @elseif(in_array($type, ['color', 'time', 'week', 'datetime-local']))
+                                    <input type="{{ $type }}" value="{{ $content }}" disabled/>
+                                @elseif(in_array($type, ['checkbox', 'radio', 'select']))
                                     @php
-                                    if($question->type->name == 'checkbox')
-                                    $value = json_decode($content);
-                                    else
-                                    $value = [$content];
-                                    $options =  $option->getDataByType($value, ['name']);
+                                        $options =  $option->getDataByType($content, ['name']);
                                     @endphp
                                     <ul class="ui list">
                                         @foreach($options as $opt)

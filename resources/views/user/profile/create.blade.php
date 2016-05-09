@@ -22,7 +22,7 @@
             @foreach($group = $profile->questions->groupBy('pivot.section.name') as $section => $questions)
 
                 <div class="ui bottom attached tab segment {{ $group->keys()[0] != $section ?:'active' }}"
-                     data-tab="tab-{{ $section }}">
+                     data-tab="tab-{{ $section }}" style="min-height: 350px;">
 
                     @foreach($questions as $question)
 
@@ -32,13 +32,11 @@
                             $required = $question->pivot->required or false;
                             $questionIndex = $required ? 'required' : 'general';
                             $name = 'question_'.$question->id.'';
-                            $value = old($name);
-                            if($type=='checkbox'){
+                            if(in_array($type, ['radio', 'checkbox', 'select'])){
                                 $name .= '[]';
-                                $value = old($name);
-                                if(!is_array($value))
-                                    $value = json_decode($value);
                             }
+                            $value = old($name, (!in_array($type, ['radio', 'checkbox'])?'':[]));
+
                             $label = $question->question;
                             if($required && $type!='checkbox'){
                                 $formValidateArr[$name] = ['identifier' => $name, 'rules' => [['type' => in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty']]];
@@ -53,8 +51,8 @@
                                 <label>{{ $label }}</label>
                                 <select class="ui dropdown" name="{{ $name }}">
                                     <option value="">{{ $placeholder or $label }}</option>
-                                    @foreach($optionsArr as $key => $value)
-                                        <option {{ @$value!='' && $value == $key ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                                    @foreach($optionsArr as $key => $option)
+                                        <option {{ !empty($value) && in_array($key, $value) ? 'selected' : '' }} value="{{ $key }}">{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </div>

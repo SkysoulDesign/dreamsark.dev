@@ -44,3 +44,9 @@ input[type="color"] {
 .ui.modal video::-webkit-media-controls-fullscreen-button {
     display: none !important;
 }
+
+.profile-tab input[disabled] {
+    background: none transparent;
+    border: 0px;
+    padding: 2px;
+}

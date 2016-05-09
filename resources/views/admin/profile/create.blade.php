@@ -32,7 +32,7 @@
                         <div class="ui checkbox">
                             <select name="sections[{{ $question->id }}]">
                                 @foreach($sections as $section)
-                                    <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                    <option value="{{ $section->id }}">{{ ucwords($section->name) }}</option>
                                 @endforeach
                             </select>
                         </div>

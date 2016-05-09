@@ -28,7 +28,7 @@
             @foreach($group = $profile->questions->groupBy('pivot.section.name') as $section => $questions)
 
                 <div class="ui bottom attached tab segment {{ $group->keys()[0] != $section ?:'active' }}"
-                     data-tab="tab-{{ $section }}">
+                     data-tab="tab-{{ $section }}" style="min-height: 350px;">
 
                     @foreach($questions as $question)
                         @php
@@ -37,36 +37,36 @@
                             $required = $question->pivot->required or false;
                             $questionIndex = $required ? 'required' : 'general';
                             $name = 'question_'.$question->id.'';
-                            $answer = $answers->find($question->id);
+                            $answer = isset($answers[$question->id])?$answers[$question->id]:[];
                             $content = '';
-                            echo $answer->pivot->content;
-                            if($answer->pivot)
-                                $content = $answer->pivot->content;
-                            $value = old($name, $content);
-                            if($type=='checkbox'){
-                                $name .= '[]';
-                                $value = $content = [];
-                                /*$value = old($name, $content);
-                                if(!is_array($value) && $value !='')
-                                    $value = json_decode($value);*/
+                            if($answer && $answer[0]){
+                                if(sizeof($answer)>1 || in_array($type, ['select', 'radio']))
+                                    $content = $answer->pluck('option_id')->toArray();
+                                else
+                                    $content = $answer[0]->content;
                             }
+                            if(in_array($type, ['radio', 'checkbox', 'select'])){
+                                $name .= '[]';
+                            }
+                            $value = old($name, $content);
+
                             $label = $question->question;
                             if($required && $type!='checkbox'){
                                 $formValidateArr[$name] = ['identifier' => $name, 'rules' => [['type' => in_array($type, ['radio', 'checkbox']) ? 'checked' : 'empty']]];
                                 if(in_array($type, ['file', 'image', 'video']))
                                     $formValidateArr[$name]['optional'] = true;
                             }
+
                             $optionsArr = $question->options->pluck('cleanName', 'id')->toArray();
                         @endphp
 
-                        {{ $question->id }}
                         @if($type=='select')
                             <div class="field {{ @$required?' required':'' }}">
                                 <label>{{ $label }}</label>
                                 <select class="ui dropdown" name="{{ $name }}">
                                     <option value="">{{ $placeholder or $label }}</option>
-                                    @foreach($optionsArr as $key => $value)
-                                        <option {{ @$value!='' && $value == $key ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
+                                    @foreach($optionsArr as $key => $option)
+                                        <option {{ !empty($value) && in_array($key, $value) ? 'selected' : '' }} value="{{ $key }}">{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </div>

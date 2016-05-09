@@ -87,14 +87,29 @@ class ProfileController extends Controller
     public function edit(Profile $profile, Request $request)
     {
 
-        /** @var Collection $answers */
-        $answers = $request->user()->profiles->find($profile)->answers;
+        /** @var Profile $userProfiles */
+        $userProfile = $request->user()->profiles->find($profile);
+
 
         return view('user.profile.edit')
             ->with('profile', $profile)
-            ->with('answers', $answers)
+            ->with('answers', $this->getProfileAnswers($userProfile))
             ->with('sections', $profile->questions->pluck('pivot.section')->unique());
 
+    }
+
+    /**
+     * @param Profile $userProfile
+     * @return Collection
+     */
+    protected function getProfileAnswers(Profile $userProfile)
+    {
+        /** @var Collection $answers */
+        $answers = $userProfile->answers->pluck('pivot')->groupBy('question_id');
+        foreach ($userProfile->answersOptions->pluck('pivot')->groupBy('question_id') as $questionId => $object)
+            $answers[$questionId] = $object;
+
+        return $answers;
     }
 
     /**
@@ -117,7 +132,7 @@ class ProfileController extends Controller
             )
         );
 
-        return redirect()->route('user.profile.show', $profile)
+        return redirect()->route('user.profile.edit', $profile->name)
             ->withSuccess("$profile->display_name profile updated successfully");
     }
 
@@ -133,9 +148,9 @@ class ProfileController extends Controller
 
         return view('user.profile.show')
             ->with('option', $option)
-            ->with('answers', $request->user()->profiles->find($profile)->answers)
+            ->with('answers', $this->getProfileAnswers($request->user()->profiles->find($profile)))
             ->with('profile', $profile)
-            ->with('sections', $profile->questions->pluck('pivot.section'));
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
-    
+
 }

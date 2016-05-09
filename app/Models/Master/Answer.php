@@ -50,7 +50,7 @@ class Answer extends Model
      */
     public function options()
     {
-        return $this->belongsToMany(Option::class, 'answer_question_option');
+        return $this->belongsToMany(Option::class, 'answer_question_option')->withPivot('question_id');
     }
 
 }
