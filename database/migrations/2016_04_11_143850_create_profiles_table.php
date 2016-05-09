@@ -23,7 +23,6 @@ class CreateProfilesTable extends Migration
             $table->string('name')->unique();
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
-            $table->boolean('public');
             $table->timestamps();
         });
     }

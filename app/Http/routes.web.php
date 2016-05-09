@@ -33,6 +33,7 @@ use DreamsArk\Http\Controllers\Project\Script\ScriptController;
 use DreamsArk\Http\Controllers\Project\SubmissionController;
 use DreamsArk\Http\Controllers\Project\Synapse\SynapseController;
 use DreamsArk\Http\Controllers\Project\VoteController;
+use DreamsArk\Http\Controllers\PublicData\ProfileController as PublicProfileController;
 use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
 use DreamsArk\Http\Controllers\Translation\TranslationController;
@@ -121,7 +122,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             /**
              * Test.. what is this?
              */
-            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
+//            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
         });
 
     });
@@ -131,7 +132,11 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
 //    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
 //    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
-//    $app->get('public/profile/{profile}/{username}', ProfileController::class . '@showPublicProfile')->name('user.profile.public');
+    $app->group(['prefix' => 'public', 'as' => 'public.'], function () use ($app) {
+        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            $app->get('{profile}/{username}', PublicProfileController::class . '@showPublicProfile')->name('show');
+        });
+    });
 
     /**
      * Vote Controller

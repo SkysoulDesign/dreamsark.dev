@@ -1,16 +1,8 @@
 @extends('layouts.master-user')
 
-
 @section('content')
     <div class="column">
-        <h3>@lang('user.view-profile')</h3>
-        <div class="ui right aligned menu">
-            <a class="ui purple button"
-               href="{{ route('public.profile.show', [$profile->name, auth()->user()->username]) }}">
-                <i class="world icon" style="font-size: 1.5em;"></i>
-                @lang('user.view-public-profile')
-            </a>
-        </div>
+        <h2>{{ $profile->display_name }} @lang('user.profile')</h2>
     </div>
     <div class="ui tabular menu">
         @foreach($sections as $index => $section)
