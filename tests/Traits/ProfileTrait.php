@@ -22,10 +22,10 @@ trait ProfileTrait
         /** @var Faker\Generator $faker */
         $faker = app(Faker\Generator::class);
 
-        $fields = array_merge($fields, $data = [
+        $fields = array_merge($data = [
             'name'         => $faker->name,
             'display_name' => $faker->name,
-        ]);
+        ], $fields);
 
         /**
          * Create Questions
