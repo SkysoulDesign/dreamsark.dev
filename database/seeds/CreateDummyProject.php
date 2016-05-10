@@ -43,7 +43,7 @@ class CreateDummyProject extends Seeder
             'name'    => 'My Supper Project',
             'content' => 'This is a Script',
         );
-        $reward = ['idea' => 50];
+        $reward = ['idea' => 5];
 
 
         /** @var Project $project */
@@ -65,7 +65,7 @@ class CreateDummyProject extends Seeder
          */
         $fields = array(
             'content' => 'Now i will become a Synapse',
-            'reward'  => '150'
+            'reward'  => '10'
         );
         dispatch(new CreateSynapseJob($project->id, $fields));
 
@@ -84,7 +84,7 @@ class CreateDummyProject extends Seeder
          */
         $fields = array(
             'content' => 'Now i will become a Synapse',
-            'reward'  => '500'
+            'reward'  => '15'
         );
         dispatch(new CreateScriptJob($project->id, $fields));
 
@@ -119,7 +119,7 @@ class CreateDummyProject extends Seeder
          * Back The Project
          */
         collect(range(1, 20))->each(function () use ($project) {
-            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 5000)));
+            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 5)));
         });
 
         /**
