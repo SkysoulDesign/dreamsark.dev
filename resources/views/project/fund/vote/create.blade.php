@@ -8,16 +8,16 @@
             <div class="ui segment">
                 <div class="ui header"> {{ class_basename($class) }} </div>
                 <div class="ui styled fluid accordion">
-                    @foreach($type as $expenditure)
+                    @foreach($type as $index => $expenditure)
 
-                        <div class="title">
+                        <div class="{{ ($index>0?'':'active ') }}title">
                             <i class="dropdown icon"></i>
                             {{ $expenditure->expenditurable->name or $expenditure->expenditurable->profile->name }}
                             @if($expenditure->expenditurable->name)
                                 - {{ $expenditure->expenditurable->profile->name }}
                             @endif
                         </div>
-                        <div class="content">
+                        <div class="{{ ($index>0?'':'active ') }}content">
                             <table class="ui compact celled table">
                                 <thead>
                                 <tr>
@@ -35,7 +35,7 @@
                                             <span>{{ $enroller->user->present()->name }}</span>
                                         </td>
                                         <td>
-                                            {{ $expenditure->votes->count() }}
+                                            {{ $enroller->enrollvotes->count() }}
                                         </td>
                                         <td class="collapsing">
                                             <form class="ui form" method="post"

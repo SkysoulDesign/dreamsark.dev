@@ -52,4 +52,13 @@ class Enroller extends Model
     {
         return $this->belongsToMany(User::class, 'expenditure_enroller_vote')->withTimestamps();
     }
+
+    /**
+     * To get Votes w.r.t an Enroller Id
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function enrollvotes()
+    {
+        return $this->hasMany(Vote::class);
+    }
 }
