@@ -1,7 +1,6 @@
 <?php
 
 use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
-use DreamsArk\Commands\Project\Submission\SubmitCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
 use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
@@ -13,6 +12,7 @@ use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
+use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
@@ -183,7 +183,7 @@ class CreateProjectCompleteCycleTest extends TestCase
         );
 
         collect(range(1, 10))->each(function () use ($project, $user, $fields) {
-            dispatch(new SubmitCommand($project, $user, $fields));
+            dispatch(new SubmitJob($project, $user, $fields));
         });
 
         /**
