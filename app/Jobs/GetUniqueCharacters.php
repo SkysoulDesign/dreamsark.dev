@@ -4,7 +4,11 @@ namespace DreamsArk\Jobs;
 
 use Symfony\Component\Finder\SplFileInfo;
 
-
+/**
+ * Class GetUniqueCharacters
+ *
+ * @package DreamsArk\Jobs
+ */
 class GetUniqueCharacters extends Job
 {
 
@@ -26,7 +30,7 @@ class GetUniqueCharacters extends Job
     /**
      * @var int size of the document
      */
-    public $docSize = 2048;
+    public $docSize = 1024;
 
     /**
      * Create a new job instance.
@@ -357,9 +361,8 @@ class GetUniqueCharacters extends Job
             '你没有选定需要的怪物',
             '完成上一关卡才能解锁'
         ];
-        $this->ignore = ["，", ",", " ", "", '“', '”', '。', '？', '：', '！', '、', '—'];
-        $this->inject = 'abcdefghijklmnopqrstuvwxyz()?!#$%/@=:;-.1234567890';
-
+        $this->ignore = ["，", ",", " ", "", '“', '”', '。', '？', '：', '！', '、', '—', 'abcdefghijklmnopqrstuvwxyz'];
+        $this->inject = '()?!#$%/@=:;-.1234567890';
     }
 
     /**
@@ -482,12 +485,14 @@ class GetUniqueCharacters extends Job
         }
 
         $count = count($sprites);
-        $header = "info face='sprite.png' size=$this->docSize bold=0 italic=0 charset='' unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0 common lineHeight=32 base=25 scaleW=$this->docSize scaleH=$this->docSize pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0 \npage id=0 file='sprite.png' \nchars count=$count";
+        $header = "info face='sprite.png' size=16 bold=0 italic=0 charset=\"\" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0 common lineHeight=32 base=25 scaleW=$this->docSize scaleH=$this->docSize pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0 \npage id=0 file='sprite.png' \nchars count=$count";
         $rows = [$header];
 
         foreach ($sprites as $sprite) {
 
             $image = imagecreatefrompng($sprite->path);
+
+            imagescale($image, .1, .5);
 
             imagecopy($canvas, $image, $sprite->x, $sprite->y, 0, 0, $sprite->width, $sprite->height);
 
@@ -505,9 +510,9 @@ class GetUniqueCharacters extends Job
          */
         imagepng($canvas, base_path('mrTest/sprite.png'));
 
-        dd('hi');
+//        dd('hi');
 
-//        dd($sprites);
+        dd($sprites);
 //
 //        $rows = [];
 //        $width = 60;
