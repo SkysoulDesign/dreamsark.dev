@@ -17,7 +17,6 @@ class CreateIdeasTable extends Migration
             $table->integer('project_id')->unsigned()->index()->unique();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('content');
-            $table->string('reward');
             $table->boolean('active')->default(true);
 
             $table->integer('submission_id')->unsigned()->nullable()->index();

@@ -124,6 +124,11 @@ $app->group(['middleware' => ['web']], function () use ($app) {
              */
 //            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
         });
+        /** User's Project Related Actions List */
+        $app->group(['prefix' => 'activity', 'as' => 'activity.'], function () use ($app) {
+            $app->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');
+            $app->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
+        });
 
     });
 

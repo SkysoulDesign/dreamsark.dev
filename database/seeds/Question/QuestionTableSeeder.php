@@ -3,7 +3,6 @@
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 use DreamsArk\Models\Master\Question\Type;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Collection;
 
 /**
  * Class QuestionTableSeeder
@@ -29,7 +28,8 @@ class QuestionTableSeeder extends Seeder
         ];
 
         foreach ($questions as $question) {
-            $question = dispatch(new CreateQuestionJob($question, Type::all()->random()));
+            $type = Type::whereNotIn('name', ['checkbox', 'select', 'radio'])->orderBy(DB::raw('RAND()'))->limit(1)->get();
+            $question = dispatch(new CreateQuestionJob($question, $type[0]));
         }
 
     }

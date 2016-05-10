@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\User;
 
 use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Traits\ModelDetentionTrait;
@@ -97,6 +98,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Project::class);
     }
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
     public function __get($name)
     {
 
@@ -141,6 +146,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function backers()
     {
         return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
+    }
+
+    /**
+     * User to Enroller relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function enrollers()
+    {
+        return $this->belongsToMany(Expenditure::class, 'expenditure_enrollers')->withTimestamps();
     }
 
     /**

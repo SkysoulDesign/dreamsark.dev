@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master-user')
 
 @section('content')
 
@@ -12,9 +12,9 @@
 
                         <div class="title">
                             <i class="dropdown icon"></i>
-                            {{ $expenditure->expenditurable->name or $expenditure->expenditurable->present()->position }}
+                            {{ $expenditure->expenditurable->name or $expenditure->expenditurable->profile->name }}
                             @if($expenditure->expenditurable->name)
-                                - {{ $expenditure->expenditurable->present()->position }}
+                                - {{ $expenditure->expenditurable->profile->name }}
                             @endif
                         </div>
                         <div class="content">

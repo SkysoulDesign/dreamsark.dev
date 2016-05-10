@@ -7,6 +7,10 @@ $(document).ready(function () {
     $('.ui.dropdown').dropdown(); // to trigger sub-menu events on click of parent item
     if ($('.tabular.menu:not(.customCall)').length > 0)// to trigger tabbed content in page;; initially added for user/projects page
         $('.tabular.menu:not(.customCall) .item').tab();
+    if ($('.ui.accordion').length > 0)// to trigger accordion event if element exists
+        $('.ui.accordion').accordion();
+    if ($('.ui.rating').length > 0)// to trigger rating event if element exists
+        $('.ui.rating').rating();
     /**
      * prompt user to confirm onDelete event
      */
@@ -29,8 +33,8 @@ $(document).ready(function () {
     if ($('#idea-submit-modal').length > 0)
         $('#idea-submit-modal')
             .modal({
-                blurring: true,
-                closable: false,
+                blurring:  true,
+                closable:  false,
                 onApprove: function () {
                     $('#idea-submit-form').submit();
                 }
@@ -40,8 +44,8 @@ $(document).ready(function () {
     if ($('#project-take-modal').length > 0)
         $('#project-take-modal')
             .modal({
-                blurring: true,
-                closable: false,
+                blurring:  true,
+                closable:  false,
                 onApprove: function () {
                     $('#project-take-form').submit();
                 }

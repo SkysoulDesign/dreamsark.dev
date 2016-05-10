@@ -10,6 +10,7 @@ use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Stages\Draft;
+use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepository;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
@@ -40,6 +41,35 @@ class ProjectController extends Controller
 
         return view('user.project.index', compact('projects', 'publishedProjects', 'failedProjects'));
 
+    }
+
+    /**
+     * User's Backed/Funded List
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function backerList(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user()->load('backers');
+
+        return view('user.activity.backed-list', compact('user'));
+    }
+
+    /**
+     * User's Backed/Funded List
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function enrolledList(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user()->load('enrollers');
+//        dd($user->enrollers);
+
+        return view('user.activity.enroll-list', compact('user'));
     }
 
     /**

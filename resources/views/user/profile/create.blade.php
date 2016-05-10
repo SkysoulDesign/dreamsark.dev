@@ -116,4 +116,4 @@
     </div>
 @endsection
 
-@include('user.profile.scripts')
+{{--@include('user.profile.scripts')--}}

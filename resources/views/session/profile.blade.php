@@ -30,7 +30,7 @@
                     @lang('project.backed-projects')
                 </div>
                 <div class="body">
-                    <td class="description">
+                    <div class="description">
                         @if(!$user->backers->isEmpty())
                             <table class="ui selectable celled table">
                                 <thead>
@@ -40,17 +40,27 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($user->backers as $backer)
+                                @foreach($user->backers as $index => $backer)
+                                    @if($index>1) @break; @endif
                                     <tr>
                                         <td>{{ $backer->name }}</td>
                                         <td>{{ $backer->pivot->amount.' ('.($backer->pivot->updated_at->format('m/d/Y H:i:a')).')' }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2" align="right">
+                                        <a class="ui orange button right aligned"
+                                           href="{{ route('user.profile.index') }}">@lang('profile.backer-all')</a>
+                                    </td>
+                                </tr>
+                                </tfoot>
                             </table>
-                    @else
-                        @lang('project.no-backed-projects')
-                    @endif
+                        @else
+                            @lang('project.no-backed-projects')
+                        @endif
+                    </div>
                 </div>
             </div>
             {{-- Segment End --}}
@@ -71,7 +81,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($user->profiles as $profile)
+                        @foreach($user->profiles as $index => $profile)
+                            @if($index>1) @break; @endif
                             <tr>
                                 <td>{{ $profile->display_name }}</td>
                                 <td>{{ $profile->display_name }}</td>
