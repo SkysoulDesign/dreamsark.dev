@@ -1,24 +1,19 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Stages\Voting;
+namespace DreamsArk\Jobs\Project\Stages\Voting;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\Vote\VotingHasFailed;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailIdeaSynapseScriptStageJob;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
 use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class CloseVotingCommand extends Command implements SelfHandling
+class CloseVotingJob extends Job
 {
-    use SerializesModels, DispatchesJobs;
 
     /**
      * @var Vote
@@ -40,13 +35,14 @@ class CloseVotingCommand extends Command implements SelfHandling
      *
      * @param Submission $submission
      * @param VoteRepositoryInterface $repository
-     * @param Dispatcher $event
+     * @return bool|void
      */
-    public function handle(Submission $submission, VoteRepositoryInterface $repository, Dispatcher $event)
+    public function handle(Submission $submission, VoteRepositoryInterface $repository)
     {
 
         if ($this->vote->votable instanceof Fund) {
-            dd('wait it`s a fund function on CloseVotingCommand');
+            //dd('wait it`s a fund function on CloseVotingJob');
+            return false;
         }
 
         /**
@@ -67,12 +63,12 @@ class CloseVotingCommand extends Command implements SelfHandling
             /**
              * Fail The project stage
              */
-            $this->dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
+            dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
 
             /**
              * Announce Vote has Failed
              */
-            $event->fire(new VotingHasFailed($this->vote));
+            event(new VotingHasFailed($this->vote));
 
             return;
         }
@@ -92,7 +88,7 @@ class CloseVotingCommand extends Command implements SelfHandling
         /**
          * Announce VoteHasFinished
          */
-        $event->fire(new VotingHasFinished($this->vote, $submission_winner, $losers));
+        event(new VotingHasFinished($this->vote, $submission_winner, $losers));
 
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use DreamsArk\Commands\Project\Stages\Voting\CloseVotingCommand;
 use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\SubmitCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
@@ -13,7 +12,7 @@ use DreamsArk\Jobs\Project\Expenditure\BackProjectJob;
 use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
-use DreamsArk\Models\Master\Profile;
+use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
@@ -22,9 +21,15 @@ use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * Class CreateProjectCompleteCycleTest
+ */
 class CreateProjectCompleteCycleTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, UserTrait, ProfileTrait;
+    /**
+     * @var Project
+     */
     private $project;
 
     /**
@@ -34,18 +39,22 @@ class CreateProjectCompleteCycleTest extends TestCase
      */
     public function it_creates_complete_cycle_of_project()
     {
-        $this->createProjectEvent(User::find(2));
+
+        $this->createProjectEvent($this->createUser());
 
         $this->assertEquals(Fund::class, get_class($this->project->stage), 'Project Not in Fund Stage');
 
         $this->assertTrue(true);
     }
 
+    /**
+     * @param string $user
+     */
     protected function createProjectEvent($user = '')
     {
 
         if (!$user instanceof User)
-            $user = User::all()->random();
+            $user = $this->createUser();
 
         /**
          * Create Project in Idea Stage
@@ -129,7 +138,7 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Back The Project
          */
         collect(range(1, 20))->each(function () use ($project) {
-            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 5000)));
+            dispatch(new BackProjectJob($project, $this->createUser(), rand(1, 5000)));
         });
 
         /**
@@ -137,7 +146,7 @@ class CreateProjectCompleteCycleTest extends TestCase
          */
         $expenditures = $project->enrollable;
         $expenditures->each(function ($expenditure) {
-            dispatch(new EnrollProjectJob($expenditure, User::all()->random()));
+            dispatch(new EnrollProjectJob($expenditure, $this->createUser()));
         });
 
         /**
@@ -148,7 +157,7 @@ class CreateProjectCompleteCycleTest extends TestCase
 
         $enrollers = Enroller::all();
         $enrollers->each(function ($enroller) {
-            dispatch(new VoteOnEnrollablePositionCommand($enroller, User::all()->random()));
+            dispatch(new VoteOnEnrollablePositionCommand($enroller, $this->createUser()));
         });
 
         $this->project = Project::find($projectId);
@@ -194,7 +203,7 @@ class CreateProjectCompleteCycleTest extends TestCase
         /**
          * Close the Voting
          */
-        dispatch(new CloseVotingCommand($vote));
+        dispatch(new CloseVotingJob($vote));
 
     }
 
@@ -209,13 +218,13 @@ class CreateProjectCompleteCycleTest extends TestCase
             [
                 'name'        => 'Crew ' . rand(1, 5),
                 'cost'        => rand(0, 5000),
-                'profile_id'  => Profile::all()->random(),
+                'profile_id'  => $this->createProfile(),
                 'description' => 'Super Nice Guy.'
             ],
             [
                 'name'        => 'Crew ' . rand(1, 5),
                 'cost'        => rand(0, 5000),
-                'profile_id'  => Profile::all()->random(),
+                'profile_id'  => $this->createProfile(),
                 'description' => 'He will do everything.'
             ]
         ])->each(function ($crew) use ($project) {

@@ -45,7 +45,7 @@ class FailIdeaSynapseScriptStageJob extends Job
         /**
          * Announce StageHasFailed
          */
-        event(new StageHasFailed($this->model, $this->model->user, $this->model->reward->amount));
+        event(new StageHasFailed($this->model, $this->model->user, ($this->model->reward?$this->model->reward->amount:0)));
 
     }
 }

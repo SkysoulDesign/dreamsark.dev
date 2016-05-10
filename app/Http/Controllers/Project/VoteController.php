@@ -37,7 +37,7 @@ class VoteController extends Controller
      */
     public function show(Vote $vote)
     {
-//        $this->dispatch(new CloseVotingCommand($vote));
+//        $this->dispatch(new CloseVotingJob($vote));
         if(!$vote->active)
             return redirect()->route('project.show', $vote->votable->project_id)->withErrors("Voting is not active for this project");
 
