@@ -1,12 +1,11 @@
 <?php
 
-namespace DreamsArk\Commands\Bag;
+namespace DreamsArk\Jobs\User\Bag;
 
-use DreamsArk\Commands\Command;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Repositories\Bag\BagRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 
-class DeductCoinCommand extends Command implements SelfHandling
+class DeductCoinJob extends Job
 {
     /**
      * @var

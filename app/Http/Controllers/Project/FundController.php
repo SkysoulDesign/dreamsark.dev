@@ -2,11 +2,11 @@
 
 namespace DreamsArk\Http\Controllers\Project;
 
-use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\VotingOnUserEnrollment;
 use DreamsArk\Jobs\Project\Expenditure\BackProjectJob;
+use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Http\Request;
@@ -53,7 +53,7 @@ class FundController extends Controller
      */
     public function vote(Enroller $enroller, VotingOnUserEnrollment $request)
     {
-        $this->dispatch(new VoteOnEnrollablePositionCommand($enroller, $request->user()));
+        $this->dispatch(new VoteOnEnrollablePositionJob($enroller, $request->user()));
 
         return redirect()->back();
     }

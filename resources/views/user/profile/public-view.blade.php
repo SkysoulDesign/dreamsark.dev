@@ -1,6 +1,7 @@
 @extends('layouts.master-user')
 
 @section('content')
+    <p>&nbsp;</p>
     <div class="column">
         <h2>{{ ucwords($user->name?: $user->username) .' - '. $profile->display_name }} @lang('user.profile')</h2>
     </div>
@@ -83,7 +84,6 @@
                 </table>
         </div>
     @endforeach
-
 @endsection
 @section('pos-scripts')
     <script>

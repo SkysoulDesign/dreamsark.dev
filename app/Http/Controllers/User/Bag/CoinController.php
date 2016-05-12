@@ -2,10 +2,12 @@
 
 namespace DreamsArk\Http\Controllers\User\Bag;
 
-use DreamsArk\Commands\Bag\PurchaseCoinCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Bag\CoinCreation;
+use DreamsArk\Http\Requests\Bag\CoinWithdrawRequest;
+use DreamsArk\Jobs\User\Bag\DeductCoinJob;
+use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use Illuminate\Http\Request;
 
 /**
@@ -34,9 +36,24 @@ class CoinController extends Controller
      */
     public function store(CoinCreation $request)
     {
-        $command = new PurchaseCoinCommand($request->user(), $request->get('amount'));
-        $this->dispatch($command);
+        $command = new PurchaseCoinJob($request->user(), $request->get('amount'));
+        dispatch($command);
+
         return redirect()->back();
+    }
+
+    /**
+     * @param CoinWithdrawRequest $request
+     * @return mixed
+     */
+    public function withdrawCoins(CoinWithdrawRequest $request)
+    {
+        /**
+         * @todo: need to create event for refund coin to User as money
+         */
+        dispatch(new DeductCoinJob($request->user()->id, $request->get('withdraw_amount')));
+
+        return redirect()->back()->withSuccess('Coins withdrawn to your account successfully');
     }
 
 }

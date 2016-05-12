@@ -10,23 +10,48 @@ use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
+/**
+ * Class ProfileController
+ *
+ * @package DreamsArk\Http\Controllers\PublicData
+ */
 class ProfileController extends Controller
 {
+    /**
+     * @var bool
+     */
+    private $isIFrameCall = false;
+
+    /**
+     * @param Request $request
+     * @param Profile $profile
+     * @param Option $option
+     * @return mixed
+     */
     public function showPublicProfile(Request $request, Profile $profile, Option $option)
     {
         /** @var User $user */
         $user = User::with('profiles')->where('username', $request->username)->get();
-        if (!$user[0]->hasProfile($profile->name))
+        if (!$user[0]->hasProfile($profile->name)) {
+            if ($this->isIFrameCall)
+                return view('errors.errors')->withErrors('Profile not exists');
+
             return redirect()->route('user.account')->withErrors('Profile not exists');
+        }
 
         return view('user.profile.public-view')
             ->with('user', $user[0])
             ->with('option', $option)
             ->with('answers', $this->getProfileAnswers($user[0]->profiles->find($profile)))
             ->with('profile', $profile)
-            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
+            ->with('sections', $profile->questions->pluck('pivot.section')->unique())
+            ->with('isIFrameCall', $this->isIFrameCall);
     }
 
+    /**
+     * @param Profile $userProfile
+     * @return Collection
+     */
     protected function getProfileAnswers(Profile $userProfile)
     {
         /** @var Collection $answers */
@@ -35,5 +60,18 @@ class ProfileController extends Controller
             $answers[$questionId] = $object;
 
         return $answers;
+    }
+
+    /**
+     * @param Request $request
+     * @param Profile $profile
+     * @param Option $option
+     * @return mixed
+     */
+    public function showPublicProfileIframe(Request $request, Profile $profile, Option $option)
+    {
+        $this->isIFrameCall = true;
+
+        return $this->showPublicProfile($request, $profile, $option);
     }
 }

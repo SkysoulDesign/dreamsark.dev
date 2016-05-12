@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Commands\Project\Submission;
 
-use DreamsArk\Commands\Bag\DeductCoinCommand;
 use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\Submission\SubmissionReceivedAVote;
 use DreamsArk\Models\Project\Submission;

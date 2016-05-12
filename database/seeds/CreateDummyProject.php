@@ -2,7 +2,6 @@
 
 use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
-use DreamsArk\Commands\Project\VoteOnEnrollablePositionCommand;
 use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
 use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateCrewJob;
 use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateExpenseJob;
@@ -13,6 +12,7 @@ use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
+use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
@@ -137,7 +137,7 @@ class CreateDummyProject extends Seeder
 
         $enrollers = Enroller::all();
         $enrollers->each(function ($enroller) {
-            dispatch(new VoteOnEnrollablePositionCommand($enroller, User::all()->random()));
+            dispatch(new VoteOnEnrollablePositionJob($enroller, User::all()->random()));
         });
 
     }

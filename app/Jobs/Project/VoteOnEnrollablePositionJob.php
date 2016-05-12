@@ -1,15 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\Project;
+namespace DreamsArk\Jobs\Project;
 
-use DreamsArk\Commands\Command;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class VoteOnEnrollablePositionCommand extends Command implements SelfHandling
+class VoteOnEnrollablePositionJob extends Job
 {
     /**
      * @var User
@@ -37,9 +35,8 @@ class VoteOnEnrollablePositionCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ExpenditureRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(ExpenditureRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ExpenditureRepositoryInterface $repository)
     {
         /**
          *

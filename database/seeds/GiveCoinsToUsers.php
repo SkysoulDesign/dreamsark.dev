@@ -1,6 +1,6 @@
 <?php
 
-use DreamsArk\Commands\Bag\PurchaseCoinCommand;
+use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -22,7 +22,7 @@ class GiveCoinsToUsers extends Seeder
          * Purchase Coins
          */
         User::all()->each(function ($user) {
-            $this->dispatch(new PurchaseCoinCommand($user, rand(5000, 50000)));
+            $this->dispatch(new PurchaseCoinJob($user, rand(5000, 50000)));
         });;
     }
 

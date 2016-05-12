@@ -138,6 +138,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
                 $app->get('add', CoinController::class . '@create')->name('create');
                 $app->post('store', CoinController::class . '@store')->name('store');
+                $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
             });
         });
 
@@ -152,6 +153,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     $app->group(['prefix' => 'public', 'as' => 'public.'], function () use ($app) {
         $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
             $app->get('{profile}/{username}', PublicProfileController::class . '@showPublicProfile')->name('show');
+            $app->get('iframe/{profile}/{username}', PublicProfileController::class . '@showPublicProfileIframe')->name('show.iframe');
         });
     });
 

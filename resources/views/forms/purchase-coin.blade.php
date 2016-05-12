@@ -2,7 +2,7 @@
 
     {!! csrf_field() !!}
 
-    @include('partials.field', ['name' => 'amount', 'label'=> trans('payment.amount')])
+    @include('partials.field', ['name' => 'amount', 'label'=> trans('payment.coins')])
 
     @include('partials.select-with-icon',
     [

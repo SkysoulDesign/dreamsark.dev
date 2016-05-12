@@ -1,15 +1,18 @@
 <?php
 
-namespace DreamsArk\Commands\Bag;
+namespace DreamsArk\Jobs\User\Bag;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Bag\CoinWasPurchased;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Bag\BagRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class PurchaseCoinCommand extends Command implements SelfHandling
+/**
+ * Class PurchaseCoinJob
+ *
+ * @package DreamsArk\Jobs\User\Bag
+ */
+class PurchaseCoinJob extends Job
 {
     /**
      * @var
@@ -37,9 +40,8 @@ class PurchaseCoinCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param BagRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(BagRepositoryInterface $repository, Dispatcher $event)
+    public function handle(BagRepositoryInterface $repository)
     {
         /**
          * Increment User Coins
@@ -49,7 +51,7 @@ class PurchaseCoinCommand extends Command implements SelfHandling
         /**
          * Announce CoinWasPurchased
          */
-        $event->fire(new CoinWasPurchased($this->user, $this->amount));
+        event(new CoinWasPurchased($this->user, $this->amount));
 
     }
 }

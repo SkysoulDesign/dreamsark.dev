@@ -12,9 +12,9 @@
 
                         <div class="{{ ($index>0?'':'active ') }}title">
                             <i class="dropdown icon"></i>
-                            {{ $expenditure->expenditurable->name or $expenditure->expenditurable->profile->name }}
+                            {{ $expenditure->expenditurable->name or $expenditure->expenditurable->profile->display_name }}
                             @if($expenditure->expenditurable->name)
-                                - {{ $expenditure->expenditurable->profile->name }}
+                                - {{ $expenditure->expenditurable->profile->display_name }}
                             @endif
                         </div>
                         <div class="{{ ($index>0?'':'active ') }}content">
@@ -31,8 +31,12 @@
 
                                     <tr>
                                         <td>
-                                            <img src="{{ $enroller->user->present()->avatar }}" class="ui avatar image">
-                                            <span>{{ $enroller->user->present()->name }}</span>
+                                            <a href="javascript:;" class="ui view-modal view-profile"
+                                               data-url="{{ route('public.profile.show.iframe', [$expenditure->expenditurable->profile->name, $enroller->user->username]) }}">
+                                                <img src="{{ $enroller->user->present()->avatar }}"
+                                                     class="ui avatar image">
+                                                <span>{{ $enroller->user->present()->name }}</span>
+                                            </a>
                                         </td>
                                         <td>
                                             {{ $enroller->enrollvotes->count() }}
@@ -58,4 +62,40 @@
 
     </div>
 
+    <div id="profile-view-modal" class="ui fullscreen modal">
+        <i class="close icon"></i>
+        <div class="ui embed" data-url="{{ route('public.profile.show.iframe', ['user', 'user']) }}"
+             data-placeholder="{{ asset('dreamsark-assets/mini-header-bg.jpg') }}"
+             data-icon="right circle arrow">
+        </div>
+    </div>
+
+@endsection
+
+@section('pos-scripts')
+    <script>
+        $(document).ready(function () {
+            $('#profile-view-modal')
+                    .modal({
+                        blurring: true,
+                    })
+                    .modal('attach events', '.view-profile', 'show')
+            ;
+
+            var embedIdentifier = '#profile-view-modal .ui.embed'
+            var iconElem        = ($(embedIdentifier).attr('data-icon')).replace(/ /g, '.')
+            $('.view-profile').on('click', function () {
+                $(embedIdentifier).embed({
+                    url:     $(this).attr('data-url'),
+                    onEmbed: function () {
+                        $("#profile-view-modal").modal("refresh");
+                    }
+                });
+                setTimeout(function () {
+                    $(embedIdentifier + ' .' + iconElem).trigger('click');
+                }, 250);
+                $(this).trigger('blur');
+            });
+        });
+    </script>
 @endsection

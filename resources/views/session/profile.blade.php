@@ -36,7 +36,7 @@
                                 <thead>
                                 <tr>
                                     <th>@lang('project.project')</th>
-                                    <th>@lang('project.amount')</th>
+                                    <th>@lang('project.paid')</th>
                                 </tr>
                                 </thead>
                                 <tbody>

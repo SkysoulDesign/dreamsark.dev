@@ -5,7 +5,7 @@
     <div class="twelve wide stretched column">
         <div class="left menu">
             <a class="item ui button" href="{{ route('user.purchase.index') }}">
-                <i class="backward icon"></i>
+                <i class="arrow left icon"></i>
                 @lang('navbar.back')
             </a>
         </div>

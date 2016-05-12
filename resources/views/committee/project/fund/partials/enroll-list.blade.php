@@ -4,6 +4,7 @@
     <tr>
         <th>@lang('project.enroll-user')</th>
         <th>@lang('project.enroll-date')</th>
+        <th>@lang('project.enroll-votes')</th>
         <th>@lang('navbar.actions')</th>
     </tr>
     </thead>
@@ -20,7 +21,8 @@
             @foreach($expenditure->enrollers as $enroller)
                 <tr>
                     <td>{{ $enroller->user->name or $enroller->user->username }}</td>
-                    <td>@if($enroller->created_at) {{ $enroller->created_at->format('m/d/Y H:i') }} @endif</td>
+                    <td>@if($enroller->created_at) {{ $enroller->created_at->format('m/d/Y H:i A') }} @endif</td>
+                    <td>@if($enroller->enrollvotes) {{ $enroller->enrollvotes->count() }} @endif</td>
                     <td>
                         <div class="ui small basic icon buttons">
                             <a target="_blank" class="ui button" href="{{ route('public.profile.show', [$profile, $enroller->user->username]) }}">
