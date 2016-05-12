@@ -16,7 +16,6 @@ use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileCo
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
-use DreamsArk\Http\Controllers\Bag\CoinController;
 use DreamsArk\Http\Controllers\Committee\CommitteeController;
 use DreamsArk\Http\Controllers\Committee\Project\CastController;
 use DreamsArk\Http\Controllers\Committee\Project\CrewController;
@@ -38,6 +37,7 @@ use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
 use DreamsArk\Http\Controllers\Translation\TranslationController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
+use DreamsArk\Http\Controllers\User\Bag\CoinController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
@@ -129,6 +129,18 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');
             $app->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
         });
+        /** User's Payments/Coins Related Actions List */
+        $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
+            $app->get('/', ProfileController::class . '@purchaseHistory')->name('index');
+            /**
+             * Coin Controller
+             */
+            $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
+                $app->get('add', CoinController::class . '@create')->name('create');
+                $app->post('store', CoinController::class . '@store')->name('store');
+            });
+        });
+
 
     });
 
@@ -211,13 +223,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 //        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
     });
 
-    /**
-     * Coin Controller
-     */
-    $app->group(['prefix' => 'purchase/coins', 'as' => 'coin.'], function () use ($app) {
-        $app->get('create', CoinController::class . '@create')->name('create');
-        $app->post('store', CoinController::class . '@store')->name('store');
-    });
+
 
 
     /**

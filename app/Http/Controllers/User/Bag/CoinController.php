@@ -1,13 +1,18 @@
 <?php
 
-namespace DreamsArk\Http\Controllers\Bag;
+namespace DreamsArk\Http\Controllers\User\Bag;
 
 use DreamsArk\Commands\Bag\PurchaseCoinCommand;
+use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Bag\CoinCreation;
 use Illuminate\Http\Request;
-use DreamsArk\Http\Requests;
-use DreamsArk\Http\Controllers\Controller;
 
+/**
+ * Class CoinController
+ *
+ * @package DreamsArk\Http\Controllers\User\Bag
+ */
 class CoinController extends Controller
 {
 
@@ -18,7 +23,7 @@ class CoinController extends Controller
      */
     public function create()
     {
-        return view('coin.create');
+        return view('user.payment.coin.create');
     }
 
     /**

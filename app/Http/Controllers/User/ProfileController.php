@@ -10,6 +10,7 @@ use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
+use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -40,6 +41,8 @@ class ProfileController extends Controller
      */
     public function index(Request $request, UserProfileRepositoryInterface $profile)
     {
+//        return dispatch(new GetUniqueCharacters());
+
         return view('user.profile.index')
             ->with('user', $request->user())
             ->with('profiles', $profile->all());
@@ -139,7 +142,6 @@ class ProfileController extends Controller
     /**
      * @param Request $request
      * @param Profile $profile
-     * @param $
      * @param Option $option
      * @return
      */
@@ -151,6 +153,18 @@ class ProfileController extends Controller
             ->with('answers', $this->getProfileAnswers($request->user()->profiles->find($profile)))
             ->with('profile', $profile)
             ->with('sections', $profile->questions->pluck('pivot.section')->unique());
+    }
+
+    /**
+     * Coins Purchase History
+     *
+     * @param Request $request
+     */
+    public function purchaseHistory(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user();
+        return view('user.payment.index', compact('user'));
     }
 
 }

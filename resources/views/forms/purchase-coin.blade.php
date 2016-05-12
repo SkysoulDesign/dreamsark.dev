@@ -1,4 +1,4 @@
-<form class="ui form error" action="{{ route('coin.store') }}" method="post">
+<form class="ui form error" action="{{ route('user.purchase.coin.store') }}" method="post">
 
     {!! csrf_field() !!}
 
@@ -15,6 +15,6 @@
         ]
     ])
 
-    <button class="ui button" type="submit">@lang('forms.process')</button>
+    <button class="ui olive button" type="submit">@lang('forms.process')</button>
 
 </form>

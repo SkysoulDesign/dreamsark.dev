@@ -50,3 +50,7 @@ input[type="color"] {
     border: 0px;
     padding: 2px;
 }
+
+.ui.vertical.no-content.divider:after, .ui.vertical.no-content.divider:before{
+    height: calc(100%);
+}
