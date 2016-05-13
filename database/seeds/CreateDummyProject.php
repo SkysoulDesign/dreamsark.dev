@@ -13,6 +13,7 @@ use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
+use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
@@ -25,7 +26,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class CreateDummyProject extends Seeder
 {
 
-    use DispatchesJobs;
+    use DispatchesJobs, UserTrait;
 
     /**
      * Run the database seeds.
@@ -38,7 +39,7 @@ class CreateDummyProject extends Seeder
         /**
          * Create Project in Idea Stage
          */
-        $user = User::find(2);
+        $user = $this->createUser();// User::find(2);
         $fields = array(
             'name'    => 'My Supper Project',
             'content' => 'This is a Script',
@@ -119,15 +120,27 @@ class CreateDummyProject extends Seeder
          * Back The Project
          */
         collect(range(1, 20))->each(function () use ($project) {
-            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 5)));
+            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 10)));
         });
 
         /**
          * Enroll to Project
          */
         $expenditures = $project->enrollable;
-        $expenditures->each(function ($expenditure) {
-            dispatch(new EnrollProjectJob($expenditure, User::all()->random()));
+        /** @var Faker\Generator $faker */
+        $faker = app(Faker\Generator::class);
+        $expenditures->each(function ($expenditure) use ($faker) {
+            $user = User::all()->random();
+            $profile = $expenditure->expenditurable->profile;
+            if(!$user->hasProfile($profile)) {
+                $answers = [];
+                foreach ($profile->questions as $question) {
+                    array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+                }
+                /** @var User $user */
+                $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
+            }
+            dispatch(new EnrollProjectJob($expenditure, $user));
         });
 
         /**
@@ -195,13 +208,13 @@ class CreateDummyProject extends Seeder
         collect([
             [
                 'name'        => 'Crew ' . rand(1, 5),
-                'cost'        => rand(0, 5000),
+                'cost'        => rand(1, 1000),
                 'profile_id'  => Profile::all()->random(),
                 'description' => 'Super Nice Guy.'
             ],
             [
                 'name'        => 'Crew ' . rand(1, 5),
-                'cost'        => rand(0, 5000),
+                'cost'        => rand(1, 1000),
                 'profile_id'  => Profile::all()->random(),
                 'description' => 'He will do everything.'
             ]
@@ -219,18 +232,18 @@ class CreateDummyProject extends Seeder
     {
         collect([
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 500),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'This will be very expansive'
             ],
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 500),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'We need this.'
             ],
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 500),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'Cheap thing.'
             ]
         ])->each(function ($expanse) use ($project) {

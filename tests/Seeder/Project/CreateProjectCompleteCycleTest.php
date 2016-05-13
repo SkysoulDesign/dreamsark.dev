@@ -13,6 +13,7 @@ use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
+use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
@@ -60,7 +61,7 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Create Project in Idea Stage
          */
         $fields = array(
-            'name'    => 'My Supper Project',
+            'name'    => 'My Super Project - '.rand(1, 10),
             'content' => 'This is a Script',
         );
         $reward = ['idea' => 50];
@@ -102,7 +103,7 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Start Script Stage
          */
         $fields = array(
-            'content' => 'Now i will become a Synapse',
+            'content' => 'Now i will become a Script',
             'reward'  => '500'
         );
         dispatch(new CreateScriptJob($project->id, $fields));
@@ -138,15 +139,28 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Back The Project
          */
         collect(range(1, 20))->each(function () use ($project) {
-            dispatch(new BackProjectJob($project, $this->createUser(), rand(1, 5000)));
+            dispatch(new BackProjectJob($project, $this->createUser(), rand(1, 10)));
         });
 
         /**
          * Enroll to Project
          */
         $expenditures = $project->enrollable;
-        $expenditures->each(function ($expenditure) {
-            dispatch(new EnrollProjectJob($expenditure, $this->createUser()));
+        /** @var Faker\Generator $faker */
+        $faker = app(Faker\Generator::class);
+        $expenditures->each(function ($expenditure) use ($faker) {
+            $user = $this->createUser();
+            $profile = $expenditure->expenditurable->profile;
+            if(!$user->hasProfile($profile)) {
+                $answers = [];
+                foreach ($profile->questions as $question) {
+                    array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+                }
+                /** @var User $user */
+                $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
+            }
+
+            dispatch(new EnrollProjectJob($expenditure, $user));
         });
 
         /**
@@ -217,13 +231,13 @@ class CreateProjectCompleteCycleTest extends TestCase
         collect([
             [
                 'name'        => 'Crew ' . rand(1, 5),
-                'cost'        => rand(0, 5000),
+                'cost'        => rand(0, 500),
                 'profile_id'  => $this->createProfile(),
                 'description' => 'Super Nice Guy.'
             ],
             [
                 'name'        => 'Crew ' . rand(1, 5),
-                'cost'        => rand(0, 5000),
+                'cost'        => rand(0, 500),
                 'profile_id'  => $this->createProfile(),
                 'description' => 'He will do everything.'
             ]
@@ -241,18 +255,18 @@ class CreateProjectCompleteCycleTest extends TestCase
     {
         collect([
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 200),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'This will be very expansive'
             ],
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 200),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'We need this.'
             ],
             [
-                'cost'        => rand(0, 2000),
-                'name'        => 'Dummy expense ' . rand(0, 5),
+                'cost'        => rand(1, 200),
+                'name'        => 'Dummy expense ' . rand(1, 5),
                 'description' => 'Cheap thing.'
             ]
         ])->each(function ($expanse) use ($project) {
