@@ -23,6 +23,9 @@ use DreamsArk\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class CreateDummyProject
+ */
 class CreateDummyProject extends Seeder
 {
 
