@@ -23,7 +23,8 @@ class Fund extends Model
     /**
      * Define Which is the next Model
      */
-    protected $next = Synapse::class;
+//    protected $next = Synapse::class;
+    protected $next = Review::class;
 
     /**
      * Define this model Repository.

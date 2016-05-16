@@ -52,7 +52,7 @@
                                 <tr>
                                     <td colspan="2" align="right">
                                         <a class="ui orange button right aligned"
-                                           href="{{ route('user.profile.index') }}">@lang('profile.backer-all')</a>
+                                           href="{{ route('user.activity.backed.list') }}">@lang('profile.backer-all')</a>
                                     </td>
                                 </tr>
                                 </tfoot>

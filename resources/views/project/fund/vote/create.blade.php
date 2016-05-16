@@ -1,8 +1,15 @@
 @extends('layouts.master-user')
 
 @section('content')
+    <div class="left menu">
+        <a class="item ui button" href="{{ route('project.show', $model->project->id) }}">
+            <i class="arrow left icon"></i>
+            @lang('navbar.back')
+        </a>
+    </div>
 
     <div class="column">
+        <h2>{{ ($model->project->name) }}</h2>
 
         @foreach($model->enrollable->groupBy('expenditurable_type') as $class => $type)
             <div class="ui segment">
