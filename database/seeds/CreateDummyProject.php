@@ -7,6 +7,7 @@ use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateExpenseJob;
 use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\Expenditure\BackProjectJob;
 use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
+use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
@@ -126,7 +127,9 @@ class CreateDummyProject extends Seeder
              * Release the Project Back
              */
             $review = $project->review;//Review::find($project->id);
-            if ($review instanceof Review)
+            if (!$review instanceof Review) {
+                $review = dispatch(new CreateReviewJob($project));
+            }
                 dispatch(new PublishProjectReviewJob($review));
 
             $project = Project::find($projectId);

@@ -2,8 +2,8 @@
 
 namespace DreamsArk\Listeners\Project\Vote;
 
-use DreamsArk\Commands\Project\Stages\Review\CreateReviewCommand;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
+use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Models\Project\Stages\Script;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -22,7 +22,7 @@ class AutomaticallySendReviewToCommittee
     {
 
         if ($event->vote->votable instanceof Script) {
-            $this->dispatch(new CreateReviewCommand($event->vote->project));
+            $this->dispatch(new CreateReviewJob($event->vote->project));
         }
     }
 }

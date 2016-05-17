@@ -1,15 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Stages\Review;
+namespace DreamsArk\Jobs\Project\Stages\Review;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\Review\ReviewRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 
-class CreateReviewCommand extends Command implements SelfHandling
+class CreateReviewJob extends Job
 {
     /**
      * @var Project
@@ -30,9 +28,9 @@ class CreateReviewCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param ReviewRepositoryInterface $repository
-     * @param Dispatcher $event
+     * @return \DreamsArk\Models\Project\Stages\Review
      */
-    public function handle(ReviewRepositoryInterface $repository, Dispatcher $event)
+    public function handle(ReviewRepositoryInterface $repository)
     {
         /**
          * Create Review
@@ -42,7 +40,9 @@ class CreateReviewCommand extends Command implements SelfHandling
         /**
          * Announce ReviewWasCreated
          */
-        $event->fire(new ReviewWasCreated($review));
+        event(new ReviewWasCreated($review));
+
+        return $review;
 
     }
 }
