@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.31 on 2016-05-07.
+ * Generated for Laravel 5.2.31 on 2016-05-16.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -13111,218 +13111,100 @@ namespace {
     class Form extends \SkysoulDesign\Form\Facade{
         
         /**
-         * Error Class
-         * <div class=".
-         * 
-         * .."> ... </div>
+         * Make Form Tag
          *
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function getErrorMessageClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getErrorMessageClass();
-        }
-        
-        /**
-         * Error Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getErrorClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getErrorClass();
-        }
-        
-        /**
-         * Wrapper Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getWrapperClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getWrapperClass();
-        }
-        
-        /**
-         * Form Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getFormClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getFormClass();
-        }
-        
-        /**
-         * Button Class
-         * <button class=".
-         * 
-         * .."> ... </button>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getButtonClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getButtonClass();
-        }
-        
-        /**
-         * Select Class
-         * <select class=".
-         * 
-         * .."> ... </select>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getSelectClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getSelectClass();
-        }
-        
-        /**
-         * Create Label
-         *
-         * @param string $name
-         * @return $this 
-         * @static 
-         */
-        public static function makeLabel($name){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($name);
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */
-        public static function makeErrorMessage($attributes = null, $errors = null, $title = null){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeErrorMessage($attributes, $errors, $title);
-        }
-        
-        /**
-         * Create Label
-         *
-         * @param $attributes
-         * @param $collection
-         * @param $placeholder
-         * @param $label
-         * @return $this 
-         * @static 
-         */
-        public static function makeSelect($attributes, $collection, $placeholder, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeSelect($attributes, $collection, $placeholder, $label);
+        public static function makeForm($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($tag);
         }
         
         /**
          * Make Form Tag
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @param string $label
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeForm($attributes, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($attributes, $label);
+        public static function makeInput($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($tag);
         }
         
         /**
-         * Make Input
+         * Make Form Tag
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @param string $label
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeInput($attributes, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($attributes, $label);
+        public static function makeCheckbox($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeCheckbox($tag);
         }
         
         /**
-         * Make Input
+         * Create Label
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @return string 
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @return $this 
          * @static 
          */
-        public static function makeButton($attributes, $text){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeButton($attributes, $text);
+        public static function makeLabel($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($tag);
         }
         
         /**
          * Make Wrapper Class
          *
-         * @param $class
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @return string 
+         * @static 
+         */
+        public static function makeDiv($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeDiv($tag);
+        }
+        
+        /**
+         * Make Wrapper Class
+         *
          * @param $content
          * @return string 
          * @static 
          */
-        public static function makeWrapper($class, $content){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($class, $content);
+        public static function makeWrapper($tag, $content){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($tag, $content);
         }
         
         /**
          * Form Open Method
          *
-         * @param null $method
-         * @param null $action
-         * @return mixed 
+         * @param string $method
+         * @param string $action
+         * @return $this 
          * @static 
          */
-        public static function open($method = null, $action = null){
+        public static function open($method = 'post', $action = '/'){
             //Method inherited from \SkysoulDesign\Form\FormBuilder            
             return \SkysoulDesign\Form\Implementations\Semantic::open($method, $action);
         }
         
         /**
-         * Generate Form Token Input
+         * Dynamic Action to element
          *
-         * @param string $name
-         * @return mixed 
-         * @static 
-         */
-        public static function token($name = '_token'){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::token($name);
-        }
-        
-        /**
-         * Generate Form Tag
-         *
-         * @param null $method
-         * @param null $action
-         * @return  
-         * @static 
-         */
-        public static function generateFormTag($method = null, $action = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateFormTag($method, $action);
-        }
-        
-        /**
-         * Bind Model to the form
-         *
-         * @param \SkysoulDesign\Form\Model|Array $model
+         * @param $name
+         * @param array $params
          * @return $this 
          * @static 
          */
-        public static function bind($model = array()){
+        public static function route($name, $params = array()){
             //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::bind($model);
+            return \SkysoulDesign\Form\Implementations\Semantic::route($name, $params);
         }
         
         /**
-         * Close Form and Bootstrap all the fields
+         * Close Form
          *
-         * @return string 
          * @static 
          */
         public static function close(){
@@ -13331,322 +13213,114 @@ namespace {
         }
         
         /**
-         * CLose tagging
+         * 
+         *
+         * @param $content
+         * @param array $attributes
+         * @return $this 
+         * @internal param string $class
+         * @static 
+         */
+        public static function label($content, $attributes = array()){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::label($content, $attributes);
+        }
+        
+        /**
+         * 
+         *
+         * @param $name
+         * @param null $content
+         * @param array $attributes
+         * @return \SkysoulDesign\Form\Tag 
+         * @static 
+         */
+        public static function createTag($name, $content = null, $attributes = array()){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::createTag($name, $content, $attributes);
+        }
+        
+        /**
+         * Add Field to the Form
+         *
+         * @param $type
+         * @param $name
+         * @param null $value
+         * @param null $placeholder
+         * @return \SkysoulDesign\Form\Tag 
+         * @static 
+         */
+        public static function addInput($type, $name, $placeholder = null, $value = null){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::addInput($type, $name, $placeholder, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @param $type
+         * @param $name
+         * @param null $placeholder
+         * @param null $value
+         * @return $this 
+         * @static 
+         */
+        public static function addCheckbox($name, $placeholder = null, $value = null){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::addCheckbox($name, $placeholder, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @param $name
+         * @param null $placeholder
+         * @param null $value
+         * @return $this 
+         * @static 
+         */
+        public static function text($name, $placeholder = null, $value = null){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::text($name, $placeholder, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @param $name
+         * @param null $placeholder
+         * @param null $value
+         * @return \SkysoulDesign\Form\Tag 
+         * @static 
+         */
+        public static function checkbox($name, $placeholder = null, $value = null){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::checkbox($name, $placeholder, $value);
+        }
+        
+        /**
+         * Wrapper a tag
+         *
+         * @param \SkysoulDesign\Form\Tag $wrapper
+         * @param $content
+         * @return \SkysoulDesign\Form\Tag 
+         * @static 
+         */
+        public static function solveWrapper($wrapper, $content){
+            //Method inherited from \SkysoulDesign\Form\FormBuilder            
+            return \SkysoulDesign\Form\Implementations\Semantic::solveWrapper($wrapper, $content);
+        }
+        
+        /**
+         * Generate Tags HTML
          *
          * @param $tag
-         * @return $this 
-         * @static 
-         */
-        public static function closeTag($tag){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::closeTag($tag);
-        }
-        
-        /**
-         * Add Method to form
-         *
-         * @param $method
-         * @return $this 
-         * @static 
-         */
-        public static function method($method = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::method($method);
-        }
-        
-        /**
-         * Add Method to form
-         *
-         * @param string $route
-         * @param array|string $params
-         * @return $this 
-         * @static 
-         */
-        public static function route($route, $params = array()){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::route($route, $params);
-        }
-        
-        /**
-         * Add Method to form
-         *
-         * @param string $action
-         * @return $this 
-         * @static 
-         */
-        public static function action($action = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::action($action);
-        }
-        
-        /**
-         * Add Method to form
-         *
-         * @param null $class
-         * @return $this 
-         * @static 
-         */
-        public static function _class($class){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::_class($class);
-        }
-        
-        /**
-         * Submit Button
-         *
-         * @param $text
-         * @static 
-         */
-        public static function submit($text){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::submit($text);
-        }
-        
-        /**
-         * Cancel Button
-         *
-         * @param $text
-         * @static 
-         */
-        public static function cancel($text){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::cancel($text);
-        }
-        
-        /**
-         * Create Button
-         *
-         * @param $type
-         * @param $content
-         * @return  
-         * @static 
-         */
-        public static function generateButton($type, $content){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateButton($type, $content);
-        }
-        
-        /**
-         * Error Box
-         *
-         * @param null $title
-         * @return  
-         * @static 
-         */
-        public static function errorBox($title = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::errorBox($title);
-        }
-        
-        /**
-         * Display Error Box
-         *
-         * @param null $title
-         * @return  
-         * @static 
-         */
-        public static function generateErrors($title = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateErrors($title);
-        }
-        
-        /**
-         * Overrides WrapperClass Class to wrapperClass
-         *
-         * @param $wrapperClass
-         * @return $this 
-         * @static 
-         */
-        public static function wrapperClass($wrapperClass){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::wrapperClass($wrapperClass);
-        }
-        
-        /**
-         * Append Class to wrapperClass
-         *
-         * @param $appendWrapperClass
-         * @return $this 
-         * @static 
-         */
-        public static function appendWrapperClass($appendWrapperClass){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::appendWrapperClass($appendWrapperClass);
-        }
-        
-        /**
-         * Append Anything to the Tag $name="$value"
-         *
-         * @param $name
-         * @param $value
-         * @return \SkysoulDesign\Form\FormBuilder 
-         * @static 
-         */
-        public static function append($name, $value = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::append($name, $value);
-        }
-        
-        /**
-         * Append Class to Tag
-         *
-         * @param string $class
-         * @return $this 
-         * @static 
-         */
-        public static function appendClass($class){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::appendClass($class);
-        }
-        
-        /**
-         * Generate Parameters
-         *
-         * @param array $data
-         * @param $default
-         * @return $this 
-         * @internal param $key
-         * @internal param $value
-         * @static 
-         */
-        public static function set($data, $default = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::set($data, $default);
-        }
-        
-        /**
-         * Append Errors to Tag
-         *
-         * @param \SkysoulDesign\Form\Collection $item
-         * @return null 
-         * @static 
-         */
-        public static function appendErrors($item){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::appendErrors($item);
-        }
-        
-        /**
-         * Create Text Input
-         *
-         * @param $name
-         * @param null $value
-         * @param null $label
-         * @return mixed 
-         * @static 
-         */
-        public static function text($name, $value = null, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::text($name, $value, $label);
-        }
-        
-        /**
-         * Create Email Input
-         *
-         * @param $name
-         * @param null $value
-         * @param null $label
-         * @return mixed 
-         * @static 
-         */
-        public static function email($name, $value = null, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::email($name, $value, $label);
-        }
-        
-        /**
-         * Create Password Field
-         *
-         * @param $name
-         * @param null $value
-         * @param null $label
-         * @return $this 
-         * @static 
-         */
-        public static function password($name, $value = null, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::password($name, $value, $label);
-        }
-        
-        /**
-         * Create Select Field
-         *
-         * @param $name
-         * @param array $collection
-         * @param null $label
-         * @return \SkysoulDesign\Form\FormBuilder 
-         * @static 
-         */
-        public static function select($name, $collection, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::select($name, $collection, $label);
-        }
-        
-        /**
-         * Generate Field
-         *
-         * @param $type
-         * @param $name
-         * @param null $value
-         * @param null $label
-         * @return $this 
-         * @static 
-         */
-        public static function generateField($type, $name, $value = null, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateField($type, $name, $value, $label);
-        }
-        
-        /**
-         * Generate Hidden Inputs
-         *
-         * @param $name
-         * @param null $value
-         * @return $this 
-         * @static 
-         */
-        public static function generateHiddenInput($name, $value = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateHiddenInput($name, $value);
-        }
-        
-        /**
-         * Create Hidden Input
-         *
-         * @param array $attributes
          * @return string 
          * @static 
          */
-        public static function makeHidden($attributes = array()){
+        public static function generate($tag){
             //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::makeHidden($attributes);
-        }
-        
-        /**
-         * Generate Select
-         *
-         * @param $type
-         * @param $name
-         * @param array $collection
-         * @param null $label
-         * @return $this 
-         * @internal param null $value
-         * @static 
-         */
-        public static function generateSelect($type, $name, $collection, $label = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::generateSelect($type, $name, $collection, $label);
-        }
-        
-        /**
-         * Remove Label
-         *
-         * @return $this 
-         * @static 
-         */
-        public static function withoutLabel(){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::withoutLabel();
+            return \SkysoulDesign\Form\Implementations\Semantic::generate($tag);
         }
         
         /**
@@ -13656,47 +13330,9 @@ namespace {
          * @return string 
          * @static 
          */
-        public static function map($attributes = null){
+        public static function map($attributes = array()){
             //Method inherited from \SkysoulDesign\Form\FormBuilder            
             return \SkysoulDesign\Form\Implementations\Semantic::map($attributes);
-        }
-        
-        /**
-         * Generate Ul li HTML attributes
-         *
-         * @param \SkysoulDesign\Form\Collection|array $attributes
-         * @param null $ulClass
-         * @param null $liClass
-         * @return string 
-         * @static 
-         */
-        public static function mapUl($attributes, $ulClass = null, $liClass = null){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::mapUl($attributes, $ulClass, $liClass);
-        }
-        
-        /**
-         * Generate HTML attributes
-         *
-         * @param \SkysoulDesign\Form\Collection|array $attributes
-         * @return string 
-         * @static 
-         */
-        public static function options($attributes){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::options($attributes);
-        }
-        
-        /**
-         * Create a new entry on the Form Array
-         *
-         * @param array $data
-         * @return $this 
-         * @static 
-         */
-        public static function push($data = array()){
-            //Method inherited from \SkysoulDesign\Form\FormBuilder            
-            return \SkysoulDesign\Form\Implementations\Semantic::push($data);
         }
         
     }

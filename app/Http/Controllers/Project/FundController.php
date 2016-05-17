@@ -53,7 +53,7 @@ class FundController extends Controller
      */
     public function vote(Enroller $enroller, VotingOnUserEnrollment $request)
     {
-        $this->dispatch(new VoteOnEnrollablePositionJob($enroller, $request->user()));
+        $this->dispatch(new VoteOnEnrollablePositionJob($enroller, $request->user(), $request->get('amount', 0)));
 
         return redirect()->back();
     }

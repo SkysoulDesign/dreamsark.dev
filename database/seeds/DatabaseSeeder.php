@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSectionTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
-        $this->call(CreateDummyProject::class);
+        if (app()->environment() == 'local')
+            $this->call(CreateDummyProject::class);
     }
 }

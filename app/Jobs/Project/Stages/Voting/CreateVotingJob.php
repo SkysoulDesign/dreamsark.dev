@@ -1,20 +1,16 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Stages\Voting;
+namespace DreamsArk\Jobs\Project\Stages\Voting;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\Vote\VoteWasCreated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
-class CreateVotingCommand extends Command implements SelfHandling
+class CreateVotingJob extends Job
 {
 
-    use DispatchesJobs;
 
     /**
      * @var Project
@@ -48,9 +44,8 @@ class CreateVotingCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param VoteRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(VoteRepositoryInterface $repository, Dispatcher $event)
+    public function handle(VoteRepositoryInterface $repository)
     {
 
         /**
@@ -61,7 +56,7 @@ class CreateVotingCommand extends Command implements SelfHandling
         /**
          * Announce VoteWasCreated
          */
-        $event->fire(new VoteWasCreated($vote));
+        event(new VoteWasCreated($vote));
 
     }
 }

@@ -91,11 +91,13 @@ class ExpenditureRepository implements ExpenditureRepositoryInterface
      *
      * @param int $enroller_id
      * @param int $user_id
+     * @param $amount
      * @return \Illuminate\Database\Eloquent\Model
+     * @throws \DreamsArk\Repositories\Exceptions\RepositoryException
      */
-    public function vote($enroller_id, $user_id)
+    public function vote($enroller_id, $user_id, $amount)
     {
-        return $this->newInstance($enroller_id, Enroller::class)->model->votes()->attach($user_id);
+        return $this->newInstance($enroller_id, Enroller::class)->model->votes()->attach($user_id, compact('amount'));
     }
 
 }

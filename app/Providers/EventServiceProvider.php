@@ -11,16 +11,20 @@ use DreamsArk\Events\Idea\UserHasBiddenAnIdea;
 use DreamsArk\Events\Position\ExpenditurePositionWasCreated;
 use DreamsArk\Events\Project\CastWasAdded;
 use DreamsArk\Events\Project\CrewWasAdded;
+use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Events\Project\IdeaWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
 use DreamsArk\Events\Project\Script\ScriptWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
+use DreamsArk\Events\Project\Stages\DistributionWasCreated;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
 use DreamsArk\Events\Project\Submission\SubmissionReceivedAVote;
 use DreamsArk\Events\Project\Synapse\SynapseWasCreated;
 use DreamsArk\Events\Project\UserHasEnrolledToCast;
+use DreamsArk\Events\Project\Vote\Enroll\WinnerHasAssignedToCrew;
+use DreamsArk\Events\Project\Vote\EnrollVotingHasFinished;
 use DreamsArk\Events\Project\Vote\VoteWasCreated;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
 use DreamsArk\Events\Project\Vote\VotingHasFailed;
@@ -45,6 +49,7 @@ use DreamsArk\Listeners\Project\Vote\AutomaticallySendReviewToCommittee;
 use DreamsArk\Listeners\Project\Vote\DeactivateVoting;
 use DreamsArk\Listeners\Project\Vote\QueueCloseVotingCommand;
 use DreamsArk\Listeners\Project\Vote\QueueOpenVotingCommand;
+use DreamsArk\Listeners\Project\Vote\SendProjectToDistributionReview;
 use DreamsArk\Listeners\User\AppendDefaultSettings;
 use DreamsArk\Listeners\User\AttachUserRole;
 use DreamsArk\Listeners\User\GiveUserAnEmptyBag;
@@ -131,12 +136,27 @@ class EventServiceProvider extends ServiceProvider
             AutomaticallySendReviewToCommittee::class,
         ],
 
+        EnrollVotingHasFinished::class => [
+            DeactivateVoting::class,
+            SendProjectToDistributionReview::class
+        ],
+
+        WinnerHasAssignedToCrew::class => [
+        ],
+
+        DistributionWasCreated::class => [
+            UpdateProjectStage::class,
+        ],
 
         ReviewWasCreated::class => [
             UpdateProjectStage::class
         ],
 
         SubmissionReceivedAVote::class => [
+            DeductUserCoins::class
+        ],
+
+        EnrollerReceivedVote::class => [
             DeductUserCoins::class
         ],
 

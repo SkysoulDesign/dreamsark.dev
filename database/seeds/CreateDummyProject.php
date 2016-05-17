@@ -1,6 +1,5 @@
 <?php
 
-use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
 use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateCrewJob;
@@ -11,11 +10,10 @@ use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
+use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
-use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
-use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
@@ -38,14 +36,20 @@ class CreateDummyProject extends Seeder
      */
     public function run()
     {
+        $this->createProject();
+        sleep(2);
+        $this->createProject('review');
+    }
 
+    protected function createProject($endStage = 'fund')
+    {
         /**
          * Create Project in Idea Stage
          */
         $user = $this->createUser();// User::find(2);
         $fields = array(
-            'name'    => 'My Supper Project',
-            'content' => 'This is a Script',
+            'name'    => 'My Project - ' . rand(1, 5),
+            'content' => 'This is an Idea',
         );
         $reward = ['idea' => 5];
 
@@ -63,6 +67,7 @@ class CreateDummyProject extends Seeder
          * Process
          */
         $this->openNextStage($project, $user, $project->stage->vote);
+        sleep(1);
 
         /**
          * Start Synapse Stage
@@ -82,6 +87,7 @@ class CreateDummyProject extends Seeder
          * Process
          */
         $this->openNextStage($project, $user, $project->stage->vote);
+        sleep(1);
 
         /**
          * Start Script Stage
@@ -101,6 +107,7 @@ class CreateDummyProject extends Seeder
          * Process
          */
         $this->openNextStage($project, $user, $project->stage->vote);
+        sleep(1);
 
         /**
          * Add Crew
@@ -112,50 +119,55 @@ class CreateDummyProject extends Seeder
          */
         $this->addExpense($project);
 
-        /**
-         * Release the Project Back
-         */
-        $review = $project->review;//Review::find($project->id);
-        dispatch(new PublishProjectReviewJob($review));
+        if ($endStage == 'fund') {
 
-        $project = Project::find($projectId);
-        /**
-         * Back The Project
-         */
-        collect(range(1, 20))->each(function () use ($project) {
-            dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 10)));
-        });
+            /**
+             * Release the Project Back
+             */
+            $review = $project->review;//Review::find($project->id);
+            dispatch(new PublishProjectReviewJob($review));
 
-        /**
-         * Enroll to Project
-         */
-        $expenditures = $project->enrollable;
-        /** @var Faker\Generator $faker */
-        $faker = app(Faker\Generator::class);
-        $expenditures->each(function ($expenditure) use ($faker) {
-            $user = User::all()->random();
-            $profile = $expenditure->expenditurable->profile;
-            if(!$user->hasProfile($profile)) {
-                $answers = [];
-                foreach ($profile->questions as $question) {
-                    array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+            $project = Project::find($projectId);
+            /**
+             * Back The Project
+             */
+            collect(range(1, 20))->each(function () use ($project) {
+                dispatch(new BackProjectJob($project, User::all()->random(), rand(1, 10)));
+            });
+
+            /**
+             * Enroll to Project
+             */
+            $expenditures = $project->enrollable;
+            /** @var Faker\Generator $faker */
+            $faker = app(Faker\Generator::class);
+            $expenditures->each(function ($expenditure) use ($faker) {
+                $profile = $expenditure->expenditurable->profile;
+                /** to create two enrollers for a profile */
+                $users = User::all()->random(2);
+                foreach ($users as $user) {
+                    if (!$user->hasProfile($profile)) {
+                        $answers = [];
+                        foreach ($profile->questions as $question) {
+                            array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+                        }
+                        /** @var User $user */
+                        $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
+                    }
+                    dispatch(new EnrollProjectJob($expenditure, $user));
                 }
-                /** @var User $user */
-                $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
-            }
-            dispatch(new EnrollProjectJob($expenditure, $user));
-        });
+            });
 
-        /**
-         * Process Project
-         */
-        dispatch(new OpenVotingCommand(Project::first()->stage->vote));
+            /**
+             * Process Project
+             */
+            dispatch(new OpenVotingJob(Project::find($projectId)->stage->vote));
 
-        $enrollers = Enroller::all();
-        $enrollers->each(function ($enroller) {
-            dispatch(new VoteOnEnrollablePositionJob($enroller, User::all()->random()));
-        });
-
+            /*$enrollers = Enroller::all();
+            $enrollers->each(function ($enroller) {
+                dispatch(new VoteOnEnrollablePositionJob($enroller, User::all()->random()));
+            });*/
+        }
     }
 
     /**
@@ -176,28 +188,28 @@ class CreateDummyProject extends Seeder
             'visibility' => '1'
         );
 
-        collect(range(1, 10))->each(function () use ($project, $user, $fields) {
-            $this->dispatch(new SubmitJob($project, $user, $fields));
+        collect(range(1, 6))->each(function () use ($project, $user, $fields) {
+            $this->dispatch(new SubmitJob($project, User::all()->random(), $fields));
         });
 
         /**
          * Open project Voting
          */
-        $this->dispatch(new OpenVotingCommand($vote));
+        $this->dispatch(new OpenVotingJob($vote));
 
         /**
          * Vote on Some Submissions
          */
         $submissions = Submission::all();
 
-        collect(range(1, 10))->each(function () use ($submissions, $user) {
-            $this->dispatch(new VoteOnSubmissionCommand(rand(1, 50), $submissions->random(), $user));
+        collect(range(1, 6))->each(function () use ($submissions, $user) {
+            $this->dispatch(new VoteOnSubmissionCommand(rand(1, 50), $submissions->random(), User::all()->random()));
         });
 
         /**
          * Close the Voting
          */
-        $this->dispatch(new CloseVotingJob($vote));
+        $this->dispatch(new CloseVotingJob($vote->id));
 
     }
 

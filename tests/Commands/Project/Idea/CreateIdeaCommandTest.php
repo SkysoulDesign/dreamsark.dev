@@ -11,7 +11,7 @@
 //use Carbon\Carbon;
 //use DreamsArk\Commands\Project\ChargeUserJob;
 //use DreamsArk\Jobs\Project\Stages\Idea\CreateIdeaJob;
-//use DreamsArk\Commands\Project\Stages\Voting\CreateVotingCommand;
+//use DreamsArk\Jobs\Project\Stages\Voting\CreateVotingCommand;
 //use DreamsArk\Events\Project\IdeaWasCreated;
 //use DreamsArk\Models\Project\Stages\Idea;
 //use DreamsArk\Models\Project\Project;

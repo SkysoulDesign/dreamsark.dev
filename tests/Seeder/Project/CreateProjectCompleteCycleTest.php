@@ -1,6 +1,5 @@
 <?php
 
-use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
 use DreamsArk\Jobs\Project\Committee\Review\ReviewCreateCrewJob;
@@ -11,10 +10,9 @@ use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
+use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
-use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
-use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
@@ -149,30 +147,32 @@ class CreateProjectCompleteCycleTest extends TestCase
         /** @var Faker\Generator $faker */
         $faker = app(Faker\Generator::class);
         $expenditures->each(function ($expenditure) use ($faker) {
-            $user = $this->createUser();
             $profile = $expenditure->expenditurable->profile;
-            if(!$user->hasProfile($profile)) {
-                $answers = [];
-                foreach ($profile->questions as $question) {
-                    array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+            /** to create two enrollers for a profile */
+            collect([1, 2])->each(function () use ($expenditure, $faker, $profile) {
+                $user = $this->createUser();
+                if(!$user->hasProfile($profile)) {
+                    $answers = [];
+                    foreach ($profile->questions as $question) {
+                        array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));
+                    }
+                    /** @var User $user */
+                    $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
                 }
-                /** @var User $user */
-                $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
-            }
-
-            dispatch(new EnrollProjectJob($expenditure, $user));
+                dispatch(new EnrollProjectJob($expenditure, $user));
+            });
         });
 
         /**
          * Process Project
          */
         $project = Project::find($projectId);
-        dispatch(new OpenVotingCommand($project->stage->vote));
+        dispatch(new OpenVotingJob($project->stage->vote));
 
-        $enrollers = Enroller::all();
+        /*$enrollers = Enroller::all();
         $enrollers->each(function ($enroller) {
             dispatch(new VoteOnEnrollablePositionJob($enroller, $this->createUser()));
-        });
+        });*/
 
         $this->project = Project::find($projectId);
 
@@ -203,7 +203,7 @@ class CreateProjectCompleteCycleTest extends TestCase
         /**
          * Open project Voting
          */
-        dispatch(new OpenVotingCommand($vote));
+        dispatch(new OpenVotingJob($vote));
 
         /**
          * Vote on Some Submissions
@@ -217,7 +217,7 @@ class CreateProjectCompleteCycleTest extends TestCase
         /**
          * Close the Voting
          */
-        dispatch(new CloseVotingJob($vote));
+        dispatch(new CloseVotingJob($vote->id));
 
     }
 

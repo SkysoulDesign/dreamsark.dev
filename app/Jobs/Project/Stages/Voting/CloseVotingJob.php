@@ -23,11 +23,11 @@ class CloseVotingJob extends Job
     /**
      * Create a new command instance.
      *
-     * @param \DreamsArk\Models\Project\Stages\Vote $vote
+     * @param $voteId
      */
-    public function __construct(Vote $vote)
+    public function __construct($voteId)
     {
-        $this->vote = $vote;
+        $this->vote = Vote::find($voteId);
     }
 
     /**
@@ -41,54 +41,54 @@ class CloseVotingJob extends Job
     {
 
         if ($this->vote->votable instanceof Fund) {
-            //dd('wait it`s a fund function on CloseVotingJob');
-            return false;
-        }
-
-        /**
-         * Get which Submission had more Votes
-         * @todo Improve this messy function
-         */
-        /** @var Collection $submissions */
-        $submissions = $this->vote->votable->submissions->load('votes');
-        $votes = $submissions->pluck('votes', 'id')->map(function ($item) {
-            return $item->sum('pivot.amount');
-        });
-
-        /**
-         * if don't have any votes there will be no winner, so declare this failed
-         */
-        if ($votes->sum() <= 0) {
+            return dispatch(new CloseEnrollVotingJob($this->vote));
+        } else {
 
             /**
-             * Fail The project stage
+             * Get which Submission had more Votes
+             *
+             * @todo Improve this messy function
              */
-            dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
+            /** @var Collection $submissions */
+            $submissions = $this->vote->votable->submissions->load('votes');
+            $votes = $submissions->pluck('votes', 'id')->map(function ($item) {
+                return $item->sum('pivot.amount');
+            });
 
             /**
-             * Announce Vote has Failed
+             * if don't have any votes there will be no winner, so declare this failed
              */
-            event(new VotingHasFailed($this->vote));
+            if ($votes->sum() <= 0) {
 
-            return;
+                /**
+                 * Fail The project stage
+                 */
+                dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
+
+                /**
+                 * Announce Vote has Failed
+                 */
+                event(new VotingHasFailed($this->vote));
+
+                return;
+            }
+
+            /**
+             * Retrieve Winner Submission
+             */
+            $submission_winner = $submission->findOrFail($votes->sort()->keys()->pop());
+
+            /**
+             * Refund Losers
+             */
+            $losers = $submissions->filter(function ($submission) use ($submission_winner) {
+                return $submission->id != $submission_winner->id;
+            });
+
+            /**
+             * Announce VoteHasFinished
+             */
+            event(new VotingHasFinished($this->vote, $submission_winner, $losers));
         }
-
-        /**
-         * Retrieve Winner Submission
-         */
-        $submission_winner = $submission->findOrFail($votes->sort()->keys()->pop());
-
-        /**
-         * Refund Losers
-         */
-        $losers = $submissions->filter(function ($submission) use ($submission_winner) {
-            return $submission->id != $submission_winner->id;
-        });
-
-        /**
-         * Announce VoteHasFinished
-         */
-        event(new VotingHasFinished($this->vote, $submission_winner, $losers));
-
     }
 }

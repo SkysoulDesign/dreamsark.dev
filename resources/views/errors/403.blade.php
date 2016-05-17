@@ -39,7 +39,7 @@
 <div class="container">
     <div class="content">
         <div class="title">You don't have permission to access this URL.</div>
-        <a href="javascript:history.go(-1);">Go Back</a>
+        <a href="{{ request()->server('HTTP_REFERER') }}">Go Back</a>
     </div>
 </div>
 </body>

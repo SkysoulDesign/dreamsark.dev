@@ -28,7 +28,8 @@ class ProjectPresenter extends Presenter
     public function progress()
     {
         $cost = $this->expenditures->pluck('expenditurable')->sum('cost');
-        $pledged = $this->backers->sum('pivot.amount');
+//        $pledged = $this->backers->sum('pivot.amount');
+        $pledged = $this->totalCollected();
         return round(($pledged * 100) / $cost);
     }
 

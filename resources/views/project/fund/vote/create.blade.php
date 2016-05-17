@@ -29,6 +29,7 @@
                                 <thead>
                                 <tr>
                                     <th>@lang('project.candidates')</th>
+                                    <th>@lang('project.expected-cost')</th>
                                     <th>@lang('project.votes')</th>
                                     <th>@lang('project.vote')</th>
                                 </tr>
@@ -46,15 +47,22 @@
                                             </a>
                                         </td>
                                         <td>
-                                            {{ $enroller->enrollvotes->count() }}
+                                            {{ $expenditure->expenditurable->cost }}
+                                        </td>
+                                        <td>
+{{--                                            {{ $enroller->enrollvotes->count() }}--}}
+                                            {{ $enroller->enrollvotes->pluck('amount')->sum() }}
                                         </td>
                                         <td class="collapsing">
                                             <form class="ui form" method="post"
                                                   action="{{ route('project.fund.vote.store', $enroller->id) }}">
                                                 {{ csrf_field() }}
-                                                <button class="olive circular ui icon button">
-                                                    <i class="icon thumbs up"></i>
-                                                </button>
+                                                <div class="inline fields">
+                                                    @include('partials.field',['name' => 'amount', 'label' => trans('forms.amount'), 'displayLabel' => false])
+                                                    <button class="olive circular ui icon button">
+                                                        <i class="icon thumbs up"></i>
+                                                    </button>
+                                                </div>
                                             </form>
                                         </td>
                                     </tr>

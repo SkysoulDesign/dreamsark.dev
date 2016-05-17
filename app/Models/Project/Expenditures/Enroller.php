@@ -50,7 +50,7 @@ class Enroller extends Model
      */
     public function votes()
     {
-        return $this->belongsToMany(User::class, 'expenditure_enroller_vote')->withTimestamps();
+        return $this->belongsToMany(User::class, 'expenditure_enroller_vote')->withPivot('amount')->withTimestamps();
     }
 
     /**

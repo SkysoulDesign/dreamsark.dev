@@ -21,10 +21,9 @@ class CreateExpenditureCrewsTable extends Migration
             $table->string('description')->nullable();
 
             $table->integer('expenditure_profile_id')->unsigned()->index();
-//            $table->foreign('expenditure_profile_id')->references('id')->on('profiles')->onDelete('cascade');
 
-            $table->integer('user_id')->unsigned()->nullable()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('enroller_id')->unsigned()->nullable()->index();
+            $table->foreign('enroller_id')->references('id')->on('expenditure_enrollers');
 
             $table->timestamps();
 

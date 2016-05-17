@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Jobs\Project;
 
+use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\User\User;
@@ -18,17 +19,23 @@ class VoteOnEnrollablePositionJob extends Job
      * @var User
      */
     private $user;
+    /**
+     * @var
+     */
+    private $amount;
 
     /**
      * Create a new command instance.
      *
      * @param Enroller $enroller
      * @param User $user
+     * @param $amount
      */
-    public function __construct(Enroller $enroller, User $user)
+    public function __construct(Enroller $enroller, User $user, $amount)
     {
         $this->enroller = $enroller;
         $this->user = $user;
+        $this->amount = $amount;
     }
 
     /**
@@ -41,6 +48,9 @@ class VoteOnEnrollablePositionJob extends Job
         /**
          *
          */
-        $repository->vote($this->enroller->id, $this->user->id);
+        $repository->vote($this->enroller->id, $this->user->id, $this->amount);
+
+        event(new EnrollerReceivedVote($this->enroller, $this->user, $this->amount));
+
     }
 }

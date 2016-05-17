@@ -1,24 +1,19 @@
 <?php
 
-namespace DreamsArk\Commands\Project\Stages\Voting;
+namespace DreamsArk\Jobs\Project\Stages\Voting;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Commands\Project\FailFundingStageCommand;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailIdeaSynapseScriptStageJob;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
 use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class OpenVotingCommand extends Command implements SelfHandling
+class OpenVotingJob extends Job
 {
-    use SerializesModels, DispatchesJobs;
 
     /**
      * @var Vote
@@ -39,10 +34,9 @@ class OpenVotingCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param VoteRepositoryInterface $repository
-     * @param Dispatcher $event
      * @return array|null
      */
-    public function handle(VoteRepositoryInterface $repository, Dispatcher $event)
+    public function handle(VoteRepositoryInterface $repository)
     {
 
         /**
@@ -59,7 +53,7 @@ class OpenVotingCommand extends Command implements SelfHandling
             /**
              * Fail this project
              */
-            $this->dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
+            dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
 
             return;
         }
@@ -88,7 +82,7 @@ class OpenVotingCommand extends Command implements SelfHandling
                     /**
                      * Fail this project
                      */
-                    $this->dispatch(new FailFundingStageCommand($this->vote->votable));
+                    dispatch(new FailFundingStageCommand($this->vote->votable));
 
                     return;
                 }
@@ -105,7 +99,7 @@ class OpenVotingCommand extends Command implements SelfHandling
         /**
          * Announce VoteWasOpened
          */
-        $event->fire(new VoteWasOpened($this->vote));
+        event(new VoteWasOpened($this->vote));
 
     }
 

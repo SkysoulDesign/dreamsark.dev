@@ -120,7 +120,8 @@ class ProjectController extends Controller
             return view('project.show', compact('project', 'isIFrameCall'))->with('submissions', $submissions);
         }
 
-        return view('project.show', compact('isIFrameCall'))->with('project', $project->load('expenditures.expenditurable', 'backers'));
+        return view('project.show', compact('isIFrameCall'))
+                ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
 
     }
 

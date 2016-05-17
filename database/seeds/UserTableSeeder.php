@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
 
         $dreamsark = [
             'username' => 'DreamsArk',
-            'password' => "dreamsark",
+            'password' => "478135",
             'email'    => 'dreamsark@dreamsark.com'
         ];
 
@@ -37,7 +37,7 @@ class UserTableSeeder extends Seeder
 
         $justin = [
             'username' => 'Justin',
-            'password' => "skysoul",
+            'password' => "478135",
             'email'    => 'skysoul@skysoul.com.au'
         ];
 

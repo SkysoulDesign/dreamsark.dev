@@ -63,18 +63,21 @@
 
                     </div>
                 </div>
-                @if(!$project->stage->vote->active)
-                    <div class="ui two inverted green item menu">
-                        <a href="{{ route('project.fund.create', $project->id) }}"
-                           class="item">@lang('project.back-this-project')</a>
-                        <a href="{{ route('project.enroll.create', $project->id) }}"
-                           class="item">@lang('project.enroll')</a>
-                    </div>
+                @if(isset($isIFrameCall) && $isIFrameCall)
                 @else
-                    <div class="ui one inverted blue item menu">
-                        <a href="{{ route('vote.show', $project->stage->vote->id) }}"
-                           class="item">@lang('vote.is-open')</a>
-                    </div>
+                    @if(!$project->stage->vote->active)
+                        <div class="ui two inverted green item menu">
+                            <a href="{{ route('project.fund.create', $project->id) }}"
+                               class="item">@lang('project.back-this-project')</a>
+                            <a href="{{ route('project.enroll.create', $project->id) }}"
+                               class="item">@lang('project.enroll')</a>
+                        </div>
+                    @else
+                        <div class="ui one inverted blue item menu">
+                            <a href="{{ route('vote.show', $project->stage->vote->id) }}"
+                               class="item">@lang('vote.is-open')</a>
+                        </div>
+                    @endif
                 @endif
 
             </div>
@@ -86,7 +89,7 @@
                 <div class="ui four wide column statistics">
                     <div class="olive statistic">
                         <div class="value">
-                            <i class="yen icon"></i> {{ $project->backers->sum('pivot.amount') }}
+                            <i class="yen icon"></i> {{ $project->totalCollected() }}
                         </div>
                         <div class="label">
                             {{ trans('project.collected') }}
@@ -130,5 +133,7 @@
     </div>
 </div>
 <style>
-    .segment div.menu, .attached div.menu { position: static; }
+    .segment div.menu, .attached div.menu {
+        position: static;
+    }
 </style>

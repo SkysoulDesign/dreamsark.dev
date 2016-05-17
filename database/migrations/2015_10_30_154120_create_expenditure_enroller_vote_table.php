@@ -22,6 +22,8 @@ class CreateExpenditureEnrollerVoteTable extends Migration
             $table->integer('enroller_id')->unsigned()->index();
             $table->foreign('enroller_id')->references('id')->on('expenditure_enrollers')->onDelete('cascade');
 
+            $table->integer('amount');
+
             $table->timestamps();
 
         });

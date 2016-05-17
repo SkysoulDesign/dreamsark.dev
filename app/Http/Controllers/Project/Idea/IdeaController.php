@@ -2,9 +2,8 @@
 
 namespace DreamsArk\Http\Controllers\Project\Idea;
 
-use DreamsArk\Commands\Project\Stages\Voting\OpenVotingCommand;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
 use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
 use DreamsArk\Repositories\Project\Submission\SubmissionRepositoryInterface;

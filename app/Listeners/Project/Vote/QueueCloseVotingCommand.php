@@ -44,7 +44,7 @@ class QueueCloseVotingCommand
         /**
          * Queue OpenVoteCommand
          */
-        $command = new CloseVotingJob($event->vote);
+        $command = new CloseVotingJob($event->vote->id);
 
         $delay = $event->vote->close_date->timestamp - $this->carbon->now()->timestamp;
 

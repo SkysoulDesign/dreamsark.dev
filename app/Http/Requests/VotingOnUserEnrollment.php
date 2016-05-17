@@ -11,7 +11,8 @@ class VotingOnUserEnrollment extends Request
      */
     public function authorize()
     {
-        return $this->enroller->votes()->whereUserId($this->user()->id)->get()->isEmpty();
+        return true;
+//        return $this->enroller->votes()->whereUserId($this->user()->id)->get()->isEmpty();
     }
 
     /**

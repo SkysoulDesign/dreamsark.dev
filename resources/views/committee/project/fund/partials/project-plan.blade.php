@@ -54,5 +54,16 @@
             </div>
         </th>
     </tr>
+    <tr>
+        <th colspan="2">
+            <div class="ui header right aligned">@lang('project.total-collected')</div>
+        </th>
+        <th>
+            <div class="ui header">
+                {{ $fund->project->totalCollected() }}
+            </div>
+        </th>
+    </tr>
+
     </tfoot>
 </table>

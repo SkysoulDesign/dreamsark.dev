@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Project;
 
 use DreamsArk\Models\Project\Expenditures\Expenditure;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Models\Project\Stages\Review;
@@ -13,6 +14,7 @@ use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ProjectPresenter;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
@@ -55,13 +57,14 @@ class Project extends Model
 
     /**
      * Add "ORDER BY" to query object
+     *
      * @param $query
      * @param string $orderBy
      * @return mixed
      */
     public function addOrderBy($query, $orderBy = '')
     {
-        return $query->orderBy('updated_at', ($orderBy?:'desc'));
+        return $query->orderBy('updated_at', ($orderBy ?: 'desc'));
     }
 
     /**
@@ -173,6 +176,15 @@ class Project extends Model
     }
 
     /**
+     * distribution Relationship
+     */
+    public function distribution()
+    {
+        return $this->hasOne(Distribution::class);
+    }
+
+
+    /**
      * Returns the right Relationship for the current project stage
      */
     public function stage()
@@ -224,8 +236,27 @@ class Project extends Model
     public function backers()
     {
         return $this->belongsToMany(User::class, 'project_backer')
-                ->withPivot('amount')->withTimestamps()
-                ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
+            ->withPivot('amount')->withTimestamps()
+            ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
+    }
+
+    public function enrollVoteTotal()
+    {
+        /** @var Collection $voteSum */
+        $voteSum = $this->enrollable->pluck('enrollers')->map(function ($item) {
+            return $item->pluck('enrollvotes');
+        })->flatten();
+
+        return $voteSum->sum('amount');
+    }
+
+    /**
+     * sum of amount received from "Project Backers" & "voters to enrollers"
+     */
+    public function totalCollected()
+    {
+
+        return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
     }
 
     /**
