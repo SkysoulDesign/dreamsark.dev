@@ -244,7 +244,8 @@ class Project extends Model
     {
         /** @var Collection $voteSum */
         $voteSum = $this->enrollable->pluck('enrollers')->map(function ($item) {
-            return $item->pluck('enrollvotes');
+            if ($item)
+                return $item->pluck('enrollvotes');
         })->flatten();
 
         return $voteSum->sum('amount');
