@@ -86,7 +86,6 @@ class CommitteeController extends Controller
                 return $item->sum('amount');
             });
             $winnerId = $enrollerVoteList->sort()->keys()->pop();
-//            echo 'Crew Id: ' . $expenditureCrew->id . ' -> Winner: ' . $winnerId;
             dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->id, $winnerId));
         }
         event(new EnrollVotingHasFinished($project->id, 1, $project->stage->vote));
