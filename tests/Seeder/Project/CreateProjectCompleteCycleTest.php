@@ -15,6 +15,7 @@ use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
+use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\User\User;
@@ -59,7 +60,7 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Create Project in Idea Stage
          */
         $fields = array(
-            'name'    => 'My Super Project - '.rand(1, 10),
+            'name'    => 'My Super Project - ' . rand(1, 10),
             'content' => 'This is a Script',
         );
         $reward = ['idea' => 50];
@@ -130,7 +131,8 @@ class CreateProjectCompleteCycleTest extends TestCase
          * Release the Project Back
          */
         $review = $project->review;//Review::find($project->id);
-        dispatch(new PublishProjectReviewJob($review));
+        if ($review instanceof Review)
+            dispatch(new PublishProjectReviewJob($review));
 
         $project = Project::find($projectId);
         /**
@@ -151,7 +153,7 @@ class CreateProjectCompleteCycleTest extends TestCase
             /** to create two enrollers for a profile */
             collect([1, 2])->each(function () use ($expenditure, $faker, $profile) {
                 $user = $this->createUser();
-                if(!$user->hasProfile($profile)) {
+                if (!$user->hasProfile($profile)) {
                     $answers = [];
                     foreach ($profile->questions as $question) {
                         array_set($answers, "question_$question->id", $faker->realText(rand(20, 30)));

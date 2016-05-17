@@ -15,6 +15,7 @@ use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\User\User;
@@ -125,7 +126,8 @@ class CreateDummyProject extends Seeder
              * Release the Project Back
              */
             $review = $project->review;//Review::find($project->id);
-            dispatch(new PublishProjectReviewJob($review));
+            if ($review instanceof Review)
+                dispatch(new PublishProjectReviewJob($review));
 
             $project = Project::find($projectId);
             /**
