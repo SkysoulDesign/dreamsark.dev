@@ -41,7 +41,7 @@ class CloseVotingJob extends Job
     {
 
         if ($this->vote->votable instanceof Fund) {
-            return dispatch(new CloseEnrollVotingJob($this->vote));
+            dispatch(new CloseEnrollVotingJob($this->vote));
         } else {
 
             /**

@@ -8,7 +8,7 @@
     box-shadow: none;
 }
 
-.ui.table thead th {
+.ui.table:not(.celled) thead th {
     background: none transparent;
     border-bottom: none;
 }

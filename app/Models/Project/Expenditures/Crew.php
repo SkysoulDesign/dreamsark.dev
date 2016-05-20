@@ -50,4 +50,13 @@ class Crew extends Model
         return $this->belongsTo(Profile::class, 'expenditure_profile_id');
     }
 
+    /**
+     * Enroller Relationship
+     */
+    public function enroller()
+    {
+        return $this->belongsTo(Enroller::class, 'enroller_id');
+    }
+
+
 }

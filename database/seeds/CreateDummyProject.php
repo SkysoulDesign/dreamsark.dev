@@ -13,6 +13,7 @@ use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
+use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Project;
@@ -38,12 +39,15 @@ class CreateDummyProject extends Seeder
      */
     public function run()
     {
-        $this->createProject();
+        $this->createProject('fund');
         sleep(2);
-        $this->createProject('review');
+        $this->createProject();
+        sleep(1);
+        $this->createProject('distribute');
+
     }
 
-    protected function createProject($endStage = 'fund')
+    protected function createProject($endStage = '')
     {
         /**
          * Create Project in Idea Stage
@@ -121,7 +125,7 @@ class CreateDummyProject extends Seeder
          */
         $this->addExpense($project);
 
-        if ($endStage == 'fund') {
+        if (in_array($endStage, ['fund', 'distribute'])) {
 
             /**
              * Release the Project Back
@@ -130,7 +134,7 @@ class CreateDummyProject extends Seeder
             if (!$review instanceof Review) {
                 $review = dispatch(new CreateReviewJob($project));
             }
-                dispatch(new PublishProjectReviewJob($review));
+            dispatch(new PublishProjectReviewJob($review));
 
             $project = Project::find($projectId);
             /**
@@ -168,11 +172,31 @@ class CreateDummyProject extends Seeder
              */
             dispatch(new OpenVotingJob(Project::find($projectId)->stage->vote));
 
-            /*$enrollers = Enroller::all();
-            $enrollers->each(function ($enroller) {
-                dispatch(new VoteOnEnrollablePositionJob($enroller, User::all()->random()));
-            });*/
+            if ($endStage == 'distribute')
+                $this->doVotingOnEnrollAndClose($projectId);
         }
+    }
+
+    protected function doVotingOnEnrollAndClose($projectId)
+    {
+        $project = Project::find($projectId)->load('enrollable');
+        $amount = 0;
+        foreach ($project->enrollable as $expenditure) {
+            if (!$expenditure->enrollers->isEmpty()) {
+                foreach ($expenditure->enrollers as $enroller) {
+                    $enrollVote = rand(1, 100);
+                    $amount += $enrollVote;
+                    dispatch(new VoteOnEnrollablePositionJob($enroller, User::all()->random(), $enrollVote));
+                }
+            }
+        }
+
+        /**
+         * Close the Voting
+         */
+        sleep(2);
+        dispatch(new CloseVotingJob($project->stage->vote->id));
+
     }
 
     /**

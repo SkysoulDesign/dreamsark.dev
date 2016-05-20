@@ -26,6 +26,8 @@
                    href="{{ route('committee.project.review.list') }}">@lang('navbar.project-in-review')</a>
                 <a class="item"
                    href="{{ route('committee.project.fund.list') }}">@lang('navbar.project-in-fund')</a>
+                <a class="item"
+                   href="{{ route('committee.project.distribute.list') }}">@lang('navbar.project-in-distribute')</a>
 
             </div>
         </div>

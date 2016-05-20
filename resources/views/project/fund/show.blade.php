@@ -79,6 +79,20 @@
                         </div>
                     @endif
                 @endif
+                <div class="ui one column statistics">
+                    <div class="statistic">
+                        <div class="value" style="font-size: 2rem;">
+                            @lang('project.'.($project->stage->vote->active ? 'vote-closing' : 'vote-open'))
+                        </div>
+                        <div class="label">
+                            @if($project->stage->vote->active)
+                                {{ $project->stage->vote->close_date->diffForHumans(\Carbon\Carbon::now()) }}
+                            @else
+                                {{ $project->stage->vote->open_date->diffForHumans(\Carbon\Carbon::now()) }}
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -86,7 +100,7 @@
         <div class="ui stacked segments">
             <div class="ui segment" style="min-height: 100px;">
 
-                <div class="ui four wide column statistics">
+                <div class="ui three wide column statistics">
                     <div class="olive statistic">
                         <div class="value">
                             <i class="yen icon"></i> {{ $project->totalCollected() }}
@@ -105,15 +119,6 @@
                     </div>
                     <div class="statistic">
                         <div class="value">
-                            {{ $project->stage->vote->open_date->diffInHours(\Carbon\Carbon::now()) }}
-                        </div>
-                        <div class="label">
-                            {{ trans('project.hours-to-go') }}
-                        </div>
-                    </div>
-
-                    <div class="statistic">
-                        <div class="value">
                             <img src="{{ asset('img/avatar/male.png') }}" class="ui circular inline image">
                             {{ $project->enrollable()->count() }}
                         </div>
@@ -121,6 +126,7 @@
                             {{ trans('project.staff') }}
                         </div>
                     </div>
+
                 </div>
 
             </div>

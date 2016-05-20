@@ -7,6 +7,7 @@
         <tr>
             <th>@lang('navbar.project')</th>
             <th>@lang('navbar.creator')</th>
+            <th>@lang('navbar.created-date')</th>
             <th>@lang('navbar.actions')</th>
         </tr>
         </thead>
@@ -15,6 +16,7 @@
             <tr>
                 <td>{{ $review->project->name }}</td>
                 <td>{{ $review->project->user->name ?:$review->project->user->username }}</td>
+                <td>{{ $review->created_at->format('m/d/Y H:i A') }}</td>
                 <td>
                     @include('admin.partials.project.view-project-button', ['project_id' => $review->project_id])
                     <a href="{{ route('committee.project.planning.manage', $review->id) }}" class="ui button">
@@ -25,7 +27,7 @@
             </tr>
         @endforeach
         </tbody>
-        @include('admin.partials.paginate-links', ['resultSet' => $reviews, 'colSpan' => 3])
+        @include('admin.partials.paginate-links', ['resultSet' => $reviews, 'colSpan' => 4])
     </table>
 @endsection
 @section('pos-scripts')

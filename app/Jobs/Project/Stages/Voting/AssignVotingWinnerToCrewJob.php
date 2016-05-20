@@ -32,12 +32,11 @@ class AssignVotingWinnerToCrewJob extends Job
     /**
      * Execute the job.
      *
-     * @param Crew $crew
      */
-    public function handle(Crew $crew)
+    public function handle()
     {
         /** @var Crew $expenditure */
-        $expenditure = $crew->find($this->expenditureId);
+        $expenditure = Crew::find($this->expenditureId);
         $expenditure->setAttribute('enroller_id', $this->winnerEnrollId)->save();
         $expenditure->fresh();
 

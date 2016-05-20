@@ -225,32 +225,10 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 //        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
     });
 
-
-
-
     /**
      * User Applications
      */
     $app->get('user/application', ActorController::class . '@create')->name('user.application.actor');
-
-    /**
-     * User Projects Controller
-     */
-
-//    $app->group(['prefix' => 'user', 'as' => 'user.', ['middleware' => ['auth']]], function () use ($app) {
-//
-//
-//
-//        /*$app->get('project/publish/{draft}', UserProjectController::class . '@publish')->name('project.publish');
-//        $app->get('project/edit/{draft}', UserProjectController::class . '@edit')->name('project.edit');
-//        $app->post('project/update/{draft}', UserProjectController::class . '@update')->name('project.update');
-//        $app->post('project/store', UserProjectController::class . '@store')->name('project.store');
-//
-//        $app->post('project/synapse/store/{project}', UserSynapseController::class . '@store')->name('project.synapse.store');
-//        $app->post('project/script/store/{project}', UserScriptController::class . '@store')->name('project.script.store');*/
-//
-//    });
-
 
     /**
      * Report Controller
@@ -323,15 +301,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         /** Admin projects */
         $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
 
-//        $app->resource('question', QuestionController::class, ['except' => ['show']]);
-
-
-//    $app->get('user', AdminHomeController::class . '@user')->name('admin.users');
-
-//        $app->resource('user', AdminUserController::class, ['except' => ['show']]);
-//        $app->resource('profile', AdminProfileController::class, ['except' => ['show']]);
-
-
     });
 
     /**
@@ -360,10 +329,19 @@ $app->group(['middleware' => ['web']], function () use ($app) {
          */
         $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
 
-        $app->group(['prefix' => 'project/fund', 'as' => 'project.fund.'], function () use ($app) {
-            $app->get('/', CommitteeController::class . '@projectsInFundStage')->name('list');
-            $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
+        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+            $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+                $app->get('/', CommitteeController::class . '@projectsInFundStage')->name('list');
+                $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
+            });
+
+            $app->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($app) {
+                $app->get('/', CommitteeController::class . '@projectsInDistributionStage')->name('list');
+                $app->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
+            });
         });
+
+
     });
 
 });

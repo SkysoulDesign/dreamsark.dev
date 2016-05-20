@@ -2,13 +2,13 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
-use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\ScopeAbleTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Distribution extends Model
 {
-    use ProjectableTrait;
+    use ProjectableTrait, ScopeAbleTrait;
 
     /**
      * The database table used by the model.
@@ -19,13 +19,4 @@ class Distribution extends Model
 
     protected $fillable = ['project_id', 'active'];
 
-    /**
-     * Project Relationship
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
 }

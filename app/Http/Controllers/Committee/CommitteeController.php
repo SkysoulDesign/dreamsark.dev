@@ -6,9 +6,11 @@ use DreamsArk\Events\Project\Vote\EnrollVotingHasFinished;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Project\Stages\Voting\AssignVotingWinnerToCrewJob;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CommitteeController
@@ -44,6 +46,15 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @param Distribution $distribution
+     * @return mixed
+     */
+    public function projectsInDistributionStage(Distribution $distribution)
+    {
+        return view('committee.project.distribute.index')->with('distributions', $this->getListWithPagination($distribution));
+    }
+
+    /**
      * @param $object
      * @return mixed
      */
@@ -58,14 +69,33 @@ class CommitteeController extends Controller
      */
     public function ViewFundProcess(Fund $fund)
     {
-        $fund = $fund->load([
-            'project',
-            'project.enrollable', 'project.enrollable.expenditurable', 'project.enrollable.enrollers', 'project.enrollable.enrollers.enrollvotes',
-            'project.expensable',
-            'project.backers'
-        ]);
+        $fund = $this->loadProjectData($fund);
 
         return view('committee.project.fund.view', compact('fund'));
+    }
+
+    /**
+     * @param Distribution $distribution
+     * @return mixed
+     */
+    public function ViewDistributeProcess(Distribution $distribution)
+    {
+        $distribution = $this->loadProjectData($distribution);
+
+        return view('committee.project.distribute.view', compact('distribution'));
+    }
+
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    protected function loadProjectData(Model $model){
+        return $model->load([
+            'project',
+            'project.enrollable', 'project.enrollable.expenditurable', 'project.enrollable.enrollers', 'project.enrollable.enrollers.enrollvotes',
+            'project.expensable', 'project.expensable.expenditurable',
+            'project.backers'
+        ]);
     }
 
     /**
@@ -86,7 +116,7 @@ class CommitteeController extends Controller
                 return $item->sum('amount');
             });
             $winnerId = $enrollerVoteList->sort()->keys()->pop();
-            dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->id, $winnerId));
+            dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->expenditurable_id, $winnerId));
         }
         event(new EnrollVotingHasFinished($project->id, 1, $project->stage->vote));
     }

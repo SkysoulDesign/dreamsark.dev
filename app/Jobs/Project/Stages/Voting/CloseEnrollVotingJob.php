@@ -37,6 +37,8 @@ class CloseEnrollVotingJob extends Job
         $fund = $this->vote->votable;
         /** @var Project $project */
         $project = $fund->project;
+        $project = $project->load('enrollable.enrollers.enrollvotes');
+
         if ($project->enrollVoteTotal() > 0) {
             foreach ($project->enrollable as $expenditureCrew) {
                 /** to get enrollers' votes */
@@ -50,12 +52,11 @@ class CloseEnrollVotingJob extends Job
                     return $item->sum('amount');
                 });
                 $winnerId = $enrollerVoteList->sort()->keys()->pop();
-                dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->id, $winnerId));
+                dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->expenditurable_id, $winnerId));
 
             }
 
             event(new EnrollVotingHasFinished($project->id, $fund->id, $this->vote));
         }
-        return false;
     }
 }

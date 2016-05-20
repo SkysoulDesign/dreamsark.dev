@@ -26,7 +26,7 @@ class VoteController extends Controller
      */
     public function index(VoteRepositoryInterface $repository)
     {
-        return view('project.vote.index')->with('votes', $repository->allOpened()->load('project'));
+        return view('project.vote.index')->with('votes', $repository->allOpened()->load('votable'));
     }
 
     /**

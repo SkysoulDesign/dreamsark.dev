@@ -1,6 +1,6 @@
 <div id="idea-submit-modal" class="ui modal">
     <div class="header">
-        @lang('idea.submission-form-title')
+        @lang('idea.submission-content-title')
     </div>
     <div class="content">
         <form id="idea-submit-form" class="ui error form" method="post"

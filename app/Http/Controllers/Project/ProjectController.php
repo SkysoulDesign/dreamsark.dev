@@ -12,6 +12,7 @@ use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
@@ -114,7 +115,7 @@ class ProjectController extends Controller
             return view('project.show', compact('project', 'isIFrameCall'));
         }
 
-        if (!$project->stage instanceof Fund) {
+        if (!$project->stage instanceof Fund && !$project->stage instanceof Distribution) {
             $submissions = $repository->submissions($project->id)->load('user');
 
             return view('project.show', compact('project', 'isIFrameCall'))->with('submissions', $submissions);

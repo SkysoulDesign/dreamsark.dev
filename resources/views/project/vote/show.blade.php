@@ -13,3 +13,21 @@
     @endif
 
 @endsection
+
+@section('styles')
+    <link href="{{ asset('css/flipclock.css') }}" rel="stylesheet" media="all"/>
+@endsection
+@section('pos-scripts')
+    <script src="{{ asset('js/flipclock.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            /**
+             * Countdown
+             */
+            if ($('#flipclock').length > 0)
+                $('#flipclock').FlipClock($('#flipclock').attr('data-time'), {
+                    countdown: true
+                });
+        });
+    </script>
+@endsection

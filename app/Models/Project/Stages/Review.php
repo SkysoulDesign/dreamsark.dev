@@ -2,8 +2,8 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
-use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\ScopeAbleTrait;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
 
-    use ProjectableTrait;
+    use ProjectableTrait, ScopeAbleTrait;
 
     /**
      * The database table used by the model.
@@ -27,33 +27,5 @@ class Review extends Model
      * Define Which is the next Model
      */
     protected $next = Fund::class;
-
-    /**
-     * Project Relationship
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
-    /**
-     * @param $query
-     * @return mixed
-     */
-    public function scopePending($query)
-    {
-        return $query->where('active', false);
-    }
-
-    /**
-     * @param $query
-     * @return mixed
-     */
-    public function scopeActives($query)
-    {
-        return $query->where('active', true);
-    }
 
 }

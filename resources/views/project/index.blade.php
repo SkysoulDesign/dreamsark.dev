@@ -32,6 +32,10 @@
                     @include('partials.card-fund')
                 @endif
 
+                @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Distribution)
+                    @include('partials.card-fund')
+                @endif
+
             @endforeach
 
         @endif

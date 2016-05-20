@@ -50,6 +50,13 @@
                     <a href="javascript:;" class="item disabled">@lang('project.back-this-project')</a>
                     <a href="javascript:;" class="item disabled">@lang('project.enroll')</a>
                 </div>
+                <div class="ui one column statistics">
+                    <div class="statistic">
+                        <div class="value" style="font-size: 2rem;">
+                            @lang('project.under-review')
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

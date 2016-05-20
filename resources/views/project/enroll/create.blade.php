@@ -20,6 +20,9 @@
                 <tbody>
 
                 @foreach($expenditures as $expenditure)
+                    @php
+                        $profile = $expenditure->expenditurable->profile;
+                    @endphp
 
                     <tr>
                         <td>
@@ -29,7 +32,7 @@
                                 <div class="content">
                                     {{ $expenditure->expenditurable->name }}
                                     <div class="sub header">
-                                        {{ (is_object($expenditure->expenditurable->profile) ? $expenditure->expenditurable->profile->display_name : '') }}
+                                        {{ $profile->display_name or '' }}
                                     </div>
                                 </div>
                             </h4>
@@ -54,24 +57,30 @@
                                     <button type="submit" class="red ui icon button">@lang('project.unroll')</button>
                                 </form>
                             @else
-                                <form method="post" action="{{ route('project.enroll.store', $expenditure->id) }}">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="olive ui icon button">@lang('project.enroll')</button>
-                                </form>
+                                @if(auth()->user()->hasProfile($expenditure->expenditurable->profile))
+                                    <form method="post" action="{{ route('project.enroll.store', $expenditure->id) }}">
+                                        {{ csrf_field() }}
+                                        <button type="submit"
+                                                class="olive ui icon button">@lang('project.enroll')</button>
+                                    </form>
+                                @else
+                                    <a class="ui button"
+                                       href="{{ route('user.profile.create', $profile->name) }}">@lang('user.create-profile-to-enroll')</a>
+                                @endif
                             @endif
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="5">
-                            <a class="ui grey button" href="{{ route('project.show', $expenditures[0]->project_id) }}">
-                                <i class="reply icon"></i>
-                                @lang('project.back-to-view')
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <th colspan="5">
+                        <a class="ui grey button" href="{{ route('project.show', $expenditures[0]->project_id) }}">
+                            <i class="reply icon"></i>
+                            @lang('project.back-to-view')
+                        </a>
+                    </th>
+                </tr>
                 </tfoot>
 
             </table>

@@ -22,7 +22,7 @@ class AutomaticallySendReviewToCommittee
     {
 
         if ($event->vote->votable instanceof Script) {
-            $this->dispatch(new CreateReviewJob($event->vote->project));
+            $this->dispatch(new CreateReviewJob($event->vote->votable->project));
         }
     }
 }

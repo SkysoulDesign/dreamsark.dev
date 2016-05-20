@@ -13,8 +13,10 @@ use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
+use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
@@ -44,6 +46,20 @@ class CreateProjectCompleteCycleTest extends TestCase
         $this->createProjectEvent($this->createUser());
 
         $this->assertEquals(Fund::class, get_class($this->project->stage), 'Project Not in Fund Stage');
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_project_and_enroll_voting()
+    {
+        $this->createProjectEvent($this->createUser());
+
+        $this->doVotingOnEnrollAndClose($this->project->id);
+
+        $this->assertEquals(Distribution::class, get_class($this->project->stage), 'Project Not in Distribution Stage');
 
         $this->assertTrue(true);
     }
@@ -176,11 +192,35 @@ class CreateProjectCompleteCycleTest extends TestCase
 
         /*$enrollers = Enroller::all();
         $enrollers->each(function ($enroller) {
-            dispatch(new VoteOnEnrollablePositionJob($enroller, $this->createUser()));
+            dispatch(new VoteOnEnrollablePositionJob($enroller, $this->createUser(), rand(1, 100)));
         });*/
 
         $this->project = Project::find($projectId);
 
+    }
+
+    protected function doVotingOnEnrollAndClose($projectId)
+    {
+        $this->project = Project::find($projectId)->load('enrollable');
+
+        $amount = 0;
+        foreach ($this->project->enrollable as $expenditure) {
+            if (!$expenditure->enrollers->isEmpty()) {
+                foreach ($expenditure->enrollers as $enroller) {
+                    $enrollVote = rand(1, 100);
+                    $amount += $enrollVote;
+                    dispatch(new VoteOnEnrollablePositionJob($enroller, $this->createUser(), $enrollVote));
+                }
+            }
+        }
+
+        /**
+         * Close the Voting
+         */
+        sleep(2);
+        dispatch(new CloseVotingJob($this->project->stage->vote->id));
+
+        $this->project = Project::find($projectId);
     }
 
     /**

@@ -40,6 +40,8 @@ class StaffController extends Controller
     public function publish(Review $review)
     {
         $this->redirectIfActive($review);
+        if($review->project->expenditures->isEmpty())
+            return redirect()->back()->withErrors('Project: "' . $review->project->name . '" do not have any Expenses/Crew. Unable to Publish');
         $this->dispatch(new PublishProjectReviewJob($review));
 
         return redirect()->route('committee.project.review.list');// dashboard

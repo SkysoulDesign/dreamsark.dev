@@ -57,12 +57,4 @@ class Vote extends Model
         return $this->morphTo();
     }
 
-    /**
-     * Project Relationship
-     */
-    public function project()
-    {
-        return $this->votable->project();
-    }
-
 }

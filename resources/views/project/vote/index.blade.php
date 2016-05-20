@@ -9,10 +9,10 @@
                 <div class="ui header">@lang('project.no-vote')</div>
             </div>
         @else
-            @foreach($votes->groupBy('project.stage') as $stage => $votes)
+            @foreach($votes->groupBy('votable_type') as $stage => $votes)
                 <div class="ui segments">
                     <div class="ui segment">
-                        <p>{{ $stage }} stage </p>
+                        {{ class_basename($stage) }}
                     </div>
                     @foreach($votes as $vote)
                         <div class="ui secondary segment">

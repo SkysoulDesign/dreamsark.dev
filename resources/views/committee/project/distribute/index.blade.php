@@ -12,22 +12,22 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($funds as $fund)
+        @foreach($distributions as $distribution)
             <tr>
-                <td>{{ $fund->project->name }}</td>
-                <td>{{ $fund->project->user->name ?:$fund->project->user->username }}</td>
-                <td>{{ $fund->created_at->format('m/d/Y H:i A') }}</td>
+                <td>{{ $distribution->project->name }}</td>
+                <td>{{ $distribution->project->user->name ?:$distribution->project->user->username }}</td>
+                <td>{{ $distribution->created_at->format('m/d/Y H:i A') }}</td>
                 <td>
-                    @include('admin.partials.project.view-project-button', ['project_id' => $fund->project_id])
-                    <a href="{{ route('committee.project.fund.view', $fund->id) }}" class="ui button">
+                    @include('admin.partials.project.view-project-button', ['project_id' => $distribution->project_id])
+                    <a href="{{ route('committee.project.distribute.view', $distribution->id) }}" class="ui button">
                         <i class="settings icon"></i>
-                        @lang('project.view-fund')
+                        @lang('project.view-distribution')
                     </a>
                 </td>
             </tr>
         @endforeach
         </tbody>
-        @include('admin.partials.paginate-links', ['resultSet' => $funds, 'colSpan' => 4])
+        @include('admin.partials.paginate-links', ['resultSet' => $distributions, 'colSpan' => 4])
     </table>
 @endsection
 @section('pos-scripts')

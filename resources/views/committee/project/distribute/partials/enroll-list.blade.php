@@ -22,7 +22,12 @@
         @if(!$expenditure->enrollers->isEmpty())
             @foreach($expenditure->enrollers as $enroller)
                 <tr>
-                    <td>{{ $enroller->user->name or $enroller->user->username }}</td>
+                    <td>
+                        {{ $enroller->user->name or $enroller->user->username }}
+                        @if($enroller->id == $expenditure->expenditurable->enroller_id)
+                            <div class="ui violet horizontal label">@lang('project.winner')</div>
+                        @endif
+                    </td>
                     <td>@if($enroller->created_at) {{ $enroller->created_at->format('m/d/Y H:i A') }} @endif</td>
                     <td>@if($enroller->enrollvotes) {{ $enroller->enrollvotes->unique('user_id')->count() }} @endif</td>
                     <td>@if($enroller->enrollvotes)

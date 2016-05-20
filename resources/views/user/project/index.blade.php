@@ -33,7 +33,7 @@
                     <tr>
                         <td class="collapsing">{{ $project->name }}</td>
                         <td>${{ $project->reward or '-' }}</td>
-                        <td>{{ $project->voting_date or '-' }}</td>
+                        <td>{{ $project->voting_date ? $project->voting_date->format('m/d/Y H:i') : '-' }}</td>
 
                         <td class="">
                             <form action="{{ route('project.publish', $project->id) }}">
@@ -84,7 +84,8 @@
                         </td>
                         <td class="collapsing">{{ $project->name }}</td>
                         <td>{{ $project->stage->reward->amount or '-'}}</td>
-                        <td>{{ $project->stage->vote->open_date or '-' }}</td>
+
+                        <td>{{ $project->stage->vote ? ($project->stage->vote->open_date ? $project->stage->vote->open_date->format('m/d/Y H:i') : '-') : '-' }}</td>
                         <td>{{ $project->stage->submission ? 'Finished' : 'Waiting' }}</td>
 
                         <td class="">

@@ -1,21 +1,26 @@
 @extends('layouts.master-user')
 
 @section('content')
-
+    @php
+    $stageArr = ['review', 'fund', 'distribution'];
+    $projectStage = strtolower(class_basename($project->stage));
+    @endphp
     <div class="column">
 
-        @if(!($project->stage instanceof \DreamsArk\Models\Project\Stages\Review) && ! ($project->stage instanceof \DreamsArk\Models\Project\Stages\Fund)&& !$project->stage->active)
-            <div class="ui inverted red segment">
-                @lang('project.project-failed')
-            </div>
-        @endif
 
-        @if(!($project->stage instanceof \DreamsArk\Models\Project\Stages\Review) && !($project->stage instanceof \DreamsArk\Models\Project\Stages\Fund) && $project->stage->vote->active)
-            <div class="ui inverted olive segment">
-                <a class="ui header" href="{{ route('vote.show', $project->stage->vote->id) }}">
-                    @lang('vote.is-open')
-                </a>
-            </div>
+        @if(!in_array($projectStage, $stageArr))
+            @if(!$project->stage->active)
+                <div class="ui inverted red segment">
+                    @lang('project.project-failed')
+                </div>
+            @endif
+            @if($project->stage->vote->active)
+                <div class="ui inverted olive segment">
+                    <a class="ui header" href="{{ route('vote.show', $project->stage->vote->id) }}">
+                        @lang('vote.is-open')
+                    </a>
+                </div>
+            @endif
         @endif
 
         @include('project.' . strtolower(class_basename($project->stage)) . '.show')
@@ -29,8 +34,24 @@
 
 @endsection
 
+@section('styles')
+    <link href="{{ asset('css/flipclock.css') }}" rel="stylesheet" media="all"/>
+@endsection
 @section('pos-scripts')
-    @if(in_array(strtolower(class_basename($project->stage)), ['review', 'fund']))
+    <script src="{{ asset('js/flipclock.min.js') }}"></script>
+    @if(in_array($projectStage, $stageArr))
         @include('forms.project-stage-script')
+    @else
+        <script>
+            $(document).ready(function () {
+                /**
+                 * Countdown
+                 */
+                if ($('#flipclock').length > 0)
+                    $('#flipclock').FlipClock($('#flipclock').attr('data-time'), {
+                        countdown: true
+                    });
+            });
+        </script>
     @endif
 @endsection

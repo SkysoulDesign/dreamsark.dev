@@ -2,16 +2,16 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
-use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
+use DreamsArk\Models\Traits\ScopeAbleTrait;
 use DreamsArk\Models\Traits\VotableTrait;
 use DreamsArk\Repositories\Project\Fund\FundRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class Fund extends Model
 {
-    use ProjectableTrait, VotableTrait, EnrollableTrait;
+    use ProjectableTrait, VotableTrait, EnrollableTrait, ScopeAbleTrait;
 
     /**
      * The database table used by the model.
@@ -31,33 +31,5 @@ class Fund extends Model
      * @var string
      */
     public $repository = FundRepositoryInterface::class;
-
-    /**
-     * Project Relationship
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
-    /**
-     * @param $query
-     * @return mixed
-     */
-    public function scopePending($query)
-    {
-        return $query->where('active', false);
-    }
-
-    /**
-     * @param $query
-     * @return mixed
-     */
-    public function scopeActives($query)
-    {
-        return $query->where('active', true);
-    }
 
 }
