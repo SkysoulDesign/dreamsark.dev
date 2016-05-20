@@ -6,7 +6,7 @@
 
         <p></p>
 
-        <a href="#{{$project->type}}" class="ui orange ribbon label">
+        <a href="#{{$project->type}}" class="ui {{ $color or 'orange' }} ribbon label">
             {{ strtoupper(trans('project.' . $project->type)) }}
         </a>
 
