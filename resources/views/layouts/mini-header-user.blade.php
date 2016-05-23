@@ -24,6 +24,7 @@
                             <div class="menu">
                                 <a href="{{ route('user.activity.backed.list') }}" class="item">@lang('navbar.backed-list')</a>
                                 <a href="{{ route('user.activity.enrolled.list') }}" class="item">@lang('navbar.enrolled-list')</a>
+                                <a href="{{ route('user.activity.earning') }}" class="item">@lang('navbar.earning-list')</a>
                             </div>
                         </div>
                         <a class="item" href="{{ route('user.settings') }}">@lang('navbar.setting')</a>

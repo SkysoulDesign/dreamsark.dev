@@ -5,6 +5,11 @@ namespace DreamsArk\Repositories\User;
 use DreamsArk\Models\User\User;
 use Illuminate\Support\Collection;
 
+/**
+ * Interface UserRepositoryInterface
+ *
+ * @package DreamsArk\Repositories\User
+ */
 interface UserRepositoryInterface
 {
     /**
@@ -31,4 +36,10 @@ interface UserRepositoryInterface
      * @return Collection
      */
     public function drafts($user_id);
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function projectEarnings($user_id);
 }

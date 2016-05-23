@@ -14,6 +14,7 @@ use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepository;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 /**
@@ -23,6 +24,10 @@ use Illuminate\Http\Request;
  */
 class ProjectController extends Controller
 {
+    /**
+     * @var array
+     */
+    private $pagination;
 
     /**
      * Display a listing of the resource.
@@ -44,6 +49,18 @@ class ProjectController extends Controller
     }
 
     /**
+     * @param $request
+     */
+    protected function getPaginationArray($request)
+    {
+        $currentPage = $request->get('page', 1);
+        $this->pagination = [
+                            'current' => $currentPage,
+                            'limit' => config('defaults.general.pagination.per_page')
+                            ];
+    }
+
+    /**
      * User's Backed/Funded List
      *
      * @param Request $request
@@ -51,10 +68,14 @@ class ProjectController extends Controller
      */
     public function backerList(Request $request)
     {
+        $this->getPaginationArray($request);
         /** @var User $user */
         $user = $request->user()->load('backers');
+        /** @var Collection $backers */
+        $backers = $user->backers->forPage($this->pagination['current'], $this->pagination['limit']);
 
-        return view('user.activity.backed-list', compact('user'));
+        return view('user.activity.backed-list', compact('backers'))
+            ->with('pagination', $this->pagination);
     }
 
     /**
@@ -65,11 +86,14 @@ class ProjectController extends Controller
      */
     public function enrolledList(Request $request)
     {
+        $this->getPaginationArray($request);
         /** @var User $user */
         $user = $request->user()->load('enrollers');
-//        dd($user->enrollers);
+        /** @var Collection $enrollers */
+        $enrollers = $user->enrollers->forPage($this->pagination['current'], $this->pagination['limit']);
 
-        return view('user.activity.enroll-list', compact('user'));
+        return view('user.activity.enroll-list', compact('enrollers'))
+            ->with('pagination', $this->pagination);
     }
 
     /**

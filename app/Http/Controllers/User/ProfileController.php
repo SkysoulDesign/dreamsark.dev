@@ -12,6 +12,7 @@ use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
+use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ use Illuminate\Http\Request;
  */
 class ProfileController extends Controller
 {
+    private $earningTotal;
 
     /**
      * ProfileController constructor.
@@ -164,7 +166,27 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
+
         return view('user.payment.index', compact('user'));
+    }
+
+    public function userEarningHistory(UserRepositoryInterface $userRepository, Request $request)
+    {
+        $currentPage = $request->get('page', 1);
+        /** @var Collection $projectEarnings */
+        $projectEarnings = $userRepository->projectEarnings($request->user()->id);
+        $this->earningTotal = 0;
+        $projectEarnings->pluck('votes')->each(function ($item) {
+            $this->earningTotal += $item->pluck('pivot')->sum('amount');
+        });
+        $currentResultSet = $projectEarnings->forPage($currentPage, config('defaults.general.pagination.per_page'));
+//        dd($currentResultSet);
+        $pagination = ['current' => $currentPage];
+
+        return view('user.activity.earning-list', compact('pagination'))
+            ->with('projectEarnings', $currentResultSet)
+            ->with('earningTotal', $this->earningTotal)
+            ;
     }
 
 }

@@ -6,6 +6,11 @@ use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Repository;
 use Illuminate\Support\Collection;
 
+/**
+ * Class UserRepository
+ *
+ * @package DreamsArk\Repositories\User
+ */
 class UserRepository extends Repository implements UserRepositoryInterface
 {
 
@@ -82,6 +87,20 @@ class UserRepository extends Repository implements UserRepositoryInterface
     public function active($user_id)
     {
         return $this->model($user_id)->projects()->active()->get();
+    }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function projectEarnings($user_id)
+    {
+        return $this->model($user_id)->submissions->load(['submissible', 'votes'])->filter(function ($item) {
+            if ($item->id == $item->submissible->submission_id)
+                return $item;
+
+            return false;
+        });
     }
 
 }

@@ -6,6 +6,7 @@ use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
+use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\Traits\ModelDetentionTrait;
 use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
@@ -150,6 +151,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * User to Enroller relation
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function enrollers()
@@ -175,6 +177,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class)->orderBy('updated_at', 'desc');
     }
 
 }
