@@ -5,10 +5,10 @@
         </a>
     </div>
     <a class="active item" href="{{ route('home') }}">
-        Home
+        @lang('navbar.home')
     </a>
     <div class="ui dropdown item">
-        Discover Project
+        @lang('navbar.discover-project')
         <div class="menu">
             <div class="header"></div>
             <a class="item" href="{{ route('projects') }}">Discover Project</a>
@@ -17,6 +17,9 @@
             <a class="item" href="{{ route('project.create') }}">Create Project</a>
         </div>
     </div>
+    <a class="active item" href="{{ route('public.profile.index') }}">
+        @lang('navbar.profile')
+    </a>
     @include('layouts.top-bar-right')
 </div>
 

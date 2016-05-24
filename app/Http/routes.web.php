@@ -153,6 +153,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 //    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
     $app->group(['prefix' => 'public', 'as' => 'public.'], function () use ($app) {
         $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            $app->get('index', PublicProfileController::class . '@index')->name('index');
+            $app->get('{profile}/list', PublicProfileController::class . '@usersByProfile')->name('list');
             $app->get('{profile}/{username}', PublicProfileController::class . '@showPublicProfile')->name('show');
             $app->get('iframe/{profile}/{username}', PublicProfileController::class . '@showPublicProfileIframe')->name('show.iframe');
         });

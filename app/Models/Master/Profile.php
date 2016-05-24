@@ -43,7 +43,7 @@ class Profile extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->orderBy('created_at', 'desc')->withPivot('answer_id');
     }
 
     /**
@@ -70,11 +70,14 @@ class Profile extends Model
         return $this->answer->questions();
     }
 
+    /**
+     * @return mixed
+     */
     public function answersOptions()
     {
         return $this->answer->options();
     }
-    
+
     /**
      * @return mixed
      */
@@ -91,6 +94,23 @@ class Profile extends Model
     public function crew()
     {
         return $this->hasMany(Crew::class, 'expenditure_profile_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function usersCount()
+    {
+        return $this->users()->selectRaw('count(profile_user.profile_id) as count')->groupBy('pivot_profile_id');
+    }
+
+    /**
+     * @return int
+     */
+    public function userCount(){
+        if ( ! array_key_exists('usersCount', $this->relations)) $this->load('usersCount');
+        $related = $this->getRelation('usersCount')->first();
+        return ($related) ? $related->count : 0;
     }
 
 }

@@ -7,6 +7,7 @@ use DreamsArk\Http\Requests;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\User\User;
+use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -38,12 +39,14 @@ class ProfileController extends Controller
 
             return redirect()->route('user.account')->withErrors('Profile not exists');
         }
+        $userProfile = $user[0]->profiles->find($profile);
 
-        return view('user.profile.public-view')
+        return view('profile.public-view')
             ->with('user', $user[0])
+            ->with('userProfile', $userProfile)
             ->with('option', $option)
-            ->with('answers', $this->getProfileAnswers($user[0]->profiles->find($profile)))
-            ->with('profile', $profile)
+            ->with('answers', $this->getProfileAnswers($userProfile))
+//            ->with('profile', $profile)
             ->with('sections', $profile->questions->pluck('pivot.section')->unique())
             ->with('isIFrameCall', $this->isIFrameCall);
     }
@@ -73,5 +76,31 @@ class ProfileController extends Controller
         $this->isIFrameCall = true;
 
         return $this->showPublicProfile($request, $profile, $option);
+    }
+
+    /**
+     * @param UserProfileRepositoryInterface $profileRepositoryInterface
+     * @return mixed
+     */
+    public function index(UserProfileRepositoryInterface $profileRepositoryInterface)
+    {
+        $profileList = $profileRepositoryInterface->all(['id', 'name', 'display_name']);
+//        dd($profileList);
+        $profileWithData = $profileRepositoryInterface->all();
+
+        return view('profile.index', compact('profileList', 'profileWithData'));
+    }
+
+    /**
+     * @param Profile $profile
+     * @param UserProfileRepositoryInterface $profileRepositoryInterface
+     * @return mixed
+     */
+    public function usersByProfile(Profile $profile, UserProfileRepositoryInterface $profileRepositoryInterface)
+    {
+        $profileList = $profileRepositoryInterface->all(['id', 'name', 'display_name']);
+        $profileWithData = $profile->users()->paginate(config('defaults.general.pagination.per_page'));
+
+        return view('profile.list', compact('profile', 'profileList', 'profileWithData'));
     }
 }
