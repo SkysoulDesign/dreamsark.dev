@@ -10,12 +10,11 @@
                 <li><a href="{{ route('home') }}">首页</a></li>
 
                 <li id="extra-trigger">
-                    <a href="#">更多</a>
+                    <a href="{{ route('public.profile.index') }}">更多</a>
                 </li>
 
-                <li><a href="#">发现</a></li>
-                {{--<li><a href="{{ route('intro') }}">Intro</a></li>--}}
-                <li><a href="#">启动项目</a></li>
+                <li><a href="{{ route('projects') }}">发现</a></li>
+                <li><a href="{{ route('project.create') }}">启动项目</a></li>
             </ul>
         </section>
 

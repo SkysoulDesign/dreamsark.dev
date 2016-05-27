@@ -1,5 +1,4 @@
 <div class="ui dropdown right item">
-    {{--<img src="{{ asset('dreamsark-assets/avatar.png') }}" alt="Avatar">--}}
     <i class="user icon circular inverted teal" style="font-size: 120%;"></i>
     <div class="menu">
         @if(auth()->check())

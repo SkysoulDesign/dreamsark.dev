@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\User;
 
 use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
@@ -186,5 +187,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Submission::class)->orderBy('updated_at', 'desc');
     }
+
+    /**
+     * @return mixed
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class)->orderBy('updated_at', 'desc');
+    }
+
 
 }

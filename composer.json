@@ -33,7 +33,8 @@
     ],
     "psr-4": {
       "DreamsArk\\": "app/",
-      "SkysoulDesign\\Form\\": "packages/SkysoulDesign/Form/src"
+      "SkysoulDesign\\Form\\": "packages/SkysoulDesign/Form/src",
+      "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src"
     }
   },
   "autoload-dev": {

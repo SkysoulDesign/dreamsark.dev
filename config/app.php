@@ -165,6 +165,7 @@ return [
         DreamsArk\Providers\EventServiceProvider::class,
         DreamsArk\Providers\RouteServiceProvider::class,
         DreamsArk\Providers\RepositoriesServiceProvider::class,
+        SkysoulDesign\Payment\PaymentServiceProvider::class,
 
     ],
 

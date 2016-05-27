@@ -36,5 +36,10 @@ return [
         'image' => 'user-profiles/images/',
         'video' => 'user-profiles/videos/',
         'file' => 'user-profiles/files/',
+    ],
+    'payment_credentials' => [
+        'alipay' => [
+            'partner_id' => '2088221979483694'
+        ]
     ]
 ];

@@ -6,9 +6,9 @@ use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Bag\CoinCreation;
 use DreamsArk\Http\Requests\Bag\CoinWithdrawRequest;
+use DreamsArk\Jobs\Payment\CreateTransactionJob;
+use DreamsArk\Jobs\Payment\GeneratePaymentFormJob;
 use DreamsArk\Jobs\User\Bag\DeductCoinJob;
-use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
-use Illuminate\Http\Request;
 
 /**
  * Class CoinController
@@ -31,15 +31,21 @@ class CoinController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CoinCreation|Request $request
+     * @param CoinCreation $request
      * @return \Illuminate\Http\Response
      */
     public function store(CoinCreation $request)
     {
-        $command = new PurchaseCoinJob($request->user(), $request->get('amount'));
-        dispatch($command);
+        $transactionData = dispatch(new CreateTransactionJob($request));
+        $getForm = dispatch(new GeneratePaymentFormJob($transactionData));
+        return response($getForm);
+        //die($getForm);
 
+        /* handled in PaymentController
+         * $command = new PurchaseCoinJob($request->user(), $request->get('amount'));
+        dispatch($command);
         return redirect()->back();
+        */
     }
 
     /**

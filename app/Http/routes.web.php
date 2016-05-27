@@ -24,6 +24,7 @@ use DreamsArk\Http\Controllers\Committee\Project\ExpenseController;
 use DreamsArk\Http\Controllers\Committee\Project\StaffController;
 use DreamsArk\Http\Controllers\Dashboard\DashboardController;
 use DreamsArk\Http\Controllers\Home\HomeController;
+use DreamsArk\Http\Controllers\Payment\PaymentController;
 use DreamsArk\Http\Controllers\Project\EnrollController;
 use DreamsArk\Http\Controllers\Project\FundController;
 use DreamsArk\Http\Controllers\Project\Idea\SubmissionController as SubmissionIdeaController;
@@ -145,6 +146,18 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
 
     });
+
+    /**
+     * Payment Related Routes
+     */
+    $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
+        $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
+        $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
+            $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
+            $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+        });
+    });
+
 
     /**
      * Profile Controller

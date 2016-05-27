@@ -11,9 +11,10 @@
         'collection' => [
             'alipay' => [trans('payment.alipay'), 'stripe icon'],
             'wechat' => [trans('payment.wechat'), 'wechat icon'],
-            'qq' => [trans('payment.qq'), 'qq icon']
+            'union' => [trans('payment.union-pay'), 'payment icon'],
         ]
     ])
+    {{--'qq' => [trans('payment.qq'), 'qq icon']--}}
 
     <button class="ui olive button" type="submit">@lang('forms.process')</button>
 
