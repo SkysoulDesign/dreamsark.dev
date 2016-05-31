@@ -24,25 +24,39 @@ class GeneratePaymentFormJob extends Job
 
     /**
      * Execute the job.
-
      */
     public function handle()
     {
         $outTradeNo = $this->paymentData['unique_no'];
 
+        $payment = '';
+        $getForm = '';
         /**
          * @TODO: need to use $this->paymentData['pay_method'] and get the object on relevant Payment Service
          * every payment service should have doPaymentForm() to receive transaction details
          */
-        $payment = PaymentGateway::alipayDirect();
+        switch ($this->paymentData['pay_method']) {
+            case 'alipay':
+                $this->paymentData['amount'] = $this->paymentData['amount'] / 20;
+                $payment = PaymentGateway::alipayDirect();
+                break;
+            case 'wechat':
+                break;
+            case 'unionpay':
+                $payment = PaymentGateway::unionPayInstant();
+                break;
+            default:
+                break;
+        }
 
-        $getForm = $payment->doPaymentForm([
-            "out_trade_no" => $outTradeNo,
-            "subject"      => trans('payment.subject'),
-            "total_fee"    => $this->paymentData['amount']/20,
-            "body"         => trans('payment.description'),
-            'transaction_id' => $this->paymentData['transaction_id']
-        ]);
+        if (is_object($payment))
+            $getForm = $payment->doPaymentForm([
+                "out_trade_no"   => $outTradeNo,
+                "subject"        => trans('payment.subject'),
+                "total_fee"      => $this->paymentData['amount'],
+                "body"           => trans('payment.description'),
+                'transaction_id' => $this->paymentData['transaction_id']
+            ]);
 
         return $getForm;
     }

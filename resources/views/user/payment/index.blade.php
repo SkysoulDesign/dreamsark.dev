@@ -6,11 +6,15 @@
         <h2>@lang('user.purchase-history')</h2>
         <div class="ui small menu">
             <div class="right menu">
-                <a class="item" href="{{ route('user.purchase.coin.create') }}">
+                {{--<a class="item" href="{{ route('user.purchase.coin.create') }}">
+                    <i class="add icon"></i>
+                    @lang('profile.add-coin')
+                </a>--}}
+                <a id="purchase-coin" class="item view-modal" href="javascript:;">
                     <i class="add icon"></i>
                     @lang('profile.add-coin')
                 </a>
-                <a id="withdraw-coin" class="item" href="javascript:;">
+                <a id="withdraw-coin" class="item view-modal" href="javascript:;">
                     <i class="external share icon"></i>
                     <i class="money icon"></i>
                     @lang('profile.withdraw-money')
@@ -33,12 +37,13 @@
         </table>
     </div>
     @include('modals.withdraw-coin')
+    @include('modals.add-coin')
 @endsection
 
 @section('pos-scripts')
     <script>
         $(document).ready(function () {
-            if ($('#withdraw-coin-modal').length > 0)
+            /*if ($('#withdraw-coin-modal').length > 0)
                 $('#withdraw-coin-modal')
                         .modal({
                             blurring:  true,
@@ -47,7 +52,20 @@
                                 $('#withdraw-coin-form').submit();
                             }
                         })
-                        .modal('attach events', '#withdraw-coin', 'show');
+                        .modal('attach events', '#withdraw-coin', 'show');*/
+            $('.item.view-modal').each(function () {
+                var id = $(this).attr('id');
+                $('#' + id+'-modal')
+                        .modal({
+                            blurring: true,
+                            closable:  false,
+                            onApprove: function () {
+                                $('#' + id+'-form').submit();
+                            }
+                        })
+                        .modal('attach events', '#' + id, 'show')
+                ;
+            });
         });
     </script>
 @endsection

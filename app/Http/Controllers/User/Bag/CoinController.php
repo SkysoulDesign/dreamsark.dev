@@ -38,6 +38,9 @@ class CoinController extends Controller
     {
         $transactionData = dispatch(new CreateTransactionJob($request));
         $getForm = dispatch(new GeneratePaymentFormJob($transactionData));
+        if (is_null($getForm))
+            return redirect()->back()->withErrors(trans('payment.invalid-method-selected'));
+
         return response($getForm);
         //die($getForm);
 

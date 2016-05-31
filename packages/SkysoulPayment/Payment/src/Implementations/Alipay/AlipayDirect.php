@@ -2,15 +2,12 @@
 
 namespace SkysoulDesign\Payment\Implementations\Alipay;
 
-
-use SkysoulDesign\Payment\PaymentBuilder;
-
 /**
  * Class AlipayDirect
  *
  * @package SkysoulDesign\Payment\Implementations
  */
-class AlipayDirect extends PaymentBuilder
+class AlipayDirect extends APHelper
 {
 
     /**
@@ -70,8 +67,8 @@ class AlipayDirect extends PaymentBuilder
     protected function buildRequestMysign($para_sort)
     {
         $mySign = "";
-        $preStr = $this->createLinkstring($para_sort);
-//        $preStr = $this->createLinkstringUrlencode($para_sort);
+        $preStr = $this->createLinkString($para_sort);
+//        $preStr = $this->createLinkStringUrlEncode($para_sort);
 
         switch (strtoupper(trim($this->config['sign_type']))) {
             case "RSA" :
@@ -110,9 +107,9 @@ class AlipayDirect extends PaymentBuilder
     {
         $para = $this->buildRequestPara($para_temp);
         if ($urlEncode)
-            $request_data = $this->createLinkstringUrlencode($para);
+            $request_data = $this->createLinkStringUrlEncode($para);
         else
-            $request_data = $this->createLinkstring($para);
+            $request_data = $this->createLinkString($para);
 
         return $request_data;
     }

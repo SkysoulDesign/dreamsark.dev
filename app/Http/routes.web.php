@@ -138,7 +138,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
              * Coin Controller
              */
             $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
-                $app->get('add', CoinController::class . '@create')->name('create');
+//                $app->get('add', CoinController::class . '@create')->name('create');
                 $app->post('store', CoinController::class . '@store')->name('store');
                 $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
             });
@@ -156,6 +156,11 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
+        $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
+            $app->post('status', PaymentController::class . '@uPStatus')->name('status');
+            $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
+        });
+
     });
 
 

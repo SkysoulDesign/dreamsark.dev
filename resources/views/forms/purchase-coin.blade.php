@@ -2,7 +2,7 @@
 
     {!! csrf_field() !!}
 
-    @include('partials.field', ['name' => 'amount', 'label'=> trans('payment.coins')])
+    @include('partials.field', ['name' => 'amount', 'label'=> trans('payment.coins'), 'type' => 'number'])
 
     @include('partials.select-with-icon',
     [
@@ -11,7 +11,7 @@
         'collection' => [
             'alipay' => [trans('payment.alipay'), 'stripe icon'],
             'wechat' => [trans('payment.wechat'), 'wechat icon'],
-            'union' => [trans('payment.union-pay'), 'payment icon'],
+            'unionpay' => [trans('payment.union-pay'), 'payment icon'],
         ]
     ])
     {{--'qq' => [trans('payment.qq'), 'qq icon']--}}

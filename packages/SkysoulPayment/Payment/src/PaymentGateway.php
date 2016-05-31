@@ -4,6 +4,8 @@ namespace SkysoulDesign\Payment;
 
 use SkysoulDesign\Payment\Implementations\Alipay\AlipayDirect;
 use SkysoulDesign\Payment\Implementations\Alipay\AlipayNotify;
+use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
+use SkysoulDesign\Payment\Implementations\Unionpay\UPNotify;
 use SkysoulDesign\Payment\Implementations\Wechat\WechatDirect;
 
 /**
@@ -43,6 +45,16 @@ class PaymentGateway
     public static function wechatDirect()
     {
         return new static(new WechatDirect);
+    }
+
+    public static function unionPayInstant()
+    {
+        return new static(new GatewayPay);
+    }
+
+    public static function unionPayNotify()
+    {
+        return new static(new UPNotify);
     }
 
     public function __call($name, $arguments)

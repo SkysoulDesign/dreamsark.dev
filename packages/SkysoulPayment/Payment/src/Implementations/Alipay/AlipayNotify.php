@@ -1,14 +1,12 @@
 <?php
 namespace SkysoulDesign\Payment\Implementations\Alipay;
 
-use SkysoulDesign\Payment\PaymentBuilder;
-
 /**
  * Class AlipayNotify
  *
  * @package SkysoulDesign\Payment\Implementations
  */
-class AlipayNotify extends PaymentBuilder
+class AlipayNotify extends APHelper
 {
     /**
      * HTTPS message authentication address
@@ -106,7 +104,7 @@ class AlipayNotify extends PaymentBuilder
     {
         $para_filter = $this->paraFilter($para_temp);
         $para_sort = $this->argSort($para_filter);
-        $prestr = $this->createLinkstring($para_sort);
+        $prestr = $this->createLinkString($para_sort);
 
         $isSign = false;
         switch (strtoupper(trim($this->config['sign_type']))) {

@@ -40,6 +40,11 @@ return [
     'payment_credentials' => [
         'alipay' => [
             'partner_id' => '2088221979483694'
-        ]
+        ],
+        'unionpay' => [
+//            'partner_id' => '777290058131411'
+            'partner_id' => '700000000000001'
+        ],
+
     ]
 ];
