@@ -8,13 +8,13 @@ return [
     'settings' => [
         'language' => 'cn',
     ],
-    'general' => [
+    'general'  => [
         'pagination' => [
             'per_page' => 10
         ],
     ],
 
-    'project'  => [
+    'project' => [
 
         'voting_span_time' => 1, /* Defined in Minutes */
 
@@ -35,16 +35,18 @@ return [
     'profile' => [
         'image' => 'user-profiles/images/',
         'video' => 'user-profiles/videos/',
-        'file' => 'user-profiles/files/',
+        'file'  => 'user-profiles/files/',
     ],
-    'payment_credentials' => [
-        'alipay' => [
-            'partner_id' => '2088221979483694'
-        ],
-        'unionpay' => [
+    'payment' => [
+        'prefix'      => ['pay' => 'DAPG', 'withdraw' => 'DAWG'],
+        'credentials' => [
+            'alipay'   => [
+                'partner_id' => '2088221979483694'
+            ],
+            'unionpay' => [
 //            'partner_id' => '777290058131411'
-            'partner_id' => '700000000000001'
-        ],
-
+                'partner_id' => '700000000000001'
+            ],
+        ]
     ]
 ];

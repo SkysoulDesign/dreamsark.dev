@@ -21,8 +21,8 @@ abstract class PaymentBuilder
 
         return [
             'gatewayUrl'          => "https://mapi.alipay.com/gateway.do?",
-            'partner'             => config('defaults.payment_credentials.alipay.partner_id'),
-            'seller_id'           => config('defaults.payment_credentials.alipay.partner_id'),
+            'partner'             => config('defaults.payment.credentials.alipay.partner_id'),
+            'seller_id'           => config('defaults.payment.credentials.alipay.partner_id'),
             'private_key_path'    => $keyPath . 'rsa_private_key.pem',
             'ali_public_key_path' => $keyPath . 'alipay_public_key.pem',
             'notify_url'          => route('payment.alipay.notify'),
@@ -72,6 +72,7 @@ abstract class PaymentBuilder
         define('JF_SDK_APP_TRANS_URL', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/jiaofei/api/appTransReq.do');
         define('SDK_FRONT_NOTIFY_URL', route('payment.unionpay.status'));
         define('SDK_BACK_NOTIFY_URL', route('payment.unionpay.notify'));
+        define('UP_CENT_CONVERT_RATE', 100);
 
         return [
             'version'      => '5.0.0',
@@ -82,10 +83,11 @@ abstract class PaymentBuilder
             'frontUrl'     => SDK_FRONT_NOTIFY_URL,
             'backUrl'      => SDK_BACK_NOTIFY_URL,
             'signMethod'   => '01',
-            'channelType'  => '08',
+//            'channelType'  => '08', // mobile
+            'channelType'  => '07', // internet
             'accessType'   => '0',
             'currencyCode' => '156',
-            'merId'        => config('defaults.payment_credentials.unionpay.partner_id'),
+            'merId'        => config('defaults.payment.credentials.unionpay.partner_id'),
         ];
     }
 

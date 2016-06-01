@@ -27,15 +27,9 @@ class AlipayDirect extends APHelper
         $this->config = $this->getAlipayConfig();
     }
 
-    /**
-     * @param $params
-     * @return string
-     */
-    public function doPaymentForm($params)
+    protected function appendConfigToParams($params)
     {
-        $transaction_id = $params['transaction_id'];
-        unset($params['transaction_id']);
-
+        $params['anti_phishing_key'] = ''; //$this->query_timestamp();
         if (isset($params['return_url']))
             $this->config['return_url'] = $params['return_url'];
         else
@@ -46,18 +40,37 @@ class AlipayDirect extends APHelper
         else
             $params['notify_url'] = $this->config['notify_url'];
 
-        $params['anti_phishing_key'] = ''; //$this->query_timestamp();
-
         $params['_input_charset'] = trim(strtolower($this->config['input_charset']));
         $params['partner'] = $this->config['partner'];
         $params['seller_id'] = $this->config['seller_id'];
         $params['payment_type'] = $this->config['payment_type'];
         $params['service'] = $this->config['service'];
 
+        return $params;
+    }
+
+    /**
+     * @param $params
+     * @return string
+     */
+    public function doPaymentForm($params)
+    {
+        $transaction_id = $params['transaction_id'];
+        unset($params['transaction_id']);
+
+        $params = $this->appendConfigToParams($params);
 
         $this->updateTransactionMessage($transaction_id, ['request' => $this->buildRequestParaToString($params, false)]);
 
         return $this->buildRequestForm($params, "post", "DreamsArk Alipay Direct Pay - Test ENV");
+    }
+
+    public function doWithdrawalForm($params)
+    {
+        $params = $this->appendConfigToParams($params);
+        $params["service"] = "batch_trans_notify";
+
+        return $this->buildRequestForm($params, "post", "DreamsArk Alipay Withdraw Money - Test ENV", false);
     }
 
     /**
@@ -119,9 +132,10 @@ class AlipayDirect extends APHelper
      * @param $para_temp
      * @param $method
      * @param $button_name
+     * @param bool $submitForm
      * @return string
      */
-    public function buildRequestForm($para_temp, $method, $button_name)
+    public function buildRequestForm($para_temp, $method, $button_name, $submitForm = true)
     {
         $para = $this->buildRequestPara($para_temp);
         $sHtml = "<form id='alipaysubmit' name='alipaysubmit' action='" . $this->config['gatewayUrl'] . "_input_charset=" . trim(strtolower($this->config['input_charset'])) . "' method='" . $method . "'>";
@@ -130,7 +144,8 @@ class AlipayDirect extends APHelper
         }
 
         $sHtml = $sHtml . "<input type='submit' style='display:none;'  value='" . $button_name . "'></form>";
-        $sHtml = $sHtml . "<script>document.forms['alipaysubmit'].submit();</script>";
+        if ($submitForm)
+            $sHtml = $sHtml . "<script>document.forms['alipaysubmit'].submit();</script>";
 
         return $sHtml;
     }

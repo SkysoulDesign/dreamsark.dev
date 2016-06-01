@@ -92,6 +92,20 @@ class PaymentController extends Controller
         $this->responseData->merge(compact('out_trade_no', 'trade_no'));
     }
 
+    protected function validateUPResponse()
+    {
+        $status = 'fail';
+        if ($this->responseData->get('respMsg', '') == 'success') {
+            $respCode = $this->responseData->get("respCode");
+            if ($respCode == "00")
+                $status = 'success';
+            else if ($respCode == "03" || $respCode == "04" || $respCode == "05")
+                $status = 'process';
+        }
+
+        return $status;
+    }
+
     public function uPStatus(Request $request)
     {
         if ($request->has('signature')) {
@@ -100,8 +114,11 @@ class PaymentController extends Controller
                 return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
 
             $this->prepareUPResponseData($request);
-            if ($request->get('respMsg', '') == 'success')
+            $upStatus = $this->validateUPResponse();
+            if ($upStatus == 'success')
                 return $this->triggerAddCoinJob($this->responseData);
+            else if ($upStatus == 'process')
+                return redirect()->route($this->defaultRoute, 'processing')->withSuccess(trans('payment.in-process'));
             else {
                 /**
                  * @TODO: can update failure event of Transaction
@@ -120,8 +137,11 @@ class PaymentController extends Controller
             $paymentResult = PaymentGateway::unionPayNotify()->validate($request->all());
             if ($paymentResult) {
                 $this->prepareUPResponseData($request);
-                if ($request->get('respMsg', '') == 'success')
+                $upStatus = $this->validateUPResponse();
+                if ($upStatus == 'success')
                     $responseText = $this->triggerAddCoinJob($this->responseData, 'notify');
+                else if ($upStatus == 'process')
+                    $responseText = $upStatus;
                 else {
                     /**
                      * @TODO: can update failure event of Transaction
@@ -179,7 +199,7 @@ class PaymentController extends Controller
     protected function triggerAddCoinJob($request, $event = '')
     {
         $out_trade_no = $request->out_trade_no;
-        $trade_no = $request->trade_no?:'';
+        $trade_no = $request->trade_no ?: '';
         /**
          * TODO: need to get data from DB through out_trade_no and process addCoinJob using params stored in new Target table for Transactions
          * get user_id & amount w.r.t to out_trade_no and process AddCoin event
@@ -194,7 +214,7 @@ class PaymentController extends Controller
 
         if (!$transaction[0]->is_payment_done) {
 //            dd($transaction[0]->user);
-            $transactResponse = $request->getMethod()=='POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
+            $transactResponse = $request->getMethod() == 'POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
             dispatch(new UpdateTransactionJob(
                 $transaction[0],
                 array_merge($request->all(), ['invoice_no' => $trade_no, 'response' => $transactResponse]

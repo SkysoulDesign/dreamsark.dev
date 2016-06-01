@@ -33,7 +33,7 @@ class GatewayPay extends UPHelper
         $requestParams = $this->config;
         $requestParams['orderId'] = $params["out_trade_no"];
         $requestParams['txnTime'] = date('YmdHis');
-        $requestParams['txnAmt'] = $params["total_fee"] * 100;
+        $requestParams['txnAmt'] = $params["total_fee"] * UP_CENT_CONVERT_RATE;
         $this->buildSign($requestParams);
 
         $this->updateTransactionMessage($transaction_id, ['request' => $this->createLinkString($params)]);
@@ -46,7 +46,7 @@ class GatewayPay extends UPHelper
         $requestParams = $this->config;
         $requestParams['txnType'] = '00';
         $requestParams['txnSubType'] = '00';
-        $requestParams['channelType'] = '07';
+//        $requestParams['channelType'] = '07';
 
         $requestParams['orderId'] = $params["out_trade_no"];
         $requestParams['txnTime'] = $params["order_date"];
@@ -54,6 +54,21 @@ class GatewayPay extends UPHelper
 
         return $this->postQuery($requestParams, SDK_SINGLE_QUERY_URL);
 
+    }
+
+    public function doWithdrawalForm($params){
+        /** Withdrawal Event; Refer 6.3.3	请求报文 in technical specification DOC
+         * not tested
+         */
+        $requestParams = $this->config;
+        $requestParams['txnType'] = '31';
+        $requestParams['txnSubType'] = '00';
+        $requestParams['orderId'] = $params["out_trade_no"];
+        $requestParams['origQryId'] = '201605311633003379058';
+        $requestParams['txnTime'] = date('YmdHis');
+        $requestParams['txnAmt'] = $params["total_fee"] * UP_CENT_CONVERT_RATE;
+        $this->buildSign($requestParams);
+        return $this->createAutoFormHtml($requestParams, SDK_FRONT_TRANS_URL);
     }
 
     protected function buildSign(&$params, $cert_path = SDK_SIGN_CERT_PATH, $cert_pwd = SDK_SIGN_CERT_PWD)
@@ -130,14 +145,14 @@ class GatewayPay extends UPHelper
     }
 
     protected function createAutoFormHtml($params, $reqUrl)
-    {
+    {// onload="javascript:document.pay_form.submit();"
         $encodeType = isset ($params ['encoding']) ? $params ['encoding'] : 'UTF-8';
         $html = <<<eot
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={$encodeType}" />
 </head>
-<body onload="javascript:document.pay_form.submit();">
+<body>
     <form id="pay_form" name="pay_form" action="{$reqUrl}" method="post">
 	
 eot;

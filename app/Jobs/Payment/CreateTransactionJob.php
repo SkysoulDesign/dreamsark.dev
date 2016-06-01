@@ -42,7 +42,7 @@ class CreateTransactionJob extends Job
          * table should have user_id, amount fields
          */
         $userId = $this->request->user()->id;
-        $out_trade_no = 'DAPG'.md5(uniqid($userId, true));
+        $out_trade_no = config('defaults.payment.prefix.'.$this->transactionType).md5(uniqid($userId, true));
         $fields = [
             'unique_no' => $out_trade_no, 'pay_method' => $this->request->get('payment_method'),
             'type' => $this->transactionType, 'user_id' => $userId, 'amount' => $this->request->get('amount')
