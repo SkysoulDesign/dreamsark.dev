@@ -27,6 +27,11 @@ $(document).ready(function () {
             return false;
     });
 
+    $('form').on('submit', function () {
+        $('.ui.dimmer').addClass('active');
+        $('.pageLoader').show();
+    });
+
     if ($('.ui.progress').length > 0)
         $('.ui.progress').progress();
 

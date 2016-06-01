@@ -19,7 +19,6 @@
                     'unionpay' => [trans('payment.union-pay'), 'payment icon'],
                 ]
             ])
-            {{--<button class="ui olive button" type="submit">@lang('forms.process')</button>--}}
 
         </form>
     </div>

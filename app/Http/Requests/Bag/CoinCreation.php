@@ -24,7 +24,8 @@ class CoinCreation extends Request
     public function rules()
     {
         return [
-            //
+            'payment_method' => 'required',
+            'amount' => 'required'
         ];
     }
 }

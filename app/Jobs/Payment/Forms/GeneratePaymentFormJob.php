@@ -1,6 +1,6 @@
 <?php
 
-namespace DreamsArk\Jobs\Payment;
+namespace DreamsArk\Jobs\Payment\Forms;
 
 use DreamsArk\Jobs\Job;
 use SkysoulDesign\Payment\PaymentGateway;
@@ -37,7 +37,7 @@ class GeneratePaymentFormJob extends Job
          */
         switch ($this->paymentData['pay_method']) {
             case 'alipay':
-                $this->paymentData['amount'] = $this->paymentData['amount'] / 20;
+//                $this->paymentData['amount'] = $this->paymentData['amount'] / 20;
                 $payment = PaymentGateway::alipayDirect();
                 break;
             case 'wechat':

@@ -7,8 +7,8 @@ use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Bag\CoinCreation;
 use DreamsArk\Http\Requests\Bag\CoinWithdrawRequest;
 use DreamsArk\Jobs\Payment\CreateTransactionJob;
-use DreamsArk\Jobs\Payment\GeneratePaymentFormJob;
-use DreamsArk\Jobs\User\Bag\DeductCoinJob;
+use DreamsArk\Jobs\Payment\Forms\GeneratePaymentFormJob;
+use DreamsArk\Jobs\Payment\Forms\GenerateWithdrawFormJob;
 
 /**
  * Class CoinController
@@ -59,10 +59,21 @@ class CoinController extends Controller
     {
         /**
          * @todo: need to create event for refund coin to User as money
+         * @todo process initiated; need to complete and do DeductCoinJob in PaymentController's status/notify actions
          */
-        dispatch(new DeductCoinJob($request->user()->id, $request->get('withdraw_amount')));
+        $transactionData = dispatch(new CreateTransactionJob($request, 'withdraw'));
+        $getForm = dispatch(new GenerateWithdrawFormJob($transactionData));
+        if (is_null($getForm))
+            return redirect()->back()->withErrors(trans('payment.invalid-method-selected'));
+
+        return redirect()->back()->withErrors(trans('payment.withdraw-event-not-available'));
+//        return response($getForm);
+
+        /*
+         * dispatch(new DeductCoinJob($request->user()->id, $request->get('amount')));
 
         return redirect()->back()->withSuccess('Coins withdrawn to your account successfully');
+        */
     }
 
 }

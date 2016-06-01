@@ -70,7 +70,7 @@ class AlipayDirect extends APHelper
         $params = $this->appendConfigToParams($params);
         $params["service"] = "batch_trans_notify";
 
-        return $this->buildRequestForm($params, "post", "DreamsArk Alipay Withdraw Money - Test ENV", false);
+        return $this->buildRequestForm($params, "post", "DreamsArk Alipay Withdraw Money - Test ENV");
     }
 
     /**

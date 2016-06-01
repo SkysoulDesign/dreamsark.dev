@@ -33,6 +33,13 @@
 </div>
 @yield('footer')
 
+<div class="ui container pageLoader" style="display: none;">
+    <div class="ui inverted dimmer">
+        <div class="ui indeterminate text loader">@lang('navbar.processing')</div>
+    </div>
+    <p></p>
+</div>
+
 @yield('scripts')
 
 

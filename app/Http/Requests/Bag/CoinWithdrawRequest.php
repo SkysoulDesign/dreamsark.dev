@@ -24,7 +24,8 @@ class CoinWithdrawRequest extends Request
     public function rules()
     {
         return [
-            'withdraw_amount' => 'required|numeric|max:'.$this->user()->bag->coins.'|min:1',
+            'amount' => 'required|numeric|max:'.$this->user()->bag->coins.'|min:1',
+            'payment_method' => 'required',
         ];
     }
 }
