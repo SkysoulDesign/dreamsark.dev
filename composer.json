@@ -29,7 +29,8 @@
   },
   "autoload": {
     "classmap": [
-      "database"
+      "database",
+      "packages/alipay-sdk-PHP-20160524120057"
     ],
     "psr-4": {
       "DreamsArk\\": "app/",
