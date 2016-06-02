@@ -8,10 +8,9 @@ mysql:
     MYSQL_ROOT_PASSWORD: 123456
 
 php:
-  image: skysoul/php
-  #build: .
-  #dockerfile: ./build/docker/php/Dockerfile
-  #image: php:fpm-alpine
+#  image: skysoul/php
+  build: .
+  dockerfile: ./build/docker/php/Dockerfile
   container_name: php
   volumes:
     - .:/var/www/dreamsark
@@ -19,11 +18,12 @@ php:
       - php-fpm
 
 gulp:
+#  image: skysoul/gulp
   build: .
   dockerfile: ./build/docker/gulp/Dockerfile
   container_name: gulp
-  volumes_from:
-      - php
+  volumes:
+      - .:/home/data
   entrypoint: top -b
 
 nginx:
