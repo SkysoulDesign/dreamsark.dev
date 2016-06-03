@@ -1,8 +1,42 @@
-@extends('layouts.master', ['topBar' => false])
+@extends('layouts.master')
 
-@section('header')
+@section('content')
 
-    <div class="container-fluid small-header"></div>
+    <div class="large-8 column red">
+        Some Content here
+    </div>
+
+    <section class="segment medium-4 column">
+
+
+        <form action="{{ route('login.store') }}" method="POST">
+
+            {{ csrf_field() }}
+
+            <div class="field">
+                <input name="login" type="text" placeholder="username or email">
+            </div>
+
+            <div class="field">
+                <input name="password" type="password" placeholder="password">
+            </div>
+
+            {{--@include('partials.form-errors')--}}
+
+            <div class="field">
+                @include('components.button-ripple', ['text' => 'Login', 'attributes' => ['type' => 'submit']])
+            </div>
+
+        </form>
+
+    </section>
+@endsection
+
+@section('scripts')
+    var hello = "hello"
+@endsection
+
+@section('contents')
 
     <div class="row">
 
@@ -16,36 +50,6 @@
 
                 <div class="title modern center">Member Login</div>
 
-                <form action="{{ route('login.store') }}" method="post">
-
-                    {{ csrf_field() }}
-
-                    <div class="form-item">
-                        <input name="login" type="text" placeholder="username or email">
-                    </div>
-
-                    <div class="form-item">
-                        <input name="password" type="password" placeholder="password">
-                    </div>
-
-                    @include('partials.form-errors')
-
-                    <div class="form-item">
-
-                        <button type="submit" class="primary rippable">
-                            Login
-
-                            <svg>
-                                <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
-                            </svg>
-
-                            @include('partials.button-ripple')
-
-                        </button>
-
-                    </div>
-
-                </form>
 
                 <div class="title simple center">or login with</div>
 

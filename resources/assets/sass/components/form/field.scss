@@ -1,0 +1,16 @@
+@mixin dreamsark-form-field() {
+
+  @include component(field) {
+
+    @include all-but(2) {
+      margin: 10px 0;
+    }
+
+    @include last(1) {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+  }
+
+}

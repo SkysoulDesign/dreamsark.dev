@@ -5,7 +5,18 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "elixir-typescript": "^2.0.0",
     "gulp": "^3.9.1",
-    "laravel-elixir": "^5.0.0"
+    "laravel-elixir": "^5.0.0",
+    "tsify": "^0.16.0",
+    "tsproject": "^1.2.1",
+    "typescript": "^1.8.10"
+  },
+  "dependencies": {
+    "csstyle": "^1.5.0",
+    "family.scss": "^1.0.4",
+    "foundation-sites": "^6.2.3",
+    "gsap": "^1.18.5",
+    "watchify": "^3.7.0"
   }
 }

@@ -1,3 +1,0 @@
-interface Configurable {
-    configure():void;
-}

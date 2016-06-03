@@ -1,0 +1,87 @@
+@mixin dreamsark-button-base() {
+
+  border: none;
+  border-radius: $border-radius;
+  width: 100%;
+  color: color(white);
+
+  line-height: normal;
+
+  appearance: none;
+  box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
+  text-shadow: 0 -0.5px 1px color(black, base, 15);
+
+  padding: rem-calc(20);
+  position: relative;
+
+  text-transform: uppercase;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+}
+
+@mixin dreamsark-button-colors() {
+
+  $colors: primary secondary;
+
+  @each $color in $colors {
+
+    &.#{$color} {
+
+      background: color($color);
+
+      &:hover {
+        background: color($color, mid-light);
+      }
+
+    }
+
+  }
+
+}
+
+@mixin dreamsark-button-ripple() {
+
+  @include component(ripple) {
+    height: 0;
+    width: 0;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  svg {
+
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    fill: color(primary, light);
+
+    use {
+      opacity: 0;
+    }
+
+  }
+
+}
+
+@mixin dreamsark-form-button() {
+
+  button, .button {
+
+    @include dreamsark-button-base;
+    @include dreamsark-button-colors;
+    @include dreamsark-button-ripple;
+
+  }
+
+}

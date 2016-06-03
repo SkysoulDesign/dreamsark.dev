@@ -2,11 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": false,
-    "out": "../../../public/js/tsc.js"
+//    "outFile": "../../../public/js/app.js",
+    "sourceMap": true
+//    "rootDir": "../../../"
   },
+  "compileOnSave": true,
   "exclude": [
-    "node_modules",
-    "vendor"
   ]
 }

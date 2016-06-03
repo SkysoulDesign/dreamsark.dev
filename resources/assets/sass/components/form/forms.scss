@@ -1,0 +1,16 @@
+@import "form";
+@import "field";
+@import "input";
+@import "button";
+
+@mixin dreamsark-forms() {
+
+  @include dreamsark-form;
+
+  form {
+    @include dreamsark-form-field;
+    @include dreamsark-form-input;
+    @include dreamsark-form-button;
+  }
+
+}

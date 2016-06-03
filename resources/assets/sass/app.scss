@@ -1,44 +1,70 @@
 @charset "UTF-8";
 
-//@import "node_modules/bootstrap-4.0.0-alpha/scss/bootstrap";
-
 /**
-* App
+* Import Third Party Frameworks
 */
-@import "../../../bower_components/foundation/scss/foundation/components/grid";
-@import "../../../bower_components/foundation/scss/foundation/components/switches";
-@import "../../../bower_components/foundation/scss/normalize";
+@import '../../../node_modules/foundation-sites/scss/foundation';
 @import '../../../node_modules/csstyle/csstyle';
-
+@import '../../../node_modules/family.scss/family';
 @import 'app/functions';
 @import 'app/colors';
 @import 'app/variables';
 @import 'app/fonts';
-
-/**
-* Components
-*/
-@import 'components/colors';
-@import 'components/form';
-@import 'components/input';
-@import 'components/button';
-@import 'components/card';
+@import 'components/form/forms';
 @import 'components/segment';
-@import 'components/slider';
-@import 'components/banner';
-@import 'components/thumbnail';
-@import 'components/advertising';
 
 /**
-* Layout
+* Initiate things up
 */
-@import 'layout/global';
-@import 'layout/top-bar';
-@import 'layout/header/header';
-@import 'layout/header/mini-header';
-@import 'layout/header/small-header';
-@import 'layout/header/huge-header';
-@import 'layout/content';
-@import 'layout/footer';
-@import 'layout/start';
-@import 'layout/enter-page';
+@include foundation-global-styles;
+@include foundation-grid;
+@include dreamsark-segment;
+@include dreamsark-forms;
+
+/**
+* test
+*/
+.blue {
+  background-color: blue;
+}
+.yellow {
+  background-color: yellow;
+}
+.green {
+  background-color: green;
+}
+.orange {
+  background-color: orange;
+}
+.red {
+  background-color: red;
+}
+
+//
+///**
+//* Components
+//*/
+//@import 'components/colors';
+//@import 'components/form';
+//@import 'components/input';
+//@import 'components/button';
+//@import 'components/card';
+//@import 'components/segment';
+//@import 'components/slider';
+//@import 'components/banner';
+//@import 'components/thumbnail';
+//@import 'components/advertising';
+//
+///**
+//* Layout
+//*/
+//@import 'layout/global';
+//@import 'layout/top-bar';
+//@import 'layout/header/header';
+//@import 'layout/header/mini-header';
+//@import 'layout/header/small-header';
+//@import 'layout/header/huge-header';
+//@import 'layout/content';
+//@import 'layout/footer';
+//@import 'layout/start';
+//@import 'layout/enter-page';

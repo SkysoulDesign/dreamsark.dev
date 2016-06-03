@@ -9,17 +9,11 @@
     <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
 
 </head>
+
 <body class="main">
 
-@if(isset($topBar) ? $topBar : true)
-    @include('layouts.top-bar')
-@endif
-
-@yield('header')
-
-<div class="container-fluid">
+<div class="expanded row" style="margin-top: 200px">
     @yield('content')
-    @yield('footer')
 </div>
 
 @yield('scripts')
