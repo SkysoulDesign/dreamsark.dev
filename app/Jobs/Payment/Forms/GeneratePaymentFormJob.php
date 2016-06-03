@@ -41,6 +41,7 @@ class GeneratePaymentFormJob extends Job
                 $payment = PaymentGateway::alipayDirect();
                 break;
             case 'wechat':
+                $payment = PaymentGateway::wechatQrPay();
                 break;
             case 'unionpay':
                 $payment = PaymentGateway::unionPayInstant();

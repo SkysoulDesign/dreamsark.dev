@@ -6,7 +6,7 @@ use SkysoulDesign\Payment\Implementations\Alipay\AlipayDirect;
 use SkysoulDesign\Payment\Implementations\Alipay\AlipayNotify;
 use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
 use SkysoulDesign\Payment\Implementations\Unionpay\UPNotify;
-use SkysoulDesign\Payment\Implementations\Wechat\WechatDirect;
+use SkysoulDesign\Payment\Implementations\Wechat\WpQRPay;
 
 /**
  * Class PaymentGateway
@@ -42,9 +42,9 @@ class PaymentGateway
         return new static(new AlipayNotify);
     }
 
-    public static function wechatDirect()
+    public static function wechatQrPay()
     {
-        return new static(new WechatDirect);
+        return new static(new WpQRPay);
     }
 
     public static function unionPayInstant()

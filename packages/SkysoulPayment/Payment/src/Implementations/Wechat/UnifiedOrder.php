@@ -2,15 +2,12 @@
 
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
-
-use SkysoulDesign\Payment\PaymentBuilder;
-
 /**
- * Class WechatDirect
+ * Class UnifiedOrder
  *
  * @package SkysoulDesign\Payment\Implementations\Wechat
  */
-class WechatDirect extends PaymentBuilder
+class UnifiedOrder extends WPHelper
 {
 
     public function __construct()

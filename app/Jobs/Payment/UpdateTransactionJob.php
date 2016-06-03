@@ -38,8 +38,9 @@ class UpdateTransactionJob extends Job
         $this->transaction->update([
             'invoice_no'      => $this->request['invoice_no'],
             'is_payment_done' => 1,
-            'attempts' => ($this->transaction->attempts + 1)
+            'attempts'        => ($this->transaction->attempts + 1)
         ]);
-        dispatch(new UpdateTransactionMessageJob($this->transaction->id, ['response' => $this->request['response']]));
+        if (isset($this->request['response']))
+            dispatch(new UpdateTransactionMessageJob($this->transaction->id, ['response' => $this->request['response']]));
     }
 }

@@ -8,6 +8,7 @@ use DreamsArk\Jobs\Payment\UpdateTransactionJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
+use SkysoulDesign\Payment\Implementations\Wechat\PayNotifyCallBack;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
@@ -26,7 +27,11 @@ class PaymentController extends Controller
      */
     public function paymentStatus(Request $request)
     {
-        return view('payment.status');
+        $errors = \Session::get('errors');
+        if ($request->result == 'pending' && is_null($errors)) {
+            return view('payment.status')->withErrors(trans('payment.paid-receipt-not-received-update-later'));
+        } else
+            return view('payment.status');
     }
 
     /**
@@ -194,6 +199,49 @@ class PaymentController extends Controller
         }
 
         return response($responseText);
+    }
+
+    public function wPStatus()
+    {
+        /** @var PayNotifyCallBack $notify */
+        $notify = new PayNotifyCallBack();
+        $notify->Handle(false);
+        \Debugbar::addMessage(implode('::', $notify->GetValues()));
+    }
+
+    public function wPScanCode(Request $request, Transaction $transaction)
+    {
+        if ($request->header('accept') == 'text/event-stream') {// ->getMethod() == 'POST'
+            header('Content-Type: text/event-stream');
+            header('Cache-Control: no-cache');
+            $response = 0;
+            if ($request->has('unique_no')) {
+                $time = date('Y-m-d H:i:s');
+                $response = $request->get('unique_no') . '--' . $time;
+                /** @var Transaction $transaction */
+                $transaction = $transaction->where('unique_no', $request->get('unique_no'))->get();
+                if ($transaction && is_object($transaction[0]))
+                    $response = $transaction[0]->is_payment_done;
+            }
+            flush();
+            $renderer = \Debugbar::getJavascriptRenderer();
+            $renderer->setBindAjaxHandlerToXHR(false);
+
+            return view('common.sse-event-data', compact('response', 'renderer'));
+
+        } else {
+            $wechatData = $request->session()->get('wechatData', []);
+            if (empty($wechatData) || (strtolower($wechatData['result_code']) == 'fail' || is_null($wechatData["code_url"])))
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.error-occurred-unable-to-process'));
+//        $request->session()->put('wechatData', []);
+            /** @var Transaction $transaction */
+            $transaction = $transaction->find($wechatData['transaction_id']);
+            $transaction->setAttribute('invoice_no', $wechatData['prepay_id'])->save();
+            $transaction->fresh();
+
+
+            return view('payment.wechat-pay', compact('wechatData', 'transaction'));
+        }
     }
 
     protected function triggerAddCoinJob($request, $event = '')

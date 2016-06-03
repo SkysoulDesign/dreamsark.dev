@@ -47,10 +47,10 @@ abstract class PaymentBuilder
         define('UP_FILE_PORT', '9080');
 
 //        define('SDK_SIGN_CERT_PATH', $keyPath.'acp_test_sign.pfx');
-        define('SDK_SIGN_CERT_PATH', $keyPath.'700000000000001_acp.pfx');
+        define('SDK_SIGN_CERT_PATH', $keyPath . '700000000000001_acp.pfx');
         define('SDK_SIGN_CERT_PWD', '000000');
 //        define('SDK_ENCRYPT_CERT_PATH', $keyPath.'acp_test_enc.cer');
-        define('SDK_ENCRYPT_CERT_PATH', $keyPath.'verify_sign_acp.cer');
+        define('SDK_ENCRYPT_CERT_PATH', $keyPath . 'verify_sign_acp.cer');
         define('SDK_VERIFY_CERT_DIR', $keyPath);
         define('SDK_FRONT_TRANS_URL', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/frontTransReq.do');
         define('SDK_BACK_TRANS_URL', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/backTransReq.do');
@@ -59,8 +59,8 @@ abstract class PaymentBuilder
         define('SDK_FILE_QUERY_URL', UP_GATEWAY_IP . ':' . UP_FILE_PORT . '/');
         define('SDK_Card_Request_Url', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/cardTransReq.do');
         define('SDK_App_Request_Url', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/appTransReq.do');
-        define('SDK_FILE_DOWN_PATH', public_path().'/payments/unionpay/file/');
-        define('SDK_LOG_FILE_PATH', public_path().'/payments/unionpay/logs/');
+        define('SDK_FILE_DOWN_PATH', public_path() . '/payments/unionpay/file/');
+        define('SDK_LOG_FILE_PATH', public_path() . '/payments/unionpay/logs/');
         define('SDK_LOG_LEVEL', PhpLog::DEBUG);
 
 
@@ -91,6 +91,52 @@ abstract class PaymentBuilder
         ];
     }
 
+    protected function getWechatConfig()
+    {
+
+        $keyPath = dirname(__FILE__) . '/Implementations/Key/Wechat/';
+
+        define('WP_APPID', config('defaults.payment.credentials.wechat.app_id'));
+        define('WP_MCHID', config('defaults.payment.credentials.wechat.partner_id'));
+        define('WP_KEY', config('defaults.payment.credentials.wechat.key'));
+        define('WP_APPSECRET', config('defaults.payment.credentials.wechat.secret'));
+
+        define('WP_SSLCERT_PATH', $keyPath . 'apiclient_cert.pem');
+        define('WP_SSLKEY_PATH', $keyPath . 'apiclient_key.pem');
+
+        define('WP_CURL_PROXY_HOST', "0.0.0.0");
+        define('WP_CURL_PROXY_PORT', 0);
+
+        define('WP_REPORT_LEVENL', 1);
+
+        return [
+            'url'      => [
+                'unified' => "https://api.mch.weixin.qq.com/pay/unifiedorder",
+                'report'  => "https://api.mch.weixin.qq.com/payitil/report",
+                'notify'  => route('payment.wechat.status'),
+                'qr_url'  => 'http://paysdk.weixin.qq.com/example/qrcode.php?data='
+            ],
+            'defaults' => [
+                'timeout' => 30,
+                'appid'   => WP_APPID,
+                'mch_id'  => WP_MCHID,
+                'key'     => WP_KEY,
+                'secret'  => WP_APPSECRET,
+            ]
+        ];
+    }
+
+    /**
+     * To strip defaults.payment.prefix from out_trade_no
+     * as Wechat allows only 32 characters
+     * @param $input
+     * @return string
+     */
+    protected function getWechatOutTradeNo($input)
+    {
+        return substr($input, 4, strlen($input));
+    }
+
     /**
      * @param $property
      * @param null $default
@@ -113,6 +159,7 @@ abstract class PaymentBuilder
     /** Common Methods for Payment Gateways */
     /** Common for Alipay & Unionpay
      * ($sort, $encode) are used in Unionpay
+     *
      * @param $para
      * @param $sort
      * @param $encode

@@ -160,6 +160,11 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
         });
+        $app->group(['prefix' => 'wechat', 'as' => 'wechat.'], function () use ($app) {
+            $app->any('status', PaymentController::class . '@wPStatus')->name('status');
+            $app->get('scanQRToPay', PaymentController::class . '@wPScanCode')->name('scan_code');
+            $app->get('scanQRPayEvent', PaymentController::class . '@wPScanCode')->name('scan_code.event');
+        });
 
     });
 
