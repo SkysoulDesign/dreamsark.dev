@@ -1,10 +1,20 @@
 FROM node:slim
-WORKDIR /var/www
+
+#ENV HOME=/home/data
+#ENV APP_BASE_DIR=$HOME
+#ENV DOCKER_USER_ID=1000
+#
+#WORKDIR $HOME
+#VOLUME $HOME
 
 RUN apt-get update
 RUN apt-get install -y python-software-properties build-essential
-RUN npm install -g gulp typescript typings
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
+RUN npm install -g gulp bower typescript typings
 
-ENTRYPOINT top -b
+#RUN usermod -u ${DOCKER_USER_ID:-$DOCKER_USER_ID} www-data \
+#    && mkdir -p ${APP_BASE_DIR:-$HOME}
+
+#ENTRYPOINT top -b
+ENTRYPOINT gulp watch
