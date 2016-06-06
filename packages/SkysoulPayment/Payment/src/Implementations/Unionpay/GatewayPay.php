@@ -145,14 +145,14 @@ class GatewayPay extends UPHelper
     }
 
     protected function createAutoFormHtml($params, $reqUrl)
-    {// onload="javascript:document.pay_form.submit();"
+    {//
         $encodeType = isset ($params ['encoding']) ? $params ['encoding'] : 'UTF-8';
         $html = <<<eot
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={$encodeType}" />
 </head>
-<body>
+<body onload="javascript:document.pay_form.submit();">
     <form id="pay_form" name="pay_form" action="{$reqUrl}" method="post">
 	
 eot;
