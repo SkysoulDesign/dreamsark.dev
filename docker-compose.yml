@@ -19,8 +19,9 @@ php:
       - php-fpm
 
 gulp:
-  build: .
-  dockerfile: ./build/docker/gulp/Dockerfile
+  image: skysoul/gulp
+#  build: .
+#  dockerfile: ./build/docker/gulp/Dockerfile
   container_name: gulp
   volumes_from:
       - php
