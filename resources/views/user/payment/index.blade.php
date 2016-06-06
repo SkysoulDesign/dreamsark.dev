@@ -6,10 +6,10 @@
         <h2>@lang('user.purchase-history')</h2>
         <div class="ui small menu">
             <div class="right menu">
-                {{--<a class="item" href="{{ route('user.purchase.coin.create') }}">
-                    <i class="add icon"></i>
-                    @lang('profile.add-coin')
-                </a>--}}
+                <a class="item" href="{{ route('user.purchase.list', 'pending') }}">
+                    <i class="payment icon"></i>
+                    @lang('payment.pending-list')
+                </a>
                 <a id="purchase-coin" class="item view-modal" href="javascript:;">
                     <i class="add icon"></i>
                     @lang('profile.add-coin')
@@ -26,13 +26,44 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th colspan="3"></th>
+                <th>@lang('payment.order-no')</th>
+                <th>@lang('payment.type')</th>
+                <th>@lang('payment.amount')</th>
+                <th>@lang('payment.is-done')</th>
+                <th>@lang('payment.request')</th>
+                <th>@lang('payment.response')</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>@lang('profile.no-purchase')</td>
-            </tr>
+            @if($transactionList->isEmpty())
+                <tr>
+                    <td>@lang('profile.no-purchase')</td>
+                </tr>
+            @else
+                @foreach($transactionList as $transaction)
+                    <tr>
+                        <td>
+                            {{ $transaction->unique_no }}<br/>
+                            <b>@lang('payment.invoice-no'):</b> {{ $transaction->invoice_no }}<br />
+                            <b>@lang('payment.paid-on'):</b> {{ $transaction->updated_at->format('Y-m-d H:i A') }}<br />
+                            @lang('payment.paid-through'): {{ $transaction->pay_method }}
+                        </td>
+                        <td>{{ ucwords($transaction->type) }}</td>
+                        <td>{{ $transaction->amount }}</td>
+                        <td>{{ $transaction->is_payment_done }}</td>
+                        <td>
+                            <div style="width: 120px; height: 120px; overflow: auto; word-wrap: break-word;">
+                                {{ $transaction->messages ? $transaction->messages->request : '' }}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width: 120px; height: 120px; overflow: auto; word-wrap: break-word;">
+                                {{ $transaction->messages ? $transaction->messages->response : '' }}
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
             </tbody>
         </table>
     </div>
@@ -44,23 +75,23 @@
     <script>
         $(document).ready(function () {
             /*if ($('#withdraw-coin-modal').length > 0)
-                $('#withdraw-coin-modal')
+             $('#withdraw-coin-modal')
+             .modal({
+             blurring:  true,
+             closable:  false,
+             onApprove: function () {
+             $('#withdraw-coin-form').submit();
+             }
+             })
+             .modal('attach events', '#withdraw-coin', 'show');*/
+            $('.item.view-modal').each(function () {
+                var id = $(this).attr('id');
+                $('#' + id + '-modal')
                         .modal({
                             blurring:  true,
                             closable:  false,
                             onApprove: function () {
-                                $('#withdraw-coin-form').submit();
-                            }
-                        })
-                        .modal('attach events', '#withdraw-coin', 'show');*/
-            $('.item.view-modal').each(function () {
-                var id = $(this).attr('id');
-                $('#' + id+'-modal')
-                        .modal({
-                            blurring: true,
-                            closable:  false,
-                            onApprove: function () {
-                                $('#' + id+'-form').submit();
+                                $('#' + id + '-form').submit();
                             }
                         })
                         .modal('attach events', '#' + id, 'show')

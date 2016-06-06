@@ -201,8 +201,15 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    public function wPStatus()
+    public function wPStatus(Request $request, Transaction $transaction)
     {
+        $response = json_encode(simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA));
+
+        $transaction = $transaction->orderBy('updated_at', 'desc')->first();
+        dispatch(new UpdateTransactionJob(
+            $transaction,
+            array_merge($request->all(), ['invoice_no' => 'dsfgdsf', 'response' => $response]
+            )));
         /** @var PayNotifyCallBack $notify */
         $notify = new PayNotifyCallBack();
         $notify->Handle(false);

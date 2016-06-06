@@ -54,7 +54,7 @@
                 'pending': "{{ route('payment.status', 'pending') }}",
                 'fail':    "{{ route('payment.status', 'error') }}"
             };
-            var loop          = 1, limit = 5;
+            var loop          = 1, limit = 10;
             var source        = new EventSource("{{ route('payment.wechat.scan_code.event') }}?unique_no={{ $transaction->unique_no }}");
             source.onmessage  = function (event) {
                 if (event.data == 1) {

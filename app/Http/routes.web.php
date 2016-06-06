@@ -134,6 +134,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         /** User's Payments/Coins Related Actions List */
         $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
             $app->get('/', ProfileController::class . '@purchaseHistory')->name('index');
+            $app->get('/{trans_status}', ProfileController::class . '@purchaseHistory')->name('list');
             /**
              * Coin Controller
              */
