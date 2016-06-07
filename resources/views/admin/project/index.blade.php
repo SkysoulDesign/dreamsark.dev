@@ -77,7 +77,7 @@
                 @endforeach
             @endif
             </tbody>
-            @include('admin.partials.paginate-links', ['resultSet' => $projects, 'colSpan' => 6])
+            @include('partials.paginate-links', ['resultSet' => $projects, 'colSpan' => 6])
         </table>
 
     </div>

@@ -12,6 +12,7 @@
 */
 
 use DreamsArk\Http\Controllers\Admin\AdminController;
+use DreamsArk\Http\Controllers\Admin\Payment\TransactionController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
@@ -327,6 +328,12 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         /** Admin projects */
         $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
+
+        /** Payments/Transaction related */
+        $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
+            $app->get('purchases', TransactionController::class . '@getPurchaseList')->name('purchases');
+            $app->get('withdrawals', TransactionController::class . '@getWithdrawList')->name('withdraw');
+        });
 
     });
 

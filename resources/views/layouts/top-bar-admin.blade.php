@@ -32,14 +32,23 @@
             </div>
         </div>
     @endif
+    <div class="ui dropdown item">
+        @lang('navbar.transactions')
+        <div class="menu">
+            <a class="item"
+               href="{{ route('admin.payment.purchases') }}">@lang('navbar.purchases')</a>
+            <a class="item"
+               href="{{ route('admin.payment.withdraw') }}">@lang('navbar.withdrawals')</a>
+        </div>
+    </div>
     @if(auth()->user()->can('see-admin-section'))
         <div class="ui dropdown item">
             @lang('navbar.configuration')
             <div class="menu">
                 <div class="header"></div>
-                <a class="item" href="{{ route('admin.question.index') }}">Questions</a>
-                <a class="item" href="{{ route('admin.profile.index') }}">Profile</a>
-                <a class="item" href="{{ route('admin.user.index') }}">Users</a>
+                <a class="item" href="{{ route('admin.question.index') }}">@lang('navbar.questions')</a>
+                <a class="item" href="{{ route('admin.profile.index') }}">@lang('navbar.profile')</a>
+                <a class="item" href="{{ route('admin.user.index') }}">@lang('navbar.users')</a>
             </div>
         </div>
     @endif

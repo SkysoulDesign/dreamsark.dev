@@ -30,14 +30,12 @@
                 <th>@lang('payment.type')</th>
                 <th>@lang('payment.amount')</th>
                 <th>@lang('payment.is-done')</th>
-                <th>@lang('payment.request')</th>
-                <th>@lang('payment.response')</th>
             </tr>
             </thead>
             <tbody>
             @if($transactionList->isEmpty())
                 <tr>
-                    <td>@lang('profile.no-purchase')</td>
+                    <td colspan="4">@lang('profile.no-purchase')</td>
                 </tr>
             @else
                 @foreach($transactionList as $transaction)
@@ -51,20 +49,11 @@
                         <td>{{ ucwords($transaction->type) }}</td>
                         <td>{{ $transaction->amount }}</td>
                         <td>{{ $transaction->is_payment_done }}</td>
-                        <td>
-                            <div style="width: 120px; height: 120px; overflow: auto; word-wrap: break-word;">
-                                {{ $transaction->messages ? $transaction->messages->request : '' }}
-                            </div>
-                        </td>
-                        <td>
-                            <div style="width: 120px; height: 120px; overflow: auto; word-wrap: break-word;">
-                                {{ $transaction->messages ? $transaction->messages->response : '' }}
-                            </div>
-                        </td>
                     </tr>
                 @endforeach
             @endif
             </tbody>
+            @include('partials.paginate-links', ['resultSet' => $transactionList, 'colSpan' => 4])
         </table>
     </div>
     @include('modals.withdraw-coin')

@@ -18,7 +18,13 @@ use SkysoulDesign\Payment\PaymentGateway;
  */
 class PaymentController extends Controller
 {
+    /**
+     * @var string
+     */
     protected $defaultRoute = 'payment.status';
+    /**
+     * @var
+     */
     protected $responseData;
 
     /**
@@ -82,7 +88,10 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    /** UnionPay Methods */
+    /** UnionPay Methods
+     *
+     * @param Request $request
+     */
     protected function prepareUPResponseData(Request $request)
     {
         /**
@@ -97,6 +106,9 @@ class PaymentController extends Controller
         $this->responseData->merge(compact('out_trade_no', 'trade_no'));
     }
 
+    /**
+     * @return string
+     */
     protected function validateUPResponse()
     {
         $status = 'fail';
@@ -111,6 +123,10 @@ class PaymentController extends Controller
         return $status;
     }
 
+    /**
+     * @param Request $request
+     * @return $this|string
+     */
     public function uPStatus(Request $request)
     {
         if ($request->has('signature')) {
@@ -134,6 +150,10 @@ class PaymentController extends Controller
         return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.trade-status-error'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function uPNotifications(Request $request)
     {
         $responseText = 'NO_SIGNATURE';
@@ -160,6 +180,10 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function uPOrderEnquiry(Request $request)
     {
         $responseText = 'not-valid';
@@ -201,6 +225,10 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
+    /**
+     * @param Request $request
+     * @param Transaction $transaction
+     */
     public function wPStatus(Request $request, Transaction $transaction)
     {
         $response = json_encode(simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA));
@@ -216,6 +244,11 @@ class PaymentController extends Controller
         \Debugbar::addMessage(implode('::', $notify->GetValues()));
     }
 
+    /**
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return $this
+     */
     public function wPScanCode(Request $request, Transaction $transaction)
     {
         if ($request->header('accept') == 'text/event-stream') {// ->getMethod() == 'POST'
@@ -240,17 +273,21 @@ class PaymentController extends Controller
             $wechatData = $request->session()->get('wechatData', []);
             if (empty($wechatData) || (strtolower($wechatData['result_code']) == 'fail' || is_null($wechatData["code_url"])))
                 return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.error-occurred-unable-to-process'));
-//        $request->session()->put('wechatData', []);
+            $request->session()->put('wechatData', []);
             /** @var Transaction $transaction */
             $transaction = $transaction->find($wechatData['transaction_id']);
             $transaction->setAttribute('invoice_no', $wechatData['prepay_id'])->save();
             $transaction->fresh();
 
-
             return view('payment.wechat-pay', compact('wechatData', 'transaction'));
         }
     }
 
+    /**
+     * @param $request
+     * @param string $event
+     * @return $this|string
+     */
     protected function triggerAddCoinJob($request, $event = '')
     {
         $out_trade_no = $request->out_trade_no;

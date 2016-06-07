@@ -27,7 +27,7 @@
             </tr>
         @endforeach
         </tbody>
-        @include('admin.partials.paginate-links', ['resultSet' => $reviews, 'colSpan' => 4])
+        @include('partials.paginate-links', ['resultSet' => $reviews, 'colSpan' => 4])
     </table>
 @endsection
 @section('pos-scripts')

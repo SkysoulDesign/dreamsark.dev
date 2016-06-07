@@ -22,6 +22,12 @@ class Transaction extends Model
     protected $fillable = ['unique_no', 'invoice_no', 'pay_method', 'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'];
 
     /**
+     * bind WITH relation by default
+     * @var array
+     */
+    protected $with = ['messages'];
+
+    /**
      * Relation to TransactionMessages Table
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -38,4 +44,5 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }
