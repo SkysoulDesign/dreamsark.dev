@@ -6,10 +6,10 @@
         <h2>@lang('user.purchase-history')</h2>
         <div class="ui small menu">
             <div class="right menu">
-                <a class="item" href="{{ route('user.purchase.list', 'pending') }}">
+                {{--<a class="item" href="{{ route('user.purchase.list', 'pending') }}">
                     <i class="payment icon"></i>
                     @lang('payment.pending-list')
-                </a>
+                </a>--}}
                 <a id="purchase-coin" class="item view-modal" href="javascript:;">
                     <i class="add icon"></i>
                     @lang('profile.add-coin')
