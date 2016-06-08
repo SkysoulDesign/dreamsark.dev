@@ -1,14 +1,15 @@
-import Ripple from "./components/ripple";
+import Vue = require("vue");
 
 export class App {
 
     constructor() {
-        let ripple = new Ripple();
+        // let ripple = new Ripple();
+        // console.log(Vue);
     }
 
     /**
      * Document Ready
-     * @returns {Promise<T>}
+     * @returns {Promise<T>|Promise}
      */
     ready() {
         return new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve(this)));
@@ -18,5 +19,14 @@ export class App {
 
 let app = new App();
     app.ready().then(application => {
-        alert('zxczxczxc')
+
+        // new Vue({
+        //     el:'#app-root',
+        //     template: require('./templates/segment.html'),
+        //     data: {
+        //         test: 'as world'
+        //     },
+        //
+        // });
+
     });

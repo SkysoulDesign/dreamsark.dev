@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://dreamsark.dev/schema">
 <head>
     <meta charset="UTF-8">
     <title>DreamsArk</title>
@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="main">
+<body id="app-root" class="main">
 
 <div class="expanded row" style="margin-top: 200px">
     @yield('content')

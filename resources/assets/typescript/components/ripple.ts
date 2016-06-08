@@ -1,10 +1,8 @@
-// import gsap = require('gsap');
 
 export default class Ripple {
 
     construct(event, timing) {
 
-        console.log(gsap)
 
         // let ripple = this.getElementsByTagName('use')[0],
         //     tl = new TimelineMax(),

@@ -2,38 +2,46 @@
 
 @section('content')
 
-    <div class="large-8 column red">
-        Some Content here
+    <div class="segments">
+        <div class="segment">2</div>
+        <div class="segment --50">4</div>
     </div>
 
-    <section class="segment medium-4 column">
+    {{--<div class="segment">--}}
 
+    {{--<ark-form action="{{ route('login.store') }}">--}}
 
-        <form action="{{ route('login.store') }}" method="POST">
+    {{--</ark-form>--}}
 
-            {{ csrf_field() }}
+    {{--</div>--}}
 
-            <div class="field">
-                <input name="login" type="text" placeholder="username or email">
-            </div>
+    {{--<section class="segment medium-4 column">--}}
 
-            <div class="field">
-                <input name="password" type="password" placeholder="password">
-            </div>
+    {{--<form action="{{ route('login.store') }}" method="POST">--}}
 
-            {{--@include('partials.form-errors')--}}
+    {{--{{ csrf_field() }}--}}
 
-            <div class="field">
-                @include('components.button-ripple', ['text' => 'Login', 'attributes' => ['type' => 'submit']])
-            </div>
+    {{--<div class="field">--}}
+    {{--<input name="login" type="text" placeholder="username or email">--}}
+    {{--</div>--}}
 
-        </form>
+    {{--<div class="field">--}}
+    {{--<input name="password" type="password" placeholder="password">--}}
+    {{--</div>--}}
 
-    </section>
+    {{--@include('partials.form-errors')--}}
+
+    {{--<div class="field">--}}
+    {{--@include('components.button-ripple', ['text' => 'Login', 'attributes' => ['type' => 'submit']])--}}
+    {{--</div>--}}
+
+    {{--</form>--}}
+
+    {{--</section>--}}
 @endsection
 
 @section('scripts')
-    var hello = "hello"
+    {{--var hello = "hello"--}}
 @endsection
 
 @section('contents')

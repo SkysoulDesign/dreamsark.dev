@@ -1,12 +1,40 @@
 @mixin dreamsark-segment() {
 
+  @include component(segments) {
+    display: flex;
+  }
+
   @include component(segment) {
 
-    border: 1px solid color(gray, mid-dark);
-    background: color(white, mid-light);
-    border-radius: 3px;
+    border: 1px solid gray;
+    margin: 2px;
+    flex: 1;
 
-    box-shadow: 0 10px 10px 0 color(gray, dark, 13);
+    //display: flex;
+    //flex-basis: 100%;
+
+    //content: 'oh my god';
+    //border: 1px solid color(gray, mid-dark);
+    //background: color(white, mid-light);
+    //border-radius: 3px;
+    //
+    //box-shadow: 0 10px 10px 0 color(gray, dark, 13);
+
+    //@include option(full-width, fit) {
+    //  flex-basis: 100%
+    //}
+    //
+    //@include option(20) {
+    //  flex-basis: 20%
+    //}
+    //
+    //@include option(50) {
+    //  flex-basis: 50%
+    //}
+    //
+    //@include option(100) {
+    //  flex-basis: 100%
+    //}
 
   }
 

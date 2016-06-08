@@ -1,0 +1,13 @@
+@mixin dreamsark-global() {
+
+  * {
+    /* So 100% means 100% */
+    box-sizing: border-box;
+  }
+  html, body {
+    /* Make the body to be as tall as browser window */
+    height: 100%;
+  }
+
+}
+

@@ -1,5 +1,7 @@
 var elixir = require('laravel-elixir');
 
+var watchify = require('watchify');
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -13,11 +15,8 @@ var elixir = require('laravel-elixir');
 elixir.config.js.browserify.watchify.enabled = true;
 
 elixir(function (mix) {
-
     mix.sass('app.scss');
-    mix.browserify("./resources/assets/typescript/app.js", null, null, {
-        cache: {},
-        packageCache: {}
+    mix.browserify("./resources/assets/typescript/App.js", null, null, {
+        cache: {}, packageCache: {}
     });
-
 });

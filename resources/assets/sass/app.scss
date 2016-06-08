@@ -3,7 +3,8 @@
 /**
 * Import Third Party Frameworks
 */
-@import '../../../node_modules/foundation-sites/scss/foundation';
+@import '../../../node_modules/normalize.css/normalize';
+@import '../../../node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import '../../../node_modules/csstyle/csstyle';
 @import '../../../node_modules/family.scss/family';
 @import 'app/functions';
@@ -11,15 +12,17 @@
 @import 'app/variables';
 @import 'app/fonts';
 @import 'components/form/forms';
+@import 'components/global';
 @import 'components/segment';
 
 /**
 * Initiate things up
 */
-@include foundation-global-styles;
-@include foundation-grid;
+//@include foundation-global-styles;
+//@include foundation-grid;
+@include dreamsark-global;
 @include dreamsark-segment;
-@include dreamsark-forms;
+//@include dreamsark-forms;
 
 /**
 * test
@@ -27,6 +30,7 @@
 .blue {
   background-color: blue;
 }
+
 .yellow {
   background-color: yellow;
 }
