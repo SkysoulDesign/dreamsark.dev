@@ -46,35 +46,33 @@ class Alipay extends PaymentGateway
 //    <input type='hidden' name='sign'
 
         return [
-            '_input_charset' => 'utf-8',
-            'body' => 'payment.description',
-            'out_trade_no' => 'DAPG8305971bf9a4b7fc34c09d9d571565b4',
-            'partner' => '2088221979483694',
-            'payment_type' => '1',
-            'seller_id' => '2088221979483694',
-            'service' => 'create_direct_pay_by_user',
-            'subject' => 'payment.subject',
-            'return_url' => 'http://dreamsark.dev/payment/alipay/status',
-            'notify_url' => 'http://dreamsark.dev/payment/alipay/notify',
-            'sign' => 'DLa3Lom0UVclXAPhHPmQ6MedAa1P1qIrd766taLtj3R4Lw4xA+7KTXE2LlqujQN/mehvenuMuF+lo8nkp1FgjiGf0fGW7OYpaftdq2fOCDyRiPgC2ko4ssvvU5Dahq1Ka2e9kC3GxyjDoKimIR0TiOLHZ2mSJzip6X/e5klTrOY='
+            "_input_charset" => "utf-8",
+            "body" => "payment.description",
+            "notify_url" => "http://dreamsark.dev/payment/alipay/notify",
+            "out_trade_no" => "DAPGeed2c4aadf201f805d937191d5e92e11",
+            "partner" => "2088221979483694",
+            "payment_type" => "1",
+            "return_url" => "http://dreamsark.dev/payment/alipay/status",
+            "seller_id" => "2088221979483694",
+            "service" => "create_direct_pay_by_user",
+            "subject" => "payment.subject",
+            "total_fee" => "5",
+            "sign" => $this->sign(),
+            "sign_type" => "RSA"
         ];
     }
 
     /**
      * @return mixed|string
      */
-    public function sign() : string
+    public function sign($data) : string
     {
 
         $key = file_get_contents(static::PRIVATE_KEY_PATH);
         $response = openssl_get_privatekey($key);
 
-        $final = '';
-        foreach ($this->getPostData() as $key => $data) {
-            $final = $final . "&$key=$data";
-        }
 
-        openssl_sign($final, $sign, $response);
+        openssl_sign($data, $sign, $response);
         openssl_free_key($response);
 
         return base64_encode($sign);
