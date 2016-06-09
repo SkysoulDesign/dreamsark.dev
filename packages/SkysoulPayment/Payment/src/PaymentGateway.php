@@ -16,7 +16,7 @@ use SkysoulDesign\Payment\Implementations\Wechat\WechatDirect;
  *
  * @package SkysoulDesign\Payment
  */
-class PaymentGateway implements PaymentGatewayContract
+abstract class PaymentGateway implements PaymentGatewayContract
 {
 
     /**

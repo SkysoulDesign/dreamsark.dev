@@ -3,6 +3,7 @@
 namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
+use GuzzleHttp\Client;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 
@@ -79,7 +80,17 @@ class Payment
      */
     public function getResponse()
     {
-        return $this;
+        $final = '';
+        foreach ($this->gateway->getPostData() as $key => $data) {
+            $final = $final . "&$key=$data";
+        }
+
+        return redirect($this->gateway::GATEWAY_URL.$final);
+
+        $client = new Client();
+        $res = $client->request('POST', $this->gateway::GATEWAY_URL, $this->gateway->getPostData());
+
+        echo $res->getBody();
     }
 
     /**

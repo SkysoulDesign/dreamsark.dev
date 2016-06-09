@@ -12,9 +12,9 @@ use SkysoulDesign\Payment\PaymentGateway;
 class Alipay extends PaymentGateway
 {
 
-    const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do';
+    const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?_input_charset=utf-8';
     const SIGN_TYPE = 'RSA';
-    const PRIVATE_KEY_PATH = 'near';
+    const PRIVATE_KEY_PATH = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem';
 
     public $postCharset = "UTF-8";
     protected $fileCharset = "UTF-8";
@@ -24,14 +24,60 @@ class Alipay extends PaymentGateway
 
     public function __construct()
     {
+
 //        $this->publicRequestParam['app_id'] = $this->config['app_id'];
 //        $this->publicRequestParam['charset'] = $this->config['charset'];
 //        $this->publicRequestParam['timestamp'] = date('Y-m-d H:i:s');
     }
 
-    public function sign()
+    public function getPostData() : array
     {
 
+//        <input type='hidden' name='_input_charset' value='utf-8'/>
+//    <input type='hidden' name='body' value='payment.description'/>
+//    <input type='hidden' name='notify_url' value='http://dreamsark.dev/payment/alipay/notify'/>
+//    <input type='hidden' name='out_trade_no' value='DAPG8305971bf9a4b7fc34c09d9d571565b4'/>
+//    <input type='hidden' name='partner' value='2088221979483694'/>
+//    <input type='hidden' name='payment_type' value='1'/>
+//    <input type='hidden' name='return_url' value='http://dreamsark.dev/payment/alipay/status'/>
+//    <input type='hidden' name='seller_id' value='2088221979483694'/>
+//    <input type='hidden' name='service' value='create_direct_pay_by_user'/>
+//    <input type='hidden' name='subject' value='payment.subject'/>
+//    <input type='hidden' name='sign'
+
+        return [
+            '_input_charset' => 'utf-8',
+            'body' => 'payment.description',
+            'out_trade_no' => 'DAPG8305971bf9a4b7fc34c09d9d571565b4',
+            'partner' => '2088221979483694',
+            'payment_type' => '1',
+            'seller_id' => '2088221979483694',
+            'service' => 'create_direct_pay_by_user',
+            'subject' => 'payment.subject',
+            'return_url' => 'http://dreamsark.dev/payment/alipay/status',
+            'notify_url' => 'http://dreamsark.dev/payment/alipay/notify',
+            'sign' => 'DLa3Lom0UVclXAPhHPmQ6MedAa1P1qIrd766taLtj3R4Lw4xA+7KTXE2LlqujQN/mehvenuMuF+lo8nkp1FgjiGf0fGW7OYpaftdq2fOCDyRiPgC2ko4ssvvU5Dahq1Ka2e9kC3GxyjDoKimIR0TiOLHZ2mSJzip6X/e5klTrOY='
+        ];
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function sign() : string
+    {
+
+        $key = file_get_contents(static::PRIVATE_KEY_PATH);
+        $response = openssl_get_privatekey($key);
+
+        $final = '';
+        foreach ($this->getPostData() as $key => $data) {
+            $final = $final . "&$key=$data";
+        }
+
+        openssl_sign($final, $sign, $response);
+        openssl_free_key($response);
+
+        return base64_encode($sign);
     }
 
     protected $eventResponse;
@@ -155,15 +201,6 @@ class Alipay extends PaymentGateway
         return $requestArr;
     }
 
-    protected function sign($data)
-    {
-        $priKey = file_get_contents($this->get('config')['private_key_path']);
-        $res = openssl_get_privatekey($priKey);
-        openssl_sign($data, $sign, $res);
-        openssl_free_key($res);
-        $sign = base64_encode($sign);
-        return $sign;
-    }
 
     protected function getSignContent($params)
     {
