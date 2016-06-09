@@ -32,10 +32,10 @@ class GeneratePaymentFormJob extends Job
         $payment = '';
         $getForm = '';
         /**
-         * @TODO: need to use $this->paymentData['pay_method'] and get the object on relevant Payment Service
+         * @TODO: need to use $this->paymentData['method'] and get the object on relevant Payment Service
          * every payment service should have doPaymentForm() to receive transaction details
          */
-        switch ($this->paymentData['pay_method']) {
+        switch ($this->paymentData['method']) {
             case 'alipay':
 //                $this->paymentData['amount'] = $this->paymentData['amount'] / 20;
                 $payment = PaymentGateway::alipayDirect();

@@ -19,7 +19,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['unique_no', 'invoice_no', 'pay_method', 'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'];
+    protected $fillable = ['unique_no', 'invoice_no', 'method', 'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'];
 
     /**
      * bind WITH relation by default

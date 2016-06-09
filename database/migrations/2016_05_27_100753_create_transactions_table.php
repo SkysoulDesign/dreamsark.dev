@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
             $table->string('unique_no')->unique();
             $table->string('invoice_no');
-            $table->string('pay_method');
+            $table->string('method');
             $table->string('type');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

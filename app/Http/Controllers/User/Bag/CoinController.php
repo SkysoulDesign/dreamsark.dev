@@ -38,12 +38,13 @@ class CoinController extends Controller
     {
         $transactionData = dispatch(new CreateTransactionJob($request));
         $getFormData = dispatch(new GeneratePaymentFormJob($transactionData));
+
         if (is_null($getFormData))
             return redirect()->back()->withErrors(trans('payment.invalid-method-selected'));
         else if ($getFormData == 'fail')
             return redirect()->back()->withErrors(trans('payment.error-occurred-unable-to-process'));
 
-        if ($request->get('payment_method') == 'wechat') {
+        if ($request->get('method') == 'wechat') {
             $request->session()->put('wechatData', $getFormData);
             return redirect()->route('payment.wechat.scan_code');
         }

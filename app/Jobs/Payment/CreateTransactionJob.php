@@ -44,7 +44,7 @@ class CreateTransactionJob extends Job
         $userId = $this->request->user()->id;
         $out_trade_no = config('defaults.payment.prefix.'.$this->transactionType).md5(uniqid($userId, true));
         $fields = [
-            'unique_no' => $out_trade_no, 'pay_method' => $this->request->get('payment_method'),
+            'unique_no' => $out_trade_no, 'method' => $this->request->get('payment_method'),
             'type' => $this->transactionType, 'user_id' => $userId, 'amount' => $this->request->get('amount')
         ];
         /** @var Transaction $transaction */
@@ -55,7 +55,7 @@ class CreateTransactionJob extends Job
             'transaction_id' => $transaction->id,
             'user_id' => $transaction->user_id,
             'amount' => $transaction->amount,
-            'pay_method' => $transaction->pay_method,
+            'method' => $transaction->method,
         ];
     }
 }
