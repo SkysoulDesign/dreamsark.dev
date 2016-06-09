@@ -12,7 +12,7 @@ use SkysoulDesign\Payment\PaymentGateway;
 class Alipay extends PaymentGateway
 {
 
-    const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?_input_charset=utf-8';
+    const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?';
     const SIGN_TYPE = 'RSA';
     const PRIVATE_KEY_PATH = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem';
 
@@ -57,8 +57,6 @@ class Alipay extends PaymentGateway
             "service" => "create_direct_pay_by_user",
             "subject" => "payment.subject",
             "total_fee" => "5",
-            "sign" => $this->sign(),
-            "sign_type" => "RSA"
         ];
     }
 

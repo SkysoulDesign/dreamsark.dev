@@ -80,12 +80,28 @@ class Payment
      */
     public function getResponse()
     {
+
+
+        $data = $this->gateway->getPostData();
+        ksort($data);
+
         $final = '';
-        foreach ($this->gateway->getPostData() as $key => $data) {
-            $final = $final . "&$key=$data";
+        foreach ($data as $key => $value) {
+            $final = $final . "&$key=$value";
         }
 
-        return redirect($this->gateway::GATEWAY_URL.$final);
+        $data['sign'] = $this->gateway->sign(ltrim($final, '&'));
+        $data['sign_type'] = 'RSA';
+
+
+        $final = '';
+        foreach ($data as $key => $value) {
+            $final = $final . "&$key=$value";
+        }
+
+//        dd($final);
+
+        return redirect($this->gateway::GATEWAY_URL.ltrim($final, '&'));
 
         $client = new Client();
         $res = $client->request('POST', $this->gateway::GATEWAY_URL, $this->gateway->getPostData());
