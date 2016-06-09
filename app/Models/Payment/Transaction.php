@@ -4,7 +4,14 @@ namespace DreamsArk\Models\Payment;
 
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use SkysoulDesign\Payment\PaymentBuilder;
+use SkysoulDesign\Payment\PaymentGateway;
 
+/**
+ * Class Transaction
+ *
+ * @package DreamsArk\Models\Payment
+ */
 class Transaction extends Model
 {
     /**
@@ -19,7 +26,10 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['unique_no', 'invoice_no', 'pay_method', 'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'];
+    protected $fillable = [
+        'unique_no', 'invoice_no', 'pay_method',
+        'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'
+    ];
 
     /**
      * Relation to TransactionMessages Table
@@ -33,9 +43,20 @@ class Transaction extends Model
 
     /**
      * User Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * @return PaymentBuilder
+     */
+    public function getPaymentResponse()
+    {
+        return new PaymentGateway($this);
+    }
+
 }

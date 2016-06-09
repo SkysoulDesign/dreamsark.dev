@@ -9,6 +9,7 @@
   "type": "project",
   "require": {
     "php": ">=5.5.9",
+    "guzzlehttp/guzzle": "^6.2",
     "laravel/framework": "5.2.*"
   },
   "require-dev": {
@@ -29,8 +30,7 @@
   },
   "autoload": {
     "classmap": [
-      "database",
-      "packages/alipay-sdk-PHP-20160524120057"
+      "database"
     ],
     "psr-4": {
       "DreamsArk\\": "app/",

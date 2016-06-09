@@ -4,6 +4,7 @@ namespace SkysoulDesign\Payment;
 
 
 use DreamsArk\Jobs\Payment\UpdateTransactionMessageJob;
+use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\Implementations\Unionpay\PhpLog;
 
 /**
@@ -20,21 +21,21 @@ abstract class PaymentBuilder
         $keyPath = dirname(__FILE__) . '/Implementations/Key/Alipay/';
 
         return [
-            'gatewayUrl'          => "https://mapi.alipay.com/gateway.do?",
-            'partner'             => config('defaults.payment.credentials.alipay.partner_id'),
-            'seller_id'           => config('defaults.payment.credentials.alipay.partner_id'),
-            'private_key_path'    => $keyPath . 'rsa_private_key.pem',
+            'gatewayUrl' => "https://mapi.alipay.com/gateway.do?",
+            'partner' => config('defaults.payment.credentials.alipay.partner_id'),
+            'seller_id' => config('defaults.payment.credentials.alipay.partner_id'),
+            'private_key_path' => $keyPath . 'rsa_private_key.pem',
             'ali_public_key_path' => $keyPath . 'alipay_public_key.pem',
-            'notify_url'          => route('payment.alipay.notify'),
-            'return_url'          => route('payment.alipay.status'),
-            'sign_type'           => strtoupper('RSA'),
-            'input_charset'       => strtolower("utf-8"),
-            'cacert'              => $keyPath . 'cacert.pem',
-            'transport'           => "http",
-            'payment_type'        => "1",
-            'service'             => "create_direct_pay_by_user",
-            'anti_phishing_key'   => "",
-            'exter_invoke_ip'     => "",
+            'notify_url' => route('payment.alipay.notify'),
+            'return_url' => route('payment.alipay.status'),
+            'sign_type' => strtoupper('RSA'),
+            'input_charset' => strtolower("utf-8"),
+            'cacert' => $keyPath . 'cacert.pem',
+            'transport' => "http",
+            'payment_type' => "1",
+            'service' => "create_direct_pay_by_user",
+            'anti_phishing_key' => "",
+            'exter_invoke_ip' => "",
         ];
     }
 
@@ -47,10 +48,10 @@ abstract class PaymentBuilder
         define('UP_FILE_PORT', '9080');
 
 //        define('SDK_SIGN_CERT_PATH', $keyPath.'acp_test_sign.pfx');
-        define('SDK_SIGN_CERT_PATH', $keyPath.'700000000000001_acp.pfx');
+        define('SDK_SIGN_CERT_PATH', $keyPath . '700000000000001_acp.pfx');
         define('SDK_SIGN_CERT_PWD', '000000');
 //        define('SDK_ENCRYPT_CERT_PATH', $keyPath.'acp_test_enc.cer');
-        define('SDK_ENCRYPT_CERT_PATH', $keyPath.'verify_sign_acp.cer');
+        define('SDK_ENCRYPT_CERT_PATH', $keyPath . 'verify_sign_acp.cer');
         define('SDK_VERIFY_CERT_DIR', $keyPath);
         define('SDK_FRONT_TRANS_URL', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/frontTransReq.do');
         define('SDK_BACK_TRANS_URL', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/backTransReq.do');
@@ -59,8 +60,8 @@ abstract class PaymentBuilder
         define('SDK_FILE_QUERY_URL', UP_GATEWAY_IP . ':' . UP_FILE_PORT . '/');
         define('SDK_Card_Request_Url', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/cardTransReq.do');
         define('SDK_App_Request_Url', UP_GATEWAY_IP . ':' . UP_COMMON_PORT . '/gateway/api/appTransReq.do');
-        define('SDK_FILE_DOWN_PATH', public_path().'/payments/unionpay/file/');
-        define('SDK_LOG_FILE_PATH', public_path().'/payments/unionpay/logs/');
+        define('SDK_FILE_DOWN_PATH', public_path() . '/payments/unionpay/file/');
+        define('SDK_LOG_FILE_PATH', public_path() . '/payments/unionpay/logs/');
         define('SDK_LOG_LEVEL', PhpLog::DEBUG);
 
 
@@ -75,19 +76,19 @@ abstract class PaymentBuilder
         define('UP_CENT_CONVERT_RATE', 100);
 
         return [
-            'version'      => '5.0.0',
-            'encoding'     => 'utf-8',
-            'txnType'      => '01',
-            'txnSubType'   => '01',
-            'bizType'      => '000201',
-            'frontUrl'     => SDK_FRONT_NOTIFY_URL,
-            'backUrl'      => SDK_BACK_NOTIFY_URL,
-            'signMethod'   => '01',
+            'version' => '5.0.0',
+            'encoding' => 'utf-8',
+            'txnType' => '01',
+            'txnSubType' => '01',
+            'bizType' => '000201',
+            'frontUrl' => SDK_FRONT_NOTIFY_URL,
+            'backUrl' => SDK_BACK_NOTIFY_URL,
+            'signMethod' => '01',
 //            'channelType'  => '08', // mobile
-            'channelType'  => '07', // internet
-            'accessType'   => '0',
+            'channelType' => '07', // internet
+            'accessType' => '0',
             'currencyCode' => '156',
-            'merId'        => config('defaults.payment.credentials.unionpay.partner_id'),
+            'merId' => config('defaults.payment.credentials.unionpay.partner_id'),
         ];
     }
 
@@ -113,6 +114,7 @@ abstract class PaymentBuilder
     /** Common Methods for Payment Gateways */
     /** Common for Alipay & Unionpay
      * ($sort, $encode) are used in Unionpay
+     *
      * @param $para
      * @param $sort
      * @param $encode

@@ -2,6 +2,9 @@
 
 namespace SkysoulDesign\Payment;
 
+use DreamsArk\Models\Payment\Transaction;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
+use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 use SkysoulDesign\Payment\Implementations\Alipay\AlipayDirect;
 use SkysoulDesign\Payment\Implementations\Alipay\AlipayNotify;
 use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
@@ -13,23 +16,48 @@ use SkysoulDesign\Payment\Implementations\Wechat\WechatDirect;
  *
  * @package SkysoulDesign\Payment
  */
-class PaymentGateway
+class PaymentGateway implements PaymentGatewayContract
 {
 
     /**
      * @var PaymentBuilder
      */
     public $builder;
+    /**
+     * @var Transaction
+     */
+    private $transaction;
+    /**
+     * @var
+     */
+    private $driver;
 
     /**
      * PaymentGateway constructor.
      *
-     * @param PaymentBuilder $builder
+     * @param $driver
      */
-    private function __construct(PaymentBuilder $builder)
+    public function __construct($driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @return string
+     * @throws DriverNotFoundException
+     */
+    public function init(Transaction $transaction)
     {
 
-        $this->builder = $builder;
+        $driver = $transaction->getAttribute('method');
+
+        if (!in_array($driver, config('payment.drivers'))) {
+            throw new DriverNotFoundException("There is no driver available with the name of $driver.");
+        }
+
+        return app("payment.drivers.$driver");
+
     }
 
     public static function alipayDirect()

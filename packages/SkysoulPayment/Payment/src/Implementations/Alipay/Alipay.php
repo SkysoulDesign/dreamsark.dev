@@ -5,77 +5,96 @@ namespace SkysoulDesign\Payment\Implementations\Alipay;
 
 use Exception;
 use Log;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\PaymentBuilder;
+use SkysoulDesign\Payment\PaymentGateway;
 
-class Alipay extends PaymentBuilder
+class Alipay extends PaymentGateway
 {
+
+    const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do';
+    const SIGN_TYPE = 'RSA';
+    const PRIVATE_KEY_PATH = 'near';
 
     public $postCharset = "UTF-8";
     protected $fileCharset = "UTF-8";
     protected $RESPONSE_SUFFIX = "_response";
     protected $ERROR_RESPONSE = "error_response";
     protected $SIGN_NODE_NAME = "sign";
+
+    public function __construct()
+    {
+//        $this->publicRequestParam['app_id'] = $this->config['app_id'];
+//        $this->publicRequestParam['charset'] = $this->config['charset'];
+//        $this->publicRequestParam['timestamp'] = date('Y-m-d H:i:s');
+    }
+
+    public function sign()
+    {
+
+    }
+
     protected $eventResponse;
 
     public $config = [
-        'ali_public_key_path'    => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB",
+        'ali_public_key_path' => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB",
         'private_key_path' => 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKK0PXoLKnBkgtOl0kvyc9X2tUUdh/lRZr9RE1frjr2ZtAulZ+Moz9VJZFew1UZIzeK0478obY/DjHmD3GMfqJoTguVqJ2MEg+mJ8hJKWelvKLgfFBNliAw+/9O6Jah9Q3mRzCD8pABDEHY7BM54W7aLcuGpIIOa/qShO8dbXn+FAgMBAAECgYA8+nQ380taiDEIBZPFZv7G6AmT97doV3u8pDQttVjv8lUqMDm5RyhtdW4n91xXVR3ko4rfr9UwFkflmufUNp9HU9bHIVQS+HWLsPv9GypdTSNNp+nDn4JExUtAakJxZmGhCu/WjHIUzCoBCn6viernVC2L37NL1N4zrR73lSCk2QJBAPb/UOmtSx+PnA/mimqnFMMP3SX6cQmnynz9+63JlLjXD8rowRD2Z03U41Qfy+RED3yANZXCrE1V6vghYVmASYsCQQCoomZpeNxAKuUJZp+VaWi4WQeMW1KCK3aljaKLMZ57yb5Bsu+P3odyBk1AvYIPvdajAJiiikRdIDmi58dqfN0vAkEAjFX8LwjbCg+aaB5gvsA3t6ynxhBJcWb4UZQtD0zdRzhKLMuaBn05rKssjnuSaRuSgPaHe5OkOjx6yIiOuz98iQJAXIDpSMYhm5lsFiITPDScWzOLLnUR55HL/biaB1zqoODj2so7G2JoTiYiznamF9h9GuFC2TablbINq80U2NcxxQJBAMhw06Ha/U7qTjtAmr2qAuWSWvHU4ANu2h0RxYlKTpmWgO0f47jCOQhdC3T/RK7f38c7q8uPyi35eZ7S1e/PznY=',
-        'public_key_path'  => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCitD16CypwZILTpdJL8nPV9rVFHYf5UWa/URNX6469mbQLpWfjKM/VSWRXsNVGSM3itOO/KG2Pw4x5g9xjH6iaE4LlaidjBIPpifISSlnpbyi4HxQTZYgMPv/TuiWofUN5kcwg/KQAQxB2OwTOeFu2i3LhqSCDmv6koTvHW15/hQIDAQAB",
+        'public_key_path' => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCitD16CypwZILTpdJL8nPV9rVFHYf5UWa/URNX6469mbQLpWfjKM/VSWRXsNVGSM3itOO/KG2Pw4x5g9xjH6iaE4LlaidjBIPpifISSlnpbyi4HxQTZYgMPv/TuiWofUN5kcwg/KQAQxB2OwTOeFu2i3LhqSCDmv6koTvHW15/hQIDAQAB",
         'alipayKeyPath' => '',
         'rsaPrivateKeyFilePath' => '',
         'rsaPublicKeyFilePath' => '',
-        'charset'              => "GBK",
-        'gatewayUrl'           => "https://openapi.alipay.com/gateway.do",
-        'app_id'               => "2088022177082393"
+        'charset' => "GBK",
+        'gatewayUrl' => "https://openapi.alipay.com/gateway.do",
+        'app_id' => "2088022177082393"
     ];
 
     protected $methodAndParams = [
-        'pay'    => [
-            'method'   => 'alipay.trade.pay',
-            'param'    => [
+        'pay' => [
+            'method' => 'alipay.trade.pay',
+            'param' => [
                 'out_trade_no' => '', 'scene' => '', 'auth_code' => '', 'total_amount' => '', 'seller_id' => '',
-                'subject'      => '', 'body' => '',
+                'subject' => '', 'body' => '',
             ],
             'response' => [
-                'trade_no'      => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'total_amount' => '', 'receipt_amount' => '',
-                'gmt_payment'   => '', 'fund_bill_list' => ['AMOUNT' => '', 'fund_channel' => ''],
+                'trade_no' => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'total_amount' => '', 'receipt_amount' => '',
+                'gmt_payment' => '', 'fund_bill_list' => ['AMOUNT' => '', 'fund_channel' => ''],
                 'buyer_user_id' => '', 'discount_goods_detail' => '',
             ]
         ],
-        'qr'    => [
-            'method'   => 'alipay.trade.precreate',
-            'param'    => [
+        'qr' => [
+            'method' => 'alipay.trade.precreate',
+            'param' => [
                 'out_trade_no' => '', 'total_amount' => '', 'seller_id' => '',
-                'buyer_logon_id'      => '', 'subject'      => '', 'body' => '',
+                'buyer_logon_id' => '', 'subject' => '', 'body' => '',
             ],
             'response' => [
                 'out_trade_no' => '', 'qr_code' => '',
             ]
         ],
-        'query'  => [
-            'method'   => 'alipay.trade.query',
-            'param'    => [
+        'query' => [
+            'method' => 'alipay.trade.query',
+            'param' => [
                 'out_trade_no' => '', 'trade_no' => '',
             ],
             'response' => [
-                'trade_no'      => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'total_amount' => '', 'receipt_amount' => '',
-                'trade_status'  => '', 'fund_bill_list' => ['AMOUNT' => '', 'fund_channel' => ''],
+                'trade_no' => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'total_amount' => '', 'receipt_amount' => '',
+                'trade_status' => '', 'fund_bill_list' => ['AMOUNT' => '', 'fund_channel' => ''],
                 'buyer_user_id' => '', 'discount_goods_detail' => '', 'send_pay_date' => '',
             ]
         ],
         'refund' => [
-            'method'   => 'alipay.trade.refund',
-            'param'    => [
+            'method' => 'alipay.trade.refund',
+            'param' => [
                 'trade_no' => '', 'out_trade_no' => '', 'refund_amount' => '', 'refund_reason' => '',
             ],
             'response' => [
-                'trade_no'    => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'open_id' => '',
+                'trade_no' => '', 'out_trade_no' => '', 'buyer_logon_id' => '', 'open_id' => '',
                 'fund_change' => '', 'refund_fee' => '', 'gmt_refund_pay' => '', 'buyer_user_id' => '', 'msg' => ''
             ]
         ],
         'cancel' => [
-            'method'   => 'alipay.trade.cancel',
-            'param'    => [
+            'method' => 'alipay.trade.cancel',
+            'param' => [
                 'trade_no' => '', 'out_trade_no' => '', 'msg' => ''
             ],
             'response' => [
@@ -85,21 +104,14 @@ class Alipay extends PaymentBuilder
     ];
 
     protected $publicRequestParam = [
-        'app_id'     => '', 'method' => '', 'charset' => '', 'sign_type' => 'RSA',
-        'sign'       => '', 'timestamp' => '', 'version' => '1.0', 'app_auth_token' => '',
+        'app_id' => '', 'method' => '', 'charset' => '', 'sign_type' => 'RSA',
+        'sign' => '', 'timestamp' => '', 'version' => '1.0', 'app_auth_token' => '',
         'notify_url' => '',
     ];
 
     protected $requestParams = [
 
     ];
-
-    public function __construct()
-    {
-        $this->publicRequestParam['app_id'] = $this->config['app_id'];
-        $this->publicRequestParam['charset'] = $this->config['charset'];
-        $this->publicRequestParam['timestamp'] = date('Y-m-d H:i:s');
-    }
 
     public function createQrCode($params)
     {
@@ -143,7 +155,8 @@ class Alipay extends PaymentBuilder
         return $requestArr;
     }
 
-    protected function sign($data) {
+    protected function sign($data)
+    {
         $priKey = file_get_contents($this->get('config')['private_key_path']);
         $res = openssl_get_privatekey($priKey);
         openssl_sign($data, $sign, $res);
@@ -152,7 +165,8 @@ class Alipay extends PaymentBuilder
         return $sign;
     }
 
-    protected function getSignContent($params) {
+    protected function getSignContent($params)
+    {
         ksort($params);
 
         $stringToBeSigned = "";
@@ -173,7 +187,8 @@ class Alipay extends PaymentBuilder
         return $stringToBeSigned;
     }
 
-    protected function checkEmpty($value) {
+    protected function checkEmpty($value)
+    {
         if (!isset($value))
             return true;
         if ($value === null)

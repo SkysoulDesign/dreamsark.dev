@@ -9,6 +9,9 @@ use DreamsArk\Http\Requests\Bag\CoinWithdrawRequest;
 use DreamsArk\Jobs\Payment\CreateTransactionJob;
 use DreamsArk\Jobs\Payment\Forms\GeneratePaymentFormJob;
 use DreamsArk\Jobs\Payment\Forms\GenerateWithdrawFormJob;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
+use SkysoulDesign\Payment\Payment;
+use SkysoulDesign\Payment\PaymentGateway;
 
 /**
  * Class CoinController
@@ -32,16 +35,36 @@ class CoinController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CoinCreation $request
+     * @param Payment $payment
      * @return \Illuminate\Http\Response
+     * @internal param PaymentGateway $gateway
      */
-    public function store(CoinCreation $request)
+    public function store(CoinCreation $request, Payment $payment)
     {
-        $transactionData = dispatch(new CreateTransactionJob($request));
-        $getForm = dispatch(new GeneratePaymentFormJob($transactionData));
-        if (is_null($getForm))
-            return redirect()->back()->withErrors(trans('payment.invalid-method-selected'));
 
-        return response($getForm);
+        $transaction = dispatch(new CreateTransactionJob(
+            $request->user(),
+            $request->input('amount'),
+            $request->input('payment_method')
+        ));
+
+//        $gateway = $gateway->init($transaction);
+
+//        dd(app('ReportAggregator'));
+
+        $payment->forTransaction($transaction);
+        $payment->getResponse();
+
+        dd($payment);
+
+//        dd(app('payment.drivers.alipay'));
+
+//        $getForm = dispatch(new GeneratePaymentFormJob($transaction));
+//        
+//        dd($getForm);
+        //$transaction->getPaymentResponse()
+        return $gateway->getPaymentResponse();
+
         //die($getForm);
 
         /* handled in PaymentController
