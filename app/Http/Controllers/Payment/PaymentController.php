@@ -46,6 +46,8 @@ class PaymentController extends Controller
 
         \Log::info($request->all());
 
+        dd(route('payment.alipay.notify'));
+
         dd($passed);
 
         $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();

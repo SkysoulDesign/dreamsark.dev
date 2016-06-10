@@ -51,7 +51,7 @@ class Alipay extends PaymentGateway
             "partner" => "2088221979483694",
             "seller_id" => "2088221979483694",
             "payment_type" => "1",
-            "return_url" => "http://dreamsark.dev/payment/alipay/status",
+            "return_url" => route('payment.alipay.status'),
             "subject" => "payment.subject",
         ];
     }

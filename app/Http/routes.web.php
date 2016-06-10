@@ -158,7 +158,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
         $app->group(['prefix' => 'alipay', 'as' => 'alipay.', 'middleware' => 'transaction'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
-            $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+            $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
