@@ -52,8 +52,6 @@ class PaymentController extends Controller
 
         $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();
 
-
-
         if (!$paymentResult)
             return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
 
