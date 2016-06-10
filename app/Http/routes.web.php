@@ -43,6 +43,10 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
+$app->get('info', function () {
+    phpinfo();
+});
+
 /** @var $app \Illuminate\Routing\Router */
 
 $app->group(['middleware' => ['web']], function () use ($app) {
@@ -152,7 +156,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
-        $app->group(['prefix' => 'alipay', 'as' => 'alipay.', 'middleware'=>'transaction'], function () use ($app) {
+        $app->group(['prefix' => 'alipay', 'as' => 'alipay.', 'middleware' => 'transaction'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
