@@ -43,6 +43,34 @@ abstract class PaymentGateway implements PaymentGatewayContract
     }
 
     /**
+     * Build URL Query string
+     *
+     * @param array $data
+     * @param bool $encoded
+     * @return string
+     */
+    public function buildQueryString(array $data, bool $encoded = false) : string
+    {
+        $query = http_build_query($data);
+
+        if ($encoded)
+            return $query;
+
+        return urldecode($query);
+    }
+
+
+
+
+
+
+
+
+
+
+    
+
+    /**
      * @param Transaction $transaction
      * @return string
      * @throws DriverNotFoundException
@@ -51,6 +79,7 @@ abstract class PaymentGateway implements PaymentGatewayContract
     {
 
         $driver = $transaction->getAttribute('method');
+
 
         if (!in_array($driver, config('payment.drivers'))) {
             throw new DriverNotFoundException("There is no driver available with the name of $driver.");

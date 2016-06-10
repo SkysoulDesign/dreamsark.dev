@@ -12,4 +12,5 @@ interface PaymentGatewayContract
     const GATEWAY_URL = 'http://gateway.com/pay.do';
 
     public function getPostData() : array;
+
 }

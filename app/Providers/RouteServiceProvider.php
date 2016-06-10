@@ -52,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
         /**
          * Generates Api or Web Routes
          */
-        $route = $request->wantsJson() ? 'api' : 'web';
+        $route = $request->wantsJson() ? 'web' : 'web';
 
         /**
          * Web Router

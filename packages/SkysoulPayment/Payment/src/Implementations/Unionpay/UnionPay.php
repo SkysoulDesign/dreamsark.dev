@@ -1,6 +1,6 @@
 <?php
 
-namespace SkysoulDesign\Payment\Implementations\Alipay;
+namespace SkysoulDesign\Payment\Implementations\UnionPay;
 
 
 use DreamsArk\Models\Payment\Transaction;
@@ -8,7 +8,7 @@ use Exception;
 use Log;
 use SkysoulDesign\Payment\PaymentGateway;
 
-class Alipay extends PaymentGateway
+class UnionPay extends PaymentGateway
 {
 
     const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?';

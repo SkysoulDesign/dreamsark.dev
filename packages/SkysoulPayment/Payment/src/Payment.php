@@ -6,6 +6,7 @@ use DreamsArk\Models\Payment\Transaction;
 use GuzzleHttp\Client;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
+use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
 
 /**
  * Class Payment
@@ -21,7 +22,7 @@ class Payment
     protected $drivers;
 
     /**
-     * @var PaymentGateway
+     * @var Alipay|PaymentGateway
      */
     protected $gateway;
 
@@ -50,23 +51,23 @@ class Payment
             );
 
         $this->gateway = $gateway;
-
     }
 
     /**
+     * Init Class based on a Transaction
+     *
      * @param Transaction $transaction
      * @throws DriverNotFoundException
      * @return $this
      */
     public function forTransaction(Transaction $transaction)
     {
-//        dd($this);
         /**
          * Get Payment Driver
          */
         $gateway = $transaction->getAttribute('method');
 
-        if (!in_array($gateway, config('payment.drivers'))) {
+        if (!array_has(config('payment.drivers'), $gateway)) {
             throw new DriverNotFoundException("There is no driver available with the name of $gateway.");
         }
 
@@ -81,45 +82,12 @@ class Payment
     public function getResponse()
     {
 
-
         $data = $this->gateway->getPostData();
-        ksort($data);
-
-        $final = '';
-        foreach ($data as $key => $value) {
-            $final = $final . "&$key=$value";
-        }
-
-        $data['sign'] = $this->gateway->sign(ltrim($final, '&'));
+        $data['sign'] = $this->gateway->sign($data);
         $data['sign_type'] = 'RSA';
 
+        return $data;
 
-        $final = '';
-        foreach ($data as $key => $value) {
-            $final = $final . "&$key=$value";
-        }
-
-//        dd($final);
-
-        return redirect($this->gateway::GATEWAY_URL.ltrim($final, '&'));
-
-        $client = new Client();
-        $res = $client->request('POST', $this->gateway::GATEWAY_URL, $this->gateway->getPostData());
-
-        echo $res->getBody();
-    }
-
-    /**
-     * @return PaymentGateway
-     * @throws DriverNotFoundException
-     */
-    protected function gateway() : PaymentGateway
-    {
-
-        if ($this->driver === null)
-            throw new DriverNotFoundException('payment gateway was not set');
-
-        return $this->driver;
     }
 
 }

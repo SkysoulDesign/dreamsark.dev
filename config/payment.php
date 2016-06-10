@@ -13,6 +13,26 @@ return [
     |
     */
 
-    'drivers' => explode(',', env('PAYMENT_DRIVERS', 'alipay')),
+//    'drivers' => explode(',', env('PAYMENT_DRIVERS', 'alipay')),
+
+    'drivers' => [
+        'alipay' => [
+            'enabled' => true,
+            'gateway_url' => 'https://mapi.alipay.com/gateway.do',
+            'seller_id' => '2088221979483694',
+            'private_key' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem',
+            'sign_type' => 'RSA',
+            'callback' => ''
+
+        ],
+        'unionpay' => [
+            'enabled' => true,
+            'seller_id' => '2088221979483694'
+        ],
+        'wechat' => [
+            'enabled' => true,
+            'seller_id' => '2088221979483694'
+        ]
+    ]
 
 ];

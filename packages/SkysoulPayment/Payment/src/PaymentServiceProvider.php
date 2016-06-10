@@ -2,21 +2,28 @@
 
 namespace SkysoulDesign\Payment;
 
-
-use DreamsArk\Http\Controllers\User\Bag\CoinController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
-use SkysoulDesign\Payment\Implementations\Alipay\AlipayDirect;
 use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
+use SkysoulDesign\Payment\Implementations\UnionPay\UnionPay;
 
+/**
+ * Class PaymentServiceProvider
+ *
+ * @package SkysoulDesign\Payment
+ */
 class PaymentServiceProvider extends ServiceProvider
 {
 
+    /**
+     * List of available drivers
+     *
+     * @var array
+     */
     private $drivers = [
         'alipay' => Alipay::class,
-        'unionpay' => GatewayPay::class
+        'unionpay' => UnionPay::class
     ];
 
     /**
@@ -33,16 +40,10 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-        /**
-         * Tag Drivers
-         */
-//        $this->app->tag($this->drivers, 'payment.drivers');
-
         /**
          * Bind Contract
          */
-        $this->app->singleton(PaymentGatewayContract::class, function ($app) {
+        $this->app->singleton(PaymentGatewayContract::class, function () {
             return new Payment($this->drivers);
         });
 
@@ -53,15 +54,6 @@ class PaymentServiceProvider extends ServiceProvider
         $this->app->alias(
             PaymentGatewayContract::class, 'payment'
         );
-
-//
-//        $this->app->bind('payment.drivers.alipay', Alipay::class);
-//
-//        $this->app->bind('ReportAggregator', function ($app) {
-//            return new PaymentGateway($app->tagged('drivers'));
-//        });
-
-
     }
 
     /**
@@ -71,6 +63,9 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        dd(array_merge([PaymentGateway::class], $this->drivers));
+        return [
+            PaymentGatewayContract::class,
+            Payment::class
+        ];
     }
 }
