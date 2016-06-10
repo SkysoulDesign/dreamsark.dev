@@ -47,7 +47,7 @@ class Alipay extends PaymentGateway
             "_input_charset" => "utf-8",
             "service" => "create_direct_pay_by_user",
             "body" => "payment.description",
-            "notify_url" => "http://dreamsark.dev/payment/alipay/notify",
+            "notify_url" => route('payment.alipay.notify'),
             "partner" => "2088221979483694",
             "seller_id" => "2088221979483694",
             "payment_type" => "1",

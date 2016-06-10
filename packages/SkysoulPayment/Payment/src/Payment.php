@@ -91,7 +91,7 @@ class Payment
 
     }
 
-    public function verify(Request $request)
+    public function verify(Request $request) : bool
     {
         $para_temp = $request->except('sign', 'sign_type');
         $sign = $request->input('sign');

@@ -40,10 +40,14 @@ class PaymentController extends Controller
     {
 
         $payment->forTransaction($transaction);
-        $payment->verify($request);
+        $passed = $payment->verify($request);
 
         // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
-        dd($request->all());
+
+        \Log::info($request->all());
+
+        dd($passed);
+
         $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();
 
 
@@ -70,6 +74,12 @@ class PaymentController extends Controller
      */
     public function alipayNotifications(Request $request)
     {
+
+        \Log::info('notify');
+        \Log::info($request->all());
+
+        dd('notfy');
+
         // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
         $paymentResult = PaymentGateway::alipayNotify()->verifyNotify();
 
