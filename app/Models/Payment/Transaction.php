@@ -56,7 +56,7 @@ class Transaction extends Model
      */
     public function getPaymentResponse()
     {
-        return new PaymentGateway($this);
+        return app('payment')->forTransaction($this)->getResponse();
     }
 
 }

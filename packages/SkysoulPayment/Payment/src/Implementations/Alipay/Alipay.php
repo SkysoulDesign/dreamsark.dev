@@ -15,6 +15,7 @@ class Alipay extends PaymentGateway
     const SIGN_TYPE = 'RSA';
     const SELLER_ID = '2088221979483694';
     const PRIVATE_KEY_PATH = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem';
+    const PUBLIC_KEY_PATH = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/alipay_public_key.pem';
 
 //    public $postCharset = "UTF-8";
 //    protected $fileCharset = "UTF-8";
@@ -42,7 +43,7 @@ class Alipay extends PaymentGateway
 
         return [
             "out_trade_no" => $this->transaction->getAttribute('unique_no'),
-            "total_fee" => $this->transaction->getAttribute('amount'),
+            "total_fee" => '0.01',
             "_input_charset" => "utf-8",
             "service" => "create_direct_pay_by_user",
             "body" => "payment.description",
@@ -76,6 +77,21 @@ class Alipay extends PaymentGateway
         openssl_free_key($response);
 
         return base64_encode($sign);
+    }
+
+    /**
+     * @param $data
+     * @param $sign
+     * @return bool
+     */
+    public function verify($data, $sign)
+    {
+        $pubKey = file_get_contents(static::PUBLIC_KEY_PATH);
+        $res = openssl_get_publickey($pubKey);
+        $result = (bool)openssl_verify($data, base64_decode($sign), $res);
+        openssl_free_key($res);
+
+        return $result;
     }
 
 

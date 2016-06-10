@@ -8,6 +8,7 @@ use DreamsArk\Jobs\Payment\UpdateTransactionJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
+use SkysoulDesign\Payment\Payment;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
@@ -31,12 +32,22 @@ class PaymentController extends Controller
 
     /**
      * @param Request $request
+     * @param Transaction $transaction
+     * @param Payment $payment
      * @return mixed
      */
-    public function alipayStatus(Request $request)
+    public function alipayStatus(Request $request, Transaction $transaction, Payment $payment)
     {
+
+        $payment->forTransaction($transaction);
+        $payment->verify($request);
+
         // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
+        dd($request->all());
         $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();
+
+
+
         if (!$paymentResult)
             return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
 

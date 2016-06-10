@@ -4,6 +4,7 @@ namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
@@ -88,6 +89,17 @@ class Payment
 
         return $data;
 
+    }
+
+    public function verify(Request $request)
+    {
+        $para_temp = $request->except('sign', 'sign_type');
+        $sign = $request->input('sign');
+
+        ksort($para_temp);
+        $prestr = $this->gateway->buildQueryString($para_temp);
+
+        return $this->gateway->verify($prestr, $sign);
     }
 
 }

@@ -9,6 +9,7 @@ use DreamsArk\Http\Middleware\EncryptCookies;
 use DreamsArk\Http\Middleware\Localization;
 use DreamsArk\Http\Middleware\RedirectIfAuthenticated;
 use DreamsArk\Http\Middleware\RoleMiddleware;
+use DreamsArk\Http\Middleware\TransactionMiddleware;
 use DreamsArk\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -62,14 +63,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => Authenticate::class,
+        'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
-        'guest'      => RedirectIfAuthenticated::class,
-        'can'        => Authorize::class,
+        'guest' => RedirectIfAuthenticated::class,
+        'can' => Authorize::class,
+        'transaction' => TransactionMiddleware::class,
 
         /**
          * Custom
          */
-        'role'       => RoleMiddleware::class,
+        'role' => RoleMiddleware::class,
     ];
 }

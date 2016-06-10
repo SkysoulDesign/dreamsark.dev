@@ -35,11 +35,9 @@ class CoinController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CoinCreation $request
-     * @param Payment $payment
      * @return \Illuminate\Http\Response
-     * @internal param PaymentGateway $gateway
      */
-    public function store(CoinCreation $request, Payment $payment)
+    public function store(CoinCreation $request)
     {
 
         $transaction = dispatch(new CreateTransactionJob(
@@ -48,14 +46,7 @@ class CoinController extends Controller
             $request->input('payment_method')
         ));
 
-//        $gateway = $gateway->init($transaction);
-
-//        dd(app('ReportAggregator'));
-
-        $payment->forTransaction($transaction);
-        $payment->getResponse();
-
-        dd($payment);
+        return response()->json($transaction->getPaymentResponse());
 
 //        dd(app('payment.drivers.alipay'));
 

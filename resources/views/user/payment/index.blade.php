@@ -44,23 +44,59 @@
     <script>
         $(document).ready(function () {
             /*if ($('#withdraw-coin-modal').length > 0)
-                $('#withdraw-coin-modal')
-                        .modal({
-                            blurring:  true,
-                            closable:  false,
-                            onApprove: function () {
-                                $('#withdraw-coin-form').submit();
-                            }
-                        })
-                        .modal('attach events', '#withdraw-coin', 'show');*/
+             $('#withdraw-coin-modal')
+             .modal({
+             blurring:  true,
+             closable:  false,
+             onApprove: function () {
+             $('#withdraw-coin-form').submit();
+             }
+             })
+             .modal('attach events', '#withdraw-coin', 'show');*/
             $('.item.view-modal').each(function () {
                 var id = $(this).attr('id');
-                $('#' + id+'-modal')
+                $('#' + id + '-modal')
                         .modal({
                             blurring: true,
-                            closable:  false,
+                            closable: false,
                             onApprove: function () {
-                                $('#' + id+'-form').submit();
+
+
+                                let form = $('#' + id + '-form');
+
+//                                return form.submit();
+
+                                form.api({
+                                    action: form.action,
+                                    method: 'POST',
+                                    on: 'now',
+                                    data: {
+                                        "_token": '{{ csrf_token() }}',
+                                        amount: form.find("input[name='amount']").val(),
+                                        payment_method: form.find("input[name='payment_method']").val()
+                                    },
+                                    onResponse: function (response) {
+
+                                        let $form = document.createElement('form');
+
+                                        for (let item in response) {
+                                            let input = document.createElement('input');
+                                                input.name = item;
+                                                input.setAttribute('value', response[item]);
+
+                                            $form.appendChild(input);
+
+                                        }
+
+                                        $form.action = 'https://mapi.alipay.com/gateway.do';
+                                        $form.method = 'post'
+                                        $form.submit();
+                                        console.log($form);
+
+                                    }
+                                })
+
+//                                $('#' + id + '-form').submit();
                             }
                         })
                         .modal('attach events', '#' + id, 'show')

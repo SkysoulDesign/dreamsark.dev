@@ -152,7 +152,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
-        $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
+        $app->group(['prefix' => 'alipay', 'as' => 'alipay.', 'middleware'=>'transaction'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
