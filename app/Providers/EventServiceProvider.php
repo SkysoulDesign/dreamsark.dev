@@ -203,7 +203,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         PaymentWasConfirmed::class => [
-            addCoinsToUser::class
+            AddCoinsToUser::class
         ]
 
     ];

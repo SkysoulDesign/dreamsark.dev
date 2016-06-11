@@ -28,7 +28,7 @@ class PurchaseCoinJob extends Job
      * Create a new command instance.
      *
      * @param User $user
-     * @param $amount
+     * @param float $amount
      */
     public function __construct(User $user, float $amount)
     {
@@ -52,6 +52,5 @@ class PurchaseCoinJob extends Job
          * Announce CoinWasPurchased
          */
         event(new CoinWasPurchased($this->user, $this->amount));
-
     }
 }
