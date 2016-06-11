@@ -5,8 +5,6 @@ namespace SkysoulDesign\Payment;
 use Illuminate\Support\ServiceProvider;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
-use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
-use SkysoulDesign\Payment\Implementations\UnionPay\UnionPay;
 
 /**
  * Class PaymentServiceProvider
