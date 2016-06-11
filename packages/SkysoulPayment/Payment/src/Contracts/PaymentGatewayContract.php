@@ -38,10 +38,13 @@ interface PaymentGatewayContract
      * for example, some gateways might require the price
      * in cents and others in dollar.
      *
+     * Attention to the return type, int != float
+     * so it might have discrepancy on how the value is parsed on the gateway API
+     *
      * @param int $amount
      * @param int $base
-     * @return int
+     * @return int|float
      */
-    public function getPrice(int $amount, int $base) : int;
+    public function getPrice(int $amount, int $base);
 
 }
