@@ -15,6 +15,10 @@ _ide_helper.php
 *.lock
 /public/user-profiles
 
+*.pem
+*.cert
+*crt
+
 
 /resources/assets/typescript/**/*.js
 .map

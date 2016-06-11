@@ -43,10 +43,6 @@ class PurchaseCoinJob extends Job
      */
     public function handle(BagRepositoryInterface $repository)
     {
-        \Log::info('adding coin');
-        \Log::info($this->amount);
-
-
         /**
          * Increment User Coins
          */
