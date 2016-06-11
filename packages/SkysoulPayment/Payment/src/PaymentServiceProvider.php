@@ -51,7 +51,7 @@ class PaymentServiceProvider extends ServiceProvider
         /**
          * Bind Contract
          */
-        $this->app->singleton(PaymentGatewayContract::class, function ($app, $model) {
+        $this->app->bind(PaymentGatewayContract::class, function ($app, $model) {
             return (new Payment($app['payment.drivers']))->boot(...$model);
         });
 
