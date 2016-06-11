@@ -74,7 +74,8 @@ class PaymentServiceProvider extends ServiceProvider
         return [
             PaymentGatewayContract::class,
             Payment::class,
-            'payment'
+            'payment',
+            'payment.drivers'
         ];
     }
 }
