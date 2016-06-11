@@ -4,9 +4,7 @@ namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Database\Eloquent\Model;
-use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
-use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
 
 /**
  * Class Payment
@@ -16,19 +14,14 @@ use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
 class Payment
 {
     /**
-     * @var PaymentGatewayContract
+     * @var array
      */
     protected $drivers;
 
     /**
-     * @var Alipay|PaymentGateway
+     * @var PaymentGateway
      */
     protected $gateway;
-
-    /**
-     * @var Transaction
-     */
-    protected $transaction;
 
     /**
      * Gateway name
@@ -36,6 +29,11 @@ class Payment
      * @var string
      */
     protected $gatewayName;
+
+    /**
+     * @var Transaction
+     */
+    protected $transaction;
 
     /**
      * Payment constructor.
@@ -48,7 +46,7 @@ class Payment
     }
 
     /**
-     * Init Class based on a Transaction
+     * Init Class
      *
      * @param Model $transaction
      * @return Payment
@@ -65,7 +63,7 @@ class Payment
             throw new DriverNotFoundException("There is no driver available with the name of $gateway.");
         }
 
-        $this->setGateway($gateway, $transaction);
+        $this->setGateway($gateway);
         $this->setGatewayName($gateway);
         $this->transaction = $transaction;
 
@@ -73,40 +71,18 @@ class Payment
     }
 
     /**
-     * Build URL Query string
-     *
-     * @param array $data
-     * @param bool $encoded
-     * @return string
-     */
-    public function buildQueryString(array $data, bool $encoded = false) : string
-    {
-
-        $query = http_build_query($data);
-
-        if ($encoded)
-            return $query;
-
-        return urldecode($query);
-    }
-
-    /**
      * Set Payment Gateway
      *
      * @param PaymentGateway|string $gateway
-     * @param $payload
      */
-    public function setGateway($gateway, $payload)
+    public function setGateway($gateway)
     {
 
         if (!$gateway instanceof PaymentGateway)
-            $gateway = new $this->drivers[$gateway](
-                $payload
-            );
+            $gateway = $this->drivers[$gateway];
 
         $this->gateway = $gateway;
     }
-
 
     /**
      * Set name of the current gateway
@@ -128,7 +104,7 @@ class Payment
 
         $data = $this->getPostData();
         $data[$this->gateway->signKey] = $this->sign($data);
-        $data['sign_type'] = 'RSA';
+        $data[$this->gateway->signTypeKey] = $this->getConfig('sign_type');
 
         return $data;
     }
@@ -141,15 +117,41 @@ class Payment
     private function getPostData() : array
     {
         return array_merge(
+
             $this->gateway->getAdditionalPostData(),
+
+            /**
+             * Gets The callbacks
+             */
             $this->parseCallback([
                 $this->gateway->callbackKey => config('payment.callback_url')
             ]),
             $this->parseCallback([
                 $this->gateway->notifyCallbackKey => config('payment.notify_callback_url')
             ]),
-            [$this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')],
-            [$this->gateway->priceKey => ($this->transaction->getAttribute('amount') / config('payment.base'))]
+
+            /**
+             * Gets The Unique Service ID
+             */
+            array(
+                $this->gateway->serviceIdKey => $this->getConfig('service_id')
+            ),
+
+            /**
+             * Gets the Transaction unique ID
+             */
+            array(
+                $this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')
+            ),
+
+            /**
+             * Prepare the price to be sent to the gateway API
+             */
+            array(
+                $this->gateway->priceKey => $this->gateway->getPrice(
+                    $this->transaction->getAttribute('amount'), config('payment.base')
+                )
+            )
         );
     }
 
@@ -197,6 +199,35 @@ class Payment
     }
 
     /**
+     * Shortcut for getting the configs for $this gateway
+     *
+     * @param null|string $value
+     * @return mixed|string
+     */
+    private function getConfig(string $value) : string
+    {
+        return config("payment.drivers.$this->gatewayName.$value");
+    }
+
+    /**
+     * Build URL Query string
+     *
+     * @param array $data
+     * @param bool $encoded
+     * @return string
+     */
+    public function buildQueryString(array $data, bool $encoded = false) : string
+    {
+
+        $query = http_build_query($data);
+
+        if ($encoded)
+            return $query;
+
+        return urldecode($query);
+    }
+
+    /**
      * Verifies already signed query request
      *
      * @param array $request
@@ -207,7 +238,7 @@ class Payment
 
         $data = array_except($request, [
             $this->gateway->signKey,
-            'sign_type'
+            $this->gateway->signTypeKey
         ]);
 
         ksort($data);
@@ -222,21 +253,9 @@ class Payment
     }
 
     /**
-     * Shortcut for getting the configs for $this gateway
-     *
-     * @param null $value
-     * @return mixed|array
-     */
-    private function getConfig($value = null)
-    {
-        $base = "payment.drivers.$this->gatewayName";
-        return $value ? config("$base.$value") : config($base);
-    }
-
-    /**
      * Get response to be sent back to gateway API once verifies is okay
      *
-     * @return string
+     * @return mixed
      */
     public function getConfirmationResponse()
     {

@@ -23,7 +23,7 @@ class PaymentServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'alipay' => Alipay::class,
-        'unionpay' => UnionPay::class
+//        'unionpay' => UnionPay::class
     ];
 
     /**
@@ -40,11 +40,21 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        /**
+         * Bing Drivers
+         */
+        $this->app->singleton('payment.drivers', function () {
+            return array_map(function ($driver) {
+                return new $driver;
+            }, $this->drivers);
+        });
+
         /**
          * Bind Contract
          */
         $this->app->bind(PaymentGatewayContract::class, function ($app, $model) {
-            return (new Payment($this->drivers))->boot(...$model);
+            return (new Payment($app['payment.drivers']))->boot(...$model);
         });
 
         $this->app->alias(

@@ -9,7 +9,6 @@ use DreamsArk\Http\Middleware\EncryptCookies;
 use DreamsArk\Http\Middleware\Localization;
 use DreamsArk\Http\Middleware\RedirectIfAuthenticated;
 use DreamsArk\Http\Middleware\RoleMiddleware;
-use DreamsArk\Http\Middleware\TransactionMiddleware;
 use DreamsArk\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -17,6 +16,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use SkysoulDesign\Payment\Middleware\TransactionMiddleware;
 
 /**
  * Class Kernel
@@ -67,11 +67,11 @@ class Kernel extends HttpKernel
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'guest' => RedirectIfAuthenticated::class,
         'can' => Authorize::class,
-        'transaction' => TransactionMiddleware::class,
 
         /**
          * Custom
          */
         'role' => RoleMiddleware::class,
+        'transaction' => TransactionMiddleware::class,
     ];
 }
