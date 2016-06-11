@@ -113,11 +113,11 @@ class Alipay extends PaymentGateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
      *
-     * @param float $amount
+     * @param int $amount
      * @param int $base
      * @return int
      */
-    public function getPrice(float $amount, int $base) : int
+    public function getPrice(int $amount, int $base) : int
     {
         return $amount / $base;
     }
