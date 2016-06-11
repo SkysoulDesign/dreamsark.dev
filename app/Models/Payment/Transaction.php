@@ -61,7 +61,7 @@ class Transaction extends Model
      */
     public function getAmountAttribute($amount)
     {
-        return (float)$amount / 1000;
+        return $amount / 1000;
     }
 
     /**
