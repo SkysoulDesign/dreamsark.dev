@@ -61,11 +61,11 @@ class PaymentController extends Controller
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        \Log::info('received callbback');
-
         if ($transaction->payment->verify($request->all())) {
             dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
         }
+
+        \Log::info($request->toArray());
 
         return response($transaction->payment->getConfirmationResponse());
 

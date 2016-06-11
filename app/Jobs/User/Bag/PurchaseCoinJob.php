@@ -15,7 +15,7 @@ use DreamsArk\Repositories\Bag\BagRepositoryInterface;
 class PurchaseCoinJob extends Job
 {
     /**
-     * @var
+     * @var float
      */
     private $amount;
 
@@ -30,7 +30,7 @@ class PurchaseCoinJob extends Job
      * @param User $user
      * @param $amount
      */
-    public function __construct(User $user, $amount)
+    public function __construct(User $user, float $amount)
     {
         $this->amount = $amount;
         $this->user = $user;
