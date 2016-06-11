@@ -16,7 +16,7 @@ return [
 //    'drivers' => explode(',', env('PAYMENT_DRIVERS', 'alipay')),
 
     'callback_url' => 'payment.callback',
-    'notify_callback_url' => 'http://139.196.36.204/payment/alipay/notify',
+    'notify_callback_url' => 'payment.notify_callback',
 
     'drivers' => [
         'alipay' => [
