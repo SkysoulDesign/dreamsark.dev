@@ -50,7 +50,7 @@ class Transaction extends Model
      */
     public function setAmountAttribute($amount)
     {
-        $this->attributes['amount'] = $amount * 1000;
+        $this->attributes['amount'] = $amount * config('payment.base');
     }
 
 //    /**

@@ -15,9 +15,10 @@ return [
 
 //    'drivers' => explode(',', env('PAYMENT_DRIVERS', 'alipay')),
 
+    'base' => 1000,
+    
     'callback_url' => 'payment.callback',
     'notify_callback_url' => 'payment.notify_callback',
-
     'transaction_prefix' => ['pay' => 'DAPG', 'withdraw' => 'DAWG'],
 
     'drivers' => [

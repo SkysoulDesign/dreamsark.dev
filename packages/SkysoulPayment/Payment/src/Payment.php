@@ -149,7 +149,7 @@ class Payment
                 $this->gateway->notifyCallbackKey => config('payment.notify_callback_url')
             ]),
             [$this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')],
-            [$this->gateway->priceKey => $this->transaction->getAttribute('amount')]
+            [$this->gateway->priceKey => ($this->transaction->getAttribute('amount') / config('payment.base'))]
         );
     }
 
