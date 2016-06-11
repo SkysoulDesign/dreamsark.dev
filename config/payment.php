@@ -15,15 +15,18 @@ return [
 
 //    'drivers' => explode(',', env('PAYMENT_DRIVERS', 'alipay')),
 
+    'callback_url' => 'payment.callback',
+    'notify_callback_url' => 'http://139.196.36.204/payment/alipay/notify',
+
     'drivers' => [
         'alipay' => [
             'enabled' => true,
             'gateway_url' => 'https://mapi.alipay.com/gateway.do',
             'seller_id' => '2088221979483694',
-            'private_key' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem',
+            'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem',
+            'public_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/alipay_public_key.pem',
             'sign_type' => 'RSA',
             'callback' => ''
-
         ],
         'unionpay' => [
             'enabled' => true,

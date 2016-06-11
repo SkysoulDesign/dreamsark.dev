@@ -5,12 +5,18 @@ namespace DreamsArk\Jobs\Payment;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Payment\Transaction;
 
+/**
+ * Class UpdateTransactionJob
+ *
+ * @package DreamsArk\Jobs\Payment
+ */
 class UpdateTransactionJob extends Job
 {
     /**
      * @var Transaction
      */
     private $transaction;
+
     /**
      * @var array
      */
@@ -35,11 +41,12 @@ class UpdateTransactionJob extends Job
      */
     public function handle()
     {
-        $this->transaction->update([
-            'invoice_no'      => $this->request['invoice_no'],
-            'is_payment_done' => 1,
-            'attempts' => ($this->transaction->attempts + 1)
-        ]);
-        dispatch(new UpdateTransactionMessageJob($this->transaction->id, ['response' => $this->request['response']]));
+
+        $this->transaction->setAttribute('invoice_no', $this->request['invoice_no'] ?? null);
+        $this->transaction->setAttribute('is_payment_done', true);
+
+//        dispatch(new UpdateTransactionMessageJob(
+//            $this->transaction->id, ['response' => $this->request['response']]
+//        ));
     }
 }

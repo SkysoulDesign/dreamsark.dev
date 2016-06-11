@@ -20,55 +20,60 @@ abstract class PaymentGateway implements PaymentGatewayContract
 {
 
     /**
-     * @var PaymentBuilder
-     */
-    public $builder;
-    /**
-     * @var Transaction
-     */
-    private $transaction;
-    /**
-     * @var
-     */
-    private $driver;
-
-    /**
-     * PaymentGateway constructor.
+     * Callback url given to the gateway website
+     * You can pass an concrete URL or an Route Name
+     * Correct value: ['return_url' => 'route_name' or 'http://concrete_url.com']
      *
-     * @param $driver
+     * @var array
      */
-    public function __construct($driver)
-    {
-        $this->driver = $driver;
-    }
+    public $callback = [];
 
     /**
-     * Build URL Query string
+     * Callback url
      *
-     * @param array $data
-     * @param bool $encoded
-     * @return string
+     * @var array
      */
-    public function buildQueryString(array $data, bool $encoded = false) : string
-    {
-        $query = http_build_query($data);
+    public $notify_callback = [];
 
-        if ($encoded)
-            return $query;
+    /**
+     * Name of the unique key identifier on the gateway Api
+     * Ex: out_trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueIdentifierKey;
 
-        return urldecode($query);
-    }
+    /**
+     * Name of the sign key on the gateway Api
+     *
+     * @var string
+     */
+    public $signKey = 'sign';
 
 
+//    /**
+//     * @var PaymentBuilder
+//     */
+//    public $builder;
+//    /**
+//     * @var Transaction
+//     */
+//    private $transaction;
+//    /**
+//     * @var
+//     */
+//    private $driver;
+//
+//    /**
+//     * PaymentGateway constructor.
+//     *
+//     * @param $driver
+//     */
+//    public function __construct($driver)
+//    {
+//        $this->driver = $driver;
+//    }
 
-
-
-
-
-
-
-
-    
 
     /**
      * @param Transaction $transaction

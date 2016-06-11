@@ -26,13 +26,22 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th colspan="3"></th>
+                <th colspan="4"></th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>@lang('profile.no-purchase')</td>
-            </tr>
+            @forelse($transactions as $transaction)
+                <tr>
+                    <td>{{ $transaction->unique_no }}</td>
+                    <td>{{ $transaction->amount }}</td>
+                    <td>{{ $transaction->method }}</td>
+                    <td>{{ $transaction->status or 'processing' }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td>No Purchases</td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
     </div>
@@ -64,8 +73,6 @@
 
                                 let form = $('#' + id + '-form');
 
-//                                return form.submit();
-
                                 form.api({
                                     action: form.action,
                                     method: 'POST',
@@ -81,8 +88,8 @@
 
                                         for (let item in response) {
                                             let input = document.createElement('input');
-                                                input.name = item;
-                                                input.setAttribute('value', response[item]);
+                                            input.name = item;
+                                            input.setAttribute('value', response[item]);
 
                                             $form.appendChild(input);
 

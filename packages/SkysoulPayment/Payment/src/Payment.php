@@ -16,7 +16,6 @@ use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
  */
 class Payment
 {
-
     /**
      * @var PaymentGatewayContract
      */
@@ -28,6 +27,18 @@ class Payment
     protected $gateway;
 
     /**
+     * @var Transaction
+     */
+    protected $transaction;
+
+    /**
+     * Gateway name
+     *
+     * @var string
+     */
+    protected $gatewayName;
+
+    /**
      * Payment constructor.
      *
      * @param array $drivers
@@ -36,6 +47,33 @@ class Payment
     {
         $this->drivers = $drivers;
     }
+
+    /**
+     * Build URL Query string
+     *
+     * @param array $data
+     * @param bool $encoded
+     * @return string
+     */
+    public function buildQueryString(array $data, bool $encoded = false) : string
+    {
+        $query = http_build_query($data);
+
+        if ($encoded)
+            return $query;
+
+        return urldecode($query);
+    }
+
+//    /**
+//     * Alipay constructor.
+//     *
+//     * @param Transaction $transaction
+//     */
+//    public function __construct(Transaction $transaction)
+//    {
+//        $this->transaction = $transaction;
+//    }
 
     /**
      * Set Payment Gateway
@@ -73,33 +111,142 @@ class Payment
         }
 
         $this->setGateway($gateway, $transaction);
+        $this->setGatewayName($gateway);
+        $this->transaction = $transaction;
 
         return $this;
     }
 
     /**
+     * Set name of the current gateway
+     *
+     * @param string $name
+     */
+    private function setGatewayName(string $name)
+    {
+        $this->gatewayName = $name;
+    }
+
+    /**
      * Get Response
      */
-    public function getResponse()
+    public function getResponse() : array
     {
 
-        $data = $this->gateway->getPostData();
-        $data['sign'] = $this->gateway->sign($data);
+        $data = $this->getPostData();
+        $data[$this->gateway->signKey] = $this->sign($data);
         $data['sign_type'] = 'RSA';
 
         return $data;
 
     }
 
-    public function verify(Request $request) : bool
+    private function getPostData() : array
     {
-        $para_temp = $request->except('sign', 'sign_type');
-        $sign = $request->input('sign');
-
-        ksort($para_temp);
-        $prestr = $this->gateway->buildQueryString($para_temp);
-
-        return $this->gateway->verify($prestr, $sign);
+        return array_merge(
+            $this->gateway->getAdditionalPostData(),
+            $this->parseCallback([
+                $this->gateway->callbackKey => config('payment.callback_url')
+            ]),
+            $this->parseCallback([
+                $this->gateway->notifyCallbackKey => config('payment.notify_callback_url')
+            ]),
+            [$this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')],
+            [$this->gateway->priceKey => $this->transaction->getAttribute('amount')]
+        );
     }
+
+    /**
+     * Parse the callback url route
+     *
+     * @param array $url
+     * @return array
+     */
+    private function parseCallback(array $url) : array
+    {
+
+        if (filter_var($value = implode($url), FILTER_VALIDATE_URL) === FALSE)
+            return [
+                key($url) => route($value)
+            ];
+
+        return $url;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed|string
+     */
+    private function sign(array $data) : string
+    {
+        /**
+         * According with alipay Api the keys should
+         * be ordered in ascending order
+         */
+        ksort($data);
+
+        $data = $this->buildQueryString($data);;
+
+        $key = file_get_contents(
+            config("payment.drivers.$this->gatewayName.private_key_path")
+        );
+
+        $response = openssl_get_privatekey($key);
+
+        openssl_sign($data, $sign, $response);
+        openssl_free_key($response);
+
+        return base64_encode($sign);
+    }
+
+    public function verify(array $request) : bool
+    {
+
+        $data = array_except($request, [
+            $this->gateway->signKey,
+            'sign_type'
+        ]);
+//dd($this)
+
+        ksort($data);
+
+        return $this->gateway->validate(
+            $this->buildQueryString($data),
+            array_get($request, $this->gateway->signKey),
+            file_get_contents(
+                $this->getConfig('public_key_path')
+            )
+        );
+
+    }
+
+    /**
+     * @param null $value
+     * @return mixed|array
+     */
+    private function getConfig($value = null)
+    {
+        $base = "payment.drivers.$this->gatewayName";
+        return $value ? config("$base.$value") : config($base);
+    }
+
+    /**
+     * Confirm Payment
+     *
+     * @param Request $request
+     * @return ConfirmTransactionJob
+     */
+    public function confirm(array $request)
+    {
+        $this->verify($request);
+
+//        return new ConfirmTransactionJob($request, $this->gateway->transaction);
+    }
+
+    public function getConfirmationResponse()
+    {
+        return $this->gateway->getConfirmationResponse();
+    }
+
 
 }

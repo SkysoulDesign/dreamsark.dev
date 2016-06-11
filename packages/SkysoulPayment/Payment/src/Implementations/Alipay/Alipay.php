@@ -6,10 +6,22 @@ namespace SkysoulDesign\Payment\Implementations\Alipay;
 use DreamsArk\Models\Payment\Transaction;
 use Exception;
 use Log;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\PaymentGateway;
 
 class Alipay extends PaymentGateway
 {
+
+    public $callbackKey = 'return_url';
+
+    public $notifyCallbackKey = 'notify_url';
+//[
+//        'notify_url' => ''
+//    ];
+
+    public $uniqueIdentifierKey = 'out_trade_no';
+
+    public $priceKey = 'total_fee';
 
     const GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?';
     const SIGN_TYPE = 'RSA';
@@ -28,72 +40,55 @@ class Alipay extends PaymentGateway
      */
     private $transaction;
 
-    /**
-     * Alipay constructor.
-     *
-     * @param Transaction $transaction
-     */
-    public function __construct(Transaction $transaction)
-    {
-        $this->transaction = $transaction;
-    }
-
-    public function getPostData() : array
+    public function getAdditionalPostData() : array
     {
 
         return [
-            "out_trade_no" => $this->transaction->getAttribute('unique_no'),
-            "total_fee" => '0.01',
-            "_input_charset" => "utf-8",
+            /**
+             * Maybe these need to be abstracted as well.. i am not sure if unionpay share the same
+             * Values
+             */
             "service" => "create_direct_pay_by_user",
-            "body" => "payment.description",
-            "notify_url" => route('payment.alipay.notify'),
             "partner" => "2088221979483694",
             "seller_id" => "2088221979483694",
+            "_input_charset" => "utf-8",
+            "body" => "payment.description",
             "payment_type" => "1",
-            "return_url" => route('payment.alipay.status'),
             "subject" => "payment.subject",
         ];
     }
 
-    /**
-     * @param array $data
-     * @return mixed|string
-     */
-    public function sign(array $data) : string
-    {
-        /**
-         * According with alipay Api the keys should
-         * be ordered in ascending order
-         */
-        ksort($data);
-
-        $data = $this->buildQueryString($data);
-
-        $key = file_get_contents(static::PRIVATE_KEY_PATH);
-        $response = openssl_get_privatekey($key);
-
-        openssl_sign($data, $sign, $response);
-        openssl_free_key($response);
-
-        return base64_encode($sign);
-    }
 
     /**
-     * @param $data
-     * @param $sign
+     * @param string $query
+     * @param string $sign
+     * @param string $key
      * @return bool
      */
-    public function verify($data, $sign)
+    public function validate(string $query, string $sign, string $key) : bool
     {
-        $pubKey = file_get_contents(static::PUBLIC_KEY_PATH);
-        $res = openssl_get_publickey($pubKey);
-        $result = (bool)openssl_verify($data, base64_decode($sign), $res);
+
+        $res = openssl_get_publickey($key);
+        $result = openssl_verify($query, base64_decode($sign), $res);
         openssl_free_key($res);
 
-        return $result;
+        return (bool)$result;
     }
 
+    /**
+     * Gets Payment Confirmation response
+     *
+     * @return string
+     */
+    public function getConfirmationResponse() : string
+    {
+        return 'success';
+    }
+
+    public function test()
+    {
+        return 'tested';
+    }
 
     protected $eventResponse;
 

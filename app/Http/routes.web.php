@@ -41,6 +41,7 @@ use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\Bag\CoinController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
+use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
 $app->get('info', function () {
@@ -137,7 +138,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         });
         /** User's Payments/Coins Related Actions List */
         $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
-            $app->get('/', ProfileController::class . '@purchaseHistory')->name('index');
+
+            $app->get('/', PurchaseController::class . '@index')->name('index');
+
             /**
              * Coin Controller
              */
@@ -148,15 +151,20 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             });
         });
 
-
     });
 
     /**
      * Payment Related Routes
      */
-    $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
+    $app->group(['prefix' => 'payment', 'as' => 'payment.', 'middleware' => 'transaction'], function () use ($app) {
+
+        $app->get('/', PaymentController::class . '@index')->name('index');
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
-        $app->group(['prefix' => 'alipay', 'as' => 'alipay.', 'middleware' => 'transaction'], function () use ($app) {
+
+        $app->get('callback', PaymentController::class . '@callback')->name('callback');
+        $app->get('notify_callback', PaymentController::class . '@callback')->name('notify_callback');
+
+        $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });

@@ -38,11 +38,11 @@ class CreateTransactionJob extends Job
      * Create a new job instance.
      *
      * @param User $user
-     * @param int $amount
+     * @param float $amount
      * @param string $method
      * @param string $type
      */
-    public function __construct(User $user, int $amount, string $method, string $type = 'pay')
+    public function __construct(User $user, float $amount, string $method, string $type = 'pay')
     {
         $this->user = $user;
         $this->amount = $amount;

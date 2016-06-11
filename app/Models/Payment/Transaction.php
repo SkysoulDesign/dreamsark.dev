@@ -4,6 +4,7 @@ namespace DreamsArk\Models\Payment;
 
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use SkysoulDesign\Payment\PaymentBuilder;
 use SkysoulDesign\Payment\PaymentGateway;
 
@@ -42,6 +43,27 @@ class Transaction extends Model
     }
 
     /**
+     * Convert amount to fen
+     *
+     * @param $amount
+     */
+    public function setAmountAttribute($amount)
+    {
+        $this->attributes['amount'] = $amount * 1000;
+    }
+
+    /**
+     * Convert amount back to yuan
+     *
+     * @param $amount
+     * @return float
+     */
+    public function getAmountAttribute($amount)
+    {
+        return (float)$amount / 1000;
+    }
+
+    /**
      * User Relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -57,6 +79,25 @@ class Transaction extends Model
     public function getPaymentResponse()
     {
         return app('payment')->forTransaction($this)->getResponse();
+    }
+
+    /**
+     * Verify Payment Response
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function verify(Request $request) : bool
+    {
+        return app('payment')->forTransaction($this)->verify($request);
+    }
+
+    /**
+     * Returns payment confirmation response
+     */
+    public function getPaymentConfirmationResponse()
+    {
+        return app('payment')->getConfirmationResponse();
     }
 
 }

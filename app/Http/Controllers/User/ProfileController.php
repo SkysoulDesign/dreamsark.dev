@@ -157,19 +157,6 @@ class ProfileController extends Controller
             ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
-    /**
-     * Coins Purchase History
-     *
-     * @param Request $request
-     */
-    public function purchaseHistory(Request $request)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        return view('user.payment.index', compact('user'));
-    }
-
     public function userEarningHistory(UserRepositoryInterface $userRepository, Request $request)
     {
         $currentPage = $request->get('page', 1);
@@ -185,8 +172,7 @@ class ProfileController extends Controller
 
         return view('user.activity.earning-list', compact('pagination'))
             ->with('projectEarnings', $currentResultSet)
-            ->with('earningTotal', $this->earningTotal)
-            ;
+            ->with('earningTotal', $this->earningTotal);
     }
 
 }
