@@ -12,7 +12,6 @@ use Illuminate\Auth\Access\Gate as ServiceProvider;
  */
 class Gate extends ServiceProvider
 {
-
     /**
      * Determine if the given ability should be granted for the current user.
      *
@@ -20,9 +19,8 @@ class Gate extends ServiceProvider
      * @param  array|mixed $arguments
      * @return bool
      */
-    public function check($ability, $arguments = [])
+    public function check($ability, $arguments = []) : bool
     {
-
         /**
          * Default to auth user if arguments is empty
          */
@@ -35,8 +33,6 @@ class Gate extends ServiceProvider
             return false;
         }
 
-        return (bool)$result;
-
+        return $result;
     }
-
 }

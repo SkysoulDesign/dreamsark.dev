@@ -2,60 +2,91 @@
 
 namespace DreamsArk\Jobs\Payment;
 
-use DreamsArk\Http\Requests\Request;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Payment\Transaction;
+use DreamsArk\Models\User\User;
 
+/**
+ * Class CreateTransactionJob
+ *
+ * @package DreamsArk\Jobs\Payment
+ */
 class CreateTransactionJob extends Job
 {
-    /**
-     * @var Request
-     */
-    private $request;
+
     /**
      * @var
      */
-    private $transactionType;
+    private $type;
+
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var int
+     */
+    private $amount;
+
+    /**
+     * @var string
+     */
+    private $method;
 
     /**
      * Create a new job instance.
      *
-     * @param Request $request
-     * @param $transactionType
+     * @param User $user
+     * @param float $amount
+     * @param string $method
+     * @param string $type
      */
-    public function __construct(Request $request = null, $transactionType = null)
+    public function __construct(User $user, float $amount, string $method, string $type = 'pay')
     {
-        $this->request = $request;
-        $this->transactionType = $transactionType ? : 'pay';
+        $this->user = $user;
+        $this->amount = $amount;
+        $this->method = $method;
+        $this->type = $type;
     }
 
     /**
      * Execute the job.
      *
      * @param Transaction $transaction
-     * @return array
+     * @return Transaction
      */
-    public function handle(Transaction $transaction)
+    public function handle(Transaction $transaction) : Transaction
     {
         /**
          * TODO: need to create table for Transactions Maintenance and use Unique "out_trade_no" in External Payment Gateways
-         * table should have user_id, amount fields
          */
-        $userId = $this->request->user()->id;
-        $out_trade_no = config('defaults.payment.prefix.'.$this->transactionType).md5(uniqid($userId, true));
-        $fields = [
-            'unique_no' => $out_trade_no, 'method' => $this->request->get('payment_method'),
-            'type' => $this->transactionType, 'user_id' => $userId, 'amount' => $this->request->get('amount')
-        ];
-        /** @var Transaction $transaction */
-        $transaction = $transaction->create($fields);
 
-        return [
-            'unique_no' => $out_trade_no,
-            'transaction_id' => $transaction->id,
-            'user_id' => $transaction->user_id,
-            'amount' => $transaction->amount,
-            'method' => $transaction->method,
-        ];
+        /**
+         * Associate User with transaction
+         */
+        $transaction->user()->associate($this->user);
+
+        /**
+         * Manually set those values to avoid mass-assignment
+         */
+        $transaction->setAttribute('unique_no', $this->generateUniqueTransactionID());
+        $transaction->setAttribute('amount', $this->amount);
+        $transaction->setAttribute('method', $this->method);
+        $transaction->setAttribute('type', $this->type);
+
+        $transaction->save();
+
+        return $transaction;
+
     }
+
+    /**
+     * @return string
+     */
+    public function generateUniqueTransactionID() : string
+    {
+        return config("payment.transaction_prefix.$this->type") . md5(uniqid($this->user->id, true));
+    }
+
 }

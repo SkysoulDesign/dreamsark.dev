@@ -12,7 +12,6 @@
 */
 
 use DreamsArk\Http\Controllers\Admin\AdminController;
-use DreamsArk\Http\Controllers\Admin\Payment\TransactionController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
@@ -42,7 +41,12 @@ use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\Bag\CoinController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
+use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
+
+$app->get('info', function () {
+    phpinfo();
+});
 
 /** @var $app \Illuminate\Routing\Router */
 
@@ -134,8 +138,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         });
         /** User's Payments/Coins Related Actions List */
         $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
-            $app->get('/', ProfileController::class . '@purchaseHistory')->name('index');
-            $app->get('/{trans_status}', ProfileController::class . '@purchaseHistory')->name('list');
+
+            $app->get('/', PurchaseController::class . '@index')->name('index');
+
             /**
              * Coin Controller
              */
@@ -146,26 +151,26 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             });
         });
 
-
     });
 
     /**
      * Payment Related Routes
      */
-    $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
+    $app->group(['prefix' => 'payment', 'as' => 'payment.', 'middleware' => 'transaction'], function () use ($app) {
+
+        $app->get('/', PaymentController::class . '@index')->name('index');
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
+
+        $app->get('callback', PaymentController::class . '@callback')->name('callback');
+        $app->any('notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
+
         $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
-            $app->post('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+            $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
-        });
-        $app->group(['prefix' => 'wechat', 'as' => 'wechat.'], function () use ($app) {
-            $app->any('status', PaymentController::class . '@wPStatus')->name('status');
-            $app->get('scanQRToPay', PaymentController::class . '@wPScanCode')->name('scan_code');
-            $app->get('scanQRPayEvent', PaymentController::class . '@wPScanCode')->name('scan_code.event');
         });
 
     });
@@ -328,12 +333,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         /** Admin projects */
         $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
-
-        /** Payments/Transaction related */
-        $app->group(['prefix' => 'payment', 'as' => 'payment.'], function () use ($app) {
-            $app->get('purchases', TransactionController::class . '@getPurchaseList')->name('purchases');
-            $app->get('withdrawals', TransactionController::class . '@getWithdrawList')->name('withdraw');
-        });
 
     });
 

@@ -2,13 +2,13 @@
 
 namespace DreamsArk\Http\Controllers\Payment;
 
+use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Jobs\Payment\UpdateTransactionJob;
+use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
-use SkysoulDesign\Payment\Implementations\Wechat\PayNotifyCallBack;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
@@ -18,13 +18,64 @@ use SkysoulDesign\Payment\PaymentGateway;
  */
 class PaymentController extends Controller
 {
+
+
     /**
-     * @var string
+     * Status
      */
-    protected $defaultRoute = 'payment.status';
+    public function index()
+    {
+
+    }
+
     /**
-     * @var
+     * Payment Callback
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return mixed
      */
+    public function callback(Request $request, Transaction $transaction)
+    {
+
+        if ($transaction->payment->verify($request->all())) {
+
+            //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
+
+            // maybe do something if request verification fails, but in general
+            // its bad if user payed and get redirected to this page and on our side we show
+            // some error occur / payment couldn't be verified and he sees a negative
+            // message, he might think the website cheat him and he probably will contact
+            // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
+        }
+
+        return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
+
+    }
+
+    /**
+     * Url hit by the payment gateway
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     */
+    public function notify_callback(Request $request, Transaction $transaction)
+    {
+
+        if (!$transaction->payment->verify($request->all())) {
+            return response('failed');
+        }
+
+        /**
+         * Confirm Payment
+         */
+        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+
+        return response($transaction->payment->getConfirmationResponse());
+
+    }
+
+    protected $defaultRoute = 'payment . status';
     protected $responseData;
 
     /**
@@ -33,36 +84,9 @@ class PaymentController extends Controller
      */
     public function paymentStatus(Request $request)
     {
-        $errors = \Session::get('errors');
-        if ($request->result == 'pending' && is_null($errors)) {
-            return view('payment.status')->withErrors(trans('payment.paid-receipt-not-received-update-later'));
-        } else
-            return view('payment.status');
+        return view('payment . status');
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function alipayStatus(Request $request)
-    {
-        // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
-        $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();
-        if (!$paymentResult)
-            return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
-
-        $trade_status = $request->get('trade_status');
-        if ($trade_status == 'TRADE_FINISHED' || $trade_status == 'TRADE_SUCCESS') {
-            return $this->triggerAddCoinJob($request);
-        } else {
-            /**
-             * @TODO: can update failure event of Transaction
-             */
-        }
-
-        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.trade-status') . ' ' . $trade_status);
-
-    }
 
     /**
      * @param Request $request
@@ -70,6 +94,9 @@ class PaymentController extends Controller
      */
     public function alipayNotifications(Request $request)
     {
+
+        return response('');
+
         // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
         $paymentResult = PaymentGateway::alipayNotify()->verifyNotify();
 
@@ -88,10 +115,7 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    /** UnionPay Methods
-     *
-     * @param Request $request
-     */
+    /** UnionPay Methods */
     protected function prepareUPResponseData(Request $request)
     {
         /**
@@ -106,9 +130,6 @@ class PaymentController extends Controller
         $this->responseData->merge(compact('out_trade_no', 'trade_no'));
     }
 
-    /**
-     * @return string
-     */
     protected function validateUPResponse()
     {
         $status = 'fail';
@@ -123,23 +144,19 @@ class PaymentController extends Controller
         return $status;
     }
 
-    /**
-     * @param Request $request
-     * @return $this|string
-     */
     public function uPStatus(Request $request)
     {
         if ($request->has('signature')) {
             $paymentResult = PaymentGateway::unionPayNotify()->validate($request->all());
             if (!$paymentResult)
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - response - received'));
 
             $this->prepareUPResponseData($request);
             $upStatus = $this->validateUPResponse();
             if ($upStatus == 'success')
                 return $this->triggerAddCoinJob($this->responseData);
             else if ($upStatus == 'process')
-                return redirect()->route($this->defaultRoute, 'processing')->withSuccess(trans('payment.in-process'));
+                return redirect()->route($this->defaultRoute, 'processing')->withSuccess(trans('payment . in - process'));
             else {
                 /**
                  * @TODO: can update failure event of Transaction
@@ -147,13 +164,9 @@ class PaymentController extends Controller
             }
         }
 
-        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.trade-status-error'));
+        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . trade - status - error'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
     public function uPNotifications(Request $request)
     {
         $responseText = 'NO_SIGNATURE';
@@ -180,13 +193,9 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
     public function uPOrderEnquiry(Request $request)
     {
-        $responseText = 'not-valid';
+        $responseText = 'not - valid';
         $requestParams = $request->all();
         if (empty($requestParams)) {
             $requestParams = ['out_trade_no' => rand(1, 10000), 'order_date' => date('YmdHis')];
@@ -225,69 +234,6 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    /**
-     * @param Request $request
-     * @param Transaction $transaction
-     */
-    public function wPStatus(Request $request, Transaction $transaction)
-    {
-        $response = json_encode(simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA));
-
-        $transaction = $transaction->orderBy('updated_at', 'desc')->first();
-        dispatch(new UpdateTransactionJob(
-            $transaction,
-            array_merge($request->all(), ['invoice_no' => 'dsfgdsf', 'response' => $response]
-            )));
-        /** @var PayNotifyCallBack $notify */
-        $notify = new PayNotifyCallBack();
-        $notify->Handle(false);
-        \Debugbar::addMessage(implode('::', $notify->GetValues()));
-    }
-
-    /**
-     * @param Request $request
-     * @param Transaction $transaction
-     * @return $this
-     */
-    public function wPScanCode(Request $request, Transaction $transaction)
-    {
-        if ($request->header('accept') == 'text/event-stream') {// ->getMethod() == 'POST'
-            header('Content-Type: text/event-stream');
-            header('Cache-Control: no-cache');
-            $response = 0;
-            if ($request->has('unique_no')) {
-                $time = date('Y-m-d H:i:s');
-                $response = $request->get('unique_no') . '--' . $time;
-                /** @var Transaction $transaction */
-                $transaction = $transaction->where('unique_no', $request->get('unique_no'))->get();
-                if ($transaction && is_object($transaction[0]))
-                    $response = $transaction[0]->is_payment_done;
-            }
-            flush();
-            $renderer = \Debugbar::getJavascriptRenderer();
-            $renderer->setBindAjaxHandlerToXHR(false);
-
-            return view('common.sse-event-data', compact('response', 'renderer'));
-
-        } else {
-            $wechatData = $request->session()->get('wechatData', []);
-            if (empty($wechatData) || (strtolower($wechatData['result_code']) == 'fail' || is_null($wechatData["code_url"])))
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.error-occurred-unable-to-process'));
-            $request->session()->put('wechatData', []);
-            /** @var Transaction $transaction */
-            $transaction = $transaction->find($wechatData['transaction_id']);
-            $transaction->setAttribute('invoice_no', $wechatData['prepay_id'])->save();
-            $transaction->fresh();
-
-            return view('payment.wechat-pay', compact('wechatData', 'transaction'));
-        }
-    }
-
-    /**
-     * @param $request
-     * @param string $event
-     * @return $this|string
-     */
     protected function triggerAddCoinJob($request, $event = '')
     {
         $out_trade_no = $request->out_trade_no;
@@ -301,13 +247,13 @@ class PaymentController extends Controller
             if ($event == 'notify')
                 return 'fail';
             else
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-transaction-match'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - transaction - match'));
         }
 
         if (!$transaction[0]->is_payment_done) {
 //            dd($transaction[0]->user);
             $transactResponse = $request->getMethod() == 'POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
-            dispatch(new UpdateTransactionJob(
+            dispatch(new ConfirmPaymentJob(
                 $transaction[0],
                 array_merge($request->all(), ['invoice_no' => $trade_no, 'response' => $transactResponse]
                 )));
@@ -318,12 +264,12 @@ class PaymentController extends Controller
             if ($event == 'notify')
                 return 'success';
             else
-                return redirect()->route('payment.status', 'success')->withSuccess(trans('payment.success'));
+                return redirect()->route('payment . status', 'success')->withSuccess(trans('payment . success'));
         } else {
             if ($event == 'notify')
                 return 'success';
             else
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.payment-already-done'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . payment - already - done'));
         }
     }
 }

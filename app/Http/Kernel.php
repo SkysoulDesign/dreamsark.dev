@@ -16,6 +16,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use SkysoulDesign\Payment\Middleware\TransactionMiddleware;
 
 /**
  * Class Kernel
@@ -45,7 +46,7 @@ class Kernel extends HttpKernel
             AddQueuedCookiesToResponse::class,
             StartSession::class,
             ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
+//            VerifyCsrfToken::class,
         ],
 
         'api' => [
@@ -62,14 +63,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => Authenticate::class,
+        'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
-        'guest'      => RedirectIfAuthenticated::class,
-        'can'        => Authorize::class,
+        'guest' => RedirectIfAuthenticated::class,
+        'can' => Authorize::class,
 
         /**
          * Custom
          */
-        'role'       => RoleMiddleware::class,
+        'role' => RoleMiddleware::class,
+        'transaction' => TransactionMiddleware::class,
     ];
 }

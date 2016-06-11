@@ -15,25 +15,25 @@ use DreamsArk\Repositories\Bag\BagRepositoryInterface;
 class PurchaseCoinJob extends Job
 {
     /**
-     * @var
-     */
-    private $amount;
-
-    /**
      * @var User
      */
     private $user;
 
     /**
+     * @var float
+     */
+    private $amount;
+
+    /**
      * Create a new command instance.
      *
      * @param User $user
-     * @param $amount
+     * @param int $amount
      */
-    public function __construct(User $user, $amount)
+    public function __construct(User $user, int $amount)
     {
-        $this->amount = $amount;
         $this->user = $user;
+        $this->amount = $amount;
     }
 
     /**
@@ -43,6 +43,10 @@ class PurchaseCoinJob extends Job
      */
     public function handle(BagRepositoryInterface $repository)
     {
+        \Log::info('adding coin');
+        \Log::info($this->amount);
+
+
         /**
          * Increment User Coins
          */
@@ -52,6 +56,5 @@ class PurchaseCoinJob extends Job
          * Announce CoinWasPurchased
          */
         event(new CoinWasPurchased($this->user, $this->amount));
-
     }
 }

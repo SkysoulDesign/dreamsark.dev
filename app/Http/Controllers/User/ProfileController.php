@@ -10,7 +10,6 @@ use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
-use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
@@ -158,23 +157,6 @@ class ProfileController extends Controller
             ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
-    /**
-     * Coins Purchase History
-     *
-     * @param UserRepositoryInterface $userRepository
-     * @param Request $request
-     * @return
-     */
-    public function purchaseHistory(UserRepositoryInterface $userRepository, Request $request)
-    {
-        /** @var User $user */
-        $user = $request->user();
-        /** @var Transaction $transactionList */
-        $transactionList = $userRepository->transactionList($request->user()->id, ($request->trans_status ?: ''));
-
-        return view('user.payment.index', compact('user', 'transactionList'));
-    }
-
     public function userEarningHistory(UserRepositoryInterface $userRepository, Request $request)
     {
         $currentPage = $request->get('page', 1);
@@ -190,8 +172,7 @@ class ProfileController extends Controller
 
         return view('user.activity.earning-list', compact('pagination'))
             ->with('projectEarnings', $currentResultSet)
-            ->with('earningTotal', $this->earningTotal)
-            ;
+            ->with('earningTotal', $this->earningTotal);
     }
 
 }
