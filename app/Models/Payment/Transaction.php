@@ -89,7 +89,7 @@ class Transaction extends Model
      */
     public function verify(Request $request) : bool
     {
-        return app('payment')->forTransaction($this)->verify($request);
+        return app('payment')->forTransaction($this)->verify($request->toArray());
     }
 
     /**
