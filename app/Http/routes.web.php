@@ -162,7 +162,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
 
         $app->get('callback', PaymentController::class . '@callback')->name('callback');
-        $app->get('notify_callback', PaymentController::class . '@callback')->name('notify_callback');
+        $app->any('notify_callback', PaymentController::class . '@callback')->name('notify_callback');
 
         $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
