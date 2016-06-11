@@ -18,6 +18,8 @@ return [
     'callback_url' => 'payment.callback',
     'notify_callback_url' => 'payment.notify_callback',
 
+    'transaction_prefix' => ['pay' => 'DAPG', 'withdraw' => 'DAWG'],
+
     'drivers' => [
         'alipay' => [
             'enabled' => true,

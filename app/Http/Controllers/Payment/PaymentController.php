@@ -4,11 +4,10 @@ namespace DreamsArk\Http\Controllers\Payment;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Jobs\Payment\UpdateTransactionJob;
+use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
-use SkysoulDesign\Payment\Payment;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
@@ -38,7 +37,7 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
-        if ($transaction->verify($request)) {
+        if ($transaction->payment->verify($request->all())) {
 
             //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
 
@@ -51,31 +50,6 @@ class PaymentController extends Controller
 
         return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
 
-//        $payment->forTransaction($transaction);
-
-//        if (!$payment->verify($request))
-//            redirect()->route('payment.status')->withErrors('An Error Occurred while processing');
-
-
-        // SAMPLE URL: http://dreamsark.dev/payment/alipay/status?is_success=T&sign_type=&sign=&trade_status=TRADE_FINISHED&trade_no=&out_trade_no=
-
-
-//        $paymentResult = PaymentGateway::alipayNotify()->verifyReturn();
-//
-//        if (!$paymentResult)
-//            return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
-//
-//        $trade_status = $request->get('trade_status');
-//        if ($trade_status == 'TRADE_FINISHED' || $trade_status == 'TRADE_SUCCESS') {
-//            return $this->triggerAddCoinJob($request);
-//        } else {
-//            /**
-//             * @TODO: can update failure event of Transaction
-//             */
-//        }
-//
-//        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.trade-status') . ' ' . $trade_status);
-
     }
 
     /**
@@ -83,15 +57,15 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @param Payment $payment
      */
-    public function notify_callback(Request $request, Transaction $transaction, Payment $payment)
+    public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        \Log::info('recieved from notify');
-        \Log::info($request->toArray());
+        if ($transaction->payment->verify($request->all())) {
+            dispatch(new ConfirmPaymentJob($request->toArray()));
+        }
 
-        return response($transaction->getPaymentConfirmationResponse());
+        return response($transaction->payment->getConfirmationResponse());
 
 //        $data = [
 //            'discount' => '0.00',
@@ -128,7 +102,7 @@ class PaymentController extends Controller
         $payment->forTransaction($transaction);
         $payment->confirm($request->toArray());
 
-        dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
+        dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
 
         /**
          * Add Coins to the User
@@ -320,7 +294,7 @@ class PaymentController extends Controller
         if (!$transaction[0]->is_payment_done) {
 //            dd($transaction[0]->user);
             $transactResponse = $request->getMethod() == 'POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
-            dispatch(new UpdateTransactionJob(
+            dispatch(new ConfirmPaymentJob(
                 $transaction[0],
                 array_merge($request->all(), ['invoice_no' => $trade_no, 'response' => $transactResponse]
                 )));

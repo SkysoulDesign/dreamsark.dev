@@ -7,6 +7,11 @@ use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Bag\BagRepositoryInterface;
 
+/**
+ * Class ChargeUserJob
+ *
+ * @package DreamsArk\Jobs\User\Coins
+ */
 class ChargeUserJob extends Job
 {
     /**

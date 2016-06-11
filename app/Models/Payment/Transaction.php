@@ -4,9 +4,7 @@ namespace DreamsArk\Models\Payment;
 
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use SkysoulDesign\Payment\PaymentBuilder;
-use SkysoulDesign\Payment\PaymentGateway;
+use SkysoulDesign\Payment\Traits\PayableTrait;
 
 /**
  * Class Transaction
@@ -15,6 +13,9 @@ use SkysoulDesign\Payment\PaymentGateway;
  */
 class Transaction extends Model
 {
+
+    use PayableTrait;
+
     /**
      * The database table used by the model.
      *
@@ -72,32 +73,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    /**
-     * @return PaymentBuilder
-     */
-    public function getPaymentResponse()
-    {
-        return app('payment')->forTransaction($this)->getResponse();
-    }
-
-    /**
-     * Verify Payment Response
-     *
-     * @param Request $request
-     * @return bool
-     */
-    public function verify(Request $request) : bool
-    {
-        return app('payment')->forTransaction($this)->verify($request->toArray());
-    }
-
-    /**
-     * Returns payment confirmation response
-     */
-    public function getPaymentConfirmationResponse()
-    {
-        return app('payment')->forTransaction($this)->getConfirmationResponse();
-    }
-
 }

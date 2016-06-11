@@ -86,7 +86,7 @@ class CreateTransactionJob extends Job
      */
     public function generateUniqueTransactionID() : string
     {
-        return config('defaults.payment.prefix.' . $this->type) . md5(uniqid($this->user->id, true));
+        return config("payment.transaction_prefix.$this->type") . md5(uniqid($this->user->id, true));
     }
 
 }

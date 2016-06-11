@@ -46,7 +46,7 @@ class CoinController extends Controller
             $request->input('payment_method')
         ));
 
-        return response()->json($transaction->getPaymentResponse());
+        return response()->json($transaction->payment->getResponse());
 
 //        dd(app('payment.drivers.alipay'));
 

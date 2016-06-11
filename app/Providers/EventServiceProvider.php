@@ -54,6 +54,7 @@ use DreamsArk\Listeners\User\AppendDefaultSettings;
 use DreamsArk\Listeners\User\AttachUserRole;
 use DreamsArk\Listeners\User\GiveUserAnEmptyBag;
 use DreamsArk\Listeners\User\LogUserIn;
+use DreamsArk\Listeners\User\Payment\AddCoinsToUser;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -117,7 +118,7 @@ class EventServiceProvider extends ServiceProvider
         /**
          * Vote
          */
-        VoteWasCreated::class   => [
+        VoteWasCreated::class => [
             QueueOpenVotingCommand::class
         ],
 
@@ -163,7 +164,7 @@ class EventServiceProvider extends ServiceProvider
         /**
          * User Create Job
          */
-        UserWasCreated::class          => [
+        UserWasCreated::class => [
             AppendDefaultSettings::class,
             GiveUserAnEmptyBag::class,
             AttachUserRole::class,
@@ -174,30 +175,34 @@ class EventServiceProvider extends ServiceProvider
             AttachUserRole::class
         ],
 
-        IdeaWasSubmitted::class    => [],
+        IdeaWasSubmitted::class => [],
         UserHasBiddenAnIdea::class => [],
 
-        CastWasAdded::class                  => [],
-        CrewWasAdded::class                  => [],
-        UserHasEnrolledToCast::class         => [],
-        TranslationsWasCreated::class        => [],
-        UserCoinsWasDeducted::class          => [],
+        CastWasAdded::class => [],
+        CrewWasAdded::class => [],
+        UserHasEnrolledToCast::class => [],
+        TranslationsWasCreated::class => [],
+        UserCoinsWasDeducted::class => [],
         ExpenditurePositionWasCreated::class => [],
 
         /** User Profiles related */
-        UserProfileWasCreated::class         => [],
-        UserProfileWasUpdated::class         => [],
+        UserProfileWasCreated::class => [],
+        UserProfileWasUpdated::class => [],
 
 
         /**
          * Questions
          */
-        QuestionWasCreated::class            => [
+        QuestionWasCreated::class => [
             SyncOptions::class
         ],
 
         QuestionWasUpdated::class => [
             SyncOptions::class
+        ],
+
+        PaymentWasConfirmed::class => [
+            addCoinsToUser::class
         ]
 
     ];

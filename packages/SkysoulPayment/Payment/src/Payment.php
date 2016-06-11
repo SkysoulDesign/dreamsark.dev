@@ -3,8 +3,7 @@
 namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
@@ -49,57 +48,13 @@ class Payment
     }
 
     /**
-     * Build URL Query string
-     *
-     * @param array $data
-     * @param bool $encoded
-     * @return string
-     */
-    public function buildQueryString(array $data, bool $encoded = false) : string
-    {
-        $query = http_build_query($data);
-
-        if ($encoded)
-            return $query;
-
-        return urldecode($query);
-    }
-
-//    /**
-//     * Alipay constructor.
-//     *
-//     * @param Transaction $transaction
-//     */
-//    public function __construct(Transaction $transaction)
-//    {
-//        $this->transaction = $transaction;
-//    }
-
-    /**
-     * Set Payment Gateway
-     *
-     * @param PaymentGateway|string $gateway
-     * @param $payload
-     */
-    public function setGateway($gateway, $payload)
-    {
-
-        if (!$gateway instanceof PaymentGateway)
-            $gateway = new $this->drivers[$gateway](
-                $payload
-            );
-
-        $this->gateway = $gateway;
-    }
-
-    /**
      * Init Class based on a Transaction
      *
-     * @param Transaction $transaction
+     * @param Model $transaction
+     * @return Payment
      * @throws DriverNotFoundException
-     * @return $this
      */
-    public function forTransaction(Transaction $transaction)
+    public function boot(Model $transaction) : Payment
     {
         /**
          * Get Payment Driver
@@ -118,6 +73,42 @@ class Payment
     }
 
     /**
+     * Build URL Query string
+     *
+     * @param array $data
+     * @param bool $encoded
+     * @return string
+     */
+    public function buildQueryString(array $data, bool $encoded = false) : string
+    {
+
+        $query = http_build_query($data);
+
+        if ($encoded)
+            return $query;
+
+        return urldecode($query);
+    }
+
+    /**
+     * Set Payment Gateway
+     *
+     * @param PaymentGateway|string $gateway
+     * @param $payload
+     */
+    public function setGateway($gateway, $payload)
+    {
+
+        if (!$gateway instanceof PaymentGateway)
+            $gateway = new $this->drivers[$gateway](
+                $payload
+            );
+
+        $this->gateway = $gateway;
+    }
+
+
+    /**
      * Set name of the current gateway
      *
      * @param string $name
@@ -128,7 +119,9 @@ class Payment
     }
 
     /**
-     * Get Response
+     * Sign and return the final data to be sent to the gateway API
+     *
+     * @return array
      */
     public function getResponse() : array
     {
@@ -140,6 +133,11 @@ class Payment
         return $data;
     }
 
+    /**
+     * Prepares the post data to be sent to the gateway API
+     *
+     * @return array
+     */
     private function getPostData() : array
     {
         return array_merge(
@@ -173,10 +171,12 @@ class Payment
     }
 
     /**
+     * Sign the request to be sent to the gateway API
+     *
      * @param array $data
      * @return mixed|string
      */
-    private function sign(array $data) : string
+    public function sign(array $data) : string
     {
         /**
          * According with alipay Api the keys should
@@ -184,20 +184,24 @@ class Payment
          */
         ksort($data);
 
-        $data = $this->buildQueryString($data);;
-
         $key = file_get_contents(
-            config("payment.drivers.$this->gatewayName.private_key_path")
+            $this->getConfig('private_key_path')
         );
 
         $response = openssl_get_privatekey($key);
 
-        openssl_sign($data, $sign, $response);
+        openssl_sign($this->buildQueryString($data), $sign, $response);
         openssl_free_key($response);
 
         return base64_encode($sign);
     }
 
+    /**
+     * Verifies already signed query request
+     *
+     * @param array $request
+     * @return bool
+     */
     public function verify(array $request) : bool
     {
 
@@ -205,7 +209,6 @@ class Payment
             $this->gateway->signKey,
             'sign_type'
         ]);
-//dd($this)
 
         ksort($data);
 
@@ -216,10 +219,11 @@ class Payment
                 $this->getConfig('public_key_path')
             )
         );
-
     }
 
     /**
+     * Shortcut for getting the configs for $this gateway
+     *
      * @param null $value
      * @return mixed|array
      */
@@ -230,22 +234,12 @@ class Payment
     }
 
     /**
-     * Confirm Payment
+     * Get response to be sent back to gateway API once verifies is okay
      *
-     * @param Request $request
-     * @return ConfirmTransactionJob
+     * @return string
      */
-    public function confirm(array $request)
-    {
-        $this->verify($request);
-
-//        return new ConfirmTransactionJob($request, $this->gateway->transaction);
-    }
-
     public function getConfirmationResponse()
     {
         return $this->gateway->getConfirmationResponse();
     }
-
-
 }
