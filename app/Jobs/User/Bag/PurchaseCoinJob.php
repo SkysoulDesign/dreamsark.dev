@@ -15,14 +15,14 @@ use DreamsArk\Repositories\Bag\BagRepositoryInterface;
 class PurchaseCoinJob extends Job
 {
     /**
-     * @var float
-     */
-    private $amount;
-
-    /**
      * @var User
      */
     private $user;
+
+    /**
+     * @var float
+     */
+    private $amount;
 
     /**
      * Create a new command instance.
@@ -32,8 +32,8 @@ class PurchaseCoinJob extends Job
      */
     public function __construct(User $user, float $amount)
     {
-        $this->amount = $amount;
         $this->user = $user;
+        $this->amount = $amount;
     }
 
     /**

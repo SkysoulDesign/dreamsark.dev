@@ -8,6 +8,7 @@ use DreamsArk\Events\Bag\UserCoinsWasDeducted;
 use DreamsArk\Events\Committee\Project\FundWasCreated;
 use DreamsArk\Events\Idea\IdeaWasSubmitted;
 use DreamsArk\Events\Idea\UserHasBiddenAnIdea;
+use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Events\Position\ExpenditurePositionWasCreated;
 use DreamsArk\Events\Project\CastWasAdded;
 use DreamsArk\Events\Project\CrewWasAdded;

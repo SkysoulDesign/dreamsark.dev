@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Http\Controllers\Payment;
 
+use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
@@ -61,60 +62,22 @@ class PaymentController extends Controller
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        if ($transaction->payment->verify($request->all())) {
-            dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
-        }
+//        if (!$transaction->payment->verify($request->all())) {
+//            return response('failed');
+//        }
 
         \Log::info($request->toArray());
 
-        return response($transaction->payment->getConfirmationResponse());
+        event(new PaymentWasConfirmed($transaction));
 
-//        $data = [
-//            'discount' => '0.00',
-//            'payment_type' => '1',
-//            'subject' => 'payment.subject',
-//            'trade_no' => '2016061121001004390290733920',
-//            'buyer_email' => 'rafael.milewski@gmail.com',
-//            'gmt_create' => '2016-06-11 00:27:46',
-//            'notify_type' => 'trade_status_sync',
-//            'quantity' => '1',
-//            'out_trade_no' => 'DAPGab1b730e8a18de40c790e2051328f697',
-//            'seller_id' => '2088221979483694',
-//            'notify_time' => '2016-06-11 00:31:14',
-//            'body' => 'payment.description',
-//            'trade_status' => 'TRADE_SUCCESS',
-//            'is_total_fee_adjust' => 'N',
-//            'total_fee' => '0.01',
-//            'gmt_payment' => '2016-06-11 00:27:53',
-//            'seller_email' => 'dreamsark666@163.com',
-//            'price' => '0.01',
-//            'buyer_id' => '2088022177082393',
-//            'notify_id' => '04ceb9134aa252a985d67bc109cc591j0e',
-//            'use_coupon' => 'N',
-//        ];
-//
-//        $sign = [
-//            'sign_type' => 'RSA',
-//            'sign' => 'Ijnp+/UxoXsHkwhV32swjXhunRB09Ih/l6AHAa3lfpCOJkC0AtZQHwTiGDgvwlFSgb7E6BCnVbrzMH5Kt2XMwdM20j4rJjY8+SKSeQmcgPRmJDevttJc9TMenRttrwVSuZxiMnOjAB4AmJXKn8ufswDN5Td5bY$'
-//        ];
+        dd('wait');
 
         /**
          * Confirm Payment
          */
-        $payment->forTransaction($transaction);
-        $payment->confirm($request->toArray());
+        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
 
-        dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
-
-        /**
-         * Add Coins to the User
-         */
-        dispatch(new PurchaseCoinJob(
-            $transaction->getRelation('user'),
-            $transaction->getAttribute('amount')
-        ));
-
-        return $transaction->getPaymentConfirmationResponse();
+        return response($transaction->payment->getConfirmationResponse());
 
     }
 
