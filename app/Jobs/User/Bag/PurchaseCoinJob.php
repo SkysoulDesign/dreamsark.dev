@@ -28,9 +28,9 @@ class PurchaseCoinJob extends Job
      * Create a new command instance.
      *
      * @param User $user
-     * @param float $amount
+     * @param int $amount
      */
-    public function __construct(User $user, float $amount)
+    public function __construct(User $user, int $amount)
     {
         $this->user = $user;
         $this->amount = $amount;
