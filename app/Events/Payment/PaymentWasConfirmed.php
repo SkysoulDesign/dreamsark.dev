@@ -5,7 +5,6 @@ namespace DreamsArk\Events\Payment;
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
  * Class PaymentWasConfirmed

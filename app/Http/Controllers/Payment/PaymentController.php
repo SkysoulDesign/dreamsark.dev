@@ -62,7 +62,7 @@ class PaymentController extends Controller
     {
 
         if ($transaction->payment->verify($request->all())) {
-            dispatch(new ConfirmPaymentJob($request->toArray()));
+            dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
         }
 
         return response($transaction->payment->getConfirmationResponse());
