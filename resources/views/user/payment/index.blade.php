@@ -26,16 +26,16 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th colspan="4"></th>
+                <th colspan="3"></th>
             </tr>
             </thead>
             <tbody>
             @forelse($transactions as $transaction)
                 <tr>
-                    <td>{{ $transaction->unique_no }}</td>
+
                     <td>{{ $transaction->amount }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->status or 'processing'}}</td>
+                    <td>{{ $transaction->status }}</td>
                 </tr>
             @empty
                 <tr>
@@ -69,7 +69,6 @@
                             blurring: true,
                             closable: false,
                             onApprove: function () {
-
 
                                 let form = $('#' + id + '-form');
 

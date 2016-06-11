@@ -137,8 +137,6 @@ class Payment
         $data[$this->gateway->signKey] = $this->sign($data);
         $data['sign_type'] = 'RSA';
 
-        dd($data);
-
         return $data;
     }
 

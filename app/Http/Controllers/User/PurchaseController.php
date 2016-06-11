@@ -21,7 +21,7 @@ class PurchaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Payment $payment)
+    public function index(Request $request)
     {
 //        $data = [
 //            'discount' => '0.00',
