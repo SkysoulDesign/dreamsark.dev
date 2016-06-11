@@ -72,6 +72,8 @@ class PaymentServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
+            PaymentGatewayContract::class,
+            Payment::class,
             'payment'
         ];
     }
