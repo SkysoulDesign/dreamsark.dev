@@ -53,16 +53,16 @@ class Transaction extends Model
         $this->attributes['amount'] = $amount * 1000;
     }
 
-    /**
-     * Convert amount back to yuan
-     *
-     * @param $amount
-     * @return float
-     */
-    public function getAmountAttribute($amount)
-    {
-        return $amount / 1000;
-    }
+//    /**
+//     * Convert amount back to yuan
+//     *
+//     * @param $amount
+//     * @return float
+//     */
+//    public function getAmountAttribute($amount)
+//    {
+//        return $amount / 1000;
+//    }
 
     /**
      * User Relationship
