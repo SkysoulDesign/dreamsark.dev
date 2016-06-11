@@ -19,6 +19,8 @@ class AddCoinsToUser
      */
     public function handle(PaymentWasConfirmed $event)
     {
+        \Log::info('veio aqui');
+        \Log::info($event);
         /**
          * Give Coins to User
          */
