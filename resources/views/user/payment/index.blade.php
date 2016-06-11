@@ -35,7 +35,7 @@
 
                     <td>{{ $transaction->amount }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->status }}</td>
+                    <td>{{ $transaction->is_payment_done }}</td>
                 </tr>
             @empty
                 <tr>
