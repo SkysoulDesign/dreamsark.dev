@@ -26,7 +26,7 @@ class TransactionMiddleware
          */
         $request->route()->setParameter(
             Transaction::class,
-            Transaction::where('unique_no', $request->input('out_trade_no'))->first()
+            Transaction::where('unique_no', $request->input('out_trade_no'))->firstOrFail()
         );
 
         return $next($request);

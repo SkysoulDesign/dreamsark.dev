@@ -91,7 +91,7 @@ class PaymentController extends Controller
         \Log::info('recieved from notify');
         \Log::info($request->toArray());
 
-        return 'success';
+        return response($transaction->getPaymentConfirmationResponse());
 
 //        $data = [
 //            'discount' => '0.00',

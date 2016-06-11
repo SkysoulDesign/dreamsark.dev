@@ -97,7 +97,7 @@ class Transaction extends Model
      */
     public function getPaymentConfirmationResponse()
     {
-        return app('payment')->getConfirmationResponse();
+        return app('payment')->forTransaction($this)->getConfirmationResponse();
     }
 
 }

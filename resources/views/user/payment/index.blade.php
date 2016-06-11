@@ -35,7 +35,7 @@
                     <td>{{ $transaction->unique_no }}</td>
                     <td>{{ $transaction->amount }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->status or 'processing' }}</td>
+                    <td>{{ $transaction->status or 'processing'}}</td>
                 </tr>
             @empty
                 <tr>
@@ -72,6 +72,8 @@
 
 
                                 let form = $('#' + id + '-form');
+
+//                                return form.submit();
 
                                 form.api({
                                     action: form.action,

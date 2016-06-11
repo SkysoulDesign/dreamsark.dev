@@ -137,8 +137,9 @@ class Payment
         $data[$this->gateway->signKey] = $this->sign($data);
         $data['sign_type'] = 'RSA';
 
-        return $data;
+        dd($data);
 
+        return $data;
     }
 
     private function getPostData() : array
