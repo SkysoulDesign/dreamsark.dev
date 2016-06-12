@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+        'client_id' => '1196086827109837', // vivek's personal account
+        'client_secret' => '814cb3f7465a5db6752afd5fd3a755d0',
+        'redirect' => 'http://139.196.36.204/login/social/facebook/status',
+    ],
+
 ];

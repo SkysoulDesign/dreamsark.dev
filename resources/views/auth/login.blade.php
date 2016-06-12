@@ -50,12 +50,34 @@
                 <div class="title simple center">or login with</div>
 
                 <div class="social center">
-                    <ul>
-                        <li><img src="{{ asset('dreamsark-assets/wechat.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/qq.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/weibo.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/facebook.png') }}" alt=""></li>
-                    </ul>
+                    <form action="{{ route('login.social.post') }}" method="post" target="_blank">
+                        {{ csrf_field() }}
+                        {{--<ul>
+                            <li><img src="{{ asset('dreamsark-assets/wechat.png') }}" alt=""></li>
+                            <li><img src="{{ asset('dreamsark-assets/qq.png') }}" alt=""></li>
+                            <li><img src="{{ asset('dreamsark-assets/weibo.png') }}" alt=""></li>
+                            <li><img src="{{ asset('dreamsark-assets/facebook.png') }}" alt=""></li>
+                        </ul>--}}
+                        <ul>
+                            <li>
+                                <input type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                       name="login_through" value="weixin"/>
+                            </li>
+                            <li>
+                                <input type="image" src="{{ asset('dreamsark-assets/qq.png') }}" name="login_through"
+                                       value="qq"/>
+                            </li>
+                            <li>
+                                <input type="image" src="{{ asset('dreamsark-assets/weibo.png') }}" name="login_through"
+                                       value="weibo"/>
+                            </li>
+                            <li>
+                                <input type="image" src="{{ asset('dreamsark-assets/facebook.png') }}"
+                                       name="login_through" value="facebook"/>
+                            </li>
+                        </ul>
+                    </form>
+
                 </div>
 
             </div>

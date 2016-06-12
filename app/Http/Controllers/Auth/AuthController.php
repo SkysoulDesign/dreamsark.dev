@@ -7,6 +7,8 @@ use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
+use Socialite;
+use SocialiteProviders\Manager\Config;
 
 /**
  * Class AuthController
@@ -47,6 +49,36 @@ class AuthController extends Controller
     public function create()
     {
         return view("auth.login");
+    }
+
+    public function loginWithSocial(Request $request)
+    {
+        if (!$request->has('login_through'))
+            return redirect()->back()->withErrors(trans('auth.invalid-data-found'));
+
+        $login_through = $request->get('login_through', '');
+
+        $clientId = env(strtoupper($login_through).'_KEY');
+        $clientSecret = env(strtoupper($login_through).'_SECRET');
+        $redirectUrl = route('login.social.callback', $login_through);
+        $config = new Config($clientId, $clientSecret, $redirectUrl);
+
+        /*return Socialite::class->with($login_through)->setConfig($config)->redirect();*/
+        $socialDriver = Socialite::driver($login_through);
+        return $socialDriver->redirect();
+
+    }
+
+    public function loginWithSocialCallBack(Request $request)
+    {
+        if (!$request->has('social'))
+            return redirect()->route('login')->withErrors(trans('auth.social-driver-not-found'));
+
+        $socialDriver = $request->get('social', '');
+        $user = Socialite::driver($socialDriver)->user();
+        dd($user);
+
+        dd($request->all());
     }
 
     /**

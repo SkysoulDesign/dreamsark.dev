@@ -9,8 +9,12 @@
   "type": "project",
   "require": {
     "php": ">=5.5.9",
-    "guzzlehttp/guzzle": "^6.2",
-    "laravel/framework": "5.2.*"
+    "laravel/framework": "5.2.*",
+    "laravel/socialite": "^2.0",
+    "socialiteproviders/manager": "^1.2",
+    "socialiteproviders/qq": "^1.1",
+    "socialiteproviders/weibo": "^1.0",
+    "socialiteproviders/weixin": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

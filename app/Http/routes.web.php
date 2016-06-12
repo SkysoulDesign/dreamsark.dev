@@ -90,10 +90,10 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->get('login', AuthController::class . '@create')->name('login');
     /** for social login */
-    /*$app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
+    $app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
         $app->post('/', AuthController::class . '@loginWithSocial')->name('post');
         $app->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
-    });*/
+    });
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
 
