@@ -33,6 +33,6 @@
             </tr>
         @endforeach
         </tbody>
-        @include('admin.partials.paginate-links', ['resultSet' => $questions, 'colSpan' => 3])
+        @include('partials.paginate-links', ['resultSet' => $questions, 'colSpan' => 3])
     </table>
 @endsection

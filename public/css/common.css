@@ -54,3 +54,8 @@ input[type="color"] {
 .ui.vertical.no-content.divider:after, .ui.vertical.no-content.divider:before{
     height: calc(100%);
 }
+
+.qrPayContainer {
+    width: 30%; border: 1px solid #ccc; border-radius: 5px;
+    text-align: center; margin: auto; padding: 5px;
+}

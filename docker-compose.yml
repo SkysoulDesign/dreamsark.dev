@@ -1,6 +1,6 @@
 mysql:
   image: mysql
-  container_name: database
+  container_name: dreamsark_database
   ports:
     - 3306:3306
   environment:
@@ -8,28 +8,25 @@ mysql:
     MYSQL_ROOT_PASSWORD: 123456
 
 php:
-  image: skysoul/php
-  #build: .
-  #dockerfile: ./build/docker/php/Dockerfile
-  #image: php:fpm-alpine
-  container_name: php
+  build: .
+  dockerfile: ./build/docker/php/Dockerfile
+  container_name: dreamsark_php
   volumes:
     - .:/var/www/dreamsark
   entrypoint:
       - php-fpm
 
-gulp:
-  image: skysoul/gulp
+#gulp:
 #  build: .
 #  dockerfile: ./build/docker/gulp/Dockerfile
-  container_name: gulp
-  volumes_from:
-      - php
-  entrypoint: top -b
+#  container_name: dreamsark_gulp
+#  volumes_from:
+#      - php
+#  entrypoint: top -b
 
 nginx:
   image: nginx:alpine
-  container_name: nginx
+  container_name: dreamsark_nginx
   volumes_from:
     - php
   volumes:

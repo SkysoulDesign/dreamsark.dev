@@ -6,12 +6,18 @@ use DreamsArk\Events\Event;
 use DreamsArk\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class CoinWasPurchased
+ *
+ * @package DreamsArk\Events\Bag
+ */
 class CoinWasPurchased extends Event
 {
+
     use SerializesModels;
 
     /**
-     * @var
+     * @var float
      */
     public $amount;
 
@@ -24,9 +30,9 @@ class CoinWasPurchased extends Event
      * Create a new event instance.
      *
      * @param User $user
-     * @param $amount
+     * @param float $amount
      */
-    public function __construct(User $user, $amount)
+    public function __construct(User $user, float $amount)
     {
         $this->amount = $amount;
         $this->user = $user;

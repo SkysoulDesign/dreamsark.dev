@@ -2,75 +2,64 @@
 
 namespace SkysoulDesign\Payment;
 
-use SkysoulDesign\Payment\Implementations\Alipay\AlipayDirect;
-use SkysoulDesign\Payment\Implementations\Alipay\AlipayNotify;
-use SkysoulDesign\Payment\Implementations\Unionpay\GatewayPay;
-use SkysoulDesign\Payment\Implementations\Unionpay\UPNotify;
-use SkysoulDesign\Payment\Implementations\Wechat\WechatDirect;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 
 /**
  * Class PaymentGateway
  *
  * @package SkysoulDesign\Payment
  */
-class PaymentGateway
+abstract class PaymentGateway implements PaymentGatewayContract
 {
 
     /**
-     * @var PaymentBuilder
+     * Callback key
+     *
+     * @var string
      */
-    public $builder;
+    public $callbackKey = 'return_url';
 
     /**
-     * PaymentGateway constructor.
+     * Notify callback key
      *
-     * @param PaymentBuilder $builder
+     * @var string
      */
-    private function __construct(PaymentBuilder $builder)
-    {
+    public $notifyCallbackKey = 'notify_url';
 
-        $this->builder = $builder;
-    }
+    /**
+     * Name of the unique key identifier on the gateway Api
+     * Ex: out_trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueIdentifierKey;
 
-    public static function alipayDirect()
-    {
-        return new static(new AlipayDirect);
-    }
+    /**
+     * Name of the sign key on the gateway API
+     *
+     * @var string
+     */
+    public $signKey = 'sign';
 
-    public static function alipayNotify()
-    {
-        return new static(new AlipayNotify);
-    }
+    /**
+     * Name of the type of signature defined by the gateway API
+     *
+     * @var string
+     */
+    public $signTypeKey = 'sign_type';
 
-    public static function wechatDirect()
-    {
-        return new static(new WechatDirect);
-    }
+    /**
+     * Key which identifies the amount payed for the product
+     *
+     * @var string
+     */
+    public $priceKey = 'total_fee';
 
-    public static function unionPayInstant()
-    {
-        return new static(new GatewayPay);
-    }
-
-    public static function unionPayNotify()
-    {
-        return new static(new UPNotify);
-    }
-
-    public function __call($name, $arguments)
-    {
-        if (method_exists($this->builder, $name))
-            return $this->builder->$name(isset($arguments[0]) ? $arguments[0] : '');
-
-    }
-
-    public function get($property, $default = null)
-    {
-        if (property_exists($this->builder, $property)) {
-            return $this->builder->$property;
-        }
-
-        return $default;
-    }
+    /**
+     * get the service key name
+     *
+     * @var string
+     */
+    public $serviceIdKey = 'partner';
 
 }

@@ -5,7 +5,7 @@
     <div class="twelve wide stretched column">
         <h2>@lang('profile.update-information')</h2>
         <div class="ui segment">
-            <form action="{{ route('user.settings.update') }}" method="post">
+            <form action="{{ route('user.settings.update') }}" method="post" class="ui form">
                 {{ method_field('patch') }}
                 {{ csrf_field() }}
                 <div class="form-item">

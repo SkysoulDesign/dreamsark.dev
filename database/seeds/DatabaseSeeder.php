@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $isLocalEnv = app()->environment() == 'local' ?: false;
+
         Model::unguard();
 
         $this->call(RoleTableSeeder::class);
@@ -19,7 +21,8 @@ class DatabaseSeeder extends Seeder
 //        $this->call(PositionTableSeeder::class);
 
         Model::reguard();
-        $this->call(GiveCoinsToUsers::Class);
+        if ($isLocalEnv)
+            $this->call(GiveCoinsToUsers::Class);
         $this->call(SetLanguageToEnglish::Class);
         Model::unguard();
 
@@ -29,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSectionTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
-        if (app()->environment() == 'local')
+        if ($isLocalEnv)
             $this->call(CreateDummyProject::class);
     }
 }

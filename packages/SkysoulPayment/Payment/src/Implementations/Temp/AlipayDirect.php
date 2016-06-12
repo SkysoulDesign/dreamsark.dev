@@ -13,7 +13,7 @@ class AlipayDirect extends APHelper
     /**
      * @var array
      */
-    protected $config = [];
+    public $config = [];
     /**
      * @var string
      */

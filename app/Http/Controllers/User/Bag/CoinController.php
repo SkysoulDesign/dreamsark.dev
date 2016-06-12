@@ -9,6 +9,9 @@ use DreamsArk\Http\Requests\Bag\CoinWithdrawRequest;
 use DreamsArk\Jobs\Payment\CreateTransactionJob;
 use DreamsArk\Jobs\Payment\Forms\GeneratePaymentFormJob;
 use DreamsArk\Jobs\Payment\Forms\GenerateWithdrawFormJob;
+use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
+use SkysoulDesign\Payment\Payment;
+use SkysoulDesign\Payment\PaymentGateway;
 
 /**
  * Class CoinController
@@ -36,12 +39,23 @@ class CoinController extends Controller
      */
     public function store(CoinCreation $request)
     {
-        $transactionData = dispatch(new CreateTransactionJob($request));
-        $getForm = dispatch(new GeneratePaymentFormJob($transactionData));
-        if (is_null($getForm))
-            return redirect()->back()->withErrors(trans('payment.invalid-method-selected'));
 
-        return response($getForm);
+        $transaction = dispatch(new CreateTransactionJob(
+            $request->user(),
+            $request->input('amount'),
+            $request->input('payment_method')
+        ));
+
+        return response()->json($transaction->payment->getResponse());
+
+//        dd(app('payment.drivers.alipay'));
+
+//        $getForm = dispatch(new GeneratePaymentFormJob($transaction));
+//        
+//        dd($getForm);
+        //$transaction->getPaymentResponse()
+        return $gateway->getPaymentResponse();
+
         //die($getForm);
 
         /* handled in PaymentController

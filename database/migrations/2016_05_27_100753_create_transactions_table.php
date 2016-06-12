@@ -9,6 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateTransactionsTable extends Migration
 {
     use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -18,13 +19,13 @@ class CreateTransactionsTable extends Migration
     {
         $this->schema->create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('unique_no')->unique();
-            $table->string('invoice_no');
-            $table->string('pay_method');
-            $table->string('type');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('unique_no')->unique();
+            $table->string('invoice_no');
+            $table->string('method');
             $table->integer('amount');
+            $table->string('type');
             $table->boolean('is_payment_done')->default(false);
             $table->tinyInteger('attempts')->unsigned();
             $table->boolean('is_canceled')->default(false);
@@ -41,4 +42,5 @@ class CreateTransactionsTable extends Migration
     {
         $this->schema->drop('transactions');
     }
+
 }
