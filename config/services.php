@@ -36,8 +36,8 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1196086827109837', // vivek's personal account
-        'client_secret' => '814cb3f7465a5db6752afd5fd3a755d0',
+        'client_id' => '362581440466557', // rafael's developer account
+        'client_secret' => '26ed1f3839d143867cfefa98d9c0b5de',
         'redirect' => 'http://139.196.36.204/login/social/facebook/status',
     ],
 
