@@ -12,9 +12,7 @@
 
 <body id="app-root" class="main">
 
-<div class="expanded row" style="margin-top: 200px">
     @yield('content')
-</div>
 
 @yield('scripts')
 

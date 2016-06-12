@@ -1,22 +1,27 @@
-@mixin dreamsark-form-input() {
+input, .input {
 
-  input {
+  font-size: 1em;
+  font-weight: lighter;
+  color: color(gray, dark);
 
-    width: 100%;
-    padding: rem-calc(15);
+  width: 100%;
+  padding: 1em;
+  margin: 0;
 
-    color: color(black, light);
-    background: color(gray);
-    border: 1px solid color(gray, mid-dark);
+  background: color(gray, light, 30);
+  border: 1px solid color(gray, light, 80);
 
-    &:focus {
-      outline: 0;
-    }
+  &:hover {
+    background: color(gray, light, 50);
+    color: color(gray, x-dark);
+  }
 
-    &:active {
-      outline: 0;
-    }
+  &:focus {
+    outline: 0;
+  }
 
+  &:active {
+    outline: 0;
   }
 
 }

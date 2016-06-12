@@ -1,7 +1,7 @@
 @mixin dreamsark-button-base() {
 
   border: none;
-  border-radius: $border-radius;
+  border-radius: 5px;
   width: 100%;
   color: color(white);
 
@@ -11,7 +11,7 @@
   box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
   text-shadow: 0 -0.5px 1px color(black, base, 15);
 
-  padding: rem-calc(20);
+  padding: 1em;
   position: relative;
 
   text-transform: uppercase;
@@ -48,17 +48,26 @@
 
 @mixin dreamsark-button-ripple() {
 
-  @include component(ripple) {
-    height: 0;
-    width: 0;
-    position: absolute;
-    visibility: hidden;
+  @include option(ripple) {
+
+    transition: 200ms background cubic-bezier(0.4, 0, 0.2, 1);
+    background: color(primary);
+    padding: 1.5em;
+
+    cursor: pointer;
+
+    &:hover{
+      outline: none;
+      background: color(primary, mid-light);
+    }
+
   }
 
   svg {
 
     height: 100%;
     pointer-events: none;
+    cursor: pointer;
     position: absolute;
     top: 0;
     left: 0;
@@ -74,14 +83,10 @@
 
 }
 
-@mixin dreamsark-form-button() {
+button, .button {
 
-  button, .button {
-
-    @include dreamsark-button-base;
-    @include dreamsark-button-colors;
-    @include dreamsark-button-ripple;
-
-  }
+  @include dreamsark-button-base;
+  @include dreamsark-button-colors;
+  @include dreamsark-button-ripple;
 
 }

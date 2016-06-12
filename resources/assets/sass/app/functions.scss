@@ -12,8 +12,8 @@
 
 }
 
-@function color($palette, $tone: 'base', $alpha: 100) {
-  @return rgba(map-get(map-get($colors, $palette), $tone), $alpha/100);
+@function color($color, $tone: 'base', $alpha: 100) {
+  @return rgba(map-get(map-get($colors, $color), $tone), $alpha/100);
 }
 
 @mixin respond-to($breakpoint) {

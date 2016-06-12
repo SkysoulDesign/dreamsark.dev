@@ -11,9 +11,11 @@
 @import 'app/colors';
 @import 'app/variables';
 @import 'app/fonts';
+@import 'app/typography';
 @import 'components/form/forms';
 @import 'components/global';
 @import 'components/segment';
+@import 'components/divider';
 
 /**
 * Initiate things up
@@ -23,7 +25,8 @@
 @include dreamsark-global;
 @include dreamsark-global;
 @include dreamsark-segment;
-//@include dreamsark-forms;
+@include dreamsark-divider;
+@include dreamsark-forms;
 
 /**
 * test

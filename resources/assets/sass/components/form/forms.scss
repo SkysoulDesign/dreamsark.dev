@@ -1,16 +1,57 @@
-@import "form";
-@import "field";
-@import "input";
-@import "button";
-
 @mixin dreamsark-forms() {
 
-  @include dreamsark-form;
+  form, .form {
 
-  form {
-    @include dreamsark-form-field;
-    @include dreamsark-form-input;
-    @include dreamsark-form-button;
+    padding: 0;
+    margin: 0;
+
+    @import "input";
+    @import "button";
+
+    @include part(field) {
+
+      @include all-but(1) {
+        margin: 10px 0;
+      }
+
+      @include last(1) {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+
+    }
+
+    @include part(message) {
+
+      background: color($color: danger, $alpha: 10);
+      padding: 1em;
+      border: 1px solid color($color: danger, $alpha: 20);
+
+      @include part(header) {
+        font-weight: 500;
+      }
+
+      @include part(items) {
+
+        font-weight: 300;
+
+        padding:0 1.125em;
+        margin: 10px 0 0 0;
+
+        font-size: $h5;
+
+        li {
+          margin: 0;
+          padding:0;
+        }
+
+      }
+
+      @include option(error) {
+        color: color($color: danger);
+      }
+    }
+
   }
 
 }

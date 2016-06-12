@@ -4,9 +4,22 @@
     /* So 100% means 100% */
     box-sizing: border-box;
   }
+
   html, body {
     /* Make the body to be as tall as browser window */
     height: 100%;
+    background-color: color(neutral);
+  }
+
+  @include component(main) {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: url('/img/universe.jpeg') no-repeat center center;
+    background-size: cover;
+
   }
 
 }
