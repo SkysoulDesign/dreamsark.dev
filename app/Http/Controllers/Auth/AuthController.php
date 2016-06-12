@@ -58,20 +58,21 @@ class AuthController extends Controller
 
         $login_through = $request->get('login_through', '');
 
-        $clientId = env(strtoupper($login_through).'_KEY');
-        $clientSecret = env(strtoupper($login_through).'_SECRET');
+        $clientId = env(strtoupper($login_through) . '_KEY');
+        $clientSecret = env(strtoupper($login_through) . '_SECRET');
         $redirectUrl = route('login.social.callback', $login_through);
         $config = new Config($clientId, $clientSecret, $redirectUrl);
 
         /*return Socialite::class->with($login_through)->setConfig($config)->redirect();*/
         $socialDriver = Socialite::driver($login_through);
+
         return $socialDriver->redirect();
 
     }
 
     public function loginWithSocialCallBack(Request $request)
     {
-        if (!$request->has('social'))
+        if (is_null($request->social))
             return redirect()->route('login')->withErrors(trans('auth.social-driver-not-found'));
 
         $socialDriver = $request->get('social', '');
