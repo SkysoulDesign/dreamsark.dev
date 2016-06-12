@@ -24,11 +24,14 @@
                         <td>{{ $expenditure->expenditurable->name }}</td>
                         <td>{{ $expenditure->pivot->created_at->format('m/d/Y H:i') }}</td>
                         <td>
-
-                            <form method="post" action="{{ route('project.unroll.store', $expenditure->id) }}">
-                                {{ csrf_field() }}
-                                <button type="submit" class="red ui icon button">@lang('project.unroll')</button>
-                            </form>
+                            @if($expenditure->project->stage instanceof \DreamsArk\Models\Project\Stages\Distribution)
+                            @elseif($expenditure->project->stage instanceof \DreamsArk\Models\Project\Stages\Fund && $expenditure->project->stage->vote->active)
+                            @else
+                                <form method="post" action="{{ route('project.unroll.store', $expenditure->id) }}">
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="red ui icon button">@lang('project.unroll')</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

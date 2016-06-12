@@ -36,9 +36,9 @@
         @lang('navbar.transactions')
         <div class="menu">
             <a class="item"
-               href="{{ route('admin.payment.purchases') }}">@lang('navbar.purchases')</a>
+               href="{{ route('admin.transactions.purchases') }}">@lang('navbar.purchases')</a>
             <a class="item"
-               href="{{ route('admin.payment.withdraw') }}">@lang('navbar.withdrawals')</a>
+               href="{{ route('admin.transactions.withdraw') }}">@lang('navbar.withdrawals')</a>
         </div>
     </div>
     @if(auth()->user()->can('see-admin-section'))

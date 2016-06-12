@@ -12,6 +12,7 @@
 */
 
 use DreamsArk\Http\Controllers\Admin\AdminController;
+use DreamsArk\Http\Controllers\Admin\Payment\TransactionController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
@@ -88,6 +89,11 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Login
      */
     $app->get('login', AuthController::class . '@create')->name('login');
+    /** for social login */
+    /*$app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
+        $app->post('/', AuthController::class . '@loginWithSocial')->name('post');
+        $app->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
+    });*/
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
 
@@ -333,6 +339,12 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         /** Admin projects */
         $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
+
+        /** Payments/Transaction related */
+        $app->group(['prefix' => 'transactions', 'as' => 'transactions.'], function () use ($app) {
+            $app->get('purchases', TransactionController::class . '@getPurchaseList')->name('purchases');
+            $app->get('withdrawals', TransactionController::class . '@getWithdrawList')->name('withdraw');
+        });
 
     });
 
