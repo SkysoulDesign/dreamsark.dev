@@ -3,12 +3,14 @@
 namespace DreamsArk\Http\Controllers\Auth;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Jobs\Session\CreateUserJob;
+use DreamsArk\Models\User\User;
+use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Socialite;
-use SocialiteProviders\Manager\Config;
 
 /**
  * Class AuthController
@@ -58,28 +60,68 @@ class AuthController extends Controller
 
         $login_through = $request->get('login_through', '');
 
-        $clientId = env(strtoupper($login_through) . '_KEY');
-        $clientSecret = env(strtoupper($login_through) . '_SECRET');
-        $redirectUrl = route('login.social.callback', $login_through);
-        $config = new Config($clientId, $clientSecret, $redirectUrl);
-
-        /*return Socialite::class->with($login_through)->setConfig($config)->redirect();*/
         $socialDriver = Socialite::driver($login_through);
 
         return $socialDriver->redirect();
 
     }
 
-    public function loginWithSocialCallBack(Request $request)
+    public function loginWithSocialCallBack(Request $request, UserRepositoryInterface $userRepository)
     {
         if (is_null($request->social))
             return redirect()->route('login')->withErrors(trans('auth.social-driver-not-found'));
 
-        $socialDriver = $request->get('social', '');
-        $user = Socialite::driver($socialDriver)->user();
-        dd($user);
+        $socialDriver = $request->social;
+        $socialUser = Socialite::driver($socialDriver)->user();
 
-        dd($request->all());
+        /**
+         * @TODO: need to check the user existence by email address received in $socialUser->user object and create if not
+         */
+        $userObj = $userRepository->checkUserExists($socialUser->email, $socialUser->id, $socialDriver);
+        $user = '';
+        $socialData = [
+            'auth_type'   => $socialDriver,
+            'auth_id'     => $socialUser->id,
+            'auth_email'  => $socialUser->email,
+            'auth_token'  => $socialUser->token,
+            'avatar_path' => $socialUser->avatar
+        ];
+        if ($userObj->isEmpty()) {
+            $faker = app(\Faker\Generator::class);
+            /**
+             * Create User
+             */
+            $newUserData = [
+                'name'     => $socialUser->name,
+                'username' => $socialUser->nickname ?: $socialUser->email,
+                'email'    => $socialUser->email,
+                'password' => $faker->password(6, 6),
+            ];
+
+            /** @var User $user */
+            $user = dispatch(new CreateUserJob($newUserData));
+
+//            $avatarUploadPath = dispatch(new UploadUserContentJob($socialUser->avatar, $user, $socialDriver.'-profile_avatar'));
+//            $socialData['avatar_path'] = $avatarUploadPath;
+
+            $user->socialite()->create($socialData);
+            $user->fresh();
+            $message = trans('auth.account-created').'. '.trans('auth.please-set-your-password');
+        } else {
+            /** @var User $user */
+            $user = $userObj[0];
+            $userSocialite = $userRepository->getSocialiteObject($user->id, $socialDriver);
+            if ($userSocialite->isEmpty()) {
+                $user->socialite()->create($socialData);
+            }
+            $this->auth->login($user);
+            $message = trans('auth.login-success');
+        }
+        if ($user instanceof User)
+            return redirect()->intended(route('user.account'))->withSuccess($message);
+
+        return redirect()->route('login')->withErrors(trans('auth.social-login-failed'));
+
     }
 
     /**

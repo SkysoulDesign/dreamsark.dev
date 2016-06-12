@@ -42,4 +42,8 @@ interface UserRepositoryInterface
      * @return mixed
      */
     public function projectEarnings($user_id);
+
+    public function checkUserExists($email, $auth_id, $auth_type);
+
+    public function getSocialiteObject($user_id, $auth_type);
 }

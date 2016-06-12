@@ -77,6 +77,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Settings Relationship
+     */
+    public function socialite()
+    {
+        return $this->hasMany(Socialite::class);
+    }
+
+    /**
      * Bags Relationship
      */
     public function bag()

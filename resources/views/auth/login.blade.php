@@ -50,14 +50,8 @@
                 <div class="title simple center">or login with</div>
 
                 <div class="social center">
-                    <form action="{{ route('login.social.post') }}" method="post" target="_blank">
+                    <form action="{{ route('login.social.post') }}" method="post">
                         {{ csrf_field() }}
-                        {{--<ul>
-                            <li><img src="{{ asset('dreamsark-assets/wechat.png') }}" alt=""></li>
-                            <li><img src="{{ asset('dreamsark-assets/qq.png') }}" alt=""></li>
-                            <li><img src="{{ asset('dreamsark-assets/weibo.png') }}" alt=""></li>
-                            <li><img src="{{ asset('dreamsark-assets/facebook.png') }}" alt=""></li>
-                        </ul>--}}
                         <ul>
                             <li>
                                 <input type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"

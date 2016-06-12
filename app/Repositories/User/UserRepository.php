@@ -115,4 +115,24 @@ class UserRepository extends Repository implements UserRepositoryInterface
         return $result->paginate(config('defaults.general.pagination.per_page'));
     }
 
+    public function checkUserExists($email, $auth_id, $auth_type)
+    {
+        return $this->model->where('email', $email)
+            ->orWhereHas('socialite', function ($query) use ($email, $auth_id, $auth_type) {
+                $query->whereRaw("(auth_email = '" . $email . "' OR auth_id='" . $auth_id . "')");
+                $query->where('auth_type', '=', $auth_type);
+            })
+            ->get();
+        //->load('socialite')
+    }
+
+    public function getSocialiteObject($user_id, $auth_type)
+    {
+        return $this->model->where('id', $user_id)
+            ->whereHas('socialite', function ($query) use ($auth_type) {
+                $query->where('auth_type', '=', $auth_type);
+            })
+            ->get();
+    }
+
 }
