@@ -1,6 +1,6 @@
-var elixir = require('laravel-elixir');
+process.env.DISABLE_NOTIFIER = true;
 
-var watchify = require('watchify');
+var elixir = require('laravel-elixir');
 
 /*
  |--------------------------------------------------------------------------
@@ -18,5 +18,13 @@ elixir(function (mix) {
     mix.sass('app.scss');
     mix.browserify("./resources/assets/typescript/App.js", null, null, {
         cache: {}, packageCache: {}
+    });
+    mix.browserSync({
+        open:   "ui",
+        notify: false,
+        proxy:  {
+            target: "dreamsark.dev:8080"
+        },
+        port:   8080
     });
 });

@@ -1,14 +1,45 @@
 @mixin dreamsark-segment() {
 
+  .body {
+
+  }
+
+  @include component(container) {
+    display: flex;
+    margin: 0 auto;
+
+    @include respond-to('mobile') {
+      width: 100%;
+    }
+
+    @include respond-to('desktop') {
+      width: 90%;
+    }
+
+  }
+
   @include component(segments) {
     display: flex;
   }
 
   @include component(segment) {
+    margin: 10px;
+    flex: 1 0 0;
+    width: 100px;
 
-    border: 1px solid gray;
-    margin: 2px;
-    flex: 1;
+    @for $i from 1 through 4 {
+      @include option(1) {
+        flex: $i 0 0;
+      }
+    }
+
+    //@include option(1) {
+    //  flex: 1 0 0;
+    //}
+    //
+    //@include option(2) {
+    //  flex: 2 0 0;
+    //}
 
     //display: flex;
     //flex-basis: 100%;
