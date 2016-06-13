@@ -6,25 +6,32 @@ use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Repositories\Payment\TransactionRepository;
 
+/**
+ * Class TransactionController
+ *
+ * @package DreamsArk\Http\Controllers\Admin\Payment
+ */
 class TransactionController extends Controller
 {
-    private $transaction;
 
-    public function __construct(TransactionRepository $transaction)
+    /**
+     * @param TransactionRepository $transaction
+     * @return mixed
+     */
+    public function getPurchaseList(TransactionRepository $transaction)
     {
-        $this->transaction = $transaction;
-    }
-
-    public function getPurchaseList()
-    {
-        $purchases = $this->transaction->purchases();
+        $purchases = $transaction->purchases();
 
         return view('admin.payment.transaction.purchases-list', compact('purchases'));
     }
 
-    public function getWithdrawList()
+    /**
+     * @param TransactionRepository $transaction
+     * @return mixed
+     */
+    public function getWithdrawList(TransactionRepository $transaction)
     {
-        $withdrawals = $this->transaction->withdrawals();
+        $withdrawals = $transaction->withdrawals();
 
         return view('admin.payment.transaction.withdraw-list', compact('withdrawals'));
     }

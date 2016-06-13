@@ -34,7 +34,9 @@ return [
 
         'unionpay' => [
             'enabled' => false,
-            'seller_id' => '2088221979483694'
+            'service_id' => '2088221979483694',
+            'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/700000000000001_acp.pfx',
+            'private_key_pwd' => '000000',
         ],
 
         'wechat' => [

@@ -20,19 +20,6 @@
                 @endif
             </a>
         @endforeach
-        {{--<a class="item" href="{{ route('user.settings') }}">
-            @lang('navbar.account-settings')
-        </a>
-        <a class="item" href="{{ route('user.purchase.index') }}">
-            @lang('navbar.purchases')
-        </a>
-        <a href="{{ route('user.activity.backed.list') }}" class="item">@lang('navbar.backed-list')</a>
-        <a href="{{ route('user.activity.enrolled.list') }}" class="item">@lang('navbar.enrolled-list')</a>
-        <a href="{{ route('user.activity.earning') }}" class="item">@lang('navbar.earning-list')</a>
-        <a class="item" href="javascript:;">
-            @lang('navbar.social-media')
-        </a>--}}
-
     </div>
 </div>
 <div class="ui vertical no-content divider"></div>

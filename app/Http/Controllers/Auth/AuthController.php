@@ -3,10 +3,16 @@
 namespace DreamsArk\Http\Controllers\Auth;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Jobs\Session\CreateUserJob;
+use DreamsArk\Models\User\User;
+use DreamsArk\Repositories\General\FileRepository;
+use DreamsArk\Repositories\User\UserRepositoryInterface;
+use Faker\Generator;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
+use Socialite;
 
 /**
  * Class AuthController
@@ -47,6 +53,102 @@ class AuthController extends Controller
     public function create()
     {
         return view("auth.login");
+    }
+
+    public function loginWithSocial(Request $request)
+    {
+        if (!$request->has('login_through'))
+            return redirect()->back()->withErrors(trans('auth.invalid-data-found'));
+
+        $login_through = $request->get('login_through', '');
+
+        $socialDriver = Socialite::driver($login_through);
+
+        return $socialDriver->redirect();
+
+    }
+
+    public function loginWithSocialCallBack(Request $request, UserRepositoryInterface $userRepository)
+    {
+        if (is_null($request->social))
+            return redirect()->route('login')->withErrors(trans('auth.social-driver-not-found'));
+
+        $socialDriver = $request->social;
+        $socialUser = Socialite::driver($socialDriver)->user();
+
+        /**
+         * @TODO: need to check the user existence by email address received in $socialUser->user object and create if not
+         */
+        $userObj = $userRepository->checkUserExists($socialUser->email, $socialUser->id, $socialDriver);
+        $user = '';
+        $socialData = [
+            'auth_type'   => $socialDriver,
+            'auth_id'     => $socialUser->id,
+            'auth_email'  => $socialUser->email,
+            'auth_token'  => $socialUser->token,
+            'avatar_path' => $socialUser->avatar
+        ];
+        if ($userObj->isEmpty()) {
+            /** @var Generator $faker */
+            $faker = app(\Faker\Generator::class);
+            /**
+             * Create User
+             */
+            $newUserData = [
+                'name'     => $socialUser->name,
+                'username' => preg_replace('/@.*?$/', '', $socialUser->email),
+                'email'    => $socialUser->email,
+                'password' => $faker->password(6, 6),
+            ];
+
+            /** @var User $user */
+            $user = dispatch(new CreateUserJob($newUserData));
+
+            $socialData['avatar_path'] = $this->saveAvatarFromUrl($socialDriver, $user, $socialUser->avatar);
+
+            $user->socialite()->create($socialData);
+            $user->fresh();
+            $message = trans('auth.account-created') . '. ' . trans('auth.please-set-your-password');
+        } else {
+            /** @var User $user */
+            $user = $userObj[0];
+            $userSocialite = $userRepository->getSocialiteObject($user->id, $socialDriver);
+            if ($userSocialite->isEmpty()) {
+                $socialData['avatar_path'] = $this->saveAvatarFromUrl($socialDriver, $user, $socialUser->avatar);
+                $user->socialite()->create($socialData);
+            }
+            $this->auth->login($user);
+            $message = trans('auth.login-success');
+        }
+        if ($user instanceof User)
+            return redirect()->intended(route('user.account'))->withSuccess($message);
+
+        return redirect()->route('login')->withErrors(trans('auth.social-login-failed'));
+
+    }
+
+    private function saveAvatarFromUrl($socialDriver, $user, $avatar)
+    {
+        /** file save from url */
+        $avatar_path = $avatar;
+        if (!is_null($avatar)) {
+            $extension = pathinfo($avatar, PATHINFO_EXTENSION) ?: 'jpg';
+            // pathinfo($socialUser->avatar, PATHINFO_FILENAME)
+            $fileName = str_slug($user->username . '-' . $socialDriver . '-profile_avatar') . '.' . $extension;
+            $userDir = "user_content" . DIRECTORY_SEPARATOR . $user->id;
+            $path = $userDir . DIRECTORY_SEPARATOR . str_plural('avatar');
+            $avatarUploadPath = $path . DIRECTORY_SEPARATOR . $fileName;
+            if (!\File::exists(public_path($userDir)))
+                \File::makeDirectory(public_path($userDir));
+            if (!\File::exists(public_path($path)))
+                \File::makeDirectory(public_path($path));
+            $newFile = copy($avatar, $avatarUploadPath);
+            if ($newFile) {
+                $avatar_path = $avatarUploadPath;
+            }
+        }
+
+        return $avatar_path;
     }
 
     /**

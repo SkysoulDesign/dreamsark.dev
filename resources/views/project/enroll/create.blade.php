@@ -52,10 +52,15 @@
 
                         <td class="collapsing">
                             @if($expenditure->users->contains('id', auth()->user()->id))
-                                <form method="post" action="{{ route('project.unroll.store', $expenditure->id) }}">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="red ui icon button">@lang('project.unroll')</button>
-                                </form>
+                                @if($expenditure->project->stage instanceof \DreamsArk\Models\Project\Stages\Distribution)
+                                @elseif($expenditure->project->stage instanceof \DreamsArk\Models\Project\Stages\Fund && $expenditure->project->stage->vote->active)
+                                @else
+                                    <form method="post" action="{{ route('project.unroll.store', $expenditure->id) }}">
+                                        {{ csrf_field() }}
+                                        <button type="submit"
+                                                class="red ui icon button">@lang('project.unroll')</button>
+                                    </form>
+                                @endif
                             @else
                                 @if(auth()->user()->hasProfile($expenditure->expenditurable->profile))
                                     <form method="post" action="{{ route('project.enroll.store', $expenditure->id) }}">

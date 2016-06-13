@@ -166,6 +166,7 @@ return [
         DreamsArk\Providers\RouteServiceProvider::class,
         DreamsArk\Providers\RepositoriesServiceProvider::class,
         SkysoulDesign\Payment\PaymentServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
     ],
 
@@ -226,6 +227,7 @@ return [
          * Developed
          */
         'Form' => \SkysoulDesign\Form\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

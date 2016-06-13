@@ -58,6 +58,7 @@ use DreamsArk\Listeners\User\LogUserIn;
 use DreamsArk\Listeners\User\Payment\AddCoinsToUser;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 /**
  * Class EventServiceProvider
@@ -204,7 +205,14 @@ class EventServiceProvider extends ServiceProvider
 
         PaymentWasConfirmed::class => [
             AddCoinsToUser::class
-        ]
+        ],
+
+        SocialiteWasCalled::class => [
+            // add your listeners (aka providers) here
+            'SocialiteProviders\Weixin\WeixinExtendSocialite@handle',
+            'SocialiteProviders\Qq\QqExtendSocialite@handle',
+            'SocialiteProviders\Weibo\WeiboExtendSocialite@handle',
+        ],
 
     ];
 

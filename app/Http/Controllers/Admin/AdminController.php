@@ -32,8 +32,8 @@ class AdminController extends Controller
                 ['name' => 'committee.project.distribute.list', 'label' => trans('navbar.project-in-distribute')],
             ]],
             ['label' => trans('navbar.transactions'), 'list' => [
-                ['name' => 'admin.payment.purchases', 'label' => trans('navbar.purchases')],
-                ['name' => 'admin.payment.withdraw', 'label' => trans('navbar.withdrawals')],
+                ['name' => 'admin.transactions.purchases', 'label' => trans('navbar.purchases')],
+                ['name' => 'admin.transactions.withdraw', 'label' => trans('navbar.withdrawals')],
             ]]
         ];
 
