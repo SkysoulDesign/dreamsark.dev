@@ -1,679 +1,347 @@
 /**
 * Import Third Party Frameworks
 */
-/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
- * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * Calculate column size percentage
  */
-html {
-  font-family: sans-serif;
-  /* 1 */
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */ }
-
 /**
- * Remove the margin in all browsers (opinionated).
+ * Spacing mixin to create uniform margin/padding
  */
-body {
-  margin: 0; }
-
-/* HTML5 display definitions
-   ========================================================================== */
-/**
- * Add the correct display in IE 9-.
- * 1. Add the correct display in Edge, IE, and Firefox.
- * 2. Add the correct display in IE.
- */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section,
-summary {
-  /* 1 */
-  display: block; }
-
-/**
- * Add the correct display in IE 9-.
- */
-audio,
-canvas,
-progress,
-video {
-  display: inline-block; }
-
-/**
- * Add the correct display in iOS 4-7.
- */
-audio:not([controls]) {
-  display: none;
-  height: 0; }
-
-/**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
- */
-progress {
-  vertical-align: baseline; }
-
-/**
- * Add the correct display in IE 10-.
- * 1. Add the correct display in IE.
- */
-template,
-[hidden] {
-  display: none; }
-
-/* Links
-   ========================================================================== */
-/**
- * 1. Remove the gray background on active links in IE 10.
- * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
- */
-a {
-  background-color: transparent;
-  /* 1 */
-  -webkit-text-decoration-skip: objects;
-  /* 2 */ }
-
-/**
- * Remove the outline on focused links when they are also active or hovered
- * in all browsers (opinionated).
- */
-a:active,
-a:hover {
-  outline-width: 0; }
-
-/* Text-level semantics
-   ========================================================================== */
-/**
- * 1. Remove the bottom border in Firefox 39-.
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
- */
-abbr[title] {
-  border-bottom: none;
-  /* 1 */
-  text-decoration: underline;
-  /* 2 */
-  text-decoration: underline dotted;
-  /* 2 */ }
-
-/**
- * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
- */
-b,
-strong {
-  font-weight: inherit; }
-
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
-b,
-strong {
-  font-weight: bolder; }
-
-/**
- * Add the correct font style in Android 4.3-.
- */
-dfn {
-  font-style: italic; }
-
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0; }
-
-/**
- * Add the correct background and color in IE 9-.
- */
-mark {
-  background-color: #ff0;
-  color: #000; }
-
-/**
- * Add the correct font size in all browsers.
- */
-small {
-  font-size: 80%; }
-
-/**
- * Prevent `sub` and `sup` elements from affecting the line height in
- * all browsers.
- */
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline; }
-
-sub {
-  bottom: -0.25em; }
-
-sup {
-  top: -0.5em; }
-
-/* Embedded content
-   ========================================================================== */
-/**
- * Remove the border on images inside links in IE 10-.
- */
-img {
-  border-style: none; }
-
-/**
- * Hide the overflow in IE.
- */
-svg:not(:root) {
-  overflow: hidden; }
-
-/* Grouping content
-   ========================================================================== */
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  /* 1 */
-  font-size: 1em;
-  /* 2 */ }
-
-/**
- * Add the correct margin in IE 8.
- */
-figure {
-  margin: 1em 40px; }
-
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-hr {
-  box-sizing: content-box;
-  /* 1 */
-  height: 0;
-  /* 1 */
-  overflow: visible;
-  /* 2 */ }
-
-/* Forms
-   ========================================================================== */
-/**
- * 1. Change font properties to `inherit` in all browsers (opinionated).
- * 2. Remove the margin in Firefox and Safari.
- */
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */ }
-
-/**
- * Restore the font weight unset by the previous rule.
- */
-optgroup {
-  font-weight: bold; }
-
-/**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
- */
-button,
-input {
-  /* 1 */
-  overflow: visible; }
-
-/**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
- */
-button,
-select {
-  /* 1 */
-  text-transform: none; }
-
-/**
- * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
- *    controls in Android 4.
- * 2. Correct the inability to style clickable types in iOS and Safari.
- */
-button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
-  /* 2 */ }
-
-/**
- * Remove the inner border and padding in Firefox.
- */
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
-  border-style: none;
-  padding: 0; }
-
-/**
- * Restore the focus styles unset by the previous rule.
- */
-button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
-  outline: 1px dotted ButtonText; }
-
-/**
- * Change the border, margin, and padding in all browsers (opinionated).
- */
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em; }
-
-/**
- * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from `fieldset` elements in IE.
- * 3. Remove the padding so developers are not caught out when they zero out
- *    `fieldset` elements in all browsers.
- */
-legend {
+.segments .segment.\--columns-mobile, .segments .segment.\--columns-small, .segments .segment.\--columns-desktop, .segments .segment.\--columns-large, .segments .segment.\--mobile-1-columns, .segments .segment.\--mobile-2-columns, .segments .segment.\--mobile-3-columns, .segments .segment.\--mobile-4-columns, .segments .segment.\--mobile-5-columns, .segments .segment.\--mobile-6-columns, .segments .segment.\--mobile-7-columns, .segments .segment.\--mobile-8-columns, .segments .segment.\--mobile-9-columns, .segments .segment.\--mobile-10-columns, .segments .segment.\--mobile-11-columns, .segments .segment.\--mobile-12-columns, .segments .segment.\--small-1-columns, .segments .segment.\--small-2-columns, .segments .segment.\--small-3-columns, .segments .segment.\--small-4-columns, .segments .segment.\--small-5-columns, .segments .segment.\--small-6-columns, .segments .segment.\--small-7-columns, .segments .segment.\--small-8-columns, .segments .segment.\--small-9-columns, .segments .segment.\--small-10-columns, .segments .segment.\--small-11-columns, .segments .segment.\--small-12-columns, .segments .segment.\--desktop-1-columns, .segments .segment.\--desktop-2-columns, .segments .segment.\--desktop-3-columns, .segments .segment.\--desktop-4-columns, .segments .segment.\--desktop-5-columns, .segments .segment.\--desktop-6-columns, .segments .segment.\--desktop-7-columns, .segments .segment.\--desktop-8-columns, .segments .segment.\--desktop-9-columns, .segments .segment.\--desktop-10-columns, .segments .segment.\--desktop-11-columns, .segments .segment.\--desktop-12-columns, .segments .segment.\--large-1-columns, .segments .segment.\--large-2-columns, .segments .segment.\--large-3-columns, .segments .segment.\--large-4-columns, .segments .segment.\--large-5-columns, .segments .segment.\--large-6-columns, .segments .segment.\--large-7-columns, .segments .segment.\--large-8-columns, .segments .segment.\--large-9-columns, .segments .segment.\--large-10-columns, .segments .segment.\--large-11-columns, .segments .segment.\--large-12-columns {
   box-sizing: border-box;
-  /* 1 */
-  color: inherit;
-  /* 2 */
-  display: table;
-  /* 1 */
-  max-width: 100%;
-  /* 1 */
-  padding: 0;
-  /* 3 */
-  white-space: normal;
-  /* 1 */ }
-
-/**
- * Remove the default vertical scrollbar in IE.
- */
-textarea {
-  overflow: auto; }
-
-/**
- * 1. Add the correct box sizing in IE 10-.
- * 2. Remove the padding in IE 10-.
- */
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box;
-  /* 1 */
-  padding: 0;
-  /* 2 */ }
-
-/**
- * Correct the cursor style of increment and decrement buttons in Chrome.
- */
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto; }
-
-/**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
- */
-[type="search"] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */ }
-
-/**
- * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.
- */
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
-/**
- * Correct the text style of placeholders in Chrome, Edge, and Safari.
- */
-::-webkit-input-placeholder {
-  color: inherit;
-  opacity: 0.54; }
-
-/**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
- */
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */ }
-
-/**
-*Top Menu
-*/
-/**
-* Header
-*/
-/**
-* Banner
-*/
-/**
-* 100,300,400,500,700,900
-*/
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-thin-webfont.eot");
-  src: url("/fonts/roboto/roboto-thin-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-thin-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-thin-webfont.woff") format("woff"), url("/fonts/roboto/roboto-thin-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-thin-webfont.svg#robotothin") format("svg");
-  font-weight: 100;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-light-webfont.eot");
-  src: url("/fonts/roboto/roboto-light-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-light-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-light-webfont.woff") format("woff"), url("/fonts/roboto/roboto-light-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-light-webfont.svg#robotolight") format("svg");
-  font-weight: 300;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-regular-webfont.eot");
-  src: url("/fonts/roboto/roboto-regular-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-regular-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-regular-webfont.woff") format("woff"), url("/fonts/roboto/roboto-regular-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-regular-webfont.svg#robotoregular") format("svg");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-medium-webfont.eot");
-  src: url("/fonts/roboto/roboto-medium-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-medium-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-medium-webfont.woff") format("woff"), url("/fonts/roboto/roboto-medium-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-medium-webfont.svg#robotomedium") format("svg");
-  font-weight: 500;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-bold-webfont.eot");
-  src: url("/fonts/roboto/roboto-bold-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-bold-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-bold-webfont.woff") format("woff"), url("/fonts/roboto/roboto-bold-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-bold-webfont.svg#robotobold") format("svg");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-black-webfont.eot");
-  src: url("/fonts/roboto/roboto-black-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-black-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-black-webfont.woff") format("woff"), url("/fonts/roboto/roboto-black-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-black-webfont.svg#robotoblack") format("svg");
-  font-weight: 900;
-  font-style: normal; }
-
-/**
-* Initiate things up
-*/
-* {
-  /* So 100% means 100% */
-  box-sizing: border-box; }
-
-html, body {
-  /* Make the body to be as tall as browser window */
-  height: 100%;
-  background-color: #f1f1f1; }
-
-.main {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  background: url("/img/universe.jpeg") no-repeat center center;
-  background-size: cover; }
-
-* {
-  /* So 100% means 100% */
-  box-sizing: border-box; }
-
-html, body {
-  /* Make the body to be as tall as browser window */
-  height: 100%;
-  background-color: #f1f1f1; }
-
-.main {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  background: url("/img/universe.jpeg") no-repeat center center;
-  background-size: cover; }
-
-.container, .segments {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin: 0 auto; }
-  .container.\--fluid, .segments.\--fluid {
-    width: 100%; }
-  @media (min-width: 767px) {
-    .container, .segments {
-      width: 97%; } }
-  @media (min-width: 992px) {
-    .container, .segments {
-      width: 80%; } }
-
-.segment {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  -ms-flex: 1;
-  flex: 1;
-  width: 100%;
-  padding: 20px;
-  margin: .5%;
-  border: 1px solid #d9d9d9;
-  background: white;
-  border-radius: 0.3125rem;
-  box-shadow: 0 10px 10px 0 rgba(199, 199, 199, 0.13);
-  /*
-    * PARTS
-    */ }
-  .segment.\--1-columns {
-    -ms-flex-preferred-size: 9%;
-    flex-basis: 9%; }
-  .segment.\--2-columns {
-    -ms-flex-preferred-size: 19%;
-    flex-basis: 19%; }
-  .segment.\--3-columns {
-    -ms-flex-preferred-size: 29%;
-    flex-basis: 29%; }
-  .segment.\--4-columns {
-    -ms-flex-preferred-size: 39%;
-    flex-basis: 39%; }
-  .segment.\--5-columns {
-    -ms-flex-preferred-size: 49%;
-    flex-basis: 49%; }
-  .segment.\--6-columns {
-    -ms-flex-preferred-size: 59%;
-    flex-basis: 59%; }
-  .segment.\--7-columns {
-    -ms-flex-preferred-size: 69%;
-    flex-basis: 69%; }
-  .segment.\--8-columns {
-    -ms-flex-preferred-size: 79%;
-    flex-basis: 79%; }
-  .segment.\--9-columns {
-    -ms-flex-preferred-size: 89%;
-    flex-basis: 89%; }
-  .segment.\--10-columns {
-    -ms-flex-preferred-size: 99%;
-    flex-basis: 99%; }
-  .segment.\--transparent {
-    background: transparent;
-    border: none;
-    box-shadow: none; }
-  .segment.\--horizontal {
-    -ms-flex-direction: column;
-    flex-direction: column; }
-  .segment.\--vertical {
-    -ms-flex-direction: row;
-    flex-direction: row; }
-  .segment__header {
-    font-size: 1.8em;
-    font-weight: 300;
-    color: #b5b9b0; }
-    .segment__header p {
-      margin: 10px 0 0 0;
-      font-size: medium; }
-  .segment__content {
-    margin: 1em 0 0 0; }
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem; }
 
-.divider {
+.segments .segment.\--columns-mobile, .segments .segment.\--columns-small, .segments .segment.\--columns-desktop, .segments .segment.\--columns-large {
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+  max-width: 100%; }
+
+.segments {
+  box-sizing: border-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
   flex-direction: row;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 100%;
-  font-size: 1em;
-  text-transform: uppercase;
-  color: #b5b9b0;
-  margin: 1em 0; }
-  .divider:before, .divider:after {
-    content: '';
-    -ms-flex: 1;
-    flex: 1;
-    background: #b5b9b0;
-    height: 2px; }
-  .divider:before {
-    margin: 0 .25em 0 0; }
-  .divider:after {
-    margin: 0 0 0 .25em; }
-  .divider.\--mini {
-    font-size: 0.8em; }
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem; }
+  .segments .segment {
+    /**
+      * GRID CONSTRUCTION
+      */ }
+    .segments .segment__content {
+      margin: .5rem;
+      padding: 1.5rem;
+      border: 1px solid color(white, dark);
+      background: color(white);
+      border-radius: 0.3125rem;
+      box-shadow: 0 10px 10px 0 rgba(199, 199, 199, 0.13); }
+    .segments .segment.\--1-columns {
+      -ms-flex-preferred-size: 8.3333333333%;
+      flex-basis: 8.3333333333%;
+      max-width: 8.3333333333%; }
+    .segments .segment.\--2-columns {
+      -ms-flex-preferred-size: 16.6666666667%;
+      flex-basis: 16.6666666667%;
+      max-width: 16.6666666667%; }
+    .segments .segment.\--3-columns {
+      -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
+      max-width: 25%; }
+    .segments .segment.\--4-columns {
+      -ms-flex-preferred-size: 33.3333333333%;
+      flex-basis: 33.3333333333%;
+      max-width: 33.3333333333%; }
+    .segments .segment.\--5-columns {
+      -ms-flex-preferred-size: 41.6666666667%;
+      flex-basis: 41.6666666667%;
+      max-width: 41.6666666667%; }
+    .segments .segment.\--6-columns {
+      -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+      max-width: 50%; }
+    .segments .segment.\--7-columns {
+      -ms-flex-preferred-size: 58.3333333333%;
+      flex-basis: 58.3333333333%;
+      max-width: 58.3333333333%; }
+    .segments .segment.\--8-columns {
+      -ms-flex-preferred-size: 66.6666666667%;
+      flex-basis: 66.6666666667%;
+      max-width: 66.6666666667%; }
+    .segments .segment.\--9-columns {
+      -ms-flex-preferred-size: 75%;
+      flex-basis: 75%;
+      max-width: 75%; }
+    .segments .segment.\--10-columns {
+      -ms-flex-preferred-size: 83.3333333333%;
+      flex-basis: 83.3333333333%;
+      max-width: 83.3333333333%; }
+    .segments .segment.\--11-columns {
+      -ms-flex-preferred-size: 91.6666666667%;
+      flex-basis: 91.6666666667%;
+      max-width: 91.6666666667%; }
+    .segments .segment.\--12-columns {
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+      max-width: 100%; }
+    .segments .segment.\--offset-1 {
+      margin-left: 8.3333333333%; }
+    .segments .segment.\--offset-2 {
+      margin-left: 16.6666666667%; }
+    .segments .segment.\--offset-3 {
+      margin-left: 25%; }
+    .segments .segment.\--offset-4 {
+      margin-left: 33.3333333333%; }
+    .segments .segment.\--offset-5 {
+      margin-left: 41.6666666667%; }
+    .segments .segment.\--offset-6 {
+      margin-left: 50%; }
+    .segments .segment.\--offset-7 {
+      margin-left: 58.3333333333%; }
+    .segments .segment.\--offset-8 {
+      margin-left: 66.6666666667%; }
+    .segments .segment.\--offset-9 {
+      margin-left: 75%; }
+    .segments .segment.\--offset-10 {
+      margin-left: 83.3333333333%; }
+    .segments .segment.\--offset-11 {
+      margin-left: 91.6666666667%; }
+    @media only screen and (min-width: 768px) {
+      .segments .segment.\--small-1-columns {
+        -ms-flex-preferred-size: 8.3333333333%;
+        flex-basis: 8.3333333333%;
+        max-width: 8.3333333333%; }
+      .segments .segment.\--small-2-columns {
+        -ms-flex-preferred-size: 16.6666666667%;
+        flex-basis: 16.6666666667%;
+        max-width: 16.6666666667%; }
+      .segments .segment.\--small-3-columns {
+        -ms-flex-preferred-size: 25%;
+        flex-basis: 25%;
+        max-width: 25%; }
+      .segments .segment.\--small-4-columns {
+        -ms-flex-preferred-size: 33.3333333333%;
+        flex-basis: 33.3333333333%;
+        max-width: 33.3333333333%; }
+      .segments .segment.\--small-5-columns {
+        -ms-flex-preferred-size: 41.6666666667%;
+        flex-basis: 41.6666666667%;
+        max-width: 41.6666666667%; }
+      .segments .segment.\--small-6-columns {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        max-width: 50%; }
+      .segments .segment.\--small-7-columns {
+        -ms-flex-preferred-size: 58.3333333333%;
+        flex-basis: 58.3333333333%;
+        max-width: 58.3333333333%; }
+      .segments .segment.\--small-8-columns {
+        -ms-flex-preferred-size: 66.6666666667%;
+        flex-basis: 66.6666666667%;
+        max-width: 66.6666666667%; }
+      .segments .segment.\--small-9-columns {
+        -ms-flex-preferred-size: 75%;
+        flex-basis: 75%;
+        max-width: 75%; }
+      .segments .segment.\--small-10-columns {
+        -ms-flex-preferred-size: 83.3333333333%;
+        flex-basis: 83.3333333333%;
+        max-width: 83.3333333333%; }
+      .segments .segment.\--small-11-columns {
+        -ms-flex-preferred-size: 91.6666666667%;
+        flex-basis: 91.6666666667%;
+        max-width: 91.6666666667%; }
+      .segments .segment.\--small-12-columns {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 100%; }
+      .segments .segment.\--offset-small-1 {
+        margin-left: 8.3333333333%; }
+      .segments .segment.\--offset-small-2 {
+        margin-left: 16.6666666667%; }
+      .segments .segment.\--offset-small-3 {
+        margin-left: 25%; }
+      .segments .segment.\--offset-small-4 {
+        margin-left: 33.3333333333%; }
+      .segments .segment.\--offset-small-5 {
+        margin-left: 41.6666666667%; }
+      .segments .segment.\--offset-small-6 {
+        margin-left: 50%; }
+      .segments .segment.\--offset-small-7 {
+        margin-left: 58.3333333333%; }
+      .segments .segment.\--offset-small-8 {
+        margin-left: 66.6666666667%; }
+      .segments .segment.\--offset-small-9 {
+        margin-left: 75%; }
+      .segments .segment.\--offset-small-10 {
+        margin-left: 83.3333333333%; }
+      .segments .segment.\--offset-small-11 {
+        margin-left: 91.6666666667%; } }
+    @media only screen and (min-width: 992px) {
+      .segments .segment.\--desktop-1-columns {
+        -ms-flex-preferred-size: 8.3333333333%;
+        flex-basis: 8.3333333333%;
+        max-width: 8.3333333333%; }
+      .segments .segment.\--desktop-2-columns {
+        -ms-flex-preferred-size: 16.6666666667%;
+        flex-basis: 16.6666666667%;
+        max-width: 16.6666666667%; }
+      .segments .segment.\--desktop-3-columns {
+        -ms-flex-preferred-size: 25%;
+        flex-basis: 25%;
+        max-width: 25%; }
+      .segments .segment.\--desktop-4-columns {
+        -ms-flex-preferred-size: 33.3333333333%;
+        flex-basis: 33.3333333333%;
+        max-width: 33.3333333333%; }
+      .segments .segment.\--desktop-5-columns {
+        -ms-flex-preferred-size: 41.6666666667%;
+        flex-basis: 41.6666666667%;
+        max-width: 41.6666666667%; }
+      .segments .segment.\--desktop-6-columns {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        max-width: 50%; }
+      .segments .segment.\--desktop-7-columns {
+        -ms-flex-preferred-size: 58.3333333333%;
+        flex-basis: 58.3333333333%;
+        max-width: 58.3333333333%; }
+      .segments .segment.\--desktop-8-columns {
+        -ms-flex-preferred-size: 66.6666666667%;
+        flex-basis: 66.6666666667%;
+        max-width: 66.6666666667%; }
+      .segments .segment.\--desktop-9-columns {
+        -ms-flex-preferred-size: 75%;
+        flex-basis: 75%;
+        max-width: 75%; }
+      .segments .segment.\--desktop-10-columns {
+        -ms-flex-preferred-size: 83.3333333333%;
+        flex-basis: 83.3333333333%;
+        max-width: 83.3333333333%; }
+      .segments .segment.\--desktop-11-columns {
+        -ms-flex-preferred-size: 91.6666666667%;
+        flex-basis: 91.6666666667%;
+        max-width: 91.6666666667%; }
+      .segments .segment.\--desktop-12-columns {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 100%; }
+      .segments .segment.\--offset-desktop-1 {
+        margin-left: 8.3333333333%; }
+      .segments .segment.\--offset-desktop-2 {
+        margin-left: 16.6666666667%; }
+      .segments .segment.\--offset-desktop-3 {
+        margin-left: 25%; }
+      .segments .segment.\--offset-desktop-4 {
+        margin-left: 33.3333333333%; }
+      .segments .segment.\--offset-desktop-5 {
+        margin-left: 41.6666666667%; }
+      .segments .segment.\--offset-desktop-6 {
+        margin-left: 50%; }
+      .segments .segment.\--offset-desktop-7 {
+        margin-left: 58.3333333333%; }
+      .segments .segment.\--offset-desktop-8 {
+        margin-left: 66.6666666667%; }
+      .segments .segment.\--offset-desktop-9 {
+        margin-left: 75%; }
+      .segments .segment.\--offset-desktop-10 {
+        margin-left: 83.3333333333%; }
+      .segments .segment.\--offset-desktop-11 {
+        margin-left: 91.6666666667%; } }
+    @media only screen and (min-width: 1200px) {
+      .segments .segment.\--large-1-columns {
+        -ms-flex-preferred-size: 8.3333333333%;
+        flex-basis: 8.3333333333%;
+        max-width: 8.3333333333%; }
+      .segments .segment.\--large-2-columns {
+        -ms-flex-preferred-size: 16.6666666667%;
+        flex-basis: 16.6666666667%;
+        max-width: 16.6666666667%; }
+      .segments .segment.\--large-3-columns {
+        -ms-flex-preferred-size: 25%;
+        flex-basis: 25%;
+        max-width: 25%; }
+      .segments .segment.\--large-4-columns {
+        -ms-flex-preferred-size: 33.3333333333%;
+        flex-basis: 33.3333333333%;
+        max-width: 33.3333333333%; }
+      .segments .segment.\--large-5-columns {
+        -ms-flex-preferred-size: 41.6666666667%;
+        flex-basis: 41.6666666667%;
+        max-width: 41.6666666667%; }
+      .segments .segment.\--large-6-columns {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        max-width: 50%; }
+      .segments .segment.\--large-7-columns {
+        -ms-flex-preferred-size: 58.3333333333%;
+        flex-basis: 58.3333333333%;
+        max-width: 58.3333333333%; }
+      .segments .segment.\--large-8-columns {
+        -ms-flex-preferred-size: 66.6666666667%;
+        flex-basis: 66.6666666667%;
+        max-width: 66.6666666667%; }
+      .segments .segment.\--large-9-columns {
+        -ms-flex-preferred-size: 75%;
+        flex-basis: 75%;
+        max-width: 75%; }
+      .segments .segment.\--large-10-columns {
+        -ms-flex-preferred-size: 83.3333333333%;
+        flex-basis: 83.3333333333%;
+        max-width: 83.3333333333%; }
+      .segments .segment.\--large-11-columns {
+        -ms-flex-preferred-size: 91.6666666667%;
+        flex-basis: 91.6666666667%;
+        max-width: 91.6666666667%; }
+      .segments .segment.\--large-12-columns {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 100%; }
+      .segments .segment.\--offset-large-1 {
+        margin-left: 8.3333333333%; }
+      .segments .segment.\--offset-large-2 {
+        margin-left: 16.6666666667%; }
+      .segments .segment.\--offset-large-3 {
+        margin-left: 25%; }
+      .segments .segment.\--offset-large-4 {
+        margin-left: 33.3333333333%; }
+      .segments .segment.\--offset-large-5 {
+        margin-left: 41.6666666667%; }
+      .segments .segment.\--offset-large-6 {
+        margin-left: 50%; }
+      .segments .segment.\--offset-large-7 {
+        margin-left: 58.3333333333%; }
+      .segments .segment.\--offset-large-8 {
+        margin-left: 66.6666666667%; }
+      .segments .segment.\--offset-large-9 {
+        margin-left: 75%; }
+      .segments .segment.\--offset-large-10 {
+        margin-left: 83.3333333333%; }
+      .segments .segment.\--offset-large-11 {
+        margin-left: 91.6666666667%; } }
 
-form, .form {
-  padding: 0;
-  margin: 0; }
-  form input, form .input, .form input, .form .input {
-    font-size: 1em;
-    font-weight: lighter;
-    color: #8f9587;
-    width: 100%;
-    padding: 1em;
-    margin: 0;
-    background: rgba(219, 221, 217, 0.3);
-    border: 1px solid rgba(219, 221, 217, 0.8); }
-    form input:hover, form .input:hover, .form input:hover, .form .input:hover {
-      background: rgba(219, 221, 217, 0.5);
-      color: #767c6e; }
-    form input:focus, form .input:focus, .form input:focus, .form .input:focus {
-      outline: 0; }
-    form input:active, form .input:active, .form input:active, .form .input:active {
-      outline: 0; }
-  form button, form .button, .form button, .form .button {
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    color: white;
-    line-height: normal;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(53, 56, 50, 0.15), 0 3px 2px -2px rgba(53, 56, 50, 0.2);
-    text-shadow: 0 -0.5px 1px rgba(53, 56, 50, 0.15);
-    padding: 1em;
-    position: relative;
-    text-transform: uppercase; }
-    form button:focus, form .button:focus, .form button:focus, .form .button:focus {
-      outline: 0; }
-    form button:active, form .button:active, .form button:active, .form .button:active {
-      outline: 0; }
-    form button.primary, form .button.primary, .form button.primary, .form .button.primary {
-      background: #0083ff; }
-      form button.primary:hover, form .button.primary:hover, .form button.primary:hover, .form .button.primary:hover {
-        background: #1a8fff; }
-    form button.secondary, form .button.secondary, .form button.secondary, .form .button.secondary {
-      background: #af0101; }
-      form button.secondary:hover, form .button.secondary:hover, .form button.secondary:hover, .form .button.secondary:hover {
-        background: #c80101; }
-    form button.\--ripple, form .button.\--ripple, .form button.\--ripple, .form .button.\--ripple {
-      transition: 200ms background cubic-bezier(0.4, 0, 0.2, 1);
-      background: #0083ff;
-      padding: 1.5em;
-      cursor: pointer; }
-      form button.\--ripple:hover, form .button.\--ripple:hover, .form button.\--ripple:hover, .form .button.\--ripple:hover {
-        outline: none;
-        background: #1a8fff; }
-    form button svg, form .button svg, .form button svg, .form .button svg {
-      height: 100%;
-      pointer-events: none;
-      cursor: pointer;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      width: 100%;
-      fill: #4da8ff; }
-      form button svg use, form .button svg use, .form button svg use, .form .button svg use {
-        opacity: 0; }
-  form__field:not(:nth-child(1)), .form__field:not(:nth-child(1)) {
-    margin: 10px 0; }
-  form__field:nth-last-child(-n + 1), .form__field:nth-last-child(-n + 1) {
-    margin-top: 10px;
-    margin-bottom: 0; }
-  form__message, .form__message {
-    background: rgba(217, 13, 18, 0.1);
-    padding: 1em;
-    border: 1px solid rgba(217, 13, 18, 0.2); }
-    form__message__header, .form__message__header {
-      font-weight: 500; }
-    form__message__items, .form__message__items {
-      font-weight: 300;
-      padding: 0 1.125em;
-      margin: 10px 0 0 0;
-      font-size: 0.8em; }
-      form__message__items li, .form__message__items li {
-        margin: 0;
-        padding: 0; }
-    form__message.\--error, .form__message.\--error {
-      color: #d90d12; }
+.item {
+  background-color: CornflowerBlue;
+  border-radius: 2px;
+  display: block;
+  height: 2rem;
+  margin-bottom: 1rem;
+  width: 100%; }
 
 /**
-* test
+* Initiate things up
 */
-.blue {
-  background-color: blue; }
-
-.yellow {
-  background-color: yellow; }
-
-.green {
-  background-color: green; }
-
-.orange {
-  background-color: orange; }
-
-.red {
-  background-color: red; }
 
 /*# sourceMappingURL=app.css.map */

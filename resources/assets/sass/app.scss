@@ -3,50 +3,32 @@
 /**
 * Import Third Party Frameworks
 */
-@import '../../../node_modules/normalize.css/normalize';
-@import '../../../node_modules/bourbon/app/assets/stylesheets/bourbon';
+//@import '../../../node_modules/normalize.css/normalize';
+//@import '../../../node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import '../../../node_modules/csstyle/csstyle';
-@import '../../../node_modules/family.scss/family';
-@import 'app/functions';
-@import 'app/colors';
-@import 'app/variables';
-@import 'app/fonts';
-@import 'app/typography';
-@import 'components/form/forms';
-@import 'components/global';
+//@import '../../../node_modules/family.scss/family';
+//@import 'app/functions';
+//@import 'app/colors';
+//@import 'app/variables';
+//@import 'app/fonts';
+//@import 'app/typography';
+//@import 'components/form/forms';
+//@import 'components/global';
 @import 'components/segment';
-@import 'components/divider';
+//@import 'components/grid';
+//@import 'components/divider';
 
 /**
 * Initiate things up
 */
 //@include foundation-global-styles;
 //@include foundation-grid;
-@include dreamsark-global;
-@include dreamsark-global;
-@include dreamsark-segment;
-@include dreamsark-divider;
-@include dreamsark-forms;
+//@include dreamsark-global;
 
-/**
-* test
-*/
-.blue {
-  background-color: blue;
-}
-
-.yellow {
-  background-color: yellow;
-}
-.green {
-  background-color: green;
-}
-.orange {
-  background-color: orange;
-}
-.red {
-  background-color: red;
-}
+//@include dreamsark-global;
+//@include dreamsark-segment;
+//@include dreamsark-divider;
+//@include dreamsark-forms;
 
 //
 ///**

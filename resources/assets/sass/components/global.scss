@@ -9,6 +9,12 @@
     /* Make the body to be as tall as browser window */
     height: 100%;
     background-color: color(neutral);
+    font-size: 20px;
+
+    @include respond-to(desktop) {
+      font-size: 15px;
+    }
+
   }
 
   @include component(main) {

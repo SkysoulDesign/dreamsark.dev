@@ -7,6 +7,7 @@
     @yield('styles')
 
     <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=no">
 
 </head>
 
