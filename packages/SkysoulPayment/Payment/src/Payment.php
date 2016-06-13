@@ -190,12 +190,11 @@ class Payment
             $this->getConfig('private_key_path')
         );
 
-        $response = openssl_get_privatekey($key);
+        $password = $this->getConfig('private_key_password');
+        $result = $this->gateway->prepare($data, $key, $password);
 
-        openssl_sign($this->buildQueryString($data), $sign, $response);
-        openssl_free_key($response);
+        return $this->gateway->sign($this->buildQueryString($result), $key, $password);
 
-        return base64_encode($sign);
     }
 
     /**
