@@ -119,7 +119,7 @@ class UserRepository extends Repository implements UserRepositoryInterface
     {
         return $this->model->where('email', $email)
             ->orWhereHas('socialite', function ($query) use ($email, $auth_id, $auth_type) {
-                $query->whereRaw("(auth_email = '" . $email . "' OR auth_id='" . $auth_id . "')");
+                $query->whereRaw("(auth_id='" . $auth_id . "')"); // auth_email = '" . $email . "' OR
                 $query->where('auth_type', '=', $auth_type);
             })
             ->get();

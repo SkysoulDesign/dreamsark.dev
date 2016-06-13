@@ -5,7 +5,9 @@ namespace DreamsArk\Http\Controllers\Auth;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Models\User\User;
+use DreamsArk\Repositories\General\FileRepository;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
+use Faker\Generator;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -87,13 +89,14 @@ class AuthController extends Controller
             'avatar_path' => $socialUser->avatar
         ];
         if ($userObj->isEmpty()) {
+            /** @var Generator $faker */
             $faker = app(\Faker\Generator::class);
             /**
              * Create User
              */
             $newUserData = [
                 'name'     => $socialUser->name,
-                'username' => $socialUser->nickname ?: $socialUser->email,
+                'username' => preg_replace('/@.*?$/', '', $socialUser->email),
                 'email'    => $socialUser->email,
                 'password' => $faker->password(6, 6),
             ];
@@ -101,17 +104,17 @@ class AuthController extends Controller
             /** @var User $user */
             $user = dispatch(new CreateUserJob($newUserData));
 
-//            $avatarUploadPath = dispatch(new UploadUserContentJob($socialUser->avatar, $user, $socialDriver.'-profile_avatar'));
-//            $socialData['avatar_path'] = $avatarUploadPath;
+            $socialData['avatar_path'] = $this->saveAvatarFromUrl($socialDriver, $user, $socialUser->avatar);
 
             $user->socialite()->create($socialData);
             $user->fresh();
-            $message = trans('auth.account-created').'. '.trans('auth.please-set-your-password');
+            $message = trans('auth.account-created') . '. ' . trans('auth.please-set-your-password');
         } else {
             /** @var User $user */
             $user = $userObj[0];
             $userSocialite = $userRepository->getSocialiteObject($user->id, $socialDriver);
             if ($userSocialite->isEmpty()) {
+                $socialData['avatar_path'] = $this->saveAvatarFromUrl($socialDriver, $user, $socialUser->avatar);
                 $user->socialite()->create($socialData);
             }
             $this->auth->login($user);
@@ -122,6 +125,30 @@ class AuthController extends Controller
 
         return redirect()->route('login')->withErrors(trans('auth.social-login-failed'));
 
+    }
+
+    private function saveAvatarFromUrl($socialDriver, $user, $avatar)
+    {
+        /** file save from url */
+        $avatar_path = $avatar;
+        if (!is_null($avatar)) {
+            $extension = pathinfo($avatar, PATHINFO_EXTENSION) ?: 'jpg';
+            // pathinfo($socialUser->avatar, PATHINFO_FILENAME)
+            $fileName = str_slug($user->username . '-' . $socialDriver . '-profile_avatar') . '.' . $extension;
+            $userDir = "user_content" . DIRECTORY_SEPARATOR . $user->id;
+            $path = $userDir . DIRECTORY_SEPARATOR . str_plural('avatar');
+            $avatarUploadPath = $path . DIRECTORY_SEPARATOR . $fileName;
+            if (!\File::exists(public_path($userDir)))
+                \File::makeDirectory(public_path($userDir));
+            if (!\File::exists(public_path($path)))
+                \File::makeDirectory(public_path($path));
+            $newFile = copy($avatar, $avatarUploadPath);
+            if ($newFile) {
+                $avatar_path = $avatarUploadPath;
+            }
+        }
+
+        return $avatar_path;
     }
 
     /**
