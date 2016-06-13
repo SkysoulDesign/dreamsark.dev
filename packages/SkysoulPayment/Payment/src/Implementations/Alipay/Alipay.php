@@ -68,12 +68,12 @@ class Alipay extends PaymentGateway
     public function getAdditionalPostData() : array
     {
         return [
-            "service" => "create_direct_pay_by_user",
-            "seller_id" => "2088221979483694",
+            "service"        => "create_direct_pay_by_user",
+            "seller_id"      => "2088221979483694",
             "_input_charset" => "utf-8",
-            "body" => "payment.description",
-            "payment_type" => "1",
-            "subject" => "payment.subject",
+            "body"           => "payment.description",
+            "payment_type"   => "1",
+            "subject"        => "payment.subject",
         ];
     }
 
@@ -112,7 +112,6 @@ class Alipay extends PaymentGateway
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
-     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
@@ -123,5 +122,35 @@ class Alipay extends PaymentGateway
     public function getPrice(int $amount, int $base) : float
     {
         return $amount / $base;
+    }
+
+    /**
+     * Prepare the data to be sign
+     *
+     * @param array $request
+     * @return array
+     */
+    public function prepare(array $request, $key, string $password = null) : array
+    {
+        return $request;
+    }
+
+    /**
+     * Sign the request
+     *
+     * @param string $query
+     * @param string $key
+     * @param string $password
+     * @return string
+     * @internal param string $pas
+     */
+    public function sign(string $query, string $key, string $password = null) : string
+    {
+        $response = openssl_get_privatekey($key);
+
+        openssl_sign($query, $sign, $response);
+        openssl_free_key($response);
+
+        return base64_encode($sign);
     }
 }
