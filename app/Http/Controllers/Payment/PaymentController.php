@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Http\Controllers\Payment;
 
-use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
@@ -38,16 +37,23 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
-        if ($transaction->payment->verify($request->all())) {
+        if (!$transaction->payment->verify($request->all()))
+            return redirect()->route('user.purchase.index')->withErrors(trans('payment.trade-status-error'));
 
-            //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
+        //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
 
-            // maybe do something if request verification fails, but in general
-            // its bad if user payed and get redirected to this page and on our side we show
-            // some error occur / payment couldn't be verified and he sees a negative
-            // message, he might think the website cheat him and he probably will contact
-            // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
-        }
+        // maybe do something if request verification fails, but in general
+        // its bad if user payed and get redirected to this page and on our side we show
+        // some error occur / payment couldn't be verified and he sees a negative
+        // message, he might think the website cheat him and he probably will contact
+        // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
+        if($transaction->is_payment_done)
+            return redirect()->route('user.purchase.index')->withSuccess('Your Purchase has been made');
+        /**
+         * Confirm Payment
+         */
+        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+
 
         return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
 
