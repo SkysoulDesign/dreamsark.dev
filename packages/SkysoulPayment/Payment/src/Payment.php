@@ -36,6 +36,11 @@ class Payment
     protected $transaction;
 
     /**
+     * @var string
+     */
+    protected $privateKey;
+
+    /**
      * Payment constructor.
      *
      * @param array $drivers
@@ -65,6 +70,7 @@ class Payment
 
         $this->setGateway($gateway);
         $this->setGatewayName($gateway);
+        $this->setPrivateKey();
         $this->transaction = $transaction;
 
         return $this;
@@ -102,11 +108,20 @@ class Payment
     public function getResponse() : array
     {
 
-        $data = $this->getPostData();
+        $data = $this->gateway->prepare(
+            $this->getPostData(),
+            $this->getPrivateKey(),
+            $this->getPrivateKeyPassword()
+        );
         $data[$this->gateway->signKey] = $this->sign($data);
-        $data[$this->gateway->signTypeKey] = $this->getConfig('sign_type');
 
-        return $data;
+        if ($key = $this->gateway->signTypeKey)
+            $data[$key] = $this->getConfig('sign_type');
+
+        return [
+            'data'   => $data,
+            'target' => $this->getConfig('gateway_url')
+        ];
     }
 
     /**
@@ -141,7 +156,7 @@ class Payment
              * Gets the Transaction unique ID
              */
             array(
-                $this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')
+                $this->gateway->uniqueIdentifierKey => $this->gateway->getUniqueNo($this->transaction->getAttribute('unique_no'))
             ),
 
             /**
@@ -164,7 +179,7 @@ class Payment
     private function parseCallback(array $url) : array
     {
 
-        if (filter_var($value = implode($url), FILTER_VALIDATE_URL) === FALSE)
+        if (filter_var($value = implode($url), FILTER_VALIDATE_URL) === false)
             return [
                 key($url) => route($value)
             ];
@@ -176,9 +191,9 @@ class Payment
      * Sign the request to be sent to the gateway API
      *
      * @param array $data
-     * @return mixed|string
+     * @return array
      */
-    public function sign(array $data) : string
+    public function sign($data)
     {
         /**
          * According with alipay Api the keys should
@@ -186,14 +201,11 @@ class Payment
          */
         ksort($data);
 
-        $key = file_get_contents(
-            $this->getConfig('private_key_path')
+        return $this->gateway->sign(
+            $this->buildQueryString($data),
+            $this->getPrivateKey(),
+            $this->getPrivateKeyPassword()
         );
-
-        $password = $this->getConfig('private_key_password');
-        $result = $this->gateway->prepare($data, $key, $password);
-
-        return $this->gateway->sign($this->buildQueryString($result), $key, $password);
 
     }
 
@@ -203,7 +215,7 @@ class Payment
      * @param null|string $value
      * @return mixed|string
      */
-    private function getConfig(string $value) : string
+    private function getConfig(string $value)
     {
         return config("payment.drivers.$this->gatewayName.$value");
     }
@@ -259,5 +271,34 @@ class Payment
     public function getConfirmationResponse()
     {
         return $this->gateway->getConfirmationResponse();
+    }
+
+    /**
+     * Set Private Key
+
+     */
+    private function setPrivateKey()
+    {
+        $this->privateKey = $this->getConfig('private_key') ?: file_get_contents($this->getConfig('private_key_path'));
+    }
+
+    /**
+     * Key private key
+     *
+     * @return string
+     */
+    private function getPrivateKey() : string
+    {
+        return $this->privateKey;
+    }
+
+    /**
+     * Get password
+     *
+     * @return mixed|string
+     */
+    private function getPrivateKeyPassword()
+    {
+        return $this->getConfig('private_key_password');
     }
 }

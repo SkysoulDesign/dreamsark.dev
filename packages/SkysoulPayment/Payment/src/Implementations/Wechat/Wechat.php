@@ -1,27 +1,19 @@
 <?php
-namespace SkysoulDesign\Payment\Implementations\Unionpay;
+
+namespace SkysoulDesign\Payment\Implementations\Wechat;
+
 
 use SkysoulDesign\Payment\PaymentGateway;
 
-/**
- *
- */
-class Unionpay extends PaymentGateway
+class Wechat extends PaymentGateway
 {
-
-    /**
-     * Callback key
-     *
-     * @var string
-     */
-    public $callbackKey = 'frontUrl';
 
     /**
      * Notify callback key
      *
      * @var string
      */
-    public $notifyCallbackKey = 'backUrl';
+    public $notifyCallbackKey = 'notify_url';
 
     /**
      * Name of the unique key identifier on the gateway Api
@@ -29,26 +21,26 @@ class Unionpay extends PaymentGateway
      *
      * @var string
      */
-    public $uniqueIdentifierKey = 'orderId';
+    public $uniqueIdentifierKey = 'out_trade_no';
 
     /**
      * Name of the sign key on the gateway API
      *
      * @var string
      */
-    public $signKey = 'signature';
+    public $signKey = 'sign';
 
     /**
      * Key which identifies the amount payed for the product
      *
      * @var string
      */
-    public $priceKey = 'txnAmt';
+    public $priceKey = 'total_fee';
 
     /**
      * @var string
      */
-    public $serviceIdKey = 'merId';
+    public $serviceIdKey = 'mch_id';
 
     /**
      * Returns any extra keyed params that should be sent within the request
@@ -59,17 +51,30 @@ class Unionpay extends PaymentGateway
     {
         // TODO: Implement getAdditionalPostData() method.
         return [
-            'version'      => '5.0.0',
-            'encoding'     => 'utf-8',
-            'txnType'      => '01',
-            'txnSubType'   => '01',
-            'bizType'      => '000201',
-            'signMethod'   => '01',
-            'channelType'  => '07', // internet
-            'accessType'   => '0',
-            'currencyCode' => '156',
-            'txnTime'      => date('YmdHis'),
+            "timeout"          => 30,
+            "secret"           => config('payment.drivers.wechat.secret'),
+            "appid"            => config('payment.drivers.wechat.app_id'),
+            "key"              => config('payment.drivers.wechat.key'),
+            "detail"           => "payment.description",
+            "payment_type"     => "",
+            "body"             => "payment.subject",
+            'time_start'       => date('YmdHis'),
+            'time_expire'      => date("YmdHis", time() + 600),
+            'trade_type'       => 'NATIVE',
+            'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
+            'nonce_str'        => $this->getNonceStr(),
         ];
+    }
+
+    private function getNonceStr($length = 32)
+    {
+        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+
+        return $str;
     }
 
     /**
@@ -80,7 +85,6 @@ class Unionpay extends PaymentGateway
     public function getConfirmationResponse() : string
     {
         // TODO: Implement getConfirmationResponse() method.
-        return 'success';
     }
 
     /**
@@ -93,40 +97,10 @@ class Unionpay extends PaymentGateway
      */
     public function sign(string $query, string $key, string $password = null) : string
     {
-        $returnStr = '';
         // TODO: Implement sign() method.
-        $querySha = sha1($query, false);
-
-        openssl_pkcs12_read($key, $certDara, $password);
-        $sign = openssl_sign($querySha, $signature, $certDara['pkey'], OPENSSL_ALGO_SHA1);
-        if ($sign)
-            $returnStr = base64_encode($signature);
-
-        return $returnStr;
-    }
-
-    /**
-     * Prepare the data to be sign
-     *
-     * @param array $request
-     * @param string $key
-     * @param string $password
-     * @return array
-     */
-    public function prepare(array $request, string $key, string $password = null) : array
-    {
-        // TODO: Implement prepare() method.
-        /**
-         * do events to append certId
-         */
-        openssl_pkcs12_read($key, $certs, $password);
-        $cert = $certs ['cert'];
-        openssl_x509_read($cert);
-        $certData = openssl_x509_parse($cert);
-        $request['certId'] = $certData ['serialNumber'];
-
-        return $request;
-
+        $string = $query . "&key=" . config('payment.drivers.wechat.key');
+        $string = md5($string);
+        return strtoupper($string);
     }
 
     /**
@@ -134,17 +108,12 @@ class Unionpay extends PaymentGateway
      *
      * @param string $query
      * @param string $sign
-     * @param string $key : public_key
+     * @param string $key
      * @return bool
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
         // TODO: Implement validate() method.
-        $signature = base64_decode($sign);
-        $querySha = sha1($query, false);
-        $isSuccess = openssl_verify($querySha, $signature, $key, OPENSSL_ALGO_SHA1);
-
-        return $isSuccess;
     }
 
     /**
@@ -161,6 +130,10 @@ class Unionpay extends PaymentGateway
     public function getPrice(int $amount, int $base)
     {
         // TODO: Implement getPrice() method.
-        return $amount / 10;
+    }
+
+    public function getUniqueNo(string $unique_no) : string
+    {
+        return substr($unique_no, 4, strlen($unique_no));
     }
 }

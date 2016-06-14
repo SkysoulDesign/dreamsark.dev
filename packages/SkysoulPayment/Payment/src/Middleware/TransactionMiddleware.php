@@ -31,7 +31,7 @@ class TransactionMiddleware
                  */
                 $request->route()->setParameter(
                     Transaction::class,
-                    Transaction::where('unique_no', $request->input('out_trade_no'))->firstOrFail()
+                    Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail()
                 );
 
                 break;
