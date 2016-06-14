@@ -70,9 +70,7 @@ class Payment
 
         $this->setGateway($gateway);
         $this->setGatewayName($gateway);
-        $this->setPrivateKey(
-            $this->getConfig('private_key_path')
-        );
+        $this->setPrivateKey();
         $this->transaction = $transaction;
 
         return $this;
@@ -158,7 +156,7 @@ class Payment
              * Gets the Transaction unique ID
              */
             array(
-                $this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')
+                $this->gateway->uniqueIdentifierKey => $this->gateway->getUniqueNo($this->transaction->getAttribute('unique_no'))
             ),
 
             /**
@@ -277,12 +275,11 @@ class Payment
 
     /**
      * Set Private Key
-     *
-     * @param string $path
+
      */
-    private function setPrivateKey(string $path)
+    private function setPrivateKey()
     {
-        $this->privateKey = file_get_contents($path);
+        $this->privateKey = $this->getConfig('private_key') ?: file_get_contents($this->getConfig('private_key_path'));
     }
 
     /**

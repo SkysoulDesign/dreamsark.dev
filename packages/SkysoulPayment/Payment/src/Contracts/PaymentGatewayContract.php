@@ -67,4 +67,6 @@ interface PaymentGatewayContract
      */
     public function getPrice(int $amount, int $base);
 
+    public function getUniqueNo(string $unique_no) : string;
+
 }

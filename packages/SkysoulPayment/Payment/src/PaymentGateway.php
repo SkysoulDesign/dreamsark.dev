@@ -70,9 +70,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
      * @param string $password
      * @return array
      */
-    public function prepare(array $request, string $key, string $password = null) : array 
+    public function prepare(array $request, string $key, string $password = null) : array
     {
         return $request;
+    }
+
+    public function getUniqueNo(string $unique_no) : string
+    {
+        return $unique_no;
     }
 
 }
