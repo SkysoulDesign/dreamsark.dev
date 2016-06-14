@@ -107,6 +107,7 @@
                                             console.log($form);
 
                                         } else {
+                                            console.log(response)
                                             if(response.data['result_code'] == 'SUCCESS') {
                                                 let $form = '<div class="ui card centered">' +
                                                         '<div class="content">' +

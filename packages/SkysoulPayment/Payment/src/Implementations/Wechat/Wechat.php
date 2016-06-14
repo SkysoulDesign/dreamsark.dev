@@ -167,7 +167,8 @@ class Wechat extends PaymentGateway implements SelfHandle
         // TODO: Implement parseResponse() method.
         libxml_disable_entity_loader(true);
 
-        return $this->checkSign(json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true), $key);
+//        return $this->checkSign(json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true), $key);
+        return json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
     private function checkSign(array $response, string $key) : array
