@@ -3,7 +3,9 @@
 namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 
 /**
@@ -64,7 +66,7 @@ class Payment
          */
         $gateway = $transaction->getAttribute('method');
 
-        if (!array_has(config('payment.drivers'), $gateway)) {
+        if (!array_has(config('payment.drivers'), $gateway) || !config('payment.drivers.' . $gateway . '.enabled', false)) {
             throw new DriverNotFoundException("There is no driver available with the name of $gateway.");
         }
 
@@ -118,10 +120,40 @@ class Payment
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
 
+        $buildForm = true;
+        if ($this->gateway instanceof SelfHandle) {
+
+            $data = $this->post(
+                $this->getConfig('gateway_url'),
+                $this->gateway->prepareData($data)
+            );
+            $data['qr_url'] = $this->getConfig('qr_url');
+            $buildForm = false;
+
+            if ($data['result_code'] == 'SUCCESS') {
+                $this->transaction->setAttribute('invoice_no', $data[$this->gateway->uniqueInvoiceNoKey]);
+                $this->transaction->save();
+            }
+            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->uniqueInvoiceNoKey], $data[$this->gateway->signKey]);
+//            $this->transaction->fresh();
+
+        }
+
         return [
-            'data'   => $data,
-            'target' => $this->getConfig('gateway_url')
+            'data'      => $data,
+            'target'    => $this->getConfig('gateway_url'),
+            'buildForm' => $buildForm
         ];
+    }
+
+    private function post($url, $postData)
+    {
+//        die($postData);
+        $client = new Client();
+
+        $response = $client->post($url, ['body' => $postData]);
+
+        return $this->gateway->parseResponse($response->getBody(), $this->getPrivateKey());
     }
 
     /**
@@ -131,7 +163,7 @@ class Payment
      */
     private function getPostData() : array
     {
-        return array_merge(
+        return array_filter(array_merge(
 
             $this->gateway->getAdditionalPostData(),
 
@@ -167,7 +199,9 @@ class Payment
                     $this->transaction->getAttribute('amount'), config('payment.base')
                 )
             )
-        );
+        ), function ($k) {
+            return $k;
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -275,7 +309,6 @@ class Payment
 
     /**
      * Set Private Key
-
      */
     private function setPrivateKey()
     {

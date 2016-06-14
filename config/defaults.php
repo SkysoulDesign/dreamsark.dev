@@ -54,7 +54,7 @@ return [
                 'secret' => '01c6d59a3f9024db6336662ac95c8e74',*/
                 'app_id' => 'wx426b3015555a46be',
                 'key' => 'e10adc3949ba59abbe56e057f20f883e',
-                'secret' => '01c6d59a3f9024db6336662ac95c8e74',
+                'secret' => '757493e63e783c6e56643a250eb85d70',
 
             ]
         ]

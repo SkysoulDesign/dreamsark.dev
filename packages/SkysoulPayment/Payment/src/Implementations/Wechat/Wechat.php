@@ -3,9 +3,10 @@
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
 
+use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\PaymentGateway;
 
-class Wechat extends PaymentGateway
+class Wechat extends PaymentGateway implements SelfHandle
 {
 
     /**
@@ -43,6 +44,14 @@ class Wechat extends PaymentGateway
     public $serviceIdKey = 'mch_id';
 
     /**
+     * Name of the invoice_no
+     * Ex: trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueInvoiceNoKey = 'prepay_id';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @return array
@@ -51,18 +60,15 @@ class Wechat extends PaymentGateway
     {
         // TODO: Implement getAdditionalPostData() method.
         return [
-            "timeout"          => 30,
-            "secret"           => config('payment.drivers.wechat.secret'),
             "appid"            => config('payment.drivers.wechat.app_id'),
-            "key"              => config('payment.drivers.wechat.key'),
             "detail"           => "payment.description",
-            "payment_type"     => "",
             "body"             => "payment.subject",
             'time_start'       => date('YmdHis'),
             'time_expire'      => date("YmdHis", time() + 600),
             'trade_type'       => 'NATIVE',
             'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
             'nonce_str'        => $this->getNonceStr(),
+
         ];
     }
 
@@ -85,6 +91,7 @@ class Wechat extends PaymentGateway
     public function getConfirmationResponse() : string
     {
         // TODO: Implement getConfirmationResponse() method.
+        return 'success';
     }
 
     /**
@@ -98,8 +105,9 @@ class Wechat extends PaymentGateway
     public function sign(string $query, string $key, string $password = null) : string
     {
         // TODO: Implement sign() method.
-        $string = $query . "&key=" . config('payment.drivers.wechat.key');
+        $string = $query . "&key=" . $key;//config('payment.drivers.wechat.private_key');
         $string = md5($string);
+
         return strtoupper($string);
     }
 
@@ -114,6 +122,7 @@ class Wechat extends PaymentGateway
     public function validate(string $query, string $sign, string $key) : bool
     {
         // TODO: Implement validate() method.
+        return false;
     }
 
     /**
@@ -130,10 +139,69 @@ class Wechat extends PaymentGateway
     public function getPrice(int $amount, int $base)
     {
         // TODO: Implement getPrice() method.
+        return $amount / $base;
     }
 
     public function getUniqueNo(string $unique_no) : string
     {
         return substr($unique_no, 4, strlen($unique_no));
+    }
+
+    public function prepareData(array $data): string
+    {
+        // TODO: Implement prepareData() method.
+        $xml = "<xml>";
+        foreach ($data as $key => $val) {
+            if (is_numeric($val))
+                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+            else
+                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+        }
+        $xml .= "</xml>";
+
+        return $xml;
+    }
+
+    public function parseResponse($response, $key): array
+    {
+        // TODO: Implement parseResponse() method.
+        libxml_disable_entity_loader(true);
+
+        return $this->checkSign(json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true), $key);
+    }
+
+    private function checkSign(array $response, string $key) : array
+    {
+
+//        print_r($response);
+        $sign = $this->sign($this->queryString($response), $key);
+//        echo $response['sign'].' -- '.$sign.'<br />';
+//        die($this->queryString($response));
+//        dd($response['sign'] == $sign);
+        if ($response['sign'] == $sign) {
+            return $response;
+        }
+
+        return ['result_code' => 'FAIL-INVALID-SIGN'];
+    }
+
+    private function queryString(array $array)
+    {
+        ksort($array);
+        /*unset($array['sign']);
+        $array = array_filter($array, 'strlen');
+        $query = http_build_query($array);
+
+        return urldecode($query);*/
+        $buff = "";
+        foreach ($array as $k => $v)
+        {
+            if($k != "sign" && $v != "" && !is_array($v)){
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+
+        $buff = trim($buff, "&");
+        return $buff;
     }
 }
