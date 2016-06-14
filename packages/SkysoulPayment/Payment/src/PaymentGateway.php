@@ -17,14 +17,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
      *
      * @var string
      */
-    public $callbackKey = 'return_url';
+    public $callbackKey;
 
     /**
      * Notify callback key
      *
      * @var string
      */
-    public $notifyCallbackKey = 'notify_url';
+    public $notifyCallbackKey;
 
     /**
      * Name of the unique key identifier on the gateway Api
@@ -39,27 +39,40 @@ abstract class PaymentGateway implements PaymentGatewayContract
      *
      * @var string
      */
-    public $signKey = 'sign';
+    public $signKey;
 
     /**
      * Name of the type of signature defined by the gateway API
      *
      * @var string
      */
-    public $signTypeKey = 'sign_type';
+    public $signTypeKey;
 
     /**
      * Key which identifies the amount payed for the product
      *
      * @var string
      */
-    public $priceKey = 'total_fee';
+    public $priceKey;
 
     /**
      * get the service key name
      *
      * @var string
      */
-    public $serviceIdKey = 'partner';
+    public $serviceIdKey;
+
+    /**
+     * Prepare the data to be sign
+     *
+     * @param array $request
+     * @param string $key
+     * @param string $password
+     * @return array
+     */
+    public function prepare(array $request, string $key, string $password = null) : array 
+    {
+        return $request;
+    }
 
 }

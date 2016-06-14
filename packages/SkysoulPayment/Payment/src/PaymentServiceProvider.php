@@ -5,6 +5,7 @@ namespace SkysoulDesign\Payment;
 use Illuminate\Support\ServiceProvider;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 use SkysoulDesign\Payment\Implementations\Alipay\Alipay;
+use SkysoulDesign\Payment\Implementations\Unionpay\Unionpay;
 
 /**
  * Class PaymentServiceProvider
@@ -21,7 +22,7 @@ class PaymentServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'alipay' => Alipay::class,
-//        'unionpay' => UnionPay::class
+        'unionpay' => Unionpay::class
     ];
 
     /**

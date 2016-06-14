@@ -86,18 +86,19 @@
 
                                         let $form = document.createElement('form');
 
-                                        for (let item in response) {
+                                        for (let item in response.data) {
                                             let input = document.createElement('input');
                                             input.name = item;
-                                            input.setAttribute('value', response[item]);
+                                            input.setAttribute('value', response.data[item]);
 
                                             $form.appendChild(input);
 
                                         }
 
-                                        $form.action = 'https://mapi.alipay.com/gateway.do';
-                                        $form.method = 'post'
+                                        $form.action = response.target;
+                                        $form.method = 'post';
                                         $form.submit();
+//                                        $(document.body).append($form);
                                         console.log($form);
 
                                     }
