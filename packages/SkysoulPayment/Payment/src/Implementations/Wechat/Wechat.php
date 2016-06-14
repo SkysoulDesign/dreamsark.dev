@@ -172,17 +172,17 @@ class Wechat extends PaymentGateway implements SelfHandle
 
     private function checkSign(array $response, string $key) : array
     {
+        $errorArr = ['result_code' => 'FAIL-INVALID-SIGN'];
 
-//        print_r($response);
+        if(!isset($response['sign']))
+            return $errorArr;
+
         $sign = $this->sign($this->queryString($response), $key);
-//        echo $response['sign'].' -- '.$sign.'<br />';
-//        die($this->queryString($response));
-//        dd($response['sign'] == $sign);
         if ($response['sign'] == $sign) {
             return $response;
         }
 
-        return ['result_code' => 'FAIL-INVALID-SIGN'];
+        return $errorArr;
     }
 
     private function queryString(array $array)
