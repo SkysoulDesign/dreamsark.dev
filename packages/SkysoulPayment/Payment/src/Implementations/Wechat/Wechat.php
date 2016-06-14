@@ -3,9 +3,10 @@
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
 
+use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\PaymentGateway;
 
-class Wechat extends PaymentGateway
+class Wechat extends PaymentGateway implements SelfHandle
 {
 
     /**

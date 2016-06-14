@@ -3,7 +3,9 @@
 namespace SkysoulDesign\Payment;
 
 use DreamsArk\Models\Payment\Transaction;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
 
 /**
@@ -113,15 +115,37 @@ class Payment
             $this->getPrivateKey(),
             $this->getPrivateKeyPassword()
         );
+
         $data[$this->gateway->signKey] = $this->sign($data);
 
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
 
+        /**
+         * If class implements SelfHandle Interface,
+         * Then we self post those data
+         */
+        if ($this->gateway instanceof SelfHandle) {
+            $data = $this->post(
+                $this->getConfig('gateway_url'),
+                $this->gateway->prepareData($data)
+            );
+        }
+
         return [
             'data'   => $data,
             'target' => $this->getConfig('gateway_url')
         ];
+    }
+
+    public function post($url, $xml) : array
+    {
+        $client = new Client();
+
+        return $this->gateway->parseResponse(
+            $client->post($url, $xml)
+        );
+
     }
 
     /**
@@ -275,7 +299,6 @@ class Payment
 
     /**
      * Set Private Key
-
      */
     private function setPrivateKey()
     {
