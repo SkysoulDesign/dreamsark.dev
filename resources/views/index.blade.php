@@ -1,11 +1,14 @@
 @extends('layouts.master')
 
+@section('meta-tags')
+    <meta property="qc:admins" content="302711632664251531236375" />
+@endsection
+
 @section('header')
     @include('layouts.huge-header')
 @endsection
 
 @section('content')
-    <meta property="qc:admins" content="302711632664251531236375" />
 
     @include('layouts.content-header')
     @include('layouts.content-grid')

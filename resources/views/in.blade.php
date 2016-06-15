@@ -1,7 +1,10 @@
 @extends('layouts.basic')
 
-@section('content')
+@section('meta-tags')
     <meta property="qc:admins" content="302711632664251531236375" />
+@endsection
+
+@section('content')
     <div id="container"></div>
 
     <div id="transistor" class="enter-page__transition --animate"></div>
