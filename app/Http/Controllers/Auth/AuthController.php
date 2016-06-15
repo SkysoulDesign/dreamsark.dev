@@ -132,6 +132,7 @@ class AuthController extends Controller
         /** file save from url */
         $avatar_path = $avatar;
         if (!is_null($avatar)) {
+            /*
             $extension = pathinfo($avatar, PATHINFO_EXTENSION) ?: 'jpg';
             // pathinfo($socialUser->avatar, PATHINFO_FILENAME)
             $fileName = str_slug($user->username . '-' . $socialDriver . '-profile_avatar') . '.' . $extension;
@@ -146,6 +147,7 @@ class AuthController extends Controller
             if ($newFile) {
                 $avatar_path = $avatarUploadPath;
             }
+            */
         }
 
         return $avatar_path;
