@@ -14,7 +14,26 @@ php:
   volumes:
     - .:/var/www/dreamsark
   entrypoint:
-      - php-fpm
+    - php-fpm
+
+regis:
+  image: redis:alpine
+  container_name: dreamsark_redis
+
+#  build: .
+#  dockerfile: ./build/docker/regis/Dockerfile
+
+node:
+  build: .
+  dockerfile: ./build/docker/node/Dockerfile
+  container_name: dreamsark_node
+  volumes:
+    - .:/src
+  entrypoint: top -b
+  links:
+    - regis
+  ports:
+    - 3333:8080
 
 #gulp:
 #  build: .
