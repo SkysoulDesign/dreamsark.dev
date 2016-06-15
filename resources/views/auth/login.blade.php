@@ -1,12 +1,11 @@
 @extends('layouts.master')
 
-@section('contenta')
+@section('content')
 
-    <div class="segments">
+    <div class="centered">
+        <div class="segments">
 
-        <div class="segment --10-columns --desktop-2-columns --offset-desktop-8">
-
-            <div class="segment__content">
+            <div class="segment --12-columns-mobile --3-columns-desktop --8-offset-desktop">
 
                 <form action="{{ route('login.store') }}" method="POST">
 
@@ -26,6 +25,7 @@
                             <li>The login field is required.</li>
                         </ul>
                     </div>
+
                     <div class="form__field">
                         <button id="js-ripple-btn" class="button --ripple">
 
@@ -57,187 +57,64 @@
                     <script src="http://tympanus.net/Tutorials/SVGRipples/js/ripple-config.js"></script>
                 </form>
 
-                <div class="divider --mini">or login with</div>
-
-                <div class="segments">
-                    <div class="segment --2-columns">
-                        <div class="segment__content">hi</div>
-                    </div>
-                    <div class="segment --2-columns">
-                        <div class="segment__content">hi</div>
-                    </div>
-                    <div class="segment --2-columns">
-                        <div class="segment__content">hi</div>
-                    </div>
-                    <div class="segment --2-columns">
-                        <div class="segment__content">hi</div>
-                    </div>
-                    <div class="segment --2-columns">
-                        <div class="segment__content">hi</div>
-                    </div>
-                </div>
-
             </div>
-        </div>
 
+        </div>
     </div>
+
 @endsection
 
 @section('contents')
-    <div class="row">
-
-        <div class="col-xs-12">
-            <h2>Columns Demo</h2>
-        </div>
-
-        <div class="col-xs-12">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-1">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-11">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-2">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-10">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-3">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-9">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-4">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-8">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-5">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-7">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-6">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-6">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-7">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-5">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-8">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-4">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-9">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-3">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-10">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-2">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-11">
-            <div class="item"></div>
-        </div>
-        <div class="col-xs-1">
-            <div class="item"></div>
-        </div>
-
-        <div class="col-xs-12">
-            <div class="item"></div>
-        </div>
-
-    </div>
-@endsection
-@section('content')
 
     <div class="segments">
-
         <div class="segment --12-columns">
             <h2>Columns Demo</h2>
         </div>
-
         <div class="segment --12-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --1-columns">
             <div class="item"></div>
         </div>
         <div class="segment --11-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --2-columns">
             <div class="item"></div>
         </div>
         <div class="segment --10-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --3-columns">
             <div class="item"></div>
         </div>
         <div class="segment --9-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --4-columns">
             <div class="item"></div>
         </div>
         <div class="segment --8-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --5-columns">
             <div class="item"></div>
         </div>
         <div class="segment --7-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --6-columns">
             <div class="item"></div>
         </div>
         <div class="segment --6-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --7-columns">
             <div class="item"></div>
         </div>
         <div class="segment --5-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --8-columns">
             <div class="item"></div>
         </div>
@@ -251,21 +128,18 @@
         <div class="segment --3-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --10-columns">
             <div class="item"></div>
         </div>
         <div class="segment --2-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --11-columns">
             <div class="item"></div>
         </div>
         <div class="segment --1-columns">
             <div class="item"></div>
         </div>
-
         <div class="segment --12-columns">
             <div class="item"></div>
         </div>

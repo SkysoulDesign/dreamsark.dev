@@ -54,7 +54,7 @@ $breakpoints: (
   }
 
   @for $i from 1 through $columns {
-    @include option(#{$namespace}-#{$i}-#{$columns-class}) {
+    @include option(#{$i}-#{$columns-class}-#{$namespace}) {
       @extend %#{$columns-class};
     }
   }
@@ -63,17 +63,9 @@ $breakpoints: (
 
 @mixin grid-sizes($namespace) {
 
-  $temp: null;
-
   @for $i from 1 through $columns {
 
-    @if ($namespace == 'mobile') {
-      $temp: '';
-    } @else {
-      $temp: $namespace+"-";
-    }
-
-    @include option(#{$temp}#{$i}-#{$columns-class}) {
+    @include option(#{$i}-#{$columns-class}-#{$namespace}) {
       flex-basis: get-col-percent($i);
       max-width: get-col-percent($i);
     }
@@ -84,7 +76,7 @@ $breakpoints: (
 
     // Don't include the .off class for the last column
     @if ($i != $columns) {
-      @include option(#{$offset-class}-#{$temp}#{$i}) {
+      @include option(#{$i}-#{$offset-class}-#{$namespace}) {
         margin-left: get-col-percent($i);
       }
     }
@@ -93,9 +85,7 @@ $breakpoints: (
 
 }
 
-//@mixin dreamsark-segment() {
-
-
+@mixin dreamsark-segment() {
 
   @include component(segments) {
 
@@ -103,12 +93,15 @@ $breakpoints: (
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
     @include spacing((-$gutter), margin, horizontal);
-    //margin: 0 auto;
-    //justify-content: center;
-    //width: 97%;
 
     @include component(segment) {
+
+        //border: 1px solid color(white, dark);
+        //background: color(white);
+        //border-radius: 0.3125rem;
+        //box-shadow: 0 10px 10px 0 rgba(199, 199, 199, 0.13);
 
       @include part(content) {
         margin: .5rem;
@@ -243,9 +236,9 @@ $breakpoints: (
   //
   //}
 
-//}
+}
 
-.item {
+.test {
   background-color: CornflowerBlue;
   border-radius: 2px;
   display: block;
@@ -253,4 +246,3 @@ $breakpoints: (
   margin-bottom: 1rem;
   width: 100%
 }
-
