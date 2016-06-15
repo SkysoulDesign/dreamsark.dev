@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <meta property="qc:admins" content="3027116641611663662047" />
+    <meta property="qc:admins" content="302711632664251531236375" />
 
     @include('layouts.content-header')
     @include('layouts.content-grid')
