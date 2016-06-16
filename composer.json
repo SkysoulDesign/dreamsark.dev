@@ -11,6 +11,7 @@
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
     "laravel/socialite": "^2.0",
+    "predis/predis": "^1.1",
     "socialiteproviders/manager": "^1.2",
     "socialiteproviders/qq": "^1.1",
     "socialiteproviders/weibo": "^1.0",
