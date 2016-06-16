@@ -68,7 +68,7 @@ class PaymentController extends Controller
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
-        \Log::info($GLOBALS['HTTP_RAW_POST_DATA']??'no-data');
+        \Log::info($GLOBALS??'no-data');
         \Log::info($request->all());
 
         if (!$transaction->payment->verify($request->all())) {
