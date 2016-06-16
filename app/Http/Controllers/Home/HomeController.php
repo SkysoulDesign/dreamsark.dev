@@ -25,9 +25,9 @@ class HomeController extends Controller
         /**
          * Check if intro cookie is set
          */
-        if (!$request->hasCookie('intro')) {
+        /*if (!$request->hasCookie('intro')) {
             return view('in');
-        }
+        }*/
 
         return view('index');
 
