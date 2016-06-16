@@ -4,6 +4,7 @@ namespace SkysoulDesign\Payment\Middleware;
 
 use Closure;
 use DreamsArk\Models\Payment\Transaction;
+use SkysoulDesign\Payment\Contracts\SelfHandle;
 
 /**
  * Class TransactionMiddleware
@@ -22,18 +23,22 @@ class TransactionMiddleware
     public function handle($request, Closure $next)
     {
 
-        foreach (app('payment.drivers') as $driver) {
+        foreach (app('payment.drivers') as $driverName => $driver) {
 
+            if ($driver instanceof SelfHandle) {
+                $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
+                $request->merge($requestRawArr);
+            }
             $whereColumn = '';
             $requestKey = '';
             if ($request->has($driver->uniqueIdentifierKey)) {
                 $whereColumn = 'unique_no';
                 $requestKey = $driver->uniqueIdentifierKey;
-            } else if ($driver->uniqueInvoiceNoKey!='' && $request->has($driver->uniqueInvoiceNoKey)) {
+            } else if ($driver->uniqueInvoiceNoKey != '' && $request->has($driver->uniqueInvoiceNoKey)) {
                 $whereColumn = 'invoice_no';
                 $requestKey = $driver->uniqueInvoiceNoKey;
             }
-            if ($whereColumn!='' && $requestKey!='') {
+            if ($whereColumn != '' && $requestKey != '') {
                 /**
                  * Bind Transaction in case request has parameters
                  */
@@ -47,5 +52,10 @@ class TransactionMiddleware
         }
 
         return $next($request);
+    }
+
+    private function readPrivateKey($driverName)
+    {
+        return config('payment.drivers.' . $driverName . '.private_key') ?: file_get_contents(config('payment.drivers.' . $driverName . '.private_key_path'));
     }
 }
