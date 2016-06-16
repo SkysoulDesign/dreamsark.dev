@@ -25,11 +25,10 @@ class TransactionMiddleware
 
         foreach (app('payment.drivers') as $driverName => $driver) {
 
-//            \Log::info($driverName.': '.$driver instanceof SelfHandle);
             if ($driver instanceof SelfHandle) {
                 $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
                 $request->merge($requestRawArr);
-                \Log::info($request->all());
+//                \Log::info($request->all());
             }
             $whereColumn = '';
             $requestKey = '';
@@ -46,7 +45,7 @@ class TransactionMiddleware
                  */
                 $request->route()->setParameter(
                     Transaction::class,
-                    Transaction::where($whereColumn, $request->input($requestKey))->firstOrFail()
+                    Transaction::where($whereColumn, $driver->getUniqueNoWithPrefix($request->input($requestKey)))->firstOrFail()
                 );
                 break;
             }

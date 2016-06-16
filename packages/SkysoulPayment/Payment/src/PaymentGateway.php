@@ -88,4 +88,13 @@ abstract class PaymentGateway implements PaymentGatewayContract
         return $unique_no;
     }
 
+    public function getUniqueNoWithPrefix(string $unique_no) : string
+    {
+        $payPrefix = config('payment.transaction_prefix.pay');
+        if (strtolower(substr($unique_no, 0, 4)) != strtolower($payPrefix))
+            $unique_no = config('payment.transaction_prefix.pay') . $unique_no;
+
+        return $unique_no;
+    }
+
 }
