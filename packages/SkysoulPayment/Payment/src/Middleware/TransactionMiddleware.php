@@ -25,6 +25,7 @@ class TransactionMiddleware
 
         foreach (app('payment.drivers') as $driverName => $driver) {
 
+            \Log::info($driverName.': '.$driver instanceof SelfHandle);
             if ($driver instanceof SelfHandle) {
                 $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
                 $request->merge($requestRawArr);
