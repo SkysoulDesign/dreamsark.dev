@@ -54,8 +54,8 @@ return [
 
         'wechat' => [
             'enabled' => true,
-            'service_id' => '1225312702',
-            'app_id' => 'wx426b3015555a46be',
+            'service_id' => '1350505001',
+            'app_id' => 'wx010b4bc4dfdd0bd6',
             'private_key' => 'cc7a7af8783004f561df839621543af1',
             'secret' => '757493e63e783c6e56643a250eb85d70',
             'gateway_url' => 'https://api.mch.weixin.qq.com/pay/unifiedorder',
