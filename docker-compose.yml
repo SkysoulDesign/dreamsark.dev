@@ -8,8 +8,9 @@ mysql:
     MYSQL_ROOT_PASSWORD: 123456
 
 php:
-  build: .
-  dockerfile: ./build/docker/php/Dockerfile
+  image: skysoul/php:latest
+#  build: .
+#  dockerfile: ./build/docker/php/Dockerfile
   container_name: dreamsark_php
   volumes:
     - .:/var/www/dreamsark
