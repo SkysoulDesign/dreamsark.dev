@@ -127,7 +127,7 @@ class Wechat extends PaymentGateway implements SelfHandle
         return $result['result_code'] == 'SUCCESS' ? true : false;
     }
 
-    private function parseRawRequest($key, $checkSign = false) : array
+    public function parseRawRequest($key, $checkSign = false) : array
     {
         $xml = $GLOBALS['HTTP_RAW_POST_DATA']??file_get_contents("php://input");
         try {
