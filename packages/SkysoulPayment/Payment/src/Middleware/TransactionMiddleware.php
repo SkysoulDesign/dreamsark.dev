@@ -29,7 +29,7 @@ class TransactionMiddleware
             if ($driver instanceof SelfHandle) {
                 $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
                 $request->merge($requestRawArr);
-                \Log::info($request);
+                \Log::info($request->all());
             }
             $whereColumn = '';
             $requestKey = '';
