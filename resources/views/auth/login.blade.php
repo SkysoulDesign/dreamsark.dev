@@ -54,7 +54,7 @@
                         {{ csrf_field() }}
                         <ul>
                             <li>
-                                <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-16x16.png') }}"
+                                <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
                                        name="login_through"
                                        value="qq"/>
                             </li>
