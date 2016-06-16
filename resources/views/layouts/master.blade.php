@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DreamsArk</title>
+    @yield('meta-tags')
 
     @yield('styles')
 

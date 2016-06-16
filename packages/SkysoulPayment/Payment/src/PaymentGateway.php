@@ -35,6 +35,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $uniqueIdentifierKey;
 
     /**
+     * Name of the invoice_no
+     * Ex: trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueInvoiceNoKey;
+
+    /**
      * Name of the sign key on the gateway API
      *
      * @var string
