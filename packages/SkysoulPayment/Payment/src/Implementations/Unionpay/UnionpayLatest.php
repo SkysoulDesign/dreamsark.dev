@@ -1,12 +1,13 @@
 <?php
+
 namespace SkysoulDesign\Payment\Implementations\Unionpay;
 
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
- *
+ * 
  */
-class Unionpay extends PaymentGateway
+class UnionpayLatest extends PaymentGateway
 {
 
     /**

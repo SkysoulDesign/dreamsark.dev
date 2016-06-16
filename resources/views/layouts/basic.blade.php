@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DreamsArk</title>
+    @yield('meta-tags')
 
     <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
 

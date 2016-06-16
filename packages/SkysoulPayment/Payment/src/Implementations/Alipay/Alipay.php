@@ -125,17 +125,6 @@ class Alipay extends PaymentGateway
     }
 
     /**
-     * Prepare the data to be sign
-     *
-     * @param array $request
-     * @return array
-     */
-    public function prepare(array $request, $key, string $password = null) : array
-    {
-        return $request;
-    }
-
-    /**
      * Sign the request
      *
      * @param string $query

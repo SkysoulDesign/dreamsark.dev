@@ -167,17 +167,17 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('/', PaymentController::class . '@index')->name('index');
         $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
 
-        $app->get('callback', PaymentController::class . '@callback')->name('callback');
+        $app->any('callback', PaymentController::class . '@callback')->name('callback');
         $app->any('notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
-        $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
+       /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
         });
         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
-        });
+        });*/
 
     });
 

@@ -17,14 +17,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
      *
      * @var string
      */
-    public $callbackKey = 'return_url';
+    public $callbackKey;
 
     /**
      * Notify callback key
      *
      * @var string
      */
-    public $notifyCallbackKey = 'notify_url';
+    public $notifyCallbackKey;
 
     /**
      * Name of the unique key identifier on the gateway Api
@@ -35,31 +35,57 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $uniqueIdentifierKey;
 
     /**
+     * Name of the invoice_no
+     * Ex: trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueInvoiceNoKey;
+
+    /**
      * Name of the sign key on the gateway API
      *
      * @var string
      */
-    public $signKey = 'sign';
+    public $signKey;
 
     /**
      * Name of the type of signature defined by the gateway API
      *
      * @var string
      */
-    public $signTypeKey = 'sign_type';
+    public $signTypeKey;
 
     /**
      * Key which identifies the amount payed for the product
      *
      * @var string
      */
-    public $priceKey = 'total_fee';
+    public $priceKey;
 
     /**
      * get the service key name
      *
      * @var string
      */
-    public $serviceIdKey = 'partner';
+    public $serviceIdKey;
+
+    /**
+     * Prepare the data to be sign
+     *
+     * @param array $request
+     * @param string $key
+     * @param string $password
+     * @return array
+     */
+    public function prepare(array $request, string $key, string $password = null) : array
+    {
+        return $request;
+    }
+
+    public function getUniqueNo(string $unique_no) : string
+    {
+        return $unique_no;
+    }
 
 }

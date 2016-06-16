@@ -33,15 +33,33 @@ return [
         ],
 
         'unionpay' => [
-            'enabled' => false,
-            'service_id' => '2088221979483694',
+            'enabled' => true,
+            /**
+             * Test ENV
+             */
+            'gateway_url' => 'https://101.231.204.80:5000/gateway/api/frontTransReq.do',
+            'service_id' => '700000000000001',
             'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/700000000000001_acp.pfx',
-            'private_key_pwd' => '000000',
+            'private_key_password' => '000000',
+            'public_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/verify_sign_acp.cer',
+            /**
+             * Production ENV
+             */
+           /* 'gateway_url' => 'https://gateway.95516.com/gateway/api/frontTransReq.do',
+            'service_id' => '',
+            'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/',
+            'private_key_password' => '000000',
+            'public_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/',*/
         ],
 
         'wechat' => [
-            'enabled' => false,
-            'seller_id' => '2088221979483694'
+            'enabled' => true,
+            'service_id' => '1225312702',
+            'app_id' => 'wx426b3015555a46be',
+            'private_key' => 'e10adc3949ba59abbe56e057f20f883e',
+            'secret' => '01c6d59a3f9024db6336662ac95c8e74',
+            'gateway_url' => 'https://api.mch.weixin.qq.com/pay/unifiedorder',
+            'qr_url' => 'http://paysdk.weixin.qq.com/example/qrcode.php?data=',
         ]
 
     ]
