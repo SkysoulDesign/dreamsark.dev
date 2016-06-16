@@ -24,18 +24,26 @@ class TransactionMiddleware
 
         foreach (app('payment.drivers') as $driver) {
 
+            $whereColumn = '';
+            $requestKey = '';
             if ($request->has($driver->uniqueIdentifierKey)) {
-
+                $whereColumn = 'unique_no';
+                $requestKey = $driver->uniqueIdentifierKey;
+            } else if ($driver->uniqueInvoiceNoKey!='' && $request->has($driver->uniqueInvoiceNoKey)) {
+                $whereColumn = 'invoice_no';
+                $requestKey = $driver->uniqueInvoiceNoKey;
+            }
+            if ($whereColumn!='' && $requestKey!='') {
                 /**
                  * Bind Transaction in case request has parameters
                  */
                 $request->route()->setParameter(
                     Transaction::class,
-                    Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail()
+                    Transaction::where($whereColumn, $request->input($requestKey))->firstOrFail()
                 );
-
                 break;
             }
+
         }
 
         return $next($request);

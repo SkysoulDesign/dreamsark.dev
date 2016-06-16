@@ -64,9 +64,13 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
+        \Log::info($GLOBALS['HTTP_RAW_POST_DATA']);
+        \Log::info($request->all());
+
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
         }

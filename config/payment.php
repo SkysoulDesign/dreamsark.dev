@@ -56,8 +56,8 @@ return [
             'enabled' => true,
             'service_id' => '1225312702',
             'app_id' => 'wx426b3015555a46be',
-            'private_key' => 'e10adc3949ba59abbe56e057f20f883e',
-            'secret' => '01c6d59a3f9024db6336662ac95c8e74',
+            'private_key' => 'cc7a7af8783004f561df839621543af1',
+            'secret' => '757493e63e783c6e56643a250eb85d70',
             'gateway_url' => 'https://api.mch.weixin.qq.com/pay/unifiedorder',
             'qr_url' => 'http://paysdk.weixin.qq.com/example/qrcode.php?data=',
         ]

@@ -122,7 +122,27 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function validate(string $query, string $sign, string $key) : bool
     {
         // TODO: Implement validate() method.
-        return false;
+        $result = $this->validateHandle(false, $key);
+
+        return $result['result_code'] == 'SUCCESS' ? true : false;
+    }
+
+    private function validateHandle($needSign = true, $key)
+    {
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+        try {
+            $result = $this->parseResponse($xml, $key);
+        } catch (\Exception $e) {
+            $result = false;
+        }
+        if ($result == false) {
+            $array['result_code'] = "FAIL";
+            $array['return_msg'] = '';
+        } else {
+            $array = $result;
+        }
+
+        return $array;
     }
 
     /**
@@ -175,7 +195,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     {
         $errorArr = ['result_code' => 'FAIL-INVALID-SIGN'];
 
-        if(!isset($response['sign']))
+        if (!isset($response['sign']))
             return $errorArr;
 
         $sign = $this->sign($this->queryString($response), $key);
@@ -195,14 +215,14 @@ class Wechat extends PaymentGateway implements SelfHandle
 
         return urldecode($query);*/
         $buff = "";
-        foreach ($array as $k => $v)
-        {
-            if($k != "sign" && $v != "" && !is_array($v)){
+        foreach ($array as $k => $v) {
+            if ($k != "sign" && $v != "" && !is_array($v)) {
                 $buff .= $k . "=" . $v . "&";
             }
         }
 
         $buff = trim($buff, "&");
+
         return $buff;
     }
 }

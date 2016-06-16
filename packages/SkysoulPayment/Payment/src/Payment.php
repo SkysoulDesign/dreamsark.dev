@@ -43,6 +43,11 @@ class Payment
     protected $privateKey;
 
     /**
+     * @var string
+     */
+    protected $publicKey;
+
+    /**
      * Payment constructor.
      *
      * @param array $drivers
@@ -73,6 +78,7 @@ class Payment
         $this->setGateway($gateway);
         $this->setGatewayName($gateway);
         $this->setPrivateKey();
+        $this->setPublicKey();
         $this->transaction = $transaction;
 
         return $this;
@@ -291,9 +297,7 @@ class Payment
         return $this->gateway->validate(
             $this->buildQueryString($data),
             array_get($request, $this->gateway->signKey),
-            file_get_contents(
-                $this->getConfig('public_key_path')
-            )
+            ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey() )
         );
     }
 
@@ -323,6 +327,26 @@ class Payment
     private function getPrivateKey() : string
     {
         return $this->privateKey;
+    }
+
+    /**
+     * Set Public Key
+     */
+    private function setPublicKey()
+    {
+        $this->publicKey = $this->getConfig('public_key_path') ? file_get_contents(
+            $this->getConfig('public_key_path')
+        ) : '';
+    }
+
+    /**
+     * Key Public key
+     *
+     * @return string
+     */
+    private function getPublicKey() : string
+    {
+        return $this->publicKey;
     }
 
     /**
