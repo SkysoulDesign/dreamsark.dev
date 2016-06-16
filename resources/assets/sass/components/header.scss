@@ -1,0 +1,16 @@
+header, .header {
+
+  margin: 0 0 1em 0;
+
+  @include option(classic) {
+
+    @include title($size: large);
+
+    p {
+      margin: 10px 0 0 0;
+      font-size: medium;
+    }
+
+  }
+
+}

@@ -94,14 +94,10 @@ $breakpoints: (
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+
     @include spacing((-$gutter), margin, horizontal);
 
     @include component(segment) {
-
-        //border: 1px solid color(white, dark);
-        //background: color(white);
-        //border-radius: 0.3125rem;
-        //box-shadow: 0 10px 10px 0 rgba(199, 199, 199, 0.13);
 
       @include part(content) {
         margin: .5rem;
