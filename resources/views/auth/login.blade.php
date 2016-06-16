@@ -54,21 +54,26 @@
                         {{ csrf_field() }}
                         <ul>
                             <li>
-                                <input type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
-                                       name="login_through" value="weixin"/>
-                            </li>
-                            <li>
-                                <input type="image" src="{{ asset('dreamsark-assets/qq.png') }}" name="login_through"
+                                <input type="image" src="{{ asset('dreamsark-assets/qq-16x16.png') }}"
+                                       name="login_through"
                                        value="qq"/>
                             </li>
                             <li>
-                                <input type="image" src="{{ asset('dreamsark-assets/weibo.png') }}" name="login_through"
+                                <input type="image" src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
                                        value="weibo"/>
                             </li>
+                            <li>
+                                <input type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                       name="login_through" value="weixin"/>
+                            </li>
+                            {{--set hidden as server will be in China and unable to access FB server on ReturnURL from it.
+                            even user have VPN and able to login FB, but code-behind process to read data from FB is not possible.
+                            so disabling it.
                             <li>
                                 <input type="image" src="{{ asset('dreamsark-assets/facebook.png') }}"
                                        name="login_through" value="facebook"/>
                             </li>
+                            --}}
                         </ul>
                     </form>
 
