@@ -5,7 +5,6 @@ namespace DreamsArk\Http\Controllers\Auth;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\General\FileRepository;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Faker\Generator;
 use Illuminate\Auth\AuthManager;

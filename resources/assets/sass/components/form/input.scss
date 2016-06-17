@@ -24,4 +24,9 @@ input, .input {
     outline: 0;
   }
 
+  @include option(error) {
+    color: color(danger);
+    border: 1px solid color(danger, light, 80);
+  }
+
 }

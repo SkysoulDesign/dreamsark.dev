@@ -1,5 +1,15 @@
-<div class="form__field">
-    <input  :type="type || 'text'"
-            :name="name"
-            :placeholder="placeholder || name">
+<div class="form__field" :class="{ '--error': errors }">
+
+    <input :class="{ '--error': errors }"
+           :type="type || 'text'"
+           :name="name"
+           :title="title"
+           :placeholder="placeholder || name">
+
+    <div v-if="errors" class="form__field__error">
+        <ul v-for="error in errors">
+            <li>{{ error }}</li>
+        </ul>
+    </div>
+
 </div>

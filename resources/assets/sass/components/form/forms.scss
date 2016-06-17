@@ -19,6 +19,27 @@
         margin-bottom: 0;
       }
 
+      @include part(error) {
+
+        color: color(danger);
+
+        ul {
+
+          list-style: none;
+          padding: 0;
+
+          li {
+            font-size: $h5;
+          }
+
+        }
+
+      }
+
+      @include option(error) {
+
+      }
+
     }
 
     @include part(message) {
@@ -35,14 +56,14 @@
 
         font-weight: 300;
 
-        padding:0 1.125em;
+        padding: 0 1.125em;
         margin: 10px 0 0 0;
 
         font-size: $h5;
 
         li {
           margin: 0;
-          padding:0;
+          padding: 0;
         }
 
       }

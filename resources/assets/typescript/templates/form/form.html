@@ -1,3 +1,11 @@
-<form>
+<form :action="action" :method="method">
+   <input v-if="method == 'post'" type="hidden" name="_token" value="{{ token }}">
+
+   <div v-if="errors" class="form__field__error">
+      <ul v-for="error in errors">
+         <li>{{ error }}</li>
+      </ul>
+   </div>
+
    <slot></slot>
 </form>
