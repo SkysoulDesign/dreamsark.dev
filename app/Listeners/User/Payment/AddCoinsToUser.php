@@ -24,7 +24,8 @@ class AddCoinsToUser
          */
         dispatch(new PurchaseCoinJob(
                 $event->transaction->user,
-                $event->transaction->getAttribute('amount')
+                $event->transaction->payment->getPrice()
+//                $event->transaction->getAttribute('amount')
             )
         );
     }

@@ -298,7 +298,7 @@ class Payment
         return $this->gateway->validate(
             $this->buildQueryString($data),
             array_get($request, $this->gateway->signKey),
-            ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey() )
+            ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey())
         );
     }
 
@@ -358,5 +358,14 @@ class Payment
     private function getPrivateKeyPassword()
     {
         return $this->getConfig('private_key_password');
+    }
+
+    /**
+     * to get original price internal use (website)
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->transaction->getAttribute('amount') / config('payment.base');
     }
 }
