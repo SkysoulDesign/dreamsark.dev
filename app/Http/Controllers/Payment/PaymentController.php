@@ -47,7 +47,7 @@ class PaymentController extends Controller
         // some error occur / payment couldn't be verified and he sees a negative
         // message, he might think the website cheat him and he probably will contact
         // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
-        if($transaction->is_payment_done)
+        if ($transaction->is_payment_done)
             return redirect()->route('user.purchase.index')->withSuccess('Your Purchase has been made');
         /**
          * Confirm Payment
@@ -64,9 +64,13 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
+//        \Log::info(file_get_contents("php://input"));
+        \Log::info($request->all());
+
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
         }

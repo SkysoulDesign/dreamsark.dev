@@ -58,12 +58,27 @@
                 <div class="title simple center">or register with</div>
 
                 <div class="social center">
-                    <ul>
-                        <li><img src="{{ asset('dreamsark-assets/wechat.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/qq.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/weibo.png') }}" alt=""></li>
-                        <li><img src="{{ asset('dreamsark-assets/facebook.png') }}" alt=""></li>
-                    </ul>
+                    <form action="{{ route('login.social.post') }}" method="post">
+                        {{ csrf_field() }}
+                        <ul>
+                            <li>
+                                <input title="Login with QQ" type="image"
+                                       src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
+                                       name="login_through"
+                                       value="qq"/>
+                            </li>
+                            <li>
+                                <input title="Login with Weibo" type="image"
+                                       src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
+                                       value="weibo"/>
+                            </li>
+                            <li>
+                                <input title="Login with Wechat" type="image"
+                                       src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                       name="login_through" value="weixin"/>
+                            </li>
+                        </ul>
+                    </form>
                 </div>
 
             </div>

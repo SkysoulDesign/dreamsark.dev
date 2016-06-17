@@ -67,12 +67,34 @@
         @else
 
             {{--If the user is not Logged in --}}
-            <section class="medium-4 column menu">
+            <section class="medium-2 column menu">
 
                 <ul class="right">
                     <li><a href="{{ route('register') }}">唱了起来</a></li>
                     <li><a href="{{ route('login') }}"><b>登录</b></a></li>
                 </ul>
+            </section>
+            <section class="medium-2 column menu">
+                <form class="right" action="{{ route('login.social.post') }}" method="post">
+                    {{ csrf_field() }}
+                    <ul>
+                        <li>
+                            <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
+                                   name="login_through"
+                                   value="qq"/>
+                        </li>
+                        <li>
+                            <input title="Login with Weibo" type="image"
+                                   src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
+                                   value="weibo"/>
+                        </li>
+                        <li>
+                            <input title="Login with Wechat" type="image"
+                                   src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                   name="login_through" value="weixin"/>
+                        </li>
+                    </ul>
+                </form>
 
             </section>
 

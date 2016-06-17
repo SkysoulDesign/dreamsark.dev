@@ -49,7 +49,7 @@ class Wechat extends PaymentGateway implements SelfHandle
      *
      * @var string
      */
-    public $uniqueInvoiceNoKey = 'prepay_id';
+    public $uniqueInvoiceNoKey = 'transaction_id';
 
     /**
      * Returns any extra keyed params that should be sent within the request
@@ -122,7 +122,27 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function validate(string $query, string $sign, string $key) : bool
     {
         // TODO: Implement validate() method.
-        return false;
+        $result = $this->parseRawRequest($key, true);
+
+        return $result['result_code'] == 'SUCCESS' ? true : false;
+    }
+
+    public function parseRawRequest($key, $checkSign = false) : array
+    {
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA']??file_get_contents("php://input");
+        try {
+            $result = $this->parseResponse($xml, $key, $checkSign);
+        } catch (\Exception $e) {
+            $result = false;
+        }
+        if ($result == false) {
+            $array['result_code'] = "FAIL";
+            $array['return_msg'] = '';
+        } else {
+            $array = $result;
+        }
+
+        return $array;
     }
 
     /**
@@ -139,7 +159,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function getPrice(int $amount, int $base)
     {
         // TODO: Implement getPrice() method.
-        return $amount / $base;
+        return $amount / 10;
     }
 
     public function getUniqueNo(string $unique_no) : string
@@ -162,12 +182,13 @@ class Wechat extends PaymentGateway implements SelfHandle
         return $xml;
     }
 
-    public function parseResponse($response, $key): array
+    public function parseResponse($response, $key, $checkSign = true): array
     {
         // TODO: Implement parseResponse() method.
         libxml_disable_entity_loader(true);
 
-        return $this->checkSign(json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true), $key);
+        $returnArr = json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return $checkSign ? $this->checkSign($returnArr, $key) : $returnArr;
 //        return json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
@@ -175,7 +196,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     {
         $errorArr = ['result_code' => 'FAIL-INVALID-SIGN'];
 
-        if(!isset($response['sign']))
+        if (!isset($response['sign']))
             return $errorArr;
 
         $sign = $this->sign($this->queryString($response), $key);
@@ -195,14 +216,14 @@ class Wechat extends PaymentGateway implements SelfHandle
 
         return urldecode($query);*/
         $buff = "";
-        foreach ($array as $k => $v)
-        {
-            if($k != "sign" && $v != "" && !is_array($v)){
+        foreach ($array as $k => $v) {
+            if ($k != "sign" && $v != "" && !is_array($v)) {
                 $buff .= $k . "=" . $v . "&";
             }
         }
 
         $buff = trim($buff, "&");
+
         return $buff;
     }
 }

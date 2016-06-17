@@ -10,9 +10,10 @@ namespace SkysoulDesign\Payment\Contracts;
 interface SelfHandle
 {
 
-
     public function prepareData(array $data): string;
 
-    public function parseResponse($response, $key): array;
+    public function parseResponse($response, $key, $checkSign = true): array;
+
+    public function parseRawRequest($key, $checkSign = false) : array;
 
 }
