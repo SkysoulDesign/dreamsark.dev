@@ -1,0 +1,8 @@
+@include component(row) {
+  background: #00AA00;
+
+  @include option(fluid) {
+    max-width: 100%
+  }
+
+}

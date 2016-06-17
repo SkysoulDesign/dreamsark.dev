@@ -8,29 +8,22 @@ use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Class HomeController
+ *
+ * @package DreamsArk\Http\Controllers\Home
+ */
 class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return Response
      * @internal param Request $request
      */
-    public function index(Request $request)
+    public function index()
     {
-
-//        return $this->dispatch(new GetUniqueCharacters());
-
-        /**
-         * Check if intro cookie is set
-         */
-        /*if (!$request->hasCookie('intro')) {
-            return view('in');
-        }*/
-
         return view('index');
-
     }
 
     /**

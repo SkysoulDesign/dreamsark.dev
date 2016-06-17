@@ -1,8 +1,10 @@
 <!doctype html>
 <html lang="en" xmlns="http://dreamsark.dev/schema">
+
 <head>
     <meta charset="UTF-8">
     <title>DreamsArk</title>
+
     @yield('meta-tags')
 
     @yield('styles')
@@ -12,7 +14,7 @@
 
 </head>
 
-<body id="app-root" class="main">
+<body id="app-root">
 
     @yield('content')
 

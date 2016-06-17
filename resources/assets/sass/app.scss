@@ -6,7 +6,16 @@
 @import '../../../node_modules/normalize.css/normalize';
 //@import '../../../node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import '../../../node_modules/csstyle/csstyle';
+@import '../../../node_modules/foundation-sites/scss/foundation';
 @import '../../../node_modules/family.scss/family';
+
+/**
+* Init Third Party Frameworks
+*/
+@include foundation-global-styles;
+@include foundation-flex-classes;
+@include foundation-flex-grid;
+
 @import 'app/functions';
 @import 'app/colors';
 @import 'app/variables';
@@ -15,20 +24,27 @@
 @import 'components/form/forms';
 @import 'components/global';
 @import 'components/header';
-@import 'components/segment';
+//@import 'components/segment';
 //@import 'components/grid';
 @import 'components/divider';
+@import 'components/menu';
+@import 'components/slider';
+@import 'components/grid/row';
+
+/**
+* Layouts
+*/
+@import 'layout/home';
 
 /**
 * Initiate things up
 */
-//@include foundation-global-styles;
-//@include foundation-grid;
+
 @include dreamsark-global;
-@include dreamsark-global;
-@include dreamsark-segment;
+//@include dreamsark-segment;
 @include dreamsark-divider;
 @include dreamsark-forms;
+@include dreamsark-menu;
 
 //
 ///**

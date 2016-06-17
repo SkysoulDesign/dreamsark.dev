@@ -31,3 +31,9 @@
     }
   }
 }
+
+@mixin page($name) {
+  @include component($name+"-page") {
+    @content;
+  }
+}

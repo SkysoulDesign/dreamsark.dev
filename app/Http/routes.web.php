@@ -63,7 +63,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
 
-
     /**
      * Translation Controller
      */

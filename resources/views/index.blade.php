@@ -1,44 +1,91 @@
 @extends('layouts.master')
 
 @section('meta-tags')
-    <meta property="qc:admins" content="302711632664251531236375" />
-@endsection
-
-@section('header')
-    @include('layouts.huge-header')
+    <meta property="qc:admins" content="302711632664251531236375"/>
 @endsection
 
 @section('content')
 
-    @include('layouts.content-header')
-    @include('layouts.content-grid')
-    {{--@include('layouts.content-2')--}}
+    <div class="home-page">
+
+        <div class="row align-justify --fluid menu">
+
+            <div class="small-6 columns">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('dreamsark-assets/logo.png') }}">
+                </a>
+            </div>
+
+            <div class="small-6 columns align-right ~align-right">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('dreamsark-assets/logo.png') }}">
+                </a>
+            </div>
+
+        </div>
+
+        <div class="row --fluid medium-unstack menu">
+
+            <div class="column menu__item">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('dreamsark-assets/logo.png') }}">
+                </a>
+            </div>
+
+            <div class="column menu__item">
+                <a class="active item" href="{{ route('home') }}">
+                    Home
+                </a>
+            </div>
+
+        </div>
+
+        <div class="row slider">
+            Slider
+        </div>
+
+        <div>
+
+        </div>
+
+    </div>
 
 @endsection
 
-@section('footer')
+{{--@section('header')--}}
+{{--@include('layouts.huge-header')--}}
+{{--@endsection--}}
 
-    @include('layouts.footer-large')
+{{--@section('content')--}}
 
-@endsection
+{{--@include('layouts.content-header')--}}
+{{--@include('layouts.content-grid')--}}
 
-@section('styles')
-    <link href="{{ asset('css/dragdealer.css') }}" rel="stylesheet" type="text/css">
-@endsection
+{{--@endsection--}}
 
-@section('scripts')
-    <script src="{{ asset('js/dragdealer.js') }}"></script>
-    <script src="{{ asset('js/particle.js') }}"></script>
-    <script>
+{{--@section('footer')--}}
 
-        var canvasMask = new Dragdealer('canvas-mask', {
-            x:0.5,
-            y: 0.5,
-            vertical: true,
-            speed: 0.2,
-            loose: true,
-            requestAnimationFrame: true
-        });
+{{--@include('layouts.footer-large')--}}
 
-    </script>
-@endsection
+{{--@endsection--}}
+
+{{--@section('styles')--}}
+{{--<link href="{{ asset('css/dragdealer.css') }}" rel="stylesheet" type="text/css">--}}
+{{--@endsection--}}
+
+{{--@section('scripts')--}}
+{{--<script src="{{ asset('js/dragdealer.js') }}"></script>--}}
+{{--<script src="{{ asset('js/particle.js') }}"></script>--}}
+{{--<script>--}}
+
+{{--var canvasMask = new Dragdealer('canvas-mask', {--}}
+{{--x:0.5,--}}
+{{--y: 0.5,--}}
+{{--vertical: true,--}}
+{{--speed: 0.2,--}}
+{{--loose: true,--}}
+{{--requestAnimationFrame: true--}}
+{{--});--}}
+
+{{--</script>--}}
+{{--@endsection--}}

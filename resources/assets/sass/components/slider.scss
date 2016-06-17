@@ -1,7 +1,12 @@
 /**
 * Slider
 */
+@include component(slider) {
+  height: 700px;
+  background: #1a2c51;
+}
 
+/*
 @include component(slider) {
 
   z-index: 5;
@@ -75,3 +80,5 @@
   }
 
 }
+
+*/

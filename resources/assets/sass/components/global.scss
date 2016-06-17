@@ -7,6 +7,8 @@
 
   html, body {
     /* Make the body to be as tall as browser window */
+    //display: flex;
+    //width: 100%;
     height: 100%;
     background-color: color(neutral);
     font-size: 20px;
@@ -17,7 +19,7 @@
 
   }
 
-  @include component(main) {
+  @include component(login-background) {
 
     //display: flex;
     //align-items: center;

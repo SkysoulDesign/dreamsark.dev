@@ -1,10 +1,12 @@
 import Vue = require("vue");
+import {popByKey} from "./Helpers";
 
+/**
+ * Application
+ */
 export class App {
 
     constructor() {
-        // let ripple = new Ripple();
-        // console.log(Vue);
     }
 
     /**
@@ -70,11 +72,7 @@ app.ready().then(application => {
         },
         computed: {
             errors: function () {
-                let value = this.$parent.errors[this.name];
-
-                delete this.$parent.errors[this.name];
-
-                return value ;
+                return popByKey(this.$parent.errors, this.name);
             }
         }
     });
@@ -92,29 +90,11 @@ app.ready().then(application => {
                 default: 'post'
             },
             errors: {
+                type: [Object, Array],
                 coerce: data => JSON.parse(data)
             }
-        },
-        computed: {
-            mistakes: function () {
-                return this.errors;
-            }
-        },
-        ready(){
-            this.model = this.errors;
         }
     });
-
-    // var child = Vue.component('ark-input', {
-    //     template: '<div class="test">testchild</div>'
-    // });
-    //
-    // var parent = Vue.component('ark-form', {
-    //     template: '<div class="test"><slot></slot></div>',
-    //     components: {
-    //         child: child
-    //     }
-    // });
 
     new Vue({
         el: '#app-root',

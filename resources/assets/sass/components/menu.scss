@@ -1,0 +1,21 @@
+@mixin dreamsark-menu() {
+
+  @include component(menu) {
+    //display: flex;
+    height: 5em;
+    //align-items: center;
+    //justify-content: space-around;
+    background: black;
+    color: white;
+
+    @include respond-to(desktop) {
+      height: 4em;
+    }
+
+    @include part(item) {
+
+    }
+
+  }
+
+}
