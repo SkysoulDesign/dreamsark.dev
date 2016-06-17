@@ -136,11 +136,12 @@ class Payment
             $data['qr_url'] = $this->getConfig('qr_url');
             $buildForm = false;
 
-            if ($data['result_code'] == 'SUCCESS') {
+            /*if ($data['result_code'] == 'SUCCESS') {
                 $this->transaction->setAttribute('invoice_no', $data[$this->gateway->uniqueInvoiceNoKey]);
                 $this->transaction->save();
-            }
-            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->uniqueInvoiceNoKey], $data[$this->gateway->signKey]);
+                unset($data[$this->gateway->uniqueInvoiceNoKey]);
+            }*/
+            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->signKey]);
 //            $this->transaction->fresh();
 
         }

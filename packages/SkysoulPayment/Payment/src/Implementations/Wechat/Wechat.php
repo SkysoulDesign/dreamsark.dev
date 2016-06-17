@@ -49,7 +49,7 @@ class Wechat extends PaymentGateway implements SelfHandle
      *
      * @var string
      */
-    public $uniqueInvoiceNoKey = 'prepay_id';
+    public $uniqueInvoiceNoKey = 'transaction_id';
 
     /**
      * Returns any extra keyed params that should be sent within the request
