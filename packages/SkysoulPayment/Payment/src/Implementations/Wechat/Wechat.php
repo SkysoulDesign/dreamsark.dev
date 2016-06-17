@@ -159,7 +159,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function getPrice(int $amount, int $base)
     {
         // TODO: Implement getPrice() method.
-        return $amount / $base;
+        return $amount / 10;
     }
 
     public function getUniqueNo(string $unique_no) : string
