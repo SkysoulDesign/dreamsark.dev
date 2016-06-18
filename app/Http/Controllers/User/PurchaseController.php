@@ -27,7 +27,7 @@ class PurchaseController extends Controller
             if ($payStatus == 'pending')
                 $message = trans('payment.paid-receipt-not-received-check-later');
             else if ($payStatus == 'success')
-                $message = trans('payment.paid-receipt-not-received-check-later');
+                $message = trans('payment.your-purchase-has-been-made');
         }
 
         return view('user.payment.index')
