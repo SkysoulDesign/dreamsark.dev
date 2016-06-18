@@ -84,6 +84,30 @@ class PaymentController extends Controller
 
     }
 
+    public function transactionEnquiryEvent(Request $request, Transaction $transaction)
+    {
+        $eventHeader = 'text/event-stream';
+        if ($request->header('accept') == $eventHeader) {
+            /** @var Boolean $response */
+            $response = 0;
+            if ($request->has('unique_no')) {
+                $time = date('Y-m-d H:i:s');
+                $response = $request->get('unique_no') . '--' . $time;
+                /** @var Transaction $transaction */
+                $transaction = $transaction->where('unique_no', $request->get('unique_no'))->get();
+                if ($transaction && is_object($transaction[0]))
+                    $response = $transaction[0]->is_payment_done;
+            }
+
+            header('Content-Type: ' . $eventHeader);
+            header('Cache-Control: no-cache');
+            echo "data: " . $response . "\n\n";
+            flush();
+
+        } else
+            return redirect()->route('user.account');
+    }
+
     protected $defaultRoute = 'payment . status';
     protected $responseData;
 
@@ -93,7 +117,11 @@ class PaymentController extends Controller
      */
     public function paymentStatus(Request $request)
     {
-        return view('payment . status');
+        $errors = \Session::get('errors');
+        if ($request->result == 'pending' && is_null($errors)) {
+            return view('payment.status')->withErrors(trans('payment.paid-receipt-not-received-check-later'));
+        } else
+            return view('payment.status');
     }
 
 

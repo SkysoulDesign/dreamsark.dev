@@ -25,7 +25,7 @@ class TransactionMiddleware
 
         foreach (app('payment.drivers') as $driverName => $driver) {
 
-            if ($driver instanceof SelfHandle) {
+            if ($driver instanceof SelfHandle && $request->header('accept') != 'text/event-stream') {
                 $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
                 $requestRawArr['invoice_no'] = $requestRawArr[$driver->uniqueInvoiceNoKey] ?? ($requestRawArr['invoice_no']??'');
                 $request->merge($requestRawArr);

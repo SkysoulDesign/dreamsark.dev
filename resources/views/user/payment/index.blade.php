@@ -53,7 +53,13 @@
 
 @section('pos-scripts')
     <script>
+        var payStatusUrls = {
+            'success': "{{ route('payment.status', 'success') }}",
+            'pending': "{{ route('payment.status', 'pending') }}",
+            'fail':    "{{ route('payment.status', 'error') }}"
+        };
         $(document).ready(function () {
+
             /*if ($('#withdraw-coin-modal').length > 0)
              $('#withdraw-coin-modal')
              .modal({
@@ -107,8 +113,8 @@
                                             console.log($form);
 
                                         } else {
-                                            console.log(response)
-                                            if(response.data['result_code'] == 'SUCCESS') {
+//                                            console.log(response)
+                                            if (response.data['result_code'] == 'SUCCESS') {
                                                 let $form = '<div class="ui card centered">' +
                                                         '<div class="content">' +
                                                         '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
@@ -127,6 +133,7 @@
                                                         '</div></div>';
                                                 $("#popup-modal .content").html($form);
                                                 $('#popup-modal').modal('show');
+                                                triggerEvent(response.data['unique_no']);
                                             } else {
                                                 alert("{{ trans('payment.error-occurred-unable-to-process') }}");
                                             }
@@ -142,6 +149,26 @@
                         .modal('attach events', '#' + id, 'show')
                 ;
             });
+
         });
+        function triggerEvent(unique_no) {
+            var loop         = 1, limit = 25;
+            var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
+            source.onmessage = function (event) {
+                if (event.data == 1) {
+                    redirectPage(source, payStatusUrls.success)
+                } else {
+                    if (loop >= limit) {
+                        redirectPage(source, payStatusUrls.pending)
+                    }
+                    $('#pay_status').val(event.data);
+                    loop++;
+                }
+            };
+        }
+        function redirectPage(source, url) {
+            source.close();
+            window.location = url;
+        }
     </script>
 @endsection

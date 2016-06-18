@@ -134,6 +134,7 @@ class Payment
                 $this->gateway->prepareData($data)
             );
             $data['qr_url'] = $this->getConfig('qr_url');
+            $data['unique_no'] = $this->transaction->unique_no;
             $buildForm = false;
 
             /*if ($data['result_code'] == 'SUCCESS') {
