@@ -42,4 +42,22 @@ return [
 //        'redirect' => 'http://dreamsark.dev/login/social/facebook/status',
     ],
 
+    'weixin' => [
+        'client_id' => 'wx010b4bc4dfdd0bd6',
+        'client_secret' => '757493e63e783c6e56643a250eb85d70',
+        'redirect' => 'http://dev.dreamsark.com/login/social/weixin/status',
+    ],
+
+    'qq' => [
+        'client_id' => '101326108',
+        'client_secret' => '4b95073ed2bfe5a8a5c34432c7454941',
+        'redirect' => 'http://dev.dreamsark.com/login/social/qq/status',
+    ],
+
+    'weibo' => [
+        'client_id' => '312525492',
+        'client_secret' => 'dcc3d3251161333acd2ed9e391757863',
+        'redirect' => 'http://dev.dreamsark.com/login/social/weibo/status',
+    ],
+
 ];
