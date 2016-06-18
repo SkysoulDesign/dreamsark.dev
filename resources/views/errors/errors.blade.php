@@ -26,6 +26,7 @@
 
 @endif
 
+@php $warning = $warning??'' @endphp
 @if($warning)
     <div class="ui warning message">
         <div class="header">
