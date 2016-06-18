@@ -150,7 +150,7 @@
 
         });
         function triggerEvent(unique_no) {
-            var loop         = 1, limit = 5;
+            var loop         = 1, limit = 15;
             var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
             source.onmessage = function (event) {
                 if (event.data == 1) {
