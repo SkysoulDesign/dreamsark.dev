@@ -25,3 +25,12 @@
     </div>
 
 @endif
+
+@if($warning)
+    <div class="ui warning message">
+        <div class="header">
+            &nbsp;
+        </div>
+        <p>{{ $warning }}</p>
+    </div>
+@endif

@@ -54,9 +54,7 @@
 @section('pos-scripts')
     <script>
         var payStatusUrls = {
-            'success': "{{ route('payment.status', 'success') }}",
-            'pending': "{{ route('payment.status', 'pending') }}",
-            'fail':    "{{ route('payment.status', 'error') }}"
+            'purchase': "{{ route('user.purchase.index') }}"
         };
         $(document).ready(function () {
 
@@ -152,23 +150,24 @@
 
         });
         function triggerEvent(unique_no) {
-            var loop         = 1, limit = 25;
+            var loop         = 1, limit = 5;
             var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
             source.onmessage = function (event) {
                 if (event.data == 1) {
-                    redirectPage(source, payStatusUrls.success)
+                    redirectPage(source, 'success')
                 } else {
                     if (loop >= limit) {
-                        redirectPage(source, payStatusUrls.pending)
+                        redirectPage(source, 'pending')
                     }
                     $('#pay_status').val(event.data);
                     loop++;
                 }
             };
         }
-        function redirectPage(source, url) {
+        function redirectPage(source, status) {
+            var queryStr = '?status=' + status;
             source.close();
-            window.location = url;
+            window.location = payStatusUrls.purchase + queryStr;
         }
     </script>
 @endsection

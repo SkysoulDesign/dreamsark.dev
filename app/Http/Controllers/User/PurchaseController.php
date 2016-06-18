@@ -2,9 +2,9 @@
 
 namespace DreamsArk\Http\Controllers\User;
 
-use Illuminate\Http\Request;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
+use Illuminate\Http\Request;
 
 /**
  * Class PurchaseController
@@ -21,9 +21,19 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
+        $message = '';
+        if ($request->has('status')) {
+            $payStatus = $request->get('status');
+            if ($payStatus == 'pending')
+                $message = trans('payment.paid-receipt-not-received-check-later');
+            else if ($payStatus == 'success')
+                $message = trans('payment.paid-receipt-not-received-check-later');
+        }
+
         return view('user.payment.index')
             ->with('user', $user = $request->user())
-            ->with('transactions', $user->transactions);
+            ->with('transactions', $user->transactions)
+            ->withWarning($message);
     }
 
     /**
