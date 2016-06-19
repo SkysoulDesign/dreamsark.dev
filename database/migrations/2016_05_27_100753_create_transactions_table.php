@@ -25,7 +25,6 @@ class CreateTransactionsTable extends Migration
             $table->string('invoice_no');
             $table->string('method');
             $table->integer('amount');
-            $table->string('type');
             $table->boolean('paid')->default(false);
             $table->tinyInteger('attempts')->unsigned();
             $table->boolean('is_canceled')->default(false);

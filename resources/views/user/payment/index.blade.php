@@ -32,9 +32,9 @@
             <tbody>
             @forelse($transactions as $transaction)
                 <tr>
-                    <td>{{ $transaction->payment->getPrice() }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->paid }}</td>
+                    <td>{{ $transaction->payment->getPrice() }}</td>
+                    <td>{{ $transaction->isPpaid() }}</td>
                 </tr>
             @empty
                 <tr>

@@ -24,16 +24,6 @@ class Transaction extends Model
     protected $table = 'transactions';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'unique_no', 'invoice_no', 'pay_method',
-        'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array

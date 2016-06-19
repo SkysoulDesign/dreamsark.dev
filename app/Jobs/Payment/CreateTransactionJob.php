@@ -13,12 +13,6 @@ use DreamsArk\Models\User\User;
  */
 class CreateTransactionJob extends Job
 {
-
-    /**
-     * @var
-     */
-    private $type;
-
     /**
      * @var User
      */
@@ -40,14 +34,12 @@ class CreateTransactionJob extends Job
      * @param User $user
      * @param float $amount
      * @param string $method
-     * @param string $type
      */
-    public function __construct(User $user, float $amount, string $method, string $type = 'pay')
+    public function __construct(User $user, float $amount, string $method)
     {
         $this->user = $user;
         $this->amount = $amount;
         $this->method = $method;
-        $this->type = $type;
     }
 
     /**
@@ -59,10 +51,6 @@ class CreateTransactionJob extends Job
     public function handle(Transaction $transaction) : Transaction
     {
         /**
-         * TODO: need to create table for Transactions Maintenance and use Unique "out_trade_no" in External Payment Gateways
-         */
-
-        /**
          * Associate User with transaction
          */
         $transaction->user()->associate($this->user);
@@ -73,7 +61,6 @@ class CreateTransactionJob extends Job
         $transaction->setAttribute('unique_no', $this->generateUniqueTransactionID());
         $transaction->setAttribute('amount', $this->amount);
         $transaction->setAttribute('method', $this->method);
-        $transaction->setAttribute('type', $this->type);
 
         $transaction->save();
 

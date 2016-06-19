@@ -2,15 +2,12 @@
 
 namespace SkysoulDesign\Payment\Implementations\Unionpay;
 
-use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
- * Class Unionpay
- *
- * @package SkysoulDesign\Payment\Implementations\Unionpay
+ * 
  */
-class Unionpay extends PaymentGateway
+class UnionpayLatest extends PaymentGateway
 {
 
     /**
@@ -63,16 +60,16 @@ class Unionpay extends PaymentGateway
     public function getAdditionalPostData(array $config) : array
     {
         return [
-            'version' => '5.0.0',
-            'encoding' => 'utf-8',
-            'txnType' => '01',
-            'txnSubType' => '01',
-            'bizType' => '000201',
-            'signMethod' => '01',
-            'channelType' => '07',
-            'accessType' => '0',
+            'version'      => '5.0.0',
+            'encoding'     => 'utf-8',
+            'txnType'      => '01',
+            'txnSubType'   => '01',
+            'bizType'      => '000201',
+            'signMethod'   => '01',
+            'channelType'  => '07',
+            'accessType'   => '0',
             'currencyCode' => '156',
-            'txnTime' => date('YmdHis'),
+            'txnTime'      => date('YmdHis'),
         ];
     }
 
@@ -96,35 +93,38 @@ class Unionpay extends PaymentGateway
      */
     public function sign(string $query, string $key, string $password = null) : string
     {
-        $sha = sha1($query, false);
+        $returnStr = '';
+        $querySha = sha1($query, false);
 
-        openssl_pkcs12_read($key, $cert, $password);
-        openssl_sign($sha, $signature, $cert['pkey'], OPENSSL_ALGO_SHA1);
+        openssl_pkcs12_read($key, $certDara, $password);
+        $sign = openssl_sign($querySha, $signature, $certDara['pkey'], OPENSSL_ALGO_SHA1);
+        if ($sign)
+            $returnStr = base64_encode($signature);
 
-        return base64_encode($signature);
+        return $returnStr;
     }
 
     /**
-     * Append Any necessary data before signing the request
+     * Prepare the data to be sign
      *
-     * @param Transaction $transaction
      * @param array $request
      * @param string $key
      * @param string $password
      * @return array
      */
-    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
+    public function prepare(array $request, string $key, string $password = null) : array
     {
-
-        openssl_pkcs12_read($key, $cert, $password);
-        $cert = $cert['cert'];
-
+        /**
+         * do events to append certId
+         */
+        openssl_pkcs12_read($key, $certs, $password);
+        $cert = $certs ['cert'];
         openssl_x509_read($cert);
         $certData = openssl_x509_parse($cert);
+        $request['certId'] = $certData ['serialNumber'];
 
-        return [
-            'certId' => $certData['serialNumber']
-        ];
+        return $request;
+
     }
 
     /**
@@ -138,15 +138,16 @@ class Unionpay extends PaymentGateway
     public function validate(string $query, string $sign, string $key) : bool
     {
         $signature = base64_decode($sign);
-        $sha = sha1($query, false);
-        return (bool)openssl_verify($sha, $signature, $key, OPENSSL_ALGO_SHA1);
+        $querySha = sha1($query, false);
+        $isSuccess = openssl_verify($querySha, $signature, $key, OPENSSL_ALGO_SHA1);
+
+        return $isSuccess;
     }
 
     /**
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
-     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
@@ -154,7 +155,7 @@ class Unionpay extends PaymentGateway
      * @param int $base
      * @return int|float
      */
-    public function getPrice(int $amount, int $base) : int
+    public function getPrice(int $amount, int $base) : init
     {
         return $amount / 10;
     }

@@ -25,7 +25,7 @@
                 </td>
                 <td>{{ $transaction->user->username }}</td>
                 <td>{{ $transaction->amount }}</td>
-                <td>{{ $transaction->is_payment_done }}</td>
+                <td>{{ $transaction->paid }}</td>
                 <td>
                     <div style="width: 120px; height: 120px; overflow: auto; word-wrap: break-word;">
                         {{ $transaction->messages ? $transaction->messages->request : '' }}
