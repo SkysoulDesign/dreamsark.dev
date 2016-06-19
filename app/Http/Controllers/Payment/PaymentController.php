@@ -74,6 +74,12 @@ class PaymentController extends Controller
         return response($transaction->payment->getConfirmationResponse());
     }
 
+    
+    
+    
+    
+    
+    
     public function transactionEnquiryEvent(Request $request, Transaction $transaction)
     {
         return;

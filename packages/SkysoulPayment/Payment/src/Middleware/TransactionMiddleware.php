@@ -51,7 +51,7 @@ class TransactionMiddleware
                 /**
                  * Example of the response returned
                  * 'nonce_str' => '1e9c6dc03fdb76cd9f68b67f291c203d',
-                 * 'out_trade_no' => '6dc03fdb76cd9f68b67f291c203d',
+                 * 'out_trade_no' =>  '6dc03fdb76cd9f68b67f291c203d',
                  */
 
                 break;

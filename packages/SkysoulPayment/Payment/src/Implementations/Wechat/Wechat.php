@@ -3,8 +3,8 @@
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
 use DreamsArk\Models\Payment\Transaction;
-use Guzzle\Stream\StreamInterface;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
+use SkysoulDesign\Payment\Contracts\string;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
@@ -45,6 +45,8 @@ class Wechat extends PaymentGateway implements SelfHandle
     public $priceKey = 'total_fee';
 
     /**
+     * Get the service key name
+     *
      * @var string
      */
     public $serviceIdKey = 'mch_id';
@@ -56,6 +58,13 @@ class Wechat extends PaymentGateway implements SelfHandle
      * @var string
      */
     public $uniqueInvoiceNoKey = 'transaction_id';
+
+    /**
+     * Key of the error message in case of failure
+     *
+     * @var string
+     */
+    public $errorMessageKey = 'return_msg';
 
     /**
      * Returns any extra keyed params that should be sent within the request
@@ -91,31 +100,6 @@ class Wechat extends PaymentGateway implements SelfHandle
             'nonce_str' => $transaction->getAttribute('unique_no')
         ];
     }
-
-    private function getNonceStr($length = 32)
-    {
-        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-        $str = "";
-        for ($i = 0; $i < $length; $i++) {
-            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-        }
-
-        return 'ohnothisisereallybadwhwywhwyhwy';
-    }
-
-//    /**
-//     * Update Transaction with vendor invoice Number
-//     *
-//     * @param Transaction $transaction
-//     * @param array $response
-//     * @return bool
-//     */
-//    public function updateTransaction(Transaction $transaction, array $response) : bool
-//    {
-//
-//        return $transaction->setAttribute('invoice_no', $response['prepay_id'])->save();
-//    }
 
     /**
      * Determine if request has failed or not
@@ -167,25 +151,11 @@ class Wechat extends PaymentGateway implements SelfHandle
         return $response['result_code'] == 'SUCCESS';
     }
 
-//    /**
-//     * Parse Raw Request data sent from gateway API
-//     *
-//     * @param $key
-//     * @param bool $checkSign
-//     * @return array
-//     */
-//    public function parseRawRequest() : array
-//    {
-//        $xml = file_get_contents("php://input");
-//
-//            $result = $this->parseResponse($xml, $key, $checkSign);
-//
-//    }
-
     /**
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
+     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
@@ -193,25 +163,25 @@ class Wechat extends PaymentGateway implements SelfHandle
      * @param int $base
      * @return int|float
      */
-    public function getPrice(int $amount, int $base)
+    public function getPrice(int $amount, int $base) : int
     {
-        // TODO: Implement getPrice() method.
         return $amount / 10;
     }
 
-    public function getUniqueNo(string $unique_no) : string
-    {
-        return substr($unique_no, 4, strlen($unique_no));
-    }
-
-    public function prepareData(array $data): string
+    /**
+     * Prepare data to be post to gateway API
+     *
+     * @param array $data
+     * @return string
+     */
+    public function prepareData(array $data) : string
     {
         $xml = "<xml>";
         foreach ($data as $key => $val) {
             if (is_numeric($val))
-                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+                $xml .= "<$key>$val</$key>";
             else
-                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+                $xml .= "<$key><![CDATA[$val]]></$key>";
         }
         $xml .= "</xml>";
 
@@ -244,25 +214,5 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function checkSign(array $response, string $sign) : bool
     {
         return $response['sign'] === $sign;
-    }
-
-    private function queryString(array $array)
-    {
-        ksort($array);
-        /*unset($array['sign']);
-        $array = array_filter($array, 'strlen');
-        $query = http_build_query($array);
-
-        return urldecode($query);*/
-        $buff = "";
-        foreach ($array as $k => $v) {
-            if ($k != "sign" && $v != "" && !is_array($v)) {
-                $buff .= $k . "=" . $v . "&";
-            }
-        }
-
-        $buff = trim($buff, "&");
-
-        return $buff;
     }
 }

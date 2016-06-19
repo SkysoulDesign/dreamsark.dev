@@ -65,7 +65,7 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $priceKey;
 
     /**
-     * get the service key name
+     * Get the service key name
      *
      * @var string
      */
@@ -76,7 +76,7 @@ abstract class PaymentGateway implements PaymentGatewayContract
      *
      * @var string
      */
-    public $errorMessageKey = 'return_msg';
+    public $errorMessageKey;
 
     /**
      * Append Any necessary data before signing the request
@@ -90,21 +90,6 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
     {
         return [];
-    }
-
-    public function getUniqueNo(string $unique_no) : string
-    {
-        dd($unique_no);
-        return $unique_no;
-    }
-
-    public function getUniqueNoWithPrefix(string $unique_no) : string
-    {
-        $payPrefix = config('payment.transaction_prefix.pay');
-        if (strtolower(substr($unique_no, 0, 4)) != strtolower($payPrefix))
-            $unique_no = config('payment.transaction_prefix.pay') . $unique_no;
-
-        return $unique_no;
     }
 
 }
