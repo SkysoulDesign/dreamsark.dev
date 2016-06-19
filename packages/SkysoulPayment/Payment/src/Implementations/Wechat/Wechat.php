@@ -4,7 +4,6 @@ namespace SkysoulDesign\Payment\Implementations\Wechat;
 
 use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
-use SkysoulDesign\Payment\Contracts\string;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
