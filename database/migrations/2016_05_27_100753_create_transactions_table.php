@@ -21,12 +21,12 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('unique_no')->unique();
+            $table->string('unique_no')->unique()->nullable();
             $table->string('invoice_no');
             $table->string('method');
             $table->integer('amount');
             $table->string('type');
-            $table->boolean('is_payment_done')->default(false);
+            $table->boolean('paid')->default(false);
             $table->tinyInteger('attempts')->unsigned();
             $table->boolean('is_canceled')->default(false);
             $table->timestamps();

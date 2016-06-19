@@ -123,6 +123,7 @@ class Payment
          * Prepare Data before sign
          */
         $data = $this->gateway->appendDataToRequestBeforeSign(
+            $this->transaction,
             $request = $this->getPostData(),
             $this->getPrivateKey(),
             $this->getPrivateKeyPassword()
@@ -149,22 +150,27 @@ class Payment
                 $this->gateway->prepareData($data)
             );
 
+            if ($response = $this->gateway->checkFailure($data)) {
+                throw new InvalidSignature(
+                    "The request failed. {$data[$this->gateway->errorMessageKey]}."
+                );
+            }
+
             if (!$this->gateway->checkSign($data, $sign = $this->sign($data))) {
                 throw new InvalidSignature(
-                    "The response has a signature mismatch. expected '$sign' got '{$data['sign']}''"
+                    "The response has a signature mismatch. expected '$sign' got '{$data['sign']}'"
                 );
             }
 
             $data['qr_url'] = $this->getConfig('qr_url');
 
-            /*if ($data['result_code'] == 'SUCCESS') {
-                $this->transaction->setAttribute('invoice_no', $data[$this->gateway->uniqueInvoiceNoKey]);
-                $this->transaction->save();
-                unset($data[$this->gateway->uniqueInvoiceNoKey]);
-            }*/
-
-//            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->signKey]);
-//            $this->transaction->fresh();
+            /**
+             * Update Transaction with pre data from the Vendor
+             */
+//            $this->gateway->updateTransaction(
+//                $this->transaction,
+//                $data
+//            );
 
         }
 
@@ -200,7 +206,7 @@ class Payment
         }
 
         return $this->gateway->parseResponse(
-            $response->getBody()->getContents(), $this->getPrivateKey()
+            $response->getBody()->getContents()
         );
     }
 
@@ -211,6 +217,7 @@ class Payment
      */
     private function getPostData() : array
     {
+
         return $this->sanitize(array_merge(
 
             $this->gateway->getAdditionalPostData(

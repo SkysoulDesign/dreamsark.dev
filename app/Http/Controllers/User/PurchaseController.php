@@ -21,6 +21,7 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
+
 //        $message = '';
 //        if ($request->has('status')) {
 //            $payStatus = $request->get('status');

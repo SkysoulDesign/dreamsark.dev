@@ -34,7 +34,7 @@
                 <tr>
                     <td>{{ $transaction->payment->getPrice() }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->is_payment_done }}</td>
+                    <td>{{ $transaction->paid }}</td>
                 </tr>
             @empty
                 <tr>
@@ -72,8 +72,8 @@
                 var id = $(this).attr('id');
                 $('#' + id + '-modal')
                         .modal({
-                            blurring:  true,
-                            closable:  false,
+                            blurring: true,
+                            closable: false,
                             onApprove: function () {
 
                                 let form = $('#' + id + '-form');
@@ -81,12 +81,12 @@
 //                                return form.submit();
 
                                 form.api({
-                                    action:     form.action,
-                                    method:     'POST',
-                                    on:         'now',
-                                    data:       {
-                                        "_token":       '{{ csrf_token() }}',
-                                        amount:         form.find("input[name='amount']").val(),
+                                    action: form.action,
+                                    method: 'POST',
+                                    on: 'now',
+                                    data: {
+                                        "_token": '{{ csrf_token() }}',
+                                        amount: form.find("input[name='amount']").val(),
                                         payment_method: form.find("input[name='payment_method']").val()
                                     },
                                     onResponse: function (response) {
@@ -96,7 +96,7 @@
                                             let $form = document.createElement('form');
 
                                             for (let item in response.data) {
-                                                let input  = document.createElement('input');
+                                                let input = document.createElement('input');
                                                 input.name = item;
                                                 input.setAttribute('value', response.data[item]);
 
@@ -131,7 +131,7 @@
                                                         '</div></div>';
                                                 $("#popup-modal .content").html($form);
                                                 $('#popup-modal').modal('show');
-                                                triggerEvent(response.data['unique_no']);
+//                                                triggerEvent(response.data['unique_no']);
                                             } else {
                                                 alert("{{ trans('payment.error-occurred-unable-to-process') }}");
                                             }
@@ -150,8 +150,8 @@
 
         });
         function triggerEvent(unique_no) {
-            var loop         = 1, limit = 15;
-            var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
+            var loop = 1, limit = 15;
+            var source = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
             source.onmessage = function (event) {
                 if (event.data == 1) {
                     redirectPage(source, 'success')

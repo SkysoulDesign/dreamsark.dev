@@ -4,6 +4,7 @@ namespace DreamsArk\Events\Payment;
 
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Payment\Transaction;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -11,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package DreamsArk\Events
  */
-class PaymentWasConfirmed extends Event
+class PaymentWasConfirmed extends Event implements ShouldBroadcastNow
 {
 
     use SerializesModels;
@@ -38,6 +39,6 @@ class PaymentWasConfirmed extends Event
      */
     public function broadcastOn()
     {
-        return ['payment-was-confirmed'];
+        return ['payment'];
     }
 }

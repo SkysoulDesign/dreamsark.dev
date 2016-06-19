@@ -34,6 +34,15 @@ class Transaction extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'paid' => 'boolean',
+    ];
+
+    /**
      * Relation to TransactionMessages Table
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -52,17 +61,6 @@ class Transaction extends Model
     {
         $this->attributes['amount'] = $amount * config('payment.base');
     }
-
-//    /**
-//     * Convert amount back to yuan
-//     *
-//     * @param $amount
-//     * @return float
-//     */
-//    public function getAmountAttribute($amount)
-//    {
-//        return $amount / 1000;
-//    }
 
     /**
      * User Relationship

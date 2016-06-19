@@ -38,19 +38,17 @@ class PaymentController extends Controller
     {
 
         if (!$transaction->payment->verify($request->all()))
-            return redirect()->route('user.purchase.index')->withErrors(trans('payment.trade-status-error'));
+            return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
-        //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
+        $response = redirect()->route('user.purchase.index');
 
-        if ($transaction->is_payment_done)
-            return redirect()->route('user.purchase.index')->withSuccess('Your Purchase has been made');
-        
         /**
-         * Confirm Payment
+         * If verification has been detected already, redirect with success message
          */
-        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+        if ($transaction->isPaid())
+            return $response->withSuccess('Your Purchase has been made.');
 
-        return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
+        return $response->withStatus('Your purchase is being processed.');
     }
 
     /**
@@ -70,14 +68,15 @@ class PaymentController extends Controller
          * Confirm Payment
          */
         $this->dispatch(new ConfirmPaymentJob(
-            $transaction, $request->toArray())
-        );
+            $transaction, $request->toArray()
+        ));
 
         return response($transaction->payment->getConfirmationResponse());
     }
 
     public function transactionEnquiryEvent(Request $request, Transaction $transaction)
     {
+        return;
         $eventHeader = 'text/event-stream';
         if ($request->header('accept') == $eventHeader) {
             /** @var Boolean $response */

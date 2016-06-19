@@ -1,6 +1,7 @@
 <?php
 
 namespace SkysoulDesign\Payment\Contracts;
+use DreamsArk\Models\Payment\Transaction;
 
 /**
  * Interface PaymentGatWayContract
@@ -27,12 +28,13 @@ interface PaymentGatewayContract
     /**
      * Append Any necessary data before signing the request
      *
+     * @param Transaction $transaction
      * @param array $request
      * @param string $key
      * @param string $password
      * @return array
      */
-    public function appendDataToRequestBeforeSign(array $request, string $key, string $password = null) : array;
+    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array;
 
     /**
      * Sign the request

@@ -2,6 +2,8 @@
 
 namespace SkysoulDesign\Payment\Contracts;
 
+use DreamsArk\Models\Payment\Transaction;
+
 /**
  * Interface SelfHandle
  *
@@ -15,16 +17,15 @@ interface SelfHandle
      * @param array $data
      * @return string
      */
-    public function prepareData(array $data): string;
+    public function prepareData(array $data) : string;
 
     /**
      * Parse Response Received from Vendor API
      *
      * @param string $response
-     * @param string $key
      * @return array
      */
-    public function parseResponse(string $response, string $key): array;
+    static function parseResponse(string $response) : array;
 
     /**
      * Check Signature of Response Data
@@ -35,6 +36,23 @@ interface SelfHandle
      */
     public function checkSign(array $response, string $sign) : bool;
 
-    public function parseRawRequest($key, $checkSign = false) : array;
+    /**
+     * Determine if request has failed or not
+     *
+     * @param array $response
+     * @return bool
+     */
+    public function checkFailure(array $response) : bool;
+
+//    /**
+//     * Update Transaction with vendor invoice Number
+//     *
+//     * @param Transaction $transaction
+//     * @param array $response
+//     * @return bool
+//     */
+//    public function updateTransaction(Transaction $transaction, array $response) : bool;
+
+//    public function parseRawRequest($key, $checkSign = false) : array;
 
 }

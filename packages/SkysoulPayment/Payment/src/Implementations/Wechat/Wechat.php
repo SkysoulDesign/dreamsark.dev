@@ -2,6 +2,7 @@
 
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
+use DreamsArk\Models\Payment\Transaction;
 use Guzzle\Stream\StreamInterface;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\PaymentGateway;
@@ -71,21 +72,60 @@ class Wechat extends PaymentGateway implements SelfHandle
             'time_start' => date('YmdHis'),
             'time_expire' => date("YmdHis", time() + 600),
             'trade_type' => 'NATIVE',
-            'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
-            'nonce_str' => $this->getNonceStr(),
+            'spbill_create_ip' => $_SERVER['REMOTE_ADDR']
+        ];
+    }
+
+    /**
+     * Append Any necessary data before signing the request
+     *
+     * @param Transaction $transaction
+     * @param array $request
+     * @param string $key
+     * @param string $password
+     * @return array
+     */
+    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
+    {
+        return [
+            'nonce_str' => $transaction->getAttribute('unique_no')
         ];
     }
 
     private function getNonceStr($length = 32)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-    
+
         $str = "";
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
 
-        return $str;
+        return 'ohnothisisereallybadwhwywhwyhwy';
+    }
+
+//    /**
+//     * Update Transaction with vendor invoice Number
+//     *
+//     * @param Transaction $transaction
+//     * @param array $response
+//     * @return bool
+//     */
+//    public function updateTransaction(Transaction $transaction, array $response) : bool
+//    {
+//
+//        return $transaction->setAttribute('invoice_no', $response['prepay_id'])->save();
+//    }
+
+    /**
+     * Determine if request has failed or not
+     *
+     * @param array $response
+     * @return bool
+     */
+    public function checkFailure(array $response) : bool
+    {
+        return $response['return_code'] === 'FAIL';
     }
 
     /**
@@ -123,29 +163,24 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-        $result = $this->parseRawRequest($key, true);
-
-        return $result['result_code'] == 'SUCCESS';
+        parse_str($query, $response);
+        return $response['result_code'] == 'SUCCESS';
     }
 
-    public function parseRawRequest($key, $checkSign = false) : array
-    {
-        $xml = $GLOBALS['HTTP_RAW_POST_DATA']??file_get_contents("php://input");
-
-        try {
-            $result = $this->parseResponse($xml, $key, $checkSign);
-        } catch (\Exception $e) {
-            $result = false;
-        }
-        if ($result == false) {
-            $array['result_code'] = "FAIL";
-            $array['return_msg'] = '';
-        } else {
-            $array = $result;
-        }
-
-        return $array;
-    }
+//    /**
+//     * Parse Raw Request data sent from gateway API
+//     *
+//     * @param $key
+//     * @param bool $checkSign
+//     * @return array
+//     */
+//    public function parseRawRequest() : array
+//    {
+//        $xml = file_get_contents("php://input");
+//
+//            $result = $this->parseResponse($xml, $key, $checkSign);
+//
+//    }
 
     /**
      * Should return the price that is sent to the API gateway
@@ -171,7 +206,6 @@ class Wechat extends PaymentGateway implements SelfHandle
 
     public function prepareData(array $data): string
     {
-        // TODO: Implement prepareData() method.
         $xml = "<xml>";
         foreach ($data as $key => $val) {
             if (is_numeric($val))
@@ -188,13 +222,12 @@ class Wechat extends PaymentGateway implements SelfHandle
      * Parse Response Received from Vendor API
      *
      * @param string $response
-     * @param string $key
      * @return array
      */
-    public function parseResponse(string $response, string $key) : array
+    static function parseResponse(string $response) : array
     {
         /**
-         * Using this function you can prevent a vulnerable to Local and Remote File Inclusion attacks.
+         * This function prevents a vulnerable to Local and Remote File Inclusion attacks.
          */
         libxml_disable_entity_loader(true);
 
