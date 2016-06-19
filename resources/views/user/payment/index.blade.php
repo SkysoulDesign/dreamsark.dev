@@ -34,7 +34,7 @@
                 <tr>
                     <td>{{ $transaction->method }}</td>
                     <td>{{ $transaction->payment->getPrice() }}</td>
-                    <td>{{ $transaction->isPpaid() }}</td>
+                    <td>{{ $transaction->isPaid() }}</td>
                 </tr>
             @empty
                 <tr>

@@ -87,7 +87,7 @@ class PaymentController extends Controller
                 /** @var Transaction $transaction */
                 $transaction = $transaction->where('unique_no', $request->get('unique_no'))->get();
                 if ($transaction && is_object($transaction[0]))
-                    $response = $transaction[0]->is_payment_done;
+                    $response = $transaction[0]->paid;
             }
 
             header('Content-Type: ' . $eventHeader);
@@ -278,7 +278,7 @@ class PaymentController extends Controller
                 return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - transaction - match'));
         }
 
-        if (!$transaction[0]->is_payment_done) {
+        if (!$transaction[0]->paid) {
 //            dd($transaction[0]->user);
             $transactResponse = $request->getMethod() == 'POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
             dispatch(new ConfirmPaymentJob(
