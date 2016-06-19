@@ -54,11 +54,11 @@ class UnionpayLatest extends PaymentGateway
     /**
      * Returns any extra keyed params that should be sent within the request
      *
+     * @param array $config
      * @return array
      */
-    public function getAdditionalPostData() : array
+    public function getAdditionalPostData(array $config) : array
     {
-        // TODO: Implement getAdditionalPostData() method.
         return [
             'version'      => '5.0.0',
             'encoding'     => 'utf-8',
@@ -66,7 +66,7 @@ class UnionpayLatest extends PaymentGateway
             'txnSubType'   => '01',
             'bizType'      => '000201',
             'signMethod'   => '01',
-            'channelType'  => '07', // internet
+            'channelType'  => '07',
             'accessType'   => '0',
             'currencyCode' => '156',
             'txnTime'      => date('YmdHis'),
@@ -80,7 +80,6 @@ class UnionpayLatest extends PaymentGateway
      */
     public function getConfirmationResponse() : string
     {
-        // TODO: Implement getConfirmationResponse() method.
         return 'success';
     }
 
@@ -95,7 +94,6 @@ class UnionpayLatest extends PaymentGateway
     public function sign(string $query, string $key, string $password = null) : string
     {
         $returnStr = '';
-        // TODO: Implement sign() method.
         $querySha = sha1($query, false);
 
         openssl_pkcs12_read($key, $certDara, $password);
@@ -116,7 +114,6 @@ class UnionpayLatest extends PaymentGateway
      */
     public function prepare(array $request, string $key, string $password = null) : array
     {
-        // TODO: Implement prepare() method.
         /**
          * do events to append certId
          */
@@ -140,7 +137,6 @@ class UnionpayLatest extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-        // TODO: Implement validate() method.
         $signature = base64_decode($sign);
         $querySha = sha1($query, false);
         $isSuccess = openssl_verify($querySha, $signature, $key, OPENSSL_ALGO_SHA1);
@@ -159,9 +155,8 @@ class UnionpayLatest extends PaymentGateway
      * @param int $base
      * @return int|float
      */
-    public function getPrice(int $amount, int $base)
+    public function getPrice(int $amount, int $base) : init
     {
-        // TODO: Implement getPrice() method.
         return $amount / 10;
     }
 }

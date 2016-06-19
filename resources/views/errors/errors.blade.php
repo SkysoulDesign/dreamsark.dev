@@ -26,12 +26,11 @@
 
 @endif
 
-@php $warning = $warning??'' @endphp
-@if($warning)
+@if(session()->has('warning'))
     <div class="ui warning message">
         <div class="header">
             &nbsp;
         </div>
-        <p>{{ $warning }}</p>
+        <p>{{ session()->get('warning') }}</p>
     </div>
 @endif

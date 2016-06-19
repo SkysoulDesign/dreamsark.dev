@@ -42,21 +42,15 @@ class PaymentController extends Controller
 
         //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
 
-        // maybe do something if request verification fails, but in general
-        // its bad if user payed and get redirected to this page and on our side we show
-        // some error occur / payment couldn't be verified and he sees a negative
-        // message, he might think the website cheat him and he probably will contact
-        // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
         if ($transaction->is_payment_done)
             return redirect()->route('user.purchase.index')->withSuccess('Your Purchase has been made');
+        
         /**
          * Confirm Payment
          */
         $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
 
-
         return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
-
     }
 
     /**
@@ -64,12 +58,9 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
-//        \Log::info(file_get_contents("php://input"));
-        \Log::info($request->all());
 
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
@@ -78,10 +69,11 @@ class PaymentController extends Controller
         /**
          * Confirm Payment
          */
-        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+        $this->dispatch(new ConfirmPaymentJob(
+            $transaction, $request->toArray())
+        );
 
         return response($transaction->payment->getConfirmationResponse());
-
     }
 
     public function transactionEnquiryEvent(Request $request, Transaction $transaction)

@@ -21,19 +21,18 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
-        $message = '';
-        if ($request->has('status')) {
-            $payStatus = $request->get('status');
-            if ($payStatus == 'pending')
-                $message = trans('payment.paid-receipt-not-received-check-later');
-            else if ($payStatus == 'success')
-                $message = trans('payment.your-purchase-has-been-made');
-        }
+//        $message = '';
+//        if ($request->has('status')) {
+//            $payStatus = $request->get('status');
+//            if ($payStatus == 'pending')
+//                $message = trans('payment.paid-receipt-not-received-check-later');
+//            else if ($payStatus == 'success')
+//                $message = trans('payment.your-purchase-has-been-made');
+//        }
 
         return view('user.payment.index')
             ->with('user', $user = $request->user())
-            ->with('transactions', $user->transactions)
-            ->withWarning($message);
+            ->with('transactions', $user->transactions);
     }
 
     /**

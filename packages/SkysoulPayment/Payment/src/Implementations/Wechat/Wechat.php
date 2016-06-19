@@ -2,10 +2,15 @@
 
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
-
+use Guzzle\Stream\StreamInterface;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\PaymentGateway;
 
+/**
+ * Class Wechat
+ *
+ * @package SkysoulDesign\Payment\Implementations\Wechat
+ */
 class Wechat extends PaymentGateway implements SelfHandle
 {
 
@@ -54,27 +59,27 @@ class Wechat extends PaymentGateway implements SelfHandle
     /**
      * Returns any extra keyed params that should be sent within the request
      *
+     * @param array $config
      * @return array
      */
-    public function getAdditionalPostData() : array
+    public function getAdditionalPostData(array $config) : array
     {
-        // TODO: Implement getAdditionalPostData() method.
         return [
-            "appid"            => config('payment.drivers.wechat.app_id'),
-            "detail"           => "payment.description",
-            "body"             => "payment.subject",
-            'time_start'       => date('YmdHis'),
-            'time_expire'      => date("YmdHis", time() + 600),
-            'trade_type'       => 'NATIVE',
+            "appid" => $config['app_id'],
+            "detail" => "payment.description",
+            "body" => "payment.subject",
+            'time_start' => date('YmdHis'),
+            'time_expire' => date("YmdHis", time() + 600),
+            'trade_type' => 'NATIVE',
             'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
-            'nonce_str'        => $this->getNonceStr(),
-
+            'nonce_str' => $this->getNonceStr(),
         ];
     }
 
     private function getNonceStr($length = 32)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    
         $str = "";
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
@@ -90,7 +95,6 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function getConfirmationResponse() : string
     {
-        // TODO: Implement getConfirmationResponse() method.
         return 'success';
     }
 
@@ -104,11 +108,9 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function sign(string $query, string $key, string $password = null) : string
     {
-        // TODO: Implement sign() method.
-        $string = $query . "&key=" . $key;//config('payment.drivers.wechat.private_key');
-        $string = md5($string);
-
-        return strtoupper($string);
+        return strtoupper(
+            md5("$query&key=$key")
+        );
     }
 
     /**
@@ -121,15 +123,15 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-        // TODO: Implement validate() method.
         $result = $this->parseRawRequest($key, true);
 
-        return $result['result_code'] == 'SUCCESS' ? true : false;
+        return $result['result_code'] == 'SUCCESS';
     }
 
     public function parseRawRequest($key, $checkSign = false) : array
     {
         $xml = $GLOBALS['HTTP_RAW_POST_DATA']??file_get_contents("php://input");
+
         try {
             $result = $this->parseResponse($xml, $key, $checkSign);
         } catch (\Exception $e) {
@@ -182,29 +184,33 @@ class Wechat extends PaymentGateway implements SelfHandle
         return $xml;
     }
 
-    public function parseResponse($response, $key, $checkSign = true): array
+    /**
+     * Parse Response Received from Vendor API
+     *
+     * @param string $response
+     * @param string $key
+     * @return array
+     */
+    public function parseResponse(string $response, string $key) : array
     {
-        // TODO: Implement parseResponse() method.
+        /**
+         * Using this function you can prevent a vulnerable to Local and Remote File Inclusion attacks.
+         */
         libxml_disable_entity_loader(true);
 
-        $returnArr = json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
-        return $checkSign ? $this->checkSign($returnArr, $key) : $returnArr;
-//        return json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return (array)simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
     }
 
-    private function checkSign(array $response, string $key) : array
+    /**
+     * Check Signature of Response Data
+     *
+     * @param array $response
+     * @param string $sign
+     * @return bool
+     */
+    public function checkSign(array $response, string $sign) : bool
     {
-        $errorArr = ['result_code' => 'FAIL-INVALID-SIGN'];
-
-        if (!isset($response['sign']))
-            return $errorArr;
-
-        $sign = $this->sign($this->queryString($response), $key);
-        if ($response['sign'] == $sign) {
-            return $response;
-        }
-
-        return $errorArr;
+        return $response['sign'] === $sign;
     }
 
     private function queryString(array $array)

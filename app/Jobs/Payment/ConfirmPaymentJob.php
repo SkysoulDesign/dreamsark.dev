@@ -52,6 +52,5 @@ class ConfirmPaymentJob extends Job
          * Announce Payment was Confirmed
          */
         event(new PaymentWasConfirmed($this->transaction));
-
     }
 }

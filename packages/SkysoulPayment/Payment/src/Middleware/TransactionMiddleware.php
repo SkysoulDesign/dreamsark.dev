@@ -29,7 +29,6 @@ class TransactionMiddleware
                 $requestRawArr = $driver->parseRawRequest($this->readPrivateKey($driverName));
                 $requestRawArr['invoice_no'] = $requestRawArr[$driver->uniqueInvoiceNoKey] ?? ($requestRawArr['invoice_no']??'');
                 $request->merge($requestRawArr);
-//                \Log::info($request->all());
             }
             $whereColumn = '';
             $requestKey = '';

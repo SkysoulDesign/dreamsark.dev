@@ -7,6 +7,9 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\Exceptions\DriverNotFoundException;
+use SkysoulDesign\Payment\Exceptions\InvalidKeysException;
+use SkysoulDesign\Payment\Exceptions\InvalidResponseException;
+use SkysoulDesign\Payment\Exceptions\InvalidSignature;
 
 /**
  * Class Payment
@@ -71,14 +74,13 @@ class Payment
          */
         $gateway = $transaction->getAttribute('method');
 
-        if (!array_has(config('payment.drivers'), $gateway) || !config('payment.drivers.' . $gateway . '.enabled', false)) {
+        if (!array_has(config('payment.drivers'), $gateway) || !config("payment.drivers.$gateway.enabled", false)) {
             throw new DriverNotFoundException("There is no driver available with the name of $gateway.");
         }
 
         $this->setGateway($gateway);
         $this->setGatewayName($gateway);
-        $this->setPrivateKey();
-        $this->setPublicKey();
+        $this->initPublicAndPrivateKeys();
         $this->transaction = $transaction;
 
         return $this;
@@ -112,56 +114,94 @@ class Payment
      * Sign and return the final data to be sent to the gateway API
      *
      * @return array
+     * @throws InvalidResponseException
+     * @throws InvalidSignature
      */
     public function getResponse() : array
     {
-
-        $data = $this->gateway->prepare(
-            $this->getPostData(),
+        /*
+         * Prepare Data before sign
+         */
+        $data = $this->gateway->appendDataToRequestBeforeSign(
+            $request = $this->getPostData(),
             $this->getPrivateKey(),
             $this->getPrivateKeyPassword()
         );
+
+        /**
+         * Merge Result
+         */
+        $data = array_merge($request, $data);
+
         $data[$this->gateway->signKey] = $this->sign($data);
 
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
 
-        $buildForm = true;
-        if ($this->gateway instanceof SelfHandle) {
+        /**
+         * If implementation implements SelfHandle then we will
+         * directly dispatch the request to the vendor API
+         */
+        if ($buildForm = $this->gateway instanceof SelfHandle) {
 
             $data = $this->post(
                 $this->getConfig('gateway_url'),
                 $this->gateway->prepareData($data)
             );
+
+            if (!$this->gateway->checkSign($data, $sign = $this->sign($data))) {
+                throw new InvalidSignature(
+                    "The response has a signature mismatch. expected '$sign' got '{$data['sign']}''"
+                );
+            }
+
             $data['qr_url'] = $this->getConfig('qr_url');
-            $data['unique_no'] = $this->transaction->unique_no;
-            $buildForm = false;
 
             /*if ($data['result_code'] == 'SUCCESS') {
                 $this->transaction->setAttribute('invoice_no', $data[$this->gateway->uniqueInvoiceNoKey]);
                 $this->transaction->save();
                 unset($data[$this->gateway->uniqueInvoiceNoKey]);
             }*/
-            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->signKey]);
+
+//            unset($data[$this->gateway->serviceIdKey], $data[$this->gateway->signKey]);
 //            $this->transaction->fresh();
 
         }
 
         return [
-            'data'      => $data,
-            'target'    => $this->getConfig('gateway_url'),
-            'buildForm' => $buildForm
+            'data' => $data,
+            'target' => $this->getConfig('gateway_url'),
+            'buildForm' => !$buildForm
         ];
     }
 
-    private function post($url, $postData)
+    /**
+     * Post data to Vendor API
+     *
+     * @param $url
+     * @param $postData
+     * @return array|mixed
+     * @throws InvalidResponseException
+     */
+    private function post($url, $postData) : array
     {
-//        die($postData);
-        $client = new Client();
 
-        $response = $client->post($url, ['body' => $postData]);
+        $response = (new Client())->post($url, [
+            'body' => $postData
+        ]);
 
-        return $this->gateway->parseResponse($response->getBody(), $this->getPrivateKey());
+        /**
+         * Throw Exception if response is other than what expected
+         */
+        if (($code = $response->getStatusCode()) != 200) {
+            throw new InvalidResponseException(
+                "Invalid Response received from $this->gatewayName. Received: $code, Expected: 200"
+            );
+        }
+
+        return $this->gateway->parseResponse(
+            $response->getBody()->getContents(), $this->getPrivateKey()
+        );
     }
 
     /**
@@ -171,9 +211,11 @@ class Payment
      */
     private function getPostData() : array
     {
-        return array_filter(array_merge(
+        return $this->sanitize(array_merge(
 
-            $this->gateway->getAdditionalPostData(),
+            $this->gateway->getAdditionalPostData(
+                $this->getConfig()
+            ),
 
             /**
              * Gets The callbacks
@@ -196,7 +238,9 @@ class Payment
              * Gets the Transaction unique ID
              */
             array(
-                $this->gateway->uniqueIdentifierKey => $this->gateway->getUniqueNo($this->transaction->getAttribute('unique_no'))
+                $this->gateway->uniqueIdentifierKey => $this->gateway->getUniqueNo(
+                    $this->transaction->getAttribute('unique_no')
+                )
             ),
 
             /**
@@ -207,13 +251,25 @@ class Payment
                     $this->transaction->getAttribute('amount'), config('payment.base')
                 )
             )
-        ), function ($k) {
-            return $k;
+        ));
+    }
+
+    /**
+     * Clean Up all empty keys on an array
+     *
+     * @param array $data
+     * @return array
+     */
+    public function sanitize(array $data) : array
+    {
+        return array_filter($data, function ($key) {
+            return $key;
         }, ARRAY_FILTER_USE_KEY);
     }
 
     /**
      * Parse the callback url route
+     * ['url' => http://... or name_of_route]
      *
      * @param array $url
      * @return array
@@ -243,6 +299,14 @@ class Payment
          */
         ksort($data);
 
+        /**
+         * Remove sign keys from array
+         */
+        array_forget($data, [
+            $this->gateway->signKey,
+            $this->gateway->signTypeKey,
+        ]);
+
         return $this->gateway->sign(
             $this->buildQueryString($data),
             $this->getPrivateKey(),
@@ -255,11 +319,15 @@ class Payment
      * Shortcut for getting the configs for $this gateway
      *
      * @param null|string $value
-     * @return mixed|string
+     * @param null $default
+     * @return array|string
      */
-    private function getConfig(string $value)
+    private function getConfig(string $value = null, $default = null)
     {
-        return config("payment.drivers.$this->gatewayName.$value");
+        return config(
+            "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''),
+            $default
+        );
     }
 
     /**
@@ -314,15 +382,38 @@ class Payment
     }
 
     /**
-     * Set Private Key
+     * Init Public and private Keys
      */
-    private function setPrivateKey()
+    private function initPublicAndPrivateKeys()
     {
-        $this->privateKey = $this->getConfig('private_key') ?: file_get_contents($this->getConfig('private_key_path'));
+
+        $config = $this->getConfig();
+
+        foreach (['private', 'public'] as $key) {
+
+            if (array_has($config, $key = "{$key}_key")) {
+                $this->{camel_case($key)} = $config[$key];
+                continue;
+            }
+
+            if (array_has($config, $path = "{$key}_path")) {
+                $this->{camel_case($key)} = file_get_contents(
+                    $config[$path]
+                );
+                continue;
+            }
+
+            /**
+             * Throw Exception in case Keys were not set
+             */
+            throw new InvalidKeysException(
+                "Neither '$key' nor '$path' has been specified in the configuration file for $this->gatewayName."
+            );
+        }
     }
 
     /**
-     * Key private key
+     * Get private key
      *
      * @return string
      */
@@ -332,17 +423,7 @@ class Payment
     }
 
     /**
-     * Set Public Key
-     */
-    private function setPublicKey()
-    {
-        $this->publicKey = $this->getConfig('public_key_path') ? file_get_contents(
-            $this->getConfig('public_key_path')
-        ) : '';
-    }
-
-    /**
-     * Key Public key
+     * Get Public key
      *
      * @return string
      */
@@ -363,6 +444,7 @@ class Payment
 
     /**
      * to get original price internal use (website)
+     *
      * @return float
      */
     public function getPrice()
