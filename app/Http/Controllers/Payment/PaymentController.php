@@ -37,7 +37,7 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
-        if (!$transaction->payment->verify($request->all()))
+        if (!$transaction || !$transaction->payment->verify($request->all()))
             return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
         $response = redirect()->route('user.purchase.index');

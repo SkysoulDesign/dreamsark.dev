@@ -227,6 +227,47 @@ class Payment
         ];
     }
 
+    public function getWithdrawResponse(array $formData) : array
+    {
+        $this->gateway->uniqueIdentifierKey = 'batch_no';
+        $this->gateway->priceKey = 'batch_fee';
+        $buildForm = true;
+        /**
+         * Prepare Data before sign
+         */
+        $data = $this->gateway->appendDataToRequestBeforeSign(
+            $this->transaction,
+            $request = $this->getPostData(),
+            $this->getPrivateKey(),
+            $this->getPrivateKeyPassword()
+        );
+
+        /**
+         * Merge Result
+         */
+        $data = array_merge($request, $data);
+
+        unset($data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
+
+        $data = array_merge($data, [
+            "service" => "batch_trans_notify",
+            "email"	=> $formData['email'],
+            "account_name"	=> $formData['account_name'],
+            "pay_date"	=> date('Y-m-d'),
+            "batch_num"	=> 1,
+            "_input_charset" => strtolower('gbk'),
+            $this->gateway->signTypeKey => strtoupper('MD5')
+        ]);
+
+        $data[$this->gateway->signKey] = $this->sign($data);
+
+        return [
+            'data'      => $data,
+            'target'    => $this->getConfig('gateway_url'),
+            'buildForm' => $buildForm
+        ];
+    }
+
     /**
      * Prepares the post data to be sent to the gateway API
      *
@@ -301,7 +342,7 @@ class Payment
 
         if (filter_var($value = implode($url), FILTER_VALIDATE_URL) === false)
             return [
-                key($url) => route($value)
+                key($url) => route($value, $this->gatewayName)
             ];
 
         return $url;

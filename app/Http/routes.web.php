@@ -167,8 +167,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         $app->get('/', PaymentController::class . '@index')->name('index');
 
-        $app->any('callback', PaymentController::class . '@callback')->name('callback');
-        $app->any('notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
+        $app->any('{pay_driver}/callback', PaymentController::class . '@callback')->name('callback');
+        $app->any('{pay_driver}/notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
         $app->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
        /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {

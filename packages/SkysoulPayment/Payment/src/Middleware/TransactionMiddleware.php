@@ -23,7 +23,7 @@ class TransactionMiddleware
     public function handle($request, Closure $next)
     {
 
-        foreach (app('payment.drivers') as $driver) {
+        if ($driver = app('payment.drivers')[$request->pay_driver]) {
 
             if ($driver instanceof SelfHandle) {
 
@@ -46,9 +46,8 @@ class TransactionMiddleware
                  * then it would match any null value on db
                  */
                 $request->route()->setParameter(
-                    Transaction::class,
+                    'pay_driver',
                     Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail()
-//                    Transaction::where('unique_no', $request->input('nonce_str'))->firstOrFail()
                 );
 
                 /**
@@ -57,7 +56,6 @@ class TransactionMiddleware
                  * 'out_trade_no' =>  '6dc03fdb76cd9f68b67f291c203d',
                  */
 
-                break;
             }
         }
 
