@@ -72,9 +72,14 @@ class AuthController extends Controller
     {
         if (is_null($request->social))
             return redirect()->route('login')->withErrors(trans('auth.social-driver-not-found'));
+        else if (empty($request->all()))
+            return redirect()->route('login')->withErrors(trans('auth.invalid-data-received'));
 
         $socialDriver = $request->social;
         $socialUser = Socialite::driver($socialDriver)->user();
+
+        if(is_null($socialUser))
+            return redirect()->route('login')->withErrors(trans('auth.token-not-received'));
 
         /**
          * @TODO: need to check the user existence by email address received in $socialUser->user object and create if not
