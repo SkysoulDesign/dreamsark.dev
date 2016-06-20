@@ -245,9 +245,7 @@ class Payment
              * Gets the Transaction unique ID
              */
             array(
-                $this->gateway->uniqueIdentifierKey => $this->gateway->getUniqueNo(
-                    $this->transaction->getAttribute('unique_no')
-                )
+                $this->gateway->uniqueIdentifierKey => $this->transaction->getAttribute('unique_no')
             ),
 
             /**
