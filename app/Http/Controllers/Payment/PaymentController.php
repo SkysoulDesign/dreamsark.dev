@@ -68,6 +68,9 @@ class PaymentController extends Controller
             return response('failed');
         }
 
+        if ($transaction->is_payment_done)
+            return response($transaction->payment->getConfirmationResponse());
+
         /**
          * Confirm Payment
          */
@@ -80,12 +83,7 @@ class PaymentController extends Controller
         return response($transaction->payment->getConfirmationResponse());
     }
 
-    
-    
-    
-    
-    
-    
+
     public function transactionEnquiryEvent(Request $request, Transaction $transaction)
     {
         return;
