@@ -3,8 +3,8 @@
 namespace DreamsArk\Jobs\Payment;
 
 use DreamsArk\Events\Payment\PaymentWasConfirmed;
-use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Payment\Transaction;
 
 /**
  * Class UpdateTransactionJob
@@ -43,7 +43,7 @@ class ConfirmPaymentJob extends Job
     public function handle()
     {
 
-        $this->transaction->setAttribute('invoice_no', $this->request['invoice_no'] ?? null);
+        $this->transaction->setAttribute('invoice_no', app('payment', [$this->transaction])->gateway->uniqueInvoiceNoKey);
         $this->transaction->setAttribute('paid', true);
 
         $this->transaction->save();

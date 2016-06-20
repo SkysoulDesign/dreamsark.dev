@@ -41,7 +41,7 @@ abstract class PaymentGateway implements PaymentGatewayContract
      *
      * @var string
      */
-    public $uniqueInvoiceNoKey;
+    public $uniqueInvoiceNoKey = 'invoice_no';
 
     /**
      * Name of the sign key on the gateway API
