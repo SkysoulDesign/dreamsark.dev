@@ -56,9 +56,13 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
+
+        \Log::info($request->all());
+        \Log::info($transaction->toArray());
 
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
@@ -70,6 +74,8 @@ class PaymentController extends Controller
         $this->dispatch(new ConfirmPaymentJob(
             $transaction, $request->toArray()
         ));
+
+        \Log::info('everything okay.');
 
         return response($transaction->payment->getConfirmationResponse());
     }
