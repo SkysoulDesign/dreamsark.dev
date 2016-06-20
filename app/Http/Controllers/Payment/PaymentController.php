@@ -68,7 +68,7 @@ class PaymentController extends Controller
             return response('failed');
         }
 
-        if ($transaction->is_payment_done)
+        if ($transaction->isPaid())
             return response($transaction->payment->getConfirmationResponse());
 
         /**
