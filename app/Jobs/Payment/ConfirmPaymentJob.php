@@ -43,7 +43,7 @@ class ConfirmPaymentJob extends Job
     public function handle()
     {
 
-        $this->transaction->setAttribute('invoice_no', $this->request[$this->transaction->payment->getInvoiceKey()]);
+        $this->transaction->setAttribute('invoice_no', $this->request['invoice_no']);
         $this->transaction->setAttribute('paid', true);
 
         $this->transaction->save();

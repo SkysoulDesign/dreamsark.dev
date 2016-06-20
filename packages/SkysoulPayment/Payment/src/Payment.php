@@ -457,13 +457,4 @@ class Payment
         return $this->transaction->getAttribute('amount') / config('payment.base');
     }
 
-    /**
-     * Return invoice key for this provider
-     *
-     * @return string
-     */
-    public function getInvoiceKey() : string
-    {
-        return $this->gateway->uniqueInvoiceNoKey;
-    }
 }

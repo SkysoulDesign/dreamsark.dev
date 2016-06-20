@@ -61,8 +61,8 @@ class PaymentController extends Controller
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        \Log::info($request->all());
-        \Log::info($transaction->toArray());
+//        \Log::info($request->all());
+//        \Log::info($transaction->toArray());
 
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');

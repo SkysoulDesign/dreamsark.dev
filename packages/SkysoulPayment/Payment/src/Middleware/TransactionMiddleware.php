@@ -33,6 +33,9 @@ class TransactionMiddleware
 
             }
 
+            if (!$request->has('invoice_no'))
+                $request->offsetSet('invoice_no', $request->get($driver->uniqueInvoiceNoKey));
+
             /**
              * If request has the required key for this driver
              */
@@ -44,8 +47,8 @@ class TransactionMiddleware
                  */
                 $request->route()->setParameter(
                     Transaction::class,
-//                    Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail(),
-                    Transaction::where('unique_no', $request->input('nonce_str'))->firstOrFail()
+                    Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail()
+//                    Transaction::where('unique_no', $request->input('nonce_str'))->firstOrFail()
                 );
 
                 /**

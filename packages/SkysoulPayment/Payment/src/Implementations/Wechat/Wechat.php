@@ -80,7 +80,7 @@ class Wechat extends PaymentGateway implements SelfHandle
             'time_start' => date('YmdHis'),
             'time_expire' => date("YmdHis", time() + 600),
             'trade_type' => 'NATIVE',
-            'spbill_create_ip' => $_SERVER['REMOTE_ADDR']
+            'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
         ];
     }
 
@@ -96,7 +96,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
     {
         return [
-            'nonce_str' => $transaction->getAttribute('unique_no')
+//            'nonce_str' => $transaction->getAttribute('unique_no')
         ];
     }
 
@@ -118,7 +118,7 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function getConfirmationResponse() : string
     {
-        return 'success';
+        return 'SUCCESS';
     }
 
     /**
