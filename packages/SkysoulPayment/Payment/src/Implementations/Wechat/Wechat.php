@@ -96,7 +96,7 @@ class Wechat extends PaymentGateway implements SelfHandle
     public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
     {
         return [
-//            'nonce_str' => $transaction->getAttribute('unique_no')
+            'nonce_str' => md5($transaction->getAttribute('unique_no'))
         ];
     }
 
