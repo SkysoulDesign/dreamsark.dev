@@ -24,13 +24,12 @@ class Transaction extends Model
     protected $table = 'transactions';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $fillable = [
-        'unique_no', 'invoice_no', 'pay_method',
-        'type', 'user_id', 'amount', 'is_payment_done', 'attempts', 'is_canceled'
+    protected $casts = [
+        'paid' => 'boolean',
     ];
 
     /**
@@ -52,17 +51,6 @@ class Transaction extends Model
     {
         $this->attributes['amount'] = $amount * config('payment.base');
     }
-
-//    /**
-//     * Convert amount back to yuan
-//     *
-//     * @param $amount
-//     * @return float
-//     */
-//    public function getAmountAttribute($amount)
-//    {
-//        return $amount / 1000;
-//    }
 
     /**
      * User Relationship

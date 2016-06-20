@@ -161,14 +161,15 @@ $app->group(['middleware' => ['web']], function () use ($app) {
     /**
      * Payment Related Routes
      */
+    $app->get('payment/status/{result}', PaymentController::class . '@paymentStatus')->name('payment.status');
     $app->group(['prefix' => 'payment', 'as' => 'payment.', 'middleware' => 'transaction'], function () use ($app) {
 
         $app->get('/', PaymentController::class . '@index')->name('index');
-        $app->get('status/{result}', PaymentController::class . '@paymentStatus')->name('status');
 
         $app->any('callback', PaymentController::class . '@callback')->name('callback');
         $app->any('notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
+        $app->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
        /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');

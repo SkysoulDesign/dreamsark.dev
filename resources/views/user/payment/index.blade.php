@@ -32,9 +32,9 @@
             <tbody>
             @forelse($transactions as $transaction)
                 <tr>
-                    <td>{{ $transaction->amount }}</td>
                     <td>{{ $transaction->method }}</td>
-                    <td>{{ $transaction->is_payment_done }}</td>
+                    <td>{{ $transaction->payment->getPrice() }}</td>
+                    <td>{{ $transaction->isPaid() }}</td>
                 </tr>
             @empty
                 <tr>
@@ -53,7 +53,11 @@
 
 @section('pos-scripts')
     <script>
+        var payStatusUrls = {
+            'purchase': "{{ route('user.purchase.index') }}"
+        };
         $(document).ready(function () {
+
             /*if ($('#withdraw-coin-modal').length > 0)
              $('#withdraw-coin-modal')
              .modal({
@@ -68,8 +72,8 @@
                 var id = $(this).attr('id');
                 $('#' + id + '-modal')
                         .modal({
-                            blurring:  true,
-                            closable:  false,
+                            blurring: true,
+                            closable: false,
                             onApprove: function () {
 
                                 let form = $('#' + id + '-form');
@@ -77,12 +81,12 @@
 //                                return form.submit();
 
                                 form.api({
-                                    action:     form.action,
-                                    method:     'POST',
-                                    on:         'now',
-                                    data:       {
-                                        "_token":       '{{ csrf_token() }}',
-                                        amount:         form.find("input[name='amount']").val(),
+                                    action: form.action,
+                                    method: 'POST',
+                                    on: 'now',
+                                    data: {
+                                        "_token": '{{ csrf_token() }}',
+                                        amount: form.find("input[name='amount']").val(),
                                         payment_method: form.find("input[name='payment_method']").val()
                                     },
                                     onResponse: function (response) {
@@ -92,7 +96,7 @@
                                             let $form = document.createElement('form');
 
                                             for (let item in response.data) {
-                                                let input  = document.createElement('input');
+                                                let input = document.createElement('input');
                                                 input.name = item;
                                                 input.setAttribute('value', response.data[item]);
 
@@ -107,8 +111,8 @@
                                             console.log($form);
 
                                         } else {
-                                            console.log(response)
-                                            if(response.data['result_code'] == 'SUCCESS') {
+//                                            console.log(response)
+                                            if (response.data['result_code'] == 'SUCCESS') {
                                                 let $form = '<div class="ui card centered">' +
                                                         '<div class="content">' +
                                                         '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
@@ -127,6 +131,7 @@
                                                         '</div></div>';
                                                 $("#popup-modal .content").html($form);
                                                 $('#popup-modal').modal('show');
+//                                                triggerEvent(response.data['unique_no']);
                                             } else {
                                                 alert("{{ trans('payment.error-occurred-unable-to-process') }}");
                                             }
@@ -142,6 +147,27 @@
                         .modal('attach events', '#' + id, 'show')
                 ;
             });
+
         });
+        function triggerEvent(unique_no) {
+            var loop = 1, limit = 15;
+            var source = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
+            source.onmessage = function (event) {
+                if (event.data == 1) {
+                    redirectPage(source, 'success')
+                } else {
+                    if (loop >= limit) {
+                        redirectPage(source, 'pending')
+                    }
+                    $('#pay_status').val(event.data);
+                    loop++;
+                }
+            };
+        }
+        function redirectPage(source, status) {
+            var queryStr = '?status=' + status;
+            source.close();
+            window.location = payStatusUrls.purchase + queryStr;
+        }
     </script>
 @endsection

@@ -78,4 +78,14 @@ trait PayableTrait
         static::registerModelEvent('loaded', $callback, $priority);
     }
 
+    /**
+     * Get Status of the transaction
+     *
+     * @return bool
+     */
+    public function isPaid() : bool
+    {
+        return $this->paid;
+    }
+
 }

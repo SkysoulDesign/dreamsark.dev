@@ -109,7 +109,7 @@ class UserRepository extends Repository implements UserRepositoryInterface
             $result = $this->model($user_id)->transactions()->where('is_canceled', 1);
         } else {
             $active = ($trans_status == 'pending' ? false : true);
-            $result = $this->model($user_id)->transactions()->where('is_payment_done', $active)->where('is_canceled', 0);
+            $result = $this->model($user_id)->transactions()->where('paid', $active)->where('is_canceled', 0);
         }
 
         return $result->paginate(config('defaults.general.pagination.per_page'));

@@ -49,7 +49,7 @@ class TransactionRepository
 
     protected function addActiveCond($query, $active = true)
     {
-        return $this->addCancelCond($query->where('is_payment_done', $active));
+        return $this->addCancelCond($query->where('paid', $active));
     }
 
     protected function addCancelCond($query, $active = false)

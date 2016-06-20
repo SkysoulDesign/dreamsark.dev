@@ -38,25 +38,17 @@ class PaymentController extends Controller
     {
 
         if (!$transaction->payment->verify($request->all()))
-            return redirect()->route('user.purchase.index')->withErrors(trans('payment.trade-status-error'));
+            return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
-        //dispatch(new UpdateTransactionJob($transaction, $request->toArray()));
+        $response = redirect()->route('user.purchase.index');
 
-        // maybe do something if request verification fails, but in general
-        // its bad if user payed and get redirected to this page and on our side we show
-        // some error occur / payment couldn't be verified and he sees a negative
-        // message, he might think the website cheat him and he probably will contact
-        // immediately dreamsark.. saying: "i bought.. alipay said i bought but it shows i didn't"..
-        if ($transaction->is_payment_done)
-            return redirect()->route('user.purchase.index')->withSuccess('Your Purchase has been made');
         /**
-         * Confirm Payment
+         * If verification has been detected already, redirect with success message
          */
-        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+        if ($transaction->isPaid())
+            return $response->withSuccess('Your Purchase has been made.');
 
-
-        return redirect()->route('user.purchase.index')->withStatus('Your Purchase has been made');
-
+        return $response->withStatus('Your purchase is being processed.');
     }
 
     /**
@@ -64,12 +56,9 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
-//        \Log::info(file_get_contents("php://input"));
-        \Log::info($request->all());
 
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
@@ -78,10 +67,42 @@ class PaymentController extends Controller
         /**
          * Confirm Payment
          */
-        $this->dispatch(new ConfirmPaymentJob($transaction, $request->toArray()));
+        $this->dispatch(new ConfirmPaymentJob(
+            $transaction, $request->toArray()
+        ));
 
         return response($transaction->payment->getConfirmationResponse());
+    }
 
+    
+    
+    
+    
+    
+    
+    public function transactionEnquiryEvent(Request $request, Transaction $transaction)
+    {
+        return;
+        $eventHeader = 'text/event-stream';
+        if ($request->header('accept') == $eventHeader) {
+            /** @var Boolean $response */
+            $response = 0;
+            if ($request->has('unique_no')) {
+                $time = date('Y-m-d H:i:s');
+                $response = $request->get('unique_no') . '--' . $time;
+                /** @var Transaction $transaction */
+                $transaction = $transaction->where('unique_no', $request->get('unique_no'))->get();
+                if ($transaction && is_object($transaction[0]))
+                    $response = $transaction[0]->paid;
+            }
+
+            header('Content-Type: ' . $eventHeader);
+            header('Cache-Control: no-cache');
+            echo "data: " . $response . "\n\n";
+            flush();
+
+        } else
+            return redirect()->route('user.account');
     }
 
     protected $defaultRoute = 'payment . status';
@@ -93,7 +114,11 @@ class PaymentController extends Controller
      */
     public function paymentStatus(Request $request)
     {
-        return view('payment . status');
+        $errors = \Session::get('errors');
+        if ($request->result == 'pending' && is_null($errors)) {
+            return view('payment.status')->withErrors(trans('payment.paid-receipt-not-received-check-later'));
+        } else
+            return view('payment.status');
     }
 
 
@@ -259,7 +284,7 @@ class PaymentController extends Controller
                 return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - transaction - match'));
         }
 
-        if (!$transaction[0]->is_payment_done) {
+        if (!$transaction[0]->paid) {
 //            dd($transaction[0]->user);
             $transactResponse = $request->getMethod() == 'POST' ? urldecode(http_build_query($request->all())) : $request->getQueryString();
             dispatch(new ConfirmPaymentJob(

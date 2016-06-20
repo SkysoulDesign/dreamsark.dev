@@ -2,10 +2,15 @@
 
 namespace SkysoulDesign\Payment\Implementations\Wechat;
 
-
+use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
 use SkysoulDesign\Payment\PaymentGateway;
 
+/**
+ * Class Wechat
+ *
+ * @package SkysoulDesign\Payment\Implementations\Wechat
+ */
 class Wechat extends PaymentGateway implements SelfHandle
 {
 
@@ -39,6 +44,8 @@ class Wechat extends PaymentGateway implements SelfHandle
     public $priceKey = 'total_fee';
 
     /**
+     * Get the service key name
+     *
      * @var string
      */
     public $serviceIdKey = 'mch_id';
@@ -52,35 +59,56 @@ class Wechat extends PaymentGateway implements SelfHandle
     public $uniqueInvoiceNoKey = 'transaction_id';
 
     /**
+     * Key of the error message in case of failure
+     *
+     * @var string
+     */
+    public $errorMessageKey = 'return_msg';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
+     * @param array $config
      * @return array
      */
-    public function getAdditionalPostData() : array
+    public function getAdditionalPostData(array $config) : array
     {
-        // TODO: Implement getAdditionalPostData() method.
         return [
-            "appid"            => config('payment.drivers.wechat.app_id'),
-            "detail"           => "payment.description",
-            "body"             => "payment.subject",
-            'time_start'       => date('YmdHis'),
-            'time_expire'      => date("YmdHis", time() + 600),
-            'trade_type'       => 'NATIVE',
-            'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],
-            'nonce_str'        => $this->getNonceStr(),
-
+            "appid" => $config['app_id'],
+            "detail" => "payment.description",
+            "body" => "payment.subject",
+            'time_start' => date('YmdHis'),
+            'time_expire' => date("YmdHis", time() + 600),
+            'trade_type' => 'NATIVE',
+            'spbill_create_ip' => $_SERVER['REMOTE_ADDR']
         ];
     }
 
-    private function getNonceStr($length = 32)
+    /**
+     * Append Any necessary data before signing the request
+     *
+     * @param Transaction $transaction
+     * @param array $request
+     * @param string $key
+     * @param string $password
+     * @return array
+     */
+    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
     {
-        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        $str = "";
-        for ($i = 0; $i < $length; $i++) {
-            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-        }
+        return [
+            'nonce_str' => $transaction->getAttribute('unique_no')
+        ];
+    }
 
-        return $str;
+    /**
+     * Determine if request has failed or not
+     *
+     * @param array $response
+     * @return bool
+     */
+    public function checkFailure(array $response) : bool
+    {
+        return $response['return_code'] === 'FAIL';
     }
 
     /**
@@ -90,7 +118,6 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function getConfirmationResponse() : string
     {
-        // TODO: Implement getConfirmationResponse() method.
         return 'success';
     }
 
@@ -104,11 +131,9 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function sign(string $query, string $key, string $password = null) : string
     {
-        // TODO: Implement sign() method.
-        $string = $query . "&key=" . $key;//config('payment.drivers.wechat.private_key');
-        $string = md5($string);
-
-        return strtoupper($string);
+        return strtoupper(
+            md5("$query&key=$key")
+        );
     }
 
     /**
@@ -121,34 +146,15 @@ class Wechat extends PaymentGateway implements SelfHandle
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-        // TODO: Implement validate() method.
-        $result = $this->parseRawRequest($key, true);
-
-        return $result['result_code'] == 'SUCCESS' ? true : false;
-    }
-
-    public function parseRawRequest($key, $checkSign = false) : array
-    {
-        $xml = $GLOBALS['HTTP_RAW_POST_DATA']??file_get_contents("php://input");
-        try {
-            $result = $this->parseResponse($xml, $key, $checkSign);
-        } catch (\Exception $e) {
-            $result = false;
-        }
-        if ($result == false) {
-            $array['result_code'] = "FAIL";
-            $array['return_msg'] = '';
-        } else {
-            $array = $result;
-        }
-
-        return $array;
+        parse_str($query, $response);
+        return $response['result_code'] == 'SUCCESS';
     }
 
     /**
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
+     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
@@ -156,74 +162,56 @@ class Wechat extends PaymentGateway implements SelfHandle
      * @param int $base
      * @return int|float
      */
-    public function getPrice(int $amount, int $base)
+    public function getPrice(int $amount, int $base) : int
     {
-        // TODO: Implement getPrice() method.
         return $amount / 10;
     }
 
-    public function getUniqueNo(string $unique_no) : string
+    /**
+     * Prepare data to be post to gateway API
+     *
+     * @param array $data
+     * @return string
+     */
+    public function prepareData(array $data) : string
     {
-        return substr($unique_no, 4, strlen($unique_no));
-    }
-
-    public function prepareData(array $data): string
-    {
-        // TODO: Implement prepareData() method.
         $xml = "<xml>";
         foreach ($data as $key => $val) {
             if (is_numeric($val))
-                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+                $xml .= "<$key>$val</$key>";
             else
-                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+                $xml .= "<$key><![CDATA[$val]]></$key>";
         }
         $xml .= "</xml>";
 
         return $xml;
     }
 
-    public function parseResponse($response, $key, $checkSign = true): array
+    /**
+     * Parse Response Received from Vendor API
+     *
+     * @param string $response
+     * @return array
+     */
+    static function parseResponse(string $response) : array
     {
-        // TODO: Implement parseResponse() method.
+        /**
+         * This function prevents a vulnerable to Local and Remote File Inclusion attacks.
+         */
         libxml_disable_entity_loader(true);
 
-        $returnArr = json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
-        return $checkSign ? $this->checkSign($returnArr, $key) : $returnArr;
-//        return json_decode(json_encode(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return (array)simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
     }
 
-    private function checkSign(array $response, string $key) : array
+    /**
+     * Check Signature of Response Data
+     *
+     * @param array $response
+     * @param string $sign
+     * @return bool
+     */
+    public function checkSign(array $response, string $sign) : bool
     {
-        $errorArr = ['result_code' => 'FAIL-INVALID-SIGN'];
-
-        if (!isset($response['sign']))
-            return $errorArr;
-
-        $sign = $this->sign($this->queryString($response), $key);
-        if ($response['sign'] == $sign) {
-            return $response;
-        }
-
-        return $errorArr;
-    }
-
-    private function queryString(array $array)
-    {
-        ksort($array);
-        /*unset($array['sign']);
-        $array = array_filter($array, 'strlen');
-        $query = http_build_query($array);
-
-        return urldecode($query);*/
-        $buff = "";
-        foreach ($array as $k => $v) {
-            if ($k != "sign" && $v != "" && !is_array($v)) {
-                $buff .= $k . "=" . $v . "&";
-            }
-        }
-
-        $buff = trim($buff, "&");
-
-        return $buff;
+        return $response['sign'] === $sign;
     }
 }

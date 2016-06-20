@@ -2,6 +2,7 @@
 
 namespace SkysoulDesign\Payment;
 
+use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\Contracts\PaymentGatewayContract;
 
 /**
@@ -64,37 +65,31 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $priceKey;
 
     /**
-     * get the service key name
+     * Get the service key name
      *
      * @var string
      */
     public $serviceIdKey;
 
     /**
-     * Prepare the data to be sign
+     * Key of the error message in case of failure
      *
+     * @var string
+     */
+    public $errorMessageKey;
+
+    /**
+     * Append Any necessary data before signing the request
+     *
+     * @param Transaction $transaction
      * @param array $request
      * @param string $key
      * @param string $password
      * @return array
      */
-    public function prepare(array $request, string $key, string $password = null) : array
+    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array
     {
-        return $request;
-    }
-
-    public function getUniqueNo(string $unique_no) : string
-    {
-        return $unique_no;
-    }
-
-    public function getUniqueNoWithPrefix(string $unique_no) : string
-    {
-        $payPrefix = config('payment.transaction_prefix.pay');
-        if (strtolower(substr($unique_no, 0, 4)) != strtolower($payPrefix))
-            $unique_no = config('payment.transaction_prefix.pay') . $unique_no;
-
-        return $unique_no;
+        return [];
     }
 
 }

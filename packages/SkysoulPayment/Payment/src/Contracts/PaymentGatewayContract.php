@@ -2,6 +2,8 @@
 
 namespace SkysoulDesign\Payment\Contracts;
 
+use DreamsArk\Models\Payment\Transaction;
+
 /**
  * Interface PaymentGatWayContract
  *
@@ -12,9 +14,10 @@ interface PaymentGatewayContract
     /**
      * Returns any extra keyed params that should be sent within the request
      *
+     * @param array $config
      * @return array
      */
-    public function getAdditionalPostData() : array;
+    public function getAdditionalPostData(array $config) : array;
 
     /**
      * Gets Payment Confirmation response
@@ -23,6 +26,16 @@ interface PaymentGatewayContract
      */
     public function getConfirmationResponse() : string;
 
+    /**
+     * Append Any necessary data before signing the request
+     *
+     * @param Transaction $transaction
+     * @param array $request
+     * @param string $key
+     * @param string $password
+     * @return array
+     */
+    public function appendDataToRequestBeforeSign(Transaction $transaction, array $request, string $key, string $password = null) : array;
 
     /**
      * Sign the request
@@ -33,16 +46,6 @@ interface PaymentGatewayContract
      * @return string
      */
     public function sign(string $query, string $key, string $password = null) : string;
-
-    /**
-     * Prepare the data to be sign
-     *
-     * @param array $request
-     * @param string $key
-     * @param string $password
-     * @return array
-     */
-    public function prepare(array $request, string $key, string $password = null) : array;
 
     /**
      * Logic for validating the sign
@@ -58,6 +61,7 @@ interface PaymentGatewayContract
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
+     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
@@ -66,9 +70,5 @@ interface PaymentGatewayContract
      * @return int|float
      */
     public function getPrice(int $amount, int $base);
-
-    public function getUniqueNo(string $unique_no) : string;
-    
-    public function getUniqueNoWithPrefix(string $unique_no) : string;
 
 }

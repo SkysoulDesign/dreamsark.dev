@@ -25,3 +25,12 @@
     </div>
 
 @endif
+
+@if(session()->has('warning'))
+    <div class="ui warning message">
+        <div class="header">
+            &nbsp;
+        </div>
+        <p>{{ session()->get('warning') }}</p>
+    </div>
+@endif

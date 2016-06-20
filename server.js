@@ -8,14 +8,14 @@ var http    = require('http'),
 /**
  * Subscript to redis
  */
-ioRedis.subscribe("test-event", function (error, count) {
+ioRedis.subscribe("payment", function (error, count) {
     console.log('error? ' + error);
     console.log('count? ' + count);
 });
 
 ioRedis.on('message', function (channel, message) {
 
-    console.log(channel);
+    console.log(channel)
     console.log(message);
 
     message = JSON.parse(message);

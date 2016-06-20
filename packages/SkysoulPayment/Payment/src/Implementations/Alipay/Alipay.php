@@ -63,13 +63,14 @@ class Alipay extends PaymentGateway
     /**
      * Returns any extra keyed params that should be sent within the request
      *
+     * @param array $config
      * @return array
      */
-    public function getAdditionalPostData() : array
+    public function getAdditionalPostData(array $config) : array
     {
         return [
             "service"        => "create_direct_pay_by_user",
-            "seller_id"      => "2088221979483694",
+            "seller_id"      => $config['service_id'],
             "_input_charset" => "utf-8",
             "body"           => "payment.description",
             "payment_type"   => "1",
