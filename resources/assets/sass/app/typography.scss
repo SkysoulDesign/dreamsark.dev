@@ -11,7 +11,7 @@ $h7: .2em;
   @if $size == "small" {
     font-size: $h4;
     font-weight: 300;
-    color: $color or 'b5b9b0'
+    color: color($color)
   }
 
   @if $size == "large" {
@@ -21,5 +21,15 @@ $h7: .2em;
   }
 
   color: color($color);
+
+}
+
+@mixin font-style($style, $color: white) {
+
+  @if $style == "links" {
+    font-size: $h4;
+    font-weight: 600;
+    color: color($color)
+  }
 
 }

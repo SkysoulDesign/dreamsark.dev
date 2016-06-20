@@ -1,18 +1,35 @@
 @mixin dreamsark-menu() {
 
   @include component(menu) {
-    //display: flex;
-    height: 5em;
-    //align-items: center;
-    //justify-content: space-around;
-    background: black;
-    color: white;
 
-    @include respond-to(desktop) {
-      height: 4em;
+    padding: 2em;
+    //align-content: center;
+    //align-items: center;
+
+    a {
+      //padding: 0;
     }
 
     @include part(item) {
+
+      background: color(black);
+      padding: .5em 2em;
+      text-decoration: none;
+      //display: flex;
+      //text-align: center;
+      //flex-direction: column;
+      //flex: auto;
+
+      @include font-style('links');
+
+      @include option(round) {
+        border-radius: 100px;
+      }
+
+      @include option(transparent) {
+        background: transparent;
+      }
+
 
     }
 

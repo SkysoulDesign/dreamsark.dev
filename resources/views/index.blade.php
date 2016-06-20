@@ -16,10 +16,9 @@
                 </a>
             </div>
 
-            <div class="small-6 columns align-right ~align-right">
-                <a href="{{ route('home') }}">
-                    <img src="{{ asset('dreamsark-assets/logo.png') }}">
-                </a>
+            <div class="small-6 columns +align-right">
+                <div href="#" class="menu__item --round --transparent">Explorer</div>
+                <div href="#" class="menu__item --round --active">Sign-in</div>
             </div>
 
         </div>
