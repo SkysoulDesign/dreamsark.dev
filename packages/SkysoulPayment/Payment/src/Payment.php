@@ -111,6 +111,52 @@ class Payment
     }
 
     /**
+     * Init Public and private Keys
+     */
+    private function initPublicAndPrivateKeys()
+    {
+
+        $config = $this->getConfig();
+
+        foreach (['private', 'public'] as $key) {
+
+            if (array_has($config, $key = "{$key}_key")) {
+                $this->{camel_case($key)} = $config[$key];
+                continue;
+            }
+
+            if (array_has($config, $path = "{$key}_path")) {
+                $this->{camel_case($key)} = file_get_contents(
+                    $config[$path]
+                );
+                continue;
+            }
+
+            /**
+             * Throw Exception in case Keys were not set
+             */
+            throw new InvalidKeysException(
+                "Neither '$key' nor '$path' has been specified in the configuration file for $this->gatewayName."
+            );
+        }
+    }
+
+    /**
+     * Shortcut for getting the configs for $this gateway
+     *
+     * @param null|string $value
+     * @param null $default
+     * @return array|string
+     */
+    private function getConfig(string $value = null, $default = null)
+    {
+        return config(
+            "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''),
+            $default
+        );
+    }
+
+    /**
      * Sign and return the final data to be sent to the gateway API
      *
      * @return array
@@ -175,39 +221,10 @@ class Payment
         }
 
         return [
-            'data' => $data,
-            'target' => $this->getConfig('gateway_url'),
+            'data'      => $data,
+            'target'    => $this->getConfig('gateway_url'),
             'buildForm' => !$buildForm
         ];
-    }
-
-    /**
-     * Post data to Vendor API
-     *
-     * @param $url
-     * @param $postData
-     * @return array|mixed
-     * @throws InvalidResponseException
-     */
-    private function post($url, $postData) : array
-    {
-
-        $response = (new Client())->post($url, [
-            'body' => $postData
-        ]);
-
-        /**
-         * Throw Exception if response is other than what expected
-         */
-        if (($code = $response->getStatusCode()) != 200) {
-            throw new InvalidResponseException(
-                "Invalid Response received from $this->gatewayName. Received: $code, Expected: 200"
-            );
-        }
-
-        return $this->gateway->parseResponse(
-            $response->getBody()->getContents()
-        );
     }
 
     /**
@@ -291,6 +308,26 @@ class Payment
     }
 
     /**
+     * Get private key
+     *
+     * @return string
+     */
+    private function getPrivateKey() : string
+    {
+        return $this->privateKey;
+    }
+
+    /**
+     * Get password
+     *
+     * @return mixed|string
+     */
+    private function getPrivateKeyPassword()
+    {
+        return $this->getConfig('private_key_password');
+    }
+
+    /**
      * Sign the request to be sent to the gateway API
      *
      * @param array $data
@@ -321,21 +358,6 @@ class Payment
     }
 
     /**
-     * Shortcut for getting the configs for $this gateway
-     *
-     * @param null|string $value
-     * @param null $default
-     * @return array|string
-     */
-    private function getConfig(string $value = null, $default = null)
-    {
-        return config(
-            "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''),
-            $default
-        );
-    }
-
-    /**
      * Build URL Query string
      *
      * @param array $data
@@ -351,6 +373,35 @@ class Payment
             return $query;
 
         return urldecode($query);
+    }
+
+    /**
+     * Post data to Vendor API
+     *
+     * @param $url
+     * @param $postData
+     * @return array|mixed
+     * @throws InvalidResponseException
+     */
+    private function post($url, $postData) : array
+    {
+
+        $response = (new Client())->post($url, [
+            'body' => $postData
+        ]);
+
+        /**
+         * Throw Exception if response is other than what expected
+         */
+        if (($code = $response->getStatusCode()) != 200) {
+            throw new InvalidResponseException(
+                "Invalid Response received from $this->gatewayName. Received: $code, Expected: 200"
+            );
+        }
+
+        return $this->gateway->parseResponse(
+            $response->getBody()->getContents()
+        );
     }
 
     /**
@@ -377,57 +428,6 @@ class Payment
     }
 
     /**
-     * Get response to be sent back to gateway API once verifies is okay
-     *
-     * @return mixed
-     */
-    public function getConfirmationResponse()
-    {
-        return $this->gateway->getConfirmationResponse();
-    }
-
-    /**
-     * Init Public and private Keys
-     */
-    private function initPublicAndPrivateKeys()
-    {
-
-        $config = $this->getConfig();
-
-        foreach (['private', 'public'] as $key) {
-
-            if (array_has($config, $key = "{$key}_key")) {
-                $this->{camel_case($key)} = $config[$key];
-                continue;
-            }
-
-            if (array_has($config, $path = "{$key}_path")) {
-                $this->{camel_case($key)} = file_get_contents(
-                    $config[$path]
-                );
-                continue;
-            }
-
-            /**
-             * Throw Exception in case Keys were not set
-             */
-            throw new InvalidKeysException(
-                "Neither '$key' nor '$path' has been specified in the configuration file for $this->gatewayName."
-            );
-        }
-    }
-
-    /**
-     * Get private key
-     *
-     * @return string
-     */
-    private function getPrivateKey() : string
-    {
-        return $this->privateKey;
-    }
-
-    /**
      * Get Public key
      *
      * @return string
@@ -438,13 +438,13 @@ class Payment
     }
 
     /**
-     * Get password
+     * Get response to be sent back to gateway API once verifies is okay
      *
-     * @return mixed|string
+     * @return mixed
      */
-    private function getPrivateKeyPassword()
+    public function getConfirmationResponse()
     {
-        return $this->getConfig('private_key_password');
+        return $this->gateway->getConfirmationResponse();
     }
 
     /**
@@ -455,5 +455,15 @@ class Payment
     public function getPrice()
     {
         return $this->transaction->getAttribute('amount') / config('payment.base');
+    }
+
+    /**
+     * Return invoice key for this provider
+     *
+     * @return string
+     */
+    public function getInvoiceKey() : string
+    {
+        return $this->gateway->uniqueInvoiceNoKey;
     }
 }
