@@ -76,8 +76,6 @@
                                         alert(errorMessage);
                                     },
                                     onResponse: function (response) {
-                                        console.log('iii')
-                                        console.dir(response)
 
                                         let message = '{{ trans('payment.error-occurred-unable-to-process') }}';
                                         if (!validateDataIsNull(response.message))
