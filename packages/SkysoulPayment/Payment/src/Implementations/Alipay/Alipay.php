@@ -62,6 +62,7 @@ class Alipay extends PaymentGateway
 
     /**
      * flag to do/skip withdraw event
+     *
      * @var bool
      */
     public $isWithdrawAvail = true;
@@ -148,5 +149,20 @@ class Alipay extends PaymentGateway
         openssl_free_key($response);
 
         return base64_encode($sign);
+    }
+
+    /**
+     * overwrite keys like uniqueNoKey, priceKey, etc. on "notify_type=batch_trans_notify"
+     *
+     * @param string $notify_type
+     */
+    public function prepareInternalKeys(string $notify_type)
+    {
+        // TODO: Implement prepareInternalKeys() method.
+        if ($notify_type == 'batch_trans_notify') {
+            $this->uniqueIdentifierKey = 'batch_no';
+            $this->priceKey = 'batch_fee';
+            $this->uniqueInvoiceNoKey = 'notify_id';
+        }
     }
 }

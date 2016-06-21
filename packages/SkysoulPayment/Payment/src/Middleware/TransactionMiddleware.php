@@ -33,6 +33,9 @@ class TransactionMiddleware
 
             }
 
+            if ($request->has($driver->uniqueNotifyKey))
+                $driver->prepareInternalKeys($request->get($driver->uniqueNotifyKey));
+
             if (!$request->has('invoice_no'))
                 $request->offsetSet('invoice_no', $request->get($driver->uniqueInvoiceNoKey));
 

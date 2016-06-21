@@ -61,9 +61,6 @@ class PaymentController extends Controller
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-//        \Log::info($request->all());
-//        \Log::info($transaction->toArray());
-
         if (!$transaction->payment->verify($request->all())) {
             return response('failed');
         }
@@ -72,10 +69,17 @@ class PaymentController extends Controller
             return response($transaction->payment->getConfirmationResponse());
 
         /**
+         * to set a transaction as canceled when no 'success_details' received
+         */
+        $cancelTransaction = false;
+        if ($transaction->type == 'withdraw' && !$request->has('success_details') && $request->has('fail_details'))
+            $cancelTransaction = true;
+
+        /**
          * Confirm Payment
          */
         $this->dispatch(new ConfirmPaymentJob(
-            $transaction, $request->toArray()
+            $transaction, $request->toArray(), $cancelTransaction
         ));
 
         \Log::info('everything okay.');

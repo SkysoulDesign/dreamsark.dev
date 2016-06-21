@@ -26,7 +26,7 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th colspan="3"></th>
+                <th colspan="4"></th>
             </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                     <td>{{ $transaction->method }}</td>
                     <td>{{ $transaction->payment->getPrice() }}</td>
                     <td>{{ ucwords($transaction->type) }}</td>
-                    <td>{{ $transaction->isPaid() }}</td>
+                    <td>{{ trans('payment.' . $transaction->getStatus()) }}</td>
                 </tr>
             @empty
                 <tr>
@@ -66,17 +66,19 @@
                             blurring:  true,
                             closable:  false,
                             onApprove: function () {
-
                                 let form = $('#' + id + '-form');
-
-//                                return form.submit();
-
                                 form.api({
                                     action:     form.action,
                                     method:     'POST',
                                     on:         'now',
                                     data:       form.serialize(),
+                                    onError:    function (errorMessage) {
+                                        alert(errorMessage);
+                                    },
                                     onResponse: function (response) {
+                                        console.log('iii')
+                                        console.dir(response)
+
                                         let message = '{{ trans('payment.error-occurred-unable-to-process') }}';
                                         if (!validateDataIsNull(response.message))
                                             message = response.message;

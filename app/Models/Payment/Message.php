@@ -20,6 +20,11 @@ class Message extends Model
      */
     protected $fillable = ['transaction_id', 'remarks', 'vendor_remarks', 'request', 'response'];
 
+    protected $casts = [
+        'request' => 'array',
+        'response' => 'array'
+    ];
+
     /**
      * Relation to Transaction Table
      *

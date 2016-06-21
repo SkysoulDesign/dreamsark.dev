@@ -71,4 +71,11 @@ interface PaymentGatewayContract
      */
     public function getPrice(int $amount, int $base);
 
+    /**
+     * overwrite keys like uniqueNoKey, priceKey, etc. on "notify_type=batch_trans_notify"
+     *
+     * @param string $notify_type
+     */
+    public function prepareInternalKeys(string $notify_type);
+
 }

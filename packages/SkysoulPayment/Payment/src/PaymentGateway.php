@@ -44,6 +44,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $uniqueInvoiceNoKey = 'invoice_no';
 
     /**
+     * Name of the invoice_no
+     * Ex: trade_no for Alipay
+     *
+     * @var string
+     */
+    public $uniqueNotifyKey = 'notify_type';
+
+    /**
      * Name of the sign key on the gateway API
      *
      * @var string
@@ -98,4 +106,14 @@ abstract class PaymentGateway implements PaymentGatewayContract
         return [];
     }
 
+    /**
+     * in TransactionMiddleware
+     * overwrite keys like uniqueNoKey, priceKey, etc. on "notify_type=batch_trans_notify"
+     *
+     * @param string $notify_type
+     */
+    public function prepareInternalKeys(string $notify_type)
+    {
+        // TODO: Implement prepareInternalKeys() method.
+    }
 }

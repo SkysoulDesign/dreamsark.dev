@@ -56,6 +56,7 @@ use DreamsArk\Listeners\User\AttachUserRole;
 use DreamsArk\Listeners\User\GiveUserAnEmptyBag;
 use DreamsArk\Listeners\User\LogUserIn;
 use DreamsArk\Listeners\User\Payment\AddCoinsToUser;
+use DreamsArk\Listeners\User\Payment\DeductCoinsFromUser;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use SocialiteProviders\Manager\SocialiteWasCalled;
@@ -204,7 +205,8 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         PaymentWasConfirmed::class => [
-            AddCoinsToUser::class
+            AddCoinsToUser::class,
+            DeductCoinsFromUser::class
         ],
 
         SocialiteWasCalled::class => [

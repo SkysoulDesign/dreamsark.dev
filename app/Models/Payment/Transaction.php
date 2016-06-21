@@ -30,6 +30,7 @@ class Transaction extends Model
      */
     protected $casts = [
         'paid' => 'boolean',
+        'is_canceled' => 'boolean',
     ];
 
     /**

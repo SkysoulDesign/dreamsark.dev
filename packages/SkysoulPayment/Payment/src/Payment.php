@@ -2,6 +2,7 @@
 
 namespace SkysoulDesign\Payment;
 
+use DreamsArk\Jobs\Payment\UpdateTransactionMessageJob;
 use DreamsArk\Models\Payment\Transaction;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
@@ -165,7 +166,7 @@ class Payment
      */
     public function getResponse() : array
     {
-        /*
+        /**
          * Prepare Data before sign
          */
         $data = $this->gateway->appendDataToRequestBeforeSign(
@@ -184,6 +185,9 @@ class Payment
 
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
+
+        $requestData = $data;
+        dispatch(new UpdateTransactionMessageJob($this->transaction, ['request' => $requestData]));
 
         /**
          * If implementation implements SelfHandle then we will
@@ -238,8 +242,10 @@ class Payment
                 'message' => trans('payment.withdraw-not-avail-in').' '.$this->gatewayName
             ];
 
-        $this->gateway->uniqueIdentifierKey = 'batch_no';
-        $this->gateway->priceKey = 'batch_fee';
+        /*$this->gateway->uniqueIdentifierKey = 'batch_no';
+        $this->gateway->priceKey = 'batch_fee';*/
+        $this->gateway->prepareInternalKeys('batch_trans_notify');
+
         /**
          * Prepare Data before sign
          */
@@ -261,7 +267,7 @@ class Payment
             "service"        => "batch_trans_notify",
             "email"          => $formData['email'],
             "account_name"   => $formData['account_name'],
-            "pay_date"       => date('Y-m-d'),
+            "pay_date"       => date('Ymd'),
             "batch_num"      => 1,
             "_input_charset" => strtolower('gbk'),
 //            $this->gateway->signTypeKey => strtoupper('MD5')
@@ -270,6 +276,8 @@ class Payment
         $data[$this->gateway->signKey] = $this->sign($data);
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
+
+        dispatch(new UpdateTransactionMessageJob($this->transaction, ['request' => $data]));
 
         return [
             'result'    => 'ok',

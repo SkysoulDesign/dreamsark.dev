@@ -10,35 +10,32 @@ class UpdateTransactionMessageJob extends Job
     /**
      * @var
      */
-    private $transaction_id;
-    /**
-     * @var
-     */
     private $messageArr;
+    /**
+     * @var Transaction
+     */
+    private $transaction;
 
     /**
      * Create a new job instance.
      *
-     * @param $transaction_id
+     * @param Transaction $transaction
      * @param $messageArr
      */
-    public function __construct($transaction_id, $messageArr)
+    public function __construct(Transaction $transaction, $messageArr)
     {
-        $this->transaction_id = $transaction_id;
+        $this->transaction = $transaction;
         $this->messageArr = $messageArr;
     }
 
     /**
      * Execute the job.
-     *
-     * @param Transaction $transaction
      */
-    public function handle(Transaction $transaction)
+    public function handle()
     {
-        $transaction = $transaction->find($this->transaction_id);
-        if (!isset($transaction->messages->id))
-            $transaction->messages()->create($this->messageArr);
+        if (!isset($this->transaction->messages->id))
+            $this->transaction->messages()->create($this->messageArr);
         else
-            $transaction->messages()->update($this->messageArr);
+            $this->transaction->messages()->update($this->messageArr);
     }
 }

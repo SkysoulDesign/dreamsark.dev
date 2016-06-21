@@ -3,30 +3,40 @@
 namespace DreamsArk\Listeners\User\Payment;
 
 use DreamsArk\Events\Payment\PaymentWasConfirmed;
-use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
+use DreamsArk\Jobs\User\Bag\DeductCoinJob;
 
 /**
- * Class AddCoinsToUser
+ * Class DeductCoinsFromUser
  *
  * @package DreamsArk\Listeners\User\Payment
  */
-class AddCoinsToUser
+class DeductCoinsFromUser
 {
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
     /**
      * Handle the event.
      *
-     * @param PaymentWasConfirmed $event
+     * @param  PaymentWasConfirmed $event
+     * @return void
      */
     public function handle(PaymentWasConfirmed $event)
     {
-        if ($event->transaction->type == 'pay') {
+        if ($event->transaction->type == 'withdraw') {
             /**
-             * Give Coins to User
+             * Deduct Coins from User
              */
-            dispatch(new PurchaseCoinJob(
+            dispatch(new DeductCoinJob(
                     $event->transaction->user,
                     $event->transaction->payment->getPrice()
-//                $event->transaction->getAttribute('amount')
                 )
             );
         }

@@ -22,17 +22,23 @@ class ConfirmPaymentJob extends Job
      * @var array
      */
     private $request;
+    /**
+     * @var bool
+     */
+    private $cancelTransaction;
 
     /**
      * Create a new job instance.
      *
      * @param Transaction $transaction
      * @param array $request
+     * @param bool $cancelTransaction
      */
-    public function __construct(Transaction $transaction, array $request)
+    public function __construct(Transaction $transaction, array $request, bool $cancelTransaction = false)
     {
         $this->transaction = $transaction;
         $this->request = $request;
+        $this->cancelTransaction = $cancelTransaction;
     }
 
     /**
@@ -44,9 +50,15 @@ class ConfirmPaymentJob extends Job
     {
 
         $this->transaction->setAttribute('invoice_no', $this->request['invoice_no']);
-        $this->transaction->setAttribute('paid', true);
+        if ($this->cancelTransaction) {
+            $this->transaction->setAttribute('paid', false);
+            $this->transaction->setAttribute('is_canceled', true);
+        } else
+            $this->transaction->setAttribute('paid', true);
 
         $this->transaction->save();
+
+        dispatch(new UpdateTransactionMessageJob($this->transaction, ['response' => $this->request]));
 
         /**
          * Announce Payment was Confirmed
