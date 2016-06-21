@@ -61,6 +61,12 @@ class Alipay extends PaymentGateway
     public $serviceIdKey = 'partner';
 
     /**
+     * flag to do/skip withdraw event
+     * @var bool
+     */
+    public $isWithdrawAvail = true;
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @param array $config

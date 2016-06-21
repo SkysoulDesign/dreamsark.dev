@@ -34,6 +34,7 @@
                 <tr>
                     <td>{{ $transaction->method }}</td>
                     <td>{{ $transaction->payment->getPrice() }}</td>
+                    <td>{{ ucwords($transaction->type) }}</td>
                     <td>{{ $transaction->isPaid() }}</td>
                 </tr>
             @empty
@@ -62,8 +63,8 @@
                 var id = $(this).attr('id');
                 $('#' + id + '-modal')
                         .modal({
-                            blurring: true,
-                            closable: false,
+                            blurring:  true,
+                            closable:  false,
                             onApprove: function () {
 
                                 let form = $('#' + id + '-form');
@@ -71,61 +72,65 @@
 //                                return form.submit();
 
                                 form.api({
-                                    action: form.action,
-                                    method: 'POST',
-                                    on: 'now',
-                                    data: form.serialize()/*{
-                                        "_token": '{{ csrf_token() }}',
-                                        amount: form.find("input[name='amount']").val(),
-                                        payment_method: form.find("input[name='payment_method']").val()
-                                    }*/,
+                                    action:     form.action,
+                                    method:     'POST',
+                                    on:         'now',
+                                    data:       form.serialize(),
                                     onResponse: function (response) {
+                                        let message = '{{ trans('payment.error-occurred-unable-to-process') }}';
+                                        if (!validateDataIsNull(response.message))
+                                            message = response.message;
 
-                                        if (response.buildForm) {
+                                        if (response.result == 'ok') {
 
-                                            let $form = document.createElement('form');
+                                            if (response.buildForm) {
 
-                                            for (let item in response.data) {
-                                                let input = document.createElement('input');
-                                                input.name = item;
-                                                input.setAttribute('value', response.data[item]);
+                                                let $form = document.createElement('form');
 
-                                                $form.appendChild(input);
+                                                for (let item in response.data) {
+                                                    let input  = document.createElement('input');
+                                                    input.name = item;
+                                                    input.setAttribute('value', response.data[item]);
 
-                                            }
+                                                    $form.appendChild(input);
 
-                                            $form.action = response.target;
-                                            $form.method = 'post';
-                                            $form.submit();
+                                                }
+
+                                                $form.action = response.target;
+                                                $form.method = 'post';
+                                                $form.submit();
 //                                            $(document.body).append($form);
-                                            console.log($form);
+                                                console.log($form);
 
-                                        } else {
-//                                            console.log(response)
-                                            if (response.data['result_code'] == 'SUCCESS') {
-                                                let $form = '<div class="ui card centered">' +
-                                                        '<div class="content">' +
-                                                        '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
-                                                        'style="width: 90px; height: 80px; padding: 5px;"/>{{ trans('payment.wechat-pay') }}' +
-                                                        '</span>' +
-                                                        '<div class="description">{{ trans('payment.wechat-scan-code') }}' +
-                                                        '</div>' +
-                                                        '</div>' +
-                                                        '<div class="centered">' +
-                                                        '<img alt="{{ trans('payment.wechat-scan-code') }}"' +
-                                                        'src="' + response.data['qr_url'] + response.data['code_url'] + '"' +
-                                                        'style="width:200px;height:200px;"/>' +
-                                                        '</div>' +
-                                                        '<div class="extra content">' +
-                                                        '<img src="{{ asset('img/logos/payment/wechat-scan-text.png') }}"/>' +
-                                                        '</div></div>';
-                                                $("#popup-modal .content").html($form);
-                                                $('#popup-modal').modal('show');
-//                                                triggerEvent(response.data['unique_no']);
                                             } else {
-                                                alert("{{ trans('payment.error-occurred-unable-to-process') }}");
-                                            }
+//                                            console.log(response)
+                                                if (response.data['result_code'] == 'SUCCESS') {
+                                                    let $form = '<div class="ui card centered">' +
+                                                            '<div class="content">' +
+                                                            '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
+                                                            'style="width: 90px; height: 80px; padding: 5px;"/>{{ trans('payment.wechat-pay') }}' +
+                                                            '</span>' +
+                                                            '<div class="description">{{ trans('payment.wechat-scan-code') }}' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="centered">' +
+                                                            '<img alt="{{ trans('payment.wechat-scan-code') }}"' +
+                                                            'src="' + response.data['qr_url'] + response.data['code_url'] + '"' +
+                                                            'style="width:200px;height:200px;"/>' +
+                                                            '</div>' +
+                                                            '<div class="extra content">' +
+                                                            '<img src="{{ asset('img/logos/payment/wechat-scan-text.png') }}"/>' +
+                                                            '</div></div>';
+                                                    $("#popup-modal .content").html($form);
+                                                    $('#popup-modal').modal('show');
+//                                                triggerEvent(response.data['unique_no']);
+                                                } else {
+                                                    alert(message);
+                                                }
 
+                                            }
+                                        } else {
+                                            alert(message)
                                         }
 
                                     }
@@ -140,8 +145,8 @@
 
         });
         function triggerEvent(unique_no) {
-            var loop = 1, limit = 15;
-            var source = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
+            var loop         = 1, limit = 15;
+            var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
             source.onmessage = function (event) {
                 if (event.data == 1) {
                     redirectPage(source, 'success')

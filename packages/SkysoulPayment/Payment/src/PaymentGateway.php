@@ -79,6 +79,12 @@ abstract class PaymentGateway implements PaymentGatewayContract
     public $errorMessageKey;
 
     /**
+     * flag to do/skip withdraw event
+     * @var bool
+     */
+    public $isWithdrawAvail = false;
+
+    /**
      * Append Any necessary data before signing the request
      *
      * @param Transaction $transaction

@@ -7,8 +7,12 @@
               action="{{ route('user.purchase.coin.withdraw') }}">
             {{ csrf_field() }}
             <h3>@lang('payment.coin-available'): <span class="cash">{{ ($user->bag->coins) }}</span></h3>
-            @include('partials.field', ['name' => 'amount', 'label'=> trans('payment.withdraw-amount'), 'type' => 'number'])
-            @include('partials.select-with-icon',
+            @include('partials.field', ['name' => 'batch_fee', 'label'=> trans('payment.withdraw-amount'), 'type' => 'number'])
+            @include('partials.field', ['name' => 'email', 'label'=> trans('payment.user-email'), 'type' => 'email'])
+            @include('partials.field', ['name' => 'account_name', 'label'=> trans('payment.account-name'), 'type' => 'number'])
+            <input name="payment_method" type="hidden" value="alipay" />
+
+            {{--@include('partials.select-with-icon',
             [
                 'name' => 'payment_method',
                 'label' => trans('forms.withdraw-method'),
@@ -16,7 +20,7 @@
                 'collection' => [
                     'alipay' => [trans('payment.alipay'), 'stripe icon'],
                 ]
-            ])
+            ])--}}
         </form>
     </div>
     <div class="actions">

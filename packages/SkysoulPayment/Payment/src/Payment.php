@@ -221,6 +221,7 @@ class Payment
         }
 
         return [
+            'result'    => 'ok',
             'data'      => $data,
             'target'    => $this->getConfig('gateway_url'),
             'buildForm' => !$buildForm
@@ -229,9 +230,16 @@ class Payment
 
     public function getWithdrawResponse(array $formData) : array
     {
+        $buildForm = true;
+
+        if (!$this->gateway->isWithdrawAvail)
+            return [
+                'result' => 'fail',
+                'message' => trans('payment.withdraw-not-avail-in').' '.$this->gatewayName
+            ];
+
         $this->gateway->uniqueIdentifierKey = 'batch_no';
         $this->gateway->priceKey = 'batch_fee';
-        $buildForm = true;
         /**
          * Prepare Data before sign
          */
@@ -250,18 +258,21 @@ class Payment
         unset($data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
 
         $data = array_merge($data, [
-            "service" => "batch_trans_notify",
-            "email"	=> $formData['email'],
-            "account_name"	=> $formData['account_name'],
-            "pay_date"	=> date('Y-m-d'),
-            "batch_num"	=> 1,
+            "service"        => "batch_trans_notify",
+            "email"          => $formData['email'],
+            "account_name"   => $formData['account_name'],
+            "pay_date"       => date('Y-m-d'),
+            "batch_num"      => 1,
             "_input_charset" => strtolower('gbk'),
-            $this->gateway->signTypeKey => strtoupper('MD5')
+//            $this->gateway->signTypeKey => strtoupper('MD5')
         ]);
 
         $data[$this->gateway->signKey] = $this->sign($data);
+        if ($key = $this->gateway->signTypeKey)
+            $data[$key] = $this->getConfig('sign_type');
 
         return [
+            'result'    => 'ok',
             'data'      => $data,
             'target'    => $this->getConfig('gateway_url'),
             'buildForm' => $buildForm
