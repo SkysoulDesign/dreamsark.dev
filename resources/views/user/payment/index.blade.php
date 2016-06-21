@@ -58,16 +58,6 @@
         };
         $(document).ready(function () {
 
-            /*if ($('#withdraw-coin-modal').length > 0)
-             $('#withdraw-coin-modal')
-             .modal({
-             blurring:  true,
-             closable:  false,
-             onApprove: function () {
-             $('#withdraw-coin-form').submit();
-             }
-             })
-             .modal('attach events', '#withdraw-coin', 'show');*/
             $('.item.view-modal').each(function () {
                 var id = $(this).attr('id');
                 $('#' + id + '-modal')
@@ -84,11 +74,11 @@
                                     action: form.action,
                                     method: 'POST',
                                     on: 'now',
-                                    data: {
+                                    data: form.serialize()/*{
                                         "_token": '{{ csrf_token() }}',
                                         amount: form.find("input[name='amount']").val(),
                                         payment_method: form.find("input[name='payment_method']").val()
-                                    },
+                                    }*/,
                                     onResponse: function (response) {
 
                                         if (response.buildForm) {
