@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->string('unique_no')->unique()->nullable();
             $table->string('invoice_no');
             $table->string('method');
+            $table->string('type');
             $table->integer('amount');
             $table->boolean('paid')->default(false);
             $table->tinyInteger('attempts')->unsigned();

@@ -58,7 +58,7 @@ class ConfirmPaymentJob extends Job
 
         $this->transaction->save();
 
-        dispatch(new UpdateTransactionMessageJob($this->transaction, ['response' => $this->request]));
+        dispatch(new UpdateTransactionMessageJob($this->transaction, ['response' => json_encode($this->request)]));
 
         /**
          * Announce Payment was Confirmed
