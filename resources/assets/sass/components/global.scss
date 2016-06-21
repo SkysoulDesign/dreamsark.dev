@@ -19,26 +19,26 @@
 
   }
 
-  @include component(login-background) {
+  //@include component(login-background) {
+  //
+  //  //display: flex;
+  //  //align-items: center;
+  //  //justify-content: center;
+  //  //flex: auto;
+  //  //width: 100%;
+  //  //flex-basis: 100%;
+  //
+  //  background: url('/img/universe.jpeg') no-repeat center center;
+  //  background-size: cover;
+  //
+  //}
 
-    //display: flex;
-    //align-items: center;
-    //justify-content: center;
-    //flex: auto;
-    //width: 100%;
-    //flex-basis: 100%;
-
-    background: url('/img/universe.jpeg') no-repeat center center;
-    background-size: cover;
-
-  }
-
-  @include component(centered) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100%;
-  }
+  //@include component(centered) {
+  //  display: flex;
+  //  align-items: center;
+  //  justify-content: center;
+  //  min-height: 100%;
+  //}
 
 }
 

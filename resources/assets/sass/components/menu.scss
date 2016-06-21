@@ -2,34 +2,64 @@
 
   @include component(menu) {
 
-    padding: 2em;
-    //align-content: center;
-    //align-items: center;
+    padding: 1.5em .2em;
 
-    a {
-      //padding: 0;
+    @include respond-to(desktop) {
+      padding: 2em;
+    }
+
+    @include part(brand) {
+
+      img {
+
+        height: auto;
+        width: 10em;
+
+        @include respond-to(desktop) {
+          width: 15em;
+        }
+
+      }
     }
 
     @include part(item) {
 
-      background: color(black);
-      padding: .5em 2em;
+      background: color(primary, dark, 50);
+      padding: .5em 1em;
       text-decoration: none;
-      //display: flex;
-      //text-align: center;
-      //flex-direction: column;
-      //flex: auto;
+      white-space: nowrap;
+      line-height: normal;
+
+      &:hover {
+        color: color(primary, x-light, 70);
+        background: color(primary, dark, 60);
+      }
 
       @include font-style('links');
 
-      @include option(round) {
-        border-radius: 100px;
-      }
+    }
 
-      @include option(transparent) {
-        background: transparent;
-      }
+    @include part(avatar) {
 
+      cursor: pointer;
+
+      img {
+        border: .22em solid color($color: primary, $tone: x-light, $alpha: 80);
+        width: 4em;
+        border-radius: 4em;
+        text-align: center;
+        transition: .1s;
+
+        &:hover{
+          box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+          transform: scale(1.1);
+        }
+
+        &:active{
+          transform: scale(.9);
+        }
+
+      }
 
     }
 

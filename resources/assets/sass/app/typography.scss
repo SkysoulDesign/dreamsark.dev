@@ -26,10 +26,22 @@ $h7: .2em;
 
 @mixin font-style($style, $color: white) {
 
-  @if $style == "links" {
+  @if $style == links {
     font-size: $h4;
     font-weight: 600;
     color: color($color)
+  }
+
+  @if $style == title {
+    font-size: $h3;
+    font-weight: 600;
+    color: color($color);
+  }
+
+  @if $style == sub-title {
+    font-size: $h4;
+    font-weight: normal;
+    color: color($color);
   }
 
 }

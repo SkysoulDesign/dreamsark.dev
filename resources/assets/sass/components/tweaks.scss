@@ -1,4 +1,36 @@
 @include tweak(align-right) {
-  background: yellow !important;
   text-align: right;
+}
+
+@include tweak(round) {
+  border-radius: 100px;
+}
+
+@include tweak(transparent) {
+  background: transparent;
+}
+
+@include tweak(full-height) {
+  height: 100%;
+}
+
+
+@include tweak(center-on-mobile) {
+  text-align: center;
+  @include respond-to(desktop) {
+    text-align: inherit;
+  }
+}
+
+@include tweak(hidden-on-mobile) {
+  display: none;
+  @include respond-to(desktop) {
+    display: block;
+  }
+}
+
+@include tweak(hidden-on-desktop) {
+  @include respond-to(mobile) {
+    display: none;
+  }
 }

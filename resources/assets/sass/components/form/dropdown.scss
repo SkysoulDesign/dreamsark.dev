@@ -1,0 +1,47 @@
+@include component(dropdown) {
+
+  position: relative;
+  display: inline-block;
+  color: color(black);
+
+  &:hover .dropdown__content {
+    display: block;
+  }
+
+  @include part(content) {
+
+    position: absolute;
+    margin-top: 1em;
+    background-color: color(white);
+    box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+    border-radius: .2em;
+    cursor: pointer;
+    white-space: nowrap;
+    right: 0;
+
+    display: none;
+
+    a {
+      text-decoration: none;
+      color: color(black);
+      display: block;
+    }
+
+    @include part(item) {
+
+      text-align: left;
+
+      padding: .8em 1.8em;
+      border-bottom: 1px solid color($color: gray, $alpha: 50);
+
+      &:hover {
+        background-color: color($color: gray, $alpha: 20);
+      }
+
+      @include last(1) {
+        border-bottom: transparent;
+      }
+
+    }
+  }
+}

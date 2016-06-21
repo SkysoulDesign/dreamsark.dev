@@ -1,12 +1,13 @@
+@import "input";
+@import "button";
+@import "dropdown";
+
 @mixin dreamsark-forms() {
 
   form, .form {
 
     padding: 0;
     margin: 0;
-
-    @import "input";
-    @import "button";
 
     @include part(field) {
 

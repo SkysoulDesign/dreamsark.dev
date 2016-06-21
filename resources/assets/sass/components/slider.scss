@@ -2,8 +2,17 @@
 * Slider
 */
 @include component(slider) {
-  height: 700px;
-  background: #1a2c51;
+  color: white;
+  font-size: 2em;
+  text-align: center;
+  height: 100%;
+  line-height: normal;
+  padding: 15%;
+
+  @include respond-to(desktop){
+    font-size: 3em;
+  }
+
 }
 
 /*

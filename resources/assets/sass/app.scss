@@ -16,6 +16,8 @@
 @include foundation-flex-classes;
 @include foundation-flex-grid;
 
+$csstyle-root-id: 'app-root';
+
 @import 'app/functions';
 @import 'app/colors';
 @import 'app/variables';
@@ -30,12 +32,15 @@
 @import 'components/menu';
 @import 'components/slider';
 @import 'components/grid/row';
+@import 'components/nav';
+@import 'components/card';
 @import 'components/tweaks';
 
 /**
-* Layouts
+* Pages
 */
 @import 'layout/home';
+@import 'pages/login';
 
 /**
 * Initiate things up

@@ -2,13 +2,13 @@
 
 @section('content')
 
-    <div class="centered login-background">
+    <div class="login-page">
 
-        <div class="segments">
+        <div class="row align-middle align-right +full-height">
 
-            <div class="segment --12-columns-mobile --3-columns-desktop --8-offset-desktop">
+            <div class="small-12 medium-6 large-4 columns card">
 
-                <div class="segment__content">
+                <div class="card__content">
 
                     <header class="header --classic">
                         Login Form
@@ -28,7 +28,7 @@
 
                     <div class="divider --mini">or login with</div>
 
-                    <div class="segment">
+                    <div class="row align-center">
                         There will be social media links here....
                     </div>
 
