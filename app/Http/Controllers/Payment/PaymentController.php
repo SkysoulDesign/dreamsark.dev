@@ -37,7 +37,7 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
-        if (!$transaction || !$transaction->payment->verify($request->all()))
+        if (!$transaction || !$transaction->payment->verify($request->except('invoice_no')))
             return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
         $response = redirect()->route('user.purchase.index');
@@ -61,7 +61,7 @@ class PaymentController extends Controller
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        if (!$transaction->payment->verify($request->all())) {
+        if (!$transaction->payment->verify($request->except('invoice_no'))) {
             return response('failed');
         }
 

@@ -56,6 +56,7 @@ class Unionpay extends PaymentGateway
 
     /**
      * * Name of the invoice_no
+     *
      * @var string
      */
     public $uniqueInvoiceNoKey = 'queryId';
@@ -69,16 +70,16 @@ class Unionpay extends PaymentGateway
     public function getAdditionalPostData(array $config) : array
     {
         return [
-            'version' => '5.0.0',
-            'encoding' => 'utf-8',
-            'txnType' => '01',
-            'txnSubType' => '01',
-            'bizType' => '000201',
-            'signMethod' => '01',
-            'channelType' => '07',
-            'accessType' => '0',
+            'version'      => '5.0.0',
+            'encoding'     => 'utf-8',
+            'txnType'      => '01',
+            'txnSubType'   => '01',
+            'bizType'      => '000201',
+            'signMethod'   => '01',
+            'channelType'  => '07',
+            'accessType'   => '0',
             'currencyCode' => '156',
-            'txnTime' => date('YmdHis'),
+            'txnTime'      => date('YmdHis'),
         ];
     }
 
@@ -145,6 +146,7 @@ class Unionpay extends PaymentGateway
     {
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
+
         return (bool)openssl_verify($sha, $signature, $key, OPENSSL_ALGO_SHA1);
     }
 
@@ -152,7 +154,6 @@ class Unionpay extends PaymentGateway
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
-     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *
