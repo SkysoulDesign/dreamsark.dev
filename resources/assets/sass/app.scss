@@ -23,6 +23,7 @@ $csstyle-root-id: 'app-root';
 @import 'app/variables';
 @import 'app/fonts';
 @import 'app/typography';
+@import 'app/styles';
 @import 'components/form/forms';
 @import 'components/global';
 @import 'components/header';
@@ -34,18 +35,21 @@ $csstyle-root-id: 'app-root';
 @import 'components/grid/row';
 @import 'components/nav';
 @import 'components/card';
+@import 'components/progress';
 @import 'components/tweaks';
+@import 'components/section';
 
 /**
 * Pages
 */
-@import 'layout/home';
+@import 'pages/base';
+@import 'pages/home';
 @import 'pages/login';
+@import 'pages/account';
 
 /**
 * Initiate things up
 */
-
 @include dreamsark-global;
 //@include dreamsark-segment;
 @include dreamsark-divider;

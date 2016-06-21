@@ -1,0 +1,20 @@
+@include page(base) {
+
+  @include part(background) {
+
+    position: relative;
+    background: url("/img/temp/1.jpg") center center;
+    background-size: cover;
+    z-index: 1;
+
+    @include part(overlay) {
+      position: absolute;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      background-color: color($color: primary, $alpha: 66);
+    }
+
+  }
+
+}

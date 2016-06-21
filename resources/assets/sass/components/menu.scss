@@ -8,15 +8,24 @@
       padding: 2em;
     }
 
+    @include option(compact) {
+      padding: .5em;
+      border-bottom: solid .2em color(gray, dark, 10);
+    }
+
+    @include option(white-background) {
+      background: color(white);
+    }
+
     @include part(brand) {
 
       img {
 
         height: auto;
-        width: 10em;
+        width: 7em;
 
         @include respond-to(desktop) {
-          width: 15em;
+          width: 10em;
         }
 
       }
@@ -50,12 +59,11 @@
         text-align: center;
         transition: .1s;
 
-        &:hover{
-          box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+        &:hover {
           transform: scale(1.1);
         }
 
-        &:active{
+        &:active {
           transform: scale(.9);
         }
 

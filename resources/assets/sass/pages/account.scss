@@ -1,0 +1,39 @@
+@include page(account) {
+
+  @include part(header) {
+
+    background: url("/img/temp/2.jpg") center center;
+    background-size: cover;
+    padding: 1em;
+
+    @include respond-to(desktop) {
+      height: 15em;
+    }
+
+    @include part(avatar) {
+
+      img {
+        height: 7em;
+        width: 7em;
+        border-radius: 100%;
+        border: .3em solid color($color: white, $alpha: 10);
+
+        @include respond-to(desktop) {
+          height: 9em;
+          width: 9em;
+        }
+
+        transition: 0.25s;
+
+        &:hover {
+          transform: scale(1.1);
+          border: .3em solid color($color: white, $alpha: 100);
+        }
+
+      }
+
+    }
+
+  }
+
+}

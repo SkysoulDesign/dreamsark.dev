@@ -12,9 +12,7 @@
 
             <div class="home-page__background__overlay"></div>
 
-            <div class="row align-middle --fluid menu">
-                @include('partials.menu')
-            </div>
+            @include('partials.menu')
 
             <div class="row slider">
                 Lorem ipsum sit amet, consectetur adipisicing elit.
@@ -22,15 +20,21 @@
 
         </div>
 
-        <ul class="nav">
-            <li class="nav__item --active">
-                <a href="#">item</a>
-            </li>
-            <li class="nav__item"><a href="#">item</a></li>
-            <li class="nav__item"><a href="#">item</a></li>
-            <li class="nav__item"><a href="#">item</a></li>
-            <li class="nav__item"><a href="#">item</a></li>
-        </ul>
+        <div class="row --fluid nav --hover align-center">
+
+            <ul class="row medium-uncollapse +center-on-mobile">
+
+                <li class="columns nav__item --active"><a href="#">first item</a></li>
+                <li class="columns nav__item"><a href="#">item</a></li>
+                <li class="columns nav__item"><a href="#">item</a></li>
+                <li class="columns nav__item"><a href="#">item</a></li>
+                <li class="columns nav__item"><a href="#">item</a></li>
+                <li class="columns nav__item"><a href="#">item</a></li>
+                <li class="columns nav__item +hidden-on-mobile"><a href="#">last item</a></li>
+
+            </ul>
+
+        </div>
 
         <div class="row">
 
@@ -53,9 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="card__progress">
-                        <div class="card__progress__completion" style="width: {{ random_int(0, 100) }}%"></div>
-                    </div>
+                    <ark-progress value="{{ random_int(0, 100) }}" flat></ark-progress>
 
                     <div class="card__footer">
                         Founded in Ann Arbor, Michigan, Ghostly International's varied roster includes Matthew Dear,

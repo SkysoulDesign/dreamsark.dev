@@ -96,6 +96,19 @@ app.ready().then(application => {
         }
     });
 
+    Vue.component('ark-progress', {
+        template: require('./templates/progress.html'),
+        props: {
+            value: String,
+            flat: Boolean,
+        },
+        computed: {
+            style: function () {
+                return this.flat ? '--flat' : '';
+            }
+        }
+    });
+
     new Vue({
         el: '#app-root',
         ready: function () {

@@ -8,6 +8,22 @@
     display: block;
   }
 
+  @include part(trigger) {
+
+    cursor: pointer;
+    font-weight: bold;
+
+    &, a {
+      color: color(black);
+      text-decoration: none;
+    }
+
+    &:hover, a:hover {
+      color: color(primary);
+    }
+
+  }
+
   @include part(content) {
 
     position: absolute;

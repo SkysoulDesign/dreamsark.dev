@@ -41,7 +41,10 @@
       "DreamsArk\\": "app/",
       "SkysoulDesign\\Form\\": "packages/SkysoulDesign/Form/src",
       "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src"
-    }
+    },
+    "files": [
+      "app/Helpers/functions.php"
+    ]
   },
   "autoload-dev": {
     "classmap": [
