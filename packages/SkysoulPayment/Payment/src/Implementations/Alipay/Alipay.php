@@ -68,6 +68,12 @@ class Alipay extends PaymentGateway
     public $isWithdrawAvail = true;
 
     /**
+     * Name of the invoice_no
+     * @var string
+     */
+    public $uniqueInvoiceNoKey = 'trade_no';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @param array $config

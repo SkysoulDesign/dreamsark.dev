@@ -55,6 +55,12 @@ class Unionpay extends PaymentGateway
     public $serviceIdKey = 'merId';
 
     /**
+     * * Name of the invoice_no
+     * @var string
+     */
+    public $uniqueInvoiceNoKey = 'queryId';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @param array $config
