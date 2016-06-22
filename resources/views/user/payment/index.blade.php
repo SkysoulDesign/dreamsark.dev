@@ -86,6 +86,7 @@
                                             if (response.buildForm) {
 
                                                 let $form = document.createElement('form');
+                                                $form.setAttribute('id', 'doPayment');
 
                                                 for (let item in response.data) {
                                                     let input  = document.createElement('input');
@@ -98,8 +99,11 @@
 
                                                 $form.action = response.target;
                                                 $form.method = 'post';
-                                                $form.submit();
-//                                            $(document.body).append($form);
+                                                if (navigator.userAgent.indexOf("Firefox") != -1) {
+                                                    $(document.body).append($form);
+                                                    $('#doPayment').submit()
+                                                } else
+                                                    $form.submit();
                                                 console.log($form);
 
                                             } else {
