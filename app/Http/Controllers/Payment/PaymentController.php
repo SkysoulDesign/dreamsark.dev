@@ -52,7 +52,11 @@ class PaymentController extends Controller
         if ($transaction->isPaid())
             return $response->withSuccess('Your Purchase has been made.');
 
-        return $response->withStatus('Your purchase is being processed.');
+        /*$this->dispatch(new ConfirmPaymentJob(
+            $transaction, $request->toArray()
+        ));*/
+
+        return $response->withWarning('Your purchase is being processed.');
     }
 
     /**

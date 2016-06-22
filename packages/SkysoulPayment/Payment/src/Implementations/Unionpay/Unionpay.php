@@ -144,7 +144,7 @@ class Unionpay extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-//        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
+        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
 
@@ -153,7 +153,7 @@ class Unionpay extends PaymentGateway
 
     protected function getPublicKeyByCertId($certId) : string
     {
-        $cert_dir = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/';
+        $cert_dir = base_path().'/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay';
         $handle = opendir($cert_dir);
         if ($handle) {
             while ($file = readdir($handle)) {
@@ -163,14 +163,13 @@ class Unionpay extends PaymentGateway
                     if (pathinfo($file, PATHINFO_EXTENSION) == 'cer') {
                         if ($this->getCertIdByCerPath($filePath) == $certId) {
                             closedir($handle);
-
                             return file_get_contents($filePath);
                         }
                     }
                 }
             }
         }
-        return file_get_contents('/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/EbppRsaCert.cer');
+        return file_get_contents($cert_dir.'/encryptpub.cer');
     }
 
     protected function getCertIdByCerPath($cert_path)
