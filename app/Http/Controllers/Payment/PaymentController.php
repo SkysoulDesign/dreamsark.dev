@@ -5,6 +5,7 @@ namespace DreamsArk\Http\Controllers\Payment;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
+use DreamsArk\Jobs\Payment\UpdateTransactionMessageJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
@@ -37,6 +38,9 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
+        if (!$transaction->isPaid())
+            dispatch(new UpdateTransactionMessageJob($transaction, ['response' => json_encode($request->all())]));
+
         if (!$transaction || !$transaction->payment->verify($request->except('invoice_no')))
             return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
@@ -60,6 +64,8 @@ class PaymentController extends Controller
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
+
+        dispatch(new UpdateTransactionMessageJob($transaction, ['response' => json_encode($request->all())]));
 
         if (!$transaction->payment->verify($request->except('invoice_no'))) {
             return response('failed');

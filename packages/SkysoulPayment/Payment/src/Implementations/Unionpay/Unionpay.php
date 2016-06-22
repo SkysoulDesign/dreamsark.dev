@@ -144,10 +144,43 @@ class Unionpay extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
+//        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
 
         return (bool)openssl_verify($sha, $signature, $key, OPENSSL_ALGO_SHA1);
+    }
+
+    protected function getPublicKeyByCertId($certId) : string
+    {
+        $cert_dir = '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/';
+        $handle = opendir($cert_dir);
+        if ($handle) {
+            while ($file = readdir($handle)) {
+                clearstatcache();
+                $filePath = $cert_dir . '/' . $file;
+                if (is_file($filePath)) {
+                    if (pathinfo($file, PATHINFO_EXTENSION) == 'cer') {
+                        if ($this->getCertIdByCerPath($filePath) == $certId) {
+                            closedir($handle);
+
+                            return file_get_contents($filePath);
+                        }
+                    }
+                }
+            }
+        }
+        return file_get_contents('/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/EbppRsaCert.cer');
+    }
+
+    protected function getCertIdByCerPath($cert_path)
+    {
+        $x509data = file_get_contents($cert_path);
+        openssl_x509_read($x509data);
+        $certdata = openssl_x509_parse($x509data);
+        $cert_id = $certdata ['serialNumber'];
+
+        return $cert_id;
     }
 
     /**
