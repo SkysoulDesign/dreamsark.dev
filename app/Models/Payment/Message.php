@@ -4,6 +4,11 @@ namespace DreamsArk\Models\Payment;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Message
+ *
+ * @package DreamsArk\Models\Payment
+ */
 class Message extends Model
 {
     /**
@@ -18,8 +23,15 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id', 'remarks', 'vendor_remarks', 'request', 'response'];
+    protected $fillable = [
+        'transaction_id', 'request', 'response', 'remarks', 'vendor_remarks',
+    ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'request' => 'array',
         'response' => 'array'

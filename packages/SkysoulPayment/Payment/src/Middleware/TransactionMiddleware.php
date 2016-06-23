@@ -4,7 +4,9 @@ namespace SkysoulDesign\Payment\Middleware;
 
 use Closure;
 use DreamsArk\Models\Payment\Transaction;
+use Illuminate\Http\Request;
 use SkysoulDesign\Payment\Contracts\SelfHandle;
+use SkysoulDesign\Payment\PaymentGateway;
 
 /**
  * Class TransactionMiddleware
@@ -16,14 +18,17 @@ class TransactionMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  Request $request
      * @param  \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
 
-        if ($driver = app('payment.drivers')[$request->pay_driver]) {
+        /**
+         * @var PaymentGateway $driver 
+         */
+        if ($driver = app('payment.drivers')[$request->input('driver')]) {
 
             if ($driver instanceof SelfHandle) {
 
@@ -44,20 +49,9 @@ class TransactionMiddleware
              */
             if ($request->has($driver->uniqueIdentifierKey)) {
 
-                /**
-                 * The False default is just in case that there is no invoice_key
-                 * then it would match any null value on db
-                 */
-                $request->route()->setParameter(
-                    'pay_driver',
+                $request->route()->setParameter('driver',
                     Transaction::where('unique_no', $request->input($driver->uniqueIdentifierKey))->firstOrFail()
                 );
-
-                /**
-                 * Example of the response returned
-                 * 'nonce_str' => '1e9c6dc03fdb76cd9f68b67f291c203d',
-                 * 'out_trade_no' =>  '6dc03fdb76cd9f68b67f291c203d',
-                 */
 
             }
         }

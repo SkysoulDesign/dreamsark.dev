@@ -8,6 +8,7 @@ use DreamsArk\Events\Bag\UserCoinsWasDeducted;
 use DreamsArk\Events\Committee\Project\FundWasCreated;
 use DreamsArk\Events\Idea\IdeaWasSubmitted;
 use DreamsArk\Events\Idea\UserHasBiddenAnIdea;
+use DreamsArk\Events\Payment\PaymentWasCanceled;
 use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Events\Position\ExpenditurePositionWasCreated;
 use DreamsArk\Events\Project\CastWasAdded;
@@ -57,6 +58,7 @@ use DreamsArk\Listeners\User\GiveUserAnEmptyBag;
 use DreamsArk\Listeners\User\LogUserIn;
 use DreamsArk\Listeners\User\Payment\AddCoinsToUser;
 use DreamsArk\Listeners\User\Payment\DeductCoinsFromUser;
+use DreamsArk\Listeners\User\Payment\UpdateOrCreateTransactionMessage;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use SocialiteProviders\Manager\SocialiteWasCalled;
@@ -206,7 +208,12 @@ class EventServiceProvider extends ServiceProvider
 
         PaymentWasConfirmed::class => [
             AddCoinsToUser::class,
-            DeductCoinsFromUser::class
+            DeductCoinsFromUser::class,
+            UpdateOrCreateTransactionMessage::class
+        ],
+
+        PaymentWasCanceled::class => [
+            UpdateOrCreateTransactionMessage::class
         ],
 
         SocialiteWasCalled::class => [

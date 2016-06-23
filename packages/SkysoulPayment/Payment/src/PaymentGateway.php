@@ -88,6 +88,7 @@ abstract class PaymentGateway implements PaymentGatewayContract
 
     /**
      * flag to do/skip withdraw event
+     *
      * @var bool
      */
     public $isWithdrawAvail = false;
@@ -114,6 +115,6 @@ abstract class PaymentGateway implements PaymentGatewayContract
      */
     public function prepareInternalKeys(string $notify_type)
     {
-        // TODO: Implement prepareInternalKeys() method.
+        
     }
 }

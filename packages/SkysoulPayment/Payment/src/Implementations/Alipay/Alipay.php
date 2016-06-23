@@ -164,7 +164,6 @@ class Alipay extends PaymentGateway
      */
     public function prepareInternalKeys(string $notify_type)
     {
-        // TODO: Implement prepareInternalKeys() method.
         if ($notify_type == 'batch_trans_notify') {
             $this->uniqueIdentifierKey = 'batch_no';
             $this->priceKey = 'batch_fee';

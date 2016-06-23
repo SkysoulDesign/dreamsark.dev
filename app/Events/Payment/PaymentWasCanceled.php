@@ -8,11 +8,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class PaymentWasConfirmed
+ * Class PaymentWasCanceled
  *
  * @package DreamsArk\Events
  */
-class PaymentWasConfirmed extends Event implements ShouldBroadcastNow
+class PaymentWasCanceled extends Event implements ShouldBroadcastNow
 {
 
     use SerializesModels;

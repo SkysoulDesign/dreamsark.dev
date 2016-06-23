@@ -34,16 +34,6 @@ class Transaction extends Model
     ];
 
     /**
-     * Relation to TransactionMessages Table
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function messages()
-    {
-        return $this->hasOne(Message::class);
-    }
-
-    /**
      * Convert amount to fen
      *
      * @param $amount
@@ -62,4 +52,15 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relation to TransactionMessages Table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function message()
+    {
+        return $this->hasOne(Message::class);
+    }
+
 }

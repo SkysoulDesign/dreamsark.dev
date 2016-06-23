@@ -2,7 +2,7 @@
 
 namespace SkysoulDesign\Payment;
 
-use DreamsArk\Jobs\Payment\UpdateTransactionMessageJob;
+use DreamsArk\Jobs\Payment\UpdateOrCreateTransactionMessageJob;
 use DreamsArk\Models\Payment\Transaction;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
@@ -152,8 +152,7 @@ class Payment
     private function getConfig(string $value = null, $default = null)
     {
         return config(
-            "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''),
-            $default
+            "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''), $default
         );
     }
 
@@ -183,11 +182,18 @@ class Payment
 
         $data[$this->gateway->signKey] = $this->sign($data);
 
+        /**
+         * Set sign Key Type example: MD5, RSA
+         */
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
 
-        $requestData = $data;
-        dispatch(new UpdateTransactionMessageJob($this->transaction, ['request' => $requestData]));
+        /**
+         * Update Message with request data
+         */
+        dispatch(new UpdateOrCreateTransactionMessageJob(
+            $this->transaction, ['request' => $data]
+        ));
 
         /**
          * If implementation implements SelfHandle then we will
@@ -214,20 +220,12 @@ class Payment
 
             $data['qr_url'] = $this->getConfig('qr_url');
 
-            /**
-             * Update Transaction with pre data from the Vendor
-             */
-//            $this->gateway->updateTransaction(
-//                $this->transaction,
-//                $data
-//            );
-
         }
 
         return [
-            'result'    => 'ok',
-            'data'      => $data,
-            'target'    => $this->getConfig('gateway_url'),
+            'result' => 'ok',
+            'data' => $data,
+            'target' => $this->getConfig('gateway_url'),
             'buildForm' => !$buildForm
         ];
     }
@@ -239,7 +237,7 @@ class Payment
         if (!$this->gateway->isWithdrawAvail)
             return [
                 'result' => 'fail',
-                'message' => trans('payment.withdraw-not-avail-in').' '.$this->gatewayName
+                'message' => trans('payment.withdraw-not-avail-in') . ' ' . $this->gatewayName
             ];
 
         /*$this->gateway->uniqueIdentifierKey = 'batch_no';
@@ -264,11 +262,11 @@ class Payment
         unset($data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
 
         $data = array_merge($data, [
-            "service"        => "batch_trans_notify",
-            "email"          => $formData['email'],
-            "account_name"   => $formData['account_name'],
-            "pay_date"       => date('Ymd'),
-            "batch_num"      => 1,
+            "service" => "batch_trans_notify",
+            "email" => $formData['email'],
+            "account_name" => $formData['account_name'],
+            "pay_date" => date('Ymd'),
+            "batch_num" => 1,
             "_input_charset" => strtolower('gbk'),
 //            $this->gateway->signTypeKey => strtoupper('MD5')
         ]);
@@ -277,12 +275,12 @@ class Payment
         if ($key = $this->gateway->signTypeKey)
             $data[$key] = $this->getConfig('sign_type');
 
-        dispatch(new UpdateTransactionMessageJob($this->transaction, ['request' => $data]));
+        dispatch(new UpdateOrCreateTransactionMessageJob($this->transaction, ['request' => $data]));
 
         return [
-            'result'    => 'ok',
-            'data'      => $data,
-            'target'    => $this->getConfig('gateway_url'),
+            'result' => 'ok',
+            'data' => $data,
+            'target' => $this->getConfig('gateway_url'),
             'buildForm' => $buildForm
         ];
     }
@@ -510,11 +508,10 @@ class Payment
     /**
      * to get original price internal use (website)
      *
-     * @return float
+     * @return float|int
      */
     public function getPrice()
     {
         return $this->transaction->getAttribute('amount') / config('payment.base');
     }
-
 }

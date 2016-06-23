@@ -167,18 +167,18 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         $app->get('/', PaymentController::class . '@index')->name('index');
 
-        $app->any('{pay_driver}/callback', PaymentController::class . '@callback')->name('callback');
-        $app->any('{pay_driver}/notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
+        $app->any('{driver}/callback', PaymentController::class . '@callback')->name('callback');
+        $app->any('{driver}/notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
         $app->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
-       /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
-            $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
-            $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
-        });
-        $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
-            $app->post('status', PaymentController::class . '@uPStatus')->name('status');
-            $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
-        });*/
+        /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
+             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
+             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+         });
+         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
+             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
+             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
+         });*/
 
     });
 
