@@ -144,7 +144,7 @@ class Unionpay extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
-//        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
+        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
 
@@ -153,6 +153,7 @@ class Unionpay extends PaymentGateway
 
     protected function getPublicKeyByCertId($certId) : string
     {
+//        echo $certId.'<br/><pre>';
         $cert_dir = base_path().'/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay';
         $handle = opendir($cert_dir);
         if ($handle) {
@@ -161,6 +162,7 @@ class Unionpay extends PaymentGateway
                 $filePath = $cert_dir . '/' . $file;
                 if (is_file($filePath)) {
                     if (pathinfo($file, PATHINFO_EXTENSION) == 'cer') {
+//                        echo $file.'--'.$this->getCertIdByCerPath($filePath).'<br/>';
                         if ($this->getCertIdByCerPath($filePath) == $certId) {
                             closedir($handle);
                             return file_get_contents($filePath);
@@ -177,6 +179,7 @@ class Unionpay extends PaymentGateway
         $x509data = file_get_contents($cert_path);
         openssl_x509_read($x509data);
         $certdata = openssl_x509_parse($x509data);
+//        print_r($certdata);
         $cert_id = $certdata ['serialNumber'];
 
         return $cert_id;

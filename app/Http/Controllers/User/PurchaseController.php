@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
 
 /**
@@ -21,6 +22,12 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
+
+        /** @var Transaction $trans */
+        /*$trans = Transaction::find(72)->load('messages');
+        $response = $trans->messages->response;
+        unset($response['invoice_no']);
+        dd($trans->payment->verify($response));*/
 
 //        $message = '';
 //        if ($request->has('status')) {

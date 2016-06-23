@@ -41,6 +41,8 @@ class PaymentController extends Controller
         if (!$transaction->isPaid())
             dispatch(new UpdateTransactionMessageJob($transaction, ['response' => json_encode($request->all())]));
 
+//        dd($transaction->payment->verify($request->except('invoice_no')));
+
         if (!$transaction || !$transaction->payment->verify($request->except('invoice_no')))
             return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 

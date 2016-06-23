@@ -39,7 +39,8 @@ return [
              * Test ENV
              */
             /* 'gateway_url' => 'https://101.231.204.80:5000/gateway/api/frontTransReq.do',
-             'service_id' => '777290058131411',
+             'service_id' => '802110053110768',
+//             'service_id' => '777290058131411',
  //            'service_id' => '700000000000001', ref id given in PRODUCT page
              'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/700000000000001_acp.pfx',
              'private_key_password' => '000000',

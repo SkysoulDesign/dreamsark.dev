@@ -211,9 +211,10 @@ class EventServiceProvider extends ServiceProvider
 
         SocialiteWasCalled::class => [
             // add your listeners (aka providers) here
-            'SocialiteProviders\Weixin\WeixinExtendSocialite@handle',
+            'SkysoulDesign\Socialite\ExtendSocialiteProvider@handle'
+            /*'SocialiteProviders\Weixin\WeixinExtendSocialite@handle',
             'SocialiteProviders\Qq\QqExtendSocialite@handle',
-            'SocialiteProviders\Weibo\WeiboExtendSocialite@handle',
+            'SocialiteProviders\Weibo\WeiboExtendSocialite@handle',*/
         ],
 
     ];
