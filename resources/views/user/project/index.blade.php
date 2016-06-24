@@ -6,7 +6,14 @@
 
     <div class="row">
 
-        <section class="small-12">
+        <div class="small-12 columns">
+            <header class="header --centered">
+                Lorem ipsum dolor sit
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci delectus dicta dolores eaque
+                    eveniet excepturi in laborum molestias nobis optio recusandae.</p>
+            </header>
+        </div>
+        <div class="small-12 columns">
 
             <ul class="section__nav --right">
                 <li class="section__nav__item --active">
@@ -15,51 +22,87 @@
                 <li class="section__nav__item">
                     <a href="#">Failed Projects</a>
                 </li>
+                <li class="section__nav__item --as-button">
+                    <a href="{{ route('user.project.create') }}">Create Project</a>
+                </li>
             </ul>
 
-            @foreach(range(0,3) as $index)
-                <div class="row project">
+        </div>
 
-                    <div class="small-12 medium-4 columns project__cover">
-                        <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
-                    </div>
+        <div class="small-12 columns">
 
-                    <div class="small-12 medium-8 columns project__header +center-on-mobile">
-                        <h1>Disney: The Jungle Book</h1>
-
-                        <div class="project__header__author">
-                            <img src="{{ asset('img/avatar/male.png') }}" alt="">
-                            by <a href="#">Microcosm Publishing</a>
-                        </div>
-
-                        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi culpa fuga laborum molestiae officiis sunt veniam. Asperiores commodi consectetur distinctio eos ex excepturi fugiat laborum mollitia quasi, quis, quod ullam.</span>
-
-                        <div class="project__progress">
-                            <ark-progress value="{{ random_int(0, 100) }}"></ark-progress>
-                        </div>
-
-                        <ark-statistics>
-
-                            <statistic-item data="50%">Founded</statistic-item>
-                            <statistic-item data="24">Days Left</statistic-item>
-
-                            <div class="small-12 medium-expand columns +align-right">
-                                <a href="#" class="button --fit --hollow-primary +full-width-on-mobile">
-                                    View Project
-                                </a>
-                            </div>
-
-                        </ark-statistics>
-
-                    </div>
-                </div>
-            @endforeach
-
-        </section>
-
+            <table class="table --stack">
+                <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Name</th>
+                    <th>Reward</th>
+                    <th class="--compact +center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($projects as $project)
+                    <tr>
+                        <td>{{ $project->type }}</td>
+                        <td>{{ $project->name }}</td>
+                        <td>{{ $project->reward }}</td>
+                        <td class="table__action">
+                            <button class="button --small --primary">View</button>
+                            <button class="button --small --primary">Edit</button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 @endsection
+
+
+
+
+
+{{--@foreach($projects as $project)--}}
+
+{{--<div class="row project">--}}
+
+{{--<div class="small-12 medium-4 columns project__cover">--}}
+{{--<img src="{{ asset('img/temp/cover.jpeg') }}" alt="">--}}
+{{--</div>--}}
+
+{{--<div class="small-12 medium-8 columns project__header +center-on-mobile">--}}
+{{--<h1>Disney: The Jungle Book</h1>--}}
+
+{{--<div class="project__header__author">--}}
+{{--<img src="{{ asset('img/avatar/male.png') }}" alt="">--}}
+{{--by <a href="#">Microcosm Publishing</a>--}}
+{{--</div>--}}
+
+{{--<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi culpa fuga laborum molestiae officiis sunt veniam. Asperiores commodi consectetur distinctio eos ex excepturi fugiat laborum mollitia quasi, quis, quod ullam.</span>--}}
+
+{{--<div class="project__progress">--}}
+{{--<ark-progress value="{{ random_int(0, 100) }}"></ark-progress>--}}
+{{--</div>--}}
+
+{{--<ark-statistics>--}}
+
+{{--<statistic-item data="50%">Founded</statistic-item>--}}
+{{--<statistic-item data="24">Days Left</statistic-item>--}}
+
+{{--<div class="small-12 medium-expand columns +align-right">--}}
+{{--<a href="#" class="button --fit --hollow-primary +full-width-on-mobile">--}}
+{{--View Project--}}
+{{--</a>--}}
+{{--</div>--}}
+
+{{--</ark-statistics>--}}
+
+{{--</div>--}}
+{{--</div>--}}
+
+{{--@endforeach--}}
+
 
 {{--@section('content')--}}
 

@@ -51,14 +51,11 @@ class ProfileController extends Controller
      * Show Create User Profile
      *
      * @param Profile $profile
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(Profile $profile, Request $request)
+    public function create(Profile $profile)
     {
-        return view('user.profile.create')
-            ->with('profile', $profile)
-            ->with('sections', $profile->questions->pluck('pivot.section')->unique());
+        return view('user.profile.create')->with('profiles', $profile->all());
     }
 
     /**

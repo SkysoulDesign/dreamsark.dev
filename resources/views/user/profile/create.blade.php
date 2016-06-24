@@ -55,7 +55,9 @@
 
     </div>
 
-    <form class="row align-center --overlapped +hidden" action="">
+    <form class="row align-center --overlapped +hidden" method="post" action="{{ route('user.profile.store', $profiles->first()->name) }}">
+
+        {{ csrf_field() }}
 
         <div class="small-11 medium-9 columns form__header --rounded">
             this is a very nice form header
@@ -65,40 +67,18 @@
 
             <div class="row">
 
-                <h3 class="small-12 columns form__step">
-                    <span>1</span>
-                    Your basic information
-                </h3>
+                @foreach($profiles->first()->questions as $index => $question)
 
-                <div class="small-12 medium-6 columns form__field">
-                    <input type="text" placeholder="first name">
-                </div>
+                    <h3 class="small-12 columns form__step">
+                        <span>{{ $index + 1 }}</span>
+                        {{ $question->question }}
+                    </h3>
 
-                <div class="small-12 medium-6 columns form__field">
-                    <input type="text" placeholder="last name">
-                </div>
+                    <div class="small-12 columns form__field">
+                        <input type="{{ $question->type->name }}" placeholder="{{ $question->question }}">
+                    </div>
 
-                <h3 class="small-12 columns form__step">
-                    <span>2</span>
-                    Select your nivel of experience
-                </h3>
-
-                <div class="small-12 columns form__field">
-                    <input type="text" placeholder="first name">
-                </div>
-
-                <h3 class="small-12 columns form__step">
-                    <span>2</span>
-                    Select your Gender
-                </h3>
-
-                <div class="small-6 columns form__field">
-                    <input type="text" placeholder="first name">
-                </div>
-
-                <div class="small-6 columns form__field">
-                    <input type="text" placeholder="first name">
-                </div>
+                @endforeach
 
                 <div class="small-12 columns divider --simple"></div>
 
@@ -120,9 +100,10 @@
 
 @endsection
 
-@section('pos-scripts')
-    {{--    <script src="{{ asset('js/profile.js') }}"></script>--}}
 
+@section('pos-scripts')
+
+    {{--<script src="{{ asset('js/profile.js') }}"></script>--}}
     <script>
         var profile = app.page(
                 'profile',

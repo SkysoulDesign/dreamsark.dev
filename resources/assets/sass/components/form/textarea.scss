@@ -1,0 +1,7 @@
+@include component(text-area) {
+  @extend input;
+}
+
+textarea {
+  @extend .text-area;
+}

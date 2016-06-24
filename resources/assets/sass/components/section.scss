@@ -39,6 +39,22 @@
         }
       }
 
+      @include option(as-button) {
+
+        background: color(primary);
+        border-radius: .5em;
+        padding: .3em 1em;
+
+        a {
+          @extend a.\--inverted;
+        }
+
+        &:hover {
+          background-color: color(primary, mid-light);
+        }
+
+      }
+
     }
 
     @include option(right) {

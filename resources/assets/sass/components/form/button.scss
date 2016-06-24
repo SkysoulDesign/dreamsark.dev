@@ -44,6 +44,15 @@
 
   }
 
+  @include option(small) {
+
+    @extend .\--fit;
+
+    padding: .5em;
+    font-size: .8em;
+
+  }
+
   @include option(hollow) {
     background-color: #00AA00;
   }

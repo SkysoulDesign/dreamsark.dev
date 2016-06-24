@@ -34,6 +34,7 @@ $csstyle-root-id: 'app-root';
 @import 'components/slider';
 @import 'components/grid/row';
 @import 'components/nav';
+@import 'components/table';
 @import 'components/card';
 @import 'components/progress';
 @import 'components/tweaks';
@@ -57,7 +58,6 @@ $csstyle-root-id: 'app-root';
 @include dreamsark-global;
 //@include dreamsark-segment;
 @include dreamsark-divider;
-@include dreamsark-forms;
 @include dreamsark-menu;
 
 //

@@ -49,15 +49,6 @@ class ProjectController extends Controller
         return view('admin.project.index')->with('projects', $repository->paginate())->with('project_count', $repository->all()->count());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('project.create')->with('user', auth()->user());
-    }
 
     /**
      * Store a newly created resource in storage.

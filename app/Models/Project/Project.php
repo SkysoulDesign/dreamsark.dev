@@ -262,16 +262,15 @@ class Project extends Model
 
     /**
      * @param Builder $query
-     * @param Boolean $activeCond
      */
-    public function scopeActives($query, $activeCond)
+    public function scopeActives($query)
     {
-        $query->whereHas('synapse', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
-        })->orWhereHas('idea', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
-        })->orWhereHas('script', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
+        $query->whereHas('synapse', function ($query) {
+            $query->where('active', '=', true);
+        })->orWhereHas('idea', function ($query) {
+            $query->where('active', '=', true);
+        })->orWhereHas('script', function ($query) {
+            $query->where('active', '=', true);
         });
 
     }

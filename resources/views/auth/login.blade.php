@@ -39,3 +39,11 @@
     </div>
 
 @endsection
+
+@section('pos-scripts')
+
+    <script>
+        app.page('common');
+    </script>
+
+@endsection

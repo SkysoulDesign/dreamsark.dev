@@ -22,7 +22,15 @@
 
 <script src="{{ asset('js/app.js') }}"></script>
 
-@yield('pos-scripts')
+@section('pos-scripts')
+
+    <script>
+        app.page('common');
+    </script>
+
+@endsection
+
+@yield('pos-scripts', 'pos-scripts')
 
 </body>
 </html>

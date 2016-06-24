@@ -1,13 +1,13 @@
+import {App} from "../../App";
 import {PageInterface} from "../../interfaces/PageInterface";
 import Vue = require("vue");
-import ComputedOption = vuejs.ComputedOption;
 
 /**
  * Profile
  */
 export class Profile implements PageInterface {
 
-    constructor(className:string, root:string, item:string, select:string, wrapper:string) {
+    constructor(app:App, className:string, root:string, item:string, select:string, wrapper:string) {
 
         /**
          * Handle The Display of The Profile Selection

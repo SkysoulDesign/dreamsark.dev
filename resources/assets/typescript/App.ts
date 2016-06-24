@@ -5,7 +5,7 @@ import {Component} from "./Component";
  * Application
  */
 
-class App {
+export class App {
 
     public pages = {};
 
@@ -14,6 +14,7 @@ class App {
         new Component();
 
         this.register(
+            require('./Pages/Common'),
             require('./Pages/User/Profile')
         )
 
@@ -41,7 +42,7 @@ class App {
         var name = name.toLowerCase();
 
         if (this.pages.hasOwnProperty(name))
-            return new this.pages[name](...payload);
+            return new this.pages[name](this, ...payload);
 
         console.error(`\{ ${name} \} might have not being registrered.`);
 
@@ -58,18 +59,8 @@ class App {
 
 }
 
-window.app = {};
+/**
+ * Register to the window object
+ * @type {App}
+ */
 window.app = new App();
-window.app.ready().then(application => {
-
-    // new Vue({
-    //     el: '#app-root',
-    //     data: {
-    //         position: 'Director'
-    //     },
-    //     ready: function () {
-    //         console.log(this)
-    //     }
-    // });
-
-});

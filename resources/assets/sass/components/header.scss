@@ -27,6 +27,10 @@ header, .header {
     color: color(white);
   }
 
+  @include option(centered) {
+    text-align: center;
+  }
+
   @include option(classic) {
 
     @include title($size: large);

@@ -11,9 +11,6 @@ use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\Project\ProjectRepository;
-use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -32,20 +29,31 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param UserRepositoryInterface $userRepository
-     * @param ProjectRepository|ProjectRepositoryInterface $projectRepository
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(UserRepositoryInterface $userRepository, ProjectRepositoryInterface $projectRepository, Request $request)
+    public function index(Request $request)
     {
+        /**
+         * @todo
+         */
+//        $projects = [];// $userRepository->drafts($request->user()->id);
+//        $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
+//        $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
 
-        $projects = [];// $userRepository->drafts($request->user()->id);
-        $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
-        $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
+        return view('user.project.index')
+            ->with('projects', $request->user()->projects()->actives()->get());
 
-        return view('user.project.index', compact('projects', 'publishedProjects', 'failedProjects'));
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('user.project.create');
     }
 
     /**
@@ -55,9 +63,9 @@ class ProjectController extends Controller
     {
         $currentPage = $request->get('page', 1);
         $this->pagination = [
-                            'current' => $currentPage,
-                            'limit' => config('defaults.general.pagination.per_page')
-                            ];
+            'current' => $currentPage,
+            'limit'   => config('defaults.general.pagination.per_page')
+        ];
     }
 
     /**
