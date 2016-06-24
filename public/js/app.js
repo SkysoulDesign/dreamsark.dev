@@ -10138,7 +10138,7 @@ var App = function () {
     function App() {
         this.pages = {};
         new Component_1.Component();
-        this.register(require('./Pages/User/Profile'));
+        this.register(require('./Pages/Common'), require('./Pages/User/Profile'));
     }
     App.prototype.register = function () {
         var _this = this;
@@ -10164,7 +10164,7 @@ var App = function () {
             payload[_i - 1] = arguments[_i];
         }
         var name = name.toLowerCase();
-        if (this.pages.hasOwnProperty(name)) return new ((_a = this.pages[name]).bind.apply(_a, [void 0].concat(payload)))();
+        if (this.pages.hasOwnProperty(name)) return new ((_a = this.pages[name]).bind.apply(_a, [void 0].concat([this], payload)))();
         console.error("{ " + name + " } might have not being registrered.");
         return null;
         var _a;
@@ -10182,22 +10182,15 @@ var App = function () {
     };
     return App;
 }();
-window.app = {};
+exports.App = App;
+/**
+ * Register to the window object
+ * @type {App}
+ */
 window.app = new App();
-window.app.ready().then(function (application) {
-    // new Vue({
-    //     el: '#app-root',
-    //     data: {
-    //         position: 'Director'
-    //     },
-    //     ready: function () {
-    //         console.log(this)
-    //     }
-    // });
-});
 
 
-},{"./Component":4,"./Pages/User/Profile":6}],4:[function(require,module,exports){
+},{"./Component":4,"./Pages/Common":6,"./Pages/User/Profile":7}],4:[function(require,module,exports){
 "use strict";
 
 var Vue = require("vue");
@@ -10225,7 +10218,7 @@ var Component = function () {
 exports.Component = Component;
 
 
-},{"./components/Form":7,"./components/Nav":8,"./components/Progress":9,"./components/Ripple":10,"./components/Statistics":11,"vue":2}],5:[function(require,module,exports){
+},{"./components/Form":8,"./components/Nav":9,"./components/Progress":10,"./components/Ripple":11,"./components/Statistics":12,"vue":2}],5:[function(require,module,exports){
 "use strict";
 /**
  * For Loop
@@ -10255,10 +10248,38 @@ exports.popByKey = function (data, key) {
 
 var Vue = require("vue");
 /**
+ * Common Page
+ */
+var Common = function () {
+    function Common(app, root) {
+        if (root === void 0) {
+            root = '#app-root';
+        }
+        console.log('yeah this is the app');
+        console.log(app);
+        /**
+         * Binding Vue
+         */
+        app.ready().then(function () {
+            new Vue({
+                el: root
+            });
+        });
+    }
+    return Common;
+}();
+exports.Common = Common;
+
+
+},{"vue":2}],7:[function(require,module,exports){
+"use strict";
+
+var Vue = require("vue");
+/**
  * Profile
  */
 var Profile = function () {
-    function Profile(className, root, item, select, wrapper) {
+    function Profile(app, className, root, item, select, wrapper) {
         /**
          * Handle The Display of The Profile Selection
          *
@@ -10300,7 +10321,7 @@ var Profile = function () {
 exports.Profile = Profile;
 
 
-},{"vue":2}],7:[function(require,module,exports){
+},{"vue":2}],8:[function(require,module,exports){
 "use strict";
 
 var Helpers_1 = require("../Helpers");
@@ -10366,7 +10387,7 @@ var Form = function () {
 exports.Form = Form;
 
 
-},{"../Helpers":5,"../templates/form/form.html":12,"../templates/form/input.html":13}],8:[function(require,module,exports){
+},{"../Helpers":5,"../templates/form/form.html":13,"../templates/form/input.html":14}],9:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -10402,7 +10423,7 @@ var Nav = function () {
 exports.Nav = Nav;
 
 
-},{"../templates/nav/item.html":14,"../templates/nav/nav.html":15}],9:[function(require,module,exports){
+},{"../templates/nav/item.html":15,"../templates/nav/nav.html":16}],10:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -10429,7 +10450,7 @@ var Progress = function () {
 exports.Progress = Progress;
 
 
-},{"../templates/progress.html":16}],10:[function(require,module,exports){
+},{"../templates/progress.html":17}],11:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -10511,7 +10532,7 @@ exports.Ripple = Ripple;
 // {{--<script src="http://tympanus.net/Tutorials/SVGRipples/js/ripple-config.js"></script>--}}
 
 
-},{"../templates/ripple-button.html":17}],11:[function(require,module,exports){
+},{"../templates/ripple-button.html":18}],12:[function(require,module,exports){
 "use strict";
 /**
  * Statistics Component
@@ -10541,21 +10562,21 @@ var Statistics = function () {
 exports.Statistics = Statistics;
 
 
-},{"../templates/statistics/item.html":18,"../templates/statistics/statistics.html":19}],12:[function(require,module,exports){
+},{"../templates/statistics/item.html":19,"../templates/statistics/statistics.html":20}],13:[function(require,module,exports){
 module.exports = '<form :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>';
-},{}],13:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
 },{}],14:[function(require,module,exports){
-module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
 },{}],15:[function(require,module,exports){
-module.exports = '<div class="row --fluid nav --hover align-center">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>';
+module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
 },{}],16:[function(require,module,exports){
-module.exports = '<div class="progress" :class="style">\n    <div class="progress__completion" :style="{ width: value + \'%\' }"></div>\n</div>';
+module.exports = '<div class="row --fluid nav --hover align-center">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>';
 },{}],17:[function(require,module,exports){
-module.exports = '<button @click="submit" :type="type" id="js-ripple-btn" class="button --ripple">\n\n    <slot></slot>\n\n    <svg class="ripple-obj" id="js-ripple">\n        <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>\n    </svg>\n\n</button>\n<div style="height: 0; width: 0; position: absolute; visibility: hidden;"\n     aria-hidden="true">\n    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"\n         xmlns:xlink="http://www.w3.org/1999/xlink"\n         focusable="false">\n        <symbol id="dreamsark-polygon" viewBox="0 0 100 100">\n            <g>\n                <polygon\n                        points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.35)"\n                         transform="scale(0.5), translate(50, 50)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.25)"\n                         transform="scale(0.25), translate(145, 145)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n            </g>\n        </symbol>\n    </svg>\n</div>';
+module.exports = '<div class="progress" :class="style">\n    <div class="progress__completion" :style="{ width: value + \'%\' }"></div>\n</div>';
 },{}],18:[function(require,module,exports){
-module.exports = '<div class="shrink columns statistic">\n    <div class="statistic__item">\n        {{ data }}\n        <span>\n            <slot></slot>\n        </span>\n    </div>\n</div>';
+module.exports = '<button @click="submit" :type="type" id="js-ripple-btn" class="button --ripple">\n\n    <slot></slot>\n\n    <svg class="ripple-obj" id="js-ripple">\n        <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>\n    </svg>\n\n</button>\n<div style="height: 0; width: 0; position: absolute; visibility: hidden;"\n     aria-hidden="true">\n    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"\n         xmlns:xlink="http://www.w3.org/1999/xlink"\n         focusable="false">\n        <symbol id="dreamsark-polygon" viewBox="0 0 100 100">\n            <g>\n                <polygon\n                        points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.35)"\n                         transform="scale(0.5), translate(50, 50)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.25)"\n                         transform="scale(0.25), translate(145, 145)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n            </g>\n        </symbol>\n    </svg>\n</div>';
 },{}],19:[function(require,module,exports){
+module.exports = '<div class="shrink columns statistic">\n    <div class="statistic__item">\n        {{ data }}\n        <span>\n            <slot></slot>\n        </span>\n    </div>\n</div>';
+},{}],20:[function(require,module,exports){
 module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
 },{}]},{},[3]);
 
