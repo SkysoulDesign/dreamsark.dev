@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "three-orbitcontrols": "registry:dt/three-orbitcontrols#0.0.0+20160317120654"
+  }
+}

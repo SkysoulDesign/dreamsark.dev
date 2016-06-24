@@ -13,4 +13,11 @@ $colors: (
         purple: Color(#6900a5),
         tomato: Color(#af0101),
         golden: Color(#ffc326),
-);
+) !default;
+
+$profile-colors: (
+        actor: Color(#ffc326),
+        director: Color(#6900a5),
+        camera-man: Color(#d90d12),
+        designer: Color(#0095ff),
+) !default;

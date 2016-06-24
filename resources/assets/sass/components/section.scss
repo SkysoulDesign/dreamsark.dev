@@ -55,6 +55,16 @@ section {
 
 @include component(project) {
 
+  padding: 2em 0;
+
+  @include all-but-first-last(2) {
+    border-bottom: .2em solid color($color: gray, $alpha: 22);
+  }
+
+  @include respond-to(desktop) {
+    padding: 4em 2em;
+  }
+
   @include part(cover) {
 
     img {
@@ -66,23 +76,38 @@ section {
   @include part(header) {
 
     h1 {
-      margin: 0;
+      margin: .5em 0 0 0;
       line-height: normal;
+      font-size: $h1;
 
-    }
-
-    @include part(author) {
-
-      font-size: $h5;
-      line-height: 3em;
-
-      img {
-        border-radius: 2em;
-        width: 1.5em;
+      @include respond-to(desktop) {
+        margin: 0;
       }
 
     }
 
+    span {
+      text-align: left;
+    }
+
+    @include part(author) {
+
+      font-size: $h4;
+      line-height: 3em;
+      padding: .5em 0;
+
+      img {
+        border-radius: 2em;
+        width: 1.5em;
+        margin-right: .2em;
+      }
+
+    }
+
+  }
+
+  @include part(progress) {
+    margin: 1em 0;
   }
 
 }

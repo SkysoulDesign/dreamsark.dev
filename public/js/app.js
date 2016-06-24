@@ -10130,15 +10130,47 @@ module.exports = Vue;
 },{"_process":1}],3:[function(require,module,exports){
 "use strict";
 
-var Vue = require("vue");
+var Component_1 = require("./Component");
+/**
+ * Application
+ */
 var App = function () {
-    function App() {}
-    // let ripple = new Ripple();
-    // console.log(Vue);
-
+    function App() {
+        this.pages = {};
+        new Component_1.Component();
+        this.register(require('./Pages/User/Profile'));
+    }
+    App.prototype.register = function () {
+        var _this = this;
+        var pages = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            pages[_i - 0] = arguments[_i];
+        }
+        pages.forEach(function (page) {
+            for (var name_1 in page) {
+                if (page.hasOwnProperty(name_1)) _this.pages[name_1.toLowerCase()] = page[name_1];
+            }
+        });
+    };
+    /**
+     * Init Page
+     *
+     * @param name
+     * @param payload
+     */
+    App.prototype.page = function (name) {
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
+        var name = name.toLowerCase();
+        if (this.pages.hasOwnProperty(name)) return new ((_a = this.pages[name]).bind.apply(_a, [void 0].concat(payload)))();
+        console.error("{ " + name + " } might have not being registrered.");
+        return null;
+        var _a;
+    };
     /**
      * Document Ready
-     * @returns {Promise<T>|Promise}
      */
     App.prototype.ready = function () {
         var _this = this;
@@ -10150,111 +10182,381 @@ var App = function () {
     };
     return App;
 }();
-exports.App = App;
-var app = new App();
-app.ready().then(function (application) {
-    var rippleButton = Vue.component('ripple-button', {
-        template: require('./templates/ripple-button.html'),
-        props: ['type'],
-        methods: {
-            submit: function submit(e) {
-                /**
-                 * If its not a submit type then prevent defaults
-                 */
-                if (this.type != 'submit') e.preventDefault();
-            }
-        },
-        data: function data() {
-            return {
-                test: 'hello world'
-            };
-        },
-        ready: function ready() {}
-    });
-    var input = Vue.component('ark-input', {
-        template: require('./templates/form/input.html'),
-        props: {
-            name: {
-                type: String,
-                required: true
-            },
-            placeholder: {
-                type: String,
-                default: function _default() {
-                    return this.name;
-                }
-            },
-            type: {
-                type: String,
-                default: 'text'
-            },
-            title: {
-                type: String,
-                default: function _default() {
-                    return this.name;
-                }
-            }
-        },
-        computed: {
-            errors: function errors() {
-                var value = this.$parent.errors[this.name];
-                delete this.$parent.errors[this.name];
-                return value;
-            }
-        }
-    });
-    Vue.component('ark-form', {
-        template: require('./templates/form/form.html'),
-        props: {
-            token: String,
-            action: {
-                type: String,
-                required: true
-            },
-            method: {
-                type: String,
-                default: 'post'
-            },
-            errors: {
-                coerce: function coerce(data) {
-                    return JSON.parse(data);
-                }
-            }
-        },
-        computed: {
-            mistakes: function mistakes() {
-                return this.errors;
-            }
-        },
-        ready: function ready() {
-            this.model = this.errors;
-        }
-    });
-    // var child = Vue.component('ark-input', {
-    //     template: '<div class="test">testchild</div>'
-    // });
-    //
-    // var parent = Vue.component('ark-form', {
-    //     template: '<div class="test"><slot></slot></div>',
-    //     components: {
-    //         child: child
+window.app = {};
+window.app = new App();
+window.app.ready().then(function (application) {
+    // new Vue({
+    //     el: '#app-root',
+    //     data: {
+    //         position: 'Director'
+    //     },
+    //     ready: function () {
+    //         console.log(this)
     //     }
     // });
-    new Vue({
-        el: '#app-root',
-        ready: function ready() {
-            console.log(this);
-        }
-    });
 });
 
 
-},{"./templates/form/form.html":4,"./templates/form/input.html":5,"./templates/ripple-button.html":6,"vue":2}],4:[function(require,module,exports){
-module.exports = '<form :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>';
-},{}],5:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
+},{"./Component":4,"./Pages/User/Profile":6}],4:[function(require,module,exports){
+"use strict";
+
+var Vue = require("vue");
+/**
+ * Components
+ */
+var Component = function () {
+    /**
+     * Register Components
+     */
+    function Component() {
+        /**
+         * Components list
+         * @type ComponentInterface[]
+         */
+        this.components = [require('./components/Form'), require('./components/Ripple'), require('./components/Nav'), require('./components/Statistics'), require('./components/Progress')];
+        this.components.forEach(function (component) {
+            for (var name_1 in component) {
+                if (component.hasOwnProperty(name_1)) new component[name_1]().register(Vue);
+            }
+        });
+    }
+    return Component;
+}();
+exports.Component = Component;
+
+
+},{"./components/Form":7,"./components/Nav":8,"./components/Progress":9,"./components/Ripple":10,"./components/Statistics":11,"vue":2}],5:[function(require,module,exports){
+"use strict";
+/**
+ * For Loop
+ */
+
+exports.forEach = function (array, callback, scope) {
+  for (var i = 0; i < array.length; i++) {
+    callback.call(scope, i, array[i]);
+  }
+};
+/**
+ * Pop array by key name
+ *
+ * @param data
+ * @param key
+ * @returns any[]
+ */
+exports.popByKey = function (data, key) {
+  var value = data[key];
+  delete data[key];
+  return value;
+};
+
+
 },{}],6:[function(require,module,exports){
+"use strict";
+
+var Vue = require("vue");
+/**
+ * Profile
+ */
+var Profile = function () {
+    function Profile(className, root, item, select, wrapper) {
+        /**
+         * Handle The Display of The Profile Selection
+         *
+         * @type {Element}
+         */
+        var button = document.querySelector(select);
+        button.addEventListener('click', function () {
+            var container = document.querySelector(wrapper);
+            for (var i = 1; i < container.childElementCount; i++) {
+                var child = container.children.item(i);
+                child.style.display = 'none';
+            }
+            var form = document.querySelector('form');
+            form.classList.remove('+hidden');
+        });
+        /**
+         * Binding Vue
+         */
+        app.ready().then(function () {
+            new Vue({
+                el: root,
+                computed: {
+                    position: 'Designer'
+                },
+                methods: {
+                    selectProfile: function selectProfile(e) {
+                        var element = e.toElement;
+                        if (element.className === item) {
+                            console.log(element.dataset['position']);
+                            this.position = element.dataset['position'];
+                        }
+                    }
+                }
+            });
+        });
+    }
+    return Profile;
+}();
+exports.Profile = Profile;
+
+
+},{"vue":2}],7:[function(require,module,exports){
+"use strict";
+
+var Helpers_1 = require("../Helpers");
+/**
+ * Form Component
+ */
+var Form = function () {
+    function Form() {}
+    Form.prototype.register = function (Vue) {
+        Vue.component('ark-input', {
+            template: require('../templates/form/input.html'),
+            props: {
+                name: {
+                    type: String,
+                    required: true
+                },
+                placeholder: {
+                    type: String,
+                    default: function _default() {
+                        return this.name;
+                    }
+                },
+                type: {
+                    type: String,
+                    default: 'text'
+                },
+                title: {
+                    type: String,
+                    default: function _default() {
+                        return this.name;
+                    }
+                }
+            },
+            computed: {
+                errors: function errors() {
+                    return Helpers_1.popByKey(this.$parent.errors, this.name);
+                }
+            }
+        });
+        Vue.component('ark-form', {
+            template: require('../templates/form/form.html'),
+            props: {
+                token: String,
+                action: {
+                    type: String,
+                    required: true
+                },
+                method: {
+                    type: String,
+                    default: 'post'
+                },
+                errors: {
+                    type: [Object, Array],
+                    coerce: function coerce(data) {
+                        return JSON.parse(data);
+                    }
+                }
+            }
+        });
+    };
+    return Form;
+}();
+exports.Form = Form;
+
+
+},{"../Helpers":5,"../templates/form/form.html":12,"../templates/form/input.html":13}],8:[function(require,module,exports){
+"use strict";
+/**
+ * Nav Component
+ */
+
+var Nav = function () {
+    function Nav() {}
+    Nav.prototype.register = function (Vue) {
+        Vue.component('ark-nav-item', {
+            template: require('../templates/nav/item.html'),
+            props: {
+                url: {
+                    type: String,
+                    default: '#'
+                },
+                active: {
+                    type: Boolean,
+                    default: false
+                }
+            },
+            computed: {
+                style: function style() {
+                    return this.active ? '--active' : '';
+                }
+            }
+        });
+        Vue.component('ark-nav', {
+            template: require('../templates/nav/nav.html')
+        });
+    };
+    return Nav;
+}();
+exports.Nav = Nav;
+
+
+},{"../templates/nav/item.html":14,"../templates/nav/nav.html":15}],9:[function(require,module,exports){
+"use strict";
+/**
+ * Nav Component
+ */
+
+var Progress = function () {
+    function Progress() {}
+    Progress.prototype.register = function (Vue) {
+        Vue.component('ark-progress', {
+            template: require('../templates/progress.html'),
+            props: {
+                value: String,
+                flat: Boolean
+            },
+            computed: {
+                style: function style() {
+                    return this.flat ? '--flat' : '';
+                }
+            }
+        });
+    };
+    return Progress;
+}();
+exports.Progress = Progress;
+
+
+},{"../templates/progress.html":16}],10:[function(require,module,exports){
+"use strict";
+/**
+ * Nav Component
+ */
+
+var Ripple = function () {
+    function Ripple() {}
+    Ripple.prototype.register = function (Vue) {
+        Vue.component('ripple-button', {
+            template: require('../templates/ripple-button.html'),
+            props: ['type'],
+            methods: {
+                submit: function submit(e) {
+                    /**
+                     * If its not a submit type then prevent defaults
+                     */
+                    if (this.type != 'submit') e.preventDefault();
+                }
+            }
+        });
+    };
+    return Ripple;
+}();
+exports.Ripple = Ripple;
+//
+// export class Ripple {
+//
+//     construct(event, timing) {
+// let ripple = this.getElementsByTagName('use')[0],
+//     tl = new TimelineMax(),
+//
+//     x = event.offsetX,
+//     y = event.offsetY,
+//     w = event.target.offsetWidth,
+//     h = event.target.offsetHeight,
+//
+//     offsetX = Math.abs((w / 2) - x),
+//     offsetY = Math.abs((h / 2) - y),
+//
+//     deltaX = (w / 2) + offsetX,
+//     deltaY = (h / 2) + offsetY,
+//
+//     scale_ratio = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+//
+// tl.fromTo(ripple, timing, {
+//     x: x,
+//     y: y,
+//     transformOrigin: '50% 50%',
+//     scale: 0,
+//     opacity: 1,
+//     ease: Linear.easeIn
+// }, {
+//     scale: scale_ratio,
+//     opacity: 0
+// });
+//
+// return tl;
+// }
+//
+//
+// // return {
+// //     init: function (target, timing) {
+// //
+// //         var rippables = document.querySelectorAll(target);
+// //
+// //         for (var i = 0; i < rippables.length; i++) {
+// //
+// //             rippables[i].addEventListener('click', function (event) {
+// //                 rippleAnimation.call(this, event, timing);
+// //             });
+// //
+// //         }
+// //
+// //     }
+// //
+// // }
+// }
+// {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>--}}
+// {{--<script src="http://tympanus.net/Tutorials/SVGRipples/js/ripple-config.js"></script>--}}
+
+
+},{"../templates/ripple-button.html":17}],11:[function(require,module,exports){
+"use strict";
+/**
+ * Statistics Component
+ */
+
+var Statistics = function () {
+    function Statistics() {}
+    Statistics.prototype.register = function (Vue) {
+        /**
+         * Statistics
+         */
+        var item = Vue.component('statistic-item', {
+            template: require('../templates/statistics/item.html'),
+            props: {
+                data: {
+                    type: String,
+                    required: true
+                }
+            }
+        });
+        Vue.component('ark-statistics', {
+            template: require('../templates/statistics/statistics.html')
+        });
+    };
+    return Statistics;
+}();
+exports.Statistics = Statistics;
+
+
+},{"../templates/statistics/item.html":18,"../templates/statistics/statistics.html":19}],12:[function(require,module,exports){
+module.exports = '<form :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>';
+},{}],13:[function(require,module,exports){
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
+},{}],14:[function(require,module,exports){
+module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
+},{}],15:[function(require,module,exports){
+module.exports = '<div class="row --fluid nav --hover align-center">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>';
+},{}],16:[function(require,module,exports){
+module.exports = '<div class="progress" :class="style">\n    <div class="progress__completion" :style="{ width: value + \'%\' }"></div>\n</div>';
+},{}],17:[function(require,module,exports){
 module.exports = '<button @click="submit" :type="type" id="js-ripple-btn" class="button --ripple">\n\n    <slot></slot>\n\n    <svg class="ripple-obj" id="js-ripple">\n        <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>\n    </svg>\n\n</button>\n<div style="height: 0; width: 0; position: absolute; visibility: hidden;"\n     aria-hidden="true">\n    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"\n         xmlns:xlink="http://www.w3.org/1999/xlink"\n         focusable="false">\n        <symbol id="dreamsark-polygon" viewBox="0 0 100 100">\n            <g>\n                <polygon\n                        points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.35)"\n                         transform="scale(0.5), translate(50, 50)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.25)"\n                         transform="scale(0.25), translate(145, 145)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n            </g>\n        </symbol>\n    </svg>\n</div>';
+},{}],18:[function(require,module,exports){
+module.exports = '<div class="shrink columns statistic">\n    <div class="statistic__item">\n        {{ data }}\n        <span>\n            <slot></slot>\n        </span>\n    </div>\n</div>';
+},{}],19:[function(require,module,exports){
+module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
 },{}]},{},[3]);
 
 //# sourceMappingURL=App.js.map

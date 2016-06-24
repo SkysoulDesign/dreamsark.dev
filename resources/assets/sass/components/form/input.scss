@@ -1,7 +1,7 @@
 input, .input {
 
   font-size: 1em;
-  font-weight: lighter;
+  font-weight: normal;
   color: color(gray, dark);
 
   width: 100%;
@@ -10,6 +10,7 @@ input, .input {
 
   background: color(gray, light, 30);
   border: 1px solid color(gray, light, 80);
+  border-radius: .5em;
 
   &:hover {
     background: color(gray, light, 50);

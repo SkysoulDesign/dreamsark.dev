@@ -4,8 +4,6 @@
 
     @include('user.partials.header')
 
-
-
 @endsection
 
 {{--@section('content')--}}

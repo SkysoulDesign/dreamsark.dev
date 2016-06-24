@@ -13,7 +13,7 @@
             <div class="header"></div>
             <a class="item" href="{{ route('projects') }}">Discover Project</a>
             <a class="item" href="{{ route('votes') }}">Vote</a>
-            <a class="item" href="{{ route('user.projects') }}">My Projects</a>
+            <a class="item" href="{{ route('user.project.index') }}">My Projects</a>
             <a class="item" href="{{ route('project.create') }}">Create Project</a>
         </div>
     </div>

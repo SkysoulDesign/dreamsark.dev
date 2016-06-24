@@ -1,4 +1,4 @@
-<div class="base-page account-page">
+<div class="base-page">
 
     <div class="row align-middle --fluid menu --compact --white-background">
 
@@ -30,21 +30,27 @@
 
     </div>
 
-    <div class="account-page__header">
+    @if(!isset($header))
 
-        <div class="row align-middle +full-height">
-            <div class="small-12 medium-3 columns +center-on-mobile">
-                <div class="account-page__header__avatar">
-                    <img class="+shadow" src="{{asset('dreamsark-assets/avatar-huge.png')}}" alt="">
+        <div class="base-page__header --default">
+
+            <div class="row align-middle +full-height">
+                <div class="small-12 medium-3 columns +center-on-mobile">
+                    <div class="base-page__header__avatar">
+                        <img class="+shadow" src="{{asset('dreamsark-assets/avatar-huge.png')}}" alt="">
+                    </div>
+                </div>
+                <div class="small-12 medium-9 columns">
+                    something here
                 </div>
             </div>
-            <div class="small-12 medium-9 columns">
-                something here
-            </div>
+
         </div>
 
-    </div>
+        @if(!isset($nav))
+            @include('user.partials.nav')
+        @endif
 
-    @include('user.partials.nav')
+    @endif
 
 </div>

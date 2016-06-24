@@ -120,23 +120,29 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('settings', SettingController::class . '@index')->name('settings');
         $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
 
-        $app->get('projects', UserProjectController::class . '@index')->name('projects');
+        /**
+         * Project Controller
+         */
+        $app->get('projects', UserProjectController::class . '@index')->name('project.index');
 
         /**
          * Profile Controller
          */
         $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+
             $app->get('/', ProfileController::class . '@index')->name('index');
-            $app->get('{profile}/create', ProfileController::class . '@create')->name('create');
+            $app->get('create', ProfileController::class . '@create')->name('create');
             $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
             $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
             $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
             $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
+
             /**
              * Test.. what is this?
              */
 //            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
         });
+
         /** User's Project Related Actions List */
         $app->group(['prefix' => 'activity', 'as' => 'activity.'], function () use ($app) {
             $app->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');

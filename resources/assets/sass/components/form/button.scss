@@ -1,5 +1,7 @@
 @mixin dreamsark-button-base() {
 
+  display: inline-block;
+
   border: none;
   border-radius: 5px;
   width: 100%;
@@ -15,6 +17,11 @@
   position: relative;
 
   text-transform: uppercase;
+  text-align: center;
+
+  &:hover {
+    color: color(white);
+  }
 
   &:focus {
     outline: 0;
@@ -24,20 +31,51 @@
     outline: 0;
   }
 
+  @include option(fit) {
+
+    width: auto;
+    margin: 1em 0;
+    padding-left: 2em;
+    padding-right: 2em;
+
+    @include respond-to(desktop) {
+      margin: 0;
+    }
+
+  }
+
+  @include option(hollow) {
+    background-color: #00AA00;
+  }
+
 }
 
 @mixin dreamsark-button-colors() {
 
-  $colors: primary secondary;
-
   @each $color in $colors {
 
-    &.#{$color} {
+    $color: nth($color, 1);
 
-      background: color($color);
+    @include option($color) {
+
+      background-color: color($color);
 
       &:hover {
-        background: color($color, mid-light);
+        background-color: color($color, mid-light);
+      }
+
+    }
+
+    @include option('hollow-'+$color) {
+
+      background-color: transparent;
+
+      color: color($color);
+      border: .135em solid color($color);
+
+      &:hover {
+        border-color: color($color, light);
+        color: color($color, light);
       }
 
     }
@@ -56,7 +94,7 @@
 
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       outline: none;
       background: color(primary, mid-light);
     }

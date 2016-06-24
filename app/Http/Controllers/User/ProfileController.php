@@ -10,7 +10,6 @@ use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
-use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -43,8 +42,6 @@ class ProfileController extends Controller
      */
     public function index(Request $request, UserProfileRepositoryInterface $profile)
     {
-//        return dispatch(new GetUniqueCharacters());
-
         return view('user.profile.index')
             ->with('user', $request->user())
             ->with('profiles', $profile->all());

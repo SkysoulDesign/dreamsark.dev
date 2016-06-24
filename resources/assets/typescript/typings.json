@@ -8,6 +8,9 @@
     "gsap/ease": "registry:dt/gsap/ease#0.0.0+20160316155526",
     "gsap/tweenlite": "registry:dt/gsap/tweenlite#0.0.0+20160316155526",
     "require": "registry:dt/require#2.1.20+20160316155526",
+    "three": "registry:dt/three#0.0.0+20160621005955",
+    "three-orbitcontrols": "registry:dt/three-orbitcontrols#0.0.0+20160317120654",
+    "three-trackballcontrols": "registry:dt/three-trackballcontrols#0.0.0+20160317120654",
     "vue": "registry:dt/vue#1.0.21+20160423143248",
     "vue-resource": "registry:dt/vue-resource#0.7.0+20160316155526"
   }

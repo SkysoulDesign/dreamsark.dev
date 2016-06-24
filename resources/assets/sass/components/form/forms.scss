@@ -9,6 +9,59 @@
     padding: 0;
     margin: 0;
 
+    @include option(overlapped) {
+      position: relative;
+      margin-top: -3.5em;
+      z-index: 10;
+    }
+
+    @include part(content) {
+
+      background: color(white);
+      padding: 1em 1.5em 1.5em 1.5em;
+
+      @include respond-to(desktop) {
+        padding: 1em 3.2em 2em 3.2em;
+      }
+
+    }
+
+    @include part(step) {
+
+      @include option(rounded) {
+        border-radius: 0 0 .5em .5em;
+      }
+
+      span {
+        border: solid 2px color(success);
+        color: color(success);
+        height: 30px;
+        width: 30px;
+        line-height: 26px;
+        margin: -2px 10px 0 0px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 100%;
+      }
+
+    }
+
+    @include part(header) {
+
+      background: color(success);
+      padding: 1em;
+      position: relative;
+      font-size: $h2;
+      text-align: center;
+      color: color(white);
+      font-weight: bold;
+
+      @include option(rounded) {
+        border-radius: .5em .5em 0 0;
+      }
+
+    }
+
     @include part(field) {
 
       @include all-but(1) {
@@ -72,6 +125,17 @@
       @include option(error) {
         color: color($color: danger);
       }
+    }
+
+    @include part(description) {
+
+      @extend .form__field;
+
+      padding-top: 1em;
+
+      font-size: small;
+      color: color(gray, dark);
+
     }
 
   }

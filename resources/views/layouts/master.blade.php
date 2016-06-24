@@ -14,9 +14,9 @@
 
 </head>
 
-<body id="app-root">
+<body id="app-root" {!! isset($class) ? "class=\"$class\"" : '' !!}>
 
-    @yield('content')
+@yield('content')
 
 @yield('scripts')
 

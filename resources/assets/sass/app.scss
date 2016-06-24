@@ -38,6 +38,8 @@ $csstyle-root-id: 'app-root';
 @import 'components/progress';
 @import 'components/tweaks';
 @import 'components/section';
+@import 'components/statistic';
+@import 'components/hex-icon';
 
 /**
 * Pages
@@ -46,6 +48,8 @@ $csstyle-root-id: 'app-root';
 @import 'pages/home';
 @import 'pages/login';
 @import 'pages/account';
+@import 'pages/profile';
+@import 'pages/project';
 
 /**
 * Initiate things up

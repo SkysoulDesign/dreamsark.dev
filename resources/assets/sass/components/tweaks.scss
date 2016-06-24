@@ -14,15 +14,41 @@
   height: 100%;
 }
 
-@include tweak(center-on-mobile) {
+@include tweak(full-width-on-mobile) {
+  width: 100%;
+  @include respond-to(desktop) {
+    width: inherit;
+  }
+}
+
+@include tweak(center) {
   text-align: center;
+}
+
+@include tweak(justify) {
+  text-align: justify;
+}
+
+@include tweak(center-on-mobile) {
+  @extend .\+center;
   @include respond-to(desktop) {
     text-align: inherit;
   }
 }
 
-@include tweak(hidden-on-mobile) {
+@include tweak(justify-on-mobile) {
+  @extend .\+justify;
+  @include respond-to(desktop) {
+    text-align: inherit;
+  }
+}
+
+@include tweak(hidden) {
   display: none;
+}
+
+@include tweak(hidden-on-mobile) {
+  @extend .\+hidden;
   @include respond-to(desktop) {
     display: block;
   }
@@ -36,4 +62,35 @@
 
 @include tweak(shadow) {
   box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+}
+
+@include tweak(text-shadow) {
+  text-shadow: .1em .1em .3em color($color: black, $alpha: 33);
+}
+
+@include tweak(uppercase) {
+  text-transform: uppercase;
+}
+
+/**
+* profile-color-actor...
+*/
+@each $color in $profile-colors {
+
+  $color: nth($color, 1);
+
+  @include tweak('profile-color-'+$color) {
+
+    color: profile-color($color);
+
+    a:hover {
+      color: profile-color($color);
+    }
+
+    svg {
+      fill: profile-color($color);
+    }
+
+  }
+
 }

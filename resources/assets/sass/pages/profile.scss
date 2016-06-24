@@ -1,0 +1,75 @@
+@include page(profile) {
+
+  a {
+
+    &:hover {
+      color: color(black);
+    }
+
+  }
+
+  h3 {
+    margin: 0;
+    line-height: normal;
+  }
+
+  @include part(profiles) {
+
+    list-style: none;
+    margin: 0;
+    padding: 0 1em;
+    text-align: left;
+
+    li {
+
+      margin: 1em 0;
+      padding: 1em;
+      border-radius: 10px;
+      border: .1em solid transparent;
+
+      @include respond-to(desktop) {
+        padding: 2em;
+        transition: .25s;
+      }
+
+      @include option(active){
+        background: color(gray, base, 10);
+        border: .1em dashed color(gray);
+      }
+
+      @each $color in $profile-colors {
+
+        @include option($color) {
+
+          $color: nth($color, 1);
+
+          &:hover {
+
+            background: profile-color($color: $color, $alpha: 8);
+            border: .1em dashed profile-color($color, light, 20);
+
+            & h3 {
+              color: profile-color($color)
+            }
+
+          }
+
+        }
+
+      }
+
+      &:hover {
+        @include respond-to(desktop) {
+          transform: scale(1.1);
+        }
+      }
+
+    }
+
+    @include part(icon) {
+
+    }
+
+  }
+
+}

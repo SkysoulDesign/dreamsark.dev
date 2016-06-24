@@ -19,6 +19,14 @@ elixir(function (mix) {
     mix.browserify("./resources/assets/typescript/App.js", null, null, {
         cache: {}, packageCache: {}
     });
+
+    /**
+     * Profile Script
+     */
+    mix.browserify("./resources/assets/typescript/Profile.js", 'public/js/profile.js', null, {
+        cache: {}, packageCache: {}
+    });
+
     mix.browserSync({
         open:   "ui",
         notify: false,

@@ -20,21 +20,13 @@
 
         </div>
 
-        <div class="row --fluid nav --hover align-center">
-
-            <ul class="row medium-uncollapse +center-on-mobile">
-
-                <li class="columns nav__item --active"><a href="#">first item</a></li>
-                <li class="columns nav__item"><a href="#">item</a></li>
-                <li class="columns nav__item"><a href="#">item</a></li>
-                <li class="columns nav__item"><a href="#">item</a></li>
-                <li class="columns nav__item"><a href="#">item</a></li>
-                <li class="columns nav__item"><a href="#">item</a></li>
-                <li class="columns nav__item +hidden-on-mobile"><a href="#">last item</a></li>
-
-            </ul>
-
-        </div>
+        <ark-nav>
+            <ark-nav-item active>Item</ark-nav-item>
+            <ark-nav-item {{ active('user.profile') }}>Item</ark-nav-item>
+            <ark-nav-item {{ active('user.profile') }}>Item</ark-nav-item>
+            <ark-nav-item {{ active('user.profile') }}>Item</ark-nav-item>
+            <ark-nav-item {{ active('user.profile') }}>Item</ark-nav-item>
+        </ark-nav>
 
         <div class="row">
 

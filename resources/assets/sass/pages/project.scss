@@ -1,0 +1,36 @@
+@include page(project) {
+
+  @include part(palette) {
+
+    user-select: none;
+    border-radius: 5px;
+
+    &:hover {
+      background: color($color: black, $alpha: 22);
+    }
+
+    @include part(item) {
+      color: white;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      padding: .2em;
+      margin: 1em auto;
+      background: black;
+      border-radius: 100%;
+
+      transition: .25s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(.9);
+      }
+
+    }
+
+  }
+
+}

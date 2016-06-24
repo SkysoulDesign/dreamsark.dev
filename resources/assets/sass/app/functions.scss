@@ -16,6 +16,10 @@
   @return rgba(map-get(map-get($colors, $color), $tone), $alpha/100);
 }
 
+@function profile-color($color, $tone: 'base', $alpha: 100) {
+  @return rgba(map-get(map-get($profile-colors, $color), $tone), $alpha/100);
+}
+
 @mixin respond-to($breakpoint) {
   @if $breakpoint == "mobile" {
     @media only screen and (min-width: 900px) {

@@ -18,11 +18,12 @@
     "family.scss": "^1.0.4",
     "foundation-sites": "^6.2.3",
     "gsap": "^1.18.5",
-    "normalize.css": "^4.1.1",
-    "vue": "^1.0.24",
-    "watchify": "^3.7.0",
-    "laravel-elixir": "^5.0.0",
     "ioredis": "^2.0.1",
-    "socket.io": "^1.4.6"
+    "laravel-elixir": "^5.0.0",
+    "normalize.css": "^4.1.1",
+    "socket.io": "^1.4.6",
+    "three": "^0.78.0",
+    "vue": "^1.0.24",
+    "watchify": "^3.7.0"
   }
 }
