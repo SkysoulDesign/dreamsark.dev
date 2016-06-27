@@ -8,10 +8,9 @@
             {{ csrf_field() }}
             <h3>@lang('payment.coin-available'): <span class="cash">{{ ($user->bag->coins) }}</span></h3>
             @include('partials.field', ['name' => 'batch_fee', 'label'=> trans('payment.withdraw-amount'), 'type' => 'number'])
-{{--            @include('partials.field', ['name' => 'email', 'label'=> trans('payment.alipay-email'), 'type' => 'email'])--}}
             @include('partials.field', ['name' => 'mobile_number', 'label'=> trans('payment.alipay-mobile-number'), 'type' => 'number'])
             @include('partials.field', ['name' => 'real_name', 'label'=> trans('payment.alipay-real-name')])
-            <input name="payment_method" type="hidden" value="alipay" />
+            <input name="payment_method" type="hidden" value="alipay"/>
 
             {{--@include('partials.select-with-icon',
             [

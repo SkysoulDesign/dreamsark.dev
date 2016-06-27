@@ -343,8 +343,9 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
         /** Payments/Transaction related */
         $app->group(['prefix' => 'transactions', 'as' => 'transactions.'], function () use ($app) {
-            $app->get('purchases', TransactionController::class . '@getPurchaseList')->name('purchases');
-            $app->get('withdrawals', TransactionController::class . '@getWithdrawList')->name('withdraw');
+            $app->get('purchases/{trans_status}', TransactionController::class . '@getPurchaseList')->name('purchases');
+            $app->get('withdrawals/{trans_status}', TransactionController::class . '@getWithdrawList')->name('withdraw');
+            $app->get('update/{new_status}', TransactionController::class . '@updateAndProcess')->name('update');
         });
 
     });

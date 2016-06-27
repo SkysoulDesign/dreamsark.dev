@@ -6,10 +6,6 @@
         <h2>@lang('user.purchase-history')</h2>
         <div class="ui small menu">
             <div class="right menu">
-                {{--<a class="item" href="{{ route('user.purchase.coin.create') }}">
-                    <i class="add icon"></i>
-                    @lang('profile.add-coin')
-                </a>--}}
                 <a id="purchase-coin" class="item view-modal" href="javascript:;">
                     <i class="add icon"></i>
                     @lang('profile.add-coin')
@@ -98,8 +94,8 @@
                                                 }
 
                                                 $form.action = response.target;
-                                                if(response.data['_input_charset']!=undefined && response.data['_input_charset']!='')
-                                                    $form.action += '?_input_charset='+response.data['_input_charset'];
+                                                if (response.data['_input_charset'] != undefined && response.data['_input_charset'] != '')
+                                                    $form.action += '?_input_charset=' + response.data['_input_charset'];
                                                 $form.method = 'post';
                                                 if (navigator.userAgent.indexOf("Firefox") != -1) {
                                                     $(document.body).append($form);
@@ -111,7 +107,7 @@
 
                                             } else {
 //                                            console.log(response)
-                                                if (response.data['result_code'] == 'SUCCESS') {
+                                                if (response.data != undefined && response.data != '' && response.data['result_code'] == 'SUCCESS') {
                                                     let $form = '<div class="ui card centered">' +
                                                             '<div class="content">' +
                                                             '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
@@ -133,6 +129,7 @@
 //                                                triggerEvent(response.data['unique_no']);
                                                 } else {
                                                     alert(message);
+                                                    window.location = window.location.href;
                                                 }
 
                                             }
