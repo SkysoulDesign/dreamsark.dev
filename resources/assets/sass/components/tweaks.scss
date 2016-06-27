@@ -1,3 +1,7 @@
+@include tweak(white) {
+  color: color(white);
+}
+
 @include tweak(align-right) {
   text-align: right;
 }
@@ -30,16 +34,14 @@
 }
 
 @include tweak(center-on-mobile) {
-  @extend .\+center;
-  @include respond-to(desktop) {
-    text-align: inherit;
+  @include breakpoint(small down) {
+    text-align: center;
   }
 }
 
 @include tweak(justify-on-mobile) {
-  @extend .\+justify;
-  @include respond-to(desktop) {
-    text-align: inherit;
+  @include breakpoint(small down) {
+    text-align: justify;
   }
 }
 
@@ -48,9 +50,8 @@
 }
 
 @include tweak(hidden-on-mobile) {
-  @extend .\+hidden;
-  @include respond-to(desktop) {
-    display: block;
+  @include breakpoint(small down) {
+    display: none;
   }
 }
 

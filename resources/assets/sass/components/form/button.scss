@@ -44,12 +44,25 @@
 
   }
 
+  @include option(rounded){
+    border-radius: 5em;
+  }
+
   @include option(small) {
 
     @extend .\--fit;
 
     padding: .5em;
     font-size: .8em;
+
+  }
+
+  @include option(medium) {
+
+    @extend .\--fit;
+
+    padding: .6em;
+    font-size: 1em;
 
   }
 

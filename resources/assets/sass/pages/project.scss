@@ -33,4 +33,89 @@
 
   }
 
+  @include part(featured) {
+
+    position: relative;
+
+    height: 500px;
+
+    img {
+      object-fit: cover;
+      height: 100%;
+    }
+
+    @include option(half) {
+      @include respond-to(desktop) {
+        height: 250px;
+      }
+    }
+
+    @include part(overlay) {
+      position: absolute;
+      bottom: 0;
+      padding: 2em;
+
+      width: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.74902) 100%);
+      transition: background 0.25s linear;
+      z-index: 1;
+
+      h1, p {
+        color: color(white);
+        margin: 0;
+        padding: 0;
+      }
+
+    }
+
+  }
+
+  @include part(highlights) {
+    padding: 2em 0;
+  }
+
+  @include part(list) {
+
+    img {
+      border-radius: .3em;
+    }
+
+    line-height: normal;
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    ul {
+
+      margin: 0;
+      padding: 0;
+      font-size: small;
+      list-style: none;
+
+      li {
+        display: inline-block;
+        @include all-but-first-last(2) {
+          padding: 0 .2em;
+        }
+      }
+
+    }
+
+    @include part(load-more) {
+      padding: 2em;
+    }
+
+    @include part(item) {
+
+      margin-bottom: 2em;
+
+      @include last(2) {
+        margin-bottom: 0;
+      }
+
+    }
+
+  }
+
 }

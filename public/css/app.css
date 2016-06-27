@@ -78,7 +78,7 @@ template,
  * 1. Remove the gray background on active links in IE 10.
  * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
  */
-a {
+a, .menu a {
   background-color: transparent;
   /* 1 */
   -webkit-text-decoration-skip: objects;
@@ -89,7 +89,8 @@ a {
  * in all browsers (opinionated).
  */
 a:active,
-a:hover {
+a:hover,
+.menu a:hover {
   outline-width: 0; }
 
 /* Text-level semantics
@@ -457,7 +458,7 @@ template {
 /**
    * Remove the gray background color from active links in IE 10.
    */
-a {
+a, .menu a {
   background-color: transparent; }
 
 /**
@@ -465,7 +466,8 @@ a {
    * active/hover state.
    */
 a:active,
-a:hover {
+a:hover,
+.menu a:hover {
   outline: 0; }
 
 /* Text-level semantics
@@ -1623,17 +1625,22 @@ button, .button {
     outline: 0; }
   button:active, .button:active {
     outline: 0; }
-  button.\--fit, button.\--small, button.button.\--small, .button.\--fit, .button.\--small {
+  button.\--fit, button.\--small, button.button.\--small, button.\--medium, button.button.\--medium, .button.\--fit, .button.\--small, .button.\--medium {
     width: auto;
     margin: 1em 0;
     padding-left: 2em;
     padding-right: 2em; }
     @media only screen and (min-width: 1000px) {
-      button.\--fit, button.\--small, button.button.\--small, .button.\--fit, .button.\--small {
+      button.\--fit, button.\--small, button.button.\--small, button.\--medium, button.button.\--medium, .button.\--fit, .button.\--small, .button.\--medium {
         margin: 0; } }
+  button.\--rounded, .button.\--rounded {
+    border-radius: 5em; }
   button.\--small, .button.\--small {
     padding: .5em;
     font-size: .8em; }
+  button.\--medium, .button.\--medium {
+    padding: .6em;
+    font-size: 1em; }
   button.\--hollow, .button.\--hollow {
     background-color: #00AA00; }
   button.\--neutral, .button.\--neutral {
@@ -1724,6 +1731,17 @@ button, .button {
     button.\--hollow-black:hover, .button.\--hollow-black:hover {
       border-color: #5b6056;
       color: #5b6056; }
+  button.\--pure-black, .button.\--pure-black {
+    background-color: black; }
+    button.\--pure-black:hover, .button.\--pure-black:hover {
+      background-color: #0d0d0d; }
+  button.\--hollow-pure-black, .button.\--hollow-pure-black {
+    background-color: transparent;
+    color: black;
+    border: 0.135em solid black; }
+    button.\--hollow-pure-black:hover, .button.\--hollow-pure-black:hover {
+      border-color: #262626;
+      color: #262626; }
   button.\--red, .button.\--red {
     background-color: #d90d12; }
     button.\--red:hover, .button.\--red:hover {
@@ -1954,8 +1972,6 @@ header, .header {
       header p, .header p {
         width: 60%;
         margin: 0 auto; } }
-  header.\--inverted, .header.\--inverted {
-    color: white; }
   header.\--centered, .header.\--centered {
     text-align: center; }
   header.\--classic, .header.\--classic {
@@ -2058,6 +2074,10 @@ header, .header {
 */
 .row.\--fluid {
   max-width: 100%; }
+
+.row.\--white-background {
+  background: white;
+  border-top: 1px solid rgba(181, 185, 176, 0.55); }
 
 .nav {
   border: 1px solid #dbddd9;
@@ -2162,6 +2182,8 @@ header, .header {
   position: relative; }
   .card__image img {
     border-radius: 5px 5px 0 0; }
+  .card__image.\--flat > img {
+    border-radius: 0 !important; }
   .card__image__avatar {
     position: absolute;
     right: 0;
@@ -2238,6 +2260,9 @@ header, .header {
     .progress.\--flat > div {
       border-radius: 0; }
 
+#app-root .\+white, #app-root header.\--inverted, #app-root header.\--inverted p, header.\--inverted #app-root p, #app-root .header.\--inverted, #app-root .header.\--inverted p, .header.\--inverted #app-root p, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a {
+  color: white; }
+
 #app-root .\+align-right {
   text-align: right; }
 
@@ -2256,26 +2281,26 @@ header, .header {
     #app-root .\+full-width-on-mobile {
       width: inherit; } }
 
-#app-root .\+center, #app-root .\+center-on-mobile {
+#app-root .\+center {
   text-align: center; }
 
-#app-root .\+justify, #app-root .\+justify-on-mobile {
+#app-root .\+justify {
   text-align: justify; }
 
-@media only screen and (min-width: 1000px) {
+@media screen and (max-width: 39.9375em) {
   #app-root .\+center-on-mobile {
-    text-align: inherit; } }
+    text-align: center; } }
 
-@media only screen and (min-width: 1000px) {
+@media screen and (max-width: 39.9375em) {
   #app-root .\+justify-on-mobile {
-    text-align: inherit; } }
+    text-align: justify; } }
 
-#app-root .\+hidden, #app-root .\+hidden-on-mobile {
+#app-root .\+hidden {
   display: none; }
 
-@media only screen and (min-width: 1000px) {
+@media screen and (max-width: 39.9375em) {
   #app-root .\+hidden-on-mobile {
-    display: block; } }
+    display: none; } }
 
 @media only screen and (min-width: 900px) {
   #app-root .\+hidden-on-desktop {
@@ -2553,6 +2578,53 @@ header, .header {
     .project-page__palette__item:active {
       transform: scale(0.9); }
 
+.project-page__featured {
+  position: relative;
+  height: 500px; }
+  .project-page__featured img {
+    object-fit: cover;
+    height: 100%; }
+  @media only screen and (min-width: 1000px) {
+    .project-page__featured.\--half {
+      height: 250px; } }
+  .project-page__featured__overlay {
+    position: absolute;
+    bottom: 0;
+    padding: 2em;
+    width: 100%;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.74902) 100%);
+    transition: background 0.25s linear;
+    z-index: 1; }
+    .project-page__featured__overlay h1, .project-page__featured__overlay p {
+      color: white;
+      margin: 0;
+      padding: 0; }
+
+.project-page__highlights {
+  padding: 2em 0; }
+
+.project-page__list {
+  line-height: normal; }
+  .project-page__list img {
+    border-radius: .3em; }
+  .project-page__list h1 {
+    font-size: 1.5em; }
+  .project-page__list ul {
+    margin: 0;
+    padding: 0;
+    font-size: small;
+    list-style: none; }
+    .project-page__list ul li {
+      display: inline-block; }
+      .project-page__list ul li:nth-child(n + 2):nth-last-child(n + 2) {
+        padding: 0 .2em; }
+  .project-page__list__load-more {
+    padding: 2em; }
+  .project-page__list__item {
+    margin-bottom: 2em; }
+    .project-page__list__item:nth-last-child(-n + 2) {
+      margin-bottom: 0; }
+
 /**
 * Initiate things up
 */
@@ -2569,14 +2641,14 @@ html, body {
     html, body {
       font-size: 15px; } }
 
-a {
+a, .menu a {
   color: #353832;
   text-decoration: none; }
-  a:hover {
+  a:hover, .menu a:hover {
     color: #0083ff; }
-  a.\--inverted, .section__nav__item.\--as-button a {
+  a.\--inverted, .section__nav__item.\--as-button a, .menu.\--translucent a {
     color: white; }
-    a.\--inverted:hover, .section__nav__item.\--as-button a:hover {
+    a.\--inverted:hover, .section__nav__item.\--as-button a:hover, .menu.\--translucent a:hover {
       color: rgba(255, 255, 255, 0.88); }
 
 p {
@@ -2615,12 +2687,15 @@ p {
 
 .menu {
   padding: 1.5em .2em; }
+  .menu.\--translucent {
+    background: rgba(0, 0, 0, 0.1);
+    padding: .3em; }
   @media only screen and (min-width: 1000px) {
     .menu {
       padding: 2em; } }
   .menu.\--compact {
     padding: .5em;
-    border-bottom: solid 0.2em rgba(143, 149, 135, 0.1); }
+    border-bottom: 0.2em solid rgba(143, 149, 135, 0.1); }
   .menu.\--white-background {
     background: white; }
   .menu__brand img {
@@ -2630,7 +2705,6 @@ p {
       .menu__brand img {
         width: 10em; } }
   .menu__item {
-    background: rgba(0, 92, 179, 0.5);
     padding: .5em 1em;
     text-decoration: none;
     white-space: nowrap;
@@ -2641,6 +2715,8 @@ p {
     .menu__item:hover {
       color: rgba(255, 255, 255, 0.7);
       background: rgba(0, 92, 179, 0.6); }
+    .menu__item.\--active {
+      background: rgba(0, 92, 179, 0.5); }
   .menu__avatar {
     cursor: pointer; }
     .menu__avatar img {

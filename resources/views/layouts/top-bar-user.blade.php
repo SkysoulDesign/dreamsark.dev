@@ -11,10 +11,10 @@
         @lang('navbar.discover-project')
         <div class="menu">
             <div class="header"></div>
-            <a class="item" href="{{ route('projects') }}">Discover Project</a>
+            <a class="item" href="{{ route('project.index') }}">Discover Project</a>
             <a class="item" href="{{ route('votes') }}">Vote</a>
             <a class="item" href="{{ route('user.project.index') }}">My Projects</a>
-            <a class="item" href="{{ route('project.create') }}">Create Project</a>
+            <a class="item" href="{{ route('user.project.create') }}">Create Project</a>
         </div>
     </div>
     <a class="active item" href="{{ route('public.profile.index') }}">

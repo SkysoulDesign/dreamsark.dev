@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Jobs\Project\CreateProjectJob;
@@ -27,11 +26,6 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     private $isIFrameCall = false;
-
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['show', 'index']]);
-    }
 
     /**
      * Show Projects Page

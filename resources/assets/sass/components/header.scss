@@ -24,7 +24,11 @@ header, .header {
   }
 
   @include option(inverted) {
-    color: color(white);
+
+    &, p {
+      @extend .\+white;
+    }
+
   }
 
   @include option(centered) {

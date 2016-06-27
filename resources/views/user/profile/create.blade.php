@@ -32,7 +32,7 @@
             </div>
 
             <div id="canvas" class="small-12 medium-6 small-order-1 medium-order-3 columns">
-                <img src="{{ asset('img/temp/profile-1.png') }}" alt="">
+                {{--<img src="{{ asset('img/temp/profile-1.png') }}" alt="">--}}
             </div>
 
             <div class="small-12 medium-3 small-order-3 medium-order-4 columns">
@@ -103,7 +103,7 @@
 
 @section('pos-scripts')
 
-    {{--<script src="{{ asset('js/profile.js') }}"></script>--}}
+    <script src="{{ asset('js/profile.js') }}"></script>
     <script>
         var profile = app.page(
                 'profile',

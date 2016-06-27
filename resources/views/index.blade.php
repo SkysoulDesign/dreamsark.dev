@@ -12,7 +12,7 @@
 
             <div class="home-page__background__overlay"></div>
 
-            @include('partials.menu')
+            @include('partials.navigation.menu', ['translucent' => true])
 
             <div class="row slider">
                 Lorem ipsum sit amet, consectetur adipisicing elit.

@@ -1,57 +1,40 @@
-@extends('layouts.master-user')
+@extends('layouts.master')
 
 @section('content')
-    @php
-    $stageArr = ['review', 'fund', 'distribution'];
-    $projectStage = strtolower(class_basename($project->stage));
-    @endphp
-    <div class="column">
 
+    <div class="home-page__background">
 
-        @if(!in_array($projectStage, $stageArr))
-            @if(!$project->stage->active)
-                <div class="ui inverted red segment">
-                    @lang('project.project-failed')
-                </div>
-            @endif
-            @if($project->stage->vote->active)
-                <div class="ui inverted olive segment">
-                    <a class="ui header" href="{{ route('vote.show', $project->stage->vote->id) }}">
-                        @lang('vote.is-open')
-                    </a>
-                </div>
-            @endif
-        @endif
+        <div class="home-page__background__overlay"></div>
 
-        @include('project.' . strtolower(class_basename($project->stage)) . '.show')
+        @include('partials.navigation.menu', ['translucent' => true])
 
-        @if(isset($isIFrameCall) && $isIFrameCall)
-        @else
-            @include('partials.comments')
-        @endif
+        <div class="row">
+            <div class="small-12">
+                <header class="header --inverted +center">
+                    Lorem ipsum dolor sit amet
+                    <p>consectetur adipisicing elit. Aperiam cupiditate dicta dolorem eum,
+                        exercitationem, fuga ipsam itaque libero minus nam nesciunt nostrum odio, porro qui sapiente sit
+                        vel voluptatem voluptates?</p>
+                </header>
+            </div>
+        </div>
+
+        <ark-nav>
+            <ark-nav-item active>Project</ark-nav-item>
+            <ark-nav-item>Idea</ark-nav-item>
+            <ark-nav-item>Synapse</ark-nav-item>
+            <ark-nav-item>Script</ark-nav-item>
+        </ark-nav>
 
     </div>
 
-@endsection
 
-@section('styles')
-    <link href="{{ asset('css/flipclock.css') }}" rel="stylesheet" media="all"/>
-@endsection
-@section('pos-scripts')
-    <script src="{{ asset('js/flipclock.min.js') }}"></script>
-    @if(in_array($projectStage, $stageArr))
-        @include('forms.project-stage-script')
-    @else
-        <script>
-            $(document).ready(function () {
-                /**
-                 * Countdown
-                 */
-                if ($('#flipclock').length > 0)
-                    $('#flipclock').FlipClock($('#flipclock').attr('data-time'), {
-                        countdown: true
-                    });
-            });
-        </script>
-    @endif
+
+    <div class="row">
+        <div class="small-8">1</div>
+        <div class="small-4">
+            2
+        </div>
+    </div>
+
 @endsection

@@ -4,13 +4,41 @@
 
     padding: 1.5em .2em;
 
+    a {
+
+      @extend a;
+
+      &:hover {
+        @extend a:hover;
+      }
+
+    }
+
+    @include option(inverted) {
+      a {
+        @extend .\+white;
+      }
+    }
+
+    @include option(translucent) {
+
+      background: color($color: pure-black, $alpha: 10);
+
+      padding: .3em;
+
+      a {
+        @extend a.\--inverted
+      }
+
+    }
+
     @include respond-to(desktop) {
       padding: 2em;
     }
 
     @include option(compact) {
       padding: .5em;
-      border-bottom: solid .2em color(gray, dark, 10);
+      border-bottom: .2em solid color(gray, dark, 10);
     }
 
     @include option(white-background) {
@@ -33,7 +61,6 @@
 
     @include part(item) {
 
-      background: color(primary, dark, 50);
       padding: .5em 1em;
       text-decoration: none;
       white-space: nowrap;
@@ -42,6 +69,10 @@
       &:hover {
         color: color(primary, x-light, 70);
         background: color(primary, dark, 60);
+      }
+
+      @include option(active) {
+        background: color(primary, dark, 50);
       }
 
       @include font-style('links');

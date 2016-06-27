@@ -11,6 +11,12 @@
       border-radius: $border $border 0 0;
     }
 
+    @include option(flat) {
+      & > img {
+        border-radius: 0 !important;
+      }
+    }
+
     @include part(avatar) {
       position: absolute;
       right: 0;

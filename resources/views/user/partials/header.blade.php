@@ -1,34 +1,6 @@
 <div class="base-page">
 
-    <div class="row align-middle --fluid menu --compact --white-background">
-
-        <div class="small-6 columns menu__brand">
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('img/temp/dreamsark-blue.png') }}">
-            </a>
-        </div>
-
-        <div class="small-6 columns +align-right">
-
-            <div class="dropdown">
-
-                <div class="dropdown__trigger">
-                    <a href="#">{{ auth()->user()->username }}</a>
-                </div>
-
-                <div class="dropdown__content">
-                    <a href="{{ route('user.account') }}" class="dropdown__content__item">Account</a>
-                    <div class="dropdown__content__item">Settings</div>
-                    <a href="{{ route('logout') }}" class="dropdown__content__item">
-                        Log-out
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    @include('partials.navigation.menu')
 
     @if(!isset($header))
 

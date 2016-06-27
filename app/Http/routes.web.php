@@ -100,6 +100,19 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
     /*
     |--------------------------------------------------------------------------
+    | Project Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is listed all routes prefixed with user.
+    |
+    */
+    $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+        $app->get('/', ProjectController::class . '@index')->name('index');
+        $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
     | User Routes
     |--------------------------------------------------------------------------
     |
@@ -129,9 +142,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->get('create', UserProjectController::class . '@create')->name('create');
             $app->post('store', ProjectController::class . '@store')->name('store');
 
-//            $app->get('projects', ProjectController::class . '@index')->name('index');
 
-            $app->get('show/{project}', ProjectController::class . '@show')->name('show');
             $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
             $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
             $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
@@ -231,14 +242,14 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->any('notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
         $app->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
-       /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
-            $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
-            $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
-        });
-        $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
-            $app->post('status', PaymentController::class . '@uPStatus')->name('status');
-            $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
-        });*/
+        /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
+             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
+             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+         });
+         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
+             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
+             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
+         });*/
 
     });
 
