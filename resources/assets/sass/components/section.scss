@@ -3,6 +3,9 @@
   background: color(white);
   padding: 1em;
 
+  border: 1px solid color(gray, light);
+  border-radius: .3em;
+
   @include part(nav) {
 
     font-weight: bold;

@@ -19,6 +19,13 @@
   text-transform: uppercase;
   text-align: center;
 
+  @include option(inverted) {
+    color: color(black);
+    &:hover {
+      color: color(primary);
+    }
+  }
+
   &:hover {
     color: color(white);
   }
@@ -44,7 +51,7 @@
 
   }
 
-  @include option(rounded){
+  @include option(rounded) {
     border-radius: 5em;
   }
 

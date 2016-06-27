@@ -118,4 +118,77 @@
 
   }
 
+  @include part(info) {
+
+    position: relative;
+    color: color(white);
+    padding: 0;
+    height: 100%;
+
+    @include breakpoint(small down) {
+      margin-bottom: 2em;
+    }
+
+    img {
+
+      height: 500px;
+      object-fit: cover;
+
+      @include breakpoint(small down) {
+        height: 630px;
+      }
+
+      @include breakpoint(medium up) {
+        border-radius: .3em;
+      }
+    }
+
+    @include part(overlay) {
+
+      position: absolute;
+      top: 0;
+      padding: 2em;
+
+      width: 100%;
+      height: 100%;
+      background-color: color($color: primary, $alpha: 80);
+      z-index: 1;
+      transition: .25s;
+
+      @include breakpoint(medium up) {
+        border-radius: .3em;
+      }
+
+      &:hover {
+        background-color: color($color: primary, $alpha: 90);
+      }
+
+      h1, p {
+        color: color(white);
+        margin: 0;
+        padding: 0;
+      }
+
+      & > div {
+        margin: 1em 0;
+        font-weight: bolder;
+
+        span {
+          display: block;
+          font-weight: normal;
+        }
+
+      }
+
+    }
+
+  }
+
+  @include option(margin-top) {
+
+    @include breakpoint(medium up) {
+      margin-top: 2em;
+    }
+
+  }
 }

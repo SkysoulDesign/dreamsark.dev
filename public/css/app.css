@@ -1619,6 +1619,10 @@ button, .button {
   position: relative;
   text-transform: uppercase;
   text-align: center; }
+  button.\--inverted, .button.\--inverted {
+    color: #353832; }
+    button.\--inverted:hover, .button.\--inverted:hover {
+      color: #0083ff; }
   button:hover, .button:hover {
     color: white; }
   button:focus, .button:focus {
@@ -2348,7 +2352,9 @@ header, .header {
 
 .section, section {
   background: white;
-  padding: 1em; }
+  padding: 1em;
+  border: 1px solid #dbddd9;
+  border-radius: .3em; }
   .section__nav {
     font-weight: bold;
     padding: 0; }
@@ -2624,6 +2630,52 @@ header, .header {
     margin-bottom: 2em; }
     .project-page__list__item:nth-last-child(-n + 2) {
       margin-bottom: 0; }
+
+.project-page__info {
+  position: relative;
+  color: white;
+  padding: 0;
+  height: 100%; }
+  @media screen and (max-width: 39.9375em) {
+    .project-page__info {
+      margin-bottom: 2em; } }
+  .project-page__info img {
+    height: 500px;
+    object-fit: cover; }
+    @media screen and (max-width: 39.9375em) {
+      .project-page__info img {
+        height: 630px; } }
+    @media screen and (min-width: 40em) {
+      .project-page__info img {
+        border-radius: .3em; } }
+  .project-page__info__overlay {
+    position: absolute;
+    top: 0;
+    padding: 2em;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 131, 255, 0.8);
+    z-index: 1;
+    transition: .25s; }
+    @media screen and (min-width: 40em) {
+      .project-page__info__overlay {
+        border-radius: .3em; } }
+    .project-page__info__overlay:hover {
+      background-color: rgba(0, 131, 255, 0.9); }
+    .project-page__info__overlay h1, .project-page__info__overlay p {
+      color: white;
+      margin: 0;
+      padding: 0; }
+    .project-page__info__overlay > div {
+      margin: 1em 0;
+      font-weight: bolder; }
+      .project-page__info__overlay > div span {
+        display: block;
+        font-weight: normal; }
+
+@media screen and (min-width: 40em) {
+  .project-page.\--margin-top {
+    margin-top: 2em; } }
 
 /**
 * Initiate things up
