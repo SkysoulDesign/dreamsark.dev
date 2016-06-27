@@ -30,17 +30,8 @@ class Transaction extends Model
      */
     protected $casts = [
         'paid' => 'boolean',
+        'is_canceled' => 'boolean',
     ];
-
-    /**
-     * Relation to TransactionMessages Table
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function messages()
-    {
-        return $this->hasOne(Message::class);
-    }
 
     /**
      * Convert amount to fen
@@ -61,4 +52,15 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relation to TransactionMessages Table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function message()
+    {
+        return $this->hasOne(Message::class);
+    }
+
 }

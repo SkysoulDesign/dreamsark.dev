@@ -25,7 +25,7 @@ class CoinCreation extends Request
     {
         return [
             'payment_method' => 'required',
-            'amount' => 'required'
+            'amount' => 'required|integer|min:1'
         ];
     }
 }

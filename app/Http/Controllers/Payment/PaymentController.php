@@ -4,7 +4,9 @@ namespace DreamsArk\Http\Controllers\Payment;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
+use DreamsArk\Jobs\Payment\CancelPaymentJob;
 use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
+use DreamsArk\Jobs\Payment\UpdateOrCreateTransactionMessageJob;
 use DreamsArk\Jobs\User\Bag\PurchaseCoinJob;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
@@ -37,7 +39,12 @@ class PaymentController extends Controller
     public function callback(Request $request, Transaction $transaction)
     {
 
-        if (!$transaction->payment->verify($request->all()))
+        if (!$transaction->isPaid())
+            dispatch(new UpdateOrCreateTransactionMessageJob($transaction, [
+                'response' => json_encode($request->all())
+            ]));
+
+        if (!$transaction || !$transaction->payment->verify($request->except('invoice_no')))
             return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
 
         $response = redirect()->route('user.purchase.index');
@@ -48,7 +55,7 @@ class PaymentController extends Controller
         if ($transaction->isPaid())
             return $response->withSuccess('Your Purchase has been made.');
 
-        return $response->withStatus('Your purchase is being processed.');
+        return $response->withWarning('Your purchase is being processed.');
     }
 
     /**
@@ -56,30 +63,42 @@ class PaymentController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function notify_callback(Request $request, Transaction $transaction)
     {
 
-        if (!$transaction->payment->verify($request->all())) {
+        dispatch(new UpdateOrCreateTransactionMessageJob($transaction, [
+            'response' => json_encode($request->all())
+        ]));
+
+        if (!$transaction->payment->verify($request->except('invoice_no'))) {
             return response('failed');
         }
 
+        if ($transaction->isPaid())
+            return response($transaction->payment->getConfirmationResponse());
+
         /**
-         * Confirm Payment
+         * to set a transaction as canceled when no 'success_details' received
          */
-        $this->dispatch(new ConfirmPaymentJob(
+        if ($transaction->type == 'withdraw' && !$request->has('success_details') && $request->has('fail_details'))
+            $job = CancelPaymentJob::class;
+        else
+            $job = ConfirmPaymentJob::class;
+
+
+        /**
+         * Confirm or Cancel Job
+         */
+        $this->dispatch(new $job(
             $transaction, $request->toArray()
         ));
 
         return response($transaction->payment->getConfirmationResponse());
     }
 
-    
-    
-    
-    
-    
-    
+
     public function transactionEnquiryEvent(Request $request, Transaction $transaction)
     {
         return;
@@ -105,16 +124,20 @@ class PaymentController extends Controller
             return redirect()->route('user.account');
     }
 
-    protected $defaultRoute = 'payment . status';
-    protected $responseData;
+    protected
+        $defaultRoute = 'payment . status';
+    protected
+        $responseData;
 
     /**
      * @param Request $request
      * @return
      */
-    public function paymentStatus(Request $request)
+    public
+    function paymentStatus(Request $request)
     {
-        $errors = \Session::get('errors');
+
+        $errors = session('errors');
         if ($request->result == 'pending' && is_null($errors)) {
             return view('payment.status')->withErrors(trans('payment.paid-receipt-not-received-check-later'));
         } else
@@ -126,7 +149,8 @@ class PaymentController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function alipayNotifications(Request $request)
+    public
+    function alipayNotifications(Request $request)
     {
 
         return response('');
@@ -150,7 +174,8 @@ class PaymentController extends Controller
     }
 
     /** UnionPay Methods */
-    protected function prepareUPResponseData(Request $request)
+    protected
+    function prepareUPResponseData(Request $request)
     {
         /**
          *  [
@@ -164,7 +189,8 @@ class PaymentController extends Controller
         $this->responseData->merge(compact('out_trade_no', 'trade_no'));
     }
 
-    protected function validateUPResponse()
+    protected
+    function validateUPResponse()
     {
         $status = 'fail';
         if ($this->responseData->get('respMsg', '') == 'success') {
@@ -178,7 +204,8 @@ class PaymentController extends Controller
         return $status;
     }
 
-    public function uPStatus(Request $request)
+    public
+    function uPStatus(Request $request)
     {
         if ($request->has('signature')) {
             $paymentResult = PaymentGateway::unionPayNotify()->validate($request->all());
@@ -201,7 +228,8 @@ class PaymentController extends Controller
         return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . trade - status - error'));
     }
 
-    public function uPNotifications(Request $request)
+    public
+    function uPNotifications(Request $request)
     {
         $responseText = 'NO_SIGNATURE';
         if ($request->has('signature')) {
@@ -227,7 +255,8 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    public function uPOrderEnquiry(Request $request)
+    public
+    function uPOrderEnquiry(Request $request)
     {
         $responseText = 'not - valid';
         $requestParams = $request->all();
@@ -268,7 +297,8 @@ class PaymentController extends Controller
         return response($responseText);
     }
 
-    protected function triggerAddCoinJob($request, $event = '')
+    protected
+    function triggerAddCoinJob($request, $event = '')
     {
         $out_trade_no = $request->out_trade_no;
         $trade_no = $request->trade_no ?: '';

@@ -27,6 +27,10 @@ class CreateTransactionJob extends Job
      * @var string
      */
     private $method;
+    /**
+     * @var string
+     */
+    private $type;
 
     /**
      * Create a new job instance.
@@ -34,12 +38,14 @@ class CreateTransactionJob extends Job
      * @param User $user
      * @param float $amount
      * @param string $method
+     * @param string $type
      */
-    public function __construct(User $user, float $amount, string $method)
+    public function __construct(User $user, float $amount, string $method, string $type)
     {
         $this->user = $user;
         $this->amount = $amount;
         $this->method = $method;
+        $this->type = $type;
     }
 
     /**
@@ -61,6 +67,7 @@ class CreateTransactionJob extends Job
         $transaction->setAttribute('unique_no', $this->generateUniqueTransactionID());
         $transaction->setAttribute('amount', $this->amount);
         $transaction->setAttribute('method', $this->method);
+        $transaction->setAttribute('type', $this->type);
 
         $transaction->save();
 

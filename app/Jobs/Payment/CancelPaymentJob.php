@@ -11,7 +11,7 @@ use DreamsArk\Models\Payment\Transaction;
  *
  * @package DreamsArk\Jobs\Payment
  */
-class ConfirmPaymentJob extends Job
+class CancelPaymentJob extends Job
 {
     /**
      * @var Transaction
@@ -24,22 +24,15 @@ class ConfirmPaymentJob extends Job
     private $response;
     
     /**
-     * @var bool
-     */
-    private $cancelTransaction;
-
-    /**
      * Create a new job instance.
      *
      * @param Transaction $transaction
      * @param array $response
-     * @param bool $cancelTransaction
      */
-    public function __construct(Transaction $transaction, array $response, bool $cancelTransaction = false)
+    public function __construct(Transaction $transaction, array $response)
     {
         $this->transaction = $transaction;
         $this->response = $response;
-        $this->cancelTransaction = $cancelTransaction;
     }
 
     /**
@@ -51,18 +44,13 @@ class ConfirmPaymentJob extends Job
     {
 
         $this->transaction->setAttribute('invoice_no', $this->response['invoice_no']);
-
-//        if ($this->cancelTransaction) {
-//            $this->transaction->setAttribute('paid', false);
-//            $this->transaction->setAttribute('is_canceled', true);
-//        } else
-            $this->transaction->setAttribute('paid', true);
-
+        $this->transaction->setAttribute('paid', false);
+        $this->transaction->setAttribute('is_canceled', true);
         $this->transaction->save();
 
         /**
          * Announce Payment was Confirmed
          */
-        event(new PaymentWasConfirmed($this->transaction, $this->response));
+        event(new PaymentWasCanceled($this->transaction, $this->response));
     }
 }

@@ -55,6 +55,13 @@ class Unionpay extends PaymentGateway
     public $serviceIdKey = 'merId';
 
     /**
+     * * Name of the invoice_no
+     *
+     * @var string
+     */
+    public $uniqueInvoiceNoKey = 'queryId';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @param array $config
@@ -63,16 +70,16 @@ class Unionpay extends PaymentGateway
     public function getAdditionalPostData(array $config) : array
     {
         return [
-            'version' => '5.0.0',
-            'encoding' => 'utf-8',
-            'txnType' => '01',
-            'txnSubType' => '01',
-            'bizType' => '000201',
-            'signMethod' => '01',
-            'channelType' => '07',
-            'accessType' => '0',
+            'version'      => '5.0.0',
+            'encoding'     => 'utf-8',
+            'txnType'      => '01',
+            'txnSubType'   => '01',
+            'bizType'      => '000201',
+            'signMethod'   => '01',
+            'channelType'  => '07',
+            'accessType'   => '0',
             'currencyCode' => '156',
-            'txnTime' => date('YmdHis'),
+            'txnTime'      => date('YmdHis'),
         ];
     }
 
@@ -137,16 +144,51 @@ class Unionpay extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
+        $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
+
         return (bool)openssl_verify($sha, $signature, $key, OPENSSL_ALGO_SHA1);
+    }
+
+    protected function getPublicKeyByCertId($certId) : string
+    {
+//        echo $certId.'<br/><pre>';
+        $cert_dir = base_path().'/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay';
+        $handle = opendir($cert_dir);
+        if ($handle) {
+            while ($file = readdir($handle)) {
+                clearstatcache();
+                $filePath = $cert_dir . '/' . $file;
+                if (is_file($filePath)) {
+                    if (pathinfo($file, PATHINFO_EXTENSION) == 'cer') {
+//                        echo $file.'--'.$this->getCertIdByCerPath($filePath).'<br/>';
+                        if ($this->getCertIdByCerPath($filePath) == $certId) {
+                            closedir($handle);
+                            return file_get_contents($filePath);
+                        }
+                    }
+                }
+            }
+        }
+        return file_get_contents($cert_dir.'/encryptpub.cer');
+    }
+
+    protected function getCertIdByCerPath($cert_path)
+    {
+        $x509data = file_get_contents($cert_path);
+        openssl_x509_read($x509data);
+        $certdata = openssl_x509_parse($x509data);
+//        print_r($certdata);
+        $cert_id = $certdata ['serialNumber'];
+
+        return $cert_id;
     }
 
     /**
      * Should return the price that is sent to the API gateway
      * for example, some gateways might require the price
      * in cents and others in dollar.
-     *
      * Attention to the return type, int != float
      * so it might have discrepancy on how the value is parsed on the gateway API
      *

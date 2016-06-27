@@ -40,7 +40,8 @@
     "psr-4": {
       "DreamsArk\\": "app/",
       "SkysoulDesign\\Form\\": "packages/SkysoulDesign/Form/src",
-      "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src"
+      "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src",
+      "SkysoulDesign\\Socialite\\": "packages/SkysoulSocialite/Socialite/src"
     },
     "files": [
       "app/Helpers/functions.php"

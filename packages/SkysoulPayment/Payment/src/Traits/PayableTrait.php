@@ -88,4 +88,23 @@ trait PayableTrait
         return $this->paid;
     }
 
+    /**
+     * Get Canceled Status of the transaction
+     *
+     * @return bool
+     */
+    public function isCanceled() : bool
+    {
+        return $this->is_canceled;
+    }
+
+    /**
+     * return status of a transaction in String
+     * @return string
+     */
+    public function getStatus() : string
+    {
+        return ($this->isCanceled() ? 'canceled' : ($this->isPaid() ? 'done' : 'pending'));
+    }
+
 }

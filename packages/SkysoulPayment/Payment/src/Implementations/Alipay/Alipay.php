@@ -61,6 +61,19 @@ class Alipay extends PaymentGateway
     public $serviceIdKey = 'partner';
 
     /**
+     * flag to do/skip withdraw event
+     *
+     * @var bool
+     */
+    public $isWithdrawAvail = true;
+
+    /**
+     * Name of the invoice_no
+     * @var string
+     */
+    public $uniqueInvoiceNoKey = 'trade_no';
+
+    /**
      * Returns any extra keyed params that should be sent within the request
      *
      * @param array $config
@@ -142,5 +155,19 @@ class Alipay extends PaymentGateway
         openssl_free_key($response);
 
         return base64_encode($sign);
+    }
+
+    /**
+     * overwrite keys like uniqueNoKey, priceKey, etc. on "notify_type=batch_trans_notify"
+     *
+     * @param string $notify_type
+     */
+    public function prepareInternalKeys(string $notify_type)
+    {
+        if ($notify_type == 'batch_trans_notify') {
+            $this->uniqueIdentifierKey = 'batch_no';
+            $this->priceKey = 'batch_fee';
+            $this->uniqueInvoiceNoKey = 'notify_id';
+        }
     }
 }
