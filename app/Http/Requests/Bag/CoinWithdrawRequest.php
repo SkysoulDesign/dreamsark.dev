@@ -24,9 +24,10 @@ class CoinWithdrawRequest extends Request
     public function rules()
     {
         return [
-            'batch_fee' => 'required|integer|max:'.$this->user()->bag->coins.'|min:1',
-            'email' => 'required|email',
-            'account_name' => 'required|string',
+//            'batch_fee' => 'required|integer|max:'.$this->user()->bag->coins.'|min:1',
+            'batch_fee' => 'required|numeric|max:'.$this->user()->bag->coins,
+            'mobile_number' => 'required|integer',
+            'real_name' => 'required|string',
             'payment_method' => 'required',
         ];
     }

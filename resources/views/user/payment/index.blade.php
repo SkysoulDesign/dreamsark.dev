@@ -98,12 +98,15 @@
                                                 }
 
                                                 $form.action = response.target;
+                                                if(response.data['_input_charset']!=undefined && response.data['_input_charset']!='')
+                                                    $form.action += '?_input_charset='+response.data['_input_charset'];
                                                 $form.method = 'post';
                                                 if (navigator.userAgent.indexOf("Firefox") != -1) {
                                                     $(document.body).append($form);
                                                     $('#doPayment').submit()
-                                                } else
+                                                } else {
                                                     $form.submit();
+                                                }
                                                 console.log($form);
 
                                             } else {

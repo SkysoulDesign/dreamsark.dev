@@ -17,6 +17,11 @@ return [
         'pay' => 'DAPG',
         'withdraw' => 'DAWG'
     ],
+    'commission' => [
+        'crew_salary' => 0,
+        'investor_return' => 0,
+        'crew_assessed' => 0,
+    ],
 
     'drivers' => [
 
@@ -27,10 +32,13 @@ return [
             'enabled' => true,
             'gateway_url' => 'https://mapi.alipay.com/gateway.do',
             'service_id' => '2088221979483694',
+            'service_email' => 'dreamsark666@163.com',
+            'service_name' => '北京追梦方舟文化传播有限公司',
             'private_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/rsa_private_key.pem',
             'public_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/alipay_public_key.pem',
             'cert_key_path' => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Alipay/cacert.pem',
             'sign_type' => 'RSA',
+            'md5_key' => 'lr2wkirlp7e8mkot0198zyzrqeu0u24f',
         ],
 
         'unionpay' => [

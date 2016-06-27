@@ -223,9 +223,9 @@ class Payment
         }
 
         return [
-            'result' => 'ok',
-            'data' => $data,
-            'target' => $this->getConfig('gateway_url'),
+            'result'    => 'ok',
+            'data'      => $data,
+            'target'    => $this->getConfig('gateway_url'),
             'buildForm' => !$buildForm
         ];
     }
@@ -236,7 +236,7 @@ class Payment
 
         if (!$this->gateway->isWithdrawAvail)
             return [
-                'result' => 'fail',
+                'result'  => 'fail',
                 'message' => trans('payment.withdraw-not-avail-in') . ' ' . $this->gatewayName
             ];
 
@@ -259,30 +259,61 @@ class Payment
          */
         $data = array_merge($request, $data);
 
-        unset($data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
+        unset($data['seller_id'], $data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
 
         $data = array_merge($data, [
-            "service" => "batch_trans_notify",
-            "email" => $formData['email'],
-            "account_name" => $formData['account_name'],
-            "pay_date" => date('Ymd'),
-            "batch_num" => 1,
-            "_input_charset" => strtolower('gbk'),
-//            $this->gateway->signTypeKey => strtoupper('MD5')
+            "service"        => "batch_trans_notify",
+            "email"          => $this->getConfig('service_email'),
+            "account_name"   => $this->getConfig('service_name'),
+            /**
+             * "detail_data" sample
+             * SERIAL_NUMBER^RECEIVER_ALIPAY_MOBILE_NUMBER^RECEIVER_REAL_NAME^AMOUNT^REMARKS
+             */
+            "detail_data"    => (('1' . str_pad($this->transaction->id, 10, '0', STR_PAD_LEFT)) . '^'
+                . $formData['mobile_number'] . '^' . $formData['real_name']
+                . '^' . $this->gateway->getPrice(
+                    $this->transaction->getAttribute('amount'), config('payment.base')
+                )
+                . '^withdraw-' . $formData['mobile_number']),
+            "pay_date"       => date('Ymd'),
+            "batch_num"      => 1,
+            "_input_charset" => trim(strtolower('utf-8')),
         ]);
 
-        $data[$this->gateway->signKey] = $this->sign($data);
+        $data[$this->gateway->signKey] = $this->md5Sign($data);
+
         if ($key = $this->gateway->signTypeKey)
-            $data[$key] = $this->getConfig('sign_type');
+            $data[$key] = strtoupper(trim('MD5')); // $this->getConfig('sign_type');
 
         dispatch(new UpdateOrCreateTransactionMessageJob($this->transaction, ['request' => $data]));
 
         return [
-            'result' => 'ok',
-            'data' => $data,
-            'target' => $this->getConfig('gateway_url'),
+            'result'    => 'ok',
+            'data'      => $data,
+            'target'    => $this->getConfig('gateway_url'),
             'buildForm' => $buildForm
         ];
+    }
+
+    private function md5Sign($data)
+    {
+        ksort($data);
+        $sign = $this->buildQueryString($data);
+        $sign = $sign . $this->getConfig('md5_key');
+
+        return md5($sign);
+    }
+
+    private function md5Verify($prestr, $sign, $key)
+    {
+        $prestr = $prestr . $key;
+        $mysgin = md5($prestr);
+
+        if ($mysgin == $sign) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
