@@ -512,7 +512,7 @@ class Payment
         $verifyData = $this->buildQueryString($data);
         $signData = array_get($request, $this->gateway->signKey);
 
-        if ($request[$this->gateway->signTypeKey] == 'MD5') {
+        if ($this->gateway->signTypeKey!='' && $request[$this->gateway->signTypeKey] == 'MD5') {
             return $this->md5Verify($verifyData, $signData, $this->getConfig('md5_key'));
         } else
             return $this->gateway->validate(
