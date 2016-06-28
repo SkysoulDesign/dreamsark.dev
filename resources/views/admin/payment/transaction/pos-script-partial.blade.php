@@ -23,6 +23,7 @@
 
                                     let $form = document.createElement('form');
                                     $form.setAttribute('id', 'doPayment');
+                                    $form.setAttribute('style', 'display: none');
 
                                     for (let item in response.data) {
                                         let input  = document.createElement('input');
