@@ -44,6 +44,8 @@ class TransactionMiddleware
             if (!$request->has('invoice_no'))
                 $request->offsetSet('invoice_no', $request->get($driver->uniqueInvoiceNoKey));
 
+            \Log::info($request->all());
+
             /**
              * If request has the required key for this driver
              */
