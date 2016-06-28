@@ -69,7 +69,7 @@
                                     on:         'now',
                                     data:       form.serialize(),
                                     onError:    function (errorMessage) {
-                                        alert(errorMessage);
+                                        showNotification(errorMessage);
                                     },
                                     onResponse: function (response) {
 
@@ -128,13 +128,13 @@
                                                     $('#popup-modal').modal('show');
 //                                                triggerEvent(response.data['unique_no']);
                                                 } else {
-                                                    alert(message);
+                                                    showNotification(message);
                                                     window.location = window.location.href;
                                                 }
 
                                             }
                                         } else {
-                                            alert(message)
+                                            showNotification(message)
                                         }
 
                                     }
@@ -148,6 +148,10 @@
             });
 
         });
+        function showNotification(message) {
+            $('.notifyContainer .message').html(message)
+            $('.notifyContainer').fadeToggle(500);
+        }
         function triggerEvent(unique_no) {
             var loop         = 1, limit = 15;
             var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);
