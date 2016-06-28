@@ -55,14 +55,20 @@
                             <i class="icon users"></i> @lang('project.script')
                         </a>
                     </div>
-                    @if($project->idea) @include('modals.project-idea-show-modal') @endif
-                    @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
-                    @if($project->script) @include('modals.project-script-show-modal') @endif
 
                 </div>
             </div>
+            @if(auth()->check() && auth()->user()->id == $project->user_id)
+                <div class="ui one inverted blue item menu">
+                    <a onClick="if(confirm('{{ trans('project.confirm-to-complete') }}')) return true;" href="{{ 'javascript:;' }}"
+                       class="item">@lang('project.set-complete')</a>
+                </div>
+            @endif
         </div>
     </div>
+    @if($project->idea) @include('modals.project-idea-show-modal') @endif
+    @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
+    @if($project->script) @include('modals.project-script-show-modal') @endif
 
     <div class="ui stacked segments">
         <div class="ui segment" style="min-height: 100px;">

@@ -53,7 +53,8 @@
                             }
                         },
                         complete:   function () {
-                            window.location = window.location.href;
+                            if (newStatus == 'cancel')
+                                window.location = window.location.href;
                         }
                     });
                 }
