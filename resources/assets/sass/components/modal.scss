@@ -1,0 +1,20 @@
+@include component(modal) {
+
+  position: relative;
+
+  @include option(open) {
+    pointer-events: none;
+  }
+
+  @include part(window) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* Sit on top */
+    overflow: auto;
+    background-color: color($color: pure-black, $alpha: 90);
+  }
+
+}

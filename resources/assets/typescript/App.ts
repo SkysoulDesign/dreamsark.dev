@@ -1,4 +1,3 @@
-import Vue = require("vue");
 import {Component} from "./Component";
 
 /**

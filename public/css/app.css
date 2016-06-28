@@ -1609,6 +1609,7 @@ button, .button {
   border-radius: 5px;
   width: 100%;
   color: white;
+  cursor: pointer;
   line-height: normal;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2381,6 +2382,8 @@ header, .header {
     .section__nav.\--right {
       text-align: right; }
 
+/** FORGOT TO PUT THIS ON ITS OWN FILE NOW DONT KNOW WHERE I USED IT
+*/
 .project {
   padding: 2em 0; }
   .project:nth-child(n + 2):nth-last-child(n + 2) {
@@ -2444,6 +2447,21 @@ header, .header {
     fill: #d90d12; }
   .hex-icon.\--designer svg {
     fill: #0095ff; }
+
+.modal {
+  position: relative; }
+  .modal.\--open {
+    pointer-events: none; }
+  .modal__window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    /* Sit on top */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); }
 
 /**
 * Pages
@@ -2561,6 +2579,10 @@ header, .header {
       .profile-page__profiles li:hover {
         transform: scale(1.1); } }
 
+@media screen and (min-width: 40em) {
+  .project-page.\--margin-top, .project-page.\--tab-comments {
+    margin-top: 2em; } }
+
 .project-page__palette {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -2673,9 +2695,8 @@ header, .header {
         display: block;
         font-weight: normal; }
 
-@media screen and (min-width: 40em) {
-  .project-page.\--margin-top {
-    margin-top: 2em; } }
+.project-page.\--tab-comments section {
+  margin-bottom: 2.5em; }
 
 /**
 * Initiate things up
@@ -2698,9 +2719,9 @@ a, .menu a {
   text-decoration: none; }
   a:hover, .menu a:hover {
     color: #0083ff; }
-  a.\--inverted, .section__nav__item.\--as-button a, .menu.\--translucent a {
+  a.\--inverted, .section__nav__item.\--as-button a, .project-page__info__overlay > div span a, .menu .project-page__info__overlay > div span a, .menu.\--translucent a {
     color: white; }
-    a.\--inverted:hover, .section__nav__item.\--as-button a:hover, .menu.\--translucent a:hover {
+    a.\--inverted:hover, .section__nav__item.\--as-button a:hover, .project-page__info__overlay > div span a:hover, .menu .project-page__info__overlay > div span a:hover, .menu.\--translucent a:hover {
       color: rgba(255, 255, 255, 0.88); }
 
 p {

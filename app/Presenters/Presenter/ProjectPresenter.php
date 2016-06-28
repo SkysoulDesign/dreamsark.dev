@@ -4,11 +4,47 @@ namespace DreamsArk\Presenters\Presenter;
 
 use DreamsArk\Presenters\Presenter;
 
+/**
+ * Class ProjectPresenter
+ *
+ * @package DreamsArk\Presenters\Presenter
+ */
 class ProjectPresenter extends Presenter
 {
 
     /**
+     * Get Voting date
+     *
+     * @return string
+     */
+    public function getVotingDate()
+    {
+        return $this->stage->vote->open_date->format('m/d/Y H:i');
+    }
+
+    /**
+     * Get Voting date
+     *
+     * @return string
+     */
+    public function getCloseVotingDate()
+    {
+        return $this->stage->vote->close_date->format('m/d/Y H:i');
+    }
+
+    /**
+     * Get Remaining date
+     *
+     * @return string
+     */
+    public function getRemainingDays()
+    {
+        return $this->stage->vote->open_date->diffInHours();
+    }
+
+    /**
      * Returns a HTML progress bar
+     *
      * @return string
      */
     public function progressBar()

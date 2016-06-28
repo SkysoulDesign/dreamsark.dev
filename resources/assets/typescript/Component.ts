@@ -15,6 +15,7 @@ export class Component {
         require('./components/Nav'),
         require('./components/Statistics'),
         require('./components/Progress'),
+        require('./components/Modal'),
     ];
 
     /**

@@ -48,7 +48,7 @@
                 </h3>
 
                 <div class="small-12 columns form__field --required">
-                    <textarea name="description" rows="5"></textarea>
+                    <textarea name="content" rows="5"></textarea>
                     <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aliquam amet
                         consectetur deserunt dignissimos dolorum excepturi facilis ipsum laboriosam minima
                         mollitia nisi pariatur, quos recusandae totam vel veniam voluptas voluptatibus.</span>
@@ -61,22 +61,22 @@
 
                 <div class="small-12 medium-4 columns form__field --required">
                     <label for="">Idea Stage</label>
-                    <input name="name" type="text" placeholder="Project Name">
+                    <input name="reward[idea]" type="text" placeholder="Project Name">
                 </div>
 
                 <div class="small-12 medium-4 columns form__field --optional">
                     <label for="">Synapse Stage</label>
-                    <input name="name" type="text" placeholder="Project Name">
+                    <input name="reward[synapse]" type="text" placeholder="Project Name">
                 </div>
 
                 <div class="small-12 medium-4 columns form__field --optional">
                     <label for="">Script Stage</label>
-                    <input name="name" type="text" placeholder="Project Name">
+                    <input name="reward[script]" type="text" placeholder="Project Name">
                 </div>
 
                 <div class="small-12 columns form__field --required">
                     <label for="">Ending Date</label>
-                    <input name="date" type="date" placeholder="ending date">
+                    <input name="voting_date" type="date" placeholder="ending date">
                     <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet beatae,
                         cum distinctio doloribus eius.</span>
                 </div>

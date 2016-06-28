@@ -83,10 +83,12 @@
 
             <div class="row project-page__list">
 
-                @foreach(range(1, 12) as $index)
+                @foreach($projects as $project)
                     <div href="#" class="small-12 medium-3 columns project-page__list__item">
                         <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
-                        <a href="#"><h1>The Jungle Book: The Movie</h1></a>
+                        <a href="{{ route('project.show', $project) }}">
+                            <h1>{{ $project->name }}</h1>
+                        </a>
                         <ul>
                             <li>User: <a href="#">milewski</a></li>
                             <li>Comments: 50</li>

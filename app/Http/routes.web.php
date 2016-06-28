@@ -51,7 +51,7 @@ $app->get('info', function () {
 
 /** @var $app \Illuminate\Routing\Router */
 
-$app->group(['middleware' => ['web']], function () use ($app) {
+$app->group(['middleware' => 'web'], function () use ($app) {
 
     /**
      * Home Controller
@@ -140,7 +140,7 @@ $app->group(['middleware' => ['web']], function () use ($app) {
 
             $app->get('/', UserProjectController::class . '@index')->name('index');
             $app->get('create', UserProjectController::class . '@create')->name('create');
-            $app->post('store', ProjectController::class . '@store')->name('store');
+            $app->post('store', UserProjectController::class . '@store')->name('store');
 
 
             $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');

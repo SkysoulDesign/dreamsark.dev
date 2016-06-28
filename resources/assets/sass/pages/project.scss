@@ -1,5 +1,13 @@
 @include page(project) {
 
+  @include option(margin-top) {
+
+    @include breakpoint(medium up) {
+      margin-top: 2em;
+    }
+
+  }
+
   @include part(palette) {
 
     user-select: none;
@@ -174,8 +182,14 @@
         font-weight: bolder;
 
         span {
+
           display: block;
           font-weight: normal;
+
+          a {
+            @extend a.\--inverted
+          }
+
         }
 
       }
@@ -184,11 +198,14 @@
 
   }
 
-  @include option(margin-top) {
+  @include option(tab-comments) {
 
-    @include breakpoint(medium up) {
-      margin-top: 2em;
+    @extend .\--margin-top;
+
+    section {
+      margin-bottom: 2.5em;
     }
 
   }
+
 }

@@ -7,7 +7,7 @@
 //@import '../../../node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import '../../../node_modules/csstyle/csstyle';
 @import '../../../node_modules/foundation-sites/scss/foundation';
-@import '../../../node_modules/family.scss/family';
+@import '../../../node_modules/family.scss/source/src/family';
 
 /**
 * Init Third Party Frameworks
@@ -41,6 +41,7 @@ $csstyle-root-id: 'app-root';
 @import 'components/section';
 @import 'components/statistic';
 @import 'components/hex-icon';
+@import 'components/modal';
 
 /**
 * Pages

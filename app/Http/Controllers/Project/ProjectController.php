@@ -5,10 +5,8 @@ namespace DreamsArk\Http\Controllers\Project;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
-use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
-use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Distribution;
@@ -27,6 +25,11 @@ class ProjectController extends Controller
 {
     private $isIFrameCall = false;
 
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['show', 'index']]);
+    }
+
     /**
      * Show Projects Page
      *
@@ -43,25 +46,14 @@ class ProjectController extends Controller
         return view('admin.project.index')->with('projects', $repository->paginate())->with('project_count', $repository->all()->count());
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new resource.
      *
-     * @param ProjectCreation|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProjectCreation $request)
+    public function create()
     {
-        if ($request->has('save_draft')) {
-            // TODO: Temporarily disabled feature of Save Draft;
-            $command = new CreateDraftJob(null, $request->user(), $request->all());
-        } else if ($request->has('save_publish')) {
-            $command = new CreateProjectJob($request->user(), $request->except('reward'), $request->get('reward'));
-        }
-        $this->dispatch($command);
-
-        return redirect()->route('projects');
-
+        return view('project.create')->with('user', auth()->user());
     }
 
     /**

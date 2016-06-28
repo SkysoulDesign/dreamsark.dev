@@ -16,6 +16,8 @@
 
 <body id="app-root" {!! isset($class) ? "class=\"$class\"" : '' !!}>
 
+@include('errors.errors')
+
 @yield('content')
 
 <div class="row +center">

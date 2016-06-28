@@ -71,7 +71,8 @@
 section {
   @extend .section;
 }
-
+/** FORGOT TO PUT THIS ON ITS OWN FILE NOW DONT KNOW WHERE I USED IT
+*/
 @include component(project) {
 
   padding: 2em 0;

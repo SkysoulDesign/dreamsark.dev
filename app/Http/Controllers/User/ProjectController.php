@@ -7,7 +7,6 @@ use DreamsArk\Http\Requests\User\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
-use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\User\User;
@@ -30,20 +29,13 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        /**
-         * @todo
-         */
-//        $projects = [];// $userRepository->drafts($request->user()->id);
-//        $publishedProjects = $projectRepository->publishedBy($request->user()->id)->actives(true)->get();
-//        $failedProjects = $projectRepository->publishedBy($request->user()->id)->actives(false)->get();
-
         return view('user.project.index')
             ->with('projects', $request->user()->projects()->actives()->get());
-
     }
 
     /**
@@ -57,6 +49,23 @@ class ProjectController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param ProjectCreation $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ProjectCreation $request)
+    {
+
+        $this->dispatch(new CreateProjectJob(
+            $request->user(), $request->except('reward'), $request->get('reward')
+        ));
+
+        return redirect()->route('project.index');
+    }
+
+    /**
      * @param $request
      */
     protected function getPaginationArray($request)
@@ -64,7 +73,7 @@ class ProjectController extends Controller
         $currentPage = $request->get('page', 1);
         $this->pagination = [
             'current' => $currentPage,
-            'limit'   => config('defaults.general.pagination.per_page')
+            'limit' => config('defaults.general.pagination.per_page')
         ];
     }
 
@@ -72,6 +81,7 @@ class ProjectController extends Controller
      * User's Backed/Funded List
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function backerList(Request $request)
@@ -90,6 +100,7 @@ class ProjectController extends Controller
      * User's Backed/Funded List
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function enrolledList(Request $request)
@@ -105,28 +116,10 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param ProjectCreation $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ProjectCreation $request)
-    {
-        if ($request->has('save_draft')) {
-            // TODO: Temporarily disabled feature of Save Draft;
-            $command = new CreateDraftJob(null, $request->user(), $request->all());
-        } else if ($request->has('save_publish')) {
-            $command = new CreateProjectJob($request->user(), $request->except('reward'), $request->get('reward'));
-        }
-        $this->dispatch($command);
-
-        return redirect()->route('user.projects')->with('message', trans('response.save-to-draft-s'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param Draft $draft
+     *
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
@@ -139,7 +132,8 @@ class ProjectController extends Controller
      * Draft Update
      *
      * @param ProjectCreation $request
-     * @param Draft $draft
+     * @param Draft           $draft
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(ProjectCreation $request, Draft $draft)
@@ -153,7 +147,8 @@ class ProjectController extends Controller
      * Publish Project
      *
      * @param ProjectPublication $request
-     * @param Draft $draft
+     * @param Draft              $draft
+     *
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
