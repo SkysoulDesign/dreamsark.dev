@@ -25,7 +25,7 @@ class TransactionMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        \Log::info($request->route('driver'));
+//        \Log::info($request->route('driver'));
         /**
          * @var PaymentGateway $driver 
          */
