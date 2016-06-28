@@ -15,7 +15,7 @@
                                     <i class="file icon"></i>
                                     <div class="content">
                                         <div class="header">
-                                            <a href="{{ route($item['name']) }}">{{ $item['label'] }}</a>
+                                            <a href="{{ (isset($item['param'])?route($item['name'], $item['param']):route($item['name'])) }}">{{ $item['label'] }}</a>
                                         </div>
                                     </div>
                                 </div>
