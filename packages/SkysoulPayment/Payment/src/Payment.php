@@ -304,12 +304,12 @@ class Payment
         return md5($sign);
     }
 
-    private function md5Verify($prestr, $sign, $key)
+    private function md5Verify($verifyData, $sign, $key)
     {
-        $prestr = $prestr . $key;
-        $mysgin = md5($prestr);
+        $verifyData = $verifyData . $key;
+        $verifySign = md5($verifyData);
 
-        if ($mysgin == $sign) {
+        if ($verifySign == $sign) {
             return true;
         } else {
             return false;
@@ -509,11 +509,17 @@ class Payment
 
         ksort($data);
 
-        return $this->gateway->validate(
-            $this->buildQueryString($data),
-            array_get($request, $this->gateway->signKey),
-            ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey())
-        );
+        $verifyData = $this->buildQueryString($data);
+        $signData = array_get($request, $this->gateway->signKey);
+
+        if ($request[$this->gateway->signTypeKey] == 'MD5') {
+            return $this->md5Verify($verifyData, $signData, $this->getConfig('md5_key'));
+        } else
+            return $this->gateway->validate(
+                $verifyData,
+                $signData,
+                ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey())
+            );
     }
 
     /**

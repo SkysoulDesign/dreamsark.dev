@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Payment;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Payment\CancelPaymentJob;
 use DreamsArk\Jobs\Payment\ConfirmPaymentJob;
 use DreamsArk\Jobs\Payment\UpdateOrCreateTransactionMessageJob;
@@ -86,6 +85,7 @@ class PaymentController extends Controller
             $job = CancelPaymentJob::class;
         else
             $job = ConfirmPaymentJob::class;
+        \Log::info(class_basename($job));
 
 
         /**
