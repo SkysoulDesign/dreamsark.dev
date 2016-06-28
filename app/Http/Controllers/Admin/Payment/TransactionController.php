@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Admin\Payment;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Payment\CancelPaymentJob;
 use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Repositories\Payment\TransactionRepository;
@@ -45,8 +44,9 @@ class TransactionController extends Controller
     {
         $response = ['message' => trans('error-occurred-unable-to-process')];
 
+        /** @var Transaction $transaction */
         $transaction = $transaction->find($request->get('transaction_id'));
-        if ($transaction) {
+        if ($transaction && !$transaction->isPaid() && !$transaction->isCanceled()) {
             $transaction->load('message');
 
             if ($request->new_status == 'cancel') {
@@ -54,7 +54,7 @@ class TransactionController extends Controller
                     $transaction, ['invoice_no' => 'NO_DATA']
                 ));
                 $response = ['message' => trans('payment.transaction-canceled-success')];
-            } else if ($request->new_status == 'approve') {
+            } else if ($request->new_status == 'approve' && !$transaction->isPaid()) {
                 $response = [
                     'result'    => 'ok',
                     'data'      => $transaction->message->request,

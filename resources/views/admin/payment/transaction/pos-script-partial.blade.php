@@ -3,7 +3,7 @@
         var processUrl = '{{ route('admin.transactions.update', 'PARAM') }}';
         $(document).ready(function () {
             $('.status.button').click(function () {
-                if(confirm("{{ trans('general.are-you-sure') }}?")) {
+                if (confirm("{{ trans('general.are-you-sure') }}?")) {
                     let newStatus = $(this).attr('type');
                     let unique_id = $(this).parents('td.actions').attr('unique_id');
                     $.ajax({
@@ -53,6 +53,7 @@
                             }
                         },
                         complete:   function () {
+                            window.location = window.location.href;
                         }
                     });
                 }

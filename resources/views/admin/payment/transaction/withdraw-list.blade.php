@@ -3,6 +3,9 @@
 @section('content')
     <h2>@lang('payment.withdraw-history')</h2>
     @include('admin.partials.transaction-menu', ['route_name' => 'admin.transactions.withdraw'])
+    <div class="ui message info">
+        @lang('payment.you-need-to-be-already-logged-in-alipay-to-approve')
+    </div>
     <table class="ui celled table">
         <thead>
         <tr>
