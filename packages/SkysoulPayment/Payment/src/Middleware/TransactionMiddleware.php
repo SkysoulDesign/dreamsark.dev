@@ -25,11 +25,11 @@ class TransactionMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        \Log::info($request->input('driver'));
+        \Log::info($request->route('driver'));
         /**
          * @var PaymentGateway $driver 
          */
-        if ($driver = app('payment.drivers')[$request->input('driver')]) {
+        if ($driver = app('payment.drivers')[$request->route('driver')]) {
 
             if ($driver instanceof SelfHandle) {
 
