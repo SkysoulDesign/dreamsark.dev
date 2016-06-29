@@ -78,7 +78,7 @@ class AuthController extends Controller
         $socialDriver = $request->social;
         $socialUser = Socialite::driver($socialDriver)->user();
 
-        if(is_null($socialUser))
+        if (is_null($socialUser))
             return redirect()->route('login')->withErrors(trans('auth.token-not-received'));
 
         /**
@@ -101,7 +101,7 @@ class AuthController extends Controller
              */
             $newUserData = [
                 'name'     => $socialUser->name,
-                'username' => preg_replace('/@.*?$/', '', $socialUser->email),
+                'username' => $socialUser->email != '' ? preg_replace('/@.*?$/', '', $socialUser->email) : $socialUser->id,
                 'email'    => $socialUser->email,
                 'password' => $faker->password(6, 6),
             ];
@@ -113,7 +113,7 @@ class AuthController extends Controller
 
             $user->socialite()->create($socialData);
             $user->fresh();
-            $message = trans('auth.account-created') . '. ' . trans('auth.please-set-your-password');
+            $message = trans('auth.account-created') . '. ' . trans('auth.please-update-your-personal-details');
         } else {
             /** @var User $user */
             $user = $userObj[0];
@@ -137,7 +137,7 @@ class AuthController extends Controller
         /** file save from url */
         $avatar_path = $avatar;
         if (!is_null($avatar)) {
-            
+
             $extension = pathinfo($avatar, PATHINFO_EXTENSION) ?: 'jpg';
             // pathinfo($socialUser->avatar, PATHINFO_FILENAME)
             $fileName = str_slug($user->username . '-' . $socialDriver . '-profile_avatar') . '.' . $extension;
