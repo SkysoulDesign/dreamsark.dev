@@ -19,9 +19,9 @@ class CreateUserSocialiteTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('auth_type', 30);
             $table->string('auth_id');
-            $table->string('auth_email');
-            $table->string('auth_token', 100);
-            $table->string('avatar_path');
+            $table->string('auth_email')->nullable();
+            $table->string('auth_token', 100)->nullable();
+            $table->string('avatar_path')->nullable();
             $table->timestamps();
         });
     }
