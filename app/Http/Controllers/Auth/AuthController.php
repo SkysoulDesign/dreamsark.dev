@@ -100,7 +100,7 @@ class AuthController extends Controller
              * Create User
              */
             $newUserData = [
-                'name'     => $socialUser->name,
+                'name'     => $socialUser->name??$socialUser->nickname??'',
                 'username' => $socialUser->email != '' ? preg_replace('/@.*?$/', '', $socialUser->email) : $socialUser->id,
                 'email'    => $socialUser->email,
                 'password' => $faker->password(6, 6),
