@@ -9,6 +9,9 @@
                 {{ method_field('patch') }}
                 {{ csrf_field() }}
                 <div class="form-item">
+                    <input name="name" type="text" value="{{ auth()->user()->name }}">
+                </div>
+                <div class="form-item">
                     <input name="username" readonly type="text" value="{{ auth()->user()->username }}">
                 </div>
                 <div class="form-item">
