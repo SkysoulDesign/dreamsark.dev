@@ -25,7 +25,7 @@ class UpdateUserInfoRequest extends Request
     {
         return [
             'email'    => 'required|email|unique:users,id,'.auth()->user()->id,
-            'password' => 'required|min:6',
+            'password' => 'sometimes|min:6',
         ];
     }
 }
