@@ -9,7 +9,7 @@
                 {{ method_field('patch') }}
                 {{ csrf_field() }}
                 <div class="form-item">
-                    <input disabled type="text" value="{{ auth()->user()->username }}">
+                    <input name="username" disabled type="text" value="{{ auth()->user()->username }}">
                 </div>
                 <div class="form-item">
                     <input {{ (auth()->user()->email!=''?'disabled ':'') }} name="email" type="email" placeholder="e-mail"
