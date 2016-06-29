@@ -24,8 +24,7 @@ class UpdateUserInfoRequest extends Request
     public function rules()
     {
         return [
-            'username' => 'required|unique:users',
-            'email'    => 'required|email|unique:users',
+            'email'    => 'required|email|unique:users,id,'.auth()->user()->id,
             'password' => 'required|min:6',
         ];
     }

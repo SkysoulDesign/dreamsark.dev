@@ -41,7 +41,7 @@ class SettingController extends Controller
     public function update(UpdateUserInfoRequest $request)
     {
 
-        dispatch(new UpdateUserJob($request->user(), $request->all()));
+        dispatch(new UpdateUserJob($request->user(), $request->except('username')));
 
         return redirect()->back();
     }
