@@ -12,7 +12,7 @@
                     <input disabled type="text" value="{{ auth()->user()->username }}">
                 </div>
                 <div class="form-item">
-                    <input disabled name="email" type="email" placeholder="e-mail"
+                    <input {{ (auth()->user()->email!=''?'disabled ':'') }} name="email" type="email" placeholder="e-mail"
                            value="{{ auth()->user()->email }}">
                 </div>
                 <div class="form-item">

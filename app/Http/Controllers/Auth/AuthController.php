@@ -126,7 +126,7 @@ class AuthController extends Controller
             $message = trans('auth.login-success');
         }
         if ($user instanceof User)
-            return redirect()->intended(route('user.account'))->withSuccess($message);
+            return redirect()->intended(route('user.settings'))->withSuccess($message);
 
         return redirect()->route('login')->withErrors(trans('auth.social-login-failed'));
 
