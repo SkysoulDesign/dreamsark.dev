@@ -35,7 +35,6 @@ class SettingControllerTest extends TestCase
     /**
      * Every authenticated user should be able to update their settings
      *
-     * @test
      */
     public function user_should_be_able_to_update_his_settings()
     {
