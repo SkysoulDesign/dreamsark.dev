@@ -209,7 +209,7 @@ class ProjectController extends Controller
          */
         dispatch(new CompleteProjectJob($project));
 
-        return redirect()->back()->withSuccess(trans('project.status-updated-success'));
+        return redirect()->back()->withSuccess(trans('project.status-updated-success') . '; ' . trans('project.coins-will-be-settled-soon'));
     }
 
 }
