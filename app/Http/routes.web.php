@@ -253,6 +253,8 @@ $app->group(['middleware' => ['web']], function () use ($app) {
             $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
         });
 
+        $app->get('{project}/setComplete', ProjectController::class . '@updateProjectAndComplete')->name('set.complete');
+
         /**
          * Project Take Controller
          */

@@ -16,6 +16,7 @@ use DreamsArk\Events\Project\CrewWasAdded;
 use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Events\Project\IdeaWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
+use DreamsArk\Events\Project\ProjectWasCompleted;
 use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
 use DreamsArk\Events\Project\Script\ScriptWasCreated;
@@ -164,6 +165,9 @@ class EventServiceProvider extends ServiceProvider
 
         EnrollerReceivedVote::class => [
             DeductUserCoins::class
+        ],
+
+        ProjectWasCompleted::class => [
         ],
 
         /**
