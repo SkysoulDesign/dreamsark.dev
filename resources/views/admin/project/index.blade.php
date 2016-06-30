@@ -35,6 +35,11 @@
                                 <a href="javascript:;" class="ui pink ribbon label">
                                     @lang('project.' . $project->type)
                                 </a>
+                            @elseif($project->type=='distribution')
+                                <a href="javascript:;"
+                                   class="ui {{ ($project->stage->active?'green':'brown') }} ribbon label">
+                                    @lang('project.' . ($project->stage->active?'complete':$project->type))
+                                </a>
                             @else
                                 @lang('project.' . $project->type)
                             @endif
@@ -43,15 +48,7 @@
                         <td>{{ $project->stage->reward->amount or '-'}}</td>
                         <td>{{ $project->stage->vote->open_date or '-' }}</td>
                         <td>
-                            @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Idea)
-                                @include('admin.partials.project.card-stages')
-                            @endif
-
-                            @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Synapse)
-                                @include('admin.partials.project.card-stages')
-                            @endif
-
-                            @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Script)
+                            @if(in_array(class_basename($project->stage), ['Idea', 'Synapse', 'Script', 'Distribution']))
                                 @include('admin.partials.project.card-stages')
                             @endif
 
