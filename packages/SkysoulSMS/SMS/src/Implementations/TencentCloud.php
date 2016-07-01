@@ -12,46 +12,36 @@ use SkysoulDesign\SMS\SMSAbstract;
 class TencentCloud extends SMSAbstract
 {
 
-    /**
-     * Application Key
-     *
-     * @var string
-     */
-    public $appKey = 'dffdfd6029698a5fdf4';
-
     public $phoneFormat = 'array';
     public $messageKey = 'msg';
     public $countryCodeKey = 'nationcode';
 
-    public $url = 'https://yun.tim.qq.com/v3/tlssmssvr/sendsms?sdkappid={app_id}&random={random}&hello={idontknow}';
+    public $url = 'https://yun.tim.qq.com/v3/tlssmssvr/sendsms?sdkappid={app_id}&random={random}';
 
     /**
      * Sign the request
      *
-     * @param string $key
-     * @param array  $data
-     *
+     * @param string $phone
      * @return string
-     *
      */
-    public function sign(string $key, array $data) : string
+    public function sign(string $phone) : string
     {
-        return md5($key . $data['phone']);
+        return md5($this->appSecret() . $phone);
     }
 
     public function appId()
     {
-        return 'im AppId';
+        return env('QCLOUD_APP_ID');
+    }
+
+    public function appSecret()
+    {
+        return env('QCLOUD_APP_SECRET');
     }
 
     public function random()
     {
-        return 'hello world';
-    }
-
-    public function idontknow()
-    {
-        return '123';
+        return rand(10000000,99999999);
     }
 
 }

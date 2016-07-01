@@ -59,6 +59,7 @@ class SMSServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
+            'sms',
             SMS::class,
             SMSInterface::class
         ];

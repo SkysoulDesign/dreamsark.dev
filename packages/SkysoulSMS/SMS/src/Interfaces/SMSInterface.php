@@ -14,12 +14,9 @@ interface SMSInterface
     /**
      * Sign the request
      *
-     * @param string $key
-     * @param array  $data
-     *
+     * @param string $phone
      * @return string
-     *
      */
-    public function sign(string $key, array $data) : string;
+    public function sign(string $phone) : string;
 
 }

@@ -84,6 +84,10 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      */
     $app->get('register', SessionController::class . '@create')->name('register');
     $app->post('register', SessionController::class . '@store')->name('register.store');
+    $app->group(['prefix' => 'mobile', 'as' => 'mobile.'], function () use ($app) {
+        $app->post('register', SessionController::class . '@storeMobile')->name('register.store');
+        $app->get('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
+    });
 
     /**
      * Login

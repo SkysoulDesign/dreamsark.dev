@@ -5,7 +5,6 @@ namespace SkysoulDesign\SMS;
 use GuzzleHttp\Client;
 use SkysoulDesign\SMS\Interfaces\SMSInterface;
 
-
 /**
  * Class Payment
  *
@@ -41,9 +40,9 @@ class SMS
     }
 
     /**
-     *
      * @param array|string|int $number
-     * @param string           $message
+     * @param string $message
+     * @return string
      */
     public function send($number, string $message)
     {
@@ -56,16 +55,17 @@ class SMS
          * Do stuff....
          */
 
-        $this->sendRequest([[
+        return $this->sendRequest([
             'tel' => [
-                "nationcode" => $code ?? 86,
+                "nationcode" => $code ?? '86',
                 "phone" => $number
             ],
             "type" => "0",
             "msg" => $message,
+            "sig" => $this->driver->sign($number),
             "extend" => "",
             "ext" => ""
-        ]]);
+        ]);
 
     }
 
@@ -73,15 +73,16 @@ class SMS
      * Send Request to the server
      *
      * @param array $data
+     * @return string
      */
     public function sendRequest(array $data = [])
     {
 
         $response = $this->client->request('POST', $this->composeUrl(), [
-            'json' => $data
+            'json' => $data,
         ]);
 
-        dd($response->getBody()->getContents());
+        return $response->getBody()->getContents();
 
     }
 
