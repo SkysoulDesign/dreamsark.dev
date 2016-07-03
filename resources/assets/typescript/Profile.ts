@@ -1,19 +1,22 @@
 import THREE = require('three');
-import Vector3 = THREE.Vector3;
 global.THREE = THREE;
 
-let head;
+import {Characters} from "./Profile/Characters";
 
-class Profile {
+/**
+ * Import the TrackballControls
+ */
+require('../../../node_modules/three/examples/js/controls/TrackballControls');
+
+export class Profile {
 
     private scene;
     private camera;
     private renderer;
     private control;
+    private characters;
 
     constructor() {
-
-        console.log();
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -22,31 +25,42 @@ class Profile {
             alpha: true
         });
 
-
-        this.control = require('../../../node_modules/three/examples/js/controls/TrackballControls');
         this.control = new THREE.TrackballControls(this.camera, document.getElementById('canvas'));
         this.control.noPan = true;
         this.control.noZoom = true;
 
-        this.init();
+        this.characters = new Characters();
 
     }
 
     init() {
 
-        let material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+        // let characters = ;
+        //
+        // let head = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), new THREE.MeshBasicMaterial(
+        //     {color: 'green', wireframe: true}
+        // ));
+        //
+        // let body = new THREE.Mesh(new THREE.BoxGeometry(300, 400, 200), new THREE.MeshBasicMaterial(
+        //     {color: 'yellow', wireframe: true}
+        // ));
+        //
+        // head.position.set(0, 200, 0);
+        // body.position.set(0, -300, 0);
+        //
+        // head.add(
+        //     body
+        // );
+        //
+        // console.dir(head)
+        // console.dir(characters.first())
 
-        head = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
-        let body = new THREE.Mesh(new THREE.BoxGeometry(300, 400, 200), material);
+        // console.dir(this.characters.first());
 
-        body.position.set(0, -300, 0);
-
-        head.position.set(0, 200, 0);
-        head.add(
-            body
+        this.scene.add(
+            this.characters.first()
         );
 
-        this.scene.add(head);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.camera.position.z = 1000;
 
@@ -59,21 +73,43 @@ class Profile {
 
     }
 
+    /**
+     * Start The Interaction
+     * @param item
+     */
+    start() {
+        this.init();
+        this.animate();
+    }
+
+    /**
+     * Switch Character
+     */
+    switch(id:number) {
+
+    }
+
     animate() {
 
-        requestAnimationFrame(app.animate);
+        let loop = () => {
 
-        head.rotation.y += 0.01;
+            requestAnimationFrame(loop);
 
-        app.control.update();
+            // head.rotation.y += 0.01;
 
-        app.renderer.render(
-            app.scene, app.camera
-        );
+            this.control.update();
+
+            this.renderer.render(
+                this.scene, this.camera
+            );
+
+        }
+
+        /**
+         * Start Loop
+         */
+        loop();
 
     }
 
 }
-
-let app = new Profile();
-app.animate();
