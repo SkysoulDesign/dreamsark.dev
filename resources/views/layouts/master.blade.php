@@ -20,17 +20,7 @@
 
 @yield('content')
 
-<div class="row +center">
-    <div class="small-12">
-        <header>
-            This is the footer
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque esse exercitationem, illo magni nesciunt
-                numquam odio porro suscipit ut, veritatis vero voluptatem? Autem deserunt doloribus ea, libero magnam
-                odit
-                quas!</p>
-        </header>
-    </div>
-</div>
+@include('partials.footer.common')
 
 @yield('scripts')
 

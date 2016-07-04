@@ -1,48 +1,52 @@
-@mixin dreamsark-divider() {
+@include component(divider) {
 
-  @include component(divider) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
 
-    width: 100%;
+  font-size: $h4;
+  text-transform: uppercase;
+  color: color(gray);
+  margin: 1em 0;
 
-    font-size: $h4;
-    text-transform: uppercase;
-    color: color(gray);
-    margin: 1em 0;
+  &:before, &:after {
+    content: '';
+    flex: 1;
+    background: color(gray, light);
+    height: 1px;
+  }
 
-    &:before, &:after {
-      content: '';
-      flex: 1;
-      background: color(gray, light);
-      height: 1px;
-    }
+  &:before {
+    margin: 0 .25em 0 0;
+  }
+
+  &:after {
+    margin: 0 0 0 .25em;
+  }
+
+  @include option(mini) {
+    font-size: $h5;
+  }
+
+  @include option(hair-line) {
+    opacity: .2;
+  }
+
+  @include option(straight) {
+    background: color(gray, light);
+  }
+
+  @include option(simple) {
 
     &:before {
-      margin: 0 .25em 0 0;
+      margin: 0;
     }
 
     &:after {
-      margin: 0 0 0 .25em;
-    }
-
-    @include option(mini) {
-      font-size: $h5;
-    }
-
-    @include option(simple) {
-
-      &:before {
-        margin: 0;
-      }
-
-      &:after {
-        margin: 0;
-      }
-
+      margin: 0;
     }
 
   }

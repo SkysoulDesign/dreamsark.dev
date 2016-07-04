@@ -42,6 +42,12 @@ $csstyle-root-id: 'app-root';
 @import 'components/statistic';
 @import 'components/hex-icon';
 @import 'components/modal';
+@import 'components/divider';
+
+/**
+* Layout
+*/
+@import 'layout/footer';
 
 /**
 * Pages
@@ -58,7 +64,6 @@ $csstyle-root-id: 'app-root';
 */
 @include dreamsark-global;
 //@include dreamsark-segment;
-@include dreamsark-divider;
 @include dreamsark-menu;
 
 //

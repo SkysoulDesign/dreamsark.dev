@@ -3,12 +3,10 @@
 namespace DreamsArk\Http\Controllers\Session;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests\Session\UserCreation;
 use DreamsArk\Http\Requests\Session\UserCreationMobile;
 use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
-use DreamsArk\Models\User\User;
 use Illuminate\Http\Request;
 use SkysoulDesign\SMS\SMS;
 
@@ -40,32 +38,7 @@ class SessionController extends Controller
         );
     }
 
-    /**
-     * Display a registration form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('session.register');
-    }
 
-    /**
-     * Dispatch command to create User
-     *
-     * @param UserCreation $request
-     * @return \Illuminate\View\View
-     */
-    public function store(UserCreation $request)
-    {
-        /**
-         * Create User
-         */
-        $this->dispatch(new CreateUserJob($request->all()));
-
-        return redirect()->route('user.account');
-
-    }
 
     /**
      * Dispatch command to create User

@@ -1,57 +1,21 @@
-/**
-* Settings
-*/
-
 @include component(footer) {
 
-  margin-top: 5%;
-  background: color(black, mid-light);
+  background: darken(color(primary, x-dark), 20);
+  padding: 3em 0;
 
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    z-index:-1;
-    background: #000;
-    width: 100%;
-    margin-top: -196px;
-    height: 196px;
-    background: url('../assets/bottom_pi-assets/bottom.png');
-    background-size: cover;
+  @include part(logo) {
+    img {
+      height: 2.5em;
+    }
   }
 
-  section.bottom {
-    background: color(black);
-    padding-top: 2%;
+  @include part(links) {
+    padding: 0;
+    list-style: none;
 
-    color: color(white, x-dark);
-
-    h4 {
-      color: color(white);
-      text-transform: uppercase;
-      font-weight: 300;
+    a {
+      @extend a.\--inverted;
     }
-
-    p {
-      font-size: rem-calc(14);
-    }
-
-    ul {
-
-      padding: 0;
-      margin: 0;
-      list-style: none;
-
-      text-transform: uppercase;
-      font-size: rem-calc(14);
-      font-weight: 300;
-
-      li {
-
-      }
-
-    }
-
   }
 
 }
