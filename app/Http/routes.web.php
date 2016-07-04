@@ -49,6 +49,7 @@ $app->get('info', function () {
     phpinfo();
 });
 
+
 /** @var $app \Illuminate\Routing\Router */
 
 $app->group(['middleware' => 'web'], function () use ($app) {
@@ -78,37 +79,37 @@ $app->group(['middleware' => 'web'], function () use ($app) {
 
     $app->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Auth: Login & Registration Routes
+    |--------------------------------------------------------------------------
+    */
+    $app->get('login', AuthController::class . '@login')->name('login');
+    $app->post('login/store', AuthController::class . '@store')->name('login.store');
+    $app->get('register', AuthController::class . '@register')->name('register');
+    $app->post('register/store', AuthController::class . '@registerStore')->name('register.store');
+    $app->get('logout', AuthController::class . '@logout')->name('logout');
+
     /**
-     * Registration
+     * Mobile
      */
-    $app->get('register', SessionController::class . '@create')->name('register');
-    $app->post('register', SessionController::class . '@store')->name('register.store');
     $app->group(['prefix' => 'mobile', 'as' => 'mobile.'], function () use ($app) {
         $app->post('register', SessionController::class . '@storeMobile')->name('register.store');
         $app->get('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
     });
 
     /**
-     * Login
+     * Social
      */
-    $app->get('login', AuthController::class . '@create')->name('login');
-
-    /** for social login */
     $app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
         $app->post('/', AuthController::class . '@loginWithSocial')->name('post');
         $app->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
     });
 
-    $app->post('login/store', AuthController::class . '@store')->name('login.store');
-    $app->get('logout', AuthController::class . '@logout')->name('logout');
-
     /*
     |--------------------------------------------------------------------------
     | Project Routes
     |--------------------------------------------------------------------------
-    |
-    | Here is listed all routes prefixed with user.
-    |
     */
     $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
 

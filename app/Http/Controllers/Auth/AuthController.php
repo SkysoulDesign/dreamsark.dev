@@ -49,9 +49,70 @@ class AuthController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function login()
     {
-        return view("auth.login");
+        return view('auth.login');
+    }
+
+    /**
+     * Display a registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function register()
+    {
+        return view('session.register');
+    }
+
+    /**
+     * Post the Login form
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function loginStore(Request $request)
+    {
+        /**
+         * Determines if it`s an email otherwise consider being a username
+         */
+        $field = filter_var($request->get('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $request->merge([$field => $request->get('login')]);
+
+        $this->validate($request, [
+            'login' => 'required',
+            'password' => 'required'
+        ]);
+
+        if ($this->auth->attempt($request->only($field, 'password'))) {
+
+            if ($this->auth->user()->is('admin'))
+                return redirect()->intended(route('admin.index'));
+
+            return redirect()->intended(route('home'));
+
+        }
+
+        return redirect()->route('login')->withInput()->withErrors('These credentials do not match our records.');
+    }
+
+    /**
+     * Dispatch command to create User
+     *
+     * @param UserCreation $request
+     *
+     * @return \Illuminate\View\View
+     */
+    public function registerStore(UserCreation $request)
+    {
+        /**
+         * Create User
+         */
+        $this->dispatch(new CreateUserJob($request->all()));
+
+        return redirect()->route('user.account');
+
     }
 
     public function loginWithSocial(Request $request)
@@ -86,10 +147,10 @@ class AuthController extends Controller
         $userObj = $userRepository->checkUserExists($socialUser->email, $socialUser->id, $socialDriver);
         $user = '';
         $socialData = [
-            'auth_type'   => $socialDriver,
-            'auth_id'     => $socialUser->id,
-            'auth_email'  => $socialUser->email,
-            'auth_token'  => $socialUser->token,
+            'auth_type' => $socialDriver,
+            'auth_id' => $socialUser->id,
+            'auth_email' => $socialUser->email,
+            'auth_token' => $socialUser->token,
             'avatar_path' => $socialUser->avatar
         ];
         if ($userObj->isEmpty()) {
@@ -99,9 +160,9 @@ class AuthController extends Controller
              * Create User
              */
             $newUserData = [
-                'name'     => $socialUser->name??$socialUser->nickname??'',
+                'name' => $socialUser->name??$socialUser->nickname??'',
                 'username' => $socialUser->email != '' ? preg_replace('/@.*?$/', '', $socialUser->email) : $socialUser->id,
-                'email'    => $socialUser->email,
+                'email' => $socialUser->email,
                 'password' => $faker->password(6, 6),
             ];
 
@@ -155,41 +216,6 @@ class AuthController extends Controller
         }
 
         return $avatar_path;
-    }
-
-    /**
-     * Post the Login form
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-
-        /**
-         * Determines if it`s an email otherwise consider being a username
-         */
-        $field = filter_var($request->get('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        $request->merge([$field => $request->get('login')]);
-
-        $this->validate($request, [
-            'login'    => 'required',
-            'password' => 'required'
-        ]);
-
-        if ($this->auth->attempt($request->only($field, 'password'))) {
-
-            if ($this->auth->user()->is('admin'))
-                return redirect()->intended(route('admin.index'));
-
-            return redirect()->intended(route('home'));
-
-        }
-
-
-        return redirect()->route('login')->withInput()->withErrors('These credentials do not match our records.');
-
     }
 
     /**

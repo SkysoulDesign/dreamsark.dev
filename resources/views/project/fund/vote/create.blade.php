@@ -50,7 +50,7 @@
                                             {{ $expenditure->expenditurable->cost }}
                                         </td>
                                         <td>
-{{--                                            {{ $enroller->enrollvotes->count() }}--}}
+                                            {{--                                            {{ $enroller->enrollvotes->count() }}--}}
                                             {{ $enroller->enrollvotes->pluck('amount')->sum() }}
                                         </td>
                                         <td class="collapsing">
@@ -98,10 +98,10 @@
             ;
 
             var embedIdentifier = '#profile-view-modal .ui.embed'
-            var iconElem        = ($(embedIdentifier).attr('data-icon')).replace(/ /g, '.')
+            var iconElem = ($(embedIdentifier).attr('data-icon')).replace(/ /g, '.')
             $('.view-profile').on('click', function () {
                 $(embedIdentifier).embed({
-                    url:     $(this).attr('data-url'),
+                    url: $(this).attr('data-url'),
                     onEmbed: function () {
                         $("#profile-view-modal").modal("refresh");
                     }

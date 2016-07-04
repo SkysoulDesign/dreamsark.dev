@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Fund extends Model
 {
+
     use ProjectableTrait, VotableTrait, EnrollableTrait, ScopeAbleTrait;
 
     /**

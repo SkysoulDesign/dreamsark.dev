@@ -5,6 +5,11 @@ namespace DreamsArk\Models\Traits;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\VotingException;
 
+/**
+ * Class VotableTrait
+ *
+ * @package DreamsArk\Models\Traits
+ */
 trait VotableTrait
 {
 
@@ -13,7 +18,9 @@ trait VotableTrait
      *
      * @var array
      */
-    private $order = array('idea', 'synapse', 'script', 'review', 'fund');
+    private $order = [
+        'idea', 'synapse', 'script', 'review', 'fund'
+    ];
 
     /**
      * Define which model is the Next on its creation order
