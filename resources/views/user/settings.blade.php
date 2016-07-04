@@ -1,4 +1,4 @@
-@extends('layouts.master-user')
+@extends('layouts.master')
 
 @section('content')
     @include('user.partials.navbar-left')
@@ -57,7 +57,6 @@
                         <svg>
                             <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
                         </svg>
-                        @include('partials.button-ripple')
                     </button>
                 </div>
             </form>

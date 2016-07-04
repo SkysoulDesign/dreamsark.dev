@@ -60,7 +60,6 @@
                                     <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
                                 </svg>
 
-                                @include('partials.button-ripple')
 
                             </button>
 
@@ -97,7 +96,6 @@
                                 <svg>
                                     <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
                                 </svg>
-                                @include('partials.button-ripple')
                             </button>
                         </div>
 
@@ -147,7 +145,7 @@
 @endsection
 
 @section('pos-scripts')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    {{--<script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/semantic.min.js') }}"></script>
     <script>
         $(document).ready(function () {
@@ -219,5 +217,5 @@
         .segment div.menu .item.active {
             background: none #ccc;
         }
-    </style>
+    </style>--}}
 @endsection
