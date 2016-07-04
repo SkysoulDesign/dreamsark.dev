@@ -77,26 +77,35 @@ class SessionController extends Controller
      */
     public function storeMobile(UserCreationMobile $request)
     {
-        if ($request->session()->get('mobile-' . $request->get('username')) != $request->get('sms_code'))
+
+        $mobile = $request->get('username');
+        if ($request->session()->get('mobile-' . $mobile) != $request->get('sms_code'))
             return redirect()->back()->withErrors('Invalid Verification Code');
         /**
          * Create User
          */
         $user = $this->dispatch(new CreateUserJob($request->except('sms_code')));
 
-        return redirect()->route('user.account');
+        $message = trans('auth.account-created') . '. ' . trans('auth.please-update-your-personal-details');
+
+        return redirect()->intended(route('user.settings'))->withSuccess($message);
 
     }
 
-    public function sendVerificationCode(Request $request, SMS $sms, Generator $faker)
+    public function sendVerificationCode(Request $request, SMS $sms, Generator $faker, User $user)
     {
         $verifyCode = $faker->randomNumber(6);
         $mobile = $request->get('mobile_number');
 
-        $message = '[DreamsArk] ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4);
+        $userObj = $user->where('username', $mobile)->get();
+        if (!$userObj->isEmpty())
+            $response = ['result' => '2', 'message' => trans('auth.mobile-number-exists')];
+        else {
+            $message = 'DreamsArk: ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4) . '';
 
-        $request->session()->set('mobile-' . $mobile, $verifyCode);
-        $response = $sms->send($mobile, $message);
+            $request->session()->put('mobile-' . $mobile, $verifyCode);
+            $response = $sms->send($mobile, $message);
+        }
 
         return response()->json($response);
     }

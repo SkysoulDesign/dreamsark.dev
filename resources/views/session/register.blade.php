@@ -178,10 +178,12 @@
                             setBtn()
                         }, 1000);
                         $.getJSON('{{ route('mobile.send.verify') }}', {mobile_number: mobileNumber}, function (data) {
-                            if (data.code == undefined || data.code != 0) {
+//                            data = JSON.parse(data);
+                            if (data.result == undefined || data.result != 0) {
                                 clearInterval(clear);
-                                sendSmsCode.html('{{ trans('auth.get-code') }}');
-                                alert('{{ trans('auth.fail-sending') }}');
+                                sendSmsCode.html('{{ trans('auth.get-code') }}').removeAttr('disabled');
+                                var message = data.message == undefined ? '{{ trans('auth.fail-sending') }}' : data.message;
+                                alert(message);
                             }
                         });
                     } else

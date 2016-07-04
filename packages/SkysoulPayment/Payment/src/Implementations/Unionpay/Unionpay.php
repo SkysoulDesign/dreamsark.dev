@@ -144,6 +144,7 @@ class Unionpay extends PaymentGateway
      */
     public function validate(string $query, string $sign, string $key) : bool
     {
+
         $key = $this->getPublicKeyByCertId($_REQUEST['certId']);
         $signature = base64_decode($sign);
         $sha = sha1($query, false);
