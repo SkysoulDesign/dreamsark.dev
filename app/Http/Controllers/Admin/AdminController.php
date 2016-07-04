@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Admin;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 
 /**
  * Class AdminHomeController
@@ -32,8 +31,8 @@ class AdminController extends Controller
                 ['name' => 'committee.project.distribute.list', 'label' => trans('navbar.project-in-distribute')],
             ]],
             ['label' => trans('navbar.transactions'), 'list' => [
-                ['name' => 'admin.transactions.purchases', 'label' => trans('navbar.purchases')],
-                ['name' => 'admin.transactions.withdraw', 'label' => trans('navbar.withdrawals')],
+                ['name' => 'admin.transactions.purchases', 'label' => trans('navbar.purchases'), 'param' => ['all']],
+                ['name' => 'admin.transactions.withdraw', 'label' => trans('navbar.withdrawals'), 'param' => ['all']],
             ]]
         ];
 

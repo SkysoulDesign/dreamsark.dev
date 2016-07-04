@@ -149,7 +149,7 @@ class Payment
      * @param null $default
      * @return array|string
      */
-    private function getConfig(string $value = null, $default = null)
+    public function getConfig(string $value = null, $default = null)
     {
         return config(
             "payment.drivers.$this->gatewayName" . ($value ? ".$value" : ''), $default
@@ -240,8 +240,6 @@ class Payment
                 'message' => trans('payment.withdraw-not-avail-in') . ' ' . $this->gatewayName
             ];
 
-        /*$this->gateway->uniqueIdentifierKey = 'batch_no';
-        $this->gateway->priceKey = 'batch_fee';*/
         $this->gateway->prepareInternalKeys('batch_trans_notify');
 
         /**
@@ -283,15 +281,17 @@ class Payment
         $data[$this->gateway->signKey] = $this->md5Sign($data);
 
         if ($key = $this->gateway->signTypeKey)
-            $data[$key] = strtoupper(trim('MD5')); // $this->getConfig('sign_type');
+            $data[$key] = strtoupper(trim('MD5'));
 
         dispatch(new UpdateOrCreateTransactionMessageJob($this->transaction, ['request' => $data]));
 
         return [
             'result'    => 'ok',
-            'data'      => $data,
+            'message'   => trans('payment.your-request-submitted-waiting-for-approval'),
+            'buildForm' => false
+            /*'data'      => $data,
             'target'    => $this->getConfig('gateway_url'),
-            'buildForm' => $buildForm
+            'buildForm' => $buildForm*/
         ];
     }
 
@@ -304,12 +304,12 @@ class Payment
         return md5($sign);
     }
 
-    private function md5Verify($prestr, $sign, $key)
+    private function md5Verify($verifyData, $sign, $key)
     {
-        $prestr = $prestr . $key;
-        $mysgin = md5($prestr);
+        $verifyData = $verifyData . $key;
+        $verifySign = md5($verifyData);
 
-        if ($mysgin == $sign) {
+        if ($verifySign == $sign) {
             return true;
         } else {
             return false;
@@ -509,11 +509,17 @@ class Payment
 
         ksort($data);
 
-        return $this->gateway->validate(
-            $this->buildQueryString($data),
-            array_get($request, $this->gateway->signKey),
-            ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey())
-        );
+        $verifyData = $this->buildQueryString($data);
+        $signData = array_get($request, $this->gateway->signKey);
+
+        if ($this->gateway->signTypeKey!='' && $request[$this->gateway->signTypeKey] == 'MD5') {
+            return $this->md5Verify($verifyData, $signData, $this->getConfig('md5_key'));
+        } else
+            return $this->gateway->validate(
+                $verifyData,
+                $signData,
+                ($this->gateway instanceof SelfHandle ? $this->getPrivateKey() : $this->getPublicKey())
+            );
     }
 
     /**

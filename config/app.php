@@ -154,8 +154,7 @@ return [
         /**
          * Developed
          */
-        SkysoulDesign\Form\FormServiceProvider::class,
-        SkysoulDesign\Payment\PaymentServiceProvider::class,
+        \SkysoulDesign\Form\FormServiceProvider::class,
 
         /**
          * Application Service Providers...
@@ -165,8 +164,8 @@ return [
         DreamsArk\Providers\EventServiceProvider::class,
         DreamsArk\Providers\RouteServiceProvider::class,
         DreamsArk\Providers\RepositoriesServiceProvider::class,
-        DreamsArk\Providers\ComposerServiceProvider::class,
-        SocialiteProviders\Manager\ServiceProvider::class,
+        SkysoulDesign\Payment\PaymentServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
     ],
 

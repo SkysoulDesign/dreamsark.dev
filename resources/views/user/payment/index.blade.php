@@ -6,10 +6,6 @@
         <h2>@lang('user.purchase-history')</h2>
         <div class="ui small menu">
             <div class="right menu">
-                {{--<a class="item" href="{{ route('user.purchase.coin.create') }}">
-                    <i class="add icon"></i>
-                    @lang('profile.add-coin')
-                </a>--}}
                 <a id="purchase-coin" class="item view-modal" href="javascript:;">
                     <i class="add icon"></i>
                     @lang('profile.add-coin')
@@ -73,7 +69,7 @@
                                     on:         'now',
                                     data:       form.serialize(),
                                     onError:    function (errorMessage) {
-                                        alert(errorMessage);
+                                        showNotification(errorMessage);
                                     },
                                     onResponse: function (response) {
 
@@ -98,8 +94,8 @@
                                                 }
 
                                                 $form.action = response.target;
-                                                if(response.data['_input_charset']!=undefined && response.data['_input_charset']!='')
-                                                    $form.action += '?_input_charset='+response.data['_input_charset'];
+                                                if (response.data['_input_charset'] != undefined && response.data['_input_charset'] != '')
+                                                    $form.action += '?_input_charset=' + response.data['_input_charset'];
                                                 $form.method = 'post';
                                                 if (navigator.userAgent.indexOf("Firefox") != -1) {
                                                     $(document.body).append($form);
@@ -111,7 +107,7 @@
 
                                             } else {
 //                                            console.log(response)
-                                                if (response.data['result_code'] == 'SUCCESS') {
+                                                if (response.data != undefined && response.data != '' && response.data['result_code'] == 'SUCCESS') {
                                                     let $form = '<div class="ui card centered">' +
                                                             '<div class="content">' +
                                                             '<span class="header" style="margin: auto;"><img src="{{ asset('img/logos/payment/wechat-logo.png') }}"' +
@@ -132,12 +128,13 @@
                                                     $('#popup-modal').modal('show');
 //                                                triggerEvent(response.data['unique_no']);
                                                 } else {
-                                                    alert(message);
+                                                    showNotification(message);
+                                                    window.location = window.location.href;
                                                 }
 
                                             }
                                         } else {
-                                            alert(message)
+                                            showNotification(message)
                                         }
 
                                     }
@@ -151,6 +148,10 @@
             });
 
         });
+        function showNotification(message) {
+            $('.notifyContainer .message').html(message)
+            $('.notifyContainer').fadeToggle(500);
+        }
         function triggerEvent(unique_no) {
             var loop         = 1, limit = 15;
             var source       = new EventSource("{{ route('payment.enquiry_event') }}?unique_no=" + unique_no);

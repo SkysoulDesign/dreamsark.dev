@@ -3,12 +3,14 @@
 namespace DreamsArk\Http\Controllers\Session;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Session\UserCreation;
+use DreamsArk\Http\Requests\Session\UserCreationMobile;
 use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
+use DreamsArk\Models\User\User;
 use Illuminate\Http\Request;
+use SkysoulDesign\SMS\SMS;
 
 /**
  * Class SessionController
@@ -33,9 +35,9 @@ class SessionController extends Controller
      */
     public function index(Request $request)
     {
-        return view('user.account.index')->with('user',
-            $request->user()->load('backers')
-        );
+        /** @var User $user */
+        $user = $request->user()->load('backers');
+        return view('session.profile', compact('user'));
     }
 
     /**
@@ -45,7 +47,7 @@ class SessionController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        return view('session.register');
     }
 
     /**
@@ -59,9 +61,42 @@ class SessionController extends Controller
         /**
          * Create User
          */
-        $this->dispatch(new CreateUserJob($request->all()));
+        $user = $this->dispatch(new CreateUserJob($request->all()));
 
         return redirect()->route('user.account');
+
+    }
+
+    /**
+     * Dispatch command to create User
+     *
+     * @param UserCreationMobile $request
+     * @return \Illuminate\View\View
+     */
+    public function storeMobile(UserCreationMobile $request)
+    {
+        if ($request->session()->get('mobile-' . $request->get('username')) != $request->get('sms_code'))
+            return redirect()->back()->withErrors('Invalid Verification Code');
+        /**
+         * Create User
+         */
+        $user = $this->dispatch(new CreateUserJob($request->except('sms_code')));
+
+        return redirect()->route('user.account');
+
+    }
+
+    public function sendVerificationCode(Request $request, SMS $sms, Generator $faker)
+    {
+        $verifyCode = $faker->randomNumber(6);
+        $mobile = $request->get('mobile_number');
+
+        $message = '[DreamsArk] ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4);
+
+        $request->session()->set('mobile-' . $mobile, $verifyCode);
+        $response = $sms->send($mobile, $message);
+
+        return response()->json($response);
     }
 
     /**

@@ -3,10 +3,13 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
+use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
+use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Distribution;
@@ -41,6 +44,10 @@ class ProjectController extends Controller
         return view('project.index')->with('projects', $repository->actives());
     }
 
+    /**
+     * @param ProjectRepositoryInterface $repository
+     * @return mixed
+     */
     public function adminIndex(ProjectRepositoryInterface $repository)
     {
         return view('admin.project.index')->with('projects', $repository->paginate())->with('project_count', $repository->all()->count());
@@ -155,6 +162,20 @@ class ProjectController extends Controller
         $this->dispatch($command);
 
         return redirect()->back()->with('message', trans('response.project-was-published'));
+    }
+
+    /**
+     * @param Project $project
+     * @return mixed
+     */
+    public function updateProjectAndComplete(Project $project)
+    {
+        /**
+         * @todo: need to create logic to distribute coins to crew, investors
+         */
+        dispatch(new CompleteProjectJob($project));
+
+        return redirect()->back()->withSuccess(trans('project.status-updated-success') . '; ' . trans('project.coins-will-be-settled-soon'));
     }
 
 }

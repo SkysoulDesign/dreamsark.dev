@@ -1,10 +1,10 @@
 <?php
 
-namespace DreamsArk\Http\Requests\Bag;
+namespace DreamsArk\Http\Requests\Setting;
 
 use DreamsArk\Http\Requests\Request;
 
-class CoinWithdrawRequest extends Request
+class UpdateUserInfoRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class CoinWithdrawRequest extends Request
     public function rules()
     {
         return [
-            'batch_fee' => 'required|integer|max:'.$this->user()->bag->coins.'|min:1',
-//            'batch_fee' => 'required|numeric|max:'.$this->user()->bag->coins,
-            'mobile_number' => 'required|integer',
-            'real_name' => 'required|string',
-            'payment_method' => 'required',
+            'email'    => 'required|email|unique:users,id,'.auth()->user()->id,
+            'password' => 'sometimes|min:6',
         ];
     }
 }

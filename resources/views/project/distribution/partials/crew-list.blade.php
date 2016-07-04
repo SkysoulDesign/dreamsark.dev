@@ -1,4 +1,3 @@
-<h2>@lang('project.plan-data')</h2>
 <table class="ui celled table">
     <thead>
     <tr>
@@ -12,6 +11,8 @@
     </tr>
     </thead>
     <tbody>
+
+    @php $voteTotal=0; @endphp
 
     @foreach($enrollable as $expenditure)
         <tr>
@@ -29,19 +30,34 @@
                 {{ $expenditure->expenditurable->description }}
             </td>
             <td>
-                {{ $expenditure->expenditurable->cost }}
+                @php
+                    $salary = $expenditure->expenditurable->cost;
+                    $enroller = $expenditure->expenditurable->enroller;
+                    $votes = $enroller->votes->pluck('pivot')->sum('amount');
+                    $voteTotal += $votes;
+                    $crewFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW'], [$salary, $votes, config('payment.salary.commission.crew')], config('payment.salary.formula.crew'));
+                    $crewAssesFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW_ASSES'], [$salary, $votes, config('payment.salary.commission.crew_asses')], config('payment.salary.formula.crew_asses'));
+                @endphp
+                {{ $salary }}
             </td>
             <td>
-                @php $enroller = $expenditure->expenditurable->enroller; @endphp
-                <a class="ui icon" href="{{ route('public.profile.show', [$expenditure->expenditurable->profile->name, $enroller->user->username]) }}">
+                <a class="ui icon"
+                   href="{{ route('public.profile.show', [$expenditure->expenditurable->profile->name, $enroller->user->username]) }}">
                     <i class="unhide icon"></i>
                     {{ $enroller->user->name or $enroller->user->username }}
                 </a>
             </td>
             <td>
-                {{ $enroller->votes->pluck('pivot')->sum('amount') }}
+                {{ $votes }}
             </td>
-            <td>-</td>
+            <td>
+                @php
+                    eval('$crewValue = round('.$crewFormula.');');
+                    eval('$crewAsses = round('.$crewAssesFormula.');');
+                @endphp
+                {{ $crewValue }}<br/>
+                {{--{{ $crewAssesFormula. ' = '.$crewAsses }}--}}
+            </td>
         </tr>
     @endforeach
 
@@ -63,7 +79,7 @@
         </th>
         <th colspan="2">
             <div class="ui header">
-                {{ $project->enrollVoteTotal() }}
+                {{ $voteTotal }}
             </div>
         </th>
     </tr>

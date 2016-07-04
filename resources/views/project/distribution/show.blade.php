@@ -55,14 +55,28 @@
                             <i class="icon users"></i> @lang('project.script')
                         </a>
                     </div>
-                    @if($project->idea) @include('modals.project-idea-show-modal') @endif
-                    @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
-                    @if($project->script) @include('modals.project-script-show-modal') @endif
 
                 </div>
             </div>
+            @if(!$project->stage->active)
+                @if(isset($isIFrameCall) && $isIFrameCall)
+                @elseif(auth()->check() && auth()->user()->id == $project->user_id)
+                    <div class="ui one inverted blue item menu">
+                        <a onClick="if(confirm('{{ trans('project.confirm-to-complete') }}')) return true;"
+                           href="{{ route('project.set.complete', $project->id) }}"
+                           class="item">@lang('project.set-complete')</a>
+                    </div>
+                @endif
+            @else
+                <div class="ui one inverted green item menu">
+                    <div class="item">@lang('project.project-complete')</div>
+                </div>
+            @endif
         </div>
     </div>
+    @if($project->idea) @include('modals.project-idea-show-modal') @endif
+    @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
+    @if($project->script) @include('modals.project-script-show-modal') @endif
 
     <div class="ui stacked segments">
         <div class="ui segment" style="min-height: 100px;">
@@ -100,12 +114,19 @@
     </div>
 </div>
 <div class="ui column">
+    <h2>@lang('project.plan-data')</h2>
     @include('project.distribution.partials.crew-list', ['enrollable' => $project->enrollable])
+    @if(auth()->check() && auth()->user()->id == $project->user_id)
+        @include('project.distribution.partials.expenditure-list', ['expenditures' => $project->expensable])
+    @endif
     <h4>@lang('project.settlement-instruction')</h4>
     <ul class="ui list">
-        <li value="*">@lang('project.crew-salary-formula')</li>
-        <li value="*">@lang('project.investor-return-formula')</li>
-        <li value="*">@lang('project.crew-assessed-formula')</li>
+        <li value="*">@lang('project.crew-salary-formula')
+            : {{ str_replace('COMMISSION_CREW', config('payment.salary.commission.crew'), config('payment.salary.formula.crew')) }}</li>
+        <li value="*">@lang('project.investor-return-formula')
+            : {{ str_replace('COMMISSION_INVESTOR', config('payment.salary.commission.investor'), config('payment.salary.formula.investor')) }}</li>
+        <li value="*">@lang('project.crew-assessed-formula')
+            : {{ str_replace('COMMISSION_CREW_ASSES', config('payment.salary.commission.crew_asses'), config('payment.salary.formula.crew_asses')) }}</li>
     </ul>
 </div>
 <p>&nbsp;</p>

@@ -3,8 +3,8 @@
 namespace DreamsArk\Http\Controllers\User\Setting;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests\Setting\SettingEdition;
-use DreamsArk\Jobs\Setting\UpdateSettingJob;
+use DreamsArk\Http\Requests\Setting\UpdateUserInfoRequest;
+use DreamsArk\Jobs\Session\UpdateUserJob;
 
 /**
  * Class SettingController
@@ -35,18 +35,15 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param SettingEdition $request
+     * @param UpdateUserInfoRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(SettingEdition $request)
+    public function update(UpdateUserInfoRequest $request)
     {
-        /**
-         * Update Settings
-         */
-        $this->dispatch(new UpdateSettingJob($request->user()->settings, $request->all()));
+
+        dispatch(new UpdateUserJob($request->user(), $request->except('username')));
 
         return redirect()->back();
-
     }
 
 }

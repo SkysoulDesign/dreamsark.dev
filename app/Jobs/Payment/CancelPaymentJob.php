@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Jobs\Payment;
 
-use DreamsArk\Events\Payment\PaymentWasConfirmed;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Payment\Transaction;
 
@@ -51,6 +50,6 @@ class CancelPaymentJob extends Job
         /**
          * Announce Payment was Confirmed
          */
-        event(new PaymentWasCanceled($this->transaction, $this->response));
+//        event(new PaymentWasCanceled($this->transaction, $this->response));
     }
 }

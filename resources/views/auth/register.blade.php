@@ -3,7 +3,9 @@
 @section('header')
 
     <div class="container-fluid small-header"></div>
+@endsection
 
+@section('content')
     <div class="row">
 
         <section class="medium-8 column">
@@ -20,40 +22,87 @@
 
                 <div class="title modern center">Member Register</div>
 
-                <form action="{{ route('register.store') }}" method="post">
-
-                    {{ csrf_field() }}
-
-                    <div class="form-item">
-                        <input name="username" type="text" placeholder="username" value="{{ old('username') }}">
+                <div class="ui tabular top two item menu">
+                    <div class="active item" data-tab="general-register">
+                        @lang('auth.general')
                     </div>
-
-                    <div class="form-item">
-                        <input name="email" type="email" placeholder="e-mail" value="{{ old('email') }}">
+                    <div class="item" data-tab="mobile-register">
+                        @lang('auth.mobile-register')
                     </div>
+                </div>
 
-                    <div class="form-item">
-                        <input name="password" type="password" placeholder="password">
-                    </div>
+                <div class="ui active bottom tab segment" data-tab="general-register">
 
-                    @include('partials.form-errors')
+                    <form action="{{ route('register.store') }}" method="post">
 
-                    <div class="form-item">
+                        {{ csrf_field() }}
 
-                        <button type="submit" class="primary rippable">
-                            Register
+                        <div class="form-item">
+                            <input name="username" type="text" placeholder="username" value="{{ old('username') }}">
+                        </div>
 
-                            <svg>
-                                <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
-                            </svg>
+                        <div class="form-item">
+                            <input name="email" type="email" placeholder="e-mail" value="{{ old('email') }}">
+                        </div>
 
-                            @include('partials.button-ripple')
+                        <div class="form-item">
+                            <input name="password" type="password" placeholder="password">
+                        </div>
 
-                        </button>
+                        @include('partials.form-errors')
 
-                    </div>
+                        <div class="form-item">
 
-                </form>
+                            <button type="submit" class="primary rippable">
+                                @lang('auth.register')
+
+                                <svg>
+                                    <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
+                                </svg>
+
+                                @include('partials.button-ripple')
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="ui bottom tab segment project-plan" data-tab="mobile-register">
+                    <form action="{{ route('mobile.register.store') }}" method="post">
+
+                        {{ csrf_field() }}
+
+                        <div class="form-item">
+                            <input name="username" id="mobile_number" type="text"
+                                   placeholder="{{ trans('auth.mobile-number') }}"
+                                   value="{{ old('username') }}"/>
+                        </div>
+
+                        <div class="form-item">
+                            <input name="password" type="password" placeholder="password">
+                        </div>
+
+                        <div class="form-item">
+                            <input name="sms_code" type="text" placeholder="{{ trans('auth.mobile-sms-code') }}"/>
+                            &nbsp;
+                            <button type="button" id="trigger_sms"
+                                    name="trigger_sms">{{ trans('auth.get-code') }}</button>
+                        </div>
+
+                        <div class="form-item">
+                            <button id="mobile_submit" type="submit" class="primary rippable">
+                                @lang('auth.register')
+                                <svg>
+                                    <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
+                                </svg>
+                                @include('partials.button-ripple')
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
 
                 <div class="title simple center">or register with</div>
 
@@ -95,4 +144,78 @@
 
     </div>
 
+@endsection
+
+@section('pos-scripts')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/semantic.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('.tabular.menu').length > 0)
+                $('.tabular.menu .item').tab();
+            $('#trigger_sms').click(function () {
+                if ($(this).hasClass('in-process'))
+                    return false;
+                var mobileNumber  = $('#mobile_number').val();
+                var phone_pattern = /^1[3|5|7|8|][0-9]{9}$/;
+                if (mobileNumber != '' && mobileNumber != undefined) {
+                    if (phone_pattern.test(mobileNumber)) {
+                        var sendSmsCode = $("#trigger_sms");
+                        var times       = 90;
+                        var setBtn      = function () {
+                            sendSmsCode.val(times);
+                            sendSmsCode.attr({disabled: 'disabled'});
+                            if (times == -1) {
+                                sendSmsCode.html('{{ trans('auth.get-code') }}');
+                                sendSmsCode.removeAttr('disabled');
+                                clearInterval(clear);
+                            } else {
+                                sendSmsCode.html(times + ' {{ trans('general.seconds') }}');
+                            }
+                            times--;
+                        };
+                        var clear       = setInterval(function () {
+                            setBtn()
+                        }, 1000);
+                        $.getJSON('{{ route('mobile.send.verify') }}', {mobile_number: mobileNumber}, function (data) {
+                            if (data.code == undefined || data.code != 0) {
+                                clearInterval(clear);
+                                sendSmsCode.html('{{ trans('auth.get-code') }}');
+                                alert('{{ trans('auth.fail-sending') }}');
+                            }
+                        });
+                    } else
+                        alert('{{ trans('auth.invalid-mobile-number') }}')
+                } else
+                    alert('{{ trans('auth.enter-mobile-number') }}')
+            });
+        });
+    </script>
+    <style>
+        .ui.tab {
+            display: none;
+        }
+
+        .ui.tab.active {
+            display: block;
+        }
+
+        .segment div.menu {
+            position: relative;
+            right: 0;
+            display: table;
+            width: 100%;
+        }
+
+        .segment div.menu .item {
+            display: table-cell;
+            border: 1px solid #ccc;
+            padding: 2px;
+            text-align: center;
+        }
+
+        .segment div.menu .item.active {
+            background: none #ccc;
+        }
+    </style>
 @endsection

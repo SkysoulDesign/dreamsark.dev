@@ -9,10 +9,13 @@
                 {{ method_field('patch') }}
                 {{ csrf_field() }}
                 <div class="form-item">
-                    <input disabled type="text" value="{{ auth()->user()->username }}">
+                    <input name="name" type="text" value="{{ auth()->user()->name }}">
                 </div>
                 <div class="form-item">
-                    <input disabled name="email" type="email" placeholder="e-mail"
+                    <input name="username" readonly type="text" value="{{ auth()->user()->username }}">
+                </div>
+                <div class="form-item">
+                    <input {{ (auth()->user()->email!=''?'readonly ':'') }} name="email" type="email" placeholder="e-mail"
                            value="{{ auth()->user()->email }}">
                 </div>
                 <div class="form-item">

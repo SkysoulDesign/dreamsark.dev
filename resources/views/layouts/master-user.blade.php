@@ -49,5 +49,7 @@
 
 @yield('pos-scripts')
 
+@include('layouts.notify-bar-user')
+
 </body>
 </html>

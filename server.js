@@ -1,18 +1,17 @@
-var http = require('http'),
+var http    = require('http'),
     ioRedis = require('ioredis')({
         port: process.env.REGIS_PORT_6379_TCP_PORT,
         host: process.env.REGIS_PORT_6379_TCP_ADDR
-    });
+    }),
+    socket  = require('socket.io')(http);
 
-var app = http.createServer()
-    app.listen(3333, function () {
-    console.log('Listening on Port 3333');
-});
+var app = http.createServer();
+app.listen(8080);
 
 var socket = require('socket.io')(app);
-    socket.on('connection', function (socket) {
-        console.log('connected');
-    });
+socket.on('connection', function(e){
+    console.log('socket connected');
+});
 
 /**
  * Subscript to redis
@@ -31,4 +30,3 @@ ioRedis.on('message', function (channel, message) {
     socket.emit(channel + ':' + message.event, message.data);
 
 });
-

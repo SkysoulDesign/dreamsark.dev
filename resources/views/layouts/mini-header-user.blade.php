@@ -18,7 +18,7 @@
 
                     <div class="ui transparent menu">
                         <a class="item" href="{{ route('user.profile.index') }}">@lang('navbar.profiles')</a>
-                        <a class="item" href="{{ route('user.project.index') }}">@lang('navbar.my-project')</a>
+                        <a class="item" href="{{ route('user.projects') }}">@lang('navbar.my-project')</a>
                         <a class="item" href="{{ route('user.settings') }}">@lang('navbar.activity')</a>
                         {{--<div class="ui dropdown item">
                             @lang('navbar.activity')
