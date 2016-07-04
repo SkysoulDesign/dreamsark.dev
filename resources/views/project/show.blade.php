@@ -1,57 +1,30 @@
-@extends('layouts.master-user')
+@extends('layouts.master')
 
 @section('content')
-    @php
-    $stageArr = ['review', 'fund', 'distribution'];
-    $projectStage = strtolower(class_basename($project->stage));
-    @endphp
-    <div class="column">
 
+    @include("project.partials." . class_basename($project->stage))
 
-        @if(!in_array($projectStage, $stageArr))
-            @if(!$project->stage->active)
-                <div class="ui inverted red segment">
-                    @lang('project.project-failed')
-                </div>
-            @endif
-            @if($project->stage->vote->active)
-                <div class="ui inverted olive segment">
-                    <a class="ui header" href="{{ route('vote.show', $project->stage->vote->id) }}">
-                        @lang('vote.is-open')
-                    </a>
-                </div>
-            @endif
-        @endif
+    <div class="base-page__background">
 
-        @include('project.' . strtolower(class_basename($project->stage)) . '.show')
+        <div class="base-page__background__overlay"></div>
 
-        @if(isset($isIFrameCall) && $isIFrameCall)
-        @else
-            @include('partials.comments')
-        @endif
+        @include('partials.navigation.menu', ['translucent' => true])
+
+        <div class="row">
+            <div class="small-12">
+                <header class="header --inverted +center">
+                    Lorem ipsum dolor sit amet
+                    <p>consectetur adipisicing elit. Aperiam cupiditate dicta dolorem eum,
+                        exercitationem, fuga ipsam itaque libero minus nam nesciunt nostrum odio, porro qui sapiente sit
+                        vel voluptatem voluptates?</p>
+                </header>
+            </div>
+        </div>
+
+        @stack('tabs')
 
     </div>
 
-@endsection
+    @yield('tab-content')
 
-@section('styles')
-    <link href="{{ asset('css/flipclock.css') }}" rel="stylesheet" media="all"/>
-@endsection
-@section('pos-scripts')
-    <script src="{{ asset('js/flipclock.min.js') }}"></script>
-    @if(in_array($projectStage, $stageArr))
-        @include('forms.project-stage-script')
-    @else
-        <script>
-            $(document).ready(function () {
-                /**
-                 * Countdown
-                 */
-                if ($('#flipclock').length > 0)
-                    $('#flipclock').FlipClock($('#flipclock').attr('data-time'), {
-                        countdown: true
-                    });
-            });
-        </script>
-    @endif
 @endsection

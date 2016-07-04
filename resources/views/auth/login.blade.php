@@ -1,96 +1,49 @@
-@extends('layouts.master', ['topBar' => false])
+@extends('layouts.master')
 
-@section('header')
+@section('content')
 
-    <div class="container-fluid small-header"></div>
+    <div class="login-page">
 
-    <div class="row">
+        <div class="row align-middle align-right +full-height">
 
-        <section class="medium-8 column">
-            <div class="segment"></div>
-        </section>
+            <div class="small-12 medium-6 large-4 columns card">
 
-        <section class="medium-4 column">
+                <div class="card__content">
 
-            <div class="segment has-attachment">
+                    <header class="header --classic">
+                        Login Form
+                        <p>Welcome to dreamsark, login or apply for a new account</p>
+                    </header>
 
-                <div class="title modern center">Member Login</div>
+                    <ark-form action="{{ route('login.store') }}"
+                              token="{{ csrf_token() }}"
+                              errors="{{ $errors->toJson() }}">
 
-                <form action="{{ route('login.store') }}" method="post">
-
-                    {{ csrf_field() }}
-
-                    <div class="form-item">
-                        <input name="login" type="text" placeholder="username or email">
-                    </div>
-
-                    <div class="form-item">
-                        <input name="password" type="password" placeholder="password">
-                    </div>
-
-                    @include('partials.form-errors')
-
-                    <div class="form-item">
-
-                        <button type="submit" class="primary rippable">
+                        <ark-input name="login" placeholder="username or email"></ark-input>
+                        <ark-input name="password" type="password"></ark-input>
+                        <ripple-button type="submit">
                             Login
+                        </ripple-button>
+                    </ark-form>
 
-                            <svg>
-                                <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
-                            </svg>
+                    <div class="divider --mini">or login with</div>
 
-                            @include('partials.button-ripple')
-
-                        </button>
-
+                    <div class="row align-center">
+                        There will be social media links here....
                     </div>
-
-                </form>
-
-                <div class="title simple center">or login with</div>
-
-                <div class="social center">
-                    <form action="{{ route('login.social.post') }}" method="post">
-                        {{ csrf_field() }}
-                        <ul>
-                            <li>
-                                <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
-                                       name="login_through"
-                                       value="qq"/>
-                            </li>
-                            <li>
-                                <input title="Login with Weibo" type="image" src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
-                                       value="weibo"/>
-                            </li>
-                            <li>
-                                <input title="Login with Wechat" type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
-                                       name="login_through" value="weixin"/>
-                            </li>
-                            {{--set hidden as server will be in China and unable to access FB server on ReturnURL from it.
-                            even user have VPN and able to login FB, but code-behind process to read data from FB is not possible.
-                            so disabling it.
-                            <li>
-                                <input type="image" src="{{ asset('dreamsark-assets/facebook.png') }}"
-                                       name="login_through" value="facebook"/>
-                            </li>
-                            --}}
-                        </ul>
-                    </form>
 
                 </div>
-
             </div>
 
-            <div class="attached center">
-                <small>
-                    <a class="inverted" href="{{ route('register') }}">
-                        Are you a new user?
-                    </a>
-                </small>
-            </div>
-
-        </section>
-
+        </div>
     </div>
+
+@endsection
+
+@section('pos-scripts')
+
+    <script>
+        app.page('common');
+    </script>
 
 @endsection

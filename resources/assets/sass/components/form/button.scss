@@ -1,0 +1,160 @@
+@mixin dreamsark-button-base() {
+
+  display: inline-block;
+
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  color: color(white);
+  cursor: pointer;
+
+  line-height: normal;
+
+  appearance: none;
+  box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
+  text-shadow: 0 -0.5px 1px color(black, base, 15);
+
+  padding: 1em;
+  position: relative;
+
+  text-transform: uppercase;
+  text-align: center;
+
+  @include option(inverted) {
+    color: color(black);
+    &:hover {
+      color: color(primary);
+    }
+  }
+
+  &:hover {
+    color: color(white);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  @include option(fit) {
+
+    width: auto;
+    margin: 1em 0;
+    padding-left: 2em;
+    padding-right: 2em;
+
+    @include respond-to(desktop) {
+      margin: 0;
+    }
+
+  }
+
+  @include option(rounded) {
+    border-radius: 5em;
+  }
+
+  @include option(small) {
+
+    @extend .\--fit;
+
+    padding: .5em;
+    font-size: .8em;
+
+  }
+
+  @include option(medium) {
+
+    @extend .\--fit;
+
+    padding: .6em;
+    font-size: 1em;
+
+  }
+
+  @include option(hollow) {
+    background-color: #00AA00;
+  }
+
+}
+
+@mixin dreamsark-button-colors() {
+
+  @each $color in $colors {
+
+    $color: nth($color, 1);
+
+    @include option($color) {
+
+      background-color: color($color);
+
+      &:hover {
+        background-color: color($color, mid-light);
+      }
+
+    }
+
+    @include option('hollow-'+$color) {
+
+      background-color: transparent;
+
+      color: color($color);
+      border: .135em solid color($color);
+
+      &:hover {
+        border-color: color($color, light);
+        color: color($color, light);
+      }
+
+    }
+
+  }
+
+}
+
+@mixin dreamsark-button-ripple() {
+
+  @include option(ripple) {
+
+    transition: 200ms background cubic-bezier(0.4, 0, 0.2, 1);
+    background: color(primary);
+    padding: 1.5em;
+
+    cursor: pointer;
+
+    &:hover {
+      outline: none;
+      background: color(primary, mid-light);
+    }
+
+  }
+
+  svg {
+
+    height: 100%;
+    pointer-events: none;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    fill: color(primary, light);
+
+    use {
+      opacity: 0;
+    }
+
+  }
+
+}
+
+button, .button {
+
+  @include dreamsark-button-base;
+  @include dreamsark-button-colors;
+  @include dreamsark-button-ripple;
+
+}

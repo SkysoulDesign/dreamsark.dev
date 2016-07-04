@@ -1,0 +1,33 @@
+input, .input {
+
+  font-size: 1em;
+  font-weight: normal;
+  color: color(gray, dark);
+
+  width: 100%;
+  padding: 1em;
+  margin: 0;
+
+  background: color(gray, light, 30);
+  border: 1px solid color(gray, light, 80);
+  border-radius: .5em;
+
+  &:hover {
+    background: color(gray, light, 50);
+    color: color(gray, x-dark);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  @include option(error) {
+    color: color(danger);
+    border: 1px solid color(danger, light, 80);
+  }
+
+}

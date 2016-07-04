@@ -4,6 +4,11 @@ namespace DreamsArk\Http\Requests\User\Project;
 
 use DreamsArk\Http\Requests\Request;
 
+/**
+ * Class ProjectCreation
+ *
+ * @package DreamsArk\Http\Requests\User\Project
+ */
 class ProjectCreation extends Request
 {
     /**
@@ -24,20 +29,25 @@ class ProjectCreation extends Request
     public function rules()
     {
         return [
-            'name'        => 'required',
-            'reward.*'    => 'sometimes|integer|min:1',
+            'name' => 'required',
+            'reward.*' => 'sometimes|integer|min:1',
             'reward.idea' => 'required',
-            'content'     => 'required',
+            'content' => 'required',
             'voting_date' => 'required|date|after:today',
         ];
     }
 
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
     public function attributes()
     {
         return [
-            'reward.idea'    => 'Reward for Idea',
+            'reward.idea' => 'Reward for Idea',
             'reward.synapse' => 'Reward for Synapse',
-            'reward.script'  => 'Reward for Script',
+            'reward.script' => 'Reward for Script',
         ];
     }
 }

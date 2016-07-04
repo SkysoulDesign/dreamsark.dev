@@ -1,0 +1,105 @@
+@include component(segment) {
+
+  border: 1px solid color(gray, mid-dark);
+  padding: 0 5%;
+  background: color(white, mid-light);
+  border-radius: $border-radius;
+
+  box-shadow: 0 10px 10px 0 color(gray, dark, 13);
+
+  div.menu {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+  }
+
+  div.title {
+
+    text-transform: uppercase;
+    color: color(black, x-light);
+    font-size: rem-calc(12);
+    padding: 5% 0 2% 0;
+    margin-bottom: 2%;
+
+    &.modern {
+      text-transform: none;
+      font-size: rem-calc(20);
+      font-weight: 300;
+    }
+
+    &.simple {
+      text-transform: none;
+      font-size: rem-calc(15);
+      font-weight: 300;
+    }
+
+  }
+
+  div.body {
+
+    text-transform: uppercase;
+    color: color(black);
+    padding-bottom: 5%;
+
+    div.head {
+      h1 {
+        margin: 0;
+      }
+    }
+
+    div.description {
+      font-size: rem-calc(12);
+      font-weight: bolder;
+    }
+
+  }
+
+  div.push-up {
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    margin-top: -30%;
+    margin-bottom: 2%;
+  }
+
+  div.social {
+
+    ul {
+
+      padding: 0;
+      list-style: none;
+
+      li {
+        display: inline-block;
+      }
+
+    }
+  }
+
+  /**
+  * Options
+  */
+
+  &.has-attachment {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: 1px solid color(gray, x-dark);
+  }
+
+}
+
+@include component(attached) {
+
+  @extend .segment;
+
+  padding: 2%;
+
+  background: color(gray, mid-dark, 100);
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: relative;
+  bottom: 0;
+
+}

@@ -1,0 +1,180 @@
+@import "input";
+@import "textarea";
+@import "button";
+@import "dropdown";
+
+form {
+  @extend .form;
+}
+
+@include component(form) {
+
+  padding: 0;
+  margin: 0;
+
+  @include option(overlapped) {
+    position: relative;
+    margin-top: -3.5em;
+    z-index: 10;
+  }
+
+  @include part(content) {
+
+    background: color(white);
+    padding: 1em 1.5em 1.5em 1.5em;
+
+    @include respond-to(desktop) {
+      padding: 1em 3.2em 2em 3.2em;
+    }
+
+  }
+
+  @include part(step) {
+
+    @include option(rounded) {
+      border-radius: 0 0 .5em .5em;
+    }
+
+    span {
+      border: solid 2px color(success);
+      color: color(success);
+      height: 30px;
+      width: 30px;
+      line-height: 26px;
+      margin: -2px 10px 0 0px;
+      text-align: center;
+      display: inline-block;
+      border-radius: 100%;
+    }
+
+  }
+
+  @include part(header) {
+
+    background: color(success);
+    padding: 1em;
+    position: relative;
+    font-size: $h2;
+    text-align: center;
+    color: color(white);
+    font-weight: bold;
+
+    @include option(rounded) {
+      border-radius: .5em .5em 0 0;
+    }
+
+  }
+
+  @include part(field) {
+
+    @include all-but(1) {
+      margin: 10px 0;
+    }
+
+    @include last(1) {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    @include part(error) {
+
+      color: color(danger);
+
+      ul {
+
+        list-style: none;
+        padding: 0;
+
+        li {
+          font-size: $h5;
+        }
+
+      }
+
+    }
+
+    label {
+      font-size: .8em;
+      font-weight: bold;
+      padding: 0 0 1em .2em;
+      display: block;
+      color: color(black, light);
+    }
+
+    span {
+      @extend .form__description;
+      display: block;
+      padding-top: 0 !important;
+    }
+
+    @include option(required) {
+
+      label {
+        position: relative;
+        &:after {
+          content: '*';
+          color: color(danger);
+          padding: .2em;
+          font-size: 1.5em;
+          position: absolute;
+          margin-top: -.3em;
+        }
+      }
+    }
+
+    @include option(optional) {
+
+      opacity: 0.6;
+      transition: opacity 0.25s;
+
+      &:hover {
+        opacity: 1
+      }
+
+    }
+
+  }
+
+  @include part(message) {
+
+    background: color($color: danger, $alpha: 10);
+    padding: 1em;
+    border: 1px solid color($color: danger, $alpha: 20);
+
+    @include part(header) {
+      font-weight: 500;
+    }
+
+    @include part(items) {
+
+      font-weight: 300;
+
+      padding: 0 1.125em;
+      margin: 10px 0 0 0;
+
+      font-size: $h5;
+
+      li {
+        margin: 0;
+        padding: 0;
+      }
+
+    }
+
+    @include option(error) {
+      color: color($color: danger);
+    }
+  }
+
+  @include part(description) {
+
+    @extend .form__field;
+
+    padding-top: 1em;
+    font-size: small;
+    color: color(gray, dark);
+
+  }
+
+}
+

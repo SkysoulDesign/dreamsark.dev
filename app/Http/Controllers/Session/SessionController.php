@@ -9,7 +9,6 @@ use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
 use DreamsArk\Models\User\User;
-use Faker\Generator;
 use Illuminate\Http\Request;
 use SkysoulDesign\SMS\SMS;
 
@@ -36,10 +35,9 @@ class SessionController extends Controller
      */
     public function index(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user()->load('backers');
-
-        return view('session.profile', compact('user'));
+        return view('user.account.index')->with('user',
+            $request->user()->load('backers')
+        );
     }
 
     /**
@@ -63,7 +61,7 @@ class SessionController extends Controller
         /**
          * Create User
          */
-        $user = $this->dispatch(new CreateUserJob($request->all()));
+        $this->dispatch(new CreateUserJob($request->all()));
 
         return redirect()->route('user.account');
 

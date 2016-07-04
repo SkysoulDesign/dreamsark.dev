@@ -9,6 +9,11 @@ use DreamsArk\Models\Traits\VotableTrait;
 use DreamsArk\Repositories\Project\Fund\FundRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Fund
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Fund extends Model
 {
     use ProjectableTrait, VotableTrait, EnrollableTrait, ScopeAbleTrait;

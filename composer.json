@@ -43,7 +43,10 @@
       "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src",
       "SkysoulDesign\\SMS\\": "packages/SkysoulSMS/SMS/src",
       "SkysoulDesign\\Socialite\\": "packages/SkysoulSocialite/Socialite/src"
-    }
+    },
+    "files": [
+      "app/Helpers/functions.php"
+    ]
   },
   "autoload-dev": {
     "classmap": [

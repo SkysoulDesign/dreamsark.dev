@@ -1,3 +1,5 @@
+process.env.DISABLE_NOTIFIER = true;
+
 var elixir = require('laravel-elixir');
 
 /*
@@ -10,7 +12,27 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+elixir.config.js.browserify.watchify.enabled = true;
 
 elixir(function (mix) {
     mix.sass('app.scss');
+    mix.browserify("./resources/assets/typescript/App.js", null, null, {
+        cache: {}, packageCache: {}
+    });
+
+    /**
+     * Profile Script
+     */
+    mix.browserify("./resources/assets/typescript/Profile.js", 'public/js/profile.js', null, {
+        cache: {}, packageCache: {}
+    });
+
+    mix.browserSync({
+        open:   "ui",
+        notify: false,
+        proxy:  {
+            target: "dreamsark.dev:8080"
+        },
+        port:   8080
+    });
 });

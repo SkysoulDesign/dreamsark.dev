@@ -1,0 +1,47 @@
+$h1: 1.8em;
+$h2: 1.4em;
+$h3: 1.2em;
+$h4: 1em;
+$h5: .8em;
+$h6: .4em;
+$h7: .2em;
+
+@mixin title($size: 'small', $color: gray) {
+
+  @if $size == "small" {
+    font-size: $h4;
+    font-weight: 300;
+    color: color($color)
+  }
+
+  @if $size == "large" {
+    font-size: $h1;
+    font-weight: 300;
+
+  }
+
+  color: color($color);
+
+}
+
+@mixin font-style($style, $color: white) {
+
+  @if $style == links {
+    font-size: $h4;
+    font-weight: 600;
+    color: color($color)
+  }
+
+  @if $style == title {
+    font-size: $h3;
+    font-weight: 600;
+    color: color($color);
+  }
+
+  @if $style == sub-title {
+    font-size: $h4;
+    font-weight: normal;
+    color: color($color);
+  }
+
+}

@@ -51,7 +51,7 @@ $app->get('info', function () {
 
 /** @var $app \Illuminate\Routing\Router */
 
-$app->group(['middleware' => ['web']], function () use ($app) {
+$app->group(['middleware' => 'web'], function () use ($app) {
 
     /**
      * Home Controller
@@ -62,7 +62,6 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Dashboard Controller
      */
     $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
-
 
     /**
      * Translation Controller
@@ -93,13 +92,38 @@ $app->group(['middleware' => ['web']], function () use ($app) {
      * Login
      */
     $app->get('login', AuthController::class . '@create')->name('login');
+
     /** for social login */
     $app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
         $app->post('/', AuthController::class . '@loginWithSocial')->name('post');
         $app->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
     });
+
     $app->post('login/store', AuthController::class . '@store')->name('login.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is listed all routes prefixed with user.
+    |
+    */
+    $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+
+        $app->get('/', ProjectController::class . '@index')->name('index');
+        $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+
+        /**
+         * Vote Controller
+         */
+        $app->group(['prefix' => 'vote', 'as' => 'vote.'], function () use ($app) {
+            $app->get('/', VoteController::class . '@index')->name('index');
+            $app->get('show/{vote}', VoteController::class . '@show')->name('show');
+        });
+
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -123,23 +147,79 @@ $app->group(['middleware' => ['web']], function () use ($app) {
         $app->get('settings', SettingController::class . '@index')->name('settings');
         $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
 
-        $app->get('projects', UserProjectController::class . '@index')->name('projects');
+        /**
+         * Project Controller
+         */
+        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+
+            $app->get('/', UserProjectController::class . '@index')->name('index');
+            $app->get('create', UserProjectController::class . '@create')->name('create');
+            $app->post('store', UserProjectController::class . '@store')->name('store');
+
+            $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
+            $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
+            $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
+            $app->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
+            $app->post('update/{draft}', ProjectController::class . '@update')->name('update');
+            $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+            /**
+             * Project Synapse Controller
+             */
+            $app->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
+            $app->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
+            $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+            /**
+             * Project Script Controller
+             */
+//        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+            $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
+
+            /**
+             * Enroll Controller
+             */
+            $app->get('enroll/create/{project}', EnrollController::class . '@create')->name('enroll.create');
+            $app->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
+            $app->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
+
+            /**
+             * Fund Controller
+             */
+            $app->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+                $app->get('create/{project}', FundController::class . '@create')->name('create');
+                $app->post('store/{project}', FundController::class . '@store')->name('store');
+                $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
+            });
+
+            /**
+             * Project Take Controller
+             */
+//        $app->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
+
+            /**
+             * Project Pledge Controller
+             */
+//        $app->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
+//        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
+        });
 
         /**
          * Profile Controller
          */
         $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+
             $app->get('/', ProfileController::class . '@index')->name('index');
-            $app->get('{profile}/create', ProfileController::class . '@create')->name('create');
+            $app->get('create', ProfileController::class . '@create')->name('create');
             $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
             $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
             $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
             $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
+
             /**
              * Test.. what is this?
              */
 //            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
         });
+
         /** User's Project Related Actions List */
         $app->group(['prefix' => 'activity', 'as' => 'activity.'], function () use ($app) {
             $app->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');

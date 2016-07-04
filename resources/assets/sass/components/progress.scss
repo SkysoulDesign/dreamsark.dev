@@ -1,0 +1,32 @@
+@include component(progress) {
+
+  //height: .5em;
+  font-size: smaller;
+  //padding: 0;
+  //margin: 0;
+  //line-height: 1.2em;
+  font-weight: bold;
+  //position: relative;
+  border-radius: 1em;
+
+  background: color(gray);
+
+  @include part(completion) {
+    border-radius: 1em;
+    position: relative;
+    height: .5em;
+    width: 100%;
+    background: color(success);
+  }
+
+  @include option(flat) {
+
+    border-radius: 0;
+
+    & > div {
+      border-radius: 0;
+    }
+
+  }
+
+}

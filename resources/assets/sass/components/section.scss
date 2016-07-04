@@ -1,0 +1,133 @@
+@include component(section) {
+
+  background: color(white);
+  padding: 1em;
+
+  border: 1px solid color(gray, light);
+  border-radius: .3em;
+
+  @include part(nav) {
+
+    font-weight: bold;
+    padding: 0;
+
+    li {
+
+      display: inline-block;
+      padding: 0 .5em;
+      font-size: $h5;
+
+      @include all-but-first-last(2) {
+        border-left: 1px solid color($color: gray, $alpha: 20);
+        border-right: 1px solid color($color: gray, $alpha: 20);
+      }
+
+      a {
+        color: color(black);
+        text-decoration: none;
+
+        &:hover {
+          color: color(primary)
+        }
+
+      }
+
+    }
+
+    @include part(item) {
+
+      @include option(active) {
+        a {
+          color: color(primary)
+        }
+      }
+
+      @include option(as-button) {
+
+        background: color(primary);
+        border-radius: .5em;
+        padding: .3em 1em;
+
+        a {
+          @extend a.\--inverted;
+        }
+
+        &:hover {
+          background-color: color(primary, mid-light);
+        }
+
+      }
+
+    }
+
+    @include option(right) {
+      text-align: right;
+    }
+
+  }
+
+}
+
+section {
+  @extend .section;
+}
+/** FORGOT TO PUT THIS ON ITS OWN FILE NOW DONT KNOW WHERE I USED IT
+*/
+@include component(project) {
+
+  padding: 2em 0;
+
+  @include all-but-first-last(2) {
+    border-bottom: .2em solid color($color: gray, $alpha: 22);
+  }
+
+  @include respond-to(desktop) {
+    padding: 4em 2em;
+  }
+
+  @include part(cover) {
+
+    img {
+      border-radius: .3em;
+    }
+
+  }
+
+  @include part(header) {
+
+    h1 {
+      margin: .5em 0 0 0;
+      line-height: normal;
+      font-size: $h1;
+
+      @include respond-to(desktop) {
+        margin: 0;
+      }
+
+    }
+
+    span {
+      text-align: left;
+    }
+
+    @include part(author) {
+
+      font-size: $h4;
+      line-height: 3em;
+      padding: .5em 0;
+
+      img {
+        border-radius: 2em;
+        width: 1.5em;
+        margin-right: .2em;
+      }
+
+    }
+
+  }
+
+  @include part(progress) {
+    margin: 1em 0;
+  }
+
+}

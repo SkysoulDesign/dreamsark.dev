@@ -1,0 +1,18 @@
+@include component(statistic) {
+
+  font-weight: bold;
+  line-height: normal;
+
+  @include part(item) {
+
+    font-size: $h2;
+
+    span {
+      font-size: x-small;
+      display: block;
+      text-transform: uppercase;
+    }
+
+  }
+
+}

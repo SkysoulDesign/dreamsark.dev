@@ -1,13 +1,24 @@
 $colors: (
-        white: Color(#f1f1f1),
+        neutral: Color(#f1f1f1),
+        white: Color(#ffffff),
+        gray: Color(#b5b9b0),
+        primary: Color(#0083ff),
+        danger: Color(#d90d12),
+        success: Color(#0bbc62),
+        secondary: Color(#af0101),
         black: Color(#353832),
-        gray: Color(#ededed),
-        primary: Color(#017eaf),
-        red: Color(#d9534f),
-        blue: Color(#0083ff),
+        pure-black: Color(#000000),
+        red: Color(#d90d12),
         yellow: Color(#eacc00),
         green: Color(#32ea00),
         purple: Color(#6900a5),
         tomato: Color(#af0101),
         golden: Color(#ffc326),
-);
+) !default;
+
+$profile-colors: (
+        actor: Color(#ffc326),
+        director: Color(#6900a5),
+        camera-man: Color(#d90d12),
+        designer: Color(#0095ff),
+) !default;

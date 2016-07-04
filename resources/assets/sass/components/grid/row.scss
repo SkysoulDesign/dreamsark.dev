@@ -1,0 +1,12 @@
+@include component(row) {
+
+  @include option(fluid) {
+    max-width: 100%
+  }
+
+  @include option(white-background) {
+    background: color(white);
+    border-top: 1px solid color($color: gray, $alpha: 55);
+  }
+
+}

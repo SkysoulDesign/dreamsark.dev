@@ -3,9 +3,9 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
-use DreamsArk\Jobs\Project\CompleteProjectJob;
 use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
@@ -26,14 +26,8 @@ use Illuminate\Http\Request;
  */
 class ProjectController extends Controller
 {
-    /**
-     * @var bool
-     */
     private $isIFrameCall = false;
 
-    /**
-     * ProjectController constructor.
-     */
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['show', 'index']]);
@@ -72,26 +66,6 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ProjectCreation|Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ProjectCreation $request)
-    {
-        if ($request->has('save_draft')) {
-            // TODO: Temporarily disabled feature of Save Draft;
-            $command = new CreateDraftJob(null, $request->user(), $request->all());
-        } else if ($request->has('save_publish')) {
-            $command = new CreateProjectJob($request->user(), $request->except('reward'), $request->get('reward'));
-        }
-        $this->dispatch($command);
-
-        return redirect()->route('projects');
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
      * @param Project $project
      * @param ProjectCreation|Request $request
      * @return \Illuminate\Http\Response
@@ -106,18 +80,10 @@ class ProjectController extends Controller
 
     }
 
-    /**
-     * @param Project $project
-     * @param ProjectRepositoryInterface $repository
-     * @return \Illuminate\View\View
-     */
-    public function showIframe(Project $project, ProjectRepositoryInterface $repository)
-    {
+    public function showIframe(Project $project, ProjectRepositoryInterface $repository){
         $this->isIFrameCall = true;
-
         return $this->show($project, $repository);
     }
-
     /**
      * Show a specific project.
      *
@@ -140,7 +106,7 @@ class ProjectController extends Controller
         }
 
         return view('project.show', compact('isIFrameCall'))
-            ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
+                ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
 
     }
 

@@ -19,8 +19,6 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
  */
 class CreateProjectJob extends Job
 {
-
-
     /**
      * @var array
      */
@@ -30,6 +28,7 @@ class CreateProjectJob extends Job
      * @var User
      */
     private $user;
+
     /**
      * @var array
      */
@@ -82,12 +81,15 @@ class CreateProjectJob extends Job
                 $project->rewards()->create($insArr);
             }
         }
+
         $project->fresh();
 
         /**
          * Announce ProjectWasCreated
          */
-        event(new ProjectWasCreated($this->user, $project, $this->fields, $this->rewards));
+        event(new ProjectWasCreated(
+            $this->user, $project, $this->fields, $this->rewards
+        ));
 
         return $project->fresh();
 

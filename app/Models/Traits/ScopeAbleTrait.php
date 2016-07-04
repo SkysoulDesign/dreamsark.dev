@@ -2,7 +2,11 @@
 
 namespace DreamsArk\Models\Traits;
 
-
+/**
+ * Class ScopeAbleTrait
+ *
+ * @package DreamsArk\Models\Traits
+ */
 trait ScopeAbleTrait
 {
     /**

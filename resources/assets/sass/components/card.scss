@@ -1,61 +1,110 @@
 @include component(card) {
 
-  margin-top: 10%;
+  $border: 5px;
 
-  /*
-  * Scope
-  */
-  box-shadow: 0 5px 5px 0 color(black, x-dark, 13);
-  border-radius: $border-radius;
-  border: 1px solid transparent;
+  padding: 1em;
+  position: relative;
 
-  &:hover {
-    border: 1px solid color(primary, base, 50);
-  }
-
-  /*
-  * Head
-  */
-  section.head {
-
-    margin-bottom: 5%;
+  @include part(image) {
 
     img {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+      border-radius: $border $border 0 0;
     }
+
+    @include option(flat) {
+      & > img {
+        border-radius: 0 !important;
+      }
+    }
+
+    @include part(avatar) {
+      position: absolute;
+      right: 0;
+      margin: -3em 2em;
+      transition: .25s;
+
+      @include respond-to(desktop) {
+        margin: -2em 2em;
+      }
+
+      &:hover {
+        transform: scale(1.5, 1.5);
+      }
+
+      img {
+        border-radius: 100%;
+        width: 6em;
+        height: 6em;
+
+        @include respond-to(desktop) {
+          width: 4em;
+          height: 4em;
+        }
+
+      }
+    }
+
+    @include part(stage) {
+      font-size: $h5;
+      font-weight: bold;
+      color: color(white);
+      background: color(primary);
+      width: auto;
+      position: absolute;
+      margin: -.8em 1.4em;
+      border-radius: 3px;
+      padding: 0 .5em;
+      text-transform: uppercase;
+    }
+
   }
 
-  section.body {
+  @include part(footer) {
 
-    padding: 0 5%;
-    line-height: normal;
+    background: color(gray, light);
+    border-radius: 0 0 $border $border;
+    padding: 1em;
 
-    div {
-      padding: 10px 0;
+    font-size: small;
+    font-weight: normal;
+
+    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
+
+  }
+
+  @include part(content) {
+
+    padding: 1em 1em 0 1em;
+    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
+    border-radius: $border;
+    border: 1px solid transparent;
+    background: color(white);
+
+    @include part(title) {
+
+      padding: 1em 0 .8em 0;
+      line-height: 1.8em;
+
+      h1, h3 {
+        margin: 0;
+      }
+
+      h1 {
+        @include font-style($style: title, $color: black);
+      }
+
+      h3 {
+        @include font-style($style: sub-title, $color: black)
+      }
+
     }
 
-    /*
-    * Tittle
-    */
-    div.title {
-      font-weight: bolder;
-      color: color(black, mid-light);
+    @include option(has-image) {
+      border-radius: 0 0 $border $border;
     }
 
-    /*
-    * Description
-    */
-    div.description {
-      font-size: rem-calc(13);
-      color: color(black, light);
-    }
-
-    /*
-    * Button
-    */
-    button {
-      margin-bottom: 5%;
+    @include option(has-footer) {
+      border-radius: 0;
     }
 
   }

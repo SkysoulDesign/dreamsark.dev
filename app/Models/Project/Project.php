@@ -16,6 +16,7 @@ use DreamsArk\Presenters\Presenter\ProjectPresenter;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -58,8 +59,9 @@ class Project extends Model
     /**
      * Add "ORDER BY" to query object
      *
-     * @param $query
+     * @param        $query
      * @param string $orderBy
+     *
      * @return mixed
      */
     public function addOrderBy($query, $orderBy = '')
@@ -71,6 +73,7 @@ class Project extends Model
      * Scope a query to only show active entries.
      *
      * @param $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
@@ -90,6 +93,7 @@ class Project extends Model
      * Scope a query to only show failed entries.
      *
      * @param $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFailed($query)
@@ -137,65 +141,80 @@ class Project extends Model
 
     /**
      * Idea Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function idea()
+    public function idea() : hasOne
     {
         return $this->hasOne(Idea::class);
     }
 
     /**
      * Synapse Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function synapse()
+    public function synapse() : hasOne
     {
         return $this->hasOne(Synapse::class);
     }
 
     /**
      * Script Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function script()
+    public function script() : hasOne
     {
         return $this->hasOne(Script::class);
     }
 
     /**
      * Script Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function review()
+    public function review() : hasOne
     {
         return $this->hasOne(Review::class);
     }
 
     /**
-     * fund Relationship
+     * Fund Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function fund()
+    public function fund() : hasOne
     {
         return $this->hasOne(Fund::class);
     }
 
     /**
-     * distribution Relationship
+     * Distribution Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function distribution()
+    public function distribution() : hasOne
     {
         return $this->hasOne(Distribution::class);
     }
 
-
     /**
      * Returns the right Relationship for the current project stage
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function stage()
+    public function stage() : hasOne
     {
         return $this->{$this->type}();
     }
 
     /**
      * Get what is the next stage of this project
+     *
+     * @return string
      */
-    public function nextStageName()
+    public function nextStageName() : string
     {
         return strtolower(class_basename($this->stage->next()));
     }
@@ -256,22 +275,20 @@ class Project extends Model
      */
     public function totalCollected()
     {
-
         return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
     }
 
     /**
      * @param Builder $query
-     * @param Boolean $activeCond
      */
-    public function scopeActives($query, $activeCond)
+    public function scopeActives($query)
     {
-        $query->whereHas('synapse', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
-        })->orWhereHas('idea', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
-        })->orWhereHas('script', function ($query) use ($activeCond) {
-            $query->where('active', '=', $activeCond);
+        $query->whereHas('synapse', function ($query) {
+            $query->where('active', '=', true);
+        })->orWhereHas('idea', function ($query) {
+            $query->where('active', '=', true);
+        })->orWhereHas('script', function ($query) {
+            $query->where('active', '=', true);
         });
 
     }

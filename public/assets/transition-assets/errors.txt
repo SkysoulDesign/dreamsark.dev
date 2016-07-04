@@ -1,1 +1,0 @@
-[Thu Jan 07 2016 10:09:54 GMT-0200 (E. South America Daylight Time)] layer "1024x1024 planet.png1": Invalid quality: 1

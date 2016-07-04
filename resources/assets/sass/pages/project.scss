@@ -1,0 +1,211 @@
+@include page(project) {
+
+  @include option(margin-top) {
+
+    @include breakpoint(medium up) {
+      margin-top: 2em;
+    }
+
+  }
+
+  @include part(palette) {
+
+    user-select: none;
+    border-radius: 5px;
+
+    &:hover {
+      background: color($color: black, $alpha: 22);
+    }
+
+    @include part(item) {
+      color: white;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      padding: .2em;
+      margin: 1em auto;
+      background: black;
+      border-radius: 100%;
+
+      transition: .25s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(.9);
+      }
+
+    }
+
+  }
+
+  @include part(featured) {
+
+    position: relative;
+
+    height: 500px;
+
+    img {
+      object-fit: cover;
+      height: 100%;
+    }
+
+    @include option(half) {
+      @include respond-to(desktop) {
+        height: 250px;
+      }
+    }
+
+    @include part(overlay) {
+      position: absolute;
+      bottom: 0;
+      padding: 2em;
+
+      width: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.74902) 100%);
+      transition: background 0.25s linear;
+      z-index: 1;
+
+      h1, p {
+        color: color(white);
+        margin: 0;
+        padding: 0;
+      }
+
+    }
+
+  }
+
+  @include part(highlights) {
+    padding: 2em 0;
+  }
+
+  @include part(list) {
+
+    img {
+      border-radius: .3em;
+    }
+
+    line-height: normal;
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    ul {
+
+      margin: 0;
+      padding: 0;
+      font-size: small;
+      list-style: none;
+
+      li {
+        display: inline-block;
+        @include all-but-first-last(2) {
+          padding: 0 .2em;
+        }
+      }
+
+    }
+
+    @include part(load-more) {
+      padding: 2em;
+    }
+
+    @include part(item) {
+
+      margin-bottom: 2em;
+
+      @include last(2) {
+        margin-bottom: 0;
+      }
+
+    }
+
+  }
+
+  @include part(info) {
+
+    position: relative;
+    color: color(white);
+    padding: 0;
+    height: 100%;
+
+    @include breakpoint(small down) {
+      margin-bottom: 2em;
+    }
+
+    img {
+
+      height: 500px;
+      object-fit: cover;
+
+      @include breakpoint(small down) {
+        height: 630px;
+      }
+
+      @include breakpoint(medium up) {
+        border-radius: .3em;
+      }
+    }
+
+    @include part(overlay) {
+
+      position: absolute;
+      top: 0;
+      padding: 2em;
+
+      width: 100%;
+      height: 100%;
+      background-color: color($color: primary, $alpha: 80);
+      z-index: 1;
+      transition: .25s;
+
+      @include breakpoint(medium up) {
+        border-radius: .3em;
+      }
+
+      &:hover {
+        background-color: color($color: primary, $alpha: 90);
+      }
+
+      h1, p {
+        color: color(white);
+        margin: 0;
+        padding: 0;
+      }
+
+      & > div {
+        margin: 1em 0;
+        font-weight: bolder;
+
+        span {
+
+          display: block;
+          font-weight: normal;
+
+          a {
+            @extend a.\--inverted
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  @include option(tab-comments) {
+
+    @extend .\--margin-top;
+
+    section {
+      margin-bottom: 2.5em;
+    }
+
+  }
+
+}

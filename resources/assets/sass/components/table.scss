@@ -1,0 +1,58 @@
+@include component(table) {
+
+  @include table(even);
+  @include table-hover;
+  @include option(stack) {
+    @include breakpoint(medium down) {
+      @include table-stack;
+    }
+  }
+
+  $radius: .3em;
+
+  border: 1px solid color(gray);
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: $radius;
+  box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+
+  thead tr th, tbody tr td {
+    padding: 1em;
+
+    @include option(compact) {
+      width: 1%;
+    }
+
+  }
+
+  thead tr th:first-child {
+    border-top-left-radius: $radius;
+  }
+
+  thead tr th:last-child {
+    border-top-right-radius: $radius;
+  }
+
+  tbody tr:last-child td:first-child {
+    border-bottom-left-radius: $radius;
+  }
+
+  tbody tr:last-child td:last-child {
+    border-bottom-right-radius: $radius;
+  }
+
+  @include part(action) {
+
+    display: flex;
+
+    button {
+      margin: 0 .5em !important;
+    }
+
+  }
+
+}
+
+table {
+  @extend .table;
+}

@@ -1,281 +1,65 @@
+import {Component} from "./Component";
 
-/// <reference path="interfaces/Initializable.ts" />
-/// <reference path="interfaces/Tweenable.ts" />
-/// <reference path="interfaces/Loadable.ts" />
-/// <reference path="interfaces/Composable.ts" />
-/// <reference path="interfaces/Configurable.ts" />
-/// <reference path="typings/three.d.ts" />
-/// <reference path="typings/parallax.d.ts" />
-/// <reference path="typings/three.OBJLoader.d.ts" />
+/**
+ * Application
+ */
 
-/// <reference path="Helpers.ts" />
+export class App {
 
-/// <reference path="elements/EnterPage.ts" />
-/// <reference path="elements/ChaosParticles.ts" />
-/// <reference path="elements/Ripple.ts" />
-/// <reference path="elements/Tunnel.ts" />
-/// <reference path="elements/Skybox.ts" />
-/// <reference path="elements/Plexus.ts" />
-    /// <reference path="elements/Particles.ts" />
-/// <reference path="elements/HexParticles.ts" />
-/// <reference path="elements/Background.ts" />
-/// <reference path="elements/Logo.ts" />
-/// <reference path="elements/TunnelFX.ts" />
-/// <reference path="elements/LogoFX.ts" />
-/// <reference path="elements/Ren.ts" />
-/// <reference path="elements/Asteroid.ts" />
-/// <reference path="elements/Galaxy.ts" />
-/// <reference path="elements/Overlay1.ts" />
-/// <reference path="elements/Overlay2.ts" />
-/// <reference path="elements/Cube.ts" />
-/// <reference path="elements/SecondaryLogo.ts" />
+    public pages = {};
 
-/// <reference path="modules/Browser.ts" />
-/// <reference path="modules/Raycaster.ts" />
-/// <reference path="modules/Checker.ts" />
-/// <reference path="modules/Animator.ts" />
-/// <reference path="modules/Loader.ts" />
-/// <reference path="modules/Mouse.ts" />
-/// <reference path="modules/Camera.ts" />
-/// <reference path="modules/Scene.ts" />
-/// <reference path="modules/Renderer.ts" />
+    constructor() {
 
-/// <reference path="compositions/Landing.ts" />
-/// <reference path="compositions/Loading.ts" />
-/// <reference path="compositions/Universe.ts" />
+        new Component();
 
-module DreamsArk {
+        this.register(
+            require('./Pages/Common'),
+            require('./Pages/User/Profile')
+        )
 
-    import is = DreamsArk.Helpers.is;
-    import query = DreamsArk.Helpers.query;
-    import init = DreamsArk.Helpers.init;
-    import Mouse = DreamsArk.Modules.Mouse;
-    import Loader = DreamsArk.Modules.Loader;
-    import Renderer = THREE.Renderer;
-    import Scene = THREE.Scene;
-    import Camera = THREE.PerspectiveCamera;
-    import Checker = DreamsArk.Modules.Checker;
+    }
 
-    /**
-     * Debug Mode
-     */
-    export var debug:boolean = false;
+    register(...pages) {
 
-    /**
-     * Stores all elements that has been loaded on the application
-     */
-    export var elementsBag:any = {};
-
-    /**
-     * Stores some trivial variables to be checked on render loop
-     */
-    export var core:any = {
-
-        /**
-         * List of active objects
-         * @todo inset components such as Camera, Scene, Renderer
-         */
-        active: {
-
-            /**
-             * Active Composition
-             */
-            composition: null
-        }
-    };
-
-    /**
-     * Defines the main application CORE
-     */
-    export class App {
-
-        /**
-         * Initialize the main APP
-         */
-        constructor() {
-
-            var mouse = <Mouse>module('Mouse');
-
-            /**
-             * start Loading the basic scene
-             */
-            load();
-
-            mouse.click('#start', function () {
-
-                start();
-
-                return true;
-
-            });
-
-            mouse.click('.skipper', function () {
-
-                query('form').submit();
-
-                return true;
-
-            });
-
-            mouse.click('#skip', function () {
-
-                query('form').submit();
-
-                return true;
-
-            });
-
-            mouse.click('.reseter', function () {
-
-                location.reload();
-
-                return true;
-
-            });
-
-        }
+        pages.forEach(page => {
+            for (let name in page) {
+                if (page.hasOwnProperty(name))
+                    this.pages[name.toLowerCase()] = page[name];
+            }
+        });
 
     }
 
     /**
-     * Start the Application
+     * Init Page
+     *
+     * @param name
+     * @param payload
      */
-    export var start = function () {
+    public page(name:string, ...payload:any[]):any {
 
-        /**
-         * Remove logo
-         */
-        //query('.container-fluid').classList.add('--fade-to-black');
-        //query('.enter-page').classList.add('--exit');
+        var name = name.toLowerCase();
 
-        var composition = new Composition('Loading');
+        if (this.pages.hasOwnProperty(name))
+            return new this.pages[name](this, ...payload);
 
-        render();
+        console.error(`\{ ${name} \} might have not being registrered.`);
 
-    };
+        return null;
+
+    }
 
     /**
-     * Start the Application
+     * Document Ready
      */
-    export var load = function () {
-
-        /**
-         * Parallax
-         */
-        var scene = document.getElementById('scene');
-        var parallax = new Parallax(scene, {
-            limitX: 30
-        });
-
-        new Composition('Landing');
-
-        render();
-
-    };
-
-    /**
-     * Render Loop Logic
-     * @param elapsedTime Time elapsed since the last call
-     */
-    export var render = function (elapsedTime?:number) {
-
-        requestAnimationFrame(render);
-
-        var renderer = <Renderer>module('Renderer'),
-            scene = <Scene>module('Scene'),
-            camera = <Camera>module('Camera'),
-            checker = <Checker>module('Checker');
-
-        if (!is.Null(core.active.composition))
-            if (core.active.composition.update)
-                core.active.composition.update(scene, camera, core.active.composition.elementsBag, elapsedTime)
-
-        checker.update();
-
-        renderer.render(scene, camera);
-
-    };
-
-    /**
-     * Get Initializable and initialize it if is not initialized before
-     * @param module - a module to be initialized
-     * @returns {*}
-     */
-    export var module = function (module) {
-
-        /**
-         * Return Null if doesn't exist
-         */
-        if (is.Null(Modules[module]))
-            return console.log('module ' + module + ' couldn\'t be found');
-
-        /**
-         * if Module is not initialized then init it
-         */
-        if (is.Null(Modules[module].instance))
-            init([Modules[module]]);
-
-        return <any>Modules[module].instance;
-
-    };
-
-    /**
-     * Get an element by it's name
-     * @param name - name of the element to be retrieven
-     * @returns {*}
-     */
-    export var element = function (name) {
-
-        if (is.Null(elementsBag[name])) {
-
-            console.log('Element ' + name + ' doesn\'t exist or it wasn\'t loaded.');
-            return;
-
-        }
-
-        return elementsBag[name];
-
-    };
-
-    /**
-     * An Element composed of several components to compose a Scene
-     */
-    export class Composition {
-
-        /**
-         * Initiate the process of starting a new composition
-         * @param name - Composition name to be started
-         */
-        constructor(public name:string) {
-
-            if (is.Null(Compositions[name])) {
-                console.log('Composition: ' + name + ' not found.');
-                return;
-            }
-
-            var loader = new Loader,
-                scene = module('Scene'),
-                camera = module('Camera'),
-                composition = new Compositions[name],
-                ready = function (elements) {
-                    composition.setup(scene, camera, elements);
-                    /**  should merge the elements here */
-                    composition.elementsBag = elements;
-                    core.active.composition = composition;
-                };
-
-            if (!is.Null(composition.elements))
-                loader.Load(composition.elements(), ready);
-
-        }
-
+    ready() {
+        return new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve(this)));
     }
 
 }
 
 /**
- * Start App
+ * Register to the window object
+ * @type {App}
  */
-new DreamsArk.App();
-
-//document.querySelector('body').style.backgroundColor: #000;
+window.app = new App();

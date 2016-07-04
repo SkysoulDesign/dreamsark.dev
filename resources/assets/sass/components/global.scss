@@ -1,0 +1,69 @@
+@mixin dreamsark-global() {
+
+  * {
+    /* So 100% means 100% */
+    box-sizing: border-box;
+  }
+
+  html, body {
+    /* Make the body to be as tall as browser window */
+    //display: flex;
+    //width: 100%;
+    height: 100%;
+    background-color: color(neutral);
+    font-size: 20px;
+
+    @include respond-to(desktop) {
+      font-size: 15px;
+    }
+
+  }
+
+  a {
+
+    color: color(black);
+    text-decoration: none;
+
+    &:hover {
+      color: color(primary);
+    }
+
+    @include option(inverted) {
+
+      color: color(white);
+
+      &:hover {
+        color: color($color: white, $alpha: 88);
+      }
+
+    }
+
+  }
+
+  p {
+    color: color($color: black, $tone: light);
+  }
+
+  //@include component(login-background) {
+  //
+  //  //display: flex;
+  //  //align-items: center;
+  //  //justify-content: center;
+  //  //flex: auto;
+  //  //width: 100%;
+  //  //flex-basis: 100%;
+  //
+  //  background: url('/img/universe.jpeg') no-repeat center center;
+  //  background-size: cover;
+  //
+  //}
+
+  //@include component(centered) {
+  //  display: flex;
+  //  align-items: center;
+  //  justify-content: center;
+  //  min-height: 100%;
+  //}
+
+}
+

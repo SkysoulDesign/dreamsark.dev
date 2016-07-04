@@ -12,6 +12,32 @@
 
 }
 
-@function color($palette, $tone: 'base', $alpha: 100) {
-  @return rgba(map-get(map-get($colors, $palette), $tone), $alpha/100);
+@function color($color, $tone: 'base', $alpha: 100) {
+  @return rgba(map-get(map-get($colors, $color), $tone), $alpha/100);
+}
+
+@function profile-color($color, $tone: 'base', $alpha: 100) {
+  @return rgba(map-get(map-get($profile-colors, $color), $tone), $alpha/100);
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == "mobile" {
+    @media only screen and (min-width: 900px) {
+      @content;
+    }
+  } @else if $breakpoint == "desktop" {
+    @media only screen and (min-width: 1000px) {
+      @content;
+    }
+  } @else if $breakpoint == "large" {
+    @media (min-width: 1500px) {
+      @content;
+    }
+  }
+}
+
+@mixin page($name) {
+  @include component($name+"-page") {
+    @content;
+  }
 }
