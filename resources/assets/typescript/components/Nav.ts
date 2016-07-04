@@ -45,7 +45,12 @@ export class Nav implements ComponentInterface {
                 },
             },
             methods: {
-                selectTab(){
+                selectTab(e:MouseEvent){
+
+                    /**
+                     * Do not scroll on click
+                     */
+                    e.preventDefault();
                     this.$parent.selectTab(this.element);
                 }
             },
@@ -55,7 +60,6 @@ export class Nav implements ComponentInterface {
                 }
             },
             ready(){
-                console.log('hi');
                 this.element.classList.add('+hidden')
                 this.$parent.$data.tabs.push(
                     this.element

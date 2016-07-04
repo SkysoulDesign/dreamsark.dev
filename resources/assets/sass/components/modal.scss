@@ -1,9 +1,12 @@
 @include component(modal) {
 
   position: relative;
+  display: none;
+  color: color(black);
 
   @include option(open) {
-    pointer-events: none;
+    display: block;
+    //pointer-events: none;
   }
 
   @include part(window) {

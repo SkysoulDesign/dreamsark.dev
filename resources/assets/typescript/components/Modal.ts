@@ -10,29 +10,23 @@ export class Modal implements ComponentInterface {
         Vue.component('ark-modal', {
             template: require('../templates/modal/modal.html'),
             props: {
-                class: {
-                    type: String
+                trigger: {
+                    type: String,
+                    required: true,
                 }
             },
             methods: {
-                open(){
-                    console.log('opening');
-                    this.$el.classList.toggle('--open');
-                    this.$children[0].show();
-                }
-            }
-        });
-
-        Vue.component('ark-modal-window', {
-            template: require('../templates/modal/modal-window.html'),
-            methods: {
                 show(){
-                    this.$el.classList.remove('+hidden');
+                    this.$el.classList.add('--open');
                 },
                 close(){
-                    console.log(this.$el)
-                    this.$el.classList.add('+hidden');
+                    this.$el.classList.remove('--open');
                 }
+            },
+
+            ready(){
+                var trigger = document.querySelector(`[data-modal-trigger="${this.trigger}"]`);
+                    trigger.addEventListener('click', event => this.show());
             }
         });
 

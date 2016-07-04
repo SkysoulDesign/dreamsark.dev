@@ -3,7 +3,6 @@
     <ark-tab content="tab-project">
         Project
         @push('tab-item')
-
         <div id="tab-project" class="row project-page --margin-top">
 
             <div class="small-12 medium-8 columns">
@@ -81,7 +80,7 @@
 
                     <div>
                         CREATOR:
-                    <span>
+                        <span>
                         <a href="#">{{ $project->creator->name }}</a>
                     </span>
                     </div>
@@ -102,11 +101,49 @@
                     </ark-statistics>
 
                     <div>
-                        <ark-modal class="button --white --inverted">
-                            Submit
-                            <ark-modal-window>
-                                <section>hello</section>
-                            </ark-modal-window>
+                        <button class="button --white --inverted" data-modal-trigger="submission">Submit</button>
+                        <ark-modal trigger="submission">
+                            <form class="row" method="post" action="">
+
+                                {{ csrf_field() }}
+
+                                <div class="small-12 columns form__content --rounded">
+
+                                    <div class="row">
+
+                                        <h3 class="small-12 columns form__step">
+                                            Make a Submission
+                                        </h3>
+
+                                        <div class="small-12 columns form__field">
+                                            <select name="visibility">
+                                                <option value="0">Private</option>
+                                                <option value="1">Public</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="small-12 columns form__field">
+                                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                                        </div>
+
+                                        <div class="small-12 columns divider --simple"></div>
+
+                                        <div class="small-12 columns form__field +center-on-mobile">
+                                            <button class="button --success --fit">Submit</button>
+                                        </div>
+
+                                        <div class="small-12 columns form__description +center-on-mobile">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi
+                                            architecto consequuntur deserunt dicta doloremque enim illum ipsam itaque
+                                            iusto molestiae mollitia nihil quaerat, quas sapiente similique, tempora!
+                                            Aperiam, tempore!
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
                         </ark-modal>
                     </div>
 
@@ -114,12 +151,8 @@
             </div>
 
         </div>
-
         @endpush
     </ark-tab>
-    {{--<ark-tab content="tab-idea">Idea</ark-tab>--}}
-    {{--<ark-tab content="tab-synapse">Synapse</ark-tab>--}}
-    {{--<ark-tab content="tab-script">Script</ark-tab>--}}
     <ark-tab content="tab-submission">
         Submission
         @push('tab-item')
@@ -173,7 +206,6 @@
         @endpush
     </ark-tab>
 </ark-nav>
-
 @endpush
 
 @section('tab-content')
