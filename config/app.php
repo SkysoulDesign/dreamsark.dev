@@ -150,11 +150,15 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
+
 
         /**
          * Developed
          */
-        \SkysoulDesign\Form\FormServiceProvider::class,
+        SkysoulDesign\Form\FormServiceProvider::class,
+        SkysoulDesign\Payment\PaymentServiceProvider::class,
+        SkysoulDesign\Translation\TranslationServiceProvider::class,
 
         /**
          * Application Service Providers...
@@ -164,8 +168,6 @@ return [
         DreamsArk\Providers\EventServiceProvider::class,
         DreamsArk\Providers\RouteServiceProvider::class,
         DreamsArk\Providers\RepositoriesServiceProvider::class,
-        SkysoulDesign\Payment\PaymentServiceProvider::class,
-        \SocialiteProviders\Manager\ServiceProvider::class,
 
     ],
 
