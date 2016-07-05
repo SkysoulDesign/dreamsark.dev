@@ -39,7 +39,6 @@ class SessionControllerTest extends TestCase
     /**
      * After Registration every user should be redirect to his account page
      *
-     * @test
      */
     public function user_should_be_redirected_to_account_after_registration()
     {
@@ -58,7 +57,6 @@ class SessionControllerTest extends TestCase
     /**
      * When Registering a new user an job should be fired
      *
-     * @test
      */
     public function expects_jobs_to_be_fired_when_registering_a_user()
     {
