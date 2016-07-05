@@ -101,20 +101,19 @@
 
 @endsection
 
-
-@section('pos-scripts')
+@push('scripts')
 
     <script src="{{ asset('js/profile.js') }}"></script>
     <script>
-        var profile = app.page(
-                'profile',
-                '#root',
-                '.--profile-pick', 'project-page__palette__item',
-                '#selectProfile', '#wrapper'
-        );
+//        app.page(
+//                'profile',
+//                '#root',
+//                '.--profile-pick', 'project-page__palette__item',
+//                '#selectProfile', '#wrapper'
+//        );
     </script>
 
-@endsection
+@endpush
 
 {{--@section('content')--}}
 

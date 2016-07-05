@@ -20,6 +20,25 @@ export var popByKey = (data:any[], key:string):any[] => {
 };
 
 /**
+ * Extend Object
+ *
+ * @param defaults
+ * @param object
+ * @returns {any}
+ */
+export var extend = (defaults:{}, object:{}):{} => {
+
+    for (let i in object) {
+        if (object.hasOwnProperty(i)) {
+            defaults[i] = object[i];
+        }
+    }
+
+    return defaults;
+
+};
+
+/**
  * Convert String to CamelCase
  *
  * @param str

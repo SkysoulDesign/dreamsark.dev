@@ -13,14 +13,13 @@
 _ide_helper.php
 *.lock
 /public/user-profiles
-
+*.map
 *.pem
 *.cert
 *crt
 
 
 /resources/assets/typescript/**/*.js
-.map
 /.phpstorm.meta.php
 /public/css/
 /public/js/

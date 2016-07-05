@@ -19,6 +19,21 @@ exports.popByKey = function (data, key) {
     return value;
 };
 /**
+ * Extend Object
+ *
+ * @param defaults
+ * @param object
+ * @returns {any}
+ */
+exports.extend = function (defaults, object) {
+    for (var i in object) {
+        if (object.hasOwnProperty(i)) {
+            defaults[i] = object[i];
+        }
+    }
+    return defaults;
+};
+/**
  * Convert String to CamelCase
  *
  * @param str

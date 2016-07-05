@@ -69,7 +69,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     |--------------------------------------------------------------------------
     */
     $app->get('login', AuthController::class . '@login')->name('login');
-    $app->post('login/store', AuthController::class . '@store')->name('login.store');
+    $app->post('login/store', AuthController::class . '@loginStore')->name('login.store');
     $app->get('register', AuthController::class . '@register')->name('register');
     $app->post('register/store', AuthController::class . '@registerStore')->name('register.store');
     $app->get('logout', AuthController::class . '@logout')->name('logout');
@@ -228,8 +228,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
             $app->get('earnings', ProfileController::class . '@userEarningHistory')->name('earning');
         });
-
-
 
     });
 

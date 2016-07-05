@@ -1,18 +1,21 @@
-import {init} from "./Helpers";
+import {extend} from "./Helpers";
 
 /**
  * Application
  */
-
 class App {
 
+    public pages;
+    public vueObject = {};
+
     /**
-     * @type {{config: Config; component: Component; pages: Pages}}
+     * List of Providers
      */
-    public components = {
-        config: require('./Config'),
-        component: require('./Component'),
-        pages: require('./Pages')
+    private components = {
+        config: require('./Classes/Config'),
+        component: require('./Classes/Component'),
+        pages: require('./Classes/Pages'),
+        logger: require('./Classes/Logger'),
     };
 
     constructor() {
@@ -20,31 +23,46 @@ class App {
         for (let component in this.components) {
 
             for (let name in this.components[component]) {
-                this.components[component] = new this.components[component][name];
+                this[component] = new this.components[component][name](this);
             }
 
         }
 
+        this.bootstrap();
+
     }
 
     /**
-     * Init Page
+     * Bootstrap all classes
+     */
+    private bootstrap() {
+
+        for (let component in this.components)
+            this[component].boot(this);
+
+    }
+
+    /**
+     * Helper Function to Init a Page
      *
      * @param name
      * @param payload
      */
-    public page(routeName:string, ...payload:any[]):any {
+    public page(routeName:string, ...payload:any[]):void {
+        this.pages.init(routeName, payload);
+    }
 
-        this.components.pages.init(routeName, payload);
+    /**
+     * Extend and get the vue Object
+     *
+     * @param obj
+     * @returns {{}}
+     */
+    public vue(obj:{}):{} {
 
-        // var name = toCamelCase(routeName);
-        //
-        // if (this.pages.hasOwnProperty(name))
-        //     return new this.pages[name](this, ...payload);
-        //
-        // console.error(`\{ ${name} \} might have not being registrered.`);
-        //
-        // return null;
+        return this.vueObject = extend(
+            this.vueObject, obj
+        );
 
     }
 
@@ -52,7 +70,9 @@ class App {
      * Document Ready
      */
     ready() {
-        return new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve(this)));
+        return new Promise(resolve => document.addEventListener(
+            'DOMContentLoaded', () => resolve(this)
+        ));
     }
 
 }
