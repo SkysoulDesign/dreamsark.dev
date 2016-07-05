@@ -70,16 +70,16 @@ class Unionpay extends PaymentGateway
     public function getAdditionalPostData(array $config) : array
     {
         return [
-            'version'      => '5.0.0',
-            'encoding'     => 'utf-8',
-            'txnType'      => '01',
-            'txnSubType'   => '01',
-            'bizType'      => '000201',
-            'signMethod'   => '01',
-            'channelType'  => '07',
-            'accessType'   => '0',
+            'version' => '5.0.0',
+            'encoding' => 'utf-8',
+            'txnType' => '01',
+            'txnSubType' => '01',
+            'bizType' => '000201',
+            'signMethod' => '01',
+            'channelType' => '07',
+            'accessType' => '0',
             'currencyCode' => '156',
-            'txnTime'      => date('YmdHis'),
+            'txnTime' => date('YmdHis'),
         ];
     }
 

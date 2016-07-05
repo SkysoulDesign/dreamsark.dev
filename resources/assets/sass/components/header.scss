@@ -23,6 +23,12 @@ header, .header {
 
   }
 
+  @include option(full) {
+    p {
+      width: 100%;
+    }
+  }
+
   @include option(inverted) {
 
     &, p {

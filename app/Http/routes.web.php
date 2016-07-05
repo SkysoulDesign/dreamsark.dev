@@ -127,6 +127,23 @@ $app->group(['middleware' => 'web'], function () use ($app) {
         $app->patch('account/update', SessionController::class . '@update')->name('account.update');
 
         /**
+         * Purchases
+         */
+        $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
+
+            $app->get('/', PurchaseController::class . '@index')->name('index');
+
+            /**
+             * Coin Controller
+             */
+            $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
+//                $app->get('add', CoinController::class . '@create')->name('create');
+                $app->post('store', CoinController::class . '@store')->name('store');
+                $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
+            });
+        });
+
+        /**
          * Settings Controller
          */
         $app->get('settings', SettingController::class . '@index')->name('settings');
@@ -211,20 +228,8 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
             $app->get('earnings', ProfileController::class . '@userEarningHistory')->name('earning');
         });
-        /** User's Payments/Coins Related Actions List */
-        $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
 
-            $app->get('/', PurchaseController::class . '@index')->name('index');
 
-            /**
-             * Coin Controller
-             */
-            $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
-//                $app->get('add', CoinController::class . '@create')->name('create');
-                $app->post('store', CoinController::class . '@store')->name('store');
-                $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
-            });
-        });
 
     });
 

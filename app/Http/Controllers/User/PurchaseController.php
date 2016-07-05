@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Models\Payment\Transaction;
 use Illuminate\Http\Request;
 
@@ -22,23 +21,7 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
-
-        /** @var Transaction $trans */
-        /*$trans = Transaction::find(72)->load('messages');
-        $response = $trans->messages->response;
-        unset($response['invoice_no']);
-        dd($trans->payment->verify($response));*/
-
-//        $message = '';
-//        if ($request->has('status')) {
-//            $payStatus = $request->get('status');
-//            if ($payStatus == 'pending')
-//                $message = trans('payment.paid-receipt-not-received-check-later');
-//            else if ($payStatus == 'success')
-//                $message = trans('payment.your-purchase-has-been-made');
-//        }
-
-        return view('user.payment.index')
+        return view('user.purchase.index')
             ->with('user', $user = $request->user())
             ->with('transactions', $user->transactions);
     }
