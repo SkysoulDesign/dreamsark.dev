@@ -4,6 +4,7 @@ namespace SkysoulDesign\Translation;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use SkysoulDesign\Translation\Http\Controllers\TranslationController;
 use SkysoulDesign\Translation\Repositories\TranslationRepository;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 

@@ -45,7 +45,6 @@ class TranslationController extends Controller
     public function index($language = '1', $group = '1')
     {
 
-        dd('test');
 
         $translations = $this->repository->fetch($language, $group)->load('groups', 'language');
 
