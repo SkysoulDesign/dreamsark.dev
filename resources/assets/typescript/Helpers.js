@@ -18,4 +18,19 @@ exports.popByKey = function (data, key) {
     delete data[key];
     return value;
 };
+/**
+ * Convert String to CamelCase
+ *
+ * @param str
+ * @returns {string}
+ */
+exports.toCamelCase = function (str) {
+    return str.toLowerCase()
+        .replace(/['"]/g, '')
+        .replace(/\W+/g, ' ')
+        .replace(/ (.)/g, function ($1) {
+        return $1.toUpperCase();
+    })
+        .replace(/ /g, '');
+};
 //# sourceMappingURL=Helpers.js.map

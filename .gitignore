@@ -26,3 +26,5 @@ _ide_helper.php
 /public/js/
 /public/translation-assets/
 node_modules
+/resources/assets/typescript/*.js
+/resources/assets/typescript/*.map

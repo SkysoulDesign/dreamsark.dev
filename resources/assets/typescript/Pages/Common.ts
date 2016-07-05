@@ -1,24 +1,25 @@
 import Vue = require("vue");
-import {PageInterface} from "../interfaces/PageInterface";
-import {App} from "../App";
+import {AbstractPage} from "./AbstractPage";
+import {app} from "../App";
 
 /**
  * Common Page
  */
-export class Common implements PageInterface {
+export class Common extends AbstractPage {
 
-    constructor(app:App, root:string = '#app-root') {
+    public routes = ['*'];
 
-        console.log('yeah this is the app');
-        console.log(app);
+    boot() {
 
         /**
          * Binding Vue
          */
         app.ready().then(function () {
 
+            console.log('i run in all the pages');
+
             new Vue({
-                el: root,
+                el: '#app-root',
             });
 
         })

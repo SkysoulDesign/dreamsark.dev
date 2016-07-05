@@ -1,32 +1,29 @@
-import {Component} from "./Component";
+import {init} from "./Helpers";
 
 /**
  * Application
  */
 
-export class App {
+class App {
 
-    public pages = {};
+    /**
+     * @type {{config: Config; component: Component; pages: Pages}}
+     */
+    public components = {
+        config: require('./Config'),
+        component: require('./Component'),
+        pages: require('./Pages')
+    };
 
     constructor() {
 
-        new Component();
+        for (let component in this.components) {
 
-        this.register(
-            require('./Pages/Common'),
-            require('./Pages/User/Profile')
-        )
-
-    }
-
-    register(...pages) {
-
-        pages.forEach(page => {
-            for (let name in page) {
-                if (page.hasOwnProperty(name))
-                    this.pages[name.toLowerCase()] = page[name];
+            for (let name in this.components[component]) {
+                this.components[component] = new this.components[component][name];
             }
-        });
+
+        }
 
     }
 
@@ -36,16 +33,18 @@ export class App {
      * @param name
      * @param payload
      */
-    public page(name:string, ...payload:any[]):any {
+    public page(routeName:string, ...payload:any[]):any {
 
-        var name = name.toLowerCase();
+        this.components.pages.init(routeName, payload);
 
-        if (this.pages.hasOwnProperty(name))
-            return new this.pages[name](this, ...payload);
-
-        console.error(`\{ ${name} \} might have not being registrered.`);
-
-        return null;
+        // var name = toCamelCase(routeName);
+        //
+        // if (this.pages.hasOwnProperty(name))
+        //     return new this.pages[name](this, ...payload);
+        //
+        // console.error(`\{ ${name} \} might have not being registrered.`);
+        //
+        // return null;
 
     }
 
@@ -62,4 +61,6 @@ export class App {
  * Register to the window object
  * @type {App}
  */
-window.app = new App();
+
+export let app = new App();
+window.app = app;

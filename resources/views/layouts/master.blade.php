@@ -22,14 +22,14 @@
 
 @include('partials.footer.common')
 
-@yield('scripts')
-
 <script src="{{ asset('js/app.js') }}"></script>
+
+@stack('scripts')
 
 @section('pos-scripts')
 
     <script>
-        app.page('common');
+        app.page("{{ request()->route()->getName() }}");
     </script>
 
 @endsection

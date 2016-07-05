@@ -55,7 +55,8 @@
 
     </div>
 
-    <form class="row align-center --overlapped +hidden" method="post" action="{{ route('user.profile.store', $profiles->first()->name) }}">
+    <form class="row align-center --overlapped +hidden" method="post"
+          action="{{ route('user.profile.store', $profiles->first()->name) }}">
 
         {{ csrf_field() }}
 

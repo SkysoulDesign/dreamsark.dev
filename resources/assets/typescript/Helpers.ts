@@ -18,3 +18,19 @@ export var popByKey = (data:any[], key:string):any[] => {
     delete data[key];
     return value;
 };
+
+/**
+ * Convert String to CamelCase
+ *
+ * @param str
+ * @returns {string}
+ */
+export var toCamelCase = (str:string) => {
+    return str.toLowerCase()
+        .replace(/['"]/g, '')
+        .replace(/\W+/g, ' ')
+        .replace(/ (.)/g, function ($1) {
+            return $1.toUpperCase();
+        })
+        .replace(/ /g, '');
+}

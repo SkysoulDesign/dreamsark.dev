@@ -72,7 +72,8 @@
 
     <ark-modal trigger="add-coin">
 
-        <form class="row align-center" method="post" action="{{ route('user.purchase.coin.store') }}">
+        <form id="purchase-coin" class="row align-center" method="post"
+              action="{{ route('user.purchase.coin.store') }}">
 
             {{ csrf_field() }}
 
