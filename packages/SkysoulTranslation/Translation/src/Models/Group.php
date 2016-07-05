@@ -3,6 +3,7 @@
 namespace SkysoulDesign\Translation\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\belongsToMany;
 
 /**
  * Class Group
@@ -28,11 +29,11 @@ class Group extends Model
     /**
      * Translation Relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return belongsToMany
      */
-    public function translations()
+    public function translations() : belongsToMany
     {
-        return $this->belongsToMany(Translation::class);
+        return $this->belongsToMany(Translation::class, 'translation_group_translation');
     }
 
 }

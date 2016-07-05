@@ -61,7 +61,7 @@ class TranslationServiceProvider extends ServiceProvider
          * Publish Assets
          */
         $this->publishes([
-            __DIR__ . '/resources/assets' => public_path(),
+            __DIR__ . '/resources/assets/translation-assets' => public_path('translation-assets'),
         ]);
 
     }

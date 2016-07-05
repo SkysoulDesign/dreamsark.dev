@@ -7,6 +7,11 @@ use SkysoulDesign\Translation\Models\Group;
 use SkysoulDesign\Translation\Models\Language;
 use SkysoulDesign\Translation\Models\Translation;
 
+/**
+ * Interface TranslationRepositoryInterface
+ *
+ * @package SkysoulDesign\Translation\Repositories
+ */
 interface TranslationRepositoryInterface
 {
     /**
@@ -107,6 +112,5 @@ interface TranslationRepositoryInterface
      * @return Collection of Translation
      */
     public function fetch($language_id, $group_id);
-
 
 }

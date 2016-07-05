@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Translation</title>
-    <link rel="stylesheet" media="all" href="{{ asset('translation/css/semantic.min.css') }}">
+    <link rel="stylesheet" media="all" href="{{ asset('translation-assets/semantic.min.css') }}">
 </head>
 
 <body>
@@ -14,10 +14,9 @@
     </div>
 </div>
 
-@yield('scripts')
-
-<script src="{{ asset('translation/js/jquery.min.js') }}"></script>
-<script src="{{ asset('translation/js/semantic.min.js') }}"></script>
+<script src="{{ asset('translation-assets/jquery.min.js') }}"></script>
+<script src="{{ asset('translation-assets/semantic.min.js') }}"></script>
+<script src="{{ asset('translation-assets/app.js') }}"></script>
 
 </body>
 </html>

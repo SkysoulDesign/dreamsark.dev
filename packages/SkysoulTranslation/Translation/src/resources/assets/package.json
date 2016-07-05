@@ -1,0 +1,27 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rafael",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
+    "throttle-debounce": "^1.0.1"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "translation-assets/jquery.min.js": "$"
+  },
+  "devDependencies": {
+    "gulp-browserify": "^0.5.1"
+  }
+}

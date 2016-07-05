@@ -31,9 +31,9 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
     private $group;
 
     /**
-     * @param Translation                                $translation
+     * @param Translation $translation
      * @param \SkysoulDesign\Translation\Models\Language $language
-     * @param Group                                      $group
+     * @param Group $group
      */
     function __construct(Translation $translation, Language $language, Group $group)
     {
@@ -110,8 +110,8 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
     /**
      * Create a new Translation
      *
-     * @param int   $language_id
-     * @param int   $group_id
+     * @param int $language_id
+     * @param int $group_id
      * @param array $translation
      * @return \SkysoulDesign\Translation\Models\Language
      */

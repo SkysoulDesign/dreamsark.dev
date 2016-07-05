@@ -2,6 +2,7 @@
 
 namespace SkysoulDesign\Translation\Http\Controllers;
 
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use SkysoulDesign\Translation\Jobs\CreateGroupJob;
@@ -20,6 +21,9 @@ use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
  */
 class TranslationController extends Controller
 {
+
+    use DispatchesJobs;
+
     /**
      * @var \SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface
      */
@@ -45,7 +49,6 @@ class TranslationController extends Controller
     public function index($language = '1', $group = '1')
     {
 
-
         $translations = $this->repository->fetch($language, $group)->load('groups', 'language');
 
         $groups = $this->repository->groups();
@@ -64,8 +67,9 @@ class TranslationController extends Controller
      */
     public function update($id, Request $request)
     {
-        $command = new UpdateTranslationJob($id, $request->all());
-        $status = $this->dispatch($command);
+        $status = $this->dispatch(
+            new UpdateTranslationJob($id, $request->all())
+        );
 
         return response()->json(compact('status'));
     }
@@ -77,7 +81,10 @@ class TranslationController extends Controller
      */
     public function import()
     {
-        $this->dispatch(new ImportTranslationJob());
+        $this->dispatch(
+            new ImportTranslationJob()
+        );
+
         return redirect()->back();
     }
 
@@ -89,7 +96,10 @@ class TranslationController extends Controller
      */
     public function export()
     {
-        $this->dispatch(new ExportTranslationJob());
+        $this->dispatch(
+            new ExportTranslationJob()
+        );
+
         return redirect()->back();
     }
 
@@ -100,7 +110,10 @@ class TranslationController extends Controller
      */
     public function sync()
     {
-        $this->dispatch(new SyncTranslationJob());
+        $this->dispatch(
+            new SyncTranslationJob()
+        );
+
         return redirect()->back();
     }
 
@@ -113,7 +126,10 @@ class TranslationController extends Controller
      */
     public function newLanguage(Request $request)
     {
-        $this->dispatch(new CreateLanguageJob($request->get('name')));
+        $this->dispatch(
+            new CreateLanguageJob($request->get('name'))
+        );
+
         return redirect()->back();
     }
 
@@ -126,7 +142,10 @@ class TranslationController extends Controller
      */
     public function newGroup(Request $request)
     {
-        $this->dispatch(new CreateGroupJob($request->get('name')));
+        $this->dispatch(
+            new CreateGroupJob($request->get('name'))
+        );
+
         return redirect()->back();
     }
 
@@ -138,8 +157,10 @@ class TranslationController extends Controller
      */
     public function newTranslation(Request $request)
     {
-        $command = new CreateTranslationJob($request->get('language'), $request->get('group'), $request->only('key', 'value'));
-        $this->dispatch($command);
+        $this->dispatch(new CreateTranslationJob(
+            $request->get('language'), $request->get('group'), $request->only('key', 'value')
+        ));
+
         return redirect()->back();
     }
 
