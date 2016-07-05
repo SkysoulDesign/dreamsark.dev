@@ -36,7 +36,6 @@ class AuthControllerTest extends TestCase
     /**
      * Ensure the user after login is the same as the authenticated one
      *
-     * @test
      */
     public function it_logs_the_user_in_to_the_app()
     {
@@ -58,7 +57,6 @@ class AuthControllerTest extends TestCase
     /**
      * Wrong password should redirect back to login screen with errors messages
      *
-     * @test
      */
     public function it_redirect_to_login_if_credentials_are_wrong()
     {
@@ -80,7 +78,6 @@ class AuthControllerTest extends TestCase
     /**
      * Admin should be redirect to admin area after login
      *
-     * @test
      */
     public function it_redirects_to_admin_section_if_user_is_an_admin()
     {
