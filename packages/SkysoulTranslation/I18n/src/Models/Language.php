@@ -1,6 +1,6 @@
 <?php
 
-namespace DreamsArk\Models\Translation;
+namespace SkysoulDesign\I18n\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

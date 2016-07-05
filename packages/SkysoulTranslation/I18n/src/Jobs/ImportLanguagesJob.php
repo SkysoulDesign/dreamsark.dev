@@ -1,18 +1,16 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Events\Translation\LanguagesWasCreated;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Events\LanguagesWasCreated;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class ImportLanguagesCommand extends Command implements SelfHandling
+class ImportLanguagesJob extends Job
 {
 
     use DispatchesJobs;
@@ -60,7 +58,7 @@ class ImportLanguagesCommand extends Command implements SelfHandling
          * but was not present yet on the database
          */
         $newLanguages = $languages->merge($names)->diff($names)->map(function ($name) {
-            return $this->dispatch(new CreateLanguageCommand($name));
+            return $this->dispatch(new CreateLanguageJob($name));
         });
 
         /**

@@ -34,7 +34,6 @@ use DreamsArk\Events\Project\Vote\VotingHasFailed;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Events\Session\UserWasUpdated;
-use DreamsArk\Events\Translation\TranslationsWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
@@ -62,6 +61,7 @@ use DreamsArk\Listeners\User\Payment\DeductCoinsFromUser;
 use DreamsArk\Listeners\User\Payment\UpdateOrCreateTransactionMessage;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use SkysoulDesign\I18n\Events\TranslationsWasCreated;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
 /**

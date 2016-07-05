@@ -1,23 +1,22 @@
 <?php
 
-namespace DreamsArk\Http\Controllers\Translation;
+namespace SkysoulDesign\I18n\Http\Controllers;
 
-use DreamsArk\Commands\Translation\CreateGroupCommand;
-use DreamsArk\Commands\Translation\CreateLanguageCommand;
-use DreamsArk\Commands\Translation\CreateTranslationCommand;
-use DreamsArk\Commands\Translation\ExportTranslationCommand;
-use DreamsArk\Commands\Translation\ImportTranslationCommand;
-use DreamsArk\Commands\Translation\SyncTranslationCommand;
-use DreamsArk\Commands\Translation\UpdateTranslationCommand;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
 use Illuminate\Http\Request;
-use DreamsArk\Http\Requests;
-use DreamsArk\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use SkysoulDesign\I18n\Jobs\CreateGroupJob;
+use SkysoulDesign\I18n\Jobs\CreateLanguageJob;
+use SkysoulDesign\I18n\Jobs\CreateTranslationJob;
+use SkysoulDesign\I18n\Jobs\ExportTranslationJob;
+use SkysoulDesign\I18n\Jobs\ImportTranslationJob;
+use SkysoulDesign\I18n\Jobs\SyncTranslationJob;
+use SkysoulDesign\I18n\Jobs\UpdateTranslationJob;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
 class TranslationController extends Controller
 {
     /**
-     * @var TranslationRepositoryInterface
+     * @var \SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface
      */
     private $repository;
 
@@ -41,7 +40,7 @@ class TranslationController extends Controller
         $groups = $this->repository->groups();
         $languages = $this->repository->languages();
 
-        return view('translation.index', compact('translations', 'groups', 'languages'));
+        return view('index', compact('translations', 'groups', 'languages'));
 
     }
 
@@ -55,7 +54,7 @@ class TranslationController extends Controller
      */
     public function update($id, Request $request)
     {
-        $command = new UpdateTranslationCommand($id, $request->all());
+        $command = new UpdateTranslationJob($id, $request->all());
         $status = $this->dispatch($command);
 
         return response()->json(compact('status'));
@@ -68,7 +67,7 @@ class TranslationController extends Controller
      */
     public function import()
     {
-        $this->dispatch(new ImportTranslationCommand());
+        $this->dispatch(new ImportTranslationJob());
         return redirect()->back();
     }
 
@@ -79,7 +78,7 @@ class TranslationController extends Controller
      */
     public function export()
     {
-        $this->dispatch(new ExportTranslationCommand());
+        $this->dispatch(new ExportTranslationJob());
         return redirect()->back();
     }
 
@@ -90,7 +89,7 @@ class TranslationController extends Controller
      */
     public function sync()
     {
-        $this->dispatch(new SyncTranslationCommand());
+        $this->dispatch(new SyncTranslationJob());
         return redirect()->back();
     }
 
@@ -103,7 +102,7 @@ class TranslationController extends Controller
      */
     public function newLanguage(Request $request)
     {
-        $this->dispatch(new CreateLanguageCommand($request->get('name')));
+        $this->dispatch(new CreateLanguageJob($request->get('name')));
         return redirect()->back();
     }
 
@@ -116,7 +115,7 @@ class TranslationController extends Controller
      */
     public function newGroup(Request $request)
     {
-        $this->dispatch(new CreateGroupCommand($request->get('name')));
+        $this->dispatch(new CreateGroupJob($request->get('name')));
         return redirect()->back();
     }
 
@@ -128,7 +127,7 @@ class TranslationController extends Controller
      */
     public function newTranslation(Request $request)
     {
-        $command = new CreateTranslationCommand($request->get('language'), $request->get('group'), $request->only('key', 'value'));
+        $command = new CreateTranslationJob($request->get('language'), $request->get('group'), $request->only('key', 'value'));
         $this->dispatch($command);
         return redirect()->back();
     }

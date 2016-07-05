@@ -1,12 +1,10 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class UpdateTranslationCommand extends Command implements SelfHandling
+class UpdateTranslationJob extends Job
 {
     /**
      * @var
@@ -34,6 +32,7 @@ class UpdateTranslationCommand extends Command implements SelfHandling
      * Execute the command.
      *
      * @param TranslationRepositoryInterface $repository
+     * @return bool|mixed
      */
     public function handle(TranslationRepositoryInterface $repository)
     {

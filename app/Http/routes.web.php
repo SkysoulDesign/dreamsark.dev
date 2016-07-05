@@ -37,7 +37,6 @@ use DreamsArk\Http\Controllers\Project\VoteController;
 use DreamsArk\Http\Controllers\PublicData\ProfileController as PublicProfileController;
 use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
-use DreamsArk\Http\Controllers\Translation\TranslationController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\Bag\CoinController;
 use DreamsArk\Http\Controllers\User\ProfileController;
@@ -63,21 +62,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
      * Dashboard Controller
      */
     $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
-
-    /**
-     * Translation Controller
-     */
-    $app->group(['prefix' => 'translation', 'as' => 'translation.'], function () use ($app) {
-        $app->get('import', TranslationController::class . '@import')->name('import');
-        $app->get('export', TranslationController::class . '@export')->name('export');
-        $app->get('sync', TranslationController::class . '@sync')->name('sync');
-        $app->post('language/store', TranslationController::class . '@newLanguage')->name('newLanguage');
-        $app->post('group/store', TranslationController::class . '@newGroup')->name('newGroup');
-        $app->post('translation/store', TranslationController::class . '@newTranslation')->name('newTranslation');
-        $app->post('update/{translation}', TranslationController::class . '@update')->name('update');
-    });
-
-    $app->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');
 
     /*
     |--------------------------------------------------------------------------

@@ -30,8 +30,6 @@ use DreamsArk\Repositories\Report\ReportRepository;
 use DreamsArk\Repositories\Report\ReportRepositoryInterface;
 use DreamsArk\Repositories\Setting\SettingRepository;
 use DreamsArk\Repositories\Setting\SettingRepositoryInterface;
-use DreamsArk\Repositories\Translation\TranslationRepository;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
 use DreamsArk\Repositories\User\Role\RoleRepository;
 use DreamsArk\Repositories\User\Role\RoleRepositoryInterface;
 use DreamsArk\Repositories\User\UserProfileRepository;
@@ -102,14 +100,6 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(
             ReportRepositoryInterface::class,
             ReportRepository::class
-        );
-
-        /**
-         * Translation Repository
-         */
-        $this->app->bind(
-            TranslationRepositoryInterface::class,
-            TranslationRepository::class
         );
 
         /**

@@ -1,23 +1,27 @@
 <?php
 
-namespace DreamsArk\Events\Translation;
+namespace SkysoulDesign\I18n\Events;
 
-use DreamsArk\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Collection;
 
-class TranslationGroupWasCreated extends Event
+class GroupsWasCreated extends Event
 {
     use SerializesModels;
 
     /**
+     * @var Collection
+     */
+    public $groups;
+
+    /**
      * Create a new event instance.
      *
-     * @return void
+     * @param Collection $groups
      */
-    public function __construct()
+    public function __construct(Collection $groups)
     {
-        //
+        $this->groups = $groups;
     }
 
     /**

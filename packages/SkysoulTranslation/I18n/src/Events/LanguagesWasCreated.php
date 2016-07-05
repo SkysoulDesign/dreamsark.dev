@@ -1,10 +1,8 @@
 <?php
 
-namespace DreamsArk\Events\Translation;
+namespace SkysoulDesign\I18n\Events;
 
-use DreamsArk\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Support\Collection;
 
 class LanguagesWasCreated extends Event

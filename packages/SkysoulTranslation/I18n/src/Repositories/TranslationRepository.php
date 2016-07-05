@@ -1,23 +1,27 @@
 <?php
 
-namespace DreamsArk\Repositories\Translation;
+namespace SkysoulDesign\I18n\Repositories;
 
-use DreamsArk\Models\Translation\Group;
-use DreamsArk\Models\Translation\Language;
-use DreamsArk\Models\Translation\Translation;
-use DreamsArk\Repositories\Repository;
 use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Models\Group;
+use SkysoulDesign\I18n\Models\Language;
+use SkysoulDesign\I18n\Models\Translation;
 
+/**
+ * Class TranslationRepository
+ *
+ * @package SkysoulDesign\I18n\Repositories
+ */
 class TranslationRepository extends Repository implements TranslationRepositoryInterface
 {
 
     /**
-     * @var Translation
+     * @var \SkysoulDesign\I18n\Models\Translation
      */
     public $model;
 
     /**
-     * @var Language
+     * @var \SkysoulDesign\I18n\Models\Language
      */
     private $language;
 
@@ -28,7 +32,7 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
 
     /**
      * @param Translation $translation
-     * @param Language $language
+     * @param \SkysoulDesign\I18n\Models\Language $language
      * @param Group $group
      */
     function __construct(Translation $translation, Language $language, Group $group)
@@ -50,9 +54,10 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
 
     /**
      * Retrieve a Language by it's name
-     *
-     * @param string $name
-     * @return Language
+
+*
+*@param string $name
+     * @return \SkysoulDesign\I18n\Models\Language
      */
     public function language($name)
     {
@@ -83,9 +88,10 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
 
     /**
      * Create a new language
-     *
-     * @param string $name
-     * @return Language
+
+*
+*@param string $name
+     * @return \SkysoulDesign\I18n\Models\Language
      */
     public function createLanguage($name)
     {
@@ -105,11 +111,12 @@ class TranslationRepository extends Repository implements TranslationRepositoryI
 
     /**
      * Create a new Translation
-     *
-     * @param int $language_id
+
+*
+*@param int $language_id
      * @param int $group_id
      * @param array $translation
-     * @return Language
+     * @return \SkysoulDesign\I18n\Models\Language
      */
     public function createTranslation($language_id, $group_id, array $translation)
     {

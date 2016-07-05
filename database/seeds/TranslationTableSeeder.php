@@ -1,10 +1,10 @@
 <?php
 
-use DreamsArk\Commands\Translation\CreateTranslationCommand;
 use DreamsArk\Models\Translation\Group;
-use DreamsArk\Models\Translation\Language;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use SkysoulDesign\I18n\Jobs\CreateTranslationJob;
+use SkysoulDesign\I18n\Models\Language;
 
 class TranslationTableSeeder extends Seeder
 {
@@ -23,6 +23,6 @@ class TranslationTableSeeder extends Seeder
             'value' => 'Email'
         ];
 
-        $this->dispatch(new CreateTranslationCommand(Language::first(), Group::first(), $translation));
+        $this->dispatch(new CreateTranslationJob(Language::first(), Group::first(), $translation));
     }
 }

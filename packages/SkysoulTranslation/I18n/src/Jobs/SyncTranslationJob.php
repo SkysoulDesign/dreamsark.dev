@@ -1,15 +1,11 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Models\Translation\Language;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class SyncTranslationCommand extends Command implements SelfHandling
+class SyncTranslationJob extends Job
 {
 
     use DispatchesJobs;
@@ -23,8 +19,9 @@ class SyncTranslationCommand extends Command implements SelfHandling
 
     /**
      * Execute the command.
-     *
-     * @param TranslationRepositoryInterface $repository
+
+*
+*@param \SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface $repository
      */
     public function handle(TranslationRepositoryInterface $repository)
     {
@@ -77,7 +74,7 @@ class SyncTranslationCommand extends Command implements SelfHandling
                  * For each new Value, Create a new Translation
                  */
                 $newValues->each(function ($key) use ($language, $group) {
-                    $this->dispatch(new CreateTranslationCommand($language, $group->id, compact('key')));
+                    $this->dispatch(new CreateTranslationJob($language, $group->id, compact('key')));
                 });
 
             });

@@ -1,21 +1,19 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Events\Translation\TranslationsWasCreated;
-use DreamsArk\Models\Translation\Group;
-use DreamsArk\Models\Translation\Language;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\Translator;
+use SkysoulDesign\I18n\Events\TranslationsWasCreated;
+use SkysoulDesign\I18n\Models\Group;
+use SkysoulDesign\I18n\Models\Language;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class ImportTranslationCommand extends Command implements SelfHandling
+class ImportTranslationJob extends Job
 {
 
     use DispatchesJobs;
@@ -44,10 +42,10 @@ class ImportTranslationCommand extends Command implements SelfHandling
         $loader = $translator->getLoader();
 
         /** @var Collection $groups */
-        $groups = $this->dispatch(new ImportGroupsCommand());
+        $groups = $this->dispatch(new ImportGroupsJob());
 
         /** @var Collection $languages */
-        $languages = $this->dispatch(new ImportLanguagesCommand());
+        $languages = $this->dispatch(new ImportLanguagesJob());
 
         foreach ($files as $file) {
 
@@ -95,7 +93,7 @@ class ImportTranslationCommand extends Command implements SelfHandling
                 /**
                  * Update Translation
                  */
-                $updateCommand = new UpdateTranslationCommand($model->where('key', $key)->first()->id, compact('value'));
+                $updateCommand = new UpdateTranslationJob($model->where('key', $key)->first()->id, compact('value'));
                 $this->dispatch($updateCommand);
 
             });
@@ -106,7 +104,7 @@ class ImportTranslationCommand extends Command implements SelfHandling
              * Save Translations on database
              */
             $newItems = $translations->merge($database)->diff($database)->map(function ($value, $key) use ($language, $group) {
-                return $this->dispatch(new CreateTranslationCommand($language->id, $group->id, compact('key', 'value')));
+                return $this->dispatch(new CreateTranslationJob($language->id, $group->id, compact('key', 'value')));
             });
 
             /**

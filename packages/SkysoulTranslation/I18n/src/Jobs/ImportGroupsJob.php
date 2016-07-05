@@ -1,18 +1,16 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Events\Translation\GroupsWasCreated;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Events\GroupsWasCreated;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class ImportGroupsCommand extends Command implements SelfHandling
+class ImportGroupsJob extends Job
 {
 
     use DispatchesJobs;
@@ -27,8 +25,9 @@ class ImportGroupsCommand extends Command implements SelfHandling
 
     /**
      * Execute the command.
-     *
-     * @param Filesystem $fileSystem
+
+*
+*@param Filesystem $fileSystem
      * @param Application $app
      * @param TranslationRepositoryInterface $repository
      * @param Dispatcher $event
@@ -60,7 +59,7 @@ class ImportGroupsCommand extends Command implements SelfHandling
          * but was not present yet on the database
          */
         $newGroups = $groups->merge($names)->diff($names)->map(function ($name) {
-            return $this->dispatch(new CreateGroupCommand($name));
+            return $this->dispatch(new CreateGroupJob($name));
         });
 
 

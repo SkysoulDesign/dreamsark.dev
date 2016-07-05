@@ -1,15 +1,13 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class ExportTranslationCommand extends Command implements SelfHandling
+class ExportTranslationJob extends Job
 {
     /**
      * Create a new command instance.

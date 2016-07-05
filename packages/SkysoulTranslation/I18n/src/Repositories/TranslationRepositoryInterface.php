@@ -1,11 +1,11 @@
 <?php
 
-namespace DreamsArk\Repositories\Translation;
+namespace SkysoulDesign\I18n\Repositories;
 
-use DreamsArk\Models\Translation\Group;
-use DreamsArk\Models\Translation\Language;
-use DreamsArk\Models\Translation\Translation;
 use Illuminate\Support\Collection;
+use SkysoulDesign\I18n\Models\Group;
+use SkysoulDesign\I18n\Models\Language;
+use SkysoulDesign\I18n\Models\Translation;
 
 interface TranslationRepositoryInterface
 {

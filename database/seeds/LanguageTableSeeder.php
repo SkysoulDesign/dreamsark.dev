@@ -1,8 +1,8 @@
 <?php
 
-use DreamsArk\Commands\Translation\CreateLanguageCommand;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use SkysoulDesign\I18n\Jobs\CreateLanguageJob;
 
 class LanguageTableSeeder extends Seeder
 {
@@ -19,7 +19,7 @@ class LanguageTableSeeder extends Seeder
         $languages = collect(['en', 'cn']);
 
         $languages->each(function ($language) {
-            $this->dispatch(new CreateLanguageCommand($language));
+            $this->dispatch(new CreateLanguageJob($language));
         });
 
     }

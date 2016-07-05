@@ -1,13 +1,11 @@
 <?php
 
-namespace DreamsArk\Commands\Translation;
+namespace SkysoulDesign\I18n\Jobs;
 
-use DreamsArk\Commands\Command;
-use DreamsArk\Models\Translation\Language;
-use DreamsArk\Repositories\Translation\TranslationRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
+use SkysoulDesign\I18n\Models\Language;
+use SkysoulDesign\I18n\Repositories\TranslationRepositoryInterface;
 
-class CreateTranslationCommand extends Command implements SelfHandling
+class CreateTranslationJob extends Job
 {
     /**
      * @var string
