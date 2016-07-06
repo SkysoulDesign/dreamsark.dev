@@ -13,11 +13,16 @@ export var forEach = (array:any, callback:Function, scope:any):void => {
  * @param key
  * @returns any[]
  */
-export var popByKey = (data:any[], key:string):any[] => {
+export var popByKey = (data:any[], key:string, defaults?:any):any[] => {
+
+    if (!data.hasOwnProperty(key))
+        return defaults;
+
     let value = data[key];
     delete data[key];
     return value;
-};
+
+}
 
 /**
  * Extend Object

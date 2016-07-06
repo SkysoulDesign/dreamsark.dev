@@ -1,5 +1,3 @@
-import {Application} from "../Abstract/Aplication";
-
-export class Config extends Application {
+export class Config {
     debug = true;
 }

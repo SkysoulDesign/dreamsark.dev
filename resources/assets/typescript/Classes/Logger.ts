@@ -1,14 +1,13 @@
-import {Application} from "../Abstract/Aplication";
-
 /**
  * Logger
  */
-export class Logger extends Application {
+export class Logger {
 
     private debug:Boolean;
 
-    boot() {
-        this.debug = this.app.config.debug;
+    constructor(config) {
+        this.debug = config.debug;
+        console.time('Application Runtime');
     }
 
     /**
@@ -18,12 +17,63 @@ export class Logger extends Application {
      * @param message
      * @param bindings
      */
-    public log(type = 'log', message, ...bindings) {
+    private log(type = 'log', message, ...bindings) {
 
-        if (this.debug) {
+        if (this.debug && type != 'dir') {
             console[type](`${message} ${this.inlineBindings(...bindings)}`);
         }
 
+        if (type === 'dir') {
+            console.dir(bindings)
+        }
+
+    }
+
+    /**
+     * Trace Execution Time
+     *
+     * @param string title
+     * @param function callback
+     */
+    time(title:string, callback?:Function) {
+        console.time(title);
+
+        if (callback instanceof Function) {
+            callback(this);
+        }
+
+        console.timeEnd(title)
+    }
+
+    /**
+     * Group Console logs
+     * @param string title
+     * @param boolean collapsed
+     */
+    group(title:string, callback?:Function, collapsed:boolean = true):void {
+
+        if (!this.debug && callback instanceof Function)
+            return callback(this);
+
+        if (collapsed)
+            console.groupCollapsed(title);
+        else
+            console.group(title);
+
+        /**
+         * Trance Time
+         */
+        this.time('Total Execution Time', callback);
+
+        this.closeGroup();
+
+    }
+
+    /**
+     * Close Console group
+     */
+    closeGroup() {
+        console.groupEnd();
     }
 
     info(message, ...bindings) {
@@ -38,8 +88,8 @@ export class Logger extends Application {
         this.log('warm', message, ...bindings);
     }
 
-    dir(message, ...bindings) {
-        this.log('dir', message, ...bindings);
+    dir(...bindings) {
+        this.log('dir', null, ...bindings);
     }
 
     private inlineBindings(...list) {

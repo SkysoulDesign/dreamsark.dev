@@ -199,7 +199,7 @@ class Payment
          * If implementation implements SelfHandle then we will
          * directly dispatch the request to the vendor API
          */
-        if ($buildForm = $this->gateway instanceof SelfHandle) {
+        if ($this->gateway instanceof SelfHandle) {
 
             $data = $this->post(
                 $this->getConfig('gateway_url'),
@@ -223,10 +223,10 @@ class Payment
         }
 
         return [
-            'result'    => 'ok',
-            'data'      => $data,
-            'target'    => $this->getConfig('gateway_url'),
-            'buildForm' => !$buildForm
+            'data' => $data,
+            'target' => $this->getConfig('gateway_url'),
+            'gateway' => $this->gatewayName,
+            'method' => 'post'
         ];
     }
 
@@ -236,7 +236,7 @@ class Payment
 
         if (!$this->gateway->isWithdrawAvail)
             return [
-                'result'  => 'fail',
+                'result' => 'fail',
                 'message' => trans('payment.withdraw-not-avail-in') . ' ' . $this->gatewayName
             ];
 
@@ -260,21 +260,21 @@ class Payment
         unset($data['seller_id'], $data[$this->gateway->callbackKey], $data['service'], $data['body'], $data['subject'], $data['payment_type']);
 
         $data = array_merge($data, [
-            "service"        => "batch_trans_notify",
-            "email"          => $this->getConfig('service_email'),
-            "account_name"   => $this->getConfig('service_name'),
+            "service" => "batch_trans_notify",
+            "email" => $this->getConfig('service_email'),
+            "account_name" => $this->getConfig('service_name'),
             /**
              * "detail_data" sample
              * SERIAL_NUMBER^RECEIVER_ALIPAY_MOBILE_NUMBER^RECEIVER_REAL_NAME^AMOUNT^REMARKS
              */
-            "detail_data"    => (('1' . str_pad($this->transaction->id, 10, '0', STR_PAD_LEFT)) . '^'
+            "detail_data" => (('1' . str_pad($this->transaction->id, 10, '0', STR_PAD_LEFT)) . '^'
                 . $formData['mobile_number'] . '^' . $formData['real_name']
                 . '^' . $this->gateway->getPrice(
                     $this->transaction->getAttribute('amount'), config('payment.base')
                 )
                 . '^withdraw-' . $formData['mobile_number']),
-            "pay_date"       => date('Ymd'),
-            "batch_num"      => 1,
+            "pay_date" => date('Ymd'),
+            "batch_num" => 1,
             "_input_charset" => trim(strtolower('utf-8')),
         ]);
 
@@ -286,8 +286,8 @@ class Payment
         dispatch(new UpdateOrCreateTransactionMessageJob($this->transaction, ['request' => $data]));
 
         return [
-            'result'    => 'ok',
-            'message'   => trans('payment.your-request-submitted-waiting-for-approval'),
+            'result' => 'ok',
+            'message' => trans('payment.your-request-submitted-waiting-for-approval'),
             'buildForm' => false
             /*'data'      => $data,
             'target'    => $this->getConfig('gateway_url'),
@@ -512,7 +512,7 @@ class Payment
         $verifyData = $this->buildQueryString($data);
         $signData = array_get($request, $this->gateway->signKey);
 
-        if ($this->gateway->signTypeKey!='' && $request[$this->gateway->signTypeKey] == 'MD5') {
+        if ($this->gateway->signTypeKey != '' && $request[$this->gateway->signTypeKey] == 'MD5') {
             return $this->md5Verify($verifyData, $signData, $this->getConfig('md5_key'));
         } else
             return $this->gateway->validate(

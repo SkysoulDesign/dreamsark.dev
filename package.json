@@ -24,6 +24,7 @@
     "socket.io": "^1.4.6",
     "three": "^0.78.0",
     "vue": "^1.0.25",
+    "vue-resource": "^0.9.3",
     "watchify": "^3.7.0"
   }
 }

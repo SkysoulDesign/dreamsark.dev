@@ -1,6 +1,7 @@
-import {toCamelCase, extend} from "../Helpers";
+import {toCamelCase, extend, popByKey} from "../Helpers";
 import {Application} from "../Abstract/Aplication";
 import Vue = require('vue');
+import VueResource = require('vue-resource');
 
 /**
  * Components
@@ -110,12 +111,38 @@ export class Pages extends Application {
                 el: '#app-root',
             }
 
+            /**
+             * Plugins
+             */
+            let obj = this.initPlugins(
+                app.vue()
+            );
+
             new Vue(
-                extend(defaults, app.vue())
+                extend(defaults, obj)
             );
 
         })
 
+    }
+
+    /**
+     * Init Plugins
+     * @param plugins
+     */
+    private initPlugins(obj):{} {
+
+        if (obj.hasOwnProperty('plugins'))
+            popByKey(obj, 'plugins', []).forEach(Plugin => {
+
+                if (Plugin instanceof Function)
+                    return Vue.use(Plugin);
+
+                this.app.logger.error('Invalid Plugin', Plugin)
+
+            })
+
+        return obj
     }
 
     /**

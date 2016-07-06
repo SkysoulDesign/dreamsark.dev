@@ -6,7 +6,10 @@ export abstract class Application {
         this.app = app;
     }
 
-    boot() {
+    boot(app) {
+    }
+
+    destruct(app) {
     }
 
 }

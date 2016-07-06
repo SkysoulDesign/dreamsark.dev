@@ -1,4 +1,6 @@
 import {extend} from "./Helpers";
+import {Logger} from "./Classes/Logger";
+import {Config} from "./Classes/Config";
 
 /**
  * Application
@@ -8,27 +10,36 @@ class App {
     public pages;
     public vueObject = {};
 
+    public config = new Config();
+    public logger = new Logger(
+        this.config
+    );
+
     /**
      * List of Providers
      */
     private components = {
-        config: require('./Classes/Config'),
         component: require('./Classes/Component'),
-        pages: require('./Classes/Pages'),
-        logger: require('./Classes/Logger'),
+        pages: require('./Classes/Pages')
     };
 
     constructor() {
 
-        for (let component in this.components) {
+        this.logger.group('Core', logger => {
 
-            for (let name in this.components[component]) {
-                this[component] = new this.components[component][name](this);
+            for (let component in this.components) {
+
+                for (let name in this.components[component]) {
+                    logger.group(name, () => {
+                        this[component] = new this.components[component][name](this);
+                    })
+                }
+
             }
 
-        }
+            this.bootstrap();
 
-        this.bootstrap();
+        })
 
     }
 
@@ -43,13 +54,27 @@ class App {
     }
 
     /**
+     * Destruct all classes
+     */
+    private destruct() {
+
+        for (let component in this.components)
+            this[component].destruct(this);
+
+        console.timeEnd('Application Runtime');
+
+    }
+
+    /**
      * Helper Function to Init a Page
      *
      * @param name
      * @param payload
      */
     public page(routeName:string, ...payload:any[]):void {
-        this.pages.init(routeName, payload);
+        this.logger.group(`Page`, logger => {
+            this.pages.init(routeName, payload);
+        }, false)
     }
 
     /**
@@ -58,7 +83,7 @@ class App {
      * @param obj
      * @returns {{}}
      */
-    public vue(obj:{}):{} {
+    public vue(obj:{}) {
 
         return this.vueObject = extend(
             this.vueObject, obj
@@ -71,8 +96,12 @@ class App {
      */
     ready() {
         return new Promise(resolve => document.addEventListener(
-            'DOMContentLoaded', () => resolve(this)
+            'DOMContentLoaded', () => {
+                resolve(this);
+                this.destruct();
+            }
         ));
+
     }
 
 }
@@ -83,4 +112,6 @@ class App {
  */
 
 export let app = new App();
-window.app = app;
+global.app = app;
+
+

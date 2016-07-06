@@ -13,7 +13,9 @@ exports.forEach = function (array, callback, scope) {
  * @param key
  * @returns any[]
  */
-exports.popByKey = function (data, key) {
+exports.popByKey = function (data, key, defaults) {
+    if (!data.hasOwnProperty(key))
+        return defaults;
     var value = data[key];
     delete data[key];
     return value;
