@@ -1,28 +1,28 @@
+node_modules
+vendor
 /.idea
-/bower_components
-/node_modules
+
+#Ignore All Javascript Files
+*.map
+/public/**/**.*
+!/public/img/**/**.*
+!/public/**.*
+/resources/assets/typescript/**/**.js
+
+
+#Ignore Env Files
+.env
+*.meta*
+*.lock
+_ide_helper.php
 .DS_Store
+/packages/SkysoulPayment/Payment/src/Implementations/Key/**/**.*
+
+#Ignore Archiver
+*.zip
+*.rar
+
+#Ignore Templates
 *.psd
 *.ai
 *.aep
-*.zip
-*.rar
-*.mov
-/vendor
-.env
-_ide_helper.php
-*.lock
-/public/user-profiles
-*.map
-*.pem
-*.cert
-*crt
-
-/resources/assets/typescript/**/*.js
-/.phpstorm.meta.php
-/public/css/
-/public/js
-/public/translation-assets/
-node_modules
-/resources/assets/typescript/*.js
-/resources/assets/typescript/*.map
