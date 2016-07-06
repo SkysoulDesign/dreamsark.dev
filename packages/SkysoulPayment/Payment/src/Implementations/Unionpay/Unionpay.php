@@ -6,11 +6,11 @@ use DreamsArk\Models\Payment\Transaction;
 use SkysoulDesign\Payment\PaymentGateway;
 
 /**
- * Class Unionpay
+ * Class UnionPay
  *
  * @package SkysoulDesign\Payment\Implementations\Unionpay
  */
-class Unionpay extends PaymentGateway
+class UnionPay extends PaymentGateway
 {
 
     /**
