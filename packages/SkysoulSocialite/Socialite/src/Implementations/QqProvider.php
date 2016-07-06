@@ -17,11 +17,6 @@ class QqProvider extends Provider
     {
         $response = $this->getHttpClient()->get('https://graph.qq.com/oauth2.0/me?' . $token);
 
-        echo 'https://graph.qq.com/oauth2.0/me?' . $token.'<pre>';
-        print_r($response->getBody()->getContents());
-        print_r(json_decode($this->removeCallback($response->getBody()->getContents()), true));
-        dd();
-
         $this->customOpenId = json_decode($this->removeCallback($response->getBody()->getContents()), true)['openid'];
 
         $response = $this->getHttpClient()->get(
