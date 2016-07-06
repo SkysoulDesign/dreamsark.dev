@@ -18,11 +18,10 @@ _ide_helper.php
 *.cert
 *crt
 
-
 /resources/assets/typescript/**/*.js
 /.phpstorm.meta.php
 /public/css/
-/public/js/
+/public/js
 /public/translation-assets/
 node_modules
 /resources/assets/typescript/*.js
