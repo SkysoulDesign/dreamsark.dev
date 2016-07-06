@@ -75,26 +75,41 @@
                 </ul>
             </section>
             <section class="medium-2 column menu">
-                <form class="right" action="{{ route('login.social.post') }}" method="post">
+                <form class="right" action="{{ route('login.social.post') }}" method="post" id="social_form">
                     {{ csrf_field() }}
+                    <input type="hidden" name="login_through" value="" id="login_through"/>
                     <ul>
                         <li>
-                            <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
+                            <input title="Login with QQ" type="image"
+                                   src="{{ asset('dreamsark-assets/qq-login-16x16.png') }}"
                                    name="login_through"
-                                   value="qq"/>
+                                   id="qq"/>
                         </li>
                         <li>
                             <input title="Login with Weibo" type="image"
                                    src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
-                                   value="weibo"/>
+                                   id="weibo"/>
                         </li>
                         <li>
-                            <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat" type="image"
+                            <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat"
+                                   type="image"
                                    src="{{ asset('dreamsark-assets/wechat.png') }}"
-                                   name="login_through" value="weixin"/>
+                                   name="login_through" id="weixin"/>
                         </li>
                     </ul>
                 </form>
+                <script>
+                    var socialForm = document.querySelector('#social_form');
+                    socialForm.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        var target = event.target.id;
+                        if (target != undefined && target != '') {
+                            document.getElementById('login_through').value = target;
+                            socialForm.submit();
+                        } else
+                            return false;
+                    });
+                </script>
 
             </section>
 

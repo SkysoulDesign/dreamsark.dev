@@ -50,21 +50,25 @@
                 <div class="title simple center">or login with</div>
 
                 <div class="social center">
-                    <form action="{{ route('login.social.post') }}" method="post">
+                    <form action="{{ route('login.social.post') }}" method="post" id="social_form">
                         {{ csrf_field() }}
+                        <input type="hidden" name="login_through" value="" id="login_through" />
                         <ul>
                             <li>
-                                <input title="Login with QQ" type="image" src="{{ asset('dreamsark-assets/qq-50x16.png') }}"
-                                       name="login_through"
-                                       value="qq"/>
+                                <input title="Login with QQ" type="image"
+                                       src="{{ asset('dreamsark-assets/qq-login-16x16.png') }}"
+                                       name="social_login"
+                                       id="qq"/>
                             </li>
                             <li>
-                                <input title="Login with Weibo" type="image" src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
-                                       value="weibo"/>
+                                <input title="Login with Weibo" type="image"
+                                       src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="social_login"
+                                       id="weibo"/>
                             </li>
                             <li>
-                                <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat" type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
-                                       name="login_through" value="weixin"/>
+                                <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat"
+                                       type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                       name="social_login" id="weixin"/>
                             </li>
                             {{--set hidden as server will be in China and unable to access FB server on ReturnURL from it.
                             even user have VPN and able to login FB, but code-behind process to read data from FB is not possible.
@@ -76,6 +80,18 @@
                             --}}
                         </ul>
                     </form>
+                    <script>
+                        var socialForm = document.querySelector('#social_form');
+                        socialForm.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            var target = event.target.id;
+                            if (target != undefined && target != '') {
+                                document.getElementById('login_through').value = target;
+                                socialForm.submit();
+                            } else
+                                return false;
+                        });
+                    </script>
 
                 </div>
 
