@@ -67,7 +67,7 @@ return [
             'service_id'           => '802110053110768',
             'private_key_path'     => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/802110053110768_acp.pfx',
             'private_key_password' => '220616',
-            'public_key_path'      => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/encryptpub.cer',
+            'public_key_path'      => '/var/www/dreamsark/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay/acp_prod_verify_sign.cer',
         ],
 
         'wechat' => [
