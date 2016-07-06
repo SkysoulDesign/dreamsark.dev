@@ -89,7 +89,7 @@
                                    value="weibo"/>
                         </li>
                         <li>
-                            <input title="Login with Wechat" type="image"
+                            <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat" type="image"
                                    src="{{ asset('dreamsark-assets/wechat.png') }}"
                                    name="login_through" value="weixin"/>
                         </li>

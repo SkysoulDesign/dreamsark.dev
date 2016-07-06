@@ -49,8 +49,10 @@ return [
     ],
 
     'qq' => [
-        'client_id' => '101326108',
-        'client_secret' => '4b95073ed2bfe5a8a5c34432c7454941',
+        /*'client_id' => '101326108',
+        'client_secret' => '4b95073ed2bfe5a8a5c34432c7454941',*/
+        'client_id' => '101327148',
+        'client_secret' => '30200fd4c5ef835e0e7e6f0f90461ecf',
         'redirect' => 'http://dev.dreamsark.com/login/social/qq/status',
     ],
 

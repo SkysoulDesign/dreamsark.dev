@@ -63,7 +63,7 @@
                                        value="weibo"/>
                             </li>
                             <li>
-                                <input title="Login with Wechat" type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat" type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
                                        name="login_through" value="weixin"/>
                             </li>
                             {{--set hidden as server will be in China and unable to access FB server on ReturnURL from it.
