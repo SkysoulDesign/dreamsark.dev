@@ -82,7 +82,7 @@ class SMS
             'json' => $data,
         ]);
 
-        return $response->getBody()->getContents();
+        return json_decode($response->getBody()->getContents(), true);
 
     }
 

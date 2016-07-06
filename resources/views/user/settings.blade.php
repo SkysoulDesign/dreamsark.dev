@@ -49,13 +49,6 @@
                             <label for="weibo"></label>
                         </div>
                     </li>
-                    <li class="split">
-                        <div><img src="{{ asset('dreamsark-assets/facebook.png') }}" alt=""></div>
-                        <div class="switch small">
-                            <input id="facebook" type="checkbox">
-                            <label for="facebook"></label>
-                        </div>
-                    </li>
                 </ul>
                 @include('partials.form-errors')
                 <div class="form-item">
