@@ -56,6 +56,7 @@ class AuthController extends Controller
 
     public function loginWithSocial(Request $request)
     {
+        \Log::info($request->all());
         if (!$request->has('login_through'))
             return redirect()->back()->withErrors(trans('auth.invalid-data-found'));
 
