@@ -154,8 +154,8 @@ class Unionpay extends PaymentGateway
 
     protected function getPublicKeyByCertId($certId) : string
     {
-//        echo $certId.'<br/><pre>';
-        $cert_dir = base_path().'/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay';
+//        echo 'Response[certId]=' . $certId . '<br/><pre>';
+        $cert_dir = base_path() . '/packages/SkysoulPayment/Payment/src/Implementations/Key/Unionpay';
         $handle = opendir($cert_dir);
         if ($handle) {
             while ($file = readdir($handle)) {
@@ -163,16 +163,19 @@ class Unionpay extends PaymentGateway
                 $filePath = $cert_dir . '/' . $file;
                 if (is_file($filePath)) {
                     if (pathinfo($file, PATHINFO_EXTENSION) == 'cer') {
-//                        echo $file.'--'.$this->getCertIdByCerPath($filePath).'<br/>';
-                        if ($this->getCertIdByCerPath($filePath) == $certId) {
+                        $fileCertId = $this->getCertIdByCerPath($filePath);
+//                        echo $file . '--' . $fileCertId . '<br/>';
+                        if ($fileCertId == $certId) {
                             closedir($handle);
+
                             return file_get_contents($filePath);
                         }
                     }
                 }
             }
         }
-        return file_get_contents($cert_dir.'/encryptpub.cer');
+
+        return file_get_contents($cert_dir . '/encryptpub.cer');
     }
 
     protected function getCertIdByCerPath($cert_path)
@@ -180,8 +183,8 @@ class Unionpay extends PaymentGateway
         $x509data = file_get_contents($cert_path);
         openssl_x509_read($x509data);
         $certdata = openssl_x509_parse($x509data);
-//        print_r($certdata);
-        $cert_id = $certdata ['serialNumber'];
+//        echo json_encode($certdata).'<br />';
+        $cert_id = $certdata['serialNumber'];
 
         return $cert_id;
     }
