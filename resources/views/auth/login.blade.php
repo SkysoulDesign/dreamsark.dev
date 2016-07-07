@@ -2,7 +2,15 @@
 
 @section('header')
 
-    <div class="container-fluid small-header"></div>
+    <div class="container-fluid small-header">
+        <div class="row top-bar">
+            <section class="medium-3 column logo">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('dreamsark-assets/logo.png') }}" alt="">
+                </a>
+            </section>
+        </div>
+    </div>
 
     <div class="row">
 
@@ -52,7 +60,7 @@
                 <div class="social center">
                     <form action="{{ route('login.social.post') }}" method="post" id="social_form">
                         {{ csrf_field() }}
-                        <input type="hidden" name="login_through" value="" id="login_through" />
+                        <input type="hidden" name="login_through" value="" id="login_through"/>
                         <ul>
                             <li>
                                 <input title="Login with QQ" type="image"

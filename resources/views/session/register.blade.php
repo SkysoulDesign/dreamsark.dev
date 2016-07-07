@@ -2,7 +2,15 @@
 
 @section('header')
 
-    <div class="container-fluid small-header"></div>
+    <div class="container-fluid small-header">
+        <div class="row top-bar">
+            <section class="medium-3 column logo">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('dreamsark-assets/logo.png') }}" alt="">
+                </a>
+            </section>
+        </div>
+    </div>
 @endsection
 
 @section('content')
