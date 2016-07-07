@@ -81,19 +81,19 @@
                     <ul>
                         <li>
                             <input title="Login with QQ" type="image"
-                                   src="{{ asset('dreamsark-assets/qq-login-16x16.png') }}"
+                                   src="{{ asset('dreamsark-assets/social/qq-40x40.png') }}"
                                    name="login_through"
                                    id="qq"/>
                         </li>
                         <li>
                             <input title="Login with Weibo" type="image"
-                                   src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="login_through"
+                                   src="{{ asset('dreamsark-assets/social/weibo-40x40.png') }}" name="login_through"
                                    id="weibo"/>
                         </li>
                         <li>
-                            <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat"
+                            <input title="Login with Wechat"
                                    type="image"
-                                   src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                   src="{{ asset('dreamsark-assets/social/wechat-40x40.png') }}"
                                    name="login_through" id="weixin"/>
                         </li>
                     </ul>

@@ -56,18 +56,18 @@
                         <ul>
                             <li>
                                 <input title="Login with QQ" type="image"
-                                       src="{{ asset('dreamsark-assets/qq-login-16x16.png') }}"
+                                       src="{{ asset('dreamsark-assets/social/qq-40x40.png') }}"
                                        name="social_login"
                                        id="qq"/>
                             </li>
                             <li>
                                 <input title="Login with Weibo" type="image"
-                                       src="{{ asset('dreamsark-assets/weibo-46x16.png') }}" name="social_login"
+                                       src="{{ asset('dreamsark-assets/social/weibo-40x40.png') }}" name="social_login"
                                        id="weibo"/>
                             </li>
                             <li>
-                                <input style="width: 50px; height: 22px; padding: 1px 5px;" title="Login with Wechat"
-                                       type="image" src="{{ asset('dreamsark-assets/wechat.png') }}"
+                                <input title="Login with Wechat"
+                                       type="image" src="{{ asset('dreamsark-assets/social/wechat-40x40.png') }}"
                                        name="social_login" id="weixin"/>
                             </li>
                             {{--set hidden as server will be in China and unable to access FB server on ReturnURL from it.
