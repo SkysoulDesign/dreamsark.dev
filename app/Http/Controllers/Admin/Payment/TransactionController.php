@@ -42,7 +42,7 @@ class TransactionController extends Controller
 
     public function updateAndProcess(Request $request, Transaction $transaction)
     {
-        $response = ['message' => trans('error-occurred-unable-to-process')];
+        $response = ['message' => trans('general.error-occurred-unable-to-process')];
 
         /** @var Transaction $transaction */
         $transaction = $transaction->find($request->get('transaction_id'));

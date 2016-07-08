@@ -13,9 +13,25 @@
             <div class="ui form">
                 <div class="three fields">
 
-                    @include('partials.select', ['name' => 'language', 'translation' => 'translation', 'collection' => $languages->lists('name', 'id'), 'id'=>'translation-language', 'class' => 'no-default'])
+                    <div class="field">
+                        <label>{{ trans('forms.language') }}</label>
+                        <select id="translation-language" class="ui dropdown no-default" name="language">
+                            <option value="">{{ trans('forms.language') }}</option>
+                            @foreach($languages->lists('name', 'id') as $key => $value)
+                                <option value="{{ $key }}">{{ trans('translation.'.str_replace(' ', '-', strtolower($value))) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                    @include('partials.select', ['name' => 'group', 'translation' => 'translation', 'collection' => $groups->lists('name', 'id'), 'id' => 'translation-group', 'class' => 'no-default'])
+                    <div class="field">
+                        <label>{{ trans('forms.group') }}</label>
+                        <select id="translation-group" class="ui dropdown no-default" name="group">
+                            <option value="">{{ trans('forms.group') }}</option>
+                            @foreach($groups->lists('name', 'id') as $key => $value)
+                                <option value="{{ $key }}">{{ trans('translation.'.str_replace(' ', '-', strtolower($value))) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="nine wide field">
                         <div class="ui right floated basic buttons">
@@ -32,6 +48,8 @@
                                                 class="level up icon"></i>@lang('translation.export')</a>
                                     <a class="item" href="{{ route('translation.sync') }}"><i
                                                 class="refresh icon"></i>@lang('translation.sync')</a>
+                                    <a class="item" href="{{ route('translation.scan-keys') }}"><i
+                                                class="find icon"></i>@lang('translation.scan-keys')</a>
 
                                     <div class="ui divider"></div>
                                     <div class="item" id="translation-new-language">
@@ -41,7 +59,7 @@
                                         <i class="tags icon"></i>@lang('translation.create-group')
                                     </div>
                                     <div class="item" id="translation-new-translation">
-                                        <i class="tags icon"></i>@lang('translation.create-translation')
+                                        <i class="add square icon"></i>@lang('translation.create-translation')
                                     </div>
                                 </div>
                             </div>
