@@ -1,4 +1,4 @@
-import {ComponentInterface} from "../interfaces/ComponentInterface";
+import {ComponentInterface} from "../Interfaces/ComponentInterface";
 
 /**
  * Form Component

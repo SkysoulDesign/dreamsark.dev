@@ -20,7 +20,9 @@
 
 @yield('content')
 
-@include('partials.footer.common')
+@if($footer ?? true)
+    @include('partials.footer.common')
+@endif
 
 <script src="{{ asset('js/app.js') }}"></script>
 

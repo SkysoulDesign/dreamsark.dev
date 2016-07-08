@@ -1,3 +1,3 @@
 export interface ComponentInterface {
-    register(vue):void;
+    register(vue, app):void;
 }

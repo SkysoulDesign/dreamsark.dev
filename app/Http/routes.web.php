@@ -48,9 +48,7 @@ $app->get('info', function () {
     phpinfo();
 });
 
-
 /** @var $app \Illuminate\Routing\Router */
-
 $app->group(['middleware' => 'web'], function () use ($app) {
 
     /**
