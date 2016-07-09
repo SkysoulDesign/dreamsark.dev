@@ -1,4 +1,4 @@
-import {ComponentInterface} from "../interfaces/ComponentInterface";
+import {ComponentInterface} from "../Interfaces/ComponentInterface";
 import {popByKey} from "../Helpers";
 
 /**
@@ -6,9 +6,9 @@ import {popByKey} from "../Helpers";
  */
 export class Form implements ComponentInterface {
 
-    register(Vue) {
+    register(vue) {
 
-        Vue.component('ark-input', {
+        vue.component('ark-input', {
             template: require('../templates/form/input.html'),
             props: {
                 name: {
@@ -39,7 +39,7 @@ export class Form implements ComponentInterface {
             }
         });
 
-        Vue.component('ark-form', {
+        vue.component('ark-form', {
             template: require('../templates/form/form.html'),
             props: {
                 token: String,

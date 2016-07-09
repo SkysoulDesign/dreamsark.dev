@@ -80,6 +80,7 @@ class TranslationServiceProvider extends ServiceProvider
             $router->post('group/store', TranslationController::class . '@newGroup')->name('newGroup');
             $router->post('translation/store', TranslationController::class . '@newTranslation')->name('newTranslation');
             $router->post('update/{translation}', TranslationController::class . '@update')->name('update');
+            $router->get('scanForKeys', TranslationController::class . '@scanKeysAndImport')->name('scan-keys');
         });
 
         $router->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');

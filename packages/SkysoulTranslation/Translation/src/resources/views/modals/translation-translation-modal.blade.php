@@ -8,8 +8,24 @@
 
             {{ csrf_field() }}
 
-            @include('partials.select', ['name' => 'language', 'collection' => $languages->lists('name', 'id')])
-            @include('partials.select', ['name' => 'group', 'collection' => $groups->lists('name', 'id')])
+            <div class="field">
+                <label>{{ trans('forms.language') }}</label>
+                <select id="language" class="ui dropdown" name="language">
+                    <option value="">{{ trans('forms.language') }}</option>
+                    @foreach($languages->lists('name', 'id') as $key => $value)
+                        <option value="{{ $key }}">{{ trans('translation.'.str_replace(' ', '-', strtolower($value))) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>{{ trans('forms.group') }}</label>
+                <select id="group" class="ui dropdown" name="group">
+                    <option value="">{{ trans('forms.group') }}</option>
+                    @foreach($groups->lists('name', 'id') as $key => $value)
+                        <option value="{{ $key }}">{{ trans('translation.'.str_replace(' ', '-', strtolower($value))) }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             @include('partials.field-multiple', array(
             'label' => trans('translation.translation'),

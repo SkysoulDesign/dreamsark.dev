@@ -210,14 +210,14 @@ class PaymentController extends Controller
         if ($request->has('signature')) {
             $paymentResult = PaymentGateway::unionPayNotify()->validate($request->all());
             if (!$paymentResult)
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - response - received'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-response-received'));
 
             $this->prepareUPResponseData($request);
             $upStatus = $this->validateUPResponse();
             if ($upStatus == 'success')
                 return $this->triggerAddCoinJob($this->responseData);
             else if ($upStatus == 'process')
-                return redirect()->route($this->defaultRoute, 'processing')->withSuccess(trans('payment . in - process'));
+                return redirect()->route($this->defaultRoute, 'processing')->withSuccess(trans('payment.in-process'));
             else {
                 /**
                  * @TODO: can update failure event of Transaction
@@ -225,7 +225,7 @@ class PaymentController extends Controller
             }
         }
 
-        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . trade - status - error'));
+        return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.trade-status-error'));
     }
 
     public
@@ -311,7 +311,7 @@ class PaymentController extends Controller
             if ($event == 'notify')
                 return 'fail';
             else
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . no - transaction - match'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.no-transaction-match'));
         }
 
         if (!$transaction[0]->paid) {
@@ -328,12 +328,12 @@ class PaymentController extends Controller
             if ($event == 'notify')
                 return 'success';
             else
-                return redirect()->route('payment . status', 'success')->withSuccess(trans('payment . success'));
+                return redirect()->route('payment . status', 'success')->withSuccess(trans('payment.success'));
         } else {
             if ($event == 'notify')
                 return 'success';
             else
-                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment . payment - already - done'));
+                return redirect()->route($this->defaultRoute, 'error')->withErrors(trans('payment.payment-already-done'));
         }
     }
 }

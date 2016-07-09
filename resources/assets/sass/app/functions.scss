@@ -20,6 +20,10 @@
   @return rgba(map-get(map-get($profile-colors, $color), $tone), $alpha/100);
 }
 
+@function get-url($url) {
+  @return url('http://192.168.1.226:8080/img/' + $url);
+}
+
 @mixin respond-to($breakpoint) {
   @if $breakpoint == "mobile" {
     @media only screen and (min-width: 900px) {

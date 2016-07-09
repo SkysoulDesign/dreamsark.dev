@@ -69,7 +69,7 @@ class ImportTranslationJob extends Job
              * Merge Translations on the database with local translations
              */
             $model = $repository->fetch($language->id, $group->id);
-            $database = $model->lists('value', 'key');
+            $database = $model->pluck('value', 'key');
 
             /**
              * If translations is an array, process the JSON data and update it
@@ -103,7 +103,7 @@ class ImportTranslationJob extends Job
              * Then for each save new Translation on DB
              * Save Translations on database
              */
-            $newItems = $translations->merge($database)->diff($database)->map(function ($value, $key) use ($language, $group) {
+            $newItems = $translations->merge($database)->diffKeys($database)->map(function ($value, $key) use ($language, $group) {
                 return $this->dispatch(new CreateTranslationJob($language->id, $group->id, compact('key', 'value')));
             });
 

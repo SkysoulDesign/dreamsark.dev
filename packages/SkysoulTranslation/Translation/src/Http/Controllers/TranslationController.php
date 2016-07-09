@@ -10,6 +10,7 @@ use SkysoulDesign\Translation\Jobs\CreateLanguageJob;
 use SkysoulDesign\Translation\Jobs\CreateTranslationJob;
 use SkysoulDesign\Translation\Jobs\ExportTranslationJob;
 use SkysoulDesign\Translation\Jobs\ImportTranslationJob;
+use SkysoulDesign\Translation\Jobs\ScanKeysAndImportJob;
 use SkysoulDesign\Translation\Jobs\SyncTranslationJob;
 use SkysoulDesign\Translation\Jobs\UpdateTranslationJob;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
@@ -160,6 +161,19 @@ class TranslationController extends Controller
         $this->dispatch(new CreateTranslationJob(
             $request->get('language'), $request->get('group'), $request->only('key', 'value')
         ));
+
+        return redirect()->back();
+    }
+
+    /**
+     * Scan files for new keys and Import to DB (DIRs: app/, resources/views)
+     *
+     * @note: after this event completes, we can do "Export" to feed the new keys in resources/lang
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function scanKeysAndImport()
+    {
+        dispatch(new ScanKeysAndImportJob());
 
         return redirect()->back();
     }
