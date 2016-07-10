@@ -20,7 +20,7 @@ export class Purchase extends AbstractPage {
                 alipay: function (response:AlipayInterface) {
                     this.submitForm(response)
                 },
-                unionpay: function (response:UnionPayInterface) {
+                unionPay: function (response:UnionPayInterface) {
                     this.submitForm(response)
                 },
                 weChat: function (response:WechatInterface) {
@@ -83,17 +83,17 @@ export class Purchase extends AbstractPage {
             ready(){
 
                 let form = <HTMLFormElement>document.querySelector('form');
-                form.addEventListener('submit', (event:Event) => {
+                    form.addEventListener('submit', (event:Event) => {
 
-                    event.preventDefault();
+                        event.preventDefault();
 
-                    let response = this.$http.post(
-                        form.action, new FormData(form)
-                    )
+                        let response = this.$http.post(
+                            form.action, new FormData(form)
+                        )
 
-                    response.then(this.success, this.error);
+                        response.then(this.success, this.error);
 
-                })
+                    })
 
             }
         })

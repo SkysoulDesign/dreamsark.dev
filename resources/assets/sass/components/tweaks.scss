@@ -108,6 +108,12 @@
 
 }
 
-@include tweak(z-1) {
-  z-index: 1;
+@for $i from 1 through 10 {
+
+  @include tweak(z-#{$i}) {
+    z-index: $i;
+  }
+
 }
+
+

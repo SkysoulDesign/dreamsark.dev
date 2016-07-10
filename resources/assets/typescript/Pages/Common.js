@@ -16,6 +16,27 @@ var Common = (function (_super) {
     }
     Common.prototype.boot = function (app) {
         app.logger.info('This class {Common} will run on every request');
+        this.dropdown();
+    };
+    /**
+     * Initialize Dropdown
+     */
+    Common.prototype.dropdown = function () {
+        var dropdown = document.querySelectorAll('.dropdown');
+        for (var i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener('click', function (event) {
+                this.classList.toggle('--show');
+            });
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown__trigger')) {
+                for (var i = 0; i < dropdown.length; i++) {
+                    if (dropdown[i].classList.contains('--show')) {
+                        dropdown[i].classList.remove('--show');
+                    }
+                }
+            }
+        };
     };
     return Common;
 }(AbstractPage_1.AbstractPage));

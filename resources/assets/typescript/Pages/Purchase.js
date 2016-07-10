@@ -25,7 +25,7 @@ var Purchase = (function (_super) {
                 alipay: function (response) {
                     this.submitForm(response);
                 },
-                unionpay: function (response) {
+                unionPay: function (response) {
                     this.submitForm(response);
                 },
                 weChat: function (response) {

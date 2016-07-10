@@ -16,8 +16,7 @@ var Nav = (function () {
                 active: {
                     type: Boolean,
                     default: false
-                },
-                content: String
+                }
             },
             computed: {
                 style: function () {
@@ -89,6 +88,12 @@ var Nav = (function () {
             },
             ready: function () {
                 this.$children.forEach(function (child, index) {
+                    /**
+                     * If not instance of Tab content wont be available
+                     * so in this case return immediately
+                     */
+                    if (!child.content)
+                        return;
                     var element = document.querySelector("#" + child.content);
                     child.$set('element', element);
                     if (!child.active)

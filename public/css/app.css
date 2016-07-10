@@ -1626,10 +1626,7 @@ button, .button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(53, 56, 50, 0.15), 0 3px 2px -2px rgba(53, 56, 50, 0.2);
-  text-shadow: 0 -0.5px 1px rgba(53, 56, 50, 0.15);
   padding: 1em;
-  position: relative;
   text-transform: uppercase;
   text-align: center; }
   button.\--inverted, .button.\--inverted {
@@ -1682,10 +1679,17 @@ button, .button {
   button.\--hollow-neutral, .button.\--hollow-neutral {
     background-color: transparent;
     color: #f1f1f1;
-    border: 0.135em solid #f1f1f1; }
+    border: 1px solid #f1f1f1;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-neutral:hover, .button.\--hollow-neutral:hover {
       border-color: white;
-      color: white; }
+      color: white;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-neutral:active, .button.\--hollow-neutral:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--white, .button.\--white {
     background-color: white; }
     button.\--white:hover, .button.\--white:hover {
@@ -1693,10 +1697,17 @@ button, .button {
   button.\--hollow-white, .button.\--hollow-white {
     background-color: transparent;
     color: white;
-    border: 0.135em solid white; }
+    border: 1px solid white;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-white:hover, .button.\--hollow-white:hover {
       border-color: white;
-      color: white; }
+      color: white;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-white:active, .button.\--hollow-white:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--gray, .button.\--gray {
     background-color: #b5b9b0; }
     button.\--gray:hover, .button.\--gray:hover {
@@ -1704,10 +1715,17 @@ button, .button {
   button.\--hollow-gray, .button.\--hollow-gray {
     background-color: transparent;
     color: #b5b9b0;
-    border: 0.135em solid #b5b9b0; }
+    border: 1px solid #b5b9b0;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-gray:hover, .button.\--hollow-gray:hover {
       border-color: #dbddd9;
-      color: #dbddd9; }
+      color: #dbddd9;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-gray:active, .button.\--hollow-gray:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--primary, .button.\--primary {
     background-color: #0083ff; }
     button.\--primary:hover, .button.\--primary:hover {
@@ -1715,10 +1733,17 @@ button, .button {
   button.\--hollow-primary, .button.\--hollow-primary {
     background-color: transparent;
     color: #0083ff;
-    border: 0.135em solid #0083ff; }
+    border: 1px solid #0083ff;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-primary:hover, .button.\--hollow-primary:hover {
       border-color: #4da8ff;
-      color: #4da8ff; }
+      color: #4da8ff;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-primary:active, .button.\--hollow-primary:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--danger, .button.\--danger {
     background-color: #d90d12; }
     button.\--danger:hover, .button.\--danger:hover {
@@ -1726,10 +1751,17 @@ button, .button {
   button.\--hollow-danger, .button.\--hollow-danger {
     background-color: transparent;
     color: #d90d12;
-    border: 0.135em solid #d90d12; }
+    border: 1px solid #d90d12;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-danger:hover, .button.\--hollow-danger:hover {
       border-color: #f33f43;
-      color: #f33f43; }
+      color: #f33f43;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-danger:active, .button.\--hollow-danger:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--success, .button.\--success {
     background-color: #0bbc62; }
     button.\--success:hover, .button.\--success:hover {
@@ -1737,10 +1769,17 @@ button, .button {
   button.\--hollow-success, .button.\--hollow-success {
     background-color: transparent;
     color: #0bbc62;
-    border: 0.135em solid #0bbc62; }
+    border: 1px solid #0bbc62;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-success:hover, .button.\--hollow-success:hover {
       border-color: #21f288;
-      color: #21f288; }
+      color: #21f288;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-success:active, .button.\--hollow-success:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--secondary, .button.\--secondary {
     background-color: #af0101; }
     button.\--secondary:hover, .button.\--secondary:hover {
@@ -1748,10 +1787,17 @@ button, .button {
   button.\--hollow-secondary, .button.\--hollow-secondary {
     background-color: transparent;
     color: #af0101;
-    border: 0.135em solid #af0101; }
+    border: 1px solid #af0101;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-secondary:hover, .button.\--hollow-secondary:hover {
       border-color: #fb0101;
-      color: #fb0101; }
+      color: #fb0101;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-secondary:active, .button.\--hollow-secondary:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--black, .button.\--black {
     background-color: #353832; }
     button.\--black:hover, .button.\--black:hover {
@@ -1759,10 +1805,17 @@ button, .button {
   button.\--hollow-black, .button.\--hollow-black {
     background-color: transparent;
     color: #353832;
-    border: 0.135em solid #353832; }
+    border: 1px solid #353832;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-black:hover, .button.\--hollow-black:hover {
       border-color: #5b6056;
-      color: #5b6056; }
+      color: #5b6056;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-black:active, .button.\--hollow-black:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--pure-black, .button.\--pure-black {
     background-color: black; }
     button.\--pure-black:hover, .button.\--pure-black:hover {
@@ -1770,10 +1823,17 @@ button, .button {
   button.\--hollow-pure-black, .button.\--hollow-pure-black {
     background-color: transparent;
     color: black;
-    border: 0.135em solid black; }
+    border: 1px solid black;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-pure-black:hover, .button.\--hollow-pure-black:hover {
       border-color: #262626;
-      color: #262626; }
+      color: #262626;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-pure-black:active, .button.\--hollow-pure-black:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--red, .button.\--red {
     background-color: #d90d12; }
     button.\--red:hover, .button.\--red:hover {
@@ -1781,10 +1841,17 @@ button, .button {
   button.\--hollow-red, .button.\--hollow-red {
     background-color: transparent;
     color: #d90d12;
-    border: 0.135em solid #d90d12; }
+    border: 1px solid #d90d12;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-red:hover, .button.\--hollow-red:hover {
       border-color: #f33f43;
-      color: #f33f43; }
+      color: #f33f43;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-red:active, .button.\--hollow-red:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--yellow, .button.\--yellow {
     background-color: #eacc00; }
     button.\--yellow:hover, .button.\--yellow:hover {
@@ -1792,10 +1859,17 @@ button, .button {
   button.\--hollow-yellow, .button.\--hollow-yellow {
     background-color: transparent;
     color: #eacc00;
-    border: 0.135em solid #eacc00; }
+    border: 1px solid #eacc00;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-yellow:hover, .button.\--hollow-yellow:hover {
       border-color: #ffe538;
-      color: #ffe538; }
+      color: #ffe538;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-yellow:active, .button.\--hollow-yellow:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--green, .button.\--green {
     background-color: #32ea00; }
     button.\--green:hover, .button.\--green:hover {
@@ -1803,10 +1877,17 @@ button, .button {
   button.\--hollow-green, .button.\--hollow-green {
     background-color: transparent;
     color: #32ea00;
-    border: 0.135em solid #32ea00; }
+    border: 1px solid #32ea00;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-green:hover, .button.\--hollow-green:hover {
       border-color: #62ff38;
-      color: #62ff38; }
+      color: #62ff38;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-green:active, .button.\--hollow-green:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--purple, .button.\--purple {
     background-color: #6900a5; }
     button.\--purple:hover, .button.\--purple:hover {
@@ -1814,10 +1895,17 @@ button, .button {
   button.\--hollow-purple, .button.\--hollow-purple {
     background-color: transparent;
     color: #6900a5;
-    border: 0.135em solid #6900a5; }
+    border: 1px solid #6900a5;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-purple:hover, .button.\--hollow-purple:hover {
       border-color: #9a00f2;
-      color: #9a00f2; }
+      color: #9a00f2;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-purple:active, .button.\--hollow-purple:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--tomato, .button.\--tomato {
     background-color: #af0101; }
     button.\--tomato:hover, .button.\--tomato:hover {
@@ -1825,10 +1913,17 @@ button, .button {
   button.\--hollow-tomato, .button.\--hollow-tomato {
     background-color: transparent;
     color: #af0101;
-    border: 0.135em solid #af0101; }
+    border: 1px solid #af0101;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-tomato:hover, .button.\--hollow-tomato:hover {
       border-color: #fb0101;
-      color: #fb0101; }
+      color: #fb0101;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-tomato:active, .button.\--hollow-tomato:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--golden, .button.\--golden {
     background-color: #ffc326; }
     button.\--golden:hover, .button.\--golden:hover {
@@ -1836,10 +1931,17 @@ button, .button {
   button.\--hollow-golden, .button.\--hollow-golden {
     background-color: transparent;
     color: #ffc326;
-    border: 0.135em solid #ffc326; }
+    border: 1px solid #ffc326;
+    cursor: auto;
+    transition: transform .25s; }
     button.\--hollow-golden:hover, .button.\--hollow-golden:hover {
       border-color: #ffd873;
-      color: #ffd873; }
+      color: #ffd873;
+      background-color: rgba(255, 255, 255, 0.13);
+      transform: scale(1.05); }
+    button.\--hollow-golden:active, .button.\--hollow-golden:active {
+      transform: scale(0.99);
+      background-color: rgba(255, 255, 255, 0.05); }
   button.\--ripple, .button.\--ripple {
     transition: 200ms background cubic-bezier(0.4, 0, 0.2, 1);
     background: #0083ff;
@@ -1865,7 +1967,9 @@ button, .button {
   position: relative;
   display: inline-block;
   color: #353832; }
-  .dropdown:hover .dropdown__content {
+  .dropdown.\--show .dropdown__trigger {
+    color: #0083ff; }
+  .dropdown.\--show .dropdown__content {
     display: block; }
   .dropdown__trigger {
     cursor: pointer;
@@ -1880,6 +1984,7 @@ button, .button {
     margin-top: 1em;
     background-color: white;
     box-shadow: 0 8px 16px 0 rgba(53, 56, 50, 0.2);
+    border: 1px solid rgba(181, 185, 176, 0.4);
     border-radius: .2em;
     cursor: pointer;
     white-space: nowrap;
@@ -1998,9 +2103,10 @@ select {
     color: #8f9587; }
 
 header, .header {
-  margin: 2em 0 2em 0;
+  margin: 2em 0;
   font-size: 1.8em;
-  font-weight: bold; }
+  font-weight: bold;
+  text-align: center; }
   header h1, .header h1 {
     margin: 0; }
   header p, .header p {
@@ -2012,8 +2118,12 @@ header, .header {
       header p, .header p {
         width: 60%;
         margin: 0 auto; } }
-  header.\--full p, .header.\--full p {
-    width: 100%; }
+  header.\--left, .header.\--left {
+    text-align: left; }
+  header.\--full, .header.\--full {
+    text-align: left; }
+    header.\--full p, .header.\--full p {
+      width: 100%; }
   header.\--centered, .header.\--centered {
     text-align: center; }
   header.\--classic, .header.\--classic {
@@ -2023,6 +2133,10 @@ header, .header {
     header.\--classic p, .header.\--classic p {
       margin: 10px 0 0 0;
       font-size: medium; }
+  header.\--small, .header.\--small {
+    margin: 1em 0; }
+  header.\--light, .header.\--light {
+    font-weight: normal; }
 
 .divider {
   display: -ms-flexbox;
@@ -2458,6 +2572,33 @@ header, .header {
 #app-root .\+z-1 {
   z-index: 1; }
 
+#app-root .\+z-2 {
+  z-index: 2; }
+
+#app-root .\+z-3 {
+  z-index: 3; }
+
+#app-root .\+z-4 {
+  z-index: 4; }
+
+#app-root .\+z-5 {
+  z-index: 5; }
+
+#app-root .\+z-6 {
+  z-index: 6; }
+
+#app-root .\+z-7 {
+  z-index: 7; }
+
+#app-root .\+z-8 {
+  z-index: 8; }
+
+#app-root .\+z-9 {
+  z-index: 9; }
+
+#app-root .\+z-10 {
+  z-index: 10; }
+
 .section, section {
   background: white;
   padding: 1em;
@@ -2645,27 +2786,42 @@ header, .header {
   .flipper__back {
     transform: rotateX(180deg); }
 
+.ul.\--inline li {
+  display: inline-block; }
+
 /**
 * Layout
 */
 .footer {
-  background: #000d1a;
-  padding: 3em 0; }
+  background: url("http://192.168.1.129:8080/img/footer.jpg") center top #000d1a;
+  padding: 3em 0;
+  color: white; }
   .footer__logo img {
     height: 2.5em; }
   .footer__links {
-    padding: 0;
-    list-style: none; }
+    display: -ms-flexbox;
+    display: flex; }
+    .footer__links ul {
+      padding: 0;
+      list-style: none;
+      -ms-flex: 1;
+      flex: 1;
+      margin: 0; }
+      .footer__links ul li.\--title {
+        color: white;
+        text-transform: uppercase;
+        padding: 0;
+        margin-bottom: 1em; }
 
 /**
 * Pages
 */
-.base-page__background {
+.base-page__background, .home-page__background {
   position: relative;
   background: url("/img/temp/1.jpg") center center;
   background-size: cover;
   z-index: 1; }
-  .base-page__background__overlay {
+  .base-page__background__overlay, .home-page__background__overlay {
     position: absolute;
     min-width: 100%;
     min-height: 100%;
@@ -2706,16 +2862,17 @@ header, .header {
       border: 0.3em solid white; }
 
 .home-page__background {
-  position: relative;
-  background: url("/img/temp/1.jpg") center center;
-  background-size: cover;
-  z-index: 1; }
+  background: url("http://192.168.1.129:8080/img/profile/dreamsArkRef89.png") center 20%; }
   .home-page__background__overlay {
-    position: absolute;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
-    background-color: rgba(0, 131, 255, 0.66); }
+    background-color: rgba(0, 131, 255, 0.5); }
+
+.home-page__not-member {
+  background: #0083ff;
+  padding: 2em;
+  color: white; }
+  .home-page__not-member h2 {
+    margin-top: 0;
+    font-weight: normal; }
 
 .login-page {
   height: 100%;
@@ -2985,9 +3142,9 @@ a, .menu a {
   text-decoration: none; }
   a:hover, .menu a:hover {
     color: #0083ff; }
-  a.\--inverted, .card__caption.\--white a, .section__nav__item.\--as-button a, .footer__links a, .project-page__info__overlay > div span a, .menu .project-page__info__overlay > div span a, .menu.\--translucent a {
+  a.\--inverted, .card__caption.\--white a, .section__nav__item.\--as-button a, .footer__links ul a, .project-page__info__overlay > div span a, .menu .project-page__info__overlay > div span a, .menu.\--translucent a {
     color: white; }
-    a.\--inverted:hover, .card__caption.\--white a:hover, .section__nav__item.\--as-button a:hover, .footer__links a:hover, .project-page__info__overlay > div span a:hover, .menu .project-page__info__overlay > div span a:hover, .menu.\--translucent a:hover {
+    a.\--inverted:hover, .card__caption.\--white a:hover, .section__nav__item.\--as-button a:hover, .footer__links ul a:hover, .project-page__info__overlay > div span a:hover, .menu .project-page__info__overlay > div span a:hover, .menu.\--translucent a:hover {
       color: rgba(0, 0, 0, 0.88); }
 
 p {

@@ -12200,8 +12200,7 @@ var Nav = function () {
                 active: {
                     type: Boolean,
                     default: false
-                },
-                content: String
+                }
             },
             computed: {
                 style: function style() {
@@ -12272,6 +12271,11 @@ var Nav = function () {
             },
             ready: function ready() {
                 this.$children.forEach(function (child, index) {
+                    /**
+                     * If not instance of Tab content wont be available
+                     * so in this case return immediately
+                     */
+                    if (!child.content) return;
                     var element = document.querySelector("#" + child.content);
                     child.$set('element', element);
                     if (!child.active) element.classList.add('+hidden');
@@ -12563,6 +12567,27 @@ var Common = function (_super) {
     }
     Common.prototype.boot = function (app) {
         app.logger.info('This class {Common} will run on every request');
+        this.dropdown();
+    };
+    /**
+     * Initialize Dropdown
+     */
+    Common.prototype.dropdown = function () {
+        var dropdown = document.querySelectorAll('.dropdown');
+        for (var i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener('click', function (event) {
+                this.classList.toggle('--show');
+            });
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown__trigger')) {
+                for (var i = 0; i < dropdown.length; i++) {
+                    if (dropdown[i].classList.contains('--show')) {
+                        dropdown[i].classList.remove('--show');
+                    }
+                }
+            }
+        };
     };
     return Common;
 }(AbstractPage_1.AbstractPage);
@@ -12597,7 +12622,7 @@ var Purchase = function (_super) {
                 alipay: function alipay(response) {
                     this.submitForm(response);
                 },
-                unionpay: function unionpay(response) {
+                unionPay: function unionPay(response) {
                     this.submitForm(response);
                 },
                 weChat: function weChat(response) {},

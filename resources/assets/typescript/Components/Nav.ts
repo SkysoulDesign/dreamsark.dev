@@ -17,8 +17,7 @@ export class Nav implements ComponentInterface {
                 active: {
                     type: Boolean,
                     default: false
-                },
-                content: String
+                }
             },
             computed: {
                 style: function () {
@@ -99,6 +98,12 @@ export class Nav implements ComponentInterface {
             ready(){
 
                 this.$children.forEach((child, index) => {
+
+                    /**
+                     * If not instance of Tab content wont be available
+                     * so in this case return immediately
+                     */
+                    if (!child.content) return;
 
                     let element = <HTMLElement>document.querySelector(`#${child.content}`);
 

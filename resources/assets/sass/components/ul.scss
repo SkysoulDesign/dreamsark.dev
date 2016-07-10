@@ -1,0 +1,9 @@
+@include component(ul) {
+
+  @include option(inline) {
+    li {
+      display: inline-block;
+    }
+  }
+
+}

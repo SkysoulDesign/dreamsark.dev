@@ -1,7 +1,8 @@
 @include component(footer) {
 
-  background: darken(color(primary, x-dark), 20);
+  background: get-url('footer.jpg') center top darken(color(primary, x-dark), 20);
   padding: 3em 0;
+  color: color(white);
 
   @include part(logo) {
     img {
@@ -10,12 +11,29 @@
   }
 
   @include part(links) {
-    padding: 0;
-    list-style: none;
+    display: flex;
 
-    a {
-      @extend a.\--inverted;
+    ul {
+      padding: 0;
+      list-style: none;
+      flex: 1;
+      margin: 0;
+
+      li {
+        @include option(title) {
+          @include title(medium, white);
+          text-transform: uppercase;
+          padding: 0;
+          margin-bottom: 1em;
+        }
+      }
+
+      a {
+        @extend a.\--inverted;
+      }
+
     }
+
   }
 
 }
