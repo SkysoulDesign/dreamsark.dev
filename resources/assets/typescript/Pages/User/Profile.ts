@@ -1,5 +1,4 @@
 import Vue = require("vue");
-import {Profile as profileAnimation} from "../../Profile";
 import {AbstractPage} from "../../Abstract/AbstractPage";
 import ComponentOption = vuejs.ComponentOption;
 
@@ -13,6 +12,8 @@ export class Profile extends AbstractPage {
     ]
 
     boot(app) {
+
+        console.log();
 
         this.noIdeaWhatsIsIt();
         this.initThreeJs(app);
@@ -46,13 +47,15 @@ export class Profile extends AbstractPage {
 
     initThreeJs(app) {
 
+        let animation = app.plugin('profile');
+
         /**
          * Binding Vue
          */
         app.ready().then(function () {
 
             // var animation = new profileAnimation();
-            //     animation.start()
+            animation.start();
 
             app.vue({
                 el: '.--profile-pick',

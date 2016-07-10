@@ -7,6 +7,8 @@ use DreamsArk\Http\Requests\Session\UserCreationMobile;
 use DreamsArk\Http\Requests\Session\UserEdition;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Jobs\Session\UpdateUserJob;
+use DreamsArk\Models\User\User;
+use Faker\Generator;
 use Illuminate\Http\Request;
 use SkysoulDesign\SMS\SMS;
 
@@ -66,11 +68,25 @@ class SessionController extends Controller
     public function sendVerificationCode(Request $request, SMS $sms, Generator $faker, User $user)
     {
         $verifyCode = $faker->randomNumber(6);
+
+        dd($request->toArray());
+
+
+        /**
+         * Validate Mobile
+         */
+         $this->validate($request, [
+            'mobile' => 'required|numeric'
+        ]);
+
+
         $mobile = $request->get('mobile_number');
 
         $userObj = $user->where('username', $mobile)->get();
+
         if (!$userObj->isEmpty())
             $response = ['result' => '2', 'message' => trans('auth.mobile-number-exists')];
+
         else {
             $message = 'DreamsArk: ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4) . '';
 

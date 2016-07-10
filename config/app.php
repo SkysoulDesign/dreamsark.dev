@@ -159,6 +159,7 @@ return [
         SkysoulDesign\Form\FormServiceProvider::class,
         SkysoulDesign\Payment\PaymentServiceProvider::class,
         SkysoulDesign\Translation\TranslationServiceProvider::class,
+        SkysoulDesign\SMS\SMSServiceProvider::class,
 
         /**
          * Application Service Providers...

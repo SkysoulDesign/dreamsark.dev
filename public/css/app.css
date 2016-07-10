@@ -4,18 +4,15 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Correct the line height in all browsers.
- * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  line-height: 1.15;
-  /* 2 */
   -ms-text-size-adjust: 100%;
-  /* 3 */
+  /* 2 */
   -webkit-text-size-adjust: 100%;
-  /* 3 */ }
+  /* 2 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -226,7 +223,6 @@ input,
 .text-area,
 textarea,
 select,
-optgroup,
 select,
 textarea {
   font: inherit;
@@ -1625,6 +1621,7 @@ button, .button {
   width: 100%;
   color: white;
   cursor: pointer;
+  white-space: nowrap;
   line-height: normal;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1663,6 +1660,21 @@ button, .button {
     font-size: 1em; }
   button.\--hollow, .button.\--hollow {
     background-color: #00AA00; }
+  button.\--default, .button.\--default {
+    background-color: #b5b9b0;
+    display: -ms-flexbox;
+    display: flex;
+    line-height: 3em;
+    padding: 0 .8em;
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    box-shadow: none;
+    text-shadow: none; }
+    button.\--default:hover, .button.\--default:hover {
+      background-color: #8f9587; }
+    button.\--default:active, .button.\--default:active {
+      background-color: #5b6056; }
   button.\--neutral, .button.\--neutral {
     background-color: #f1f1f1; }
     button.\--neutral:hover, .button.\--neutral:hover {
@@ -1924,10 +1936,10 @@ select {
     font-weight: bold; }
     .form__header.\--rounded {
       border-radius: .5em .5em 0 0; }
-  .form__field:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
-    margin: 10px 0; }
-  .form__field:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
-    margin-top: 10px;
+  .form__field:not(:nth-child(1)), .form__fields:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
+    margin: .8em 0; }
+  .form__field:nth-last-child(-n + 1), .form__fields:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
+    margin-top: .8em;
     margin-bottom: 0; }
   .form__field__error {
     color: #d90d12; }
@@ -1936,29 +1948,34 @@ select {
       padding: 0; }
       .form__field__error ul li {
         font-size: 0.8em; }
-  .form__field label, .form__description label {
+  .form__field label, .form__fields label, .form__description label {
     font-size: .8em;
     font-weight: bold;
     padding: 0 0 1em .2em;
     display: block;
     color: #5b6056; }
-  .form__field span, .form__description span {
+  .form__field span, .form__fields span, .form__description span {
     display: block;
     padding-top: 0 !important; }
-  .form__field.\--required label, .\--required.form__description label, .form__field span.\--required label {
+  .form__field.\--required label, .\--required.form__fields label, .\--required.form__description label, .form__field span.\--required label {
     position: relative; }
-    .form__field.\--required label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
+    .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
       content: '*';
       color: #d90d12;
       padding: .2em;
       font-size: 1.5em;
       position: absolute;
       margin-top: -.3em; }
-  .form__field.\--optional, .\--optional.form__description, .form__field span.\--optional {
+  .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional {
     opacity: 0.6;
     transition: opacity 0.25s; }
-    .form__field.\--optional:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
+    .form__field.\--optional:hover, .\--optional.form__fields:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
       opacity: 1; }
+  .form__fields {
+    display: -ms-flexbox;
+    display: flex; }
+    .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
+      margin: 0 0 0 .8em; }
   .form__message {
     background: rgba(217, 13, 18, 0.1);
     padding: 1em;
@@ -1975,7 +1992,7 @@ select {
         padding: 0; }
     .form__message.\--error {
       color: #d90d12; }
-  .form__description, .form__field span, .form__description span {
+  .form__description, .form__field span, .form__fields span, .form__description span {
     padding-top: 1em;
     font-size: small;
     color: #8f9587; }
@@ -2169,6 +2186,8 @@ header, .header {
     background-color: rgba(0, 131, 255, 0.03); }
     .nav.\--hover li:hover, .nav.\--hover li:hover a {
       color: #0083ff; }
+  .nav.\--basic {
+    border: none; }
 
 .table, table {
   width: 100%;
@@ -2311,6 +2330,15 @@ header, .header {
       line-height: normal; }
       .card__content__header p {
         font-size: .5em; }
+    .card__content__image.\--avatar-like {
+      left: 0;
+      right: 0;
+      position: relative;
+      width: 10em;
+      margin: 0 auto -7em auto;
+      top: -7em; }
+      .card__content__image.\--avatar-like img {
+        border-radius: 100em; }
     .card__content.\--has-image {
       border-radius: 0 0 5px 5px; }
     .card__content.\--has-footer {
@@ -2367,6 +2395,15 @@ header, .header {
   #app-root .\+justify-on-mobile {
     text-align: justify; } }
 
+#app-root .\+no-padding {
+  padding: 0; }
+
+#app-root .\+no-margin {
+  margin: 0; }
+
+#app-root .\+no-margin-bottom {
+  margin-bottom: 0; }
+
 #app-root .\+hidden {
   display: none; }
 
@@ -2417,6 +2454,9 @@ header, .header {
     color: #0095ff; }
   #app-root .\+profile-color-designer svg {
     fill: #0095ff; }
+
+#app-root .\+z-1 {
+  z-index: 1; }
 
 .section, section {
   background: white;
@@ -2578,9 +2618,13 @@ header, .header {
     display: inline-block; }
 
 .social-login svg {
-  height: 30px;
   transition: transform .1s;
-  cursor: pointer; }
+  cursor: pointer;
+  margin: 0 .5em; }
+  @media screen and (min-width: 40em) {
+    .social-login svg {
+      height: 30px;
+      margin: 0; } }
   .social-login svg:hover {
     transform: scale(1.5); }
   .social-login svg:active {
@@ -2628,17 +2672,17 @@ header, .header {
     z-index: -1;
     background-color: rgba(0, 131, 255, 0.66); }
 
-.base-page__header {
+.base-page__header, .profile-page__header {
   position: relative;
   z-index: 1;
   background-size: cover;
   padding: 1em; }
-  .base-page__header.\--default {
+  .base-page__header.\--default, .\--default.profile-page__header {
     background: url("/img/temp/2.jpg") center center; }
     @media only screen and (min-width: 1000px) {
-      .base-page__header.\--default {
+      .base-page__header.\--default, .\--default.profile-page__header {
         height: 15em; } }
-  .base-page__header__overlay {
+  .base-page__header__overlay, .profile-page__header__overlay {
     left: 0;
     top: 0;
     display: block;
@@ -2647,8 +2691,6 @@ header, .header {
     height: 100%;
     z-index: -1;
     background: rgba(77, 168, 255, 0.5); }
-  .base-page__header.\--profile-pick {
-    background: url("/img/temp/1.jpg") center center; }
   .base-page__header__avatar img {
     height: 7em;
     width: 7em;
@@ -2678,7 +2720,7 @@ header, .header {
 .login-page {
   height: 100%;
   width: 100%;
-  background: url("http://192.168.1.226:8080/img/login/dreamsArkRef39.png") no-repeat center center;
+  background: url("http://192.168.1.129:8080/img/login/dreamsArkRef39.png") no-repeat center center;
   background-size: cover; }
 
 .profile-page a:hover {
@@ -2729,32 +2771,106 @@ header, .header {
       .profile-page__profiles li:hover {
         transform: scale(1.1); } }
 
-@media screen and (min-width: 40em) {
-  .project-page.\--margin-top, .project-page.\--tab-comments {
-    margin-top: 2em; } }
+.profile-page__canvas {
+  padding: 0;
+  min-height: 500px;
+  max-height: 500px;
+  pointer-events: auto; }
 
-.project-page__palette {
+.profile-page__header.\--profile-pick {
+  background: url("http://192.168.1.129:8080/img/profile/dreamsArkRef89.png") center center; }
+
+.profile-page__palette {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border-radius: 5px; }
-  .project-page__palette:hover {
+  transition: .15s; }
+  .profile-page__palette:hover {
     background: rgba(53, 56, 50, 0.22); }
-  .project-page__palette__item {
+  .profile-page__palette.\--color-1:hover {
+    background: #E91E63; }
+  .profile-page__palette.\--color-2:hover {
+    background: #9C27B0; }
+  .profile-page__palette.\--color-3:hover {
+    background: #673AB7; }
+  .profile-page__palette.\--color-4:hover {
+    background: #3F51B5; }
+  .profile-page__palette.\--color-5:hover {
+    background: #2196F3; }
+  .profile-page__palette.\--color-6:hover {
+    background: #03A9F4; }
+  .profile-page__palette.\--color-7:hover {
+    background: #00BCD4; }
+  .profile-page__palette.\--color-8:hover {
+    background: #009688; }
+  .profile-page__palette.\--color-9:hover {
+    background: #4CAF50; }
+  .profile-page__palette.\--color-10:hover {
+    background: #8BC34A; }
+  .profile-page__palette.\--color-11:hover {
+    background: #CDDC39; }
+  .profile-page__palette.\--color-12:hover {
+    background: #FFEB3B; }
+  .profile-page__palette.\--color-13:hover {
+    background: #FFC107; }
+  .profile-page__palette.\--color-14:hover {
+    background: #FF9800; }
+  .profile-page__palette.\--color-15:hover {
+    background: #FF5722; }
+  .profile-page__palette.\--color-16:hover {
+    background: #795548; }
+  .profile-page__palette.\--color-17:hover {
+    background: #9E9E9E; }
+  .profile-page__palette.\--color-18:hover {
+    background: #607D8B; }
+  .profile-page__palette.\--color-19:hover {
+    background: #0D47A1; }
+  .profile-page__palette.\--color-20:hover {
+    background: #004D40; }
+  .profile-page__palette:hover {
+    transform: scale(1.1);
+    border-radius: .3em; }
+    .profile-page__palette:hover span {
+      display: block; }
+  .profile-page__palette:active {
+    transform: scale(0.9); }
+  .profile-page__palette__item {
     color: white;
     cursor: pointer;
+    position: relative;
     width: 50px;
     height: 50px;
     padding: .2em;
     margin: 1em auto;
-    background: black;
-    border-radius: 100%;
-    transition: .25s; }
-    .project-page__palette__item:hover {
-      transform: scale(1.1); }
-    .project-page__palette__item:active {
-      transform: scale(0.9); }
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 100%; }
+    .profile-page__palette__item img {
+      position: relative;
+      left: 0;
+      right: 0;
+      transform: scale(1.2); }
+    .profile-page__palette__item span {
+      display: none;
+      position: absolute;
+      border-radius: .3em;
+      transform: scale(2);
+      padding: 1em;
+      font-size: .4em;
+      white-space: nowrap;
+      top: -100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      font-weight: bolder;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.7); }
+  .profile-page__palette__select {
+    padding: 2em; }
+
+@media screen and (min-width: 40em) {
+  .project-page.\--margin-top, .project-page.\--tab-comments {
+    margin-top: 2em; } }
 
 .project-page__featured {
   position: relative;

@@ -23,7 +23,7 @@ elixir(function (mix) {
     /**
      * Profile Script
      */
-    mix.browserify("./resources/assets/typescript/Profile.js", 'public/js/profile.js', null, {
+    mix.browserify("./resources/assets/typescript/Plugins/Profile/Profile.js", 'public/js/plugins/profile.js', null, {
         cache: {}, packageCache: {}
     });
 

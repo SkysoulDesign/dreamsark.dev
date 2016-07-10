@@ -173,7 +173,7 @@ class TranslationController extends Controller
      */
     public function scanKeysAndImport()
     {
-        dispatch(new ScanKeysAndImportJob());
+        $this->dispatch(new ScanKeysAndImportJob());
 
         return redirect()->back();
     }

@@ -13,18 +13,15 @@ use SkysoulDesign\Translation\Models\Group;
 use SkysoulDesign\Translation\Models\Language;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 
+/**
+ * Class ImportTranslationJob
+ *
+ * @package SkysoulDesign\Translation\Jobs
+ */
 class ImportTranslationJob extends Job
 {
 
     use DispatchesJobs;
-
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
      * Execute the command.

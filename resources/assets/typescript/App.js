@@ -7,8 +7,8 @@ var Config_1 = require("./Classes/Config");
  */
 var App = (function () {
     function App() {
-        var _this = this;
         this.vueObject = {};
+        this.plugins = {};
         this.config = new Config_1.Config();
         this.logger = new Logger_1.Logger(this.config);
         /**
@@ -18,29 +18,30 @@ var App = (function () {
             component: require('./Classes/Component'),
             pages: require('./Classes/Pages')
         };
-        this.logger.group('Core', function (logger) {
-            var _loop_1 = function(component) {
-                var _loop_2 = function(name_1) {
-                    logger.group(name_1, function () {
-                        _this[component] = new _this.components[component][name_1](_this);
-                    });
-                };
-                for (var name_1 in _this.components[component]) {
-                    _loop_2(name_1);
-                }
-            };
-            for (var component in _this.components) {
-                _loop_1(component);
-            }
-            _this.bootstrap();
-        });
+        this.bootstrap(this, this.components);
     }
     /**
      * Bootstrap all classes
      */
-    App.prototype.bootstrap = function () {
-        for (var component in this.components)
-            this[component].boot(this);
+    App.prototype.bootstrap = function (container, components) {
+        if (container === void 0) { container = this; }
+        this.logger.group('Core', function (logger) {
+            var _loop_1 = function(component) {
+                var _loop_2 = function(name_1) {
+                    logger.group(name_1, function () {
+                        container[component] = new components[component][name_1](container);
+                    });
+                };
+                for (var name_1 in components[component]) {
+                    _loop_2(name_1);
+                }
+            };
+            for (var component in components) {
+                _loop_1(component);
+            }
+            for (var component in components)
+                container[component].boot(container);
+        });
     };
     /**
      * Destruct all classes
@@ -49,6 +50,28 @@ var App = (function () {
         for (var component in this.components)
             this[component].destruct(this);
         console.timeEnd('Application Runtime');
+    };
+    /**
+     * Install Plugins
+     * @param plugin
+     */
+    App.prototype.install = function (plugin) {
+        var _this = this;
+        this.logger.group("Plugin: " + plugin.name, function (logger) {
+            _this.plugins[plugin.name.toLowerCase()] = new plugin(_this);
+        }, false);
+    };
+    /**
+     * Get Plugin
+     * @param name
+     * @returns {any}
+     */
+    App.prototype.plugin = function (name) {
+        name = name.toLowerCase();
+        if (this.plugins.hasOwnProperty(name)) {
+            return this.plugins[name];
+        }
+        this.logger.error("Plugin { " + name + " } not found. did you install it already?");
     };
     /**
      * Helper Function to Init a Page

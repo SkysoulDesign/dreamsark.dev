@@ -53,4 +53,8 @@
     }
   }
 
+  @include option(basic) {
+    border: none;
+  }
+
 }

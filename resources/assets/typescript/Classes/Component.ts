@@ -10,9 +10,9 @@ export class Component extends Application {
      * @type ComponentInterface[]
      */
     private components = [
+        require('../Components/Nav'),
         require('../Components/Form'),
         require('../Components/Ripple'),
-        require('../Components/Nav'),
         require('../Components/Statistics'),
         require('../Components/Progress'),
         require('../Components/Modal'),

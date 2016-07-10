@@ -45,10 +45,6 @@
       background: color($color: primary, $tone: light, $alpha: 50);
     }
 
-    @include option(profile-pick) {
-      background: url("/img/temp/1.jpg") center center;
-    }
-
     @include part(avatar) {
 
       img {

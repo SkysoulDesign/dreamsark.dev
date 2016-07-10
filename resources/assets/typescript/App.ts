@@ -1,4 +1,4 @@
-import {extend} from "./Helpers";
+import {extend, toCamelCase} from "./Helpers";
 import {Logger} from "./Classes/Logger";
 import {Config} from "./Classes/Config";
 
@@ -9,6 +9,7 @@ class App {
 
     public pages;
     public vueObject = {};
+    public plugins = {};
 
     public config = new Config();
     public logger = new Logger(
@@ -24,32 +25,30 @@ class App {
     };
 
     constructor() {
-
-        this.logger.group('Core', logger => {
-
-            for (let component in this.components) {
-
-                for (let name in this.components[component]) {
-                    logger.group(name, () => {
-                        this[component] = new this.components[component][name](this);
-                    })
-                }
-
-            }
-
-            this.bootstrap();
-
-        })
-
+        this.bootstrap(this, this.components);
     }
 
     /**
      * Bootstrap all classes
      */
-    private bootstrap() {
+    private bootstrap(container:Object = this, components:{}) {
 
-        for (let component in this.components)
-            this[component].boot(this);
+        this.logger.group('Core', logger => {
+
+            for (let component in components) {
+
+                for (let name in components[component]) {
+                    logger.group(name, () => {
+                        container[component] = new components[component][name](container);
+                    })
+                }
+
+            }
+
+            for (let component in components)
+                container[component].boot(container);
+
+        })
 
     }
 
@@ -63,6 +62,32 @@ class App {
 
         console.timeEnd('Application Runtime');
 
+    }
+
+    /**
+     * Install Plugins
+     * @param plugin
+     */
+    public install(plugin) {
+        this.logger.group(`Plugin: ${plugin.name}`, logger => {
+            this.plugins[plugin.name.toLowerCase()] = new plugin(this);
+        }, false)
+    }
+
+    /**
+     * Get Plugin
+     * @param name
+     * @returns {any}
+     */
+    public plugin(name:string) {
+
+        name = name.toLowerCase();
+
+        if (this.plugins.hasOwnProperty(name)) {
+            return this.plugins[name];
+        }
+
+        this.logger.error(`Plugin { ${name} } not found. did you install it already?`);
     }
 
     /**
@@ -110,7 +135,6 @@ class App {
  * Register to the window object
  * @type {App}
  */
-
 export let app = new App();
 global.app = app;
 

@@ -20,9 +20,9 @@ var Component = (function (_super) {
          * @type ComponentInterface[]
          */
         this.components = [
+            require('../Components/Nav'),
             require('../Components/Form'),
             require('../Components/Ripple'),
-            require('../Components/Nav'),
             require('../Components/Statistics'),
             require('../Components/Progress'),
             require('../Components/Modal'),

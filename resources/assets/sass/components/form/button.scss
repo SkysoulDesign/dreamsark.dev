@@ -7,6 +7,7 @@
   width: 100%;
   color: color(white);
   cursor: pointer;
+  white-space: nowrap;
 
   line-height: normal;
 
@@ -76,6 +77,30 @@
 
   @include option(hollow) {
     background-color: #00AA00;
+  }
+
+  @include option(default) {
+
+    background-color: color(gray);
+    display: flex;
+    line-height: 3em;
+    padding: 0 .8em;
+    text-align: center;
+    vertical-align: middle;
+
+    height: 100%;
+
+    box-shadow: none;
+    text-shadow: none;
+
+    &:hover {
+      background-color: color(gray, dark);
+    }
+
+    &:active {
+      background-color: color(black, light);
+    }
+
   }
 
 }

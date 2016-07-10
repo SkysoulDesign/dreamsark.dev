@@ -4,7 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Profile_1 = require("../../Profile");
 var AbstractPage_1 = require("../../Abstract/AbstractPage");
 /**
  * Profile
@@ -18,6 +17,7 @@ var Profile = (function (_super) {
         ];
     }
     Profile.prototype.boot = function (app) {
+        console.log();
         this.noIdeaWhatsIsIt();
         this.initThreeJs(app);
     };
@@ -39,12 +39,13 @@ var Profile = (function (_super) {
         });
     };
     Profile.prototype.initThreeJs = function (app) {
+        var animation = app.plugin('profile');
         /**
          * Binding Vue
          */
         app.ready().then(function () {
             // var animation = new profileAnimation();
-            //     animation.start()
+            animation.start();
             app.vue({
                 el: '.--profile-pick',
                 data: function () {
@@ -58,7 +59,7 @@ var Profile = (function (_super) {
                         if (element.className === 'project-page__palette__item') {
                             console.log("Selected Character: " + element.dataset['position']);
                             this.position = element.dataset['position'];
-                            Profile_1.Profile.switch(this.position);
+                            profileAnimation.switch(this.position);
                         }
                     }
                 }

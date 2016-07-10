@@ -31,7 +31,7 @@ export class Nav implements ComponentInterface {
             template: require('../templates/nav/tab.html'),
             data: function () {
                 return {
-                    element: document.querySelector(`#${this.content}`)
+                    element: null
                 }
             },
             props: {
@@ -58,37 +58,59 @@ export class Nav implements ComponentInterface {
                 style: function () {
                     return this.active ? '--active' : '';
                 }
-            },
-            ready(){
-                this.element.classList.add('+hidden')
-                this.$parent.$data.tabs.push(
-                    this.element
-                )
             }
         });
 
         Vue.component('ark-nav', {
             template: require('../templates/nav/nav.html'),
-            data: function () {
-                return {
-                    tabs: []
+            props: {
+                class: {
+                    type: String,
+                    default: 'row --fluid nav --hover align-center'
+                },
+                basic: {
+                    type: Boolean,
+                },
+            },
+            computed: {
+                style: function () {
+                    return this.basic ? 'row nav --basic' : this.class;
                 }
             },
             methods: {
+
                 selectTab: function (element) {
 
-                    this.tabs.forEach(function (tab:HTMLElement) {
+                    this.$children.forEach(function (child) {
 
-                        if (element === tab) {
-                            tab.classList.remove('+hidden');
+                        if (child.element === element) {
+                            child.$set('active', true)
+                            child.element.classList.remove('+hidden');
                         } else {
-                            tab.classList.add('+hidden')
+                            child.$set('active', false)
+                            child.element.classList.add('+hidden')
                         }
 
                     })
 
                 }
+            },
+
+            ready(){
+
+                this.$children.forEach((child, index) => {
+
+                    let element = <HTMLElement>document.querySelector(`#${child.content}`);
+
+                    child.$set('element', element);
+
+                    if (!child.active)
+                        element.classList.add('+hidden')
+
+                })
+
             }
+
         });
 
         Vue.component('ark-item', item);
