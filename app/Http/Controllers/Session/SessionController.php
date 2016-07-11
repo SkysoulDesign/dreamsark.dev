@@ -69,9 +69,6 @@ class SessionController extends Controller
     {
         $verifyCode = $faker->randomNumber(6);
 
-        dd($request->toArray());
-
-
         /**
          * Validate Mobile
          */
@@ -79,8 +76,7 @@ class SessionController extends Controller
             'mobile' => 'required|numeric'
         ]);
 
-
-        $mobile = $request->get('mobile_number');
+        $mobile = $request->get('mobile');
 
         $userObj = $user->where('username', $mobile)->get();
 

@@ -1,4 +1,4 @@
-import {extend, toCamelCase} from "./Helpers";
+import {extend} from "./Helpers";
 import {Logger} from "./Classes/Logger";
 import {Config} from "./Classes/Config";
 
@@ -108,7 +108,11 @@ class App {
      * @param obj
      * @returns {{}}
      */
-    public vue(obj:{}) {
+    public vue(obj:{} = {}) {
+
+        if(obj.hasOwnProperty('ready')){
+            console.log('todo: better merge the ready property on vue-js');
+        }
 
         return this.vueObject = extend(
             this.vueObject, obj

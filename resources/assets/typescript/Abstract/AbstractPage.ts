@@ -2,7 +2,10 @@ import {PageInterface} from "../interfaces/PageInterface";
 
 export abstract class AbstractPage implements PageInterface {
 
-    constructor() {
+    public app;
+
+    constructor(app) {
+        this.app = app;
     }
 
     abstract boot(app);

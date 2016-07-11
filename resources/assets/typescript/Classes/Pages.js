@@ -34,7 +34,7 @@ var Pages = (function (_super) {
         this.routes = {};
         this.collection.forEach(function (page) {
             var _loop_1 = function(name_1) {
-                var object = _this.initialize(name_1, page[name_1]);
+                var object = _this.initialize(app, name_1, page[name_1]);
                 if (object.hasOwnProperty('routes')) {
                     object.routes.forEach(function (route) { return _this.setRoute(route, name_1); });
                 }
@@ -47,12 +47,13 @@ var Pages = (function (_super) {
     /**
      * Initialize Object
      *
+     * @param app
      * @param name
      * @param object
      * @returns {any}
      */
-    Pages.prototype.initialize = function (name, object) {
-        return this.initialized[name] = new object;
+    Pages.prototype.initialize = function (app, name, object) {
+        return this.initialized[name] = new object(app);
     };
     /**
      * Init

@@ -57,6 +57,11 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     $app->get('/', HomeController::class . '@index')->name('home');
 
     /**
+     * Switch Language
+     */
+    $app->post('change-language', HomeController::class . '@changeLanguage')->name('language');
+
+    /**
      * Dashboard Controller
      */
     $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
@@ -77,7 +82,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
      */
     $app->group(['prefix' => 'mobile', 'as' => 'mobile.'], function () use ($app) {
         $app->post('register', SessionController::class . '@storeMobile')->name('register.store');
-        $app->get('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
+        $app->post('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
     });
 
     /**

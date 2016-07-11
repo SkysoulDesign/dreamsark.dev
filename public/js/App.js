@@ -1410,7 +1410,7 @@ module.exports = plugin;
 },{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.25
+ * Vue.js v1.0.26
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -4820,7 +4820,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if (isA || isO) {
+  if ((isA || isO) && Object.isExtensible(val)) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -6306,13 +6306,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
+    if (!inDoc(el)) {
+      nextTick(this.forceUpdate);
+    }
   },
 
   update: function update(value) {
     var el = this.el;
-    if (!inDoc(el)) {
-      return nextTick(this.forceUpdate);
-    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -11260,7 +11260,13 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
+    var length = args.length;
+    if (length > 1) {
+      var index = value % 10 - 1;
+      return index in args ? args[index] : args[length - 1];
+    } else {
+      return args[0] + (value === 1 ? '' : 's');
+    }
   },
 
   /**
@@ -11462,7 +11468,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.25';
+Vue.version = '1.0.26';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -11482,7 +11488,9 @@ module.exports = Vue;
 "use strict";
 
 var AbstractPage = function () {
-    function AbstractPage() {}
+    function AbstractPage(app) {
+        this.app = app;
+    }
     return AbstractPage;
 }();
 exports.AbstractPage = AbstractPage;
@@ -11606,6 +11614,12 @@ var App = function () {
      * @returns {{}}
      */
     App.prototype.vue = function (obj) {
+        if (obj === void 0) {
+            obj = {};
+        }
+        if (obj.hasOwnProperty('ready')) {
+            console.log('todo: better merge the ready property on vue-js');
+        }
         return this.vueObject = Helpers_1.extend(this.vueObject, obj);
     };
     /**
@@ -11826,7 +11840,7 @@ var Pages = function (_super) {
         this.routes = {};
         this.collection.forEach(function (page) {
             var _loop_1 = function _loop_1(name_1) {
-                var object = _this.initialize(name_1, page[name_1]);
+                var object = _this.initialize(app, name_1, page[name_1]);
                 if (object.hasOwnProperty('routes')) {
                     object.routes.forEach(function (route) {
                         return _this.setRoute(route, name_1);
@@ -11841,12 +11855,13 @@ var Pages = function (_super) {
     /**
      * Initialize Object
      *
+     * @param app
      * @param name
      * @param object
      * @returns {any}
      */
-    Pages.prototype.initialize = function (name, object) {
-        return this.initialized[name] = new object();
+    Pages.prototype.initialize = function (app, name, object) {
+        return this.initialized[name] = new object(app);
     };
     /**
      * Init
@@ -12061,7 +12076,7 @@ var Form = function () {
             methods: {
                 send: function send(e) {
                     e.preventDefault();
-                    var response = this.$http[this.method](this.action, this.formData);
+                    var response = this.$http[this.method](this.action, new FormData(document.querySelector("#" + this.dataFrom)));
                     response.then(function (e) {
                         console.log(e);
                     }, function (e) {
@@ -12070,11 +12085,6 @@ var Form = function () {
                 }
             },
             ready: function ready() {
-                var form = null;
-                if (this.dataFrom) {
-                    form = document.querySelector("#" + this.dataFrom);
-                    this.$set('formData', new FormData(form));
-                }
                 for (var key in this.data) {
                     this.formData.append(key, this.data[key]);
                 }
@@ -12568,6 +12578,17 @@ var Common = function (_super) {
     Common.prototype.boot = function (app) {
         app.logger.info('This class {Common} will run on every request');
         this.dropdown();
+        this.languageSwitcher();
+    };
+    Common.prototype.languageSwitcher = function () {
+        document.querySelector('#language-switcher').addEventListener('change', function (e) {
+            var form = document.createElement('form'),
+                element = e.target;
+            form.method = 'post';
+            form.action = element.dataset['action'];
+            form.appendChild(element);
+            form.submit();
+        });
     };
     /**
      * Initialize Dropdown
@@ -12733,7 +12754,6 @@ var Profile = function (_super) {
         this.routes = ['user.profile.create'];
     }
     Profile.prototype.boot = function (app) {
-        console.log();
         this.noIdeaWhatsIsIt();
         this.initThreeJs(app);
     };
@@ -12760,7 +12780,6 @@ var Profile = function (_super) {
          * Binding Vue
          */
         app.ready().then(function () {
-            // var animation = new profileAnimation();
             animation.start();
             app.vue({
                 el: '.--profile-pick',

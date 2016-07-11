@@ -47,7 +47,6 @@
 
             <ark-flipper-back class="small-12 medium-6 large-4 columns card">
 
-
                 <div class="card__content">
 
                     <div class="card__content__image --avatar-like">
@@ -83,7 +82,7 @@
                             @push('tab-item')
                             <div id="tab-mobile">
                                 <ark-form id="mobile-login-form"
-                                          action="{{ route('login.store') }}"
+                                          action="{{ route('register.store') }}"
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
@@ -91,13 +90,15 @@
 
                                     <ark-fields>
                                         <ark-input name="code" placeholder="sms code"></ark-input>
-                                        <ark-ajax-button method="get" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
+                                        <ark-ajax-button method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
                                             Send Code
                                         </ark-ajax-button>
                                     </ark-fields>
 
+                                    <ark-input name="password" placeholder="password"></ark-input>
+
                                     <ripple-button type="submit">
-                                        Login
+                                        Register
                                     </ripple-button>
                                 </ark-form>
                             </div>

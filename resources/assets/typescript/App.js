@@ -96,6 +96,10 @@ var App = (function () {
      * @returns {{}}
      */
     App.prototype.vue = function (obj) {
+        if (obj === void 0) { obj = {}; }
+        if (obj.hasOwnProperty('ready')) {
+            console.log('todo: better merge the ready property on vue-js');
+        }
         return this.vueObject = Helpers_1.extend(this.vueObject, obj);
     };
     /**

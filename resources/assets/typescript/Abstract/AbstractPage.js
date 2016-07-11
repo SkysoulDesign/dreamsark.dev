@@ -1,6 +1,7 @@
 "use strict";
 var AbstractPage = (function () {
-    function AbstractPage() {
+    function AbstractPage(app) {
+        this.app = app;
     }
     return AbstractPage;
 }());

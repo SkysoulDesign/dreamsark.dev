@@ -17,7 +17,6 @@ var Profile = (function (_super) {
         ];
     }
     Profile.prototype.boot = function (app) {
-        console.log();
         this.noIdeaWhatsIsIt();
         this.initThreeJs(app);
     };
@@ -44,7 +43,6 @@ var Profile = (function (_super) {
          * Binding Vue
          */
         app.ready().then(function () {
-            // var animation = new profileAnimation();
             animation.start();
             app.vue({
                 el: '.--profile-pick',

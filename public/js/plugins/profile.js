@@ -46426,14 +46426,14 @@ var Designer = function (_super) {
     }
     Designer.prototype.models = function () {
         return {
-            miku: '/models/miku.min.json',
+            // miku: '/models/miku.min.json',
             man: '/models/Screenwriter.json'
         };
     };
     Designer.prototype.create = function (models) {
-        // materials.forEach(function (material) {
+        // materials.forEach( function ( material ) {
         //     material.skinning = true;
-        // });
+        // } );
         var materials = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
@@ -46441,24 +46441,35 @@ var Designer = function (_super) {
         var material = new THREE.MeshStandardMaterial({
             vertexColors: THREE.VertexColors
         });
+        material.skinning = true;
         var mesh = new THREE.SkinnedMesh(models.man, material);
         var action = {};
         var mixer = this.animator.create(mesh);
+        console.log(models.man.animations);
         action.idle = mixer.clipAction(models.man.animations[0]);
-        //http://yomotsu.net/blog/2015/10/31/three-r73-anim.html
+        // action.run   = mixer.clipAction( models.miku.animations[ 1 ] );
+        // action.jump  = mixer.clipAction( models.miku.animations[ 2 ] );
+        // action.slide = mixer.clipAction( models.miku.animations[ 3 ] );
+        action.idle.setEffectiveWeight(1);
+        // action.run.setEffectiveWeight( 1 );
+        // action.jump.setEffectiveWeight( 1 );
+        // action.slide.setEffectiveWeight( 1 );
+        // action.jump.setLoop( THREE.LoopOnce, 0 );
+        // action.slide.setLoop( THREE.LoopOnce, 0 );
+        // action.jump.clampWhenFinished = true;
+        // action.slide.clampWhenFinished = true;
+        action.idle.play();
         // action.idle.setEffectiveWeight(1);
-        // action.run.setEffectiveWeight(1);
-        // action.jump.setEffectiveWeight(1);
-        // action.slide.setEffectiveWeight(1);
+        //http://yomotsu.net/blog/2015/10/31/three-r73-anim.html
         // action.jump.setLoop(THREE.LoopOnce, 0);
         // action.slide.setLoop(THREE.LoopOnce, 0);
         // action.jump.clampWhenFinished = true;
         // action.slide.clampWhenFinished = true;
-        action.idle.play();
         // let mesh = new THREE.SkinnedMesh(object, material);
         // console.log(mesh.animations)
         // let animation = new THREE.Animation(model, model.animations);
         mesh.position.setY(-25);
+        // mesh.position.setZ(-50)
         mesh.rotation.y = Math.PI;
         return mesh;
     };
@@ -46473,6 +46484,61 @@ exports.Designer = Designer;
 
 
 },{"../Abstract/Character":12}],15:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Components_1 = require("../Abstract/Components");
+/**
+ * Animator Class
+ */
+var Animator = function (_super) {
+    __extends(Animator, _super);
+    function Animator() {
+        _super.call(this);
+        this.animations = [];
+    }
+    /**
+     * Create a new Animation
+     *
+     * @param mesh
+     * @returns {THREE.AnimationMixer}
+     */
+    Animator.prototype.create = function (mesh) {
+        var mixer = new THREE.AnimationMixer(mesh);
+        this.animations.push(mixer);
+        return mixer;
+    };
+    Animator.prototype.push = function (name, mixer) {
+        this.animations.push({
+            name: name,
+            mixer: mixer
+        });
+    };
+    /**
+     * Update Animations
+     * @param time
+     * @param delta
+     */
+    Animator.prototype.update = function (time, delta) {
+        if (this.animations.length > 0) {
+            for (var i = 0; i < this.animations.length; i++) {
+                this.animations[i].update(delta);
+            }
+        }
+    };
+    return Animator;
+}(Components_1.Components);
+exports.Animator = Animator;
+
+
+},{"../Abstract/Components":13}],16:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46539,7 +46605,7 @@ var Browser = function (_super) {
 exports.Browser = Browser;
 
 
-},{"../Abstract/Components":13}],16:[function(require,module,exports){
+},{"../Abstract/Components":13}],17:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46571,7 +46637,7 @@ var Camera = function (_super) {
 exports.Camera = Camera;
 
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46687,7 +46753,7 @@ var Characters = function (_super) {
 exports.Characters = Characters;
 
 
-},{"../../Helpers":10,"../Abstract/Components":13,"../Characters/Designer":14}],18:[function(require,module,exports){
+},{"../../Helpers":10,"../Abstract/Components":13,"../Characters/Designer":14}],19:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46753,7 +46819,7 @@ var Controls = function (_super) {
 exports.Controls = Controls;
 
 
-},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],19:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],20:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46813,7 +46879,7 @@ var EffectComposer = function (_super) {
 exports.EffectComposer = EffectComposer;
 
 
-},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],20:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],21:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46843,7 +46909,7 @@ var Light = function (_super) {
 exports.Light = Light;
 
 
-},{"../Abstract/Components":13}],21:[function(require,module,exports){
+},{"../Abstract/Components":13}],22:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46882,7 +46948,7 @@ var Loader = function (_super) {
 exports.Loader = Loader;
 
 
-},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":10,"../Abstract/Components":13}],22:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":10,"../Abstract/Components":13}],23:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46910,7 +46976,7 @@ var Manager = function (_super) {
 exports.Manager = Manager;
 
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46945,7 +47011,7 @@ var Renderer = function (_super) {
 exports.Renderer = Renderer;
 
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46968,62 +47034,7 @@ var Scene = function (_super) {
 exports.Scene = Scene;
 
 
-},{}],25:[function(require,module,exports){
-"use strict";
-
-var __extends = undefined && undefined.__extends || function (d, b) {
-    for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-    }function __() {
-        this.constructor = d;
-    }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Components_1 = require("../Abstract/Components");
-/**
- * Animator Class
- */
-var Animator = function (_super) {
-    __extends(Animator, _super);
-    function Animator() {
-        _super.call(this);
-        this.animations = [];
-    }
-    /**
-     * Create a new Animation
-     *
-     * @param mesh
-     * @returns {THREE.AnimationMixer}
-     */
-    Animator.prototype.create = function (mesh) {
-        var mixer = new THREE.AnimationMixer(mesh);
-        this.animations.push(mixer);
-        return mixer;
-    };
-    Animator.prototype.push = function (name, mixer) {
-        this.animations.push({
-            name: name,
-            mixer: mixer
-        });
-    };
-    /**
-     * Update Animations
-     * @param time
-     * @param delta
-     */
-    Animator.prototype.update = function (time, delta) {
-        if (this.animations.length > 0) {
-            for (var i = 0; i < this.animations.length; i++) {
-                this.animations[i].update(delta);
-            }
-        }
-    };
-    return Animator;
-}(Components_1.Components);
-exports.Animator = Animator;
-
-
-},{"../Abstract/Components":13}],26:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -47103,6 +47114,6 @@ global.app.install(Profile);
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../Plugins":11,"./Classes/Browser":15,"./Classes/Camera":16,"./Classes/Characters":17,"./Classes/Controls":18,"./Classes/EffectComposer":19,"./Classes/Light":20,"./Classes/Loader":21,"./Classes/Manager":22,"./Classes/Renderer":23,"./Classes/Scene":24,"./Classes/animator":25,"three":1}]},{},[26]);
+},{"../Plugins":11,"./Classes/Browser":16,"./Classes/Camera":17,"./Classes/Characters":18,"./Classes/Controls":19,"./Classes/EffectComposer":20,"./Classes/Light":21,"./Classes/Loader":22,"./Classes/Manager":23,"./Classes/Renderer":24,"./Classes/Scene":25,"./Classes/animator":15,"three":1}]},{},[26]);
 
 //# sourceMappingURL=profile.js.map

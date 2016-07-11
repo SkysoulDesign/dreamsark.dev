@@ -4,15 +4,18 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  -ms-text-size-adjust: 100%;
+  line-height: 1.15;
   /* 2 */
+  -ms-text-size-adjust: 100%;
+  /* 3 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */ }
+  /* 3 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -222,7 +225,9 @@ button,
 input,
 .text-area,
 textarea,
+.select,
 select,
+optgroup,
 select,
 textarea {
   font: inherit;
@@ -244,6 +249,7 @@ button,
 input,
 .text-area,
 textarea,
+.select,
 select {
   /* 1 */
   overflow: visible; }
@@ -591,6 +597,7 @@ button,
 input,
 .text-area,
 textarea,
+.select,
 select,
 optgroup,
 select,
@@ -629,14 +636,17 @@ button,
 html input[type="button"],
 html [type="button"].text-area,
 html textarea[type="button"],
+html [type="button"].select,
 html select[type="button"],
 input[type="reset"],
 [type="reset"].text-area,
 textarea[type="reset"],
+[type="reset"].select,
 select[type="reset"],
 input[type="submit"],
 [type="submit"].text-area,
 textarea[type="submit"],
+[type="submit"].select,
 select[type="submit"] {
   -webkit-appearance: button;
   /* 2 */
@@ -650,6 +660,7 @@ button[disabled],
 html input[disabled],
 html [disabled].text-area,
 html textarea[disabled],
+html [disabled].select,
 html select[disabled] {
   cursor: not-allowed; }
 
@@ -660,6 +671,7 @@ button::-moz-focus-inner,
 input::-moz-focus-inner,
 .text-area::-moz-focus-inner,
 textarea::-moz-focus-inner,
+.select::-moz-focus-inner,
 select::-moz-focus-inner {
   border: 0;
   padding: 0; }
@@ -668,7 +680,7 @@ select::-moz-focus-inner {
    * Address Firefox 4+ setting `line-height` on `input` using `!important` in
    * the UA stylesheet.
    */
-input, .text-area, textarea, select {
+input, .text-area, textarea, .select, select {
   line-height: normal; }
 
 /**
@@ -678,10 +690,11 @@ input, .text-area, textarea, select {
    * 1. Address box sizing set to `content-box` in IE 8/9/10.
    * 2. Remove excess padding in IE 8/9/10.
    */
-input[type="checkbox"], [type="checkbox"].text-area, textarea[type="checkbox"], select[type="checkbox"],
+input[type="checkbox"], [type="checkbox"].text-area, textarea[type="checkbox"], [type="checkbox"].select, select[type="checkbox"],
 input[type="radio"],
 [type="radio"].text-area,
 textarea[type="radio"],
+[type="radio"].select,
 select[type="radio"] {
   box-sizing: border-box;
   /* 1 */
@@ -693,10 +706,11 @@ select[type="radio"] {
    * `font-size` values of the `input`, it causes the cursor style of the
    * decrement button to change from `default` to `text`.
    */
-input[type="number"]::-webkit-inner-spin-button, [type="number"].text-area::-webkit-inner-spin-button, textarea[type="number"]::-webkit-inner-spin-button, select[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-inner-spin-button, [type="number"].text-area::-webkit-inner-spin-button, textarea[type="number"]::-webkit-inner-spin-button, [type="number"].select::-webkit-inner-spin-button, select[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button,
 [type="number"].text-area::-webkit-outer-spin-button,
 textarea[type="number"]::-webkit-outer-spin-button,
+[type="number"].select::-webkit-outer-spin-button,
 select[type="number"]::-webkit-outer-spin-button {
   height: auto; }
 
@@ -704,7 +718,7 @@ select[type="number"]::-webkit-outer-spin-button {
    * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
    * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.
    */
-input[type="search"], [type="search"].text-area, textarea[type="search"], select[type="search"] {
+input[type="search"], [type="search"].text-area, textarea[type="search"], [type="search"].select, select[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
   box-sizing: content-box;
@@ -715,10 +729,11 @@ input[type="search"], [type="search"].text-area, textarea[type="search"], select
    * Safari (but not Chrome) clips the cancel button when the search input has
    * padding (and `textfield` appearance).
    */
-input[type="search"]::-webkit-search-cancel-button, [type="search"].text-area::-webkit-search-cancel-button, textarea[type="search"]::-webkit-search-cancel-button, select[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-cancel-button, [type="search"].text-area::-webkit-search-cancel-button, textarea[type="search"]::-webkit-search-cancel-button, [type="search"].select::-webkit-search-cancel-button, select[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration,
 [type="search"].text-area::-webkit-search-decoration,
 textarea[type="search"]::-webkit-search-decoration,
+[type="search"].select::-webkit-search-decoration,
 select[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none; }
 
@@ -1593,7 +1608,7 @@ button {
   font-weight: 900;
   font-style: normal; }
 
-input, .text-area, textarea, select, .input {
+input, .text-area, textarea, .select, select, .input {
   font-size: 1em;
   font-weight: normal;
   color: #8f9587;
@@ -1603,14 +1618,14 @@ input, .text-area, textarea, select, .input {
   background: rgba(219, 221, 217, 0.3);
   border: 1px solid rgba(219, 221, 217, 0.8);
   border-radius: .5em; }
-  input:hover, .text-area:hover, textarea:hover, select:hover, .input:hover {
+  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover {
     background: rgba(219, 221, 217, 0.5);
     color: #767c6e; }
-  input:focus, .text-area:focus, textarea:focus, select:focus, .input:focus {
+  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus {
     outline: 0; }
-  input:active, .text-area:active, textarea:active, select:active, .input:active {
+  input:active, .text-area:active, textarea:active, .select:active, select:active, .input:active {
     outline: 0; }
-  input.\--error, .\--error.text-area, textarea.\--error, select.\--error, .input.\--error {
+  input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
     color: #d90d12;
     border: 1px solid rgba(243, 63, 67, 0.8); }
 
@@ -2003,8 +2018,14 @@ button, .button {
       .dropdown__content__item:nth-last-child(-n + 1) {
         border-bottom: transparent; }
 
-select {
+.select, select {
   height: 3.5em; }
+  .select.\--simple, select.\--simple {
+    padding: 0;
+    height: auto;
+    border: none;
+    background: none;
+    width: auto; }
 
 .form, form {
   padding: 0;
@@ -2793,7 +2814,7 @@ header, .header {
 * Layout
 */
 .footer {
-  background: url("http://192.168.1.129:8080/img/footer.jpg") center top #000d1a;
+  background: url("/img/footer.jpg") center top #000d1a;
   padding: 3em 0;
   color: white; }
   .footer__logo img {
@@ -2862,7 +2883,7 @@ header, .header {
       border: 0.3em solid white; }
 
 .home-page__background {
-  background: url("http://192.168.1.129:8080/img/profile/dreamsArkRef89.png") center 20%; }
+  background: url("/img/profile/dreamsArkRef89.png") center 20%; }
   .home-page__background__overlay {
     background-color: rgba(0, 131, 255, 0.5); }
 
@@ -2877,7 +2898,7 @@ header, .header {
 .login-page {
   height: 100%;
   width: 100%;
-  background: url("http://192.168.1.129:8080/img/login/dreamsArkRef39.png") no-repeat center center;
+  background: url("/img/login/dreamsArkRef39.png") no-repeat center center;
   background-size: cover; }
 
 .profile-page a:hover {
@@ -2935,7 +2956,7 @@ header, .header {
   pointer-events: auto; }
 
 .profile-page__header.\--profile-pick {
-  background: url("http://192.168.1.129:8080/img/profile/dreamsArkRef89.png") center center; }
+  background: url("/img/profile/dreamsArkRef89.png") center center; }
 
 .profile-page__palette {
   -webkit-user-select: none;

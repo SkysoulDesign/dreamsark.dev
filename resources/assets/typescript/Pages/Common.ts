@@ -11,6 +11,24 @@ export class Common extends AbstractPage {
         app.logger.info('This class {Common} will run on every request');
 
         this.dropdown();
+        this.languageSwitcher();
+
+    }
+
+    languageSwitcher() {
+
+        document.querySelector('#language-switcher')
+            .addEventListener('change', (e:MouseEvent) => {
+
+                let form = document.createElement('form'),
+                    element = <HTMLSelectElement>e.target;
+
+                form.method = 'post';
+                form.action = element.dataset['action'];
+                form.appendChild(element);
+                form.submit();
+
+            })
 
     }
 

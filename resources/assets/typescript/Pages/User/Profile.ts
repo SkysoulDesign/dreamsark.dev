@@ -13,8 +13,6 @@ export class Profile extends AbstractPage {
 
     boot(app) {
 
-        console.log();
-
         this.noIdeaWhatsIsIt();
         this.initThreeJs(app);
 
@@ -54,7 +52,6 @@ export class Profile extends AbstractPage {
          */
         app.ready().then(function () {
 
-            // var animation = new profileAnimation();
             animation.start();
 
             app.vue({

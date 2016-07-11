@@ -4,6 +4,11 @@ namespace DreamsArk\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class Localization
+ *
+ * @package DreamsArk\Http\Middleware
+ */
 class Localization
 {
     /**
@@ -15,18 +20,21 @@ class Localization
      */
     public function handle($request, Closure $next)
     {
+
         /**
          * Set User Language
          */
         if (auth()->check()) {
-            app()->setLocale(auth()->user()->settings->language);
+            app()->setLocale(
+                $request->user()->settings->language
+            );
         }
 
         /**
          * if locate is set, override user language
          */
-        if ($locate = session('locate')) {
-            app()->setLocale($locate);
+        if ($language = $request->session()->get('language')) {
+            app()->setLocale($language);
         }
 
         return $next($request);

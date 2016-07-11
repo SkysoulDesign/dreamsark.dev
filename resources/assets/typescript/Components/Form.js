@@ -70,7 +70,7 @@ var Form = (function () {
             methods: {
                 send: function (e) {
                     e.preventDefault();
-                    var response = this.$http[this.method](this.action, this.formData);
+                    var response = this.$http[this.method](this.action, new FormData(document.querySelector("#" + this.dataFrom)));
                     response.then(function (e) {
                         console.log(e);
                     }, function (e) {
@@ -79,11 +79,6 @@ var Form = (function () {
                 }
             },
             ready: function () {
-                var form = null;
-                if (this.dataFrom) {
-                    form = document.querySelector("#" + this.dataFrom);
-                    this.$set('formData', new FormData(form));
-                }
                 for (var key in this.data) {
                     this.formData.append(key, this.data[key]);
                 }

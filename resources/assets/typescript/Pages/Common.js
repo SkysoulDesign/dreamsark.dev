@@ -17,6 +17,17 @@ var Common = (function (_super) {
     Common.prototype.boot = function (app) {
         app.logger.info('This class {Common} will run on every request');
         this.dropdown();
+        this.languageSwitcher();
+    };
+    Common.prototype.languageSwitcher = function () {
+        document.querySelector('#language-switcher')
+            .addEventListener('change', function (e) {
+            var form = document.createElement('form'), element = e.target;
+            form.method = 'post';
+            form.action = element.dataset['action'];
+            form.appendChild(element);
+            form.submit();
+        });
     };
     /**
      * Initialize Dropdown

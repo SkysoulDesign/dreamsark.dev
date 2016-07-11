@@ -9,7 +9,6 @@ use DreamsArk\Http\Middleware\EncryptCookies;
 use DreamsArk\Http\Middleware\Localization;
 use DreamsArk\Http\Middleware\RedirectIfAuthenticated;
 use DreamsArk\Http\Middleware\RoleMiddleware;
-use DreamsArk\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -32,7 +31,6 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         CheckForMaintenanceMode::class,
-        Localization::class,
     ];
 
     /**
@@ -46,6 +44,7 @@ class Kernel extends HttpKernel
             AddQueuedCookiesToResponse::class,
             StartSession::class,
             ShareErrorsFromSession::class,
+            Localization::class,
 //            VerifyCsrfToken::class,
         ],
 

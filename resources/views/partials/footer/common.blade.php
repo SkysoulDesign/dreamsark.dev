@@ -38,7 +38,12 @@
                 <img src="{{ asset('img/temp/dreamsark-white.png') }}" alt="">
             </div>
             <div class="small-6 footer__social +align-right">
-                 @lang('footer.icp')
+                @lang('footer.icp')
+                <select id="language-switcher" data-action="{{ route('language') }}" name="language"
+                        class="select --simple">
+                    <option value="en" {{ session('language') == 'en' ? 'selected' : '' }}>@lang('forms.english')</option>
+                    <option value="cn" {{ session('language') == 'cn' ? 'selected' : '' }}>@lang('forms.chinese')</option>
+                </select>
             </div>
         </div>
     </div>

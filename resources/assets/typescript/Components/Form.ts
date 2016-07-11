@@ -77,7 +77,11 @@ export class Form implements ComponentInterface {
                     send(e:MouseEvent){
                         e.preventDefault();
 
-                        let response = this.$http[this.method](this.action, this.formData);
+                        let response = this.$http[this.method](this.action,
+                            new FormData(
+                                <HTMLFormElement>document.querySelector(`#${this.dataFrom}`)
+                            )
+                        );
 
                         response.then(function (e) {
                             console.log(e)
@@ -89,13 +93,6 @@ export class Form implements ComponentInterface {
                 },
 
                 ready(){
-
-                    let form = null;
-
-                    if (this.dataFrom) {
-                        form = <HTMLFormElement>document.querySelector(`#${this.dataFrom}`);
-                        this.$set('formData', new FormData(form));
-                    }
 
                     for (let key in this.data) {
                         this.formData.append(key, this.data[key])

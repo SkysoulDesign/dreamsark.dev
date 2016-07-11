@@ -3,8 +3,8 @@
 namespace DreamsArk\Http\Controllers\Home;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use Illuminate\Cookie\CookieJar;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -40,6 +40,28 @@ class HomeController extends Controller
 
         return redirect()->route('home');
 
+    }
+
+    /**
+     * Change Language
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Foundation\Application $application
+     */
+    public function changeLanguage(Request $request, Application $application)
+    {
+
+        $request->session()->set('language',
+            $request->input('language', config('app.fallback_locale'))
+        );
+
+        $application->setLocale(
+            $request->session()->get('language')
+        );
+
+        return redirect()->back()->withStatus(
+            trans('notifications.language-changed-success')
+        );
     }
 
 }
