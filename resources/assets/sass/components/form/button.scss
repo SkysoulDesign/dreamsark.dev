@@ -7,15 +7,16 @@
   width: 100%;
   color: color(white);
   cursor: pointer;
+  white-space: nowrap;
 
   line-height: normal;
 
   appearance: none;
-  box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
-  text-shadow: 0 -0.5px 1px color(black, base, 15);
+  //box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
+  //text-shadow: 0 -0.5px 1px color(black, base, 15);
 
   padding: 1em;
-  position: relative;
+  //position: relative;
 
   text-transform: uppercase;
   text-align: center;
@@ -78,6 +79,30 @@
     background-color: #00AA00;
   }
 
+  @include option(default) {
+
+    background-color: color(gray);
+    display: flex;
+    line-height: 3em;
+    padding: 0 .8em;
+    text-align: center;
+    vertical-align: middle;
+
+    height: 100%;
+
+    box-shadow: none;
+    text-shadow: none;
+
+    &:hover {
+      background-color: color(gray, dark);
+    }
+
+    &:active {
+      background-color: color(black, light);
+    }
+
+  }
+
 }
 
 @mixin dreamsark-button-colors() {
@@ -101,11 +126,20 @@
       background-color: transparent;
 
       color: color($color);
-      border: .135em solid color($color);
+      border: 1px solid color($color);
+      cursor: auto;
+      transition: transform .25s;
 
       &:hover {
         border-color: color($color, light);
         color: color($color, light);
+        background-color: color($color: white, $alpha: 13);
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(.99);
+        background-color: color($color: white, $alpha: 5);
       }
 
     }

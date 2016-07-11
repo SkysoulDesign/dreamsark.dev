@@ -31,15 +31,13 @@
 
         <div class="small-6 columns +align-right menu +hidden-on-mobile">
 
-            <a href="{{ route('project.index') }}" class="menu__item +round +transparent">Projects</a>
-            <a href="#" class="menu__item +round +transparent">Explorer</a>
-            <a href="#" class="menu__item +round +transparent">Explorer</a>
-            <a href="#" class="menu__item +round +transparent">Explorer</a>
+            <a href="{{ route('project.index') }}" class="menu__item +round +transparent">@lang('nav.projects')</a>
+            <a href="#" class="menu__item +round +transparent">@lang('nav.talents')</a>
 
-            <div class="dropdown">
+            <div class="dropdown +z-10">
 
                 <div class="dropdown__trigger">
-                    <a href="#">{{ auth()->user()->username }}</a>
+                    {{ auth()->user()->username }}
                 </div>
 
                 <div class="dropdown__content">

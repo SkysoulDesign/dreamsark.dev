@@ -12,6 +12,11 @@ use SkysoulDesign\Translation\Models\Language;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Class ScanKeysAndImportJob
+ *
+ * @package SkysoulDesign\Translation\Jobs
+ */
 class ScanKeysAndImportJob extends Job
 {
     use DispatchesJobs;
@@ -23,71 +28,95 @@ class ScanKeysAndImportJob extends Job
     {
     }
 
-    public function handle(Application $app, Translator $translator, TranslationRepositoryInterface $repository, Dispatcher $event)
+    public function handle(Application $app, Finder $finder, Translator $translator, TranslationRepositoryInterface $repository, Dispatcher $event)
     {
 
-        /** @var Collection $groups */
-        $groups = dispatch(new ImportGroupsJob());
+        /**
+         * Import Groups
+         */
+        $groups = $this->dispatch(
+            new ImportGroupsJob()
+        );
 
-        /** @var Collection $languages */
-        $languages = dispatch(new ImportLanguagesJob());
+        /**
+         * Import Languages
+         */
+        $languages = dispatch(
+            new ImportLanguagesJob()
+        );
 
 //        $keyword = "/(?:@lang|trans)\(['\"]+(.*?)['\"]+\)/";
 //        $keyword = "/(?:@lang|trans)\(['\"]([^$# {}<>]+?)['\"]\)/";
-        $keyword = "/(?:@lang|trans|trans_choice)\(['\"]([^$# {}<>]+?)['\"][\),]/"; // with params used in @lang() & trans()
-        /** @var Finder $finder */
-        $finder = new Finder();
-        $finder = $finder->files()
-            ->in(
-                array_merge(
-                    [$app->path()],
-                    $app['config']['view.paths']
-                )
-            )
-            ->contains($keyword)
-            ->name('*.php');
+        $keyword = "/(?:@lang|trans|trans_choice)\\(['\"]([^$# {}<>]+?)['\"][\\),]/"; // with params used in @lang() & trans()
 
-        /** @var Collection $keywordList */
+        $files = $finder
+            ->files()
+            ->name('*.php')
+            ->in($app->path())
+            ->in($app['config']['view.paths'])
+            ->contains($keyword);
+
         $keywordList = collect();
-        foreach ($finder as $file) {
+
+        foreach ($files as $file) {
+
             preg_match_all($keyword, $file->getContents(), $output_array);
-            if (!empty($output_array)) {
-                collect($output_array[1])->each(function ($item) use ($keywordList) {
-                    $temp = explode('.', $item);
-                    if (isset($temp[1]))
-                        $keywordList->push(['group' => $temp[0], 'key' => $temp[1], 'value' => null]);
-                });
+
+            foreach ($output_array[1] as $item) {
+
+                $temp = explode('.', $item);
+
+                if (count($temp) === 2)
+                    $keywordList->push([
+                        'group' => $temp[0],
+                        'key' => $temp[1],
+                        'value' => null
+                    ]);
+
             }
+
         }
-        /** @var Language $language */
-        $language = $languages->where('name', 'en')->first();
 
-        foreach ($keywordList->groupBy('group') as $groupName => $keyList) {
-            /** @var Group $group */
-            $group = $groups->where('name', $groupName)->first();
-            if (empty($group))
-                $group = dispatch(new CreateGroupJob($groupName));
+        /**
+         * Get The English Language Language
+         */
+        $language = $languages->last();
 
-            if ($group) {
-                $model = $repository->fetch($language->id, $group->id);
-                $database = $model->pluck('value', 'key');
+        foreach ($keywordList->groupBy('group') as $name => $keyList) {
 
-                $newKeys = collect();
+            $group = $groups->where('name', $name)->first();
 
-                $keyList->each(function ($data) use ($newKeys) {
-                    $newKeys->put($data['key'], $data['value']);
-                });
+            if (is_null($group))
+                $group = $this->dispatch(
+                    new CreateGroupJob($name)
+                );
 
-                $newItems = $newKeys->merge($database)->diffKeys($database)->map(function ($value, $key) use ($language, $group) {
-                    return $this->dispatch(new CreateTranslationJob($language->id, $group->id, compact('key', 'value')));
-                });
-            }
+            $model = $repository->fetch($language->id, $group->id);
+
+            $database = $model->pluck('value', 'key');
+
+            $newKeys = collect();
+
+            $keyList->each(function ($data) use ($newKeys) {
+                $newKeys->put($data['key'], $data['value']);
+            });
+
+            $newKeys->merge($database)->diffKeys($database)->map(function ($value, $key) use ($language, $group) {
+                return $this->dispatch(
+                    new CreateTranslationJob(
+                        $language->id, $group->id, compact('key', 'value')
+                    )
+                );
+            });
+
         }
+
         /**
          * after inserting new keys to 'en' sync with all languages
          */
-        dispatch(
+        $this->dispatch(
             new SyncTranslationJob()
         );
+
     }
 }

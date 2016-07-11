@@ -6,9 +6,9 @@
 
     <div class="row --fluid">
         <a href="{{ route('project.show', 1) }}" class="small-12 medium-5 project-page__featured">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/dummy/cover-1.jpg') }}" alt="">
             <div class="project-page__featured__overlay">
-                <h1>The Jungle Book</h1>
+                <h1>The Avangers</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
@@ -81,7 +81,7 @@
                     officiis pariatur quam repellendus?</p>
             </header>
 
-            <div class="row project-page__list">
+            <div class="row align-center project-page__list">
 
                 @foreach($projects as $project)
                     <div href="#" class="small-12 medium-3 columns project-page__list__item">

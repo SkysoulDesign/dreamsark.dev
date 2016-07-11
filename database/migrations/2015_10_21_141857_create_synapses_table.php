@@ -3,6 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+/**
+ * Class CreateSynapsesTable
+ */
 class CreateSynapsesTable extends Migration
 {
     /**
@@ -16,7 +19,7 @@ class CreateSynapsesTable extends Migration
             $table->increments('id');
             $table->integer('project_id')->unsigned()->index()->unique();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->string('content');
+            $table->longText('content');
             $table->boolean('active')->default(true);
 
             $table->integer('submission_id')->unsigned()->nullable()->index();

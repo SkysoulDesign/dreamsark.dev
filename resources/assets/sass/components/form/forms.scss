@@ -59,6 +59,7 @@ form {
     text-align: center;
     color: color(white);
     font-weight: bold;
+    text-transform: uppercase;
 
     @include option(rounded) {
       border-radius: .5em .5em 0 0;
@@ -69,11 +70,11 @@ form {
   @include part(field) {
 
     @include all-but(1) {
-      margin: 10px 0;
+      margin: .8em 0;
     }
 
     @include last(1) {
-      margin-top: 10px;
+      margin-top: .8em;
       margin-bottom: 0;
     }
 
@@ -130,6 +131,22 @@ form {
 
       &:hover {
         opacity: 1
+      }
+
+    }
+
+  }
+
+  @include part(fields) {
+
+    @extend .form__field;
+
+    display: flex;
+
+    & .form__field {
+
+      @include all-but(1) {
+        margin: 0 0 0 .8em;
       }
 
     }

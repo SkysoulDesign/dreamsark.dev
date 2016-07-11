@@ -60,6 +60,7 @@ class SMSServiceProvider extends ServiceProvider
     {
         return [
             'sms',
+            'sms.driver',
             SMS::class,
             SMSInterface::class
         ];

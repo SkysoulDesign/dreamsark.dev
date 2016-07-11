@@ -1,19 +1,19 @@
-@extends('layouts.master')
+@extends('layouts.master', ['footer' => false])
 
 @section('content')
 
     <div class="login-page">
 
-        <div class="row align-middle align-right +full-height">
+        <ark-flipper class="row align-middle align-right +full-height">
 
-            <div class="small-12 medium-6 large-4 columns card">
+            <ark-flipper-front class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
-                    <header class="header --classic">
+                    <div class="card__content__header">
                         Login Form
                         <p>Welcome to dreamsark, login or apply for a new account</p>
-                    </header>
+                    </div>
 
                     <ark-form action="{{ route('login.store') }}"
                               token="{{ csrf_token() }}"
@@ -26,16 +26,110 @@
                         </ripple-button>
                     </ark-form>
 
-                    <div class="divider --mini">or login with</div>
+                    <div class="divider --mini --spaced">or login with</div>
 
-                    <div class="row align-center">
-                        There will be social media links here....
-                    </div>
+                    <ark-social url="{{ route('login.social.post') }}">
+                        <ark-wechat></ark-wechat>
+                        <ark-qq></ark-qq>
+                        <ark-weibo></ark-weibo>
+                    </ark-social>
 
                 </div>
-            </div>
 
-        </div>
+                <div class="card__caption --white">
+                    You are not a member yet?
+                    <div>
+                        <a data-flipper-trigger href="{{ route('register') }}">click here to register.</a>
+                    </div>
+                </div>
+
+            </ark-flipper-front>
+
+            <ark-flipper-back class="small-12 medium-6 large-4 columns card">
+
+                <div class="card__content">
+
+                    <div class="card__content__image --avatar-like">
+                        <img src="{{ asset('img/temp/avatar.png') }}" alt="">
+                    </div>
+
+                    <div class="card__content__header">
+                        Member Register
+                        <p>Welcome to dreamsark, login or apply for a new account</p>
+                    </div>
+
+                    <ark-nav basic>
+                        <ark-tab content="tab-standard" active>
+                            Standard
+                            @push('tab-item')
+                            <div id="tab-standard">
+                                <ark-form action="{{ route('login.store') }}"
+                                          token="{{ csrf_token() }}"
+                                          errors="{{ $errors->toJson() }}">
+
+                                    <ark-input name="username" placeholder="username"></ark-input>
+                                    <ark-input name="email" placeholder="email"></ark-input>
+                                    <ark-input name="password" type="password"></ark-input>
+                                    <ripple-button type="submit">
+                                        Login
+                                    </ripple-button>
+                                </ark-form>
+                            </div>
+                            @endpush
+                        </ark-tab>
+                        <ark-tab content="tab-mobile">
+                            Mobile
+                            @push('tab-item')
+                            <div id="tab-mobile">
+                                <ark-form id="mobile-login-form"
+                                          action="{{ route('register.store') }}"
+                                          token="{{ csrf_token() }}"
+                                          errors="{{ $errors->toJson() }}">
+
+                                    <ark-input name="mobile" placeholder="mobile number"></ark-input>
+
+                                    <ark-fields>
+                                        <ark-input name="code" placeholder="sms code"></ark-input>
+                                        <ark-ajax-button method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
+                                            Send Code
+                                        </ark-ajax-button>
+                                    </ark-fields>
+
+                                    <ark-input name="password" placeholder="password"></ark-input>
+
+                                    <ripple-button type="submit">
+                                        Register
+                                    </ripple-button>
+                                </ark-form>
+                            </div>
+                            @endpush
+                        </ark-tab>
+                    </ark-nav>
+
+                    @stack('tab-item')
+
+                    <div class="divider --mini --spaced">or register with</div>
+
+                    <ark-social url="{{ route('login.social.post') }}">
+                        <ark-wechat></ark-wechat>
+                        <ark-qq></ark-qq>
+                        <ark-weibo></ark-weibo>
+                    </ark-social>
+
+                </div>
+
+                <div class="card__caption --white">
+                    You are not a member yet?
+                    <div>
+                        <a data-flipper-trigger href="{{ route('register') }}">click here to register.</a>
+                    </div>
+                </div>
+
+            </ark-flipper-back>
+
+        </ark-flipper>
+
+
     </div>
 
 @endsection

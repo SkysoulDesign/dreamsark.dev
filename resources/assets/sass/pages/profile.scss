@@ -32,7 +32,7 @@
         transition: .25s;
       }
 
-      @include option(active){
+      @include option(active) {
         background: color(gray, base, 10);
         border: .1em dashed color(gray);
       }
@@ -68,6 +68,135 @@
 
     @include part(icon) {
 
+    }
+
+  }
+
+  @include part(canvas) {
+    padding: 0;
+    //position: absolute;
+    //top: 0;
+    //left: 0;
+    //min-width: 100%;
+    min-height: 500px;
+    max-height: 500px;
+    //z-index: -1;
+    pointer-events: auto;
+  }
+
+  @include part(header) {
+
+    @extend .base-page__header;
+
+    //height: 100%;
+
+    @include part(overlay) {
+      @extend .base-page__header__overlay;
+    }
+
+    @include option(profile-pick) {
+      background: get-url('profile/dreamsArkRef89.png') center center;
+    }
+
+  }
+
+  @include part(palette) {
+
+    user-select: none;
+    //border-radius: 5px;
+
+    &:hover {
+      background: color($color: black, $alpha: 22);
+    }
+
+    $colors: (
+            1: #E91E63,
+            2: #9C27B0,
+            3: #673AB7,
+            4: #3F51B5,
+            5: #2196F3,
+            6: #03A9F4,
+            7: #00BCD4,
+            8: #009688,
+            9: #4CAF50,
+            10: #8BC34A,
+            11: #CDDC39,
+            12: #FFEB3B,
+            13: #FFC107,
+            14: #FF9800,
+            15: #FF5722,
+            16: #795548,
+            17: #9E9E9E,
+            18: #607D8B,
+            19: #0D47A1,
+            20: #004D40
+    );
+
+    @each $color in $colors {
+
+      @include option(color-#{nth($color, 1)}) {
+        &:hover {
+          background: nth($color, 2);
+        }
+      }
+
+    }
+
+    transition: .15s;
+
+    &:hover {
+      transform: scale(1.1);
+      border-radius: .3em;
+
+      & span {
+        display: block;
+      }
+    }
+
+    &:active {
+      transform: scale(.9);
+    }
+
+    @include part(item) {
+      color: white;
+      cursor: pointer;
+      position: relative;
+      width: 50px;
+      height: 50px;
+      padding: .2em;
+      margin: 1em auto;
+      background: color($color: pure-black, $alpha: 10);
+      border-radius: 100%;
+
+      img {
+        position: relative;
+        left: 0;
+        right: 0;
+        transform: scale(1.2);
+      }
+
+      & span {
+        display: none;
+
+        position: absolute;
+        border-radius: .3em;
+        transform: scale(2);
+        padding:1em;
+        font-size: .4em;
+        white-space: nowrap;
+        top: -100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        font-weight: bolder;
+        text-transform: uppercase;
+        background: color($color:pure-black, $alpha: 70);
+      }
+
+    }
+
+    @include part(select) {
+      padding: 2em;
     }
 
   }

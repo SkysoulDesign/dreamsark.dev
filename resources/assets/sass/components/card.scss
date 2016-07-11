@@ -18,6 +18,7 @@
     }
 
     @include part(avatar) {
+
       position: absolute;
       right: 0;
       margin: -3em 2em;
@@ -72,9 +73,23 @@
 
   }
 
+  @include part(caption) {
+
+    text-align: center;
+    padding: 1em;
+
+    @include option(white) {
+      @extend .\+white;
+      a {
+        @extend a.\--inverted;
+      }
+    }
+
+  }
+
   @include part(content) {
 
-    padding: 1em 1em 0 1em;
+    padding: 1em;
     box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
     border-radius: $border;
     border: 1px solid transparent;
@@ -95,6 +110,37 @@
 
       h3 {
         @include font-style($style: sub-title, $color: black)
+      }
+
+    }
+
+    @include part(header) {
+
+      padding: .5em 0;
+      color: color(gray);
+      font-size: 2em;
+      line-height: normal;
+
+      p {
+        font-size: .5em;
+      }
+
+    }
+
+    @include part(image) {
+
+      @include option(avatar-like) {
+        left: 0;
+        right: 0;
+        position: relative;
+        width: 10em;
+        margin: 0 auto -7em auto;
+        top: -7em;
+
+        img {
+          border-radius: 100em;
+        }
+
       }
 
     }

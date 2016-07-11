@@ -13,10 +13,7 @@
         <div class="row">
             <div class="small-12">
                 <header class="header --inverted +center">
-                    Lorem ipsum dolor sit amet
-                    <p>consectetur adipisicing elit. Aperiam cupiditate dicta dolorem eum,
-                        exercitationem, fuga ipsam itaque libero minus nam nesciunt nostrum odio, porro qui sapiente sit
-                        vel voluptatem voluptates?</p>
+                    {{ $project->name }}
                 </header>
             </div>
         </div>

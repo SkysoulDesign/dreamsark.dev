@@ -1,0 +1,41 @@
+@include component(comments) {
+
+  @include part(item) {
+
+    margin-left: 1em;
+    margin-right: 1em;
+
+    @include all-but(1) {
+      margin-top: 2em;
+    }
+
+    @include part(author) {
+
+      padding-left: 0;
+
+      img {
+        width: 100%;
+        border-radius: 100em;
+      }
+    }
+
+    @include part(content) {
+      @extend section;
+
+      p {
+        float: left;
+        color: color(black);
+      }
+
+    }
+
+    @include part(meta) {
+      font-size: x-small;
+      color: color(gray, dark);
+      padding: 1em 0;
+      text-transform: uppercase;
+    }
+
+  }
+
+}

@@ -36,7 +36,7 @@ export class Pages extends Application {
 
             for (let name in page) {
 
-                let object = this.initialize(name, page[name]);
+                let object = this.initialize(app, name, page[name]);
 
                 if (object.hasOwnProperty('routes')) {
                     object.routes.forEach(route => this.setRoute(route, name));
@@ -51,12 +51,13 @@ export class Pages extends Application {
     /**
      * Initialize Object
      *
+     * @param app
      * @param name
      * @param object
      * @returns {any}
      */
-    private initialize(name, object) {
-        return this.initialized[name] = new object;
+    private initialize(app, name, object) {
+        return this.initialized[name] = new object(app);
     }
 
     /**

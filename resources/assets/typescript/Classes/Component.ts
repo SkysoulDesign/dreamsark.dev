@@ -10,12 +10,14 @@ export class Component extends Application {
      * @type ComponentInterface[]
      */
     private components = [
-        require('../components/Form'),
-        require('../components/Ripple'),
-        require('../components/Nav'),
-        require('../components/Statistics'),
-        require('../components/Progress'),
-        require('../components/Modal'),
+        require('../Components/Nav'),
+        require('../Components/Form'),
+        require('../Components/Ripple'),
+        require('../Components/Statistics'),
+        require('../Components/Progress'),
+        require('../Components/Modal'),
+        require('../Components/Social'),
+        require('../Components/Flipper'),
     ];
 
     /**
@@ -29,7 +31,7 @@ export class Component extends Application {
             for (let name in component) {
                 if (component.hasOwnProperty(name))
                     (new component[name]).register(
-                        require("vue")
+                        require("vue"), app
                     );
             }
         })

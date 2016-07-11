@@ -124,7 +124,7 @@ class AuthController extends Controller
 
         $socialDriver = Socialite::driver($login_through);
 
-        return $socialDriver->redirect();
+        return response()->json(['url' => $socialDriver->redirect()->getTargetUrl()]);
 
     }
 

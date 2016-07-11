@@ -4,8 +4,15 @@
   display: inline-block;
   color: color(black);
 
-  &:hover .dropdown__content {
-    display: block;
+  @include option(show) {
+
+    & .dropdown__trigger {
+      color: color(primary);
+    }
+
+    & .dropdown__content {
+      display: block;
+    }
   }
 
   @include part(trigger) {
@@ -30,6 +37,7 @@
     margin-top: 1em;
     background-color: color(white);
     box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+    border: 1px solid color($color: gray, $alpha: 40);
     border-radius: .2em;
     cursor: pointer;
     white-space: nowrap;

@@ -4,8 +4,18 @@ namespace SkysoulDesign\Translation\Jobs;
 
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 
+/**
+ * Class CreateGroupJob
+ *
+ * @package SkysoulDesign\Translation\Jobs
+ */
 class CreateGroupJob extends Job
 {
+    /**
+     * @var
+     */
+    private $name;
+
     /**
      * Create a new command instance.
      *
@@ -20,7 +30,7 @@ class CreateGroupJob extends Job
      * Execute the command.
      *
      * @param \SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface $repository
-     * @return \SkysoulDesign\Translation\Models\Language
+     * @return \SkysoulDesign\Translation\Models\Group
      */
     public function handle(TranslationRepositoryInterface $repository)
     {

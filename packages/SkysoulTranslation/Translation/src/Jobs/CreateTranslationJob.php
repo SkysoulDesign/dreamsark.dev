@@ -5,6 +5,11 @@ namespace SkysoulDesign\Translation\Jobs;
 use SkysoulDesign\Translation\Models\Language;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 
+/**
+ * Class CreateTranslationJob
+ *
+ * @package SkysoulDesign\Translation\Jobs
+ */
 class CreateTranslationJob extends Job
 {
     /**
@@ -44,7 +49,9 @@ class CreateTranslationJob extends Job
      */
     public function handle(TranslationRepositoryInterface $repository)
     {
-        return $repository->createTranslation($this->language_id, $this->group_id, $this->translation);
+        return $repository->createTranslation(
+            $this->language_id, $this->group_id, $this->translation
+        );
     }
 
 }

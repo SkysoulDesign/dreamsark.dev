@@ -45,6 +45,22 @@
   }
 }
 
+@include tweak(no-padding) {
+  padding: 0;
+}
+
+@include tweak(no-margin) {
+  margin: 0;
+}
+
+@include tweak(no-margin-top) {
+  margin-top: 0;
+}
+
+@include tweak(no-margin-bottom) {
+  margin-bottom: 0;
+}
+
 @include tweak(hidden) {
   display: none;
 }
@@ -95,3 +111,13 @@
   }
 
 }
+
+@for $i from 1 through 10 {
+
+  @include tweak(z-#{$i}) {
+    z-index: $i;
+  }
+
+}
+
+

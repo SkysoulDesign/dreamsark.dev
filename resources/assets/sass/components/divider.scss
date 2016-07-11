@@ -31,6 +31,10 @@
     font-size: $h5;
   }
 
+  @include option(spaced) {
+    margin: 1.5em 0;
+  }
+
   @include option(hair-line) {
     opacity: .2;
   }
