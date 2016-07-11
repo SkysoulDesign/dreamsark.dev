@@ -25,3 +25,7 @@
     @yield('tab-content')
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/plugins/Chart.js') }}"></script>
+@endpush

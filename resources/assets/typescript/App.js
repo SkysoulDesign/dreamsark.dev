@@ -112,12 +112,26 @@ var App = (function () {
             _this.destruct();
         }); });
     };
+    /**
+     * Exposes Plugin globally
+     * @param instance
+     */
+    App.prototype.exposes = function (instance) {
+        /**
+         * Register Globally Globaly
+         */
+        for (var name_2 in instance) {
+            if (window.hasOwnProperty(name_2)) {
+                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name_2);
+            }
+            window[name_2] = instance[name_2];
+        }
+    };
     return App;
 }());
 /**
  * Register to the window object
  * @type {App}
  */
-exports.app = new App();
-global.app = exports.app;
+window['dreamsark'] = new App();
 //# sourceMappingURL=App.js.map

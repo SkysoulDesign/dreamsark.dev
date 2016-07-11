@@ -15,6 +15,7 @@
   "dependencies": {
     "bourbon": "^4.2.7",
     "csstyle": "^1.5.0",
+    "easy-pie-chart": "^2.1.7",
     "family.scss": "^1.0.8",
     "foundation-sites": "^6.2.3",
     "gsap": "^1.18.5",

@@ -4,18 +4,15 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Correct the line height in all browsers.
- * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  line-height: 1.15;
-  /* 2 */
   -ms-text-size-adjust: 100%;
-  /* 3 */
+  /* 2 */
   -webkit-text-size-adjust: 100%;
-  /* 3 */ }
+  /* 2 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -228,7 +225,6 @@ input,
 textarea,
 .select,
 select,
-optgroup,
 select,
 textarea {
   font: inherit;
@@ -2866,6 +2862,27 @@ header, .header {
     color: #8f9587;
     padding: 1em 0;
     text-transform: uppercase; }
+
+.chart {
+  position: relative;
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center; }
+  .chart canvas {
+    position: absolute;
+    top: 0;
+    left: 0; }
+  .chart__percent {
+    display: inline-block;
+    line-height: 110px;
+    z-index: 2; }
+    .chart__percent:after {
+      content: '%';
+      margin-left: 0.1em;
+      font-size: .8em; }
 
 /**
 * Layout

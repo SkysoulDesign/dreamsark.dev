@@ -16,23 +16,22 @@ elixir.config.js.browserify.watchify.enabled = true;
 
 elixir(function (mix) {
     mix.sass('app.scss');
-    mix.browserify("./resources/assets/typescript/App.js", null, null, {
-        cache: {}, packageCache: {}
-    });
+    mix.browserify("./resources/assets/typescript/App.js");
+
+    var pluginsPath = 'public/js/plugins';
 
     /**
      * Profile Script
      */
-    mix.browserify("./resources/assets/typescript/Plugins/Profile/Profile.js", 'public/js/plugins/profile.js', null, {
-        cache: {}, packageCache: {}
-    });
+    mix.browserify("./resources/assets/typescript/Plugins/Profile/Profile.js", pluginsPath)
+        .browserify("./resources/assets/typescript/Plugins/Chart.js", pluginsPath)
 
     mix.browserSync({
-        open:   "ui",
+        open: "ui",
         notify: false,
-        proxy:  {
+        proxy: {
             target: "dreamsark.dev:8080"
         },
-        port:   8080
+        port: 8080
     });
 });

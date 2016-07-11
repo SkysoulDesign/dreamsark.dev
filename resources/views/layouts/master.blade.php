@@ -24,14 +24,14 @@
     @include('partials.footer.common')
 @endif
 
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/App.js') }}"></script>
 
 @stack('scripts')
 
 @section('pos-scripts')
 
     <script>
-        app.page("{{ request()->route()->getName() }}");
+        dreamsark.page("{{ request()->route()->getName() }}");
     </script>
 
 @endsection

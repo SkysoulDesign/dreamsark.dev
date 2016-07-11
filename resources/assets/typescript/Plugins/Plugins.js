@@ -1,6 +1,7 @@
 "use strict";
 var Plugins = (function () {
     function Plugins() {
+        this.exposes = {};
     }
     Plugins.prototype.install = function () {
     };

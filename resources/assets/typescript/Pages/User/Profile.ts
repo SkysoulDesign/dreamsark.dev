@@ -1,6 +1,5 @@
 import Vue = require("vue");
 import {AbstractPage} from "../../Abstract/AbstractPage";
-import ComponentOption = vuejs.ComponentOption;
 
 /**
  * Profile
@@ -11,10 +10,10 @@ export class Profile extends AbstractPage {
         'user.profile.create'
     ]
 
-    boot(app) {
+    boot() {
 
         this.noIdeaWhatsIsIt();
-        this.initThreeJs(app);
+        this.initThreeJs();
 
     }
 
@@ -43,14 +42,14 @@ export class Profile extends AbstractPage {
     }
 
 
-    initThreeJs(app) {
+    initThreeJs() {
 
-        let animation = app.plugin('profile');
+        let animation = this.app.plugin('profile');
 
         /**
          * Binding Vue
          */
-        app.ready().then(function () {
+        this.app.ready().then(function (app) {
 
             animation.start();
 
@@ -70,8 +69,6 @@ export class Profile extends AbstractPage {
 
                             console.log(`Selected Character: ${element.dataset['position']}`);
                             this.position = element.dataset['position'];
-
-                            profileAnimation.switch(this.position);
 
                         }
 

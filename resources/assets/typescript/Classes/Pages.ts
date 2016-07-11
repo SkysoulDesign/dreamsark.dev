@@ -16,17 +16,20 @@ export class Pages extends Application {
         require('../Pages/Test'),
         require('../Pages/Purchase'),
         require('../Pages/User/Profile'),
+        require('../Pages/Project'),
     ]
 
     /**
      * Initialized Objects
      */
     private initialized = {};
+    private currentRoute = null;
 
     /**
      * Routes Mapping
      */
     private routes = {};
+    private except = {};
 
     constructor(app) {
 
@@ -36,10 +39,14 @@ export class Pages extends Application {
 
             for (let name in page) {
 
-                let object = this.initialize(app, name, page[name]);
+                let object = this.initialize(name, page[name]);
 
                 if (object.hasOwnProperty('routes')) {
                     object.routes.forEach(route => this.setRoute(route, name));
+                }
+
+                if (object.hasOwnProperty('except')) {
+                    object.except.forEach(route => this.setException(route, name));
                 }
 
             }
@@ -56,21 +63,23 @@ export class Pages extends Application {
      * @param object
      * @returns {any}
      */
-    private initialize(app, name, object) {
-        return this.initialized[name] = new object(app);
+    private initialize(name, object) {
+        return this.initialized[name] = new object(
+            this.app
+        );
     }
 
     /**
      * Init
      * @param string routeName
      */
-    public init(routeName) {
+    public init(routeName, ...payload) {
 
         this.app.logger.info(
             `Current Route`, routeName
         );
 
-        let route = toCamelCase(routeName);
+        let route = this.currentRoute = toCamelCase(routeName);
 
         if (!this.routes.hasOwnProperty(route)) {
 
@@ -154,11 +163,21 @@ export class Pages extends Application {
     private create(routes:string[]):void {
 
         if (routes instanceof Array)
-            return routes.forEach(
-                name => this.initialized[name].boot(
-                    this.app
-                )
-            );
+            return routes.forEach(name => {
+                
+                let currentRoute = this.currentRoute;
+
+                /**
+                 * If page explicit exclude an route, then return before calling boot on it
+                 */
+                if (this.except.hasOwnProperty(currentRoute)
+                    && this.except[currentRoute].includes(name)) {
+                    return;
+                }
+                this.initialized[name].route = currentRoute;
+                this.initialized[name].boot();
+                
+            });
 
         this.app.logger.error(
             'The Current route doesn\'t contain any bootable instances.'
@@ -172,10 +191,10 @@ export class Pages extends Application {
      * @param routes
      * @returns string[]
      */
-    private mergeRoutes(route:string, value:string):string[] {
+    private mergeRoutes(routes:{}, route:string, value:string):string[] {
 
-        if (this.routes.hasOwnProperty(route)) {
-            return this.routes[route].concat(value);
+        if (routes.hasOwnProperty(route)) {
+            return routes[route].concat(value);
         }
 
         return [value];
@@ -193,7 +212,24 @@ export class Pages extends Application {
 
         let key = toCamelCase(route);
 
-        this.routes[key] = this.mergeRoutes(key, element);
+        this.routes[key] = this.mergeRoutes(
+            this.routes, key, element
+        );
+    }
+
+    /**
+     * Set or Merge Route
+     *
+     * @param string route
+     * @param string element
+     */
+    private setException(route:string, element:string):void {
+
+        let key = toCamelCase(route);
+
+        this.except[key] = this.mergeRoutes(
+            this.except, key, element
+        );
     }
 
 }

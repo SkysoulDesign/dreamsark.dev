@@ -23,20 +23,26 @@ var Pages = (function (_super) {
             require('../Pages/Test'),
             require('../Pages/Purchase'),
             require('../Pages/User/Profile'),
+            require('../Pages/Project'),
         ];
         /**
          * Initialized Objects
          */
         this.initialized = {};
+        this.currentRoute = null;
         /**
          * Routes Mapping
          */
         this.routes = {};
+        this.except = {};
         this.collection.forEach(function (page) {
             var _loop_1 = function(name_1) {
-                var object = _this.initialize(app, name_1, page[name_1]);
+                var object = _this.initialize(name_1, page[name_1]);
                 if (object.hasOwnProperty('routes')) {
                     object.routes.forEach(function (route) { return _this.setRoute(route, name_1); });
+                }
+                if (object.hasOwnProperty('except')) {
+                    object.except.forEach(function (route) { return _this.setException(route, name_1); });
                 }
             };
             for (var name_1 in page) {
@@ -52,16 +58,20 @@ var Pages = (function (_super) {
      * @param object
      * @returns {any}
      */
-    Pages.prototype.initialize = function (app, name, object) {
-        return this.initialized[name] = new object(app);
+    Pages.prototype.initialize = function (name, object) {
+        return this.initialized[name] = new object(this.app);
     };
     /**
      * Init
      * @param string routeName
      */
     Pages.prototype.init = function (routeName) {
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
         this.app.logger.info("Current Route", routeName);
-        var route = Helpers_1.toCamelCase(routeName);
+        var route = this.currentRoute = Helpers_1.toCamelCase(routeName);
         if (!this.routes.hasOwnProperty(route)) {
             this.app.logger.info('The current route has no listeners', routeName);
             /**
@@ -116,7 +126,18 @@ var Pages = (function (_super) {
     Pages.prototype.create = function (routes) {
         var _this = this;
         if (routes instanceof Array)
-            return routes.forEach(function (name) { return _this.initialized[name].boot(_this.app); });
+            return routes.forEach(function (name) {
+                var currentRoute = _this.currentRoute;
+                /**
+                 * If page explicit exclude an route, then return before calling boot on it
+                 */
+                if (_this.except.hasOwnProperty(currentRoute)
+                    && _this.except[currentRoute].includes(name)) {
+                    return;
+                }
+                _this.initialized[name].route = currentRoute;
+                _this.initialized[name].boot();
+            });
         this.app.logger.error('The Current route doesn\'t contain any bootable instances.');
     };
     /**
@@ -125,9 +146,9 @@ var Pages = (function (_super) {
      * @param routes
      * @returns string[]
      */
-    Pages.prototype.mergeRoutes = function (route, value) {
-        if (this.routes.hasOwnProperty(route)) {
-            return this.routes[route].concat(value);
+    Pages.prototype.mergeRoutes = function (routes, route, value) {
+        if (routes.hasOwnProperty(route)) {
+            return routes[route].concat(value);
         }
         return [value];
     };
@@ -140,7 +161,17 @@ var Pages = (function (_super) {
     Pages.prototype.setRoute = function (route, element) {
         route = route === '*' ? 'all' : route;
         var key = Helpers_1.toCamelCase(route);
-        this.routes[key] = this.mergeRoutes(key, element);
+        this.routes[key] = this.mergeRoutes(this.routes, key, element);
+    };
+    /**
+     * Set or Merge Route
+     *
+     * @param string route
+     * @param string element
+     */
+    Pages.prototype.setException = function (route, element) {
+        var key = Helpers_1.toCamelCase(route);
+        this.except[key] = this.mergeRoutes(this.except, key, element);
     };
     return Pages;
 }(Aplication_1.Application));

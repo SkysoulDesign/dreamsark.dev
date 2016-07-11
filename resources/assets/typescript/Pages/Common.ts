@@ -7,8 +7,9 @@ export class Common extends AbstractPage {
 
     public routes = ['*'];
 
-    boot(app) {
-        app.logger.info('This class {Common} will run on every request');
+    boot() {
+
+        this.app.logger.info('This class {Common} will run on every request');
 
         this.dropdown();
         this.languageSwitcher();
@@ -16,6 +17,9 @@ export class Common extends AbstractPage {
     }
 
     languageSwitcher() {
+
+        if (this.is('login'))
+            return;
 
         document.querySelector('#language-switcher')
             .addEventListener('change', (e:MouseEvent) => {
@@ -36,7 +40,6 @@ export class Common extends AbstractPage {
      * Initialize Dropdown
      */
     dropdown() {
-
 
         let dropdown = document.querySelectorAll('.dropdown');
 
