@@ -15,7 +15,9 @@ class QqProvider extends Provider
      */
     protected function getUserByToken($token)
     {
+        \Log::info('token:'.$token);
         $response = $this->getHttpClient()->get('https://graph.qq.com/oauth2.0/me?' . $token);
+        \Log::info($response);
 
         $this->customOpenId = json_decode($this->removeCallback($response->getBody()->getContents()), true)['openid'];
 
