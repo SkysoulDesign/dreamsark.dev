@@ -11,7 +11,7 @@
 
                     <div class="small-12 columns">
                         <header class="header --full --small --light --with-divider +uppercase +no-margin-top">
-                            Mission requirements
+                            @lang('project.mission-requirements')
                         </header>
                         <section>
                             {{ $project->idea->content }}

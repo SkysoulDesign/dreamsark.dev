@@ -12019,9 +12019,9 @@ var Form = function () {
         vue.component('ark-fields', {
             template: require('../templates/form/fields.html'),
             props: {
-                columns: {
-                    type: Number,
-                    default: 2
+                gap: {
+                    type: String,
+                    default: 'normal' // normal, small, medium, large, huge
                 }
             }
         });
@@ -12094,8 +12094,7 @@ var Form = function () {
             template: require('../templates/form/input.html'),
             props: {
                 name: {
-                    type: String,
-                    required: true
+                    type: String
                 },
                 placeholder: {
                     type: String,
@@ -12112,6 +12111,16 @@ var Form = function () {
                     default: function _default() {
                         return this.name;
                     }
+                },
+                readOnly: {
+                    type: Boolean,
+                    default: false
+                },
+                value: {
+                    type: String
+                },
+                label: {
+                    type: String
                 }
             },
             computed: {
@@ -12556,6 +12565,9 @@ exports.toCamelCase = function (str) {
         return $1.toUpperCase();
     }).replace(/ /g, '');
 };
+exports.captalize = function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 
 },{}],20:[function(require,module,exports){
@@ -12821,11 +12833,11 @@ module.exports = '<div class="form__field">\n    <button @click="send" :type="ty
 },{}],28:[function(require,module,exports){
 module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],29:[function(require,module,exports){
-module.exports = '<div class="form__fields">\n\n    <slot></slot>\n\n</div>\n';
+module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],30:[function(require,module,exports){
 module.exports = '<form :id="id" :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>\n';
 },{}],31:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],32:[function(require,module,exports){
 module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],33:[function(require,module,exports){

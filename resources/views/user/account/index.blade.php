@@ -4,6 +4,38 @@
 
     @include('user.partials.header')
 
+    <div class="row">
+
+        <div class="small-12 columns">
+            <header class="header --light --with-divider --full">
+                User Account
+            </header>
+
+            <section>
+                <ark-form action="#" errors="{{ json_encode($errors) }}">
+
+                    <header class="header --light --full --mini +no-margin-top">
+                        Personal
+                    </header>
+
+                    <ark-fields gap="large">
+                        <ark-input name="name" label="Name"></ark-input>
+                        <ark-input name="password" label="Password"></ark-input>
+                    </ark-fields>
+
+                    <ark-fields gap="large">
+                        <ark-input label="Username" read-only>helllo world</ark-input>
+                        <ark-input name="confirm_password" label="Password Confirmation"></ark-input>
+                    </ark-fields>
+
+                    <ark-input name="name" label="Password"></ark-input>
+
+                </ark-form>
+            </section>
+        </div>
+
+    </div>
+
 @endsection
 
 {{--@section('content')--}}

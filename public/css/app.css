@@ -2103,8 +2103,21 @@ button, .button {
   .form__fields {
     display: -ms-flexbox;
     display: flex; }
-    .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
-      margin: 0 0 0 .8em; }
+    .form__fields .form__field, .form__fields .form__fields, .form__fields .form__description, .form__fields .form__field span, .form__field .form__fields span {
+      -ms-flex: 1;
+      flex: 1; }
+      .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
+        margin: 0 0 0 .8em; }
+    .form__fields.\--gap-normal .form__field:not(:nth-child(1)), .form__fields.\--gap-normal .form__fields:not(:nth-child(1)), .form__fields.\--gap-normal .form__description:not(:nth-child(1)), .form__fields.\--gap-normal .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-normal span:not(:nth-child(1)) {
+      margin: 0 0 0 0.8em; }
+    .form__fields.\--gap-small .form__field:not(:nth-child(1)), .form__fields.\--gap-small .form__fields:not(:nth-child(1)), .form__fields.\--gap-small .form__description:not(:nth-child(1)), .form__fields.\--gap-small .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-small span:not(:nth-child(1)) {
+      margin: 0 0 0 5em; }
+    .form__fields.\--gap-medium .form__field:not(:nth-child(1)), .form__fields.\--gap-medium .form__fields:not(:nth-child(1)), .form__fields.\--gap-medium .form__description:not(:nth-child(1)), .form__fields.\--gap-medium .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-medium span:not(:nth-child(1)) {
+      margin: 0 0 0 8em; }
+    .form__fields.\--gap-large .form__field:not(:nth-child(1)), .form__fields.\--gap-large .form__fields:not(:nth-child(1)), .form__fields.\--gap-large .form__description:not(:nth-child(1)), .form__fields.\--gap-large .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-large span:not(:nth-child(1)) {
+      margin: 0 0 0 10em; }
+    .form__fields.\--gap-huge .form__field:not(:nth-child(1)), .form__fields.\--gap-huge .form__fields:not(:nth-child(1)), .form__fields.\--gap-huge .form__description:not(:nth-child(1)), .form__fields.\--gap-huge .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-huge span:not(:nth-child(1)) {
+      margin: 0 0 0 15em; }
   .form__message {
     background: rgba(217, 13, 18, 0.1);
     padding: 1em;

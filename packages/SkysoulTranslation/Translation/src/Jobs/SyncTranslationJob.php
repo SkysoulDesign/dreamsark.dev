@@ -5,6 +5,11 @@ namespace SkysoulDesign\Translation\Jobs;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface;
 
+/**
+ * Class SyncTranslationJob
+ *
+ * @package SkysoulDesign\Translation\Jobs
+ */
 class SyncTranslationJob extends Job
 {
 
@@ -19,13 +24,11 @@ class SyncTranslationJob extends Job
 
     /**
      * Execute the command.
-
-*
-*@param \SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface $repository
+     *
+     * @param \SkysoulDesign\Translation\Repositories\TranslationRepositoryInterface $repository
      */
     public function handle(TranslationRepositoryInterface $repository)
     {
-
         /**
          * Retrieve all languages for further usage
          */
@@ -74,12 +77,13 @@ class SyncTranslationJob extends Job
                  * For each new Value, Create a new Translation
                  */
                 $newValues->each(function ($key) use ($language, $group) {
-                    $this->dispatch(new CreateTranslationJob($language, $group->id, compact('key')));
+                    $this->dispatch(
+                        new CreateTranslationJob($language, $group->id, compact('key'))
+                    );
                 });
 
             });
 
         });
-
     }
 }

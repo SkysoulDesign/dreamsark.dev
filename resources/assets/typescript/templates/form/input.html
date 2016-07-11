@@ -1,10 +1,14 @@
 <div class="form__field" :class="{ '--error': errors }">
 
+    <label v-if="label" :for="name">{{ label }}</label>
+
     <input :class="{ '--error': errors }"
            :type="type || 'text'"
            :name="name"
            :title="title"
-           :placeholder="placeholder || name">
+           :placeholder="placeholder || name"
+           :value="value"
+           :readOnly="readOnly">
 
     <div v-if="errors" class="form__field__error">
         <ul v-for="error in errors">

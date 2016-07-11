@@ -72,4 +72,5 @@ return array(
     'voting-date' => 'Voting Date',
     'voting-close-date' => 'Close Voting Date',
     'submit' => 'Submit',
+    'mission-requirements' => 'Mission requirements'
 );

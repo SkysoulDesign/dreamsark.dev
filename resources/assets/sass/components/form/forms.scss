@@ -145,8 +145,24 @@ form {
 
     & .form__field {
 
+      flex: 1;
+
       @include all-but(1) {
         margin: 0 0 0 .8em;
+      }
+
+    }
+
+    @each $gap in (normal: .8, small: 5, medium: 8, large: 10, huge: 15) {
+
+      @include option(gap-#{nth($gap, 1)}) {
+
+        & .form__field {
+          @include all-but(1) {
+            margin: 0 0 0 #{nth($gap, 2)}em;
+          }
+        }
+
       }
 
     }
