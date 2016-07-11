@@ -15,9 +15,11 @@ class QqProvider extends Provider
      */
     protected function getUserByToken($token)
     {
-        \Log::info('token:'.$token);
+        if ($token == '') {
+            \Redirect::route('login')->withErrors('Invalid data received');
+        }
         $response = $this->getHttpClient()->get('https://graph.qq.com/oauth2.0/me?' . $token);
-        \Log::info($response);
+        \Log::info($response->getBody()->getContents());
 
         $this->customOpenId = json_decode($this->removeCallback($response->getBody()->getContents()), true)['openid'];
 
@@ -31,6 +33,7 @@ class QqProvider extends Provider
     protected function mapUserToObject(array $user)
     {
         \Log::info($user);
+
         return (new User())->setRaw($user)->map([
             'id'   => $this->customOpenId, 'nickname' => $user['nickname'],
             'name' => null, 'email' => null, 'avatar' => $user['figureurl_qq_2'],
