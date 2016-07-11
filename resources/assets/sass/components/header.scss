@@ -62,10 +62,17 @@ header, .header {
 
   @include option(small) {
     margin: 1em 0;
+    p {
+      padding: 0;
+    }
   }
 
   @include option(light) {
     font-weight: normal;
+  }
+
+  @include option(with-divider) {
+    border-bottom: 1px solid color(gray, light);
   }
 
 }

@@ -1,9 +1,39 @@
 @include component(ul) {
 
+  margin: 0;
+  padding: 0;
+
   @include option(inline) {
     li {
       display: inline-block;
     }
+  }
+
+  @include option(divided) {
+
+    li {
+
+      float: left;
+
+      &:after {
+        margin: 0;
+        padding: 0;
+        content: '|';
+        padding: 0 .8em;
+      }
+
+      @include last-child() {
+        &:after {
+          content: '';
+          padding: 0;
+        }
+      }
+
+    }
+  }
+
+  @include option(right) {
+    float: right;
   }
 
 }

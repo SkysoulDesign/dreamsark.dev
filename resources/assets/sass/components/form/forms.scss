@@ -59,6 +59,7 @@ form {
     text-align: center;
     color: color(white);
     font-weight: bold;
+    text-transform: uppercase;
 
     @include option(rounded) {
       border-radius: .5em .5em 0 0;

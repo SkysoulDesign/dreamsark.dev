@@ -12167,6 +12167,10 @@ var Modal = function () {
                 trigger: {
                     type: String,
                     required: true
+                },
+                header: {
+                    type: String,
+                    required: true
                 }
             },
             methods: {
@@ -12823,7 +12827,7 @@ module.exports = '<form :id="id" :action="action" :method="method">\n   <input v
 },{}],31:[function(require,module,exports){
 module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>';
 },{}],32:[function(require,module,exports){
-module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    This is a very nice form header\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
+module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],33:[function(require,module,exports){
 module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
 },{}],34:[function(require,module,exports){

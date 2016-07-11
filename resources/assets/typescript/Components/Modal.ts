@@ -13,6 +13,10 @@ export class Modal implements ComponentInterface {
                 trigger: {
                     type: String,
                     required: true,
+                },
+                header: {
+                    type: String,
+                    required: true,
                 }
             },
             methods: {
