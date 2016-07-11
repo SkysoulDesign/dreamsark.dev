@@ -16,7 +16,7 @@ class QqProvider extends Provider
     protected function getUserByToken($token)
     {
         if (is_null($token)) {
-            return \Redirect::route('login')->withErrors('Invalid data received');
+            die(redirect()->route('login', ['error' => 'Invalid token received']));
         }
         $response = $this->getHttpClient()->get('https://graph.qq.com/oauth2.0/me?' . $token);
         \Log::info($response->getBody()->getContents());
@@ -24,7 +24,7 @@ class QqProvider extends Provider
         $this->customOpenId = json_decode($this->removeCallback($response->getBody()->getContents()), true)['openid']??'';
 
         if ($this->customOpenId == '') {
-            return \Redirect::to('login')->withErrors('QQ OpenId not received');
+            die(redirect()->route('login', ['error' => 'QQ OpenId not received']));
         }
 
         $response = $this->getHttpClient()->get(
