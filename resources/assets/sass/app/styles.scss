@@ -1,3 +1,20 @@
-//@mixin sexy-shadow($alpha: 20) {
-//
-//}
+@mixin a-meta() {
+
+  a {
+
+    color: color(gray);
+    padding-bottom: 2px;
+    border-bottom: 1px dotted transparent;
+
+    &:hover {
+      color: color(gray, x-dark);
+      border-bottom: 1px dotted color(gray);
+    }
+
+    i {
+      margin-right: .3em;
+    }
+
+  }
+
+}

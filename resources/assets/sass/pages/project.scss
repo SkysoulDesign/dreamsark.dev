@@ -1,5 +1,7 @@
 @include page(project) {
 
+  padding-bottom: 5em;
+
   @include option(margin-top) {
 
     @include breakpoint(medium up) {
@@ -101,6 +103,8 @@
     padding: 0;
     background-size: cover;
     background: get-url('temp/2.jpg') center center;
+
+    height: 100%;
 
     @include breakpoint(small down) {
       margin-bottom: 2em;

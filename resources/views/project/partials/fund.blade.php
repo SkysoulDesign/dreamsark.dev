@@ -9,11 +9,11 @@
             <div class="small-12 align-center columns">
 
                 <ark-steps>
-                    <ark-step description="Some text">1</ark-step>
-                    <ark-step description="Some text">2</ark-step>
-                    <ark-step active description="Some text">3</ark-step>
-                    <ark-step description="Some text">4</ark-step>
-                    <ark-step description="Some text">4</ark-step>
+                    <ark-step description="Idea">1</ark-step>
+                    <ark-step description="Script">2</ark-step>
+                    <ark-step active description="Synapse">3</ark-step>
+                    <ark-step description="Funding">4</ark-step>
+                    <ark-step description="Distribution">5</ark-step>
                 </ark-steps>
 
             </div>
@@ -21,16 +21,95 @@
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
 
                 <section>
+                    <header class="header --with-divider --full --small +no-margin-top">Description</header>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, ad, architecto, ex fuga id
                     inventore natus officia quae quibusdam reiciendis reprehenderit sit vel voluptas. Accusantium est
                     porro quos veritatis voluptatem.
 
-                    <div class="quote">
+                    <h4>IDEA</h4>
+                    <ark-quote expand-text="@lang('forms.expand')">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
                         facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
                         repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
                         cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
                         quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                    </ark-quote>
+
+                    <h4>Synapse</h4>
+                    <ark-quote expand-text="@lang('forms.expand')">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                    </ark-quote>
+
+                    <h4>SCRIPT</h4>
+
+                    <ark-quote expand-text="@lang('forms.expand')">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam. Lorem ipsum dolor sit
+                        amet, consectetur adipisicing elit. Alias aliquam at beatae dolorem enim excepturi
+                        exercitationem fugiat ipsam minima neque, non odio pariatur perferendis quidem, repellendus,
+                        similique ullam velit! Cum! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
+                        architecto blanditiis consectetur corporis, delectus dolores exercitationem fugiat, id incidunt
+                        nemo nesciunt officiis pariatur quaerat quasi, sequi similique voluptatum. Facere, harum! Lorem
+                        ipsum dolor sit amet, consectetur adipisicing elit. Aut blanditiis commodi labore, quas qui sit
+                        tempore ullam. Beatae commodi est id modi nostrum, quae quas quis, tempora ut voluptate
+                        voluptatum. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aut neque, qui
+                        quibusdam reprehenderit sed unde velit voluptates? Distinctio dolor ducimus labore maiores
+                        nostrum perferendis possimus quidem repellat vel veniam. Lorem ipsum dolor sit amet, consectetur
+                        adipisicing elit. Ad aliquid consectetur eveniet harum impedit incidunt iusto laboriosam nisi,
+                        pariatur perspiciatis placeat recusandae reiciendis rerum saepe sunt temporibus vitae voluptas
+                        voluptates! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aspernatur corporis
+                        deleniti eligendi et expedita fuga impedit iste minima molestiae mollitia officia perspiciatis,
+                        quaerat quidem quis ratione reiciendis sint, totam! Lorem ipsum dolor sit amet, consectetur
+                        adipisicing elit. Aliquid consequuntur eos eveniet excepturi, expedita fugiat fugit, impedit in
+                        maiores maxime nostrum perspiciatis quaerat quam repellendus similique veritatis vitae voluptate
+                        voluptatem.
+                    </ark-quote>
+
+                    <div class="small-12 columns">
+
+                        <ul class="ul --inline --meta --right">
+                            <li>
+                                @lang('project.script')
+                            </li>
+                            <li>
+                                <a href="#read-mode">
+                                    <i class="fa fa-book fa-fw" aria-hidden="true"></i>@lang('forms.read-mode')
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#download" title="@lang('forms.download-as-pdf')">
+                                    <i class="fa fa-file fa-fw" aria-hidden="true"></i>@lang('forms.download')
+                                </a>
+                            </li>
+                        </ul>
+
                     </div>
 
                 </section>

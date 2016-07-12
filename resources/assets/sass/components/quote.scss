@@ -2,9 +2,51 @@
 
   padding: 2em;
   margin: 1em 0;
-  background: color($color: gray, $alpha: 20);
+  background: color($color: gray, $tone: light);
 
   border-left: 3px solid color($color: gray, $alpha: 20);
-  color:color($color: black);
+  color: color($color: black);
+  position: relative;
+
+  @include option(collapsed) {
+
+    max-height: 300px;
+    overflow: hidden;
+
+    &:before {
+      transition: all .3s;
+      will-change: padding, height, padding, color;
+      transition-property: height, padding, color;
+      content: attr(data-expend-text);
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30%;
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: .9em;
+      font-weight: bolder;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1em;
+      color: transparent;
+      cursor: pointer;
+
+      background: linear-gradient(to bottom, transparent 0%, color($color: gray, $tone: light) 80%);
+    }
+
+    &:hover {
+      &:before {
+        color: #000;
+        height: 100%;
+        padding: 2em;
+      }
+    }
+
+  }
 
 }

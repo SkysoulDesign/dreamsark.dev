@@ -29,6 +29,7 @@ var Component = (function (_super) {
             require('../Components/Social'),
             require('../Components/Flipper'),
             require('../Components/Steps'),
+            require('../Components/Quote'),
         ];
         this.components.forEach(function (component) {
             for (var name_1 in component) {

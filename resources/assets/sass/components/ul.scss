@@ -1,19 +1,37 @@
 @include component(ul) {
 
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
+  align-items: flex-start;
+  list-style: none;
+
+  li {
+    padding: .2em 0;
+
+    @include option(active) {
+      color: color(primary);
+      a {
+        color: color(primary);
+      }
+    }
+
+  }
 
   @include option(inline) {
+    flex-direction: row;
+
     li {
-      display: inline-block;
+      @include all-but(1) {
+        padding-left: 1em;
+      }
     }
   }
 
   @include option(divided) {
 
     li {
-
-      float: left;
 
       &:after {
         margin: 0;
@@ -33,7 +51,20 @@
   }
 
   @include option(right) {
-    float: right;
+    justify-content: flex-end;
   }
 
+  @include option(meta) {
+
+    font-size: .8em;
+    color: color(gray);
+
+    @include a-meta();
+
+  }
+
+}
+
+ul {
+  @extend .ul;
 }

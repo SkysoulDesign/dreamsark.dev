@@ -6,8 +6,8 @@
           mid-dark : darken($color, 5%),
           base : $color,
           mid-light : lighten($color, 5%),
-          light : lighten($color, 15%),
-          x-light : lighten($color, 50%),
+          light : lighten($color, 25%),
+          x-light : lighten($color, 30%),
   );
 
 }
