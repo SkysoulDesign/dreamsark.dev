@@ -84,7 +84,8 @@ class SessionController extends Controller
             $response = ['result' => '2', 'message' => trans('auth.mobile-number-exists')];
 
         else {
-            $message = 'DreamsArk: ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4) . '';
+            $message = trans('auth.sms-verify-code-template', ['verifyCode' => $verifyCode, 'mobile' => substr($mobile, strlen($mobile) - 4, 4)]);
+//            $message = 'DreamsArk: ' . $verifyCode . ' is your verification code for mobile number ending with ' . substr($mobile, strlen($mobile) - 4, 4) . '';
 
             $request->session()->put('mobile-' . $mobile, $verifyCode);
             $response = $sms->send($mobile, $message);
