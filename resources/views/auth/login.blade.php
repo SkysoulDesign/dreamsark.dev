@@ -119,9 +119,9 @@
                 </div>
 
                 <div class="card__caption --white">
-                    @lang('auth.no-member')
+                    @lang('auth.already-member')
                     <div>
-                        <a data-flipper-trigger href="{{ route('register') }}">@lang('auth.click-to-register')</a>
+                        <a data-flipper-trigger href="{{ route('login') }}">@lang('auth.go-to-login')</a>
                     </div>
                 </div>
 
