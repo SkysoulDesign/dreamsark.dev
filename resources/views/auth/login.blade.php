@@ -90,7 +90,7 @@
 
                                     <ark-fields>
                                         <ark-input name="code" placeholder="{{ trans('auth.sms-code') }}"></ark-input>
-                                        <ark-ajax-button method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
+                                        <ark-ajax-button set-disabled="yes" :set-timer="90" timer-text="{{ trans('general.seconds') }}" method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
                                             @lang('auth.send-code')
                                         </ark-ajax-button>
                                     </ark-fields>

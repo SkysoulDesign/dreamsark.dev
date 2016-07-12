@@ -44,6 +44,7 @@ export class Form implements ComponentInterface {
                 template: require('../templates/form/ajax-button.html'),
                 data: function () {
                     return {
+                        disabled: false,
                         formData: new FormData()
                     }
                 },
@@ -58,7 +59,7 @@ export class Form implements ComponentInterface {
                     },
                     method: {
                         type: String,
-                        default: 'post'
+                        default: 'post',
                     },
                     class: {
                         type: String,
@@ -71,21 +72,58 @@ export class Form implements ComponentInterface {
                     },
                     dataFrom: {
                         type: String
+                    },
+                    setTimer: {
+                        type: Number,
+                        default: 0
+                    },
+                    setDisabled: {
+                        type: String,
+                        default: 'no'
+                    },
+                    timerText: {
+                        type: String,
+                        default: ''
                     }
                 },
                 methods: {
                     send(e:MouseEvent){
                         e.preventDefault();
+                        if (this.setDisabled == 'yes')
+                            this.disabled = true;
+                        let button = this;
 
-                        let response = this.$http[this.method](this.action,
+                        let response = button.$http[button.method](button.action,
                             new FormData(
-                                <HTMLFormElement>document.querySelector(`#${this.dataFrom}`)
+                                <HTMLFormElement>document.querySelector(`#${button.dataFrom}`)
                             )
                         );
 
-                        response.then(function (e) {
-                            console.log(e)
-                        }, function (e) {
+                        response.then(e => {
+                            var responseData = e.json();
+                            if (responseData.result == undefined || responseData.result != 0) {
+                                if (responseData.message != undefined && responseData.message != '')
+                                    alert(responseData.message)
+                                button.disabled = false;
+                            } else {
+                                if (button.setTimer > 0) {
+                                    let countDown = button.setTimer;
+                                    let buttonElement = button.$el.firstElementChild,
+                                        buttonText = buttonElement.innerText;
+                                    let doTimer = setInterval(function () {
+                                        if (countDown == -1) {
+                                            buttonElement.innerText = buttonText;
+                                            button.disabled = false;
+                                            clearInterval(doTimer);
+                                        } else {
+                                            buttonElement.innerText = countDown + ' ' + button.timerText;
+                                        }
+                                        countDown--;
+                                    }, 1000);
+                                }
+                            }
+                        }, e => {
+                            button.disabled = false;
                             console.log(e)
                         })
 

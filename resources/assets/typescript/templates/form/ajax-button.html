@@ -1,5 +1,5 @@
 <div class="form__field">
-    <button @click="send" :type="type" class="button" :class="class">
+    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">
         <slot></slot>
     </button>
 </div>
