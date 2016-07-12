@@ -72,7 +72,7 @@ class TranslationServiceProvider extends ServiceProvider
     private function registerRoutes(Router $router)
     {
 
-        $router->group(['prefix' => 'translation', 'as' => 'translation.'], function () use ($router) {
+        $router->group(['prefix' => 'translation', 'as' => 'translation.', 'middleware' => 'web'], function () use ($router) {
             $router->get('import', TranslationController::class . '@import')->name('import');
             $router->get('export', TranslationController::class . '@export')->name('export');
             $router->get('sync', TranslationController::class . '@sync')->name('sync');
@@ -83,7 +83,9 @@ class TranslationServiceProvider extends ServiceProvider
             $router->get('scanForKeys', TranslationController::class . '@scanKeysAndImport')->name('scan-keys');
         });
 
-        $router->get('translation/{language?}/{group?}', TranslationController::class . '@index')->name('translation');
+        $router->get('translation/{language?}/{group?}', TranslationController::class . '@index')
+            ->middleware('web')
+            ->name('translation');
     }
 
 }

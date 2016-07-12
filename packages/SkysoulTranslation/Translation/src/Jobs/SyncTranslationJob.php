@@ -63,7 +63,7 @@ class SyncTranslationJob extends Job
              * Merge All Values in order to get uniques
              */
             $merged = $languages->map(function ($translations) {
-                return $translations->pluck('key');
+                return $translations->pluck('value', 'key');
             })->collapse();
 
             /**
@@ -71,14 +71,15 @@ class SyncTranslationJob extends Job
              */
             $languages->each(function ($translations, $language) use ($merged, $group) {
 
-                $newValues = collect($merged)->diff($translations->pluck('key'));
+                $newValues = collect($merged)->diffKeys($translations->pluck('value', 'key'));
 
                 /**
                  * For each new Value, Create a new Translation
                  */
-                $newValues->each(function ($key) use ($language, $group) {
+                $newValues->each(function ($value, $key) use ($language, $group) {
+
                     $this->dispatch(
-                        new CreateTranslationJob($language, $group->id, compact('key'))
+                        new CreateTranslationJob($language, $group->id, compact('key', 'value'))
                     );
                 });
 

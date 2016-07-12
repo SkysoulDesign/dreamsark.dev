@@ -42,6 +42,9 @@ export class Nav implements ComponentInterface {
                     type: Boolean,
                     default: false
                 },
+                icon: {
+                    type: String
+                },
             },
             methods: {
                 selectTab(e:MouseEvent){

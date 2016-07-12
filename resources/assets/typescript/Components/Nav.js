@@ -40,6 +40,9 @@ var Nav = (function () {
                     type: Boolean,
                     default: false
                 },
+                icon: {
+                    type: String
+                },
             },
             methods: {
                 selectTab: function (e) {

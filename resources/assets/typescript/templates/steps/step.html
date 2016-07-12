@@ -1,0 +1,4 @@
+<div class="steps__step" :class="{ '--active' : active }" data-desc="{{ description }}">
+    <i v-if="done" class="fa fa-check" aria-hidden="true"></i>
+    <slot v-if="!done"></slot>
+</div>

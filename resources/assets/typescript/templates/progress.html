@@ -1,3 +1,9 @@
-<div class="progress" :class="style">
-    <div class="progress__completion" :style="{ width: value + '%' }"></div>
+<div class="progress">
+    <div v-if="label" class="progress__label">
+        {{ label }}
+        <span>{{ data }} {{ symbol }}</span>
+    </div>
+    <div class="progress__bar" :class="style">
+        <div class="progress__bar__completion" :style="{ width: percentage + '%' }"></div>
+    </div>
 </div>

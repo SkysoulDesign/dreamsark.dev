@@ -1,0 +1,90 @@
+$blue: hsl(206, 72%, 68%);
+$green: hsl(120, 42%, 54%);
+$white: hsl(0, 0%, 100%);
+$grey: hsl(226, 10%, 55%);
+$disa: hsl(226, 15%, 83%);
+
+@include component(steps) {
+
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 4em;
+
+  @include part(step) {
+
+    width: 40px;
+    height: 40px;
+
+    background-color: color(white);
+    border: 4px transparent;
+    border-radius: 50%;
+
+    color: color(primary);
+    font-weight: bold;
+    text-align: center;
+
+    &:after {
+
+      width: 150px;
+      display: block;
+      transform: translate(-55px, 3px);
+
+      color: $grey;
+      content: attr(data-desc);
+      font-weight: 400;
+      font-size: 13px;
+
+    }
+
+    &:first-child {
+      //line-height: 40px;
+    }
+
+    &:nth-child(n+2) {
+      margin: 0 0 0 100px;
+      transform: translate(0, -4px);
+    }
+
+    &:nth-child(n+2):before {
+      width: 75px;
+      height: 3px;
+      display: block;
+      background-color: $white;
+      transform: translate(-95px, 21px);
+      content: '';
+    }
+
+    &:first-child:after {
+      transform: translate(-55px, -1px);
+    }
+
+    @include option(active) {
+
+      border-color: color(primary, dark);
+      color: color(primary);
+
+      &:before {
+        background: linear-gradient(to right, $green 0%, $blue 100%);
+      }
+
+      &:after {
+        color: $blue;
+      }
+
+    }
+
+    @include option(done) {
+
+      background-color: $green;
+      border-color: $green;
+      color: $white;
+
+      &:before {
+        background-color: $green;
+      }
+
+    }
+
+  }
+
+}

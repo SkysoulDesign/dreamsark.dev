@@ -12,7 +12,6 @@ var Chart = (function (_super) {
     __extends(Chart, _super);
     function Chart() {
         _super.call(this);
-        console.log('Hello world');
     }
     return Chart;
 }(Plugins_1.Plugins));

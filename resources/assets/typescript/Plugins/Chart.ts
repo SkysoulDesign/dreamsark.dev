@@ -6,13 +6,8 @@ window['dreamsark'].exposes({
 
 export class Chart extends Plugins {
 
-
     constructor() {
-
         super();
-
-        console.log('Hello world')
-
     }
 
 }

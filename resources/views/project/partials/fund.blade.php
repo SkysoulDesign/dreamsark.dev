@@ -1,30 +1,57 @@
 @push('tabs')
 <ark-nav>
-    <ark-tab content="tab-project" active>
+    <ark-tab content="tab-project" active icon="star">
         Project
         @push('tab-item')
 
         <div id="tab-project" class="row project-page --margin-top">
+
+            <div class="small-12 align-center columns">
+                <ark-steps>
+                    <ark-step description="Listing information">1</ark-step>
+                    <ark-step description="Photos & Details">2</ark-step>
+                    <ark-step active description="Review & Post">3</ark-step>
+                    <ark-step description="Your order">4</ark-step>
+                </ark-steps>
+            </div>
+
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
+
                 <section>
-                    {{--                    <img src="{{ asset('img/temp/cover.jpeg') }}" width="100%" alt="">--}}
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, ad, architecto, ex fuga id
+                    inventore natus officia quae quibusdam reiciendis reprehenderit sit vel voluptas. Accusantium est
+                    porro quos veritatis voluptatem.
+
+                    <div class="quote">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci at, culpa dolorem enim error
+                        facilis illum inventore ipsa ipsam, iste labore laboriosam minima nemo possimus repellendus
+                        repudiandae sit ullam vero. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet
+                        cum deserunt eos excepturi exercitationem fuga illo impedit numquam, perferendis, possimus
+                        quibusdam soluta voluptatem! Deserunt et exercitationem in ipsa quam.
+                    </div>
+
                 </section>
             </div>
+
             <div class="small-12 medium-4 small-order-1 medium-order-2 columns project-page__info">
-                <img src="{{ asset('img/temp/2.jpg') }}" alt="">
+
                 <div class="project-page__info__overlay">
 
-                    <span class="chart" data-percent="86">
-                        <span class="chart__percent">50</span>
+                    <h2>{{ $project->name }}</h2>
+
+                    <span class="chart --centered" data-percent="100">
+                        <span class="chart__content --reward">5000</span>
                     </span>
 
-                    <div>
-                        DIRECTOR:
-                        <span>Rafael Milewski</span>
+                    <div class="project-page__info__overlay__spacer">
+                        <ark-progress :data="3000" :max="5000" symbol="¥" label="Budget" color="success"></ark-progress>
+                        <ark-progress :data="10" label="Goal" color="secondary"></ark-progress>
+                        <ark-progress :data="5" :max="30" symbol="days" label="Time Left"
+                                      color="ternary"></ark-progress>
                     </div>
 
                     <div>
-                        DIRECTOR:
+                        @lang('project.director')
                         <span>Rafael Milewski</span>
                     </div>
 
@@ -80,6 +107,14 @@
         @push('tab-item')
         <div id="tab-script" class="row project-page --margin-top">
             Script Tab
+        </div>
+        @endpush
+    </ark-tab>
+    <ark-tab content="tab-crew">
+        Crew
+        @push('tab-item')
+        <div id="tab-crew" class="row project-page --margin-top">
+            Crew Tab
         </div>
         @endpush
     </ark-tab>

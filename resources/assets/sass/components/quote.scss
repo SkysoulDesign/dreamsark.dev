@@ -1,0 +1,10 @@
+@include component(quote) {
+
+  padding: 2em;
+  margin: 1em 0;
+  background: color($color: gray, $alpha: 20);
+
+  border-left: 3px solid color($color: gray, $alpha: 20);
+  color:color($color: black);
+
+}

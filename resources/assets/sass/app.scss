@@ -8,6 +8,7 @@
 @import '../../../node_modules/csstyle/csstyle';
 @import '../../../node_modules/foundation-sites/scss/foundation';
 @import '../../../node_modules/family.scss/source/src/family';
+@import '../../../node_modules/font-awesome/scss/font-awesome';
 
 /**
 * Init Third Party Frameworks
@@ -48,6 +49,8 @@ $csstyle-root-id: 'app-root';
 @import 'components/ul';
 @import 'components/comments';
 @import 'components/chart';
+@import 'components/quote';
+@import 'components/steps';
 
 /**
 * Layout

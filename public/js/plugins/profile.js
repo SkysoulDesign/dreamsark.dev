@@ -46368,7 +46368,9 @@ exports.countKeys = function (object) {
 "use strict";
 
 var Plugins = function () {
-    function Plugins() {}
+    function Plugins() {
+        this.exposes = {};
+    }
     Plugins.prototype.install = function () {};
     return Plugins;
 }();
@@ -47035,7 +47037,6 @@ exports.Scene = Scene;
 
 
 },{}],26:[function(require,module,exports){
-(function (global){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -47046,9 +47047,10 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var THREE = require('three');
-global.THREE = THREE;
 var Plugins_1 = require("../Plugins");
+window['dreamsark'].exposes({
+    THREE: require('three')
+});
 var Profile = function (_super) {
     __extends(Profile, _super);
     function Profile(app) {
@@ -47110,10 +47112,9 @@ exports.Profile = Profile;
 /**
  * Auto install itself
  */
-global.app.install(Profile);
+window['dreamsark'].install(Profile);
 
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"../Plugins":11,"./Classes/Browser":16,"./Classes/Camera":17,"./Classes/Characters":18,"./Classes/Controls":19,"./Classes/EffectComposer":20,"./Classes/Light":21,"./Classes/Loader":22,"./Classes/Manager":23,"./Classes/Renderer":24,"./Classes/Scene":25,"./Classes/animator":15,"three":1}]},{},[26]);
 
-//# sourceMappingURL=profile.js.map
+//# sourceMappingURL=Profile.js.map

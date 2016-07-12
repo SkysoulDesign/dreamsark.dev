@@ -25,6 +25,12 @@ elixir(function (mix) {
      */
     mix.browserify("./resources/assets/typescript/Plugins/Profile/Profile.js", pluginsPath)
         .browserify("./resources/assets/typescript/Plugins/Chart.js", pluginsPath)
+        .browserify("./resources/assets/typescript/Plugins/ProgressBar.js", pluginsPath)
+
+    /**
+     * Copy FontAwesome Font
+     */
+    mix.copy('node_modules/font-awesome/fonts', 'public/fonts')
 
     mix.browserSync({
         open: "ui",

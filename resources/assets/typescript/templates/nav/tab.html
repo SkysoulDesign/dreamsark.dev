@@ -1,3 +1,4 @@
 <a href="#{{ content }}" @click="selectTab" class="shrink columns nav__content__item" :class="style">
+    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>
     <slot></slot>
 </a>

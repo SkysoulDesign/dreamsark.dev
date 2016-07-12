@@ -1,30 +1,56 @@
 @include component(progress) {
 
-  //height: .5em;
-  font-size: smaller;
-  //padding: 0;
-  //margin: 0;
-  //line-height: 1.2em;
-  font-weight: bold;
-  //position: relative;
-  border-radius: 1em;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-  background: color(gray);
+  margin: .8em 0;
 
-  @include part(completion) {
-    border-radius: 1em;
-    position: relative;
-    height: .5em;
-    width: 100%;
-    background: color(success);
+  &:hover {
+    transform: scale(1.05);
   }
 
-  @include option(flat) {
+  @include part(label) {
 
-    border-radius: 0;
+    padding: .3em 0;
+    font-weight: normal;
 
-    & > div {
+    span {
+      float: right;
+    }
+
+  }
+
+  @include part(bar) {
+
+    font-size: smaller;
+    font-weight: bold;
+    border-radius: 1em;
+
+    background: color(gray);
+
+    @include part(completion) {
+      border-radius: 1em;
+      position: relative;
+      height: 1.2em;
+      width: 100%;
+      background: color(success);
+    }
+
+    @include option(flat) {
+
       border-radius: 0;
+
+      & > div {
+        border-radius: 0;
+      }
+
+    }
+
+    @each $color in $colors {
+      @include option(color-#{nth($color, 1)}) {
+        & .progress__bar__completion {
+          background: color(nth($color, 1));
+        }
+      }
     }
 
   }

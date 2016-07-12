@@ -18,7 +18,11 @@ var Project = (function (_super) {
     }
     Project.prototype.boot = function () {
         var element = document.querySelector('.chart');
-        new Chart(element, {});
+        new Chart(element, {
+            easing: 'easeOutBounce',
+            barColor: '#5eb404',
+            trackColor: '#e3e3e3',
+        });
     };
     return Project;
 }(AbstractPage_1.AbstractPage));

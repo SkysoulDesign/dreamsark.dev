@@ -18,6 +18,7 @@ export class Component extends Application {
         require('../Components/Modal'),
         require('../Components/Social'),
         require('../Components/Flipper'),
+        require('../Components/Steps'),
     ];
 
     /**

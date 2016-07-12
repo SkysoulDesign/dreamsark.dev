@@ -28,6 +28,7 @@ var Component = (function (_super) {
             require('../Components/Modal'),
             require('../Components/Social'),
             require('../Components/Flipper'),
+            require('../Components/Steps'),
         ];
         this.components.forEach(function (component) {
             for (var name_1 in component) {

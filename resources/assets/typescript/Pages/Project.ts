@@ -14,6 +14,9 @@ export class Project extends AbstractPage {
         var element = document.querySelector('.chart');
 
         new Chart(element, {
+            easing: 'easeOutBounce',
+            barColor: '#5eb404',
+            trackColor: '#e3e3e3',
             // your options goes here
         });
 
