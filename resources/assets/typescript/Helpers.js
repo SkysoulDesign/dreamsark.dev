@@ -50,4 +50,7 @@ exports.toCamelCase = function (str) {
     })
         .replace(/ /g, '');
 };
+exports.captalize = function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
 //# sourceMappingURL=Helpers.js.map

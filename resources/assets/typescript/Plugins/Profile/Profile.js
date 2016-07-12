@@ -4,9 +4,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var THREE = require('three');
-global.THREE = THREE;
 var Plugins_1 = require("../Plugins");
+window['dreamsark'].exposes({
+    THREE: require('three')
+});
 var Profile = (function (_super) {
     __extends(Profile, _super);
     function Profile(app) {
@@ -68,5 +69,5 @@ exports.Profile = Profile;
 /**
  * Auto install itself
  */
-global.app.install(Profile);
+window['dreamsark'].install(Profile);
 //# sourceMappingURL=Profile.js.map

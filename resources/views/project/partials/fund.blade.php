@@ -3,15 +3,20 @@
     <ark-tab content="tab-project" active>
         Project
         @push('tab-item')
+
         <div id="tab-project" class="row project-page --margin-top">
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
                 <section>
-{{--                    <img src="{{ asset('img/temp/cover.jpeg') }}" width="100%" alt="">--}}
+                    {{--                    <img src="{{ asset('img/temp/cover.jpeg') }}" width="100%" alt="">--}}
                 </section>
             </div>
             <div class="small-12 medium-4 small-order-1 medium-order-2 columns project-page__info">
                 <img src="{{ asset('img/temp/2.jpg') }}" alt="">
                 <div class="project-page__info__overlay">
+
+                    <span class="chart" data-percent="86">
+                        <span class="chart__percent">50</span>
+                    </span>
 
                     <div>
                         DIRECTOR:

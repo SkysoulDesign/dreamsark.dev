@@ -70,7 +70,9 @@ class App {
      */
     public install(plugin) {
         this.logger.group(`Plugin: ${plugin.name}`, logger => {
+
             this.plugins[plugin.name.toLowerCase()] = new plugin(this);
+
         }, false)
     }
 
@@ -110,7 +112,7 @@ class App {
      */
     public vue(obj:{} = {}) {
 
-        if(obj.hasOwnProperty('ready')){
+        if (obj.hasOwnProperty('ready')) {
             console.log('todo: better merge the ready property on vue-js');
         }
 
@@ -133,13 +135,33 @@ class App {
 
     }
 
+    /**
+     * Exposes Plugin globally
+     * @param instance
+     */
+    exposes(instance:any) {
+
+        /**
+         * Register Globally Globaly
+         */
+        for (let name in instance) {
+
+            if (window.hasOwnProperty(name)) {
+                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name)
+            }
+
+            window[name] = instance[name];
+
+        }
+
+    }
+
 }
 
 /**
  * Register to the window object
  * @type {App}
  */
-export let app = new App();
-global.app = app;
+window['dreamsark'] = new App();
 
 

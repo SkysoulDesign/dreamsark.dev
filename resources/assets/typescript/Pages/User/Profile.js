@@ -16,9 +16,9 @@ var Profile = (function (_super) {
             'user.profile.create'
         ];
     }
-    Profile.prototype.boot = function (app) {
+    Profile.prototype.boot = function () {
         this.noIdeaWhatsIsIt();
-        this.initThreeJs(app);
+        this.initThreeJs();
     };
     Profile.prototype.noIdeaWhatsIsIt = function () {
         /**
@@ -37,12 +37,12 @@ var Profile = (function (_super) {
             form.classList.remove('+hidden');
         });
     };
-    Profile.prototype.initThreeJs = function (app) {
-        var animation = app.plugin('profile');
+    Profile.prototype.initThreeJs = function () {
+        var animation = this.app.plugin('profile');
         /**
          * Binding Vue
          */
-        app.ready().then(function () {
+        this.app.ready().then(function (app) {
             animation.start();
             app.vue({
                 el: '.--profile-pick',
@@ -57,7 +57,6 @@ var Profile = (function (_super) {
                         if (element.className === 'project-page__palette__item') {
                             console.log("Selected Character: " + element.dataset['position']);
                             this.position = element.dataset['position'];
-                            profileAnimation.switch(this.position);
                         }
                     }
                 }

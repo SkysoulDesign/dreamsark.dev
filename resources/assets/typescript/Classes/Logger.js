@@ -84,7 +84,7 @@ var Logger = (function () {
         for (var _i = 1; _i < arguments.length; _i++) {
             bindings[_i - 1] = arguments[_i];
         }
-        this.log.apply(this, ['warm', message].concat(bindings));
+        this.log.apply(this, ['warn', message].concat(bindings));
     };
     Logger.prototype.dir = function () {
         var bindings = [];

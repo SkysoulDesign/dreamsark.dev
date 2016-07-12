@@ -1,6 +1,3 @@
-import THREE = require('three');
-global.THREE = THREE;
-
 import {Plugins} from "../Plugins";
 import {Characters} from "./Classes/Characters";
 import {Camera} from "./Classes/Camera";
@@ -11,6 +8,10 @@ import {Animator} from "./Classes/Animator";
 import {Light} from "./Classes/Light";
 import {Scene} from "./Classes/Scene";
 import {EffectComposer} from "./Classes/EffectComposer";
+
+window['dreamsark'].exposes({
+    THREE: require('three')
+});
 
 export class Profile extends Plugins {
 
@@ -103,4 +104,4 @@ export class Profile extends Plugins {
 /**
  * Auto install itself
  */
-global.app.install(Profile);
+window['dreamsark'].install(Profile);

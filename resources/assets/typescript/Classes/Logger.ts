@@ -85,7 +85,7 @@ export class Logger {
     }
 
     warn(message, ...bindings) {
-        this.log('warm', message, ...bindings);
+        this.log('warn', message, ...bindings);
     }
 
     dir(...bindings) {

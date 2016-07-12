@@ -89,5 +89,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/plugins/profile.js') }}"></script>
+<script src="{{ asset('js/plugins/Profile.js') }}"></script>
 @endpush

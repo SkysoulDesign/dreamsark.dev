@@ -14,12 +14,14 @@ var Common = (function (_super) {
         _super.apply(this, arguments);
         this.routes = ['*'];
     }
-    Common.prototype.boot = function (app) {
-        app.logger.info('This class {Common} will run on every request');
+    Common.prototype.boot = function () {
+        this.app.logger.info('This class {Common} will run on every request');
         this.dropdown();
         this.languageSwitcher();
     };
     Common.prototype.languageSwitcher = function () {
+        if (this.is('login'))
+            return;
         document.querySelector('#language-switcher')
             .addEventListener('change', function (e) {
             var form = document.createElement('form'), element = e.target;

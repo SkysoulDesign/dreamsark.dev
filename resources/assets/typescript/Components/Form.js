@@ -15,9 +15,9 @@ var Form = (function () {
         vue.component('ark-fields', {
             template: require('../templates/form/fields.html'),
             props: {
-                columns: {
-                    type: Number,
-                    default: 2
+                gap: {
+                    type: String,
+                    default: 'normal' // normal, small, medium, large, huge
                 }
             }
         });
@@ -88,8 +88,7 @@ var Form = (function () {
             template: require('../templates/form/input.html'),
             props: {
                 name: {
-                    type: String,
-                    required: true
+                    type: String
                 },
                 placeholder: {
                     type: String,
@@ -106,6 +105,16 @@ var Form = (function () {
                     default: function () {
                         return this.name;
                     }
+                },
+                readOnly: {
+                    type: Boolean,
+                    default: false
+                },
+                value: {
+                    type: String,
+                },
+                label: {
+                    type: String
                 }
             },
             computed: {
