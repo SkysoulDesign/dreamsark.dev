@@ -12,10 +12,12 @@ export class Steps implements ComponentInterface {
                 props: {},
                 ready(){
 
-                    this.$children.forEach(function (child) {
+                    this.$children.every(function (child) {
 
                         if (!child.active)
                             child.setDone()
+
+                        return !child.active;
 
                     })
 

@@ -7,12 +7,15 @@
         <div id="tab-project" class="row project-page --margin-top">
 
             <div class="small-12 align-center columns">
+
                 <ark-steps>
-                    <ark-step description="Listing information">1</ark-step>
-                    <ark-step description="Photos & Details">2</ark-step>
-                    <ark-step active description="Review & Post">3</ark-step>
-                    <ark-step description="Your order">4</ark-step>
+                    <ark-step description="Some text">1</ark-step>
+                    <ark-step description="Some text">2</ark-step>
+                    <ark-step active description="Some text">3</ark-step>
+                    <ark-step description="Some text">4</ark-step>
+                    <ark-step description="Some text">4</ark-step>
                 </ark-steps>
+
             </div>
 
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">

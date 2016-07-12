@@ -1,88 +1,104 @@
-$blue: hsl(206, 72%, 68%);
-$green: hsl(120, 42%, 54%);
-$white: hsl(0, 0%, 100%);
-$grey: hsl(226, 10%, 55%);
-$disa: hsl(226, 15%, 83%);
-
 @include component(steps) {
 
   display: flex;
   justify-content: space-around;
-  padding-bottom: 4em;
+  padding: 0 5em 5em 5em;
+  position: relative;
+  z-index: 1;
 
   @include part(step) {
 
-    width: 40px;
-    height: 40px;
+    position: relative;
 
-    background-color: color(white);
-    border: 4px transparent;
-    border-radius: 50%;
+    @include part(container) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      margin: .8em 2em;
 
-    color: color(primary);
-    font-weight: bold;
-    text-align: center;
+      background-color: color(white);
+      border: 1px dashed color(gray);
+      border-radius: 50%;
 
-    &:after {
+      color: color(gray);
+      font-weight: 600;
+      text-align: center;
 
-      width: 150px;
+      &:before, &:after {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        content: '';
+        height: 3px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        right: 0;
+        z-index: -1;
+      }
+
+      &:before {
+        left: -140%;
+        background: color(gray, light);
+      }
+
+      &:after {
+        left: 70%;
+        background: color(gray, light);
+      }
+
+    }
+
+    @include part(description) {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
       display: block;
-      transform: translate(-55px, 3px);
-
-      color: $grey;
-      content: attr(data-desc);
-      font-weight: 400;
+      color: color(gray, dark);
+      font-weight: normal;
       font-size: 13px;
-
-    }
-
-    &:first-child {
-      //line-height: 40px;
-    }
-
-    &:nth-child(n+2) {
-      margin: 0 0 0 100px;
-      transform: translate(0, -4px);
-    }
-
-    &:nth-child(n+2):before {
-      width: 75px;
-      height: 3px;
-      display: block;
-      background-color: $white;
-      transform: translate(-95px, 21px);
-      content: '';
-    }
-
-    &:first-child:after {
-      transform: translate(-55px, -1px);
     }
 
     @include option(active) {
 
-      border-color: color(primary, dark);
-      color: color(primary);
+      .steps__step__container {
 
-      &:before {
-        background: linear-gradient(to right, $green 0%, $blue 100%);
-      }
+        border: solid color(primary);
+        color: color(primary);
 
-      &:after {
-        color: $blue;
+        &:before {
+          background: linear-gradient(to right, color(success) 0%, color(primary) 100%);
+        }
+
+        &:after {
+          color: color(primary);
+        }
       }
 
     }
 
     @include option(done) {
 
-      background-color: $green;
-      border-color: $green;
-      color: $white;
+      .steps__step__container {
+        background-color: color(success);
+        border-color: color(success);
+        color: color(white);
 
-      &:before {
-        background-color: $green;
+        &:before {
+          background-color: color(success);
+        }
+
+        &:after {
+          background: color(success);
+        }
+
       }
-
     }
 
   }

@@ -12094,6 +12094,7 @@ var Form = function () {
             template: require('../templates/form/ajax-button.html'),
             data: function data() {
                 return {
+                    disabled: false,
                     formData: new FormData()
                 };
             },
@@ -12123,15 +12124,50 @@ var Form = function () {
                 },
                 dataFrom: {
                     type: String
+                },
+                setTimer: {
+                    type: Number,
+                    default: 0
+                },
+                setDisabled: {
+                    type: String,
+                    default: 'no'
+                },
+                timerText: {
+                    type: String,
+                    default: ''
                 }
             },
             methods: {
                 send: function send(e) {
                     e.preventDefault();
-                    var response = this.$http[this.method](this.action, new FormData(document.querySelector("#" + this.dataFrom)));
+                    if (this.setDisabled == 'yes') this.disabled = true;
+                    var button = this;
+                    var response = button.$http[button.method](button.action, new FormData(document.querySelector("#" + button.dataFrom)));
                     response.then(function (e) {
-                        console.log(e);
+                        var responseData = e.json();
+                        if (responseData.result == undefined || responseData.result != 0) {
+                            if (responseData.message != undefined && responseData.message != '') alert(responseData.message);
+                            button.disabled = false;
+                        } else {
+                            if (button.setTimer > 0) {
+                                var countDown_1 = button.setTimer;
+                                var buttonElement_1 = button.$el.firstElementChild,
+                                    buttonText_1 = buttonElement_1.innerText;
+                                var doTimer_1 = setInterval(function () {
+                                    if (countDown_1 == -1) {
+                                        buttonElement_1.innerText = buttonText_1;
+                                        button.disabled = false;
+                                        clearInterval(doTimer_1);
+                                    } else {
+                                        buttonElement_1.innerText = countDown_1 + ' ' + button.timerText;
+                                    }
+                                    countDown_1--;
+                                }, 1000);
+                            }
+                        }
                     }, function (e) {
+                        button.disabled = false;
                         console.log(e);
                     });
                 }
@@ -12599,8 +12635,9 @@ var Steps = function () {
             template: require('../templates/steps/steps.html'),
             props: {},
             ready: function ready() {
-                this.$children.forEach(function (child) {
+                this.$children.every(function (child) {
                     if (!child.active) child.setDone();
+                    return !child.active;
                 });
             }
         });
@@ -12980,7 +13017,7 @@ module.exports = '<div :class="class" class="flipper">\n    <slot></slot>\n</div
 },{}],28:[function(require,module,exports){
 module.exports = '<div :class="class" class="flipper__front">\n    <slot></slot>\n</div>\n';
 },{}],29:[function(require,module,exports){
-module.exports = '<div class="form__field">\n    <button @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
+module.exports = '<div class="form__field">\n    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],30:[function(require,module,exports){
 module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],31:[function(require,module,exports){
@@ -13014,9 +13051,9 @@ module.exports = '<div class="shrink columns statistic">\n    <div class="statis
 },{}],45:[function(require,module,exports){
 module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
 },{}],46:[function(require,module,exports){
-module.exports = '<div class="steps__step" :class="{ \'--active\' : active }" data-desc="{{ description }}">\n    <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    <slot v-if="!done"></slot>\n</div>\n';
+module.exports = '<div class="steps__step" :class="{ \'--active\' : active }">\n\n    <div class="steps__step__container">\n        <slot v-if="!done"></slot>\n        <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    </div>\n\n    <div class="steps__step__description">{{ description }}</div>\n\n</div>\n';
 },{}],47:[function(require,module,exports){
-module.exports = '<div id="steps">\n    <slot></slot>\n</div>\n';
+module.exports = '<div class="steps">\n    <slot></slot>\n</div>\n';
 },{}]},{},[6]);
 
 //# sourceMappingURL=App.js.map

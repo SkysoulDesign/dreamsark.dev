@@ -10,9 +10,10 @@ var Steps = (function () {
             template: require('../templates/steps/steps.html'),
             props: {},
             ready: function () {
-                this.$children.forEach(function (child) {
+                this.$children.every(function (child) {
                     if (!child.active)
                         child.setDone();
+                    return !child.active;
                 });
             }
         });
