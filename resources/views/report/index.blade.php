@@ -8,18 +8,14 @@
             <div class="ui negative message">
                 <i class="close icon"></i>
 
-                <div class="header">
-                    There are no reports at the moment
-                </div>
+                <div class="header">@lang('report.no-data')</div>
 
             </div>
         @else
             <table class="ui celled striped table">
                 <thead>
                 <tr>
-                    <th colspan="4">
-                        Reports
-                    </th>
+                    <th colspan="4">@lang('report.reports')</th>
                 </tr>
                 </thead>
                 <tbody>

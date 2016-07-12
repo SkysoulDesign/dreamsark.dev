@@ -30,10 +30,10 @@
                 <table class="table --stack">
                     <thead>
                     <tr>
-                        <th>Candidates</th>
-                        <th>Expected Cost</th>
-                        <th>Votes</th>
-                        <th class="--compact +center">Action</th>
+                        <th>@lang('vote.candidate')</th>
+                        <th>@lang('vote.expect-cost')</th>
+                        <th>@lang('vote.votes')</th>
+                        <th class="--compact +center">@lang('vote.action')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                             <td>{{ $enroller->enrollvotes->pluck('amount')->sum() }}</td>
                             <td class="table__action">
                                 <input type="text">
-                                <button class="button --small --primary">vote</button>
+                                <button class="button --small --primary">@lang('vote.vote')</button>
                             </td>
                         </tr>
                     @endforeach

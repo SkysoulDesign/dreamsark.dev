@@ -11,8 +11,8 @@
         </div>
 
         <div class="small-6 columns +align-right">
-            <a href="#" class="menu__item +round +transparent">Explorer</a>
-            <a href="{{ route('login') }}" class="menu__item --active +round">Sign-in</a>
+            <a href="#" class="menu__item +round +transparent">@lang('navbar.explorer')</a>
+            <a href="{{ route('login') }}" class="menu__item --active +round">@lang('navbar.sign-in')</a>
         </div>
 
     </div>
@@ -41,10 +41,10 @@
                 </div>
 
                 <div class="dropdown__content">
-                    <a href="{{ route('user.account') }}" class="dropdown__content__item">Account</a>
-                    <div class="dropdown__content__item">Settings</div>
+                    <a href="{{ route('user.account') }}" class="dropdown__content__item">@lang('navbar.account')</a>
+                    <div class="dropdown__content__item">@lang('navbar.settings')</div>
                     <a href="{{ route('logout') }}" class="dropdown__content__item">
-                        Log-out
+                        @lang('navbar.logout')
                     </a>
                 </div>
 

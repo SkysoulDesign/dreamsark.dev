@@ -35,7 +35,7 @@ class RoleMiddleware
         $arguments = $this->parseArgs(array_slice(func_get_args(), 2));
 
         if (!call_user_func_array([$user, "hasRoles"], $arguments)) {
-            return response('Unauthorized, user has no assigned roles', 401);
+            return response(trans('auth.unauthorized-no-roles'), 401);
         }
 
         return $next($request);

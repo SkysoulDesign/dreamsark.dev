@@ -5,9 +5,9 @@
     <div class="three wide column">
 
         <div class="ui fluid vertical menu">
-            <a class="item"> Home </a>
-            <a class="item"> Pending Projects </a>
-            <a class="item"> All Projects </a>
+            <a class="item">@lang('navbar.home')</a>
+            <a class="item">@lang('dashboard.pending-projects')</a>
+            <a class="item">@lang('dashboard.all-projects')</a>
         </div>
 
     </div>

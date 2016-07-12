@@ -53,7 +53,7 @@ class SessionController extends Controller
 
         $mobile = $request->get('username');
         if ($request->session()->get('mobile-' . $mobile) != $request->get('sms_code'))
-            return redirect()->back()->withErrors('Invalid Verification Code');
+            return redirect()->back()->withErrors(trans('auth.invalid-verify-code'));
         /**
          * Create User
          */

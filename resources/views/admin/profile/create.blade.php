@@ -11,21 +11,21 @@
 
             <h3>Create Profile</h3>
             <div class="required field">
-                <label>Name</label>
+                <label>@lang('forms.name')</label>
                 <input type="text"
                        name="name"
-                       placeholder="e.g. Actor">
+                       placeholder="{{ trans('forms.profile-name-sample') }}">
             </div>
             <div class="required field">
-                <label>Display Name</label>
+                <label>@lang('forms.display-name')</label>
                 <input type="text"
                        name="display_name"
-                       placeholder="Actor">
+                       placeholder="{{ trans('forms.display-name-sample') }}">
             </div>
 
             <div class="fields grouped">
 
-                <label>Select Questions</label>
+                <label>@lang('forms.select-question')</label>
 
                 @foreach($questions as $question)
                     <div class="field">
@@ -51,7 +51,7 @@
                                    name="required[]"
                                    value="{{ $question->id }}">
                             <label for="{{ "required_$question->id" }}">
-                                Required
+                                @lang('general.required')
                             </label>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
 
             </div>
 
-            <button class="ui submit button primary" type="submit">Update</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 
             <a href="{{ route('admin.profile.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

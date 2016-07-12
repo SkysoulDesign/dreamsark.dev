@@ -39,7 +39,7 @@
             @else
 
                 <div class="ui tall stacked ui yellow inverted segment">
-                    <a class="ui red massive ribbon label">Winner</a>
+                    <a class="ui red massive ribbon label">@lang('project.winner')</a>
                     <a class="ui massive label basic image ">
                         <img class="ui right spaced avatar image" src="{{ $project->stage->submission->user->present()->avatar() }}">
                         {{ $project->stage->submission->user->present()->name() }}
@@ -71,8 +71,8 @@
             <table class="ui celled table">
                 <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Details</th>
+                    <th>@lang('project.user')</th>
+                    <th>@lang('project.detail')</th>
                 </tr>
                 </thead>
                 <tbody>

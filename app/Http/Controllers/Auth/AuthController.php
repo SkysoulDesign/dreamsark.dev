@@ -3,6 +3,7 @@
 namespace DreamsArk\Http\Controllers\Auth;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests\Session\UserCreation;
 use DreamsArk\Jobs\Session\CreateUserJob;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\User\UserRepositoryInterface;
@@ -94,7 +95,7 @@ class AuthController extends Controller
 
         }
 
-        return redirect()->route('login')->withInput()->withErrors('These credentials do not match our records.');
+        return redirect()->route('login')->withInput()->withErrors(trans('auth.failed'));
     }
 
     /**

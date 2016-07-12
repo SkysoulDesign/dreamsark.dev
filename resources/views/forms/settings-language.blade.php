@@ -5,13 +5,13 @@
     @include('partials.select-with-icon',
     [
         'name' => 'language',
-        'placeholder' => 'Select the Default Language',
+        'placeholder' => trans('forms.select-language'),
         'collection' => [
             'en' => ['English', 'us flag'],
             'cn' => ['Chinese', 'cn flag']
         ]
     ])
 
-    <button class="ui button" type="submit">Save</button>
+    <button class="ui button" type="submit">@lang('forms.save')</button>
 
 </form>

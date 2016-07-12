@@ -140,7 +140,7 @@ class ProjectController extends Controller
     {
         dispatch(new UpdateDraftJob($draft, $request->user(), $request->all()));
 
-        return redirect()->back()->withSuccess('Updated successfully');
+        return redirect()->back()->withSuccess(trans('project.updated'));
     }
 
     /**

@@ -3,13 +3,11 @@
 namespace DreamsArk\Http\Controllers\Admin\Question;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Admin\Question\StoreQuestionRequest;
 use DreamsArk\Http\Requests\Admin\Question\UpdateQuestionRequest;
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
 use DreamsArk\Jobs\Admin\Question\DeleteQuestionJob;
 use DreamsArk\Jobs\Admin\Question\UpdateQuestionJob;
-use DreamsArk\Models\Master;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\Master\Question\Question;
 use DreamsArk\Models\Master\Question\Type;
@@ -64,7 +62,7 @@ class QuestionController extends Controller
             $request->get('options', [])
         ));
 
-        return redirect()->route('admin.question.index')->withSuccess('Question created successfully');
+        return redirect()->route('admin.question.index')->withSuccess(trans('profile.question-created'));
 
     }
 
@@ -101,7 +99,7 @@ class QuestionController extends Controller
             $request->get('options', [])
         ));
 
-        return redirect()->back()->withSuccess('Question updated successfully');
+        return redirect()->back()->withSuccess(trans('profile.question-updated'));
 
     }
 
@@ -123,7 +121,7 @@ class QuestionController extends Controller
          */
         $this->dispatch(new DeleteQuestionJob($question));
 
-        return redirect()->route('admin.question.index')->withSuccess('Question deleted successfully');
+        return redirect()->route('admin.question.index')->withSuccess(trans('profile.question-deleted'));
 
     }
 

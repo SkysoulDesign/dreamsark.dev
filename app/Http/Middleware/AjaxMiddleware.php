@@ -17,6 +17,6 @@ class AjaxMiddleware
     {
         if ($request->ajax() || $request->pjax())
             return $next($request);
-        return response()->json(['error' => 'Access denied']);
+        return response()->json(['error' => trans('auth.access-denied')]);
     }
 }

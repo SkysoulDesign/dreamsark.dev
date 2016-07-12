@@ -3,13 +3,11 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
-use DreamsArk\Jobs\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\CompleteProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
-use DreamsArk\Jobs\User\Project\CreateDraftJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Distribution;
@@ -144,7 +142,7 @@ class ProjectController extends Controller
     {
         dispatch(new UpdateDraftJob($draft, $request->user(), $request->all()));
 
-        return redirect()->back()->withSuccess('Updated successfully');
+        return redirect()->back()->withSuccess(trans('project.updated'));
     }
 
     /**

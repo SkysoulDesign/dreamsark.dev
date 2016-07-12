@@ -1,6 +1,26 @@
 <?php
 
 return array(
-    'failed'   => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed'                 => 'These credentials do not match our records.',
+    'throttle'               => 'Too many login attempts. Please try again in :seconds seconds.',
+    'invalid-data-found'     => 'Invalid data found',
+    'invalid-verify-code'    => 'Invalid Verification Code',
+    'access-denied'          => 'Access denied',
+    'unauthorized-no-roles'  => 'Unauthorized, user has no assigned roles',
+    'login-form'             => 'Login Form',
+    'register-form'          => 'Member Register',
+    'register-mobile'        => 'Mobile',
+    'register-standard'      => 'Standard',
+    'login'                  => 'Login',
+    'register'               => 'Register',
+    'login-register-welcome' => 'Welcome to dreamsark, login or apply for a new account',
+    'user-or-email'          => 'username or email',
+    'login-with'             => 'or login with',
+    'register-with'          => 'or register with',
+    'no-member'              => 'You are not a member yet?',
+    'click-to-register'      => 'click here to register',
+    'click-to-login'         => 'Are you looking for login instead?',
+    'mobile-number'          => 'mobile number',
+    'sms-code'               => 'sms code',
+    'send-code'              => 'Send Code',
 );

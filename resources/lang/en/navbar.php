@@ -34,4 +34,8 @@ return array(
     'queue-default'     => 'Default',
     'queue-voting'      => 'Voting',
     'translations'      => 'Translations',
+    'explorer'          => 'Explorer',
+    'sign-in'           => 'Sign in',
+    'account'           => 'Account',
+    'settings'          => 'Settings',
 );

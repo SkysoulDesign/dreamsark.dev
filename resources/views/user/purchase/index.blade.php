@@ -7,7 +7,7 @@
     <div class="row">
         <div class="small-12 columns">
             <header class="header --full">
-                Purchases
+                @lang('user.purchases')
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad aliquam aliquid aspernatur autem
                     beatae culpa dolor dolore dolorem doloribus fugit illum iusto mollitia natus non, odit provident
                     quisquam ratione.</p>
@@ -19,16 +19,16 @@
 
             <ul class="section__nav --right">
                 <li class="section__nav__item --active">
-                    <a href="#">Purchase</a>
+                    <a href="#">@lang('payment.purchase')</a>
                 </li>
                 <li class="section__nav__item --active">
-                    <a href="#">Withdraw</a>
+                    <a href="#">@lang('payment.withdraw')</a>
                 </li>
                 <li class="section__nav__item --as-button">
-                    <a href="#" data-modal-trigger="add-coin">Add Coins</a>
+                    <a href="#" data-modal-trigger="add-coin">@lang('payment.add-coins')</a>
                 </li>
                 <li class="section__nav__item --as-button">
-                    <a href="#" data-modal-trigger="withdraw-coin">Withdraw Coins</a>
+                    <a href="#" data-modal-trigger="withdraw-coin">@lang('payment.withdraw-coins')</a>
                 </li>
             </ul>
         </div>
@@ -36,19 +36,17 @@
         <div class="small-12 columns">
             @if($transactions->isEmpty())
 
-                <div>
-                    There isn't anything here, please make a purchase first to see some history
-                </div>
+                <div>@lang('payment.no-purchase')</div>
 
             @else
                 <table class="table --stack">
                     <thead>
                     <tr>
-                        <th>Vendor</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th class="--compact +center">Action</th>
+                        <th>@lang('payment.vendor')</th>
+                        <th>@lang('payment.amount')</th>
+                        <th>@lang('payment.status')</th>
+                        <th>@lang('payment.date')</th>
+                        <th class="--compact +center">@lang('forms.action')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -59,7 +57,7 @@
                             <td>{{ $transaction->getStatus() }}</td>
                             <td>{{ $transaction->created_at }}</td>
                             <td class="table__action">
-                                <button class="button --small --primary">Details</button>
+                                <button class="button --small --primary">@lang('payment.detail')</button>
                             </td>
                         </tr>
                     @endforeach
@@ -83,30 +81,30 @@
 
                     <h3 class="small-12 columns form__step">
                         <span>1</span>
-                        Choose your favorite payment method
+                        @lang('payment.choose-method')
                     </h3>
 
                     <div class="small-12 columns form__field">
                         <select name="payment_method">
-                            <option value="alipay">Alipay</option>
-                            <option value="unionpay">UnionPay</option>
-                            <option value="wechat">Wechat</option>
+                            <option value="alipay">@lang('payment.alipay')</option>
+                            <option value="unionpay">@lang('payment.unionpay')</option>
+                            <option value="wechat">@lang('payment.wechat')</option>
                         </select>
                     </div>
 
                     <h3 class="small-12 columns form__step">
                         <span>2</span>
-                        Amount
+                        @lang('payment.amount')
                     </h3>
 
                     <div class="small-12 columns form__field">
-                        <input type="number" name="amount" placeholder="Amount in yuan">
+                        <input type="number" name="amount" placeholder="{{ trans('payment.amount-sample') }}">
                     </div>
 
                     <div class="small-12 columns divider --simple"></div>
 
                     <div class="small-12 columns form__field +align-right +center-on-mobile">
-                        <button type="submit" class="button --success --fit">Buy</button>
+                        <button type="submit" class="button --success --fit">@lang('payment.buy')</button>
                     </div>
 
                     <div class="small-12 columns form__description +center-on-mobile">

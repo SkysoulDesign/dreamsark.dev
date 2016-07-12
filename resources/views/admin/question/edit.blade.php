@@ -10,12 +10,12 @@
             {{ csrf_field() }}
 
             <div class="field">
-                <label>Question</label>
+                <label>@lang('forms.question')</label>
                 <input type="text" name="question" value="{{ $question->question }}">
             </div>
 
             <div class="field">
-                <label>Type</label>
+                <label>@lang('forms.question-type')</label>
                 <select id="question_type" class="ui dropdown" name="type">
                     @foreach($types as $type)
                         <option {{ $question->type->id !== $type->id ? : 'selected' }} value="{{ $type->id }}">
@@ -26,7 +26,7 @@
             </div>
 
             <div class="field options_block">
-                <label>Options</label>
+                <label>@lang('forms.question-option')</label>
                 <select id="options" class="ui dropdown " name="options[]" multiple>
                     @foreach($options as $option)
 
@@ -37,7 +37,7 @@
                 </select>
             </div>
 
-            <button class="ui submit button primary" type="submit">@lang('forms.save')</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 
             <a href="{{ route('admin.question.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

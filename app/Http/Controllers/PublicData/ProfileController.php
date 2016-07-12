@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\PublicData;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Models\User\User;
@@ -35,9 +34,9 @@ class ProfileController extends Controller
         $user = User::with('profiles')->where('username', $request->username)->get();
         if (!$user[0]->hasProfile($profile->name)) {
             if ($this->isIFrameCall)
-                return view('errors.errors')->withErrors('Profile not exists');
+                return view('errors.errors')->withErrors(trans('profile.not-exists'));
 
-            return redirect()->route('user.account')->withErrors('Profile not exists');
+            return redirect()->route('user.account')->withErrors(trans('profile.not-exists'));
         }
         $userProfile = $user[0]->profiles->find($profile);
 

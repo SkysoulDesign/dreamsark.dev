@@ -17,13 +17,13 @@
 
             <ul class="section__nav --right">
                 <li class="section__nav__item --active">
-                    <a href="#">Published Projects</a>
+                    <a href="#">@lang('project.published')</a>
                 </li>
                 <li class="section__nav__item">
-                    <a href="#">Failed Projects</a>
+                    <a href="#">@lang('project.failed')</a>
                 </li>
                 <li class="section__nav__item --as-button">
-                    <a href="{{ route('user.project.create') }}">Create Project</a>
+                    <a href="{{ route('user.project.create') }}">@lang('forms.create-project')</a>
                 </li>
             </ul>
 
@@ -34,10 +34,10 @@
             <table class="table --stack">
                 <thead>
                 <tr>
-                    <th>Stage</th>
-                    <th>Name</th>
-                    <th>Reward</th>
-                    <th class="--compact +center">Action</th>
+                    <th>@lang('forms.stage')</th>
+                    <th>@lang('forms.name')</th>
+                    <th>@lang('forms.reward')</th>
+                    <th class="--compact +center">@lang('forms.action')</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,8 +47,8 @@
                         <td>{{ $project->name }}</td>
                         <td>{{ $project->reward }}</td>
                         <td class="table__action">
-                            <button class="button --small --primary">View</button>
-                            <button class="button --small --primary">Edit</button>
+                            <button class="button --small --primary">@lang('forms.view')</button>
+                            <button class="button --small --primary">@lang('forms.edit')</button>
                         </td>
                     </tr>
                 @endforeach

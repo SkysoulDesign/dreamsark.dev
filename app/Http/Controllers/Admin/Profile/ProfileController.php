@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Admin\Profile;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Admin\Profile\StoreProfileRequest;
 use DreamsArk\Http\Requests\Admin\Profile\UpdateProfileRequest;
 use DreamsArk\Jobs\Admin\Profile\CreateProfileJob;
@@ -68,7 +67,7 @@ class ProfileController extends Controller
 
         return redirect()
             ->route('admin.profile.index')
-            ->withSuccess("Profile: $profile->display_name created successfully");
+            ->withSuccess(trans("profile.created-success"));
 
     }
 
@@ -125,7 +124,7 @@ class ProfileController extends Controller
 
         return redirect()
             ->route('admin.profile.edit', $profile->name)
-            ->withSuccess("Profile: $profile->display_name updated successfully");
+            ->withSuccess(trans('profile.updated-success'));
     }
 
     /**
@@ -149,7 +148,7 @@ class ProfileController extends Controller
 
         return redirect()
             ->route('admin.profile.index')
-            ->withSuccess("Profile: $profile->display_name was deleted successfully");
+            ->withSuccess(trans("profile.deleted-success"));
     }
 
 }

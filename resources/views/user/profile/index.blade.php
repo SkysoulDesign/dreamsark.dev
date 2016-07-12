@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="small-9 columns">
-                            <h3>New Profile</h3>
+                            <h3>@lang('profile.new-profile')</h3>
                             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
                         </div>
                     </a>

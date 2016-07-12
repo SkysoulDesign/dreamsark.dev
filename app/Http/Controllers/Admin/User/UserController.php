@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Admin\User;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Admin\User\StoreUserRequest;
 use DreamsArk\Http\Requests\Admin\User\UpdateUserRequest;
 use DreamsArk\Jobs\Admin\User\DeleteUserJob;
@@ -64,7 +63,7 @@ class UserController extends Controller
             $request->get('role_id')
         ));
 
-        return redirect()->route('admin.user.index')->withSuccess("User: $user->username created successfully.");
+        return redirect()->route('admin.user.index')->withSuccess(trans('user.user-created'));
 
     }
 
@@ -111,7 +110,7 @@ class UserController extends Controller
             $request->get('role_id')
         ));
 
-        return redirect()->route('admin.user.index')->withSuccess("User: $user->username updated successfully.");
+        return redirect()->route('admin.user.index')->withSuccess(trans('user.user-updated'));
 
     }
 
@@ -136,7 +135,7 @@ class UserController extends Controller
          */
         $this->dispatch(new DeleteUserJob($user));
 
-        return redirect()->route('admin.user.index')->withSuccess("User: $user->username was deleted successfully");
+        return redirect()->route('admin.user.index')->withSuccess(trans('user.user-deleted'));
 
     }
 

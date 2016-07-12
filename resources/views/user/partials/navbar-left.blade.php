@@ -3,12 +3,12 @@
         <div class="item header">@lang('navbar.activity-list')</div>
         @php
             $sideMenuArr = [
-                ['url' => 'user.settings', 'label' => trans('navbar.account-settings')],
-                ['url' => 'user.purchase.index', 'label' => trans('navbar.purchases')],
-                ['url' => 'user.activity.backed.list', 'label' => trans('navbar.backed-list')],
-                ['url' => 'user.activity.enrolled.list', 'label' => trans('navbar.enrolled-list')],
-                ['url' => 'user.activity.earning', 'label' => trans('navbar.earning-list')],
-                ['url' => '', 'label' => trans('navbar.social-media')],
+                ['url' => 'user.settings', 'label' => trans('user.settings')],
+                ['url' => 'user.purchase.index', 'label' => trans('user.purchases')],
+                ['url' => 'user.activity.backed.list', 'label' => trans('user.backed-list')],
+                ['url' => 'user.activity.enrolled.list', 'label' => trans('user.enrolled-list')],
+                ['url' => 'user.activity.earning', 'label' => trans('user.earning-list')],
+                ['url' => '', 'label' => trans('user.social-media')],
             ];
         @endphp
         @foreach($sideMenuArr as $item)

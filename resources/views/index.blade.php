@@ -13,20 +13,20 @@
         @include('partials.navigation.menu', ['translucent' => true])
 
         <div class="row align-center slider">
-            Welcome to Dreamsark,
-            <small>The place where your dreams may come true.</small>
+            @lang('dashboard.site-welcome')
+            <small>@lang('dashboard.site-welcome-description')</small>
         </div>
 
     </div>
 
     <ark-nav>
         <ark-tab content="tab-latest" active>
-            Latest
+            @lang('dashboard.latest')
             @push('tab-item')
             <div id="tab-latest" class="row">
                 <div class="small-12 columns">
                     <header class="header --full --light --small">
-                        Latest Projects
+                        @lang('dashboard.latest-project')
                     </header>
                 </div>
 
@@ -61,12 +61,12 @@
             @endpush
         </ark-tab>
         <ark-tab content="tab-popular" {{ active('user.profile') }}>
-            Popular
+            @lang('dashboard.popular')
             @push('tab-item')
             <div id="tab-popular" class="row">
                 <div class="small-12 columns">
                     <header class="header --full --light --small">
-                        What’s popular
+                        @lang('dashboard.what-popular')
                     </header>
                 </div>
                 @foreach(range(1,3) as $item)
@@ -100,12 +100,12 @@
             @endpush
         </ark-tab>
         <ark-tab content="tab-voting" {{ active('user.profile') }}>
-            Voting
+            @lang('dashboard.voting')
             @push('tab-item')
             <div id="tab-voting" class="row">
                 <div class="small-12 columns">
                     <header class="header --full --light --small">
-                        Latest Projects
+                        @lang('dashboard.latest-project')
                     </header>
                 </div>
 
@@ -146,7 +146,7 @@
     <div class="row" style="padding-bottom: 3em">
 
         <div class="small-12 columns">
-            <div class="divider">load more</div>
+            <div class="divider">@lang('dashboard.load-more')</div>
         </div>
 
         <div class="small-12 columns">
@@ -166,9 +166,9 @@
         <div class="row --fluid +center">
             <div class="small-12 columns home-page__not-member">
                 <h2>
-                    Not a member yet? click here and become part of our family
+                    @lang('dashboard.no-member-message')
                 </h2>
-                <a href="{{ route('register') }}" class="button --fit --hollow-white">join now</a>
+                <a href="{{ route('register') }}" class="button --fit --hollow-white">@lang('dashboard.join-now')</a>
             </div>
         </div>
     @endif

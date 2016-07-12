@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Project\Expenditure\EnrollProjectJob;
 use DreamsArk\Jobs\Project\Expenditure\UnrollProjectJob;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
@@ -32,7 +31,7 @@ class EnrollController extends Controller
     public function create(Project $project, Request $request)
     {
         if ($request->user()->profiles->isEmpty())
-            return redirect()->back()->withErrors('You must have a Profile to Enroll in project');
+            return redirect()->back()->withErrors(trans('project.need-profile-to-enroll'));
 
         return view('project.enroll.create')->with('expenditures', $project->enrollable);
     }
@@ -47,10 +46,10 @@ class EnrollController extends Controller
     public function store(Expenditure $expenditure, Request $request)
     {
         if ($request->user()->profiles->isEmpty())
-            return redirect()->back()->withErrors('You must have a Profile to Enroll in project');
+            return redirect()->back()->withErrors(trans('project.need-profile-to-enroll'));
         $targetProfile = $expenditure->expenditurable->profile;
         if (!$request->user()->hasProfile($targetProfile->name))
-            return redirect()->back()->withErrors('You must have ' . $targetProfile->display_name . ' Profile to Enroll in project');
+            return redirect()->back()->withErrors(trans('project.need-target-profile-to-enroll', ['target_profile' => $targetProfile->display_name]));
 
         $this->dispatch(new EnrollProjectJob($expenditure, $request->user()));
 

@@ -1,7 +1,7 @@
 @extends('layouts.master-admin')
 
 @section('content')
-    <h2>DreamsArk Admin</h2>
+    <h2>@lang('general.site-admin')</h2>
     <div class="ui segment">
         <div class="ui link list">
             @foreach($routes as $route)

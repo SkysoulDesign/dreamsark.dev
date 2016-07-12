@@ -14,14 +14,14 @@
                 <label>@lang('forms.name')</label>
                 <input type="text"
                        name="name"
-                       placeholder="@lang('forms.profile-name-lower')"
+                       placeholder="@lang('forms.profile-name-sample')"
                        value="{{ old('name', $profile->name) }}">
             </div>
             <div class="required field">
                 <label>@lang('forms.display-name')</label>
                 <input type="text"
                        name="display_name"
-                       placeholder="@lang('forms.profile-name')"
+                       placeholder="@lang('forms.display-name-sample')"
                        value="{{ old('display_name', $profile->display_name) }}">
             </div>
 
@@ -29,7 +29,7 @@
 
             <div class="fields grouped">
 
-                <label>@lang('forms.select-questions')</label>
+                <label>@lang('forms.select-question')</label>
 
                 @foreach($questions as $question)
 
@@ -60,7 +60,7 @@
                                    @if($question->required) checked @endif
                                    value="{{ $question->id }}">
                             <label for="{{ "required_$question->id" }}">
-                                Required
+                                @lang('general.required')
                             </label>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
 
             </div>
 
-            <button class="ui submit button primary" type="submit">Update</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 
             <a href="{{ route('admin.profile.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

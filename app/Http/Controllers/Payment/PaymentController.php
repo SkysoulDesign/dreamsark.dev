@@ -44,7 +44,7 @@ class PaymentController extends Controller
             ]));
 
         if (!$transaction || !$transaction->payment->verify($request->except('invoice_no')))
-            return redirect()->route('user.purchase.index')->withErrors('Something went wrong.');
+            return redirect()->route('user.purchase.index')->withErrors(trans('payment.error'));
 
         $response = redirect()->route('user.purchase.index');
 
@@ -52,9 +52,9 @@ class PaymentController extends Controller
          * If verification has been detected already, redirect with success message
          */
         if ($transaction->isPaid())
-            return $response->withSuccess('Your Purchase has been made.');
+            return $response->withSuccess(trans('payment.pay-complete'));
 
-        return $response->withWarning('Your purchase is being processed.');
+        return $response->withWarning(trans('payment.pay-in-process'));
     }
 
     /**

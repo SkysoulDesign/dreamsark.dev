@@ -7,14 +7,14 @@
         <form class="ui form warning error" action="{{ route('admin.user.store') }}" method="POST">
 
             {{ csrf_field() }}
-            <h3>@lang('forms.create-user')</h3>
+            <h3>@lang('user.create-user')</h3>
 
             <div class="required field">
-                <label>Role</label>
+                <label>@lang('forms.user-role')</label>
                 <div class="ui fluid search selection dropdown">
                     <input type="hidden" name="role_id" value="{{ old('role_id', 'user') }}">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Select User Role</div>
+                    <div class="default text">@lang('forms.select-user-role')</div>
                     <div class="menu">
                         @foreach($roles as $role)
                             <div class="item" data-value="{{ $role->name }}">

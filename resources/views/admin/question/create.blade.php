@@ -8,15 +8,15 @@
 
             {{ csrf_field() }}
 
-            <h3>Create Question</h3>
+            <h3>@lang('forms.create-question')</h3>
 
             <div class="field">
-                <label>Question</label>
-                <input type="text" name="question" placeholder="e.g. what is your nickname?">
+                <label>@lang('forms.question')</label>
+                <input type="text" name="question" placeholder="{{ trans('forms.question-sample') }}">
             </div>
 
             <div class="field">
-                <label>Type</label>
+                <label>@lang('forms.question-type')</label>
                 <select id="question_type" class="ui dropdown " name="type">
                     @foreach($types as $type)
                         <option value="{{ $type->id }}">{{ $type->display_name }}</option>
@@ -24,7 +24,7 @@
                 </select>
             </div>
             <div class="field options_block">
-                <label>Options</label>
+                <label>@lang('forms.question-option')</label>
                 <select id="options" class="ui dropdown " name="options[]" multiple>
                     @foreach($options as $option)
                         <option value="{{ $option->name }}">{{ $option->cleanName }}</option>
@@ -32,7 +32,7 @@
                 </select>
             </div>
 
-            <button class="ui submit button primary" type="submit">Create</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
 
             <a href="{{ route('admin.question.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

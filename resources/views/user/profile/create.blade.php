@@ -12,7 +12,7 @@
 
             <div class="small-12 align-top columns">
                 <header class="header --inverted +text-shadow +no-margin-bottom">
-                    <small>Pick your position:</small>
+                    <small>@lang('profile.pick-position'):</small>
                     <h1 class="+uppercase">@{{ position }}</h1>
                 </header>
             </div>
@@ -33,7 +33,7 @@
                         </div>
                     @endforeach
                     <div class="columns profile-page__palette__select">
-                        <button id="selectProfile" class="button --fit --hollow">Select</button>
+                        <button id="selectProfile" class="button --fit --hollow">@lang('forms.select')</button>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="small-12 columns divider --simple"></div>
 
                 <div class="small-12 columns form__field +center-on-mobile">
-                    <button class="button --success --fit">Create Profile</button>
+                    <button class="button --success --fit">@lang('profile.create-profile')</button>
                 </div>
 
                 <div class="small-12 columns form__description +center-on-mobile">

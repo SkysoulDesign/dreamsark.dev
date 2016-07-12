@@ -8,14 +8,14 @@
             {{ method_field('patch') }}
 
             {{ csrf_field() }}
-            <h3>@lang('forms.create-user')</h3>
+            <h3>@lang('user.edit-user')</h3>
 
             <div class="required field">
-                <label>Role</label>
+                <label>@lang('forms.user-role')</label>
                 <div class="ui fluid search selection dropdown">
                     <input type="hidden" name="role_id" value="{{ old('role_id', $user->roles[0]->name) }}">
                     <i class="dropdown icon"></i>
-                    <div class="default text">Select User Role</div>
+                    <div class="default text">@lang('forms.select-user-role')</div>
                     <div class="menu">
                         @foreach($roles as $role)
                             <div class="item" data-value="{{ $role->name }}">
@@ -36,7 +36,7 @@
 
             @include('partials.field', ['name' => 'name', 'value' => old('name', $user->name)])
 
-            <button class="ui submit button primary" type="submit">Update</button>
+            <button class="ui submit button primary" type="submit">@lang('forms.update')</button>
 
             <a href="{{ route('admin.user.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')

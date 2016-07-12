@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\User\Profile\StoreProfileRequest;
 use DreamsArk\Http\Requests\User\Profile\UpdateProfileRequest;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
@@ -73,7 +72,7 @@ class ProfileController extends Controller
             $profile
         ));
 
-        return redirect()->route('user.profile.index')->withSuccess('Profile created successfully');
+        return redirect()->route('user.profile.index')->withSuccess(trans('profile.created-success'));
     }
 
     /**
@@ -132,7 +131,7 @@ class ProfileController extends Controller
         );
 
         return redirect()->route('user.profile.edit', $profile->name)
-            ->withSuccess("$profile->display_name profile updated successfully");
+            ->withSuccess(trans('profile.updated-success'));
     }
 
     /**

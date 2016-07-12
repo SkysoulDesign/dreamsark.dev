@@ -1,5 +1,5 @@
 @extends('layouts.master-admin')
 
 @section('content')
-    <h2>DreamsArk Committee</h2>
+    <h2>@lang('general.site-committee')</h2>
 @endsection

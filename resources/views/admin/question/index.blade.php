@@ -7,9 +7,9 @@
     <table class="ui selectable celled table">
         <thead>
         <tr>
-            <th>Question</th>
-            <th>Type</th>
-            <th>Action</th>
+            <th>@lang('forms.question')</th>
+            <th>@lang('forms.question-type')</th>
+            <th>@lang('forms.action')</th>
         </tr>
         </thead>
         <tbody>
@@ -22,11 +22,11 @@
                     <div class="ui small basic icon buttons">
                         <a class="ui button" href="{{ route('admin.question.edit', $question->id) }}">
                             <i class="edit icon"></i>
-                            Edit
+                            @lang('forms.edit')
                         </a>
                         <a class="ui button delete-item" href="{{ route('admin.question.destroy', $question->id) }}">
                             <i class="delete icon"></i>
-                            Delete
+                            @lang('forms.delete')
                         </a>
                     </div>
                 </td>

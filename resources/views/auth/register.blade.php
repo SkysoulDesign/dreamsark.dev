@@ -20,7 +20,7 @@
                     <img src="{{ asset('dreamsark-assets/register-avatar.png') }}" alt="">
                 </div>
 
-                <div class="title modern center">Member Register</div>
+                <div class="title modern center">@lang('auth.register-form')</div>
 
                 <div class="ui tabular top two item menu">
                     <div class="active item" data-tab="general-register">
@@ -38,15 +38,15 @@
                         {{ csrf_field() }}
 
                         <div class="form-item">
-                            <input name="username" type="text" placeholder="username" value="{{ old('username') }}">
+                            <input name="username" type="text" placeholder="{{ trans('forms.username') }}" value="{{ old('username') }}">
                         </div>
 
                         <div class="form-item">
-                            <input name="email" type="email" placeholder="e-mail" value="{{ old('email') }}">
+                            <input name="email" type="email" placeholder="{{ trans('forms.email') }}" value="{{ old('email') }}">
                         </div>
 
                         <div class="form-item">
-                            <input name="password" type="password" placeholder="password">
+                            <input name="password" type="password" placeholder="{{ trans('forms.password') }}">
                         </div>
 
                         @include('partials.form-errors')
@@ -80,14 +80,14 @@
                         </div>
 
                         <div class="form-item">
-                            <input name="password" type="password" placeholder="password">
+                            <input name="password" type="password" placeholder="{{ trans('forms.password') }}">
                         </div>
 
                         <div class="form-item">
-                            <input name="sms_code" type="text" placeholder="{{ trans('auth.mobile-sms-code') }}"/>
+                            <input name="sms_code" type="text" placeholder="{{ trans('auth.sms-code') }}"/>
                             &nbsp;
                             <button type="button" id="trigger_sms"
-                                    name="trigger_sms">{{ trans('auth.get-code') }}</button>
+                                    name="trigger_sms">{{ trans('auth.send-code') }}</button>
                         </div>
 
                         <div class="form-item">
@@ -102,7 +102,7 @@
                     </form>
                 </div>
 
-                <div class="title simple center">or register with</div>
+                <div class="title simple center">@lang('auth.register-with')</div>
 
                 <div class="social center">
                     <form action="{{ route('login.social.post') }}" method="post">
@@ -133,7 +133,7 @@
             <div class="attached center">
                 <small>
                     <a class="inverted" href="{{ route('login') }}">
-                        Are you looking for login instead?
+                        @lang('auth.click-to-login')
                     </a>
                 </small>
             </div>

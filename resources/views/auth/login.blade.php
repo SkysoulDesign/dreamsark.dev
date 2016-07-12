@@ -11,22 +11,22 @@
                 <div class="card__content">
 
                     <div class="card__content__header">
-                        Login Form
-                        <p>Welcome to dreamsark, login or apply for a new account</p>
+                        @lang('auth.login-form')
+                        <p>@lang('auth.login-register-welcome')</p>
                     </div>
 
                     <ark-form action="{{ route('login.store') }}"
                               token="{{ csrf_token() }}"
                               errors="{{ $errors->toJson() }}">
 
-                        <ark-input name="login" placeholder="username or email"></ark-input>
+                        <ark-input name="login" placeholder="{{ trans('auth.user-or-email') }}"></ark-input>
                         <ark-input name="password" type="password"></ark-input>
                         <ripple-button type="submit">
-                            Login
+                            @lang('auth.login')
                         </ripple-button>
                     </ark-form>
 
-                    <div class="divider --mini --spaced">or login with</div>
+                    <div class="divider --mini --spaced">@lang('auth.login-with')</div>
 
                     <ark-social url="{{ route('login.social.post') }}">
                         <ark-wechat></ark-wechat>
@@ -37,9 +37,9 @@
                 </div>
 
                 <div class="card__caption --white">
-                    You are not a member yet?
+                    @lang('auth.no-member')
                     <div>
-                        <a data-flipper-trigger href="{{ route('register') }}">click here to register.</a>
+                        <a data-flipper-trigger href="{{ route('register') }}">@lang('auth.click-to-register')</a>
                     </div>
                 </div>
 
@@ -54,31 +54,31 @@
                     </div>
 
                     <div class="card__content__header">
-                        Member Register
-                        <p>Welcome to dreamsark, login or apply for a new account</p>
+                        @lang('auth.register-form')
+                        <p>@lang('auth.login-register-welcome')</p>
                     </div>
 
                     <ark-nav basic>
                         <ark-tab content="tab-standard" active>
-                            Standard
+                            @lang('auth.register-standard')
                             @push('tab-item')
                             <div id="tab-standard">
                                 <ark-form action="{{ route('login.store') }}"
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
-                                    <ark-input name="username" placeholder="username"></ark-input>
-                                    <ark-input name="email" placeholder="email"></ark-input>
+                                    <ark-input name="username" placeholder="{{ trans('forms.username') }}"></ark-input>
+                                    <ark-input name="email" placeholder="{{ trans('forms.email') }}"></ark-input>
                                     <ark-input name="password" type="password"></ark-input>
                                     <ripple-button type="submit">
-                                        Login
+                                        @lang('auth.register')
                                     </ripple-button>
                                 </ark-form>
                             </div>
                             @endpush
                         </ark-tab>
                         <ark-tab content="tab-mobile">
-                            Mobile
+                            @lang('auth.register-mobile')
                             @push('tab-item')
                             <div id="tab-mobile">
                                 <ark-form id="mobile-login-form"
@@ -86,19 +86,19 @@
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
-                                    <ark-input name="mobile" placeholder="mobile number"></ark-input>
+                                    <ark-input name="mobile" placeholder="{{ trans('auth.mobile-number') }}"></ark-input>
 
                                     <ark-fields>
-                                        <ark-input name="code" placeholder="sms code"></ark-input>
+                                        <ark-input name="code" placeholder="{{ trans('auth.sms-code') }}"></ark-input>
                                         <ark-ajax-button method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
-                                            Send Code
+                                            @lang('auth.send-code')
                                         </ark-ajax-button>
                                     </ark-fields>
 
-                                    <ark-input name="password" placeholder="password"></ark-input>
+                                    <ark-input name="password" type="password"></ark-input>
 
                                     <ripple-button type="submit">
-                                        Register
+                                        @lang('auth.register')
                                     </ripple-button>
                                 </ark-form>
                             </div>
@@ -108,7 +108,7 @@
 
                     @stack('tab-item')
 
-                    <div class="divider --mini --spaced">or register with</div>
+                    <div class="divider --mini --spaced">@lang('auth.register-with')</div>
 
                     <ark-social url="{{ route('login.social.post') }}">
                         <ark-wechat></ark-wechat>
@@ -119,9 +119,9 @@
                 </div>
 
                 <div class="card__caption --white">
-                    You are not a member yet?
+                    @lang('auth.no-member')
                     <div>
-                        <a data-flipper-trigger href="{{ route('register') }}">click here to register.</a>
+                        <a data-flipper-trigger href="{{ route('register') }}">@lang('auth.click-to-register')</a>
                     </div>
                 </div>
 

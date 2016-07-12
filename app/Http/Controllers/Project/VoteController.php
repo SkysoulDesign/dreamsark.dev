@@ -39,7 +39,7 @@ class VoteController extends Controller
         if (!$vote->active)
             return redirect()
                 ->route('project.show', $vote->votable->project_id)
-                ->withErrors("Voting is not active for this project");
+                ->withErrors(trans('vote.is-not-open'));
 
         if (array_has(class_uses($vote->votable), EnrollableTrait::class)) {
             return view('project.vote.show')->with('model', $vote->votable);

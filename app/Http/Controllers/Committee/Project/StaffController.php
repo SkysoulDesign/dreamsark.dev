@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Committee\Project;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Project\Committee\Review\PublishProjectReviewJob;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
@@ -41,7 +40,7 @@ class StaffController extends Controller
     {
         $this->redirectIfActive($review);
         if($review->project->expenditures->isEmpty())
-            return redirect()->back()->withErrors('Project: "' . $review->project->name . '" do not have any Expenses/Crew. Unable to Publish');
+            return redirect()->back()->withErrors(trans('project.unable-publish-no-cast-crew-data', ['project_name' => $review->project->name]));
         $this->dispatch(new PublishProjectReviewJob($review));
 
         return redirect()->route('committee.project.review.list');// dashboard
@@ -55,7 +54,7 @@ class StaffController extends Controller
     protected function redirectIfActive(Review $review)
     {
         if ($review->active)
-            return redirect()->back()->withErrors('Project: "' . $review->project->name . '" is already reviewed and published');
+            return redirect()->back()->withErrors(trans('project.already-published', ['project_name' => $review->project->name]));
     }
 
 }

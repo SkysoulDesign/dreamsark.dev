@@ -71,8 +71,8 @@
             <table class="ui celled table">
                 <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Details</th>
+                    <th>@lang('project.user')</th>
+                    <th>@lang('project.detail')</th>
                 </tr>
                 </thead>
                 <tbody>

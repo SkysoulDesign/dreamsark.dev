@@ -20,13 +20,13 @@
                 </div>
                 <div class="form-item">
                     <input name="password" type="password"
-                           placeholder="Leave blank if don't want to change password"
+                           placeholder="{{ trans('user.password-no-change') }}"
                            value="">
                 </div>
                 <div class="form-item">
                     <input name="password_confirmation" type="password" value="">
                 </div>
-                <div class="title">Linked Accounts</div>
+                <div class="title">@lang('user.linked-accounts')</div>
                 <ul class="list">
                     <li class="split">
                         <div><img src="{{ asset('dreamsark-assets/wechat.png') }}" alt=""></div>
@@ -53,7 +53,7 @@
                 @include('partials.form-errors')
                 <div class="form-item">
                     <button type="submit" class="primary rippable">
-                        Save
+                        @lang('forms.save')
                         <svg>
                             <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>
                         </svg>
