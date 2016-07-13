@@ -133,3 +133,32 @@
     </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    dreamsark.on('ajax.button.success', function(e, button){
+        var responseData = e.json();
+        if (responseData.result == undefined || responseData.result != 0) {
+            if (responseData.message != undefined && responseData.message != '')
+                alert(responseData.message)
+            button.disabled = false;
+        } else {
+            if (button.setTimer > 0) {
+                let countDown = button.setTimer;
+                let buttonElement = button.$el.firstElementChild,
+                    buttonText = buttonElement.innerText;
+                let doTimer = setInterval(function () {
+                    if (countDown == -1) {
+                        buttonElement.innerText = buttonText;
+                        button.disabled = false;
+                        clearInterval(doTimer);
+                    } else {
+                        buttonElement.innerText = countDown + ' ' + button.timerText;
+                    }
+                    countDown--;
+                }, 1000);
+            }
+        }
+    });
+</script>
+@endpush
