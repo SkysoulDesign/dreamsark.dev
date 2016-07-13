@@ -27,7 +27,8 @@ var Profile = (function (_super) {
             loader: require('./Classes/Loader'),
             animator: require('./Classes/animator'),
             characters: require('./Classes/Characters'),
-            effectComposer: require('./Classes/EffectComposer'),
+            material: require('./Classes/Material'),
+            effectComposer: require('./Classes/EffectComposer')
         };
         if (canvas instanceof String) {
             canvas = document.querySelector(canvas);
@@ -58,6 +59,7 @@ var Profile = (function (_super) {
         var clock = new THREE.Clock(), loop = function (time) {
             var delta = clock.getDelta();
             requestAnimationFrame(loop);
+            _this.loader.process();
             _this.controls.update();
             _this.animator.update(time, delta);
             _this.light.update(time, delta);

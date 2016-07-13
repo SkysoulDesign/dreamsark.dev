@@ -1410,7 +1410,7 @@ module.exports = plugin;
 },{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.26
+ * Vue.js v1.0.25
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -4820,7 +4820,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if ((isA || isO) && Object.isExtensible(val)) {
+  if (isA || isO) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -6306,13 +6306,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
-    if (!inDoc(el)) {
-      nextTick(this.forceUpdate);
-    }
   },
 
   update: function update(value) {
     var el = this.el;
+    if (!inDoc(el)) {
+      return nextTick(this.forceUpdate);
+    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -11260,13 +11260,7 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    var length = args.length;
-    if (length > 1) {
-      var index = value % 10 - 1;
-      return index in args ? args[index] : args[length - 1];
-    } else {
-      return args[0] + (value === 1 ? '' : 's');
-    }
+    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
   },
 
   /**
@@ -11468,7 +11462,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.26';
+Vue.version = '1.0.25';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -12212,32 +12206,13 @@ var Form = function () {
             },
             methods: {
                 send: function send(e) {
+                    var _this = this;
                     e.preventDefault();
                     if (this.setDisabled == 'yes') this.disabled = true;
                     var button = this;
                     var response = button.$http[button.method](button.action, new FormData(document.querySelector("#" + button.dataFrom)));
                     response.then(function (e) {
-                        var responseData = e.json();
-                        if (responseData.result == undefined || responseData.result != 0) {
-                            if (responseData.message != undefined && responseData.message != '') alert(responseData.message);
-                            button.disabled = false;
-                        } else {
-                            if (button.setTimer > 0) {
-                                var countDown_1 = button.setTimer;
-                                var buttonElement_1 = button.$el.firstElementChild,
-                                    buttonText_1 = buttonElement_1.innerText;
-                                var doTimer_1 = setInterval(function () {
-                                    if (countDown_1 == -1) {
-                                        buttonElement_1.innerText = buttonText_1;
-                                        button.disabled = false;
-                                        clearInterval(doTimer_1);
-                                    } else {
-                                        buttonElement_1.innerText = countDown_1 + ' ' + button.timerText;
-                                    }
-                                    countDown_1--;
-                                }, 1000);
-                            }
-                        }
+                        _this.$dispatch.apply(_this, ['ajax.button.success'].concat([e, button]));
                     }, function (e) {
                         button.disabled = false;
                         console.log(e);

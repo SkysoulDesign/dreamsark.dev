@@ -1,20 +1,26 @@
 import {Character} from "../Abstract/Character";
 
 /**
- * Character: ArtDirector
+ * Character: Editor
  */
-export class ArtDirector extends Character {
+export class Editor extends Character {
 
     public defer:Boolean = true;
     public animator;
 
     models() {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/Editor.json',
         }
     }
 
-    create(models, ...materials) {
+    // textures() {
+    //     return {
+    //         base: '/models/texture.png'
+    //     }
+    // }
+
+    create(models, textures, ...materials) {
 
         let mesh = new THREE.SkinnedMesh(
             models.character,
@@ -36,12 +42,6 @@ export class ArtDirector extends Character {
 
         return mesh;
 
-    }
-
-    material() {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
-        });
     }
 
 }

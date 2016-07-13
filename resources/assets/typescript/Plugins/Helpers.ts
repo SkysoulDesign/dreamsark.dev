@@ -3,7 +3,7 @@
  * @param path
  * @returns {any}
  */
-export var extension = function (path) {
+export var extension = function (path):string {
     return path.slice((path.lastIndexOf(".") - 1 >>> 0) + 2);
 }
 

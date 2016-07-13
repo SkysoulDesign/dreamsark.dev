@@ -1,4 +1,4 @@
 export interface CharacterInterface {
-    create(models:{}, ...materials):THREE.Object3D
+    create(models:{}, textures, ...materials):THREE.Object3D
     material?():THREE.Material
 }

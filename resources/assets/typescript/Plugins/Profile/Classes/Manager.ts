@@ -12,16 +12,18 @@ export class Manager extends THREE.LoadingManager implements BootableInterface {
 
         super(app)
 
+        console.log(this);
+
         this.onLoad = function(){
-            console.log('start Loading');
+            // console.log('start Loading');
         }
 
         this.onError = function(){
-            console.log('failed loading');
+            // console.log('failed loading');
         }
 
         this.onProgress = function(){
-            console.log('finished loading');
+            // console.log('finished loading');
         }
 
     }

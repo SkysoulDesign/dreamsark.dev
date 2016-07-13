@@ -24,10 +24,7 @@ var Director = (function (_super) {
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
-        materials.forEach(function (material) {
-            material.skinning = true;
-        });
-        var mesh = new THREE.SkinnedMesh(models.character, materials[0]);
+        var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
         var action = {};
         var mixer = this.animator.create(mesh);
         action.idle = mixer.clipAction(models.character.animations[0]);

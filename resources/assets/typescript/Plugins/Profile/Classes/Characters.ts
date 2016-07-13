@@ -1,7 +1,7 @@
 import {Character} from "../Abstract/Character";
 import {Components} from "../Abstract/Components";
 import {countKeys} from "../../Helpers";
-import {toCamelCase} from "../../../Helpers";
+import {toCamelCase, extend} from "../../../Helpers";
 
 /**
  * Characters Class
@@ -18,6 +18,7 @@ export class Characters extends Components {
         require('../Characters/ArtDirector'),
         require('../Characters/ScreenWriter'),
         require('../Characters/Director'),
+        require('../Characters/Editor'),
     ]
 
     /**
@@ -60,7 +61,7 @@ export class Characters extends Components {
 
                 character.loaded = false;
 
-                this.initialized[character.name] = character
+                this.initialized[character.name] = character;
 
                 return accept(character);
 
@@ -68,11 +69,31 @@ export class Characters extends Components {
 
             if (character.object.models instanceof Function) {
 
-                this.load(character.object.models(), (models, materials) => {
+                /**
+                 * Load Models
+                 */
+                let items = character.object.models();
+
+                if (character.object.textures instanceof Function)
+                    items = extend(items, character.object.textures());
+
+                this.load(items, (object, materials) => {
+
+                    let textures = {},
+                        geometry = {};
+
+                    for (let i in object) {
+
+                        if (object[i] instanceof THREE.Texture)
+                            textures[i] = object[i];
+                        else
+                            geometry[i] = object[i];
+
+                    }
 
                     character.loaded = true;
                     character.object = character.object.init(
-                        character.object.name, models, materials
+                        character.object.name, geometry, textures, materials
                     )
 
                     this.initialized[character.name] = character
@@ -103,7 +124,7 @@ export class Characters extends Components {
         return new Promise((accept, reject) => {
 
             if (this.initialized.hasOwnProperty(name)) {
-console.log(this.initialized)
+
                 if (!this.initialized[name].loaded) {
 
                     this.initialized[name].force = true;

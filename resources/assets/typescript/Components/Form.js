@@ -82,35 +82,14 @@ var Form = (function () {
             },
             methods: {
                 send: function (e) {
+                    var _this = this;
                     e.preventDefault();
                     if (this.setDisabled == 'yes')
                         this.disabled = true;
                     var button = this;
                     var response = button.$http[button.method](button.action, new FormData(document.querySelector("#" + button.dataFrom)));
                     response.then(function (e) {
-                        var responseData = e.json();
-                        if (responseData.result == undefined || responseData.result != 0) {
-                            if (responseData.message != undefined && responseData.message != '')
-                                alert(responseData.message);
-                            button.disabled = false;
-                        }
-                        else {
-                            if (button.setTimer > 0) {
-                                var countDown_1 = button.setTimer;
-                                var buttonElement_1 = button.$el.firstElementChild, buttonText_1 = buttonElement_1.innerText;
-                                var doTimer_1 = setInterval(function () {
-                                    if (countDown_1 == -1) {
-                                        buttonElement_1.innerText = buttonText_1;
-                                        button.disabled = false;
-                                        clearInterval(doTimer_1);
-                                    }
-                                    else {
-                                        buttonElement_1.innerText = countDown_1 + ' ' + button.timerText;
-                                    }
-                                    countDown_1--;
-                                }, 1000);
-                            }
-                        }
+                        _this.$dispatch.apply(_this, ['ajax.button.success'].concat([e, button]));
                     }, function (e) {
                         button.disabled = false;
                         console.log(e);

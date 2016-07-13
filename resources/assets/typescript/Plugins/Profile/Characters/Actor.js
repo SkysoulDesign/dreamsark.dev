@@ -24,10 +24,7 @@ var Actor = (function (_super) {
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
-        materials.forEach(function (material) {
-            material.skinning = true;
-        });
-        var mesh = new ((_a = THREE.SkinnedMesh).bind.apply(_a, [void 0].concat([models.character], materials)))();
+        var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
         var action = {};
         var mixer = this.animator.create(mesh);
         action.idle = mixer.clipAction(models.character.animations[0]);
@@ -37,7 +34,6 @@ var Actor = (function (_super) {
         mesh.rotation.y = Math.PI;
         console.log(models.character.animations);
         return mesh;
-        var _a;
     };
     Actor.prototype.material = function () {
         return new THREE.MeshBasicMaterial({

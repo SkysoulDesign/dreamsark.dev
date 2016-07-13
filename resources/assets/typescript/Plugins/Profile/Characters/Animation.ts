@@ -16,13 +16,9 @@ export class Animation extends Character {
 
     create(models, ...materials) {
 
-        materials.forEach(function(material){
-            material.skinning = true;
-        })
-
         let mesh = new THREE.SkinnedMesh(
             models.character,
-            materials[0]
+            this.material.get('baseMaterial')
         );
 
         let action = {};

@@ -9,6 +9,7 @@ import {Light} from "./Classes/Light";
 import {Scene} from "./Classes/Scene";
 import {EffectComposer} from "./Classes/EffectComposer";
 import {Compositions} from "./Classes/Compositions";
+import {Loader} from "./Classes/Loader";
 
 window['dreamsark'].exposes({
     THREE: require('three')
@@ -26,6 +27,7 @@ export class Profile extends Plugins {
     private characters:Characters;
     private animator:Animator;
     private light:Light;
+    private loader:Loader;
     private camera:Camera;
     private browser:Browser;
     private effectComposer:EffectComposer;
@@ -43,7 +45,8 @@ export class Profile extends Plugins {
         loader: require('./Classes/Loader'),
         animator: require('./Classes/animator'),
         characters: require('./Classes/Characters'),
-        effectComposer: require('./Classes/EffectComposer'),
+        material: require('./Classes/Material'),
+        effectComposer: require('./Classes/EffectComposer')
     }
 
     constructor(app, canvas) {
@@ -85,6 +88,7 @@ export class Profile extends Plugins {
 
                 requestAnimationFrame(loop);
 
+                this.loader.process();
                 this.controls.update();
                 this.animator.update(time, delta);
                 this.light.update(time, delta);

@@ -25,6 +25,7 @@ var Project = (function (_super) {
     Project.prototype.characters = function () {
         console.log(this.chars);
         return [
+            'editor',
             'director',
             'actor',
             'screen-writer',

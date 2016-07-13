@@ -3,6 +3,7 @@ import {ComposableInterface} from "../Interfaces/ComposableInterface";
 export abstract class AbstractComposition implements ComposableInterface {
 
     boot(app) {
+
     }
 
     characters() {

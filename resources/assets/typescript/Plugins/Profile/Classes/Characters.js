@@ -24,6 +24,7 @@ var Characters = (function (_super) {
             require('../Characters/ArtDirector'),
             require('../Characters/ScreenWriter'),
             require('../Characters/Director'),
+            require('../Characters/Editor'),
         ];
         /**
          * List of Initialized Object
@@ -58,9 +59,22 @@ var Characters = (function (_super) {
                 return accept(character);
             }
             if (character.object.models instanceof Function) {
-                _this.load(character.object.models(), function (models, materials) {
+                /**
+                 * Load Models
+                 */
+                var items = character.object.models();
+                if (character.object.textures instanceof Function)
+                    items = Helpers_2.extend(items, character.object.textures());
+                _this.load(items, function (object, materials) {
+                    var textures = {}, geometry = {};
+                    for (var i in object) {
+                        if (object[i] instanceof THREE.Texture)
+                            textures[i] = object[i];
+                        else
+                            geometry[i] = object[i];
+                    }
                     character.loaded = true;
-                    character.object = character.object.init(character.object.name, models, materials);
+                    character.object = character.object.init(character.object.name, geometry, textures, materials);
                     _this.initialized[character.name] = character;
                     return accept(character);
                 });
@@ -79,7 +93,6 @@ var Characters = (function (_super) {
         name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
             if (_this.initialized.hasOwnProperty(name)) {
-                console.log(_this.initialized);
                 if (!_this.initialized[name].loaded) {
                     _this.initialized[name].force = true;
                     _this.init(name, _this.initialized[name]).then(function (character) {

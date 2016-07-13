@@ -15,6 +15,7 @@ export class Project extends AbstractComposition {
     characters() {
         console.log(this.chars)
         return [
+            'editor',
             'director',
             'actor',
             'screen-writer',

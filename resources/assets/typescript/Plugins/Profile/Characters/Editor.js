@@ -6,23 +6,28 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Character_1 = require("../Abstract/Character");
 /**
- * Character: ArtDirector
+ * Character: Editor
  */
-var ArtDirector = (function (_super) {
-    __extends(ArtDirector, _super);
-    function ArtDirector() {
+var Editor = (function (_super) {
+    __extends(Editor, _super);
+    function Editor() {
         _super.apply(this, arguments);
         this.defer = true;
     }
-    ArtDirector.prototype.models = function () {
+    Editor.prototype.models = function () {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/Editor.json',
         };
     };
-    ArtDirector.prototype.create = function (models) {
+    // textures() {
+    //     return {
+    //         base: '/models/texture.png'
+    //     }
+    // }
+    Editor.prototype.create = function (models, textures) {
         var materials = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            materials[_i - 1] = arguments[_i];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            materials[_i - 2] = arguments[_i];
         }
         var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
         var action = {};
@@ -35,12 +40,7 @@ var ArtDirector = (function (_super) {
         console.log(models.character.animations);
         return mesh;
     };
-    ArtDirector.prototype.material = function () {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
-        });
-    };
-    return ArtDirector;
+    return Editor;
 }(Character_1.Character));
-exports.ArtDirector = ArtDirector;
-//# sourceMappingURL=ArtDirector.js.map
+exports.Editor = Editor;
+//# sourceMappingURL=Editor.js.map

@@ -11,14 +11,15 @@ var Manager = (function (_super) {
     __extends(Manager, _super);
     function Manager(app) {
         _super.call(this, app);
+        console.log(this);
         this.onLoad = function () {
-            console.log('start Loading');
+            // console.log('start Loading');
         };
         this.onError = function () {
-            console.log('failed loading');
+            // console.log('failed loading');
         };
         this.onProgress = function () {
-            console.log('finished loading');
+            // console.log('finished loading');
         };
     }
     Manager.prototype.boot = function (app) {
