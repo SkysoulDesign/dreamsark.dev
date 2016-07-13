@@ -6,37 +6,31 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Character_1 = require("../Abstract/Character");
 /**
- * Character: Designer
+ * Character: ScreenWriter
  */
-var Designer = (function (_super) {
-    __extends(Designer, _super);
-    function Designer() {
+var ScreenWriter = (function (_super) {
+    __extends(ScreenWriter, _super);
+    function ScreenWriter() {
         _super.apply(this, arguments);
         this.defer = true;
     }
-    Designer.prototype.models = function () {
+    ScreenWriter.prototype.models = function () {
         return {
-            // miku: '/models/miku.min.json',
-            man: '/models/Screenwriter.json',
+            character: '/models/ScreenWriter.json',
         };
     };
-    Designer.prototype.create = function (models) {
-        // materials.forEach( function ( material ) {
-        //     material.skinning = true;
-        // } );
+    ScreenWriter.prototype.create = function (models) {
         var materials = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
-        var material = new THREE.MeshStandardMaterial({
-            vertexColors: THREE.VertexColors
+        materials.forEach(function (material) {
+            material.skinning = true;
         });
-        material.skinning = true;
-        var mesh = new THREE.SkinnedMesh(models.man, material);
+        var mesh = new THREE.SkinnedMesh(models.character, materials[0]);
         var action = {};
         var mixer = this.animator.create(mesh);
-        console.log(models.man.animations);
-        action.idle = mixer.clipAction(models.man.animations[0]);
+        action.idle = mixer.clipAction(models.character.animations[0]);
         // action.run   = mixer.clipAction( models.miku.animations[ 1 ] );
         // action.jump  = mixer.clipAction( models.miku.animations[ 2 ] );
         // action.slide = mixer.clipAction( models.miku.animations[ 3 ] );
@@ -63,12 +57,12 @@ var Designer = (function (_super) {
         mesh.rotation.y = Math.PI;
         return mesh;
     };
-    Designer.prototype.material = function () {
+    ScreenWriter.prototype.material = function () {
         return new THREE.MeshBasicMaterial({
             color: 0xff0000, wireframe: true
         });
     };
-    return Designer;
+    return ScreenWriter;
 }(Character_1.Character));
-exports.Designer = Designer;
-//# sourceMappingURL=Designer.js.map
+exports.ScreenWriter = ScreenWriter;
+//# sourceMappingURL=ScreenWriter.js.map

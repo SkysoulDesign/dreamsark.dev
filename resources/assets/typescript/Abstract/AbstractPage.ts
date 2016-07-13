@@ -24,6 +24,6 @@ export abstract class AbstractPage implements PageInterface {
         return !this.is(route);
     }
 
-    abstract boot(app);
+    abstract boot(app, vue);
 
 }

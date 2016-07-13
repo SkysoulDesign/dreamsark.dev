@@ -9,8 +9,8 @@ var __extends = (this && this.__extends) || function (d, b) {
  */
 var Camera = (function (_super) {
     __extends(Camera, _super);
-    function Camera(app) {
-        _super.call(this);
+    function Camera() {
+        _super.apply(this, arguments);
     }
     Camera.prototype.boot = function (app) {
         this.fov = 20;

@@ -2,6 +2,11 @@
 
 namespace DreamsArk\Models\Traits;
 
+/**
+ * Class EnrollableTrait
+ *
+ * @package DreamsArk\Models\Traits
+ */
 trait EnrollableTrait
 {
     /**

@@ -19,5 +19,7 @@ exports.Chart = Chart;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Chart);
+window['dreamsark'].install({
+    Chart: Chart
+});
 //# sourceMappingURL=Chart.js.map

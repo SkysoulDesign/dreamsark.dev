@@ -1,45 +1,35 @@
 import {Character} from "../Abstract/Character";
 
 /**
- * Character: Designer
+ * Character: ScreenWriter
  */
-export class Designer extends Character {
+export class ScreenWriter extends Character {
 
     public defer:Boolean = true;
     public animator;
 
     models() {
         return {
-            // miku: '/models/miku.min.json',
-            man: '/models/Screenwriter.json',
+            character: '/models/ScreenWriter.json',
         }
     }
 
     create(models, ...materials) {
 
-        // materials.forEach( function ( material ) {
-        //     material.skinning = true;
-        // } );
-
-        var material = new THREE.MeshStandardMaterial({
-            vertexColors: THREE.VertexColors
+        materials.forEach(function(material){
+            material.skinning = true;
         })
 
-        material.skinning = true;
-
         let mesh = new THREE.SkinnedMesh(
-            models.man,
-            material
-            // new THREE.MeshFaceMaterial( materials )
+            models.character,
+            materials[0]
         );
 
         let action = {};
 
         let mixer = this.animator.create(mesh);
 
-        console.log(models.man.animations);
-
-        action.idle = mixer.clipAction(models.man.animations[0]);
+        action.idle = mixer.clipAction(models.character.animations[0]);
         // action.run   = mixer.clipAction( models.miku.animations[ 1 ] );
         // action.jump  = mixer.clipAction( models.miku.animations[ 2 ] );
         // action.slide = mixer.clipAction( models.miku.animations[ 3 ] );

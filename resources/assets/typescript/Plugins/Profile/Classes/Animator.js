@@ -11,7 +11,7 @@ var Components_1 = require("../Abstract/Components");
 var Animator = (function (_super) {
     __extends(Animator, _super);
     function Animator() {
-        _super.call(this);
+        _super.apply(this, arguments);
         this.animations = [];
     }
     /**

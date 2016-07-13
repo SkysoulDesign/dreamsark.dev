@@ -10,8 +10,8 @@ export class Browser extends Components {
     public aspect = this.width / this.height;
     public pixelRatio = window.devicePixelRatio;
 
-    constructor() {
-        super();
+    constructor(app) {
+        super(app);
         window.addEventListener('resize', this.resize.bind(this), false);
     }
 

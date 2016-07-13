@@ -10,6 +10,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 // require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
 require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
 //
+/**
+ * Class Controls
+ */
 var Controls = (function (_super) {
     __extends(Controls, _super);
     /**

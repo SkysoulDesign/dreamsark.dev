@@ -1,25 +1,22 @@
 import {Components} from "../Abstract/Components";
 
+/**
+ * Class Light
+ */
 export class Light extends Components {
 
     private scene;
 
-    constructor() {
-        super()
-    }
-
     boot(app) {
+
         this.scene = app.scene;
 
         let light = new THREE.AmbientLight(0xffffff);
-        light.intensity = 3;
-
-        console.log(light);
+            light.intensity = 1.2;
 
         this.scene.add(
             light
         );
-
 
     }
 

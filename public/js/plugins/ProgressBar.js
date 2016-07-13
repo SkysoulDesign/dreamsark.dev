@@ -2465,7 +2465,9 @@ exports.ProgressBar = ProgressBar;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(ProgressBar);
+window['dreamsark'].install({
+    ProgressBar: ProgressBar
+});
 
 
 },{"./Plugins":9,"progressbar.js":3}]},{},[10]);

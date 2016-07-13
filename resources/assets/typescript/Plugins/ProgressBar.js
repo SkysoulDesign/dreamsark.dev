@@ -19,5 +19,7 @@ exports.ProgressBar = ProgressBar;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(ProgressBar);
+window['dreamsark'].install({
+    ProgressBar: ProgressBar
+});
 //# sourceMappingURL=ProgressBar.js.map

@@ -42,13 +42,11 @@ exports.extend = function (defaults, object) {
  * @returns {string}
  */
 exports.toCamelCase = function (str) {
-    return str.toLowerCase()
-        .replace(/['"]/g, '')
-        .replace(/\W+/g, ' ')
-        .replace(/ (.)/g, function ($1) {
-        return $1.toUpperCase();
-    })
-        .replace(/ /g, '');
+    return str.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
+        if (p2)
+            return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
 };
 exports.captalize = function (str) {
     return str.charAt(0).toUpperCase() + str.slice(1);

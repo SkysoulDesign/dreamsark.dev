@@ -13,8 +13,7 @@ require('../../../../../../node_modules/three/examples/js/loaders/FBXLoader');
 var Loader = (function (_super) {
     __extends(Loader, _super);
     function Loader() {
-        _super.call(this);
-        this.fbx = {};
+        _super.apply(this, arguments);
     }
     Loader.prototype.boot = function (app) {
         this.fbx = new THREE.FBXLoader(app.manager);
@@ -23,7 +22,7 @@ var Loader = (function (_super) {
     Loader.prototype.load = function (path, callback) {
         var ext = this[Helpers_1.extension(path)];
         if (this.hasOwnProperty(ext)) {
-            return app.logger.error("Unknown loader", ext);
+            return this.app.logger.error("Unknown loader", ext);
         }
         this[Helpers_1.extension(path)].load(path, callback);
     };

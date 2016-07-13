@@ -17,8 +17,4 @@ export class Camera extends THREE.PerspectiveCamera implements BootableInterface
 
     }
 
-    constructor(app) {
-        super();
-    }
-
 }

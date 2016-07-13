@@ -6,19 +6,24 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Components_1 = require("../Abstract/Components");
 var Helpers_1 = require("../../Helpers");
+var Helpers_2 = require("../../../Helpers");
 /**
  * Characters Class
  */
 var Characters = (function (_super) {
     __extends(Characters, _super);
     function Characters() {
-        _super.call(this);
+        _super.apply(this, arguments);
         /**
          * Characters Collection
          * @type {Character[]}
          */
         this.collection = [
-            require('../Characters/Designer')
+            require('../Characters/Actor'),
+            require('../Characters/Animation'),
+            require('../Characters/ArtDirector'),
+            require('../Characters/ScreenWriter'),
+            require('../Characters/Director'),
         ];
         /**
          * List of Initialized Object
@@ -28,7 +33,6 @@ var Characters = (function (_super) {
     }
     Characters.prototype.boot = function (app) {
         var _this = this;
-        this.app = app;
         this.loader = app.loader;
         this.collection.forEach(function (character) {
             for (var name_1 in character) {
@@ -43,10 +47,11 @@ var Characters = (function (_super) {
     };
     Characters.prototype.init = function (name, character) {
         var _this = this;
+        name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
             if (character.object instanceof Function)
                 character.object = new character.object(_this.app);
-            character.name = name.toLowerCase();
+            character.name = name;
             if (!character.force && character.object.hasOwnProperty('defer') && character.object.defer) {
                 character.loaded = false;
                 _this.initialized[character.name] = character;
@@ -71,15 +76,19 @@ var Characters = (function (_super) {
      */
     Characters.prototype.get = function (name) {
         var _this = this;
-        name = name.toLowerCase();
+        name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
             if (_this.initialized.hasOwnProperty(name)) {
+                console.log(_this.initialized);
                 if (!_this.initialized[name].loaded) {
                     _this.initialized[name].force = true;
                     _this.init(name, _this.initialized[name]).then(function (character) {
                         accept(character.object);
                     });
                 }
+            }
+            else {
+                console.log("There is no character called: " + name);
             }
         });
     };
@@ -104,9 +113,6 @@ var Characters = (function (_super) {
         for (var name_2 in models) {
             _loop_1(name_2);
         }
-    };
-    Characters.prototype.first = function () {
-        return;
     };
     return Characters;
 }(Components_1.Components));

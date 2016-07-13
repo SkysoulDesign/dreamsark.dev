@@ -15,4 +15,6 @@ export class Chart extends Plugins {
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Chart);
+window['dreamsark'].install({
+    Chart
+});

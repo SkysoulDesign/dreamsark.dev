@@ -1,4 +1,4 @@
-import {Components} from "../Abstract/Components";
+import {BootableInterface} from "../../../Interfaces/BootableInterface";
 
 /**
  * Import the TrackballControls
@@ -7,7 +7,10 @@ import {Components} from "../Abstract/Components";
 require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
 //
 
-export class Controls extends THREE.OrbitControls {
+/**
+ * Class Controls
+ */
+export class Controls extends THREE.OrbitControls implements BootableInterface {
 
     /**
      * Mouse Coordinates
@@ -26,6 +29,7 @@ export class Controls extends THREE.OrbitControls {
      * Constructor
      */
     constructor(app) {
+
         super(app.camera, app.canvas);
 
         this.enableDamping = true;

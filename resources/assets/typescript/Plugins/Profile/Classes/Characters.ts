@@ -1,6 +1,7 @@
 import {Character} from "../Abstract/Character";
 import {Components} from "../Abstract/Components";
 import {countKeys} from "../../Helpers";
+import {toCamelCase} from "../../../Helpers";
 
 /**
  * Characters Class
@@ -12,7 +13,11 @@ export class Characters extends Components {
      * @type {Character[]}
      */
     private collection = [
-        require('../Characters/Designer')
+        require('../Characters/Actor'),
+        require('../Characters/Animation'),
+        require('../Characters/ArtDirector'),
+        require('../Characters/ScreenWriter'),
+        require('../Characters/Director'),
     ]
 
     /**
@@ -21,15 +26,9 @@ export class Characters extends Components {
      */
     private initialized = {};
     private loader;
-    private app;
-
-    constructor() {
-        super();
-    }
 
     boot(app) {
 
-        this.app = app;
         this.loader = app.loader;
         this.collection.forEach(character => {
 
@@ -48,12 +47,14 @@ export class Characters extends Components {
 
     init(name:string, character) {
 
+        name = toCamelCase(name);
+
         return new Promise((accept, reject) => {
 
             if (character.object instanceof Function)
                 character.object = new character.object(this.app);
 
-            character.name = name.toLowerCase();
+            character.name = name;
 
             if (!character.force && character.object.hasOwnProperty('defer') && character.object.defer) {
 
@@ -97,26 +98,28 @@ export class Characters extends Components {
      */
     get(name:string) {
 
-        name = name.toLowerCase();
+        name = toCamelCase(name);
 
         return new Promise((accept, reject) => {
 
             if (this.initialized.hasOwnProperty(name)) {
-
+console.log(this.initialized)
                 if (!this.initialized[name].loaded) {
 
                     this.initialized[name].force = true;
 
-                    this.init(name, this.initialized[name]).then(function (character) {
+                    this.init(name, this.initialized[name]).then(function (character:any) {
                         accept(character.object)
                     });
 
                 }
 
-
+            } else {
+                console.log(`There is no character called: ${name}`);
             }
 
         })
+
     }
 
     /**
@@ -145,10 +148,6 @@ export class Characters extends Components {
 
         }
 
-    }
-
-    first() {
-        return;
     }
 
 }

@@ -8,14 +8,19 @@ import {Animator} from "./Classes/Animator";
 import {Light} from "./Classes/Light";
 import {Scene} from "./Classes/Scene";
 import {EffectComposer} from "./Classes/EffectComposer";
+import {Compositions} from "./Classes/Compositions";
 
 window['dreamsark'].exposes({
     THREE: require('three')
 });
 
+/**
+ * Profile Class
+ */
 export class Profile extends Plugins {
 
     private scene:Scene;
+    private compositions:Compositions;
     private renderer:Renderer;
     private controls:Controls;
     private characters:Characters;
@@ -24,13 +29,14 @@ export class Profile extends Plugins {
     private camera:Camera;
     private browser:Browser;
     private effectComposer:EffectComposer;
-    private canvas = <HTMLCanvasElement>document.querySelector('#canvas');
+    private canvas:HTMLCanvasElement;
 
     public components = {
         camera: require('./Classes/Camera'),
         browser: require('./Classes/Browser'),
         controls: require('./Classes/Controls'),
         scene: require('./Classes/Scene'),
+        compositions: require('./Classes/Compositions'),
         light: require('./Classes/Light'),
         renderer: require('./Classes/Renderer'),
         manager: require('./Classes/Manager'),
@@ -40,22 +46,17 @@ export class Profile extends Plugins {
         effectComposer: require('./Classes/EffectComposer'),
     }
 
-    constructor(app) {
+    constructor(app, canvas) {
 
         super();
 
+        if(canvas instanceof String){
+            canvas = <HTMLCanvasElement>document.querySelector(canvas);
+        }
+
+        this.canvas = canvas;
+
         app.bootstrap(this, this.components);
-
-    }
-
-    init() {
-
-        this.characters.get('designer').then(character => {
-                this.scene.add(
-                    <THREE.Object3D>character
-                );
-            }
-        )
 
     }
 
@@ -63,8 +64,8 @@ export class Profile extends Plugins {
      * Start The Interaction
      * @param item
      */
-    start() {
-        this.init();
+    start(composition:string = 'main', ...payload) {
+        this.compositions.start(composition, payload);
         this.animate();
     }
 
@@ -87,6 +88,7 @@ export class Profile extends Plugins {
                 this.controls.update();
                 this.animator.update(time, delta);
                 this.light.update(time, delta);
+                this.compositions.update(time, delta);
                 this.renderer.update(time, delta);
                 // this.effectComposer.update(time, delta);
 
@@ -104,4 +106,6 @@ export class Profile extends Plugins {
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Profile);
+window['dreamsark'].install({
+    Profile
+});

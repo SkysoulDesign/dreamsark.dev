@@ -26,7 +26,7 @@ var Project = (function (_super) {
         this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
     };
     Project.prototype.initCrew = function (e, element) {
-        var animation = this.app.plugin('profile');
+        // console.log(animation)
     };
     return Project;
 }(AbstractPage_1.AbstractPage));

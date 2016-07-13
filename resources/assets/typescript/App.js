@@ -59,11 +59,17 @@ var App = (function () {
      * Install Plugins
      * @param plugin
      */
-    App.prototype.install = function (plugin) {
+    App.prototype.install = function (plugins) {
         var _this = this;
-        this.logger.group("Plugin: " + plugin.name, function (logger) {
-            _this.plugins[plugin.name.toLowerCase()] = new plugin(_this);
-        }, false);
+        var _loop_3 = function(name_2) {
+            this_1.logger.group("Plugin: " + name_2, function (logger) {
+                _this.plugins[name_2.toLowerCase()] = plugins[name_2];
+            }, false);
+        };
+        var this_1 = this;
+        for (var name_2 in plugins) {
+            _loop_3(name_2);
+        }
     };
     /**
      * Get Plugin
@@ -71,11 +77,20 @@ var App = (function () {
      * @returns {any}
      */
     App.prototype.plugin = function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
         name = name.toLowerCase();
         if (this.plugins.hasOwnProperty(name)) {
+            if (this.plugins[name] instanceof Function) {
+                return new ((_a = this.plugins[name]).bind.apply(_a, [void 0].concat([this], args)))();
+            }
+            ;
             return this.plugins[name];
         }
         this.logger.error("Plugin { " + name + " } not found. did you install it already?");
+        var _a;
     };
     /**
      * Helper Function to Init a Page
@@ -139,11 +154,11 @@ var App = (function () {
         /**
          * Register Globally Globaly
          */
-        for (var name_2 in instance) {
-            if (window.hasOwnProperty(name_2)) {
-                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name_2);
+        for (var name_3 in instance) {
+            if (window.hasOwnProperty(name_3)) {
+                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name_3);
             }
-            window[name_2] = instance[name_2];
+            window[name_3] = instance[name_3];
         }
     };
     return App;

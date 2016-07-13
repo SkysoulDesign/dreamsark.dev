@@ -15,4 +15,6 @@ export class ProgressBar extends Plugins {
 /**
  * Auto install itself
  */
-window['dreamsark'].install(ProgressBar);
+window['dreamsark'].install({
+    ProgressBar
+});

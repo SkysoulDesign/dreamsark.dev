@@ -50,13 +50,10 @@ export var extend = (defaults:any, object:any):any => {
  * @returns {string}
  */
 export var toCamelCase = (str:string) => {
-    return str.toLowerCase()
-        .replace(/['"]/g, '')
-        .replace(/\W+/g, ' ')
-        .replace(/ (.)/g, function ($1) {
-            return $1.toUpperCase();
-        })
-        .replace(/ /g, '');
+    return str.replace(/^([A-Z])|[\s-_](\w)/g, function(match, p1, p2, offset) {
+        if (p2) return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
 }
 
 export var captalize = (str:string) => {

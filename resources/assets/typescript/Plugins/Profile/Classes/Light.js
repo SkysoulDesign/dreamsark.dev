@@ -5,16 +5,18 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Components_1 = require("../Abstract/Components");
+/**
+ * Class Light
+ */
 var Light = (function (_super) {
     __extends(Light, _super);
     function Light() {
-        _super.call(this);
+        _super.apply(this, arguments);
     }
     Light.prototype.boot = function (app) {
         this.scene = app.scene;
         var light = new THREE.AmbientLight(0xffffff);
-        light.intensity = 3;
-        console.log(light);
+        light.intensity = 1.2;
         this.scene.add(light);
     };
     Light.prototype.update = function (time, delta) {

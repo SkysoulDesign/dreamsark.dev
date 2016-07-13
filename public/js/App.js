@@ -11587,11 +11587,17 @@ var App = function () {
      * Install Plugins
      * @param plugin
      */
-    App.prototype.install = function (plugin) {
+    App.prototype.install = function (plugins) {
         var _this = this;
-        this.logger.group("Plugin: " + plugin.name, function (logger) {
-            _this.plugins[plugin.name.toLowerCase()] = new plugin(_this);
-        }, false);
+        var _loop_3 = function _loop_3(name_2) {
+            this_1.logger.group("Plugin: " + name_2, function (logger) {
+                _this.plugins[name_2.toLowerCase()] = plugins[name_2];
+            }, false);
+        };
+        var this_1 = this;
+        for (var name_2 in plugins) {
+            _loop_3(name_2);
+        }
     };
     /**
      * Get Plugin
@@ -11599,11 +11605,20 @@ var App = function () {
      * @returns {any}
      */
     App.prototype.plugin = function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
         name = name.toLowerCase();
         if (this.plugins.hasOwnProperty(name)) {
+            if (this.plugins[name] instanceof Function) {
+                return new ((_a = this.plugins[name]).bind.apply(_a, [void 0].concat([this], args)))();
+            }
+            ;
             return this.plugins[name];
         }
         this.logger.error("Plugin { " + name + " } not found. did you install it already?");
+        var _a;
     };
     /**
      * Helper Function to Init a Page
@@ -11668,11 +11683,11 @@ var App = function () {
         /**
          * Register Globally Globaly
          */
-        for (var name_2 in instance) {
-            if (window.hasOwnProperty(name_2)) {
-                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name_2);
+        for (var name_3 in instance) {
+            if (window.hasOwnProperty(name_3)) {
+                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name_3);
             }
-            window[name_2] = instance[name_2];
+            window[name_3] = instance[name_3];
         }
     };
     return App;
@@ -11715,7 +11730,7 @@ var Component = function (_super) {
          * Components list
          * @type ComponentInterface[]
          */
-        this.components = [require('../Components/Nav'), require('../Components/Form'), require('../Components/Ripple'), require('../Components/Statistics'), require('../Components/Progress'), require('../Components/Modal'), require('../Components/Social'), require('../Components/Flipper'), require('../Components/Steps'), require('../Components/Quote'), require('../Components/Profile')];
+        this.components = [require('../Components/Nav'), require('../Components/Form'), require('../Components/Ripple'), require('../Components/Statistics'), require('../Components/Progress'), require('../Components/Modal'), require('../Components/Social'), require('../Components/Flipper'), require('../Components/Steps'), require('../Components/Quote'), require('../Components/Animation')];
         this.components.forEach(function (component) {
             for (var name_1 in component) {
                 if (component.hasOwnProperty(name_1)) {
@@ -11731,7 +11746,7 @@ var Component = function (_super) {
 exports.Component = Component;
 
 
-},{"../Abstract/Aplication":5,"../Components/Flipper":11,"../Components/Form":12,"../Components/Modal":13,"../Components/Nav":14,"../Components/Profile":15,"../Components/Progress":16,"../Components/Quote":17,"../Components/Ripple":18,"../Components/Social":19,"../Components/Statistics":20,"../Components/Steps":21,"vue":3}],8:[function(require,module,exports){
+},{"../Abstract/Aplication":5,"../Components/Animation":11,"../Components/Flipper":12,"../Components/Form":13,"../Components/Modal":14,"../Components/Nav":15,"../Components/Progress":16,"../Components/Quote":17,"../Components/Ripple":18,"../Components/Social":19,"../Components/Statistics":20,"../Components/Steps":21,"vue":3}],8:[function(require,module,exports){
 "use strict";
 
 var Config = function () {
@@ -12035,6 +12050,37 @@ exports.Pages = Pages;
 },{"../Abstract/Aplication":5,"../Helpers":22,"../Pages/Common":23,"../Pages/Project":24,"../Pages/Purchase":25,"../Pages/Test":26,"../Pages/User/Profile":27,"vue":3}],11:[function(require,module,exports){
 "use strict";
 /**
+ * Profiles Component
+ */
+
+var Animation = function () {
+    function Animation() {}
+    Animation.prototype.register = function (vue, app) {
+        vue.component('ark-animation', {
+            template: require('../templates/animation/animation.html'),
+            props: {
+                composition: {
+                    type: String,
+                    required: true
+                },
+                payload: {
+                    type: Array
+                }
+            },
+            ready: function ready() {
+                var animation = app.plugin('profile', this.$el);
+                animation.start.apply(animation, [this.composition].concat(this.payload));
+            }
+        });
+    };
+    return Animation;
+}();
+exports.Animation = Animation;
+
+
+},{"../templates/animation/animation.html":28}],12:[function(require,module,exports){
+"use strict";
+/**
  * Flipper Component
  */
 
@@ -12081,7 +12127,7 @@ var Flipper = function () {
 exports.Flipper = Flipper;
 
 
-},{"../templates/flipper/back.html":28,"../templates/flipper/flipper.html":29,"../templates/flipper/front.html":30}],12:[function(require,module,exports){
+},{"../templates/flipper/back.html":29,"../templates/flipper/flipper.html":30,"../templates/flipper/front.html":31}],13:[function(require,module,exports){
 "use strict";
 
 var Helpers_1 = require("../Helpers");
@@ -12275,7 +12321,7 @@ var Form = function () {
 exports.Form = Form;
 
 
-},{"../Helpers":22,"../templates/form/ajax-button.html":31,"../templates/form/button.html":32,"../templates/form/fields.html":33,"../templates/form/form.html":34,"../templates/form/input.html":35,"vue-resource":2}],13:[function(require,module,exports){
+},{"../Helpers":22,"../templates/form/ajax-button.html":32,"../templates/form/button.html":33,"../templates/form/fields.html":34,"../templates/form/form.html":35,"../templates/form/input.html":36,"vue-resource":2}],14:[function(require,module,exports){
 "use strict";
 /**
  * Form Component
@@ -12318,7 +12364,7 @@ var Modal = function () {
 exports.Modal = Modal;
 
 
-},{"../templates/modal/modal.html":36}],14:[function(require,module,exports){
+},{"../templates/modal/modal.html":37}],15:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -12436,28 +12482,7 @@ var Nav = function () {
 exports.Nav = Nav;
 
 
-},{"../templates/nav/item.html":37,"../templates/nav/nav.html":38,"../templates/nav/tab.html":39}],15:[function(require,module,exports){
-"use strict";
-/**
- * Profiles Component
- */
-
-var Profile = function () {
-    function Profile() {}
-    Profile.prototype.register = function (vue, app) {
-        vue.component('ark-profile', {
-            template: require('../templates/profile/profile.html'),
-            props: {
-                character: String
-            }
-        });
-    };
-    return Profile;
-}();
-exports.Profile = Profile;
-
-
-},{"../templates/profile/profile.html":40}],16:[function(require,module,exports){
+},{"../templates/nav/item.html":38,"../templates/nav/nav.html":39,"../templates/nav/tab.html":40}],16:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -12815,9 +12840,10 @@ exports.extend = function (defaults, object) {
  * @returns {string}
  */
 exports.toCamelCase = function (str) {
-    return str.toLowerCase().replace(/['"]/g, '').replace(/\W+/g, ' ').replace(/ (.)/g, function ($1) {
-        return $1.toUpperCase();
-    }).replace(/ /g, '');
+    return str.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
+        if (p2) return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
 };
 exports.captalize = function (str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -12917,7 +12943,7 @@ var Project = function (_super) {
         this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
     };
     Project.prototype.initCrew = function (e, element) {
-        var animation = this.app.plugin('profile');
+        // console.log(animation)
     };
     return Project;
 }(AbstractPage_1.AbstractPage);
@@ -13054,7 +13080,7 @@ var __extends = undefined && undefined.__extends || function (d, b) {
 };
 var AbstractPage_1 = require("../../Abstract/AbstractPage");
 /**
- * Profile
+ * Profile Class
  */
 var Profile = function (_super) {
     __extends(Profile, _super);
@@ -13084,13 +13110,12 @@ var Profile = function (_super) {
         });
     };
     Profile.prototype.initThreeJs = function () {
-        var animation = this.app.plugin('profile');
+        var animation = this.app.plugin('profile', '#canvas');
         /**
          * Binding Vue
          */
         this.app.ready().then(function (app) {
-            animation.composition('main');
-            animation.start();
+            animation.start('main');
             app.vue({
                 el: '.--profile-pick',
                 data: function data() {
@@ -13116,31 +13141,31 @@ exports.Profile = Profile;
 
 
 },{"../../Abstract/AbstractPage":4}],28:[function(require,module,exports){
-module.exports = '<div :class="class" class="flipper__back +hidden">\n    <slot></slot>\n</div>\n';
+module.exports = '<div :class="class">\n</div>\n';
 },{}],29:[function(require,module,exports){
-module.exports = '<div :class="class" class="flipper">\n    <slot></slot>\n</div>\n';
+module.exports = '<div :class="class" class="flipper__back +hidden">\n    <slot></slot>\n</div>\n';
 },{}],30:[function(require,module,exports){
-module.exports = '<div :class="class" class="flipper__front">\n    <slot></slot>\n</div>\n';
+module.exports = '<div :class="class" class="flipper">\n    <slot></slot>\n</div>\n';
 },{}],31:[function(require,module,exports){
-module.exports = '<div class="form__field">\n    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
+module.exports = '<div :class="class" class="flipper__front">\n    <slot></slot>\n</div>\n';
 },{}],32:[function(require,module,exports){
-module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
+module.exports = '<div class="form__field">\n    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],33:[function(require,module,exports){
-module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
+module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],34:[function(require,module,exports){
-module.exports = '<form :id="id" :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>\n';
+module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],35:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<form :id="id" :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>\n';
 },{}],36:[function(require,module,exports){
-module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],37:[function(require,module,exports){
-module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
+module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],38:[function(require,module,exports){
-module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>\n';
+module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
 },{}],39:[function(require,module,exports){
-module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
+module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>\n';
 },{}],40:[function(require,module,exports){
-module.exports = '<div>test</div>\n';
+module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
 },{}],41:[function(require,module,exports){
 module.exports = '<div class="progress">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="style">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
 },{}],42:[function(require,module,exports){

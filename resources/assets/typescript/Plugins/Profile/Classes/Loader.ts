@@ -8,16 +8,12 @@ require('../../../../../../node_modules/three/examples/js/loaders/FBXLoader');
 
 export class Loader extends Components {
 
-
-    public fbx = {}
+    public fbx;
+    public json;
 
     boot(app) {
         this.fbx = new THREE.FBXLoader(app.manager);
         this.json = new THREE.JSONLoader(app.manager)
-    }
-
-    constructor() {
-        super()
     }
 
     load(path:string, callback:Function) {
@@ -25,7 +21,7 @@ export class Loader extends Components {
         let ext = this[extension(path)];
 
         if (this.hasOwnProperty(ext)) {
-            return app.logger.error(`Unknown loader`, ext);
+            return this.app.logger.error(`Unknown loader`, ext);
         }
 
         this[extension(path)].load(path, callback);

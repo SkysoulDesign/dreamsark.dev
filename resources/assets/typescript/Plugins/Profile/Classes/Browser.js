@@ -7,8 +7,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Components_1 = require("../Abstract/Components");
 var Browser = (function (_super) {
     __extends(Browser, _super);
-    function Browser() {
-        _super.call(this);
+    function Browser(app) {
+        _super.call(this, app);
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         this.aspect = this.width / this.height;

@@ -163,7 +163,9 @@
             <div class="small-12 columns">
                 <section>
 
-                    <ark-profile character="actor"></ark-profile>
+                    <ark-animation composition="project"
+                                   :payload="{{ json_encode($project->enrollable->pluck('expenditurable.profile.name')) }}">
+                    </ark-animation>
 
                 </section>
             </div>
@@ -231,12 +233,5 @@
 @endsection
 
 @push('scripts')
-<script>
-
-    dreamsark.on('nav.tab-crew.click', function (e, element) {
-        console.dir(e)
-        console.dir(element)
-    })
-
-</script>
+<script src="{{ asset('js/plugins/Profile.js') }}"></script>
 @endpush

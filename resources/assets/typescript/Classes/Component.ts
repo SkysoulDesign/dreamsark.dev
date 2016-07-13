@@ -25,7 +25,7 @@ export class Component extends Application {
         require('../Components/Flipper'),
         require('../Components/Steps'),
         require('../Components/Quote'),
-        require('../Components/Profile'),
+        require('../Components/Animation'),
     ];
 
     /**

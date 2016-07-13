@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var AbstractPage_1 = require("../../Abstract/AbstractPage");
 /**
- * Profile
+ * Profile Class
  */
 var Profile = (function (_super) {
     __extends(Profile, _super);
@@ -38,13 +38,12 @@ var Profile = (function (_super) {
         });
     };
     Profile.prototype.initThreeJs = function () {
-        var animation = this.app.plugin('profile');
+        var animation = this.app.plugin('profile', '#canvas');
         /**
          * Binding Vue
          */
         this.app.ready().then(function (app) {
-            animation.composition('main');
-            animation.start();
+            animation.start('main');
             app.vue({
                 el: '.--profile-pick',
                 data: function () {

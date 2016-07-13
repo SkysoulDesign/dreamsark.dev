@@ -1,5 +1,8 @@
 import {BootableInterface} from "../../../Interfaces/BootableInterface";
 
+/**
+ * Class Renderer
+ */
 export class Renderer extends THREE.WebGLRenderer implements BootableInterface {
 
     private scene;
@@ -20,7 +23,6 @@ export class Renderer extends THREE.WebGLRenderer implements BootableInterface {
             this.browser.pixelRatio
         );
         
-
     }
 
     constructor(app) {

@@ -8,16 +8,19 @@ var Plugins_1 = require("../Plugins");
 window['dreamsark'].exposes({
     THREE: require('three')
 });
+/**
+ * Profile Class
+ */
 var Profile = (function (_super) {
     __extends(Profile, _super);
-    function Profile(app) {
+    function Profile(app, canvas) {
         _super.call(this);
-        this.canvas = document.querySelector('#canvas');
         this.components = {
             camera: require('./Classes/Camera'),
             browser: require('./Classes/Browser'),
             controls: require('./Classes/Controls'),
             scene: require('./Classes/Scene'),
+            compositions: require('./Classes/Compositions'),
             light: require('./Classes/Light'),
             renderer: require('./Classes/Renderer'),
             manager: require('./Classes/Manager'),
@@ -26,20 +29,23 @@ var Profile = (function (_super) {
             characters: require('./Classes/Characters'),
             effectComposer: require('./Classes/EffectComposer'),
         };
+        if (canvas instanceof String) {
+            canvas = document.querySelector(canvas);
+        }
+        this.canvas = canvas;
         app.bootstrap(this, this.components);
     }
-    Profile.prototype.init = function () {
-        var _this = this;
-        this.characters.get('designer').then(function (character) {
-            _this.scene.add(character);
-        });
-    };
     /**
      * Start The Interaction
      * @param item
      */
-    Profile.prototype.start = function () {
-        this.init();
+    Profile.prototype.start = function (composition) {
+        if (composition === void 0) { composition = 'main'; }
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
+        this.compositions.start(composition, payload);
         this.animate();
     };
     /**
@@ -55,6 +61,7 @@ var Profile = (function (_super) {
             _this.controls.update();
             _this.animator.update(time, delta);
             _this.light.update(time, delta);
+            _this.compositions.update(time, delta);
             _this.renderer.update(time, delta);
             // this.effectComposer.update(time, delta);
         };
@@ -69,5 +76,7 @@ exports.Profile = Profile;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Profile);
+window['dreamsark'].install({
+    Profile: Profile
+});
 //# sourceMappingURL=Profile.js.map

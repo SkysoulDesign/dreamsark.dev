@@ -73,12 +73,14 @@ class App {
      * Install Plugins
      * @param plugin
      */
-    public install(plugin) {
-        this.logger.group(`Plugin: ${plugin.name}`, logger => {
+    public install(plugins) {
 
-            this.plugins[plugin.name.toLowerCase()] = new plugin(this);
+        for (let name in plugins) {
+            this.logger.group(`Plugin: ${name}`, logger => {
+                this.plugins[name.toLowerCase()] = plugins[name];
+            }, false)
+        }
 
-        }, false)
     }
 
     /**
@@ -86,17 +88,22 @@ class App {
      * @param name
      * @returns {any}
      */
-    public plugin(name:string) {
+    public plugin(name:string, ...args) {
 
         name = name.toLowerCase();
 
         if (this.plugins.hasOwnProperty(name)) {
+
+            if(this.plugins[name] instanceof Function){
+                return new this.plugins[name](this, ...args)
+            };
+
             return this.plugins[name];
+
         }
 
-        console.log(this.plugins);
-
         this.logger.error(`Plugin { ${name} } not found. did you install it already?`);
+
     }
 
     /**

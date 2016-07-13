@@ -2,7 +2,7 @@ import Vue = require("vue");
 import {AbstractPage} from "../../Abstract/AbstractPage";
 
 /**
- * Profile
+ * Profile Class
  */
 export class Profile extends AbstractPage {
 
@@ -44,15 +44,14 @@ export class Profile extends AbstractPage {
 
     initThreeJs() {
 
-        let animation = this.app.plugin('profile');
+        let animation = this.app.plugin('profile', '#canvas');
 
         /**
          * Binding Vue
          */
         this.app.ready().then(function (app) {
 
-            animation.composition('main')
-            animation.start();
+            animation.start('main');
 
             app.vue({
                 el: '.--profile-pick',

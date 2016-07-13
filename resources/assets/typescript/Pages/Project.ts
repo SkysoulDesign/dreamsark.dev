@@ -24,9 +24,7 @@ export class Project extends AbstractPage {
     }
 
     initCrew(e:MouseEvent, element:HTMLElement) {
-
-        let animation = this.app.plugin('profile')
-
+        // console.log(animation)
     }
 
 }

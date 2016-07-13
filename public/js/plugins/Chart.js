@@ -380,7 +380,9 @@ exports.Chart = Chart;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Chart);
+window['dreamsark'].install({
+    Chart: Chart
+});
 
 
 },{"./Plugins":3,"easy-pie-chart":1}],3:[function(require,module,exports){
