@@ -5,9 +5,9 @@ import {ComponentInterface} from "../Interfaces/ComponentInterface";
  */
 export class Nav implements ComponentInterface {
 
-    register(Vue) {
+    register(vue, app) {
 
-        var item = Vue.extend({
+        var item = vue.extend({
             template: require('../templates/nav/item.html'),
             props: {
                 url: {
@@ -26,7 +26,7 @@ export class Nav implements ComponentInterface {
             }
         });
 
-        let tab = Vue.extend({
+        let tab = vue.extend({
             template: require('../templates/nav/tab.html'),
             data: function () {
                 return {
@@ -53,6 +53,9 @@ export class Nav implements ComponentInterface {
                      * Do not scroll on click
                      */
                     e.preventDefault();
+
+                    this.$dispatch('nav.tab.click', ...[e, this.element]);
+
                     this.$parent.selectTab(this.element);
                 }
             },
@@ -63,7 +66,7 @@ export class Nav implements ComponentInterface {
             }
         });
 
-        Vue.component('ark-nav', {
+        vue.component('ark-nav', {
             template: require('../templates/nav/nav.html'),
             props: {
                 class: {
@@ -100,6 +103,9 @@ export class Nav implements ComponentInterface {
 
             ready(){
 
+                this.$emit('nav.tab.click', 'test')
+                this.$emit('test', 'test')
+
                 this.$children.forEach((child, index) => {
 
                     /**
@@ -121,8 +127,8 @@ export class Nav implements ComponentInterface {
 
         });
 
-        Vue.component('ark-item', item);
-        Vue.component('ark-tab', tab);
+        vue.component('ark-item', item);
+        vue.component('ark-tab', tab);
 
     }
 }

@@ -125,12 +125,14 @@ export class Pages extends Application {
              * Plugins
              */
             let obj = this.initPlugins(
-                app.vue()
+                app.vueObject
             );
 
-            new Vue(
+            let vue = new Vue(
                 extend(defaults, obj)
             );
+
+            app.vueInstance = vue;
 
         })
 

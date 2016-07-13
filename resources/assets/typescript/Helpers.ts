@@ -31,7 +31,7 @@ export var popByKey = (data:any[], key:string, defaults?:any):any[] => {
  * @param object
  * @returns {any}
  */
-export var extend = (defaults:{}, object:{}):{} => {
+export var extend = (defaults:any, object:any):any => {
 
     for (let i in object) {
         if (object.hasOwnProperty(i)) {

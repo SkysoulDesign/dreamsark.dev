@@ -4,6 +4,11 @@ namespace DreamsArk\Models\Traits;
 
 use DreamsArk\Models\Project\Project;
 
+/**
+ * Class ProjectableTrait
+ *
+ * @package DreamsArk\Models\Traits
+ */
 trait ProjectableTrait
 {
     /**

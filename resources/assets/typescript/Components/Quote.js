@@ -6,6 +6,9 @@ var Quote = (function () {
     function Quote() {
     }
     Quote.prototype.register = function (vue, app) {
+        /**
+         * @todo bug. when tab is not active, the quote will be display none then when try to get offsetHeight will return 0
+         */
         vue.component('ark-quote', {
             template: require('../templates/quote/quote.html'),
             props: {
@@ -15,7 +18,7 @@ var Quote = (function () {
                 },
                 maxHeight: {
                     type: Number,
-                    default: 500
+                    default: 300
                 },
                 expandText: {
                     type: String,

@@ -6,6 +6,11 @@ import {Application} from "../Abstract/Aplication";
 export class Component extends Application {
 
     /**
+     * @type {{}}
+     */
+    public initialized = {};
+
+    /**
      * Components list
      * @type ComponentInterface[]
      */
@@ -20,6 +25,7 @@ export class Component extends Application {
         require('../Components/Flipper'),
         require('../Components/Steps'),
         require('../Components/Quote'),
+        require('../Components/Profile'),
     ];
 
     /**
@@ -31,10 +37,13 @@ export class Component extends Application {
 
         this.components.forEach(component => {
             for (let name in component) {
-                if (component.hasOwnProperty(name))
-                    (new component[name]).register(
+                if (component.hasOwnProperty(name)) {
+                    let instance = new component[name];
+                    instance.register(
                         require("vue"), app
                     );
+                    this.initialized[name] = instance;
+                }
             }
         })
 

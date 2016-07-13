@@ -3,6 +3,7 @@
 namespace DreamsArk\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 
 /**
  * Class AppServiceProvider
@@ -14,11 +15,14 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * @return void
+     * @param \Illuminate\View\Compilers\BladeCompiler $blade
      */
-    public function boot()
+    public function boot(BladeCompiler $blade)
     {
-
+        $blade->directive('set', function($expression) {
+            list($name, $val) = explode(',', $expression);
+            return "<?php {$name} = {$val}; ?>";
+        });
     }
 
     /**

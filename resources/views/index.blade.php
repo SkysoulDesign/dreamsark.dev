@@ -60,7 +60,7 @@
             </div>
             @endpush
         </ark-tab>
-        <ark-tab content="tab-popular" {{ active('user.profile') }}>
+        <ark-tab content="tab-popular" {{ activeRoute('user.profile') }}>
             @lang('dashboard.popular')
             @push('tab-item')
             <div id="tab-popular" class="row">
@@ -99,7 +99,7 @@
             </div>
             @endpush
         </ark-tab>
-        <ark-tab content="tab-voting" {{ active('user.profile') }}>
+        <ark-tab content="tab-voting" {{ activeRoute('user.profile') }}>
             @lang('dashboard.voting')
             @push('tab-item')
             <div id="tab-voting" class="row">

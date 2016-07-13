@@ -2,14 +2,6 @@
 
   padding-bottom: 5em;
 
-  @include option(margin-top) {
-
-    @include breakpoint(medium up) {
-      margin-top: 2em;
-    }
-
-  }
-
   @include part(featured) {
 
     position: relative;
@@ -171,16 +163,6 @@
         padding-bottom: 1em;
       }
 
-    }
-
-  }
-
-  @include option(tab-comments) {
-
-    @extend .\--margin-top;
-
-    section {
-      margin-bottom: 2.5em;
     }
 
   }

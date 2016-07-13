@@ -5,8 +5,8 @@
 var Nav = (function () {
     function Nav() {
     }
-    Nav.prototype.register = function (Vue) {
-        var item = Vue.extend({
+    Nav.prototype.register = function (vue, app) {
+        var item = vue.extend({
             template: require('../templates/nav/item.html'),
             props: {
                 url: {
@@ -24,7 +24,7 @@ var Nav = (function () {
                 }
             }
         });
-        var tab = Vue.extend({
+        var tab = vue.extend({
             template: require('../templates/nav/tab.html'),
             data: function () {
                 return {
@@ -50,6 +50,7 @@ var Nav = (function () {
                      * Do not scroll on click
                      */
                     e.preventDefault();
+                    this.$dispatch.apply(this, ['nav.tab.click'].concat([e, this.element]));
                     this.$parent.selectTab(this.element);
                 }
             },
@@ -59,7 +60,7 @@ var Nav = (function () {
                 }
             }
         });
-        Vue.component('ark-nav', {
+        vue.component('ark-nav', {
             template: require('../templates/nav/nav.html'),
             props: {
                 class: {
@@ -90,6 +91,8 @@ var Nav = (function () {
                 }
             },
             ready: function () {
+                this.$emit('nav.tab.click', 'test');
+                this.$emit('test', 'test');
                 this.$children.forEach(function (child, index) {
                     /**
                      * If not instance of Tab content wont be available
@@ -104,8 +107,8 @@ var Nav = (function () {
                 });
             }
         });
-        Vue.component('ark-item', item);
-        Vue.component('ark-tab', tab);
+        vue.component('ark-item', item);
+        vue.component('ark-tab', tab);
     };
     return Nav;
 }());

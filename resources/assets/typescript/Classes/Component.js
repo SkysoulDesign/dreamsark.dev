@@ -14,7 +14,12 @@ var Component = (function (_super) {
      * Register Components
      */
     function Component(app) {
+        var _this = this;
         _super.call(this, app);
+        /**
+         * @type {{}}
+         */
+        this.initialized = {};
         /**
          * Components list
          * @type ComponentInterface[]
@@ -30,11 +35,15 @@ var Component = (function (_super) {
             require('../Components/Flipper'),
             require('../Components/Steps'),
             require('../Components/Quote'),
+            require('../Components/Profile'),
         ];
         this.components.forEach(function (component) {
             for (var name_1 in component) {
-                if (component.hasOwnProperty(name_1))
-                    (new component[name_1]).register(require("vue"), app);
+                if (component.hasOwnProperty(name_1)) {
+                    var instance = new component[name_1];
+                    instance.register(require("vue"), app);
+                    _this.initialized[name_1] = instance;
+                }
             }
         });
     }

@@ -8,7 +8,11 @@ import {Config} from "./Classes/Config";
 class App {
 
     public pages;
-    public vueObject = {};
+    public vueObject = {
+        events: {},
+        mixins: []
+    };
+
     public plugins = {};
 
     public config = new Config();
@@ -108,17 +112,21 @@ class App {
      * Extend and get the vue Object
      *
      * @param obj
-     * @returns {{}}
      */
     public vue(obj:{} = {}) {
+        this.vueObject.mixins.push(obj);
+    }
 
-        if (obj.hasOwnProperty('ready')) {
-            console.log('todo: better merge the ready property on vue-js');
-        }
+    /**
+     * Subscribe on event listeners
+     * @param name
+     * @param callback
+     */
+    public on(name:string, callback:Function) {
 
-        return this.vueObject = extend(
-            this.vueObject, obj
-        );
+        this.vueObject.events = extend(this.vueObject.events, {
+            [name]: callback
+        })
 
     }
 

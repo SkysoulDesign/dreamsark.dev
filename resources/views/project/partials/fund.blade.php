@@ -1,22 +1,9 @@
 @push('tabs')
 <ark-nav>
-    <ark-tab content="tab-project" active icon="star">
-        Project
+    <ark-tab content="tab-project" icon="star">
+        @lang('project.project')
         @push('tab-item')
-
-        <div id="tab-project" class="row project-page --margin-top">
-
-            <div class="small-12 align-center columns">
-
-                <ark-steps>
-                    <ark-step description="Idea">1</ark-step>
-                    <ark-step description="Script">2</ark-step>
-                    <ark-step active description="Synapse">3</ark-step>
-                    <ark-step description="Funding">4</ark-step>
-                    <ark-step description="Distribution">5</ark-step>
-                </ark-steps>
-
-            </div>
+        <div id="tab-project" class="row project-page +margin-top">
 
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
 
@@ -168,42 +155,26 @@
         </div>
         @endpush
     </ark-tab>
-    <ark-tab content="tab-idea">
-        Idea
+    <ark-tab active content="tab-crew" icon="users">
+        @lang('project.crew')
         @push('tab-item')
-        <div id="tab-idea" class="row project-page --margin-top">
-            Idea Tab
+        <div id="tab-crew" class="row project-page +margin-top">
+
+            <div class="small-12 columns">
+                <section>
+
+                    <ark-profile character="actor"></ark-profile>
+
+                </section>
+            </div>
+
         </div>
         @endpush
     </ark-tab>
-    <ark-tab content="tab-synapse">
-        Synapse
-        @push('tab-item')
-        <div id="tab-synapse" class="row project-page --margin-top">
-            Synapse Tab
-        </div>
-        @endpush
-    </ark-tab>
-    <ark-tab content="tab-script">
-        Script
-        @push('tab-item')
-        <div id="tab-script" class="row project-page --margin-top">
-            Script Tab
-        </div>
-        @endpush
-    </ark-tab>
-    <ark-tab content="tab-crew">
-        Crew
-        @push('tab-item')
-        <div id="tab-crew" class="row project-page --margin-top">
-            Crew Tab
-        </div>
-        @endpush
-    </ark-tab>
-    <ark-tab content="tab-comments">
+    <ark-tab content="tab-comments" icon="comments">
         Comments
         @push('tab-item')
-        <div id="tab-comments" class="row align-center project-page --tab-comments">
+        <div id="tab-comments" class="row align-center project-page +margin-top">
 
             @foreach(range(1,15) as $index)
                 <section class="small-12 columns">
@@ -258,3 +229,14 @@
 @section('tab-content')
     @stack('tab-item')
 @endsection
+
+@push('scripts')
+<script>
+
+    dreamsark.on('nav.tab.click', function (e, element) {
+        console.dir(e)
+        console.dir(element)
+    })
+
+</script>
+@endpush

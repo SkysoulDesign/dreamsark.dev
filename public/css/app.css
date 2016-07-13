@@ -5,15 +5,18 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  -ms-text-size-adjust: 100%;
+  line-height: 1.15;
   /* 2 */
+  -ms-text-size-adjust: 100%;
+  /* 3 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */ }
+  /* 3 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -226,6 +229,7 @@ input,
 textarea,
 .select,
 select,
+optgroup,
 select,
 textarea {
   font: inherit;
@@ -3732,51 +3736,6 @@ button {
 /**
 * Banner
 */
-/**
-* 100,300,400,500,700,900
-*/
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-thin-webfont.eot");
-  src: url("/fonts/roboto/roboto-thin-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-thin-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-thin-webfont.woff") format("woff"), url("/fonts/roboto/roboto-thin-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-thin-webfont.svg#robotothin") format("svg");
-  font-weight: 100;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-light-webfont.eot");
-  src: url("/fonts/roboto/roboto-light-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-light-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-light-webfont.woff") format("woff"), url("/fonts/roboto/roboto-light-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-light-webfont.svg#robotolight") format("svg");
-  font-weight: 300;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-regular-webfont.eot");
-  src: url("/fonts/roboto/roboto-regular-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-regular-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-regular-webfont.woff") format("woff"), url("/fonts/roboto/roboto-regular-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-regular-webfont.svg#robotoregular") format("svg");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-medium-webfont.eot");
-  src: url("/fonts/roboto/roboto-medium-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-medium-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-medium-webfont.woff") format("woff"), url("/fonts/roboto/roboto-medium-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-medium-webfont.svg#robotomedium") format("svg");
-  font-weight: 500;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-bold-webfont.eot");
-  src: url("/fonts/roboto/roboto-bold-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-bold-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-bold-webfont.woff") format("woff"), url("/fonts/roboto/roboto-bold-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-bold-webfont.svg#robotobold") format("svg");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Roboto';
-  src: url("/fonts/roboto/roboto-black-webfont.eot");
-  src: url("/fonts/roboto/roboto-black-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-black-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-black-webfont.woff") format("woff"), url("/fonts/roboto/roboto-black-webfont.ttf") format("truetype"), url("/fonts/roboto/roboto-black-webfont.svg#robotoblack") format("svg");
-  font-weight: 900;
-  font-style: normal; }
-
 input, .text-area, textarea, .select, select, .input {
   font-size: 1em;
   font-weight: normal;
@@ -4783,6 +4742,9 @@ header, .header {
 #app-root .\+no-margin {
   margin: 0; }
 
+#app-root .\+margin-top {
+  margin-top: 2em; }
+
 #app-root .\+no-margin-top {
   margin-top: 0; }
 
@@ -5022,13 +4984,6 @@ header, .header {
   .divider.\--simple:after {
     margin: 0; }
 
-.social-login ul {
-  list-style: none;
-  padding: 0;
-  margin: 0; }
-  .social-login ul li {
-    display: inline-block; }
-
 .social-login svg {
   transition: transform .1s;
   cursor: pointer;
@@ -5078,6 +5033,8 @@ header, .header {
     flex-direction: row; }
     .ul.\--inline li:not(:nth-child(1)), ul.\--inline li:not(:nth-child(1)) {
       padding-left: 1em; }
+  .ul.\--tight li:not(:nth-child(1)), ul.\--tight li:not(:nth-child(1)) {
+    padding-left: 0; }
   .ul.\--divided li:after, ul.\--divided li:after {
     margin: 0;
     padding: 0;
@@ -5195,7 +5152,7 @@ header, .header {
   display: flex;
   -ms-flex-pack: distribute;
   justify-content: space-around;
-  padding: 0 5em 5em 5em;
+  padding: 0 5em 1.3em 5em;
   position: relative;
   z-index: 1; }
   .steps__step {
@@ -5502,9 +5459,6 @@ header, .header {
 
 .project-page {
   padding-bottom: 5em; }
-  @media screen and (min-width: 40em) {
-    .project-page.\--margin-top, .project-page.\--tab-comments {
-      margin-top: 2em; } }
   .project-page__featured {
     position: relative;
     height: 500px; }
@@ -5583,8 +5537,6 @@ header, .header {
           font-weight: normal; }
       .project-page__info__overlay__spacer {
         padding-bottom: 1em; }
-  .project-page.\--tab-comments section, .project-page.\--tab-comments .comments__item__content {
-    margin-bottom: 2.5em; }
 
 /**
 * Initiate things up

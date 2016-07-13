@@ -100,8 +100,9 @@ var Pages = (function (_super) {
             /**
              * Plugins
              */
-            var obj = _this.initPlugins(app.vue());
-            new Vue(Helpers_1.extend(defaults, obj));
+            var obj = _this.initPlugins(app.vueObject);
+            var vue = new Vue(Helpers_1.extend(defaults, obj));
+            app.vueInstance = vue;
         });
     };
     /**

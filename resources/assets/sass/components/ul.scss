@@ -7,7 +7,9 @@
   align-items: flex-start;
   list-style: none;
 
+
   li {
+
     padding: .2em 0;
 
     @include option(active) {
@@ -25,6 +27,14 @@
     li {
       @include all-but(1) {
         padding-left: 1em;
+      }
+    }
+  }
+
+  @include option(tight) {
+    li {
+      @include all-but(1) {
+        padding-left: 0;
       }
     }
   }

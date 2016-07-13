@@ -7,7 +7,10 @@ var Config_1 = require("./Classes/Config");
  */
 var App = (function () {
     function App() {
-        this.vueObject = {};
+        this.vueObject = {
+            events: {},
+            mixins: []
+        };
         this.plugins = {};
         this.config = new Config_1.Config();
         this.logger = new Logger_1.Logger(this.config);
@@ -93,14 +96,22 @@ var App = (function () {
      * Extend and get the vue Object
      *
      * @param obj
-     * @returns {{}}
      */
     App.prototype.vue = function (obj) {
         if (obj === void 0) { obj = {}; }
-        if (obj.hasOwnProperty('ready')) {
-            console.log('todo: better merge the ready property on vue-js');
-        }
-        return this.vueObject = Helpers_1.extend(this.vueObject, obj);
+        this.vueObject.mixins.push(obj);
+    };
+    /**
+     * Subscribe on event listeners
+     * @param name
+     * @param callback
+     */
+    App.prototype.on = function (name, callback) {
+        this.vueObject.events = Helpers_1.extend(this.vueObject.events, (_a = {},
+            _a[name] = callback,
+            _a
+        ));
+        var _a;
     };
     /**
      * Document Ready

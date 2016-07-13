@@ -1,17 +1,5 @@
 @include component(social-login) {
 
-  ul {
-
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-    }
-
-  }
-
   svg {
 
     transition: transform .1s;
