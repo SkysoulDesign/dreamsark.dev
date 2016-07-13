@@ -94,6 +94,8 @@ class App {
             return this.plugins[name];
         }
 
+        console.log(this.plugins);
+
         this.logger.error(`Plugin { ${name} } not found. did you install it already?`);
     }
 
