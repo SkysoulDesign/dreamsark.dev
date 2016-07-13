@@ -10,7 +10,7 @@ export class Purchase extends AbstractPage {
         'user.purchase.index'
     ]
 
-    boot(app) {
+    boot(vue, app) {
 
         app.vue({
             plugins: [

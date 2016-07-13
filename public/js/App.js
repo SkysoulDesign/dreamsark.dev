@@ -11534,6 +11534,7 @@ var App = function () {
     function App() {
         this.vueObject = {
             events: {},
+            plugins: [],
             mixins: []
         };
         this.plugins = {};
@@ -11628,6 +11629,13 @@ var App = function () {
     App.prototype.vue = function (obj) {
         if (obj === void 0) {
             obj = {};
+        }
+        /**
+         * if Plugins is set Append it to root plugin property
+         */
+        if (obj.hasOwnProperty('plugins')) {
+            this.vueObject.plugins = obj.plugins.concat(this.vueObject.plugins);
+            delete obj.plugins;
         }
         this.vueObject.mixins.push(obj);
     };
@@ -12314,6 +12322,8 @@ exports.Modal = Modal;
 "use strict";
 /**
  * Nav Component
+ * Events nav.tab.selected
+ *        nav.[tab-name].click
  */
 
 var Nav = function () {
@@ -12360,10 +12370,10 @@ var Nav = function () {
             methods: {
                 selectTab: function selectTab(e) {
                     /**
-                     * Do not scroll on click
+                     * If the selected tab is already selected return
                      */
-                    e.preventDefault();
-                    this.$dispatch.apply(this, ['nav.tab.click'].concat([e, this.element]));
+                    if (this.active) return;
+                    this.$dispatch.apply(this, ["nav." + this.content + ".click"].concat([e, this.element]));
                     this.$parent.selectTab(this.element);
                 }
             },
@@ -12391,6 +12401,7 @@ var Nav = function () {
             },
             methods: {
                 selectTab: function selectTab(element) {
+                    this.$dispatch('nav.tab.selected', element);
                     this.$children.forEach(function (child) {
                         if (child.element === element) {
                             child.$set('active', true);
@@ -12903,6 +12914,10 @@ var Project = function (_super) {
             barColor: '#5eb404',
             trackColor: '#e3e3e3'
         });
+        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
+    };
+    Project.prototype.initCrew = function (e, element) {
+        var animation = this.app.plugin('profile');
     };
     return Project;
 }(AbstractPage_1.AbstractPage);
@@ -12930,7 +12945,7 @@ var Purchase = function (_super) {
         _super.apply(this, arguments);
         this.routes = ['user.purchase.index'];
     }
-    Purchase.prototype.boot = function (app) {
+    Purchase.prototype.boot = function (vue, app) {
         app.vue({
             plugins: [require('vue-resource')],
             methods: {
@@ -13074,6 +13089,7 @@ var Profile = function (_super) {
          * Binding Vue
          */
         this.app.ready().then(function (app) {
+            animation.composition('main');
             animation.start();
             app.vue({
                 el: '.--profile-pick',
@@ -13122,7 +13138,7 @@ module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" 
 },{}],38:[function(require,module,exports){
 module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>\n';
 },{}],39:[function(require,module,exports){
-module.exports = '<a href="#{{ content }}" @click="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
+module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
 },{}],40:[function(require,module,exports){
 module.exports = '<div>test</div>\n';
 },{}],41:[function(require,module,exports){

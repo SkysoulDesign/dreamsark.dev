@@ -1,6 +1,8 @@
 "use strict";
 /**
  * Nav Component
+ * Events nav.tab.selected
+ *        nav.[tab-name].click
  */
 var Nav = (function () {
     function Nav() {
@@ -47,10 +49,11 @@ var Nav = (function () {
             methods: {
                 selectTab: function (e) {
                     /**
-                     * Do not scroll on click
+                     * If the selected tab is already selected return
                      */
-                    e.preventDefault();
-                    this.$dispatch.apply(this, ['nav.tab.click'].concat([e, this.element]));
+                    if (this.active)
+                        return;
+                    this.$dispatch.apply(this, ["nav." + this.content + ".click"].concat([e, this.element]));
                     this.$parent.selectTab(this.element);
                 }
             },
@@ -78,6 +81,7 @@ var Nav = (function () {
             },
             methods: {
                 selectTab: function (element) {
+                    this.$dispatch('nav.tab.selected', element);
                     this.$children.forEach(function (child) {
                         if (child.element === element) {
                             child.$set('active', true);

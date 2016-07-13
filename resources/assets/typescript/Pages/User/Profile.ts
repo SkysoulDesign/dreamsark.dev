@@ -51,6 +51,7 @@ export class Profile extends AbstractPage {
          */
         this.app.ready().then(function (app) {
 
+            animation.composition('main')
             animation.start();
 
             app.vue({

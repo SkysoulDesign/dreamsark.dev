@@ -233,7 +233,7 @@
 @push('scripts')
 <script>
 
-    dreamsark.on('nav.tab.click', function (e, element) {
+    dreamsark.on('nav.tab-crew.click', function (e, element) {
         console.dir(e)
         console.dir(element)
     })

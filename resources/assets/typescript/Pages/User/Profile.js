@@ -43,6 +43,7 @@ var Profile = (function (_super) {
          * Binding Vue
          */
         this.app.ready().then(function (app) {
+            animation.composition('main');
             animation.start();
             app.vue({
                 el: '.--profile-pick',

@@ -10,6 +10,7 @@ class App {
     public pages;
     public vueObject = {
         events: {},
+        plugins: [],
         mixins: []
     };
 
@@ -113,7 +114,20 @@ class App {
      *
      * @param obj
      */
-    public vue(obj:{} = {}) {
+    public vue(obj:any = {}) {
+
+        /**
+         * if Plugins is set Append it to root plugin property
+         */
+        if (obj.hasOwnProperty('plugins')) {
+
+            this.vueObject.plugins = obj.plugins.concat(
+                this.vueObject.plugins
+            )
+
+            delete obj.plugins;
+        }
+
         this.vueObject.mixins.push(obj);
     }
 

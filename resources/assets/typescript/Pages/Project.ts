@@ -17,8 +17,15 @@ export class Project extends AbstractPage {
             easing: 'easeOutBounce',
             barColor: '#5eb404',
             trackColor: '#e3e3e3',
-            // your options goes here
         });
+
+        this.app.on('nav.tab-crew.click', this.initCrew.bind(this))
+
+    }
+
+    initCrew(e:MouseEvent, element:HTMLElement) {
+
+        let animation = this.app.plugin('profile')
 
     }
 

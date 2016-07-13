@@ -9,6 +9,7 @@ var App = (function () {
     function App() {
         this.vueObject = {
             events: {},
+            plugins: [],
             mixins: []
         };
         this.plugins = {};
@@ -99,6 +100,13 @@ var App = (function () {
      */
     App.prototype.vue = function (obj) {
         if (obj === void 0) { obj = {}; }
+        /**
+         * if Plugins is set Append it to root plugin property
+         */
+        if (obj.hasOwnProperty('plugins')) {
+            this.vueObject.plugins = obj.plugins.concat(this.vueObject.plugins);
+            delete obj.plugins;
+        }
         this.vueObject.mixins.push(obj);
     };
     /**

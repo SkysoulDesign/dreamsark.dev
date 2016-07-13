@@ -2,6 +2,8 @@ import {ComponentInterface} from "../Interfaces/ComponentInterface";
 
 /**
  * Nav Component
+ * Events nav.tab.selected
+ *        nav.[tab-name].click
  */
 export class Nav implements ComponentInterface {
 
@@ -50,11 +52,12 @@ export class Nav implements ComponentInterface {
                 selectTab(e:MouseEvent){
 
                     /**
-                     * Do not scroll on click
+                     * If the selected tab is already selected return
                      */
-                    e.preventDefault();
+                    if(this.active)
+                        return;
 
-                    this.$dispatch('nav.tab.click', ...[e, this.element]);
+                    this.$dispatch(`nav.${this.content}.click`, ...[e, this.element]);
 
                     this.$parent.selectTab(this.element);
                 }
@@ -85,6 +88,8 @@ export class Nav implements ComponentInterface {
             methods: {
 
                 selectTab: function (element) {
+
+                    this.$dispatch('nav.tab.selected', element);
 
                     this.$children.forEach(function (child) {
 

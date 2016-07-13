@@ -23,6 +23,10 @@ var Project = (function (_super) {
             barColor: '#5eb404',
             trackColor: '#e3e3e3',
         });
+        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
+    };
+    Project.prototype.initCrew = function (e, element) {
+        var animation = this.app.plugin('profile');
     };
     return Project;
 }(AbstractPage_1.AbstractPage));
