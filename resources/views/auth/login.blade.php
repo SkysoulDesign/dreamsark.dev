@@ -1,12 +1,19 @@
 @extends('layouts.master', ['footer' => false])
 
 @section('content')
+    @php
+        $routeName = request()->route()->getName();
+        $flipTagArr = ['front', 'back'];
+        if($routeName == 'register')
+            $flipTagArr = array_reverse($flipTagArr);
+        list($loginTag, $registerTag) = $flipTagArr;
+    @endphp
 
     <div class="login-page">
 
         <ark-flipper class="row align-middle align-right +full-height">
 
-            <ark-flipper-front class="small-12 medium-6 large-4 columns card">
+            <ark-flipper-{{ $loginTag }} class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -43,9 +50,9 @@
                     </div>
                 </div>
 
-            </ark-flipper-front>
+            </ark-flipper-{{ $loginTag }}>
 
-            <ark-flipper-back class="small-12 medium-6 large-4 columns card">
+            <ark-flipper-{{ $registerTag }} class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -86,11 +93,15 @@
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
-                                    <ark-input name="mobile" placeholder="{{ trans('auth.mobile-number') }}"></ark-input>
+                                    <ark-input name="mobile"
+                                               placeholder="{{ trans('auth.mobile-number') }}"></ark-input>
 
                                     <ark-fields>
                                         <ark-input name="code" placeholder="{{ trans('auth.sms-code') }}"></ark-input>
-                                        <ark-ajax-button set-disabled="yes" :set-timer="90" timer-text="{{ trans('general.seconds') }}" method="post" action="{{ route('mobile.send.verify') }}" data-from="mobile-login-form">
+                                        <ark-ajax-button set-disabled="yes" :set-timer="90"
+                                                         timer-text="{{ trans('general.seconds') }}" method="post"
+                                                         action="{{ route('mobile.send.verify') }}"
+                                                         data-from="mobile-login-form">
                                             @lang('auth.send-code')
                                         </ark-ajax-button>
                                     </ark-fields>
@@ -125,7 +136,7 @@
                     </div>
                 </div>
 
-            </ark-flipper-back>
+            </ark-flipper-{{ $registerTag }}>
 
         </ark-flipper>
 
@@ -136,7 +147,7 @@
 
 @push('scripts')
 <script>
-    dreamsark.on('ajax.button.success', function(e, button){
+    dreamsark.on('ajax.button.success', function (e, button) {
         var responseData = e.json();
         if (responseData.result == undefined || responseData.result != 0) {
             if (responseData.message != undefined && responseData.message != '')
@@ -144,13 +155,13 @@
             button.disabled = false;
         } else {
             if (button.setTimer > 0) {
-                let countDown = button.setTimer;
+                let countDown     = button.setTimer;
                 let buttonElement = button.$el.firstElementChild,
-                    buttonText = buttonElement.innerText;
-                let doTimer = setInterval(function () {
+                    buttonText    = buttonElement.innerText;
+                let doTimer       = setInterval(function () {
                     if (countDown == -1) {
                         buttonElement.innerText = buttonText;
-                        button.disabled = false;
+                        button.disabled         = false;
                         clearInterval(doTimer);
                     } else {
                         buttonElement.innerText = countDown + ' ' + button.timerText;
