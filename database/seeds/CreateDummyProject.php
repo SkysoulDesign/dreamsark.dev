@@ -39,11 +39,11 @@ class CreateDummyProject extends Seeder
      */
     public function run()
     {
-        $this->createProject('fund');
-        sleep(2);
-        $this->createProject();
-        sleep(1);
-        $this->createProject('distribute');
+        $stagesArr = ['idea', 'synapse', 'script', 'fund', 'distribute'];
+        for($i=0; $i<=32; $i++) {
+            $result = $this->createProject(array_rand($stagesArr));
+            sleep(1);
+        }
 
     }
 
@@ -52,9 +52,12 @@ class CreateDummyProject extends Seeder
         /**
          * Create Project in Idea Stage
          */
-        $user = $this->createUser();// User::find(2);
+//        $user = $this->createUser();// User::find(2);
+        $user = User::all()->random(1);
+        $faker = app(\Faker\Generator::class);
+        $projectName = $faker->realText(20) . ' - ' . $faker->monthName;
         $fields = array(
-            'name'    => 'My Project - ' . rand(1, 5),
+            'name'    => $projectName,
             'content' => 'This is an Idea',
         );
         $reward = ['idea' => 5];
@@ -64,6 +67,8 @@ class CreateDummyProject extends Seeder
         $project = dispatch(new CreateProjectJob($user, $fields, $reward));
         $projectId = $project->id;
 
+        if ($endStage == 'idea')
+            return $endStage;
         /**
          * Get Project
          */
@@ -84,6 +89,8 @@ class CreateDummyProject extends Seeder
         );
         dispatch(new CreateSynapseJob($project->id, $fields));
 
+        if ($endStage == 'synapse')
+            return $endStage;
         /**
          * Get Project
          */
@@ -104,6 +111,8 @@ class CreateDummyProject extends Seeder
         );
         dispatch(new CreateScriptJob($project->id, $fields));
 
+        if ($endStage == 'script')
+            return $endStage;
         /**
          * Get Project
          */

@@ -6,14 +6,14 @@
 
     <div class="row --fluid">
         <a href="{{ route('project.show', 1) }}" class="small-12 medium-5 project-page__featured">
-            <img src="{{ asset('img/dummy/cover-1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref05.jpg') }}" alt="">
             <div class="project-page__featured__overlay">
                 <h1>The Avangers</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
         <a href="#" class="small-12 medium-4 project-page__featured">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref00.jpg') }}" alt="">
             <div class="project-page__featured__overlay">
                 <h1>The Jungle Book</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -22,14 +22,14 @@
         <div class="small-12 medium-3">
             <div class="row">
                 <a href="#" class="small-12 medium-12 project-page__featured --half">
-                    <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+                    <img src="{{ asset('img/temp/movies/dreamsarkMref01.jpg') }}" alt="">
                     <div class="project-page__featured__overlay">
                         <h1>The Jungle Book</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </a>
                 <a href="#" class="small-12 medium-12 project-page__featured --half">
-                    <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+                    <img src="{{ asset('img/temp/movies/dreamsarkMref14.jpg') }}" alt="">
                     <div class="project-page__featured__overlay">
                         <h1>The Jungle Book</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -41,28 +41,28 @@
 
     <div class="row project-page__highlights +hidden-on-mobile">
         <a class="small-3 columns">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref10.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
         <a class="small-3 columns">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref04.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
         <a class="small-3 columns">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref21.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
         <a class="small-3 columns">
-            <img src="{{ asset('img/temp/1.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/dreamsarkMref32.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -83,9 +83,9 @@
 
             <div class="row align-center project-page__list">
 
-                @foreach($projects as $project)
+                @foreach($projects as $index => $project)
                     <div href="#" class="small-12 medium-3 columns project-page__list__item">
-                        <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
+                        <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}" alt="">
                         <a href="{{ route('project.show', $project) }}">
                             <h1>{{ $project->name }}</h1>
                         </a>
