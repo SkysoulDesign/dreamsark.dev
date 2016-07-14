@@ -17,10 +17,10 @@ var Profile = (function (_super) {
         ];
     }
     Profile.prototype.boot = function () {
-        this.noIdeaWhatsIsIt();
+        // this.initProfileSelection();
         this.initThreeJs();
     };
-    Profile.prototype.noIdeaWhatsIsIt = function () {
+    Profile.prototype.initProfileSelection = function () {
         /**
          * Handle The Display of The Profile Selection
          *
@@ -38,30 +38,33 @@ var Profile = (function (_super) {
         });
     };
     Profile.prototype.initThreeJs = function () {
-        var animation = this.app.plugin('profile', '#canvas');
+        // let animation = this.app.plugin('profile', '#canvas');
+        //     animation.start('project');
         /**
          * Binding Vue
          */
-        this.app.ready().then(function (app) {
-            animation.start('main');
-            app.vue({
-                el: '.--profile-pick',
-                data: function () {
-                    return {
-                        position: 'Designer'
-                    };
-                },
-                methods: {
-                    selectProfile: function (e) {
-                        var element = e.toElement;
-                        if (element.className === 'project-page__palette__item') {
-                            console.log("Selected Character: " + element.dataset['position']);
-                            this.position = element.dataset['position'];
-                        }
-                    }
-                }
-            });
-        });
+        // this.app.vue({
+        //     el: '#vueRoot',
+        //     data: function () {
+        //         return {
+        //             position: 'Designer'
+        //         }
+        //     },
+        //     methods: {
+        //         selectProfile: function (e:MouseEvent) {
+        //
+        //             let element = <HTMLElement>e.toElement;
+        //
+        //             if (element.className === 'project-page__palette__item') {
+        //
+        //                 console.log(`Selected Character: ${element.dataset['position']}`);
+        //                 this.position = element.dataset['position'];
+        //
+        //             }
+        //
+        //         }
+        //     }
+        // });
     };
     return Profile;
 }(AbstractPage_1.AbstractPage));

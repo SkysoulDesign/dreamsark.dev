@@ -1410,7 +1410,7 @@ module.exports = plugin;
 },{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.26
+ * Vue.js v1.0.25
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -4820,7 +4820,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if ((isA || isO) && Object.isExtensible(val)) {
+  if (isA || isO) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -6306,13 +6306,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
-    if (!inDoc(el)) {
-      nextTick(this.forceUpdate);
-    }
   },
 
   update: function update(value) {
     var el = this.el;
+    if (!inDoc(el)) {
+      return nextTick(this.forceUpdate);
+    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -11260,13 +11260,7 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    var length = args.length;
-    if (length > 1) {
-      var index = value % 10 - 1;
-      return index in args ? args[index] : args[length - 1];
-    } else {
-      return args[0] + (value === 1 ? '' : 's');
-    }
+    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
   },
 
   /**
@@ -11468,7 +11462,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.26';
+Vue.version = '1.0.25';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -12059,6 +12053,7 @@ var Animation = function () {
         vue.component('ark-animation', {
             template: require('../templates/animation/animation.html'),
             props: {
+                class: String,
                 composition: {
                     type: String,
                     required: true
@@ -13082,10 +13077,10 @@ var Profile = function (_super) {
         this.routes = ['user.profile.create'];
     }
     Profile.prototype.boot = function () {
-        this.noIdeaWhatsIsIt();
+        // this.initProfileSelection();
         this.initThreeJs();
     };
-    Profile.prototype.noIdeaWhatsIsIt = function () {
+    Profile.prototype.initProfileSelection = function () {
         /**
          * Handle The Display of The Profile Selection
          *
@@ -13103,30 +13098,33 @@ var Profile = function (_super) {
         });
     };
     Profile.prototype.initThreeJs = function () {
-        var animation = this.app.plugin('profile', '#canvas');
+        // let animation = this.app.plugin('profile', '#canvas');
+        //     animation.start('project');
         /**
          * Binding Vue
          */
-        this.app.ready().then(function (app) {
-            animation.start('main');
-            app.vue({
-                el: '.--profile-pick',
-                data: function data() {
-                    return {
-                        position: 'Designer'
-                    };
-                },
-                methods: {
-                    selectProfile: function selectProfile(e) {
-                        var element = e.toElement;
-                        if (element.className === 'project-page__palette__item') {
-                            console.log("Selected Character: " + element.dataset['position']);
-                            this.position = element.dataset['position'];
-                        }
-                    }
-                }
-            });
-        });
+        // this.app.vue({
+        //     el: '#vueRoot',
+        //     data: function () {
+        //         return {
+        //             position: 'Designer'
+        //         }
+        //     },
+        //     methods: {
+        //         selectProfile: function (e:MouseEvent) {
+        //
+        //             let element = <HTMLElement>e.toElement;
+        //
+        //             if (element.className === 'project-page__palette__item') {
+        //
+        //                 console.log(`Selected Character: ${element.dataset['position']}`);
+        //                 this.position = element.dataset['position'];
+        //
+        //             }
+        //
+        //         }
+        //     }
+        // });
     };
     return Profile;
 }(AbstractPage_1.AbstractPage);
@@ -13134,7 +13132,7 @@ exports.Profile = Profile;
 
 
 },{"../../Abstract/AbstractPage":4}],28:[function(require,module,exports){
-module.exports = '<div :class="class">\n</div>\n';
+module.exports = '<div :class="class"></div>\n';
 },{}],29:[function(require,module,exports){
 module.exports = '<div :class="class" class="flipper">\n    <slot></slot>\n</div>\n';
 },{}],30:[function(require,module,exports){

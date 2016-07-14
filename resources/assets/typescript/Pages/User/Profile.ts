@@ -12,12 +12,12 @@ export class Profile extends AbstractPage {
 
     boot() {
 
-        this.noIdeaWhatsIsIt();
+        // this.initProfileSelection();
         this.initThreeJs();
 
     }
 
-    noIdeaWhatsIsIt() {
+    initProfileSelection() {
 
         /**
          * Handle The Display of The Profile Selection
@@ -44,39 +44,35 @@ export class Profile extends AbstractPage {
 
     initThreeJs() {
 
-        let animation = this.app.plugin('profile', '#canvas');
+        // let animation = this.app.plugin('profile', '#canvas');
+        //     animation.start('project');
 
         /**
          * Binding Vue
          */
-        this.app.ready().then(function (app) {
+        // this.app.vue({
+        //     el: '#vueRoot',
+        //     data: function () {
+        //         return {
+        //             position: 'Designer'
+        //         }
+        //     },
+        //     methods: {
+        //         selectProfile: function (e:MouseEvent) {
+        //
+        //             let element = <HTMLElement>e.toElement;
+        //
+        //             if (element.className === 'project-page__palette__item') {
+        //
+        //                 console.log(`Selected Character: ${element.dataset['position']}`);
+        //                 this.position = element.dataset['position'];
+        //
+        //             }
+        //
+        //         }
+        //     }
+        // });
 
-            animation.start('main');
-
-            app.vue({
-                el: '.--profile-pick',
-                data: function () {
-                    return {
-                        position: 'Designer'
-                    }
-                },
-                methods: {
-                    selectProfile: function (e:MouseEvent) {
-
-                        let element = <HTMLElement>e.toElement;
-
-                        if (element.className === 'project-page__palette__item') {
-
-                            console.log(`Selected Character: ${element.dataset['position']}`);
-                            this.position = element.dataset['position'];
-
-                        }
-
-                    }
-                }
-            });
-
-        })
 
     }
 

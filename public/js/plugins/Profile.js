@@ -46348,6 +46348,62 @@ THREE.SSAOShader = {
 },{}],10:[function(require,module,exports){
 "use strict";
 /**
+ * For Loop
+ */
+
+exports.forEach = function (array, callback, scope) {
+    for (var i = 0; i < array.length; i++) {
+        callback.call(scope, i, array[i]);
+    }
+};
+/**
+ * Pop array by key name
+ *
+ * @param data
+ * @param key
+ * @returns any[]
+ */
+exports.popByKey = function (data, key, defaults) {
+    if (!data.hasOwnProperty(key)) return defaults;
+    var value = data[key];
+    delete data[key];
+    return value;
+};
+/**
+ * Extend Object
+ *
+ * @param defaults
+ * @param object
+ * @returns {any}
+ */
+exports.extend = function (defaults, object) {
+    for (var i in object) {
+        if (object.hasOwnProperty(i)) {
+            defaults[i] = object[i];
+        }
+    }
+    return defaults;
+};
+/**
+ * Convert String to CamelCase
+ *
+ * @param str
+ * @returns {string}
+ */
+exports.toCamelCase = function (str) {
+    return str.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
+        if (p2) return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
+};
+exports.captalize = function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+
+},{}],11:[function(require,module,exports){
+"use strict";
+/**
  * Get Extension of file thought the path
  * @param path
  * @returns {any}
@@ -46364,7 +46420,7 @@ exports.countKeys = function (object) {
 };
 
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 var Plugins = function () {
@@ -46377,15 +46433,77 @@ var Plugins = function () {
 exports.Plugins = Plugins;
 
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
+/**
+ * Abstract Material
+ */
+
+var AbstractAnimation = function () {
+    function AbstractAnimation() {}
+    AbstractAnimation.prototype.boot = function (app) {
+        this.app = app;
+    };
+    ;
+    return AbstractAnimation;
+}();
+exports.AbstractAnimation = AbstractAnimation;
+
+
+},{}],14:[function(require,module,exports){
+"use strict";
+
+var AbstractComposition = function () {
+    function AbstractComposition() {}
+    AbstractComposition.prototype.boot = function (app) {};
+    AbstractComposition.prototype.characters = function () {
+        return false;
+    };
+    AbstractComposition.prototype.setup = function (app) {
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
+    };
+    ;
+    AbstractComposition.prototype.update = function (scene, camera, characters, time, delta) {};
+    return AbstractComposition;
+}();
+exports.AbstractComposition = AbstractComposition;
+
+
+},{}],15:[function(require,module,exports){
+"use strict";
+/**
+ * Abstract Material
+ */
+
+var AbstractMaterial = function () {
+    function AbstractMaterial() {}
+    AbstractMaterial.prototype.boot = function (app) {
+        this.app = app;
+    };
+    ;
+    return AbstractMaterial;
+}();
+exports.AbstractMaterial = AbstractMaterial;
+
+
+},{}],16:[function(require,module,exports){
+"use strict";
+/**
+ * Character Class
+ */
 
 var Character = function () {
     function Character(app) {
+        this.defer = true;
         this.animator = app.animator;
+        this.animation = app.animation;
+        this.material = app.material;
     }
-    Character.prototype.init = function (name, models, materials) {
-        var character = this.create(models, materials);
+    Character.prototype.init = function (name, models, textures, materials) {
+        var character = this.create(models, textures, materials);
         character.name = name;
         return character;
     };
@@ -46394,18 +46512,203 @@ var Character = function () {
 exports.Character = Character;
 
 
-},{}],13:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 var Components = function () {
-    function Components() {}
+    function Components(app) {
+        this.app = app;
+    }
     Components.prototype.boot = function (app) {};
     return Components;
 }();
 exports.Components = Components;
 
 
-},{}],14:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AbstractAnimation_1 = require("../Abstract/AbstractAnimation");
+/**
+ * BaseAnimation Class
+ */
+var BaseAnimation = function (_super) {
+    __extends(BaseAnimation, _super);
+    function BaseAnimation() {
+        _super.apply(this, arguments);
+    }
+    BaseAnimation.prototype.animations = function () {
+        return {
+            base: '/animations/BaseAnimation.anim'
+        };
+    };
+    BaseAnimation.prototype.configure = function (animations) {
+        return animations;
+    };
+    return BaseAnimation;
+}(AbstractAnimation_1.AbstractAnimation);
+exports.BaseAnimation = BaseAnimation;
+
+
+},{"../Abstract/AbstractAnimation":13}],19:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: THREEDArtist
+ */
+var THREEDArtist = function (_super) {
+    __extends(THREEDArtist, _super);
+    function THREEDArtist() {
+        _super.apply(this, arguments);
+    }
+    THREEDArtist.prototype.models = function () {
+        return {
+            character: '/models/3DArtist.json'
+        };
+    };
+    return THREEDArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.THREEDArtist = THREEDArtist;
+
+
+},{"./BaseCharacter":24}],20:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Actor
+ */
+var Actor = function (_super) {
+    __extends(Actor, _super);
+    function Actor() {
+        _super.apply(this, arguments);
+    }
+    Actor.prototype.models = function () {
+        return {
+            character: '/models/Actor.json'
+        };
+    };
+    return Actor;
+}(BaseCharacter_1.BaseCharacter);
+exports.Actor = Actor;
+
+
+},{"./BaseCharacter":24}],21:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Actress
+ */
+var Actress = function (_super) {
+    __extends(Actress, _super);
+    function Actress() {
+        _super.apply(this, arguments);
+    }
+    Actress.prototype.models = function () {
+        return {
+            character: '/models/Actress.json'
+        };
+    };
+    return Actress;
+}(BaseCharacter_1.BaseCharacter);
+exports.Actress = Actress;
+
+
+},{"./BaseCharacter":24}],22:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Animation
+ */
+var Animation = function (_super) {
+    __extends(Animation, _super);
+    function Animation() {
+        _super.apply(this, arguments);
+    }
+    Animation.prototype.models = function () {
+        return {
+            character: '/models/Animation.json'
+        };
+    };
+    return Animation;
+}(BaseCharacter_1.BaseCharacter);
+exports.Animation = Animation;
+
+
+},{"./BaseCharacter":24}],23:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ArtDirector
+ */
+var ArtDirector = function (_super) {
+    __extends(ArtDirector, _super);
+    function ArtDirector() {
+        _super.apply(this, arguments);
+    }
+    ArtDirector.prototype.models = function () {
+        return {
+            character: '/models/ArtDirector.json'
+        };
+    };
+    return ArtDirector;
+}(BaseCharacter_1.BaseCharacter);
+exports.ArtDirector = ArtDirector;
+
+
+},{"./BaseCharacter":24}],24:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46417,75 +46720,819 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Character_1 = require("../Abstract/Character");
-/**
- * Character: Designer
- */
-var Designer = function (_super) {
-    __extends(Designer, _super);
-    function Designer() {
+var BaseCharacter = function (_super) {
+    __extends(BaseCharacter, _super);
+    function BaseCharacter() {
         _super.apply(this, arguments);
-        this.defer = true;
     }
-    Designer.prototype.models = function () {
-        return {
-            // miku: '/models/miku.min.json',
-            man: '/models/Screenwriter.json'
-        };
-    };
-    Designer.prototype.create = function (models) {
-        // materials.forEach( function ( material ) {
-        //     material.skinning = true;
-        // } );
+    BaseCharacter.prototype.create = function (models) {
         var materials = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
-        var material = new THREE.MeshStandardMaterial({
-            vertexColors: THREE.VertexColors
+        var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
+        var actions = {},
+            mixer = this.animator.create(mesh);
+        this.animation.get('baseAnimation', models.character.bones, mixer).then(function (animations) {
+            animations.base.idle.play();
+            animations.base.lookAround.play();
         });
-        material.skinning = true;
-        var mesh = new THREE.SkinnedMesh(models.man, material);
-        var action = {};
-        var mixer = this.animator.create(mesh);
-        console.log(models.man.animations);
-        action.idle = mixer.clipAction(models.man.animations[0]);
-        // action.run   = mixer.clipAction( models.miku.animations[ 1 ] );
-        // action.jump  = mixer.clipAction( models.miku.animations[ 2 ] );
-        // action.slide = mixer.clipAction( models.miku.animations[ 3 ] );
-        action.idle.setEffectiveWeight(1);
-        // action.run.setEffectiveWeight( 1 );
-        // action.jump.setEffectiveWeight( 1 );
-        // action.slide.setEffectiveWeight( 1 );
-        // action.jump.setLoop( THREE.LoopOnce, 0 );
-        // action.slide.setLoop( THREE.LoopOnce, 0 );
-        // action.jump.clampWhenFinished = true;
-        // action.slide.clampWhenFinished = true;
-        action.idle.play();
-        // action.idle.setEffectiveWeight(1);
-        //http://yomotsu.net/blog/2015/10/31/three-r73-anim.html
-        // action.jump.setLoop(THREE.LoopOnce, 0);
-        // action.slide.setLoop(THREE.LoopOnce, 0);
-        // action.jump.clampWhenFinished = true;
-        // action.slide.clampWhenFinished = true;
-        // let mesh = new THREE.SkinnedMesh(object, material);
-        // console.log(mesh.animations)
-        // let animation = new THREE.Animation(model, model.animations);
+        /**
+         * Play All Animations
+         */
+        models.character.animations.forEach(function (animation) {
+            actions[animation.name] = mixer.clipAction(animation);
+            actions[animation.name].play();
+        });
         mesh.position.setY(-25);
-        // mesh.position.setZ(-50)
         mesh.rotation.y = Math.PI;
+        //         var text = document.createElement('div');
+        //         text.style.position = 'absolute';
+        //         text.style.color = 'black';
+        //         text.innerHTML = 'Oh hai!';
+        // //
+        //         text.style.left = mesh.position.x + 'px';
+        //         text.style.top = mesh.position.y + 'px';
+        //
+        //         document.body.appendChild(text)
         return mesh;
     };
-    Designer.prototype.material = function () {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
+    return BaseCharacter;
+}(Character_1.Character);
+exports.BaseCharacter = BaseCharacter;
+
+
+},{"../Abstract/Character":16}],25:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: CameraDirector
+ */
+var CameraDirector = function (_super) {
+    __extends(CameraDirector, _super);
+    function CameraDirector() {
+        _super.apply(this, arguments);
+    }
+    CameraDirector.prototype.models = function () {
+        return {
+            character: '/models/CameraDirector.json'
+        };
+    };
+    return CameraDirector;
+}(BaseCharacter_1.BaseCharacter);
+exports.CameraDirector = CameraDirector;
+
+
+},{"./BaseCharacter":24}],26:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ConceptArtist
+ */
+var ConceptArtist = function (_super) {
+    __extends(ConceptArtist, _super);
+    function ConceptArtist() {
+        _super.apply(this, arguments);
+    }
+    ConceptArtist.prototype.models = function () {
+        return {
+            character: '/models/ConceptArtist.json'
+        };
+    };
+    return ConceptArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.ConceptArtist = ConceptArtist;
+
+
+},{"./BaseCharacter":24}],27:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: CostumeDesigner
+ */
+var CostumeDesigner = function (_super) {
+    __extends(CostumeDesigner, _super);
+    function CostumeDesigner() {
+        _super.apply(this, arguments);
+    }
+    CostumeDesigner.prototype.models = function () {
+        return {
+            character: '/models/CostumeDesigner.json'
+        };
+    };
+    return CostumeDesigner;
+}(BaseCharacter_1.BaseCharacter);
+exports.CostumeDesigner = CostumeDesigner;
+
+
+},{"./BaseCharacter":24}],28:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Director
+ */
+var Director = function (_super) {
+    __extends(Director, _super);
+    function Director() {
+        _super.apply(this, arguments);
+    }
+    Director.prototype.models = function () {
+        return {
+            character: '/models/Director.json'
+        };
+    };
+    return Director;
+}(BaseCharacter_1.BaseCharacter);
+exports.Director = Director;
+
+
+},{"./BaseCharacter":24}],29:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Editor
+ */
+var Editor = function (_super) {
+    __extends(Editor, _super);
+    function Editor() {
+        _super.apply(this, arguments);
+    }
+    Editor.prototype.models = function () {
+        return {
+            character: '/models/Editor.json'
+        };
+    };
+    return Editor;
+}(BaseCharacter_1.BaseCharacter);
+exports.Editor = Editor;
+
+
+},{"./BaseCharacter":24}],30:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Effects
+ */
+var Effects = function (_super) {
+    __extends(Effects, _super);
+    function Effects() {
+        _super.apply(this, arguments);
+    }
+    Effects.prototype.models = function () {
+        return {
+            character: '/models/Effects.json'
+        };
+    };
+    return Effects;
+}(BaseCharacter_1.BaseCharacter);
+exports.Effects = Effects;
+
+
+},{"./BaseCharacter":24}],31:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ExecutiveProducer
+ */
+var ExecutiveProducer = function (_super) {
+    __extends(ExecutiveProducer, _super);
+    function ExecutiveProducer() {
+        _super.apply(this, arguments);
+    }
+    ExecutiveProducer.prototype.models = function () {
+        return {
+            character: '/models/ExecutiveProducer.json'
+        };
+    };
+    return ExecutiveProducer;
+}(BaseCharacter_1.BaseCharacter);
+exports.ExecutiveProducer = ExecutiveProducer;
+
+
+},{"./BaseCharacter":24}],32:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: LightingArtist
+ */
+var LightingArtist = function (_super) {
+    __extends(LightingArtist, _super);
+    function LightingArtist() {
+        _super.apply(this, arguments);
+    }
+    LightingArtist.prototype.models = function () {
+        return {
+            character: '/models/LightingArtist.json'
+        };
+    };
+    return LightingArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.LightingArtist = LightingArtist;
+
+
+},{"./BaseCharacter":24}],33:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: PackagingDesigner
+ */
+var PackagingDesigner = function (_super) {
+    __extends(PackagingDesigner, _super);
+    function PackagingDesigner() {
+        _super.apply(this, arguments);
+    }
+    PackagingDesigner.prototype.models = function () {
+        return {
+            character: '/models/PackagingDesigner.json'
+        };
+    };
+    return PackagingDesigner;
+}(BaseCharacter_1.BaseCharacter);
+exports.PackagingDesigner = PackagingDesigner;
+
+
+},{"./BaseCharacter":24}],34:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: PreStageProjectCoordinator
+ */
+var PreStageProjectCoordinator = function (_super) {
+    __extends(PreStageProjectCoordinator, _super);
+    function PreStageProjectCoordinator() {
+        _super.apply(this, arguments);
+    }
+    PreStageProjectCoordinator.prototype.models = function () {
+        return {
+            character: '/models/PreStageProjectCoordinator.json'
+        };
+    };
+    return PreStageProjectCoordinator;
+}(BaseCharacter_1.BaseCharacter);
+exports.PreStageProjectCoordinator = PreStageProjectCoordinator;
+
+
+},{"./BaseCharacter":24}],35:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ProjectCoordinator
+ */
+var ProjectCoordinator = function (_super) {
+    __extends(ProjectCoordinator, _super);
+    function ProjectCoordinator() {
+        _super.apply(this, arguments);
+    }
+    ProjectCoordinator.prototype.models = function () {
+        return {
+            character: '/models/ProjectCoordinator.json'
+        };
+    };
+    return ProjectCoordinator;
+}(BaseCharacter_1.BaseCharacter);
+exports.ProjectCoordinator = ProjectCoordinator;
+
+
+},{"./BaseCharacter":24}],36:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: Prop
+ */
+var Prop = function (_super) {
+    __extends(Prop, _super);
+    function Prop() {
+        _super.apply(this, arguments);
+    }
+    Prop.prototype.models = function () {
+        return {
+            character: '/models/Prop.json'
+        };
+    };
+    return Prop;
+}(BaseCharacter_1.BaseCharacter);
+exports.Prop = Prop;
+
+
+},{"./BaseCharacter":24}],37:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: RecordingArtist
+ */
+var RecordingArtist = function (_super) {
+    __extends(RecordingArtist, _super);
+    function RecordingArtist() {
+        _super.apply(this, arguments);
+    }
+    RecordingArtist.prototype.models = function () {
+        return {
+            character: '/models/RecordingArtist.json'
+        };
+    };
+    return RecordingArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.RecordingArtist = RecordingArtist;
+
+
+},{"./BaseCharacter":24}],38:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: RenderAndComposite
+ */
+var RenderAndComposite = function (_super) {
+    __extends(RenderAndComposite, _super);
+    function RenderAndComposite() {
+        _super.apply(this, arguments);
+    }
+    RenderAndComposite.prototype.models = function () {
+        return {
+            character: '/models/RenderAndComposite.json'
+        };
+    };
+    return RenderAndComposite;
+}(BaseCharacter_1.BaseCharacter);
+exports.RenderAndComposite = RenderAndComposite;
+
+
+},{"./BaseCharacter":24}],39:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: RiggingArtist
+ */
+var RiggingArtist = function (_super) {
+    __extends(RiggingArtist, _super);
+    function RiggingArtist() {
+        _super.apply(this, arguments);
+    }
+    RiggingArtist.prototype.models = function () {
+        return {
+            character: '/models/RiggingArtist.json'
+        };
+    };
+    return RiggingArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.RiggingArtist = RiggingArtist;
+
+
+},{"./BaseCharacter":24}],40:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ScreenWriter
+ */
+var ScreenWriter = function (_super) {
+    __extends(ScreenWriter, _super);
+    function ScreenWriter() {
+        _super.apply(this, arguments);
+    }
+    ScreenWriter.prototype.models = function () {
+        return {
+            character: '/models/ScreenWriter.json'
+        };
+    };
+    return ScreenWriter;
+}(BaseCharacter_1.BaseCharacter);
+exports.ScreenWriter = ScreenWriter;
+
+
+},{"./BaseCharacter":24}],41:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: ScriptSupervisor
+ */
+var ScriptSupervisor = function (_super) {
+    __extends(ScriptSupervisor, _super);
+    function ScriptSupervisor() {
+        _super.apply(this, arguments);
+    }
+    ScriptSupervisor.prototype.models = function () {
+        return {
+            character: '/models/ScriptSupervisor.json'
+        };
+    };
+    return ScriptSupervisor;
+}(BaseCharacter_1.BaseCharacter);
+exports.ScriptSupervisor = ScriptSupervisor;
+
+
+},{"./BaseCharacter":24}],42:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: SetDesigner
+ */
+var SetDesigner = function (_super) {
+    __extends(SetDesigner, _super);
+    function SetDesigner() {
+        _super.apply(this, arguments);
+    }
+    SetDesigner.prototype.models = function () {
+        return {
+            character: '/models/SetDesigner.json'
+        };
+    };
+    return SetDesigner;
+}(BaseCharacter_1.BaseCharacter);
+exports.SetDesigner = SetDesigner;
+
+
+},{"./BaseCharacter":24}],43:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: SoundEffect
+ */
+var SoundEffect = function (_super) {
+    __extends(SoundEffect, _super);
+    function SoundEffect() {
+        _super.apply(this, arguments);
+    }
+    SoundEffect.prototype.models = function () {
+        return {
+            character: '/models/SoundEffect.json'
+        };
+    };
+    return SoundEffect;
+}(BaseCharacter_1.BaseCharacter);
+exports.SoundEffect = SoundEffect;
+
+
+},{"./BaseCharacter":24}],44:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: StageManager
+ */
+var StageManager = function (_super) {
+    __extends(StageManager, _super);
+    function StageManager() {
+        _super.apply(this, arguments);
+    }
+    StageManager.prototype.models = function () {
+        return {
+            character: '/models/StageManager.json'
+        };
+    };
+    return StageManager;
+}(BaseCharacter_1.BaseCharacter);
+exports.StageManager = StageManager;
+
+
+},{"./BaseCharacter":24}],45:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: StoryboardArtist
+ */
+var StoryboardArtist = function (_super) {
+    __extends(StoryboardArtist, _super);
+    function StoryboardArtist() {
+        _super.apply(this, arguments);
+    }
+    StoryboardArtist.prototype.models = function () {
+        return {
+            character: '/models/StoryboardArtist.json'
+        };
+    };
+    return StoryboardArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.StoryboardArtist = StoryboardArtist;
+
+
+},{"./BaseCharacter":24}],46:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: SwingGang
+ */
+var SwingGang = function (_super) {
+    __extends(SwingGang, _super);
+    function SwingGang() {
+        _super.apply(this, arguments);
+    }
+    SwingGang.prototype.models = function () {
+        return {
+            character: '/models/SwingGang.json'
+        };
+    };
+    return SwingGang;
+}(BaseCharacter_1.BaseCharacter);
+exports.SwingGang = SwingGang;
+
+
+},{"./BaseCharacter":24}],47:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("./BaseCharacter");
+/**
+ * Character: VoiceArtist
+ */
+var VoiceArtist = function (_super) {
+    __extends(VoiceArtist, _super);
+    function VoiceArtist() {
+        _super.apply(this, arguments);
+    }
+    VoiceArtist.prototype.models = function () {
+        return {
+            character: '/models/VoiceArtist.json'
+        };
+    };
+    return VoiceArtist;
+}(BaseCharacter_1.BaseCharacter);
+exports.VoiceArtist = VoiceArtist;
+
+
+},{"./BaseCharacter":24}],48:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Components_1 = require("../Abstract/Components");
+var Helpers_1 = require("../../Helpers");
+var Helpers_2 = require("../../../Helpers");
+/**
+ * Material Class
+ */
+var Animation = function (_super) {
+    __extends(Animation, _super);
+    function Animation() {
+        _super.apply(this, arguments);
+        /**
+         * List of Initialized Materials
+         */
+        this.initialized = {};
+        this.animations = {
+            baseAnimation: require('../Animations/BaseAnimation')
+        };
+    }
+    Animation.prototype.boot = function (app) {
+        this.loader = app.loader;
+    };
+    /**
+     * Get Material
+     * @param name
+     * @returns {any}
+     */
+    Animation.prototype.get = function (name, bones, mixer) {
+        if (!this.animations.hasOwnProperty(name)) return window['dreamsark'].logger.error("No animation found with the name: " + name);
+        if (this.initialized.hasOwnProperty(name)) return this.initialized[name];
+        return this.load(name, this.animations[name], bones, mixer);
+    };
+    Animation.prototype.load = function (name, object, bones, mixer) {
+        var _this = this;
+        return new Promise(function (accept, reject) {
+            var animation;
+            var _loop_1 = function _loop_1(i) {
+                var instance = new object[i]();
+                instance.boot(_this.app);
+                animation = instance.animations();
+                var parsed = {},
+                    counter = 1,
+                    max = Helpers_1.countKeys(animation);
+                var _loop_2 = function _loop_2(name_1) {
+                    _this.loader.load(animation[name_1], function (anims) {
+                        animation[name_1] = anims;
+                        parsed[name_1] = {};
+                        anims.forEach(function (anim) {
+                            var clip = mixer.clipAction(THREE.AnimationClip.parseAnimation(anim, bones));
+                            clip.setEffectiveWeight(1);
+                            parsed[name_1][Helpers_2.toCamelCase(anim.name)] = clip;
+                        });
+                        if (counter !== max) return ++counter;
+                        accept(instance.configure(parsed));
+                    });
+                };
+                for (var name_1 in animation) {
+                    _loop_2(name_1);
+                }
+            };
+            for (var i in object) {
+                _loop_1(i);
+            }
         });
     };
-    return Designer;
-}(Character_1.Character);
-exports.Designer = Designer;
+    return Animation;
+}(Components_1.Components);
+exports.Animation = Animation;
 
 
-},{"../Abstract/Character":12}],15:[function(require,module,exports){
+},{"../../../Helpers":10,"../../Helpers":11,"../Abstract/Components":17,"../Animations/BaseAnimation":18}],49:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46499,8 +47546,8 @@ var __extends = undefined && undefined.__extends || function (d, b) {
 var Components_1 = require("../Abstract/Components");
 var Browser = function (_super) {
     __extends(Browser, _super);
-    function Browser() {
-        _super.call(this);
+    function Browser(app) {
+        _super.call(this, app);
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         this.aspect = this.width / this.height;
@@ -46552,7 +47599,7 @@ var Browser = function (_super) {
 exports.Browser = Browser;
 
 
-},{"../Abstract/Components":13}],16:[function(require,module,exports){
+},{"../Abstract/Components":17}],50:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46568,8 +47615,8 @@ var __extends = undefined && undefined.__extends || function (d, b) {
  */
 var Camera = function (_super) {
     __extends(Camera, _super);
-    function Camera(app) {
-        _super.call(this);
+    function Camera() {
+        _super.apply(this, arguments);
     }
     Camera.prototype.boot = function (app) {
         this.fov = 20;
@@ -46584,7 +47631,7 @@ var Camera = function (_super) {
 exports.Camera = Camera;
 
 
-},{}],17:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46597,18 +47644,19 @@ var __extends = undefined && undefined.__extends || function (d, b) {
 };
 var Components_1 = require("../Abstract/Components");
 var Helpers_1 = require("../../Helpers");
+var Helpers_2 = require("../../../Helpers");
 /**
  * Characters Class
  */
 var Characters = function (_super) {
     __extends(Characters, _super);
     function Characters() {
-        _super.call(this);
+        _super.apply(this, arguments);
         /**
          * Characters Collection
          * @type {Character[]}
          */
-        this.collection = [require('../Characters/Designer')];
+        this.collection = [require('../Characters/Actor'), require('../Characters/Actress'), require('../Characters/3DArtist'), require('../Characters/Animation'), require('../Characters/ArtDirector'), require('../Characters/ScreenWriter'), require('../Characters/Director'), require('../Characters/Editor'), require('../Characters/CameraDirector'), require('../Characters/ConceptArtist'), require('../Characters/CostumeDesigner'), require('../Characters/Effects'), require('../Characters/ExecutiveProducer'), require('../Characters/LightingArtist'), require('../Characters/PackagingDesigner'), require('../Characters/PreStageProjectCoordinator'), require('../Characters/ProjectCoordinator'), require('../Characters/Prop'), require('../Characters/RecordingArtist'), require('../Characters/RenderAndComposite'), require('../Characters/RiggingArtist'), require('../Characters/ScriptSupervisor'), require('../Characters/SetDesigner'), require('../Characters/SoundEffect'), require('../Characters/StageManager'), require('../Characters/StoryboardArtist'), require('../Characters/SwingGang'), require('../Characters/VoiceArtist')];
         /**
          * List of Initialized Object
          * @type {THREE.Object3D[]}
@@ -46617,7 +47665,6 @@ var Characters = function (_super) {
     }
     Characters.prototype.boot = function (app) {
         var _this = this;
-        this.app = app;
         this.loader = app.loader;
         this.collection.forEach(function (character) {
             for (var name_1 in character) {
@@ -46632,18 +47679,29 @@ var Characters = function (_super) {
     };
     Characters.prototype.init = function (name, character) {
         var _this = this;
+        name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
             if (character.object instanceof Function) character.object = new character.object(_this.app);
-            character.name = name.toLowerCase();
+            character.name = name;
             if (!character.force && character.object.hasOwnProperty('defer') && character.object.defer) {
                 character.loaded = false;
                 _this.initialized[character.name] = character;
                 return accept(character);
             }
             if (character.object.models instanceof Function) {
-                _this.load(character.object.models(), function (models, materials) {
+                /**
+                 * Load Models
+                 */
+                var items = character.object.models();
+                if (character.object.textures instanceof Function) items = Helpers_2.extend(items, character.object.textures());
+                _this.load(items, function (object, materials) {
+                    var textures = {},
+                        geometry = {};
+                    for (var i in object) {
+                        if (object[i] instanceof THREE.Texture) textures[i] = object[i];else geometry[i] = object[i];
+                    }
                     character.loaded = true;
-                    character.object = character.object.init(character.object.name, models, materials);
+                    character.object = character.object.init(character.object.name, geometry, textures, materials);
                     _this.initialized[character.name] = character;
                     return accept(character);
                 });
@@ -46659,7 +47717,7 @@ var Characters = function (_super) {
      */
     Characters.prototype.get = function (name) {
         var _this = this;
-        name = name.toLowerCase();
+        name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
             if (_this.initialized.hasOwnProperty(name)) {
                 if (!_this.initialized[name].loaded) {
@@ -46667,7 +47725,12 @@ var Characters = function (_super) {
                     _this.init(name, _this.initialized[name]).then(function (character) {
                         accept(character.object);
                     });
+                } else {
+                    accept(_this.initialized[name].object);
                 }
+            } else {
+                console.log("There is no character called: " + name);
+                reject(name);
             }
         });
     };
@@ -46692,15 +47755,95 @@ var Characters = function (_super) {
             _loop_1(name_2);
         }
     };
-    Characters.prototype.first = function () {
-        return;
-    };
     return Characters;
 }(Components_1.Components);
 exports.Characters = Characters;
 
 
-},{"../../Helpers":10,"../Abstract/Components":13,"../Characters/Designer":14}],18:[function(require,module,exports){
+},{"../../../Helpers":10,"../../Helpers":11,"../Abstract/Components":17,"../Characters/3DArtist":19,"../Characters/Actor":20,"../Characters/Actress":21,"../Characters/Animation":22,"../Characters/ArtDirector":23,"../Characters/CameraDirector":25,"../Characters/ConceptArtist":26,"../Characters/CostumeDesigner":27,"../Characters/Director":28,"../Characters/Editor":29,"../Characters/Effects":30,"../Characters/ExecutiveProducer":31,"../Characters/LightingArtist":32,"../Characters/PackagingDesigner":33,"../Characters/PreStageProjectCoordinator":34,"../Characters/ProjectCoordinator":35,"../Characters/Prop":36,"../Characters/RecordingArtist":37,"../Characters/RenderAndComposite":38,"../Characters/RiggingArtist":39,"../Characters/ScreenWriter":40,"../Characters/ScriptSupervisor":41,"../Characters/SetDesigner":42,"../Characters/SoundEffect":43,"../Characters/StageManager":44,"../Characters/StoryboardArtist":45,"../Characters/SwingGang":46,"../Characters/VoiceArtist":47}],52:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Components_1 = require("../Abstract/Components");
+/**
+ * Compositions Class
+ */
+var Compositions = function (_super) {
+    __extends(Compositions, _super);
+    function Compositions() {
+        _super.apply(this, arguments);
+        this.compositions = {
+            main: require('../Compositions/Main'),
+            project: require('../Compositions/Project')
+        };
+        this.initialized = {};
+        this.active = null;
+    }
+    Compositions.prototype.boot = function (app) {
+        window['dreamsark'].bootstrap(this.initialized, this.compositions);
+    };
+    /**
+     *
+     * @param name
+     * @returns {any}
+     */
+    Compositions.prototype.get = function (name) {
+        if (this.initialized.hasOwnProperty(name)) return this.initialized[name];
+        console.log("There is no composition called: " + name);
+    };
+    Compositions.prototype.start = function (compositionName, payload) {
+        var _this = this;
+        var composition = this.get(compositionName);
+        /**
+         * if no composition, abort
+         */
+        if (!composition) return;
+        /**
+         * Setup The scene
+         */
+        composition.setup.apply(composition, [this.app].concat(payload));
+        var characters = {},
+            characterList = composition.characters(),
+            callback = function callback() {
+            composition.stage(_this.app.scene, _this.app.camera, characters);
+            /**
+             * Set Active Composition after Loading every character
+             * @type {any}
+             */
+            _this.active = {
+                characters: characters,
+                composition: composition
+            };
+        };
+        if (!characterList) return callback();
+        var counter = 0;
+        characterList.forEach(function (name) {
+            _this.app.characters.get(name).then(function (character) {
+                characters[name] = character;
+                counter++;
+                if (characterList.length === counter) {
+                    callback();
+                }
+            });
+        });
+    };
+    Compositions.prototype.update = function (time, delta) {
+        if (!this.active) return;
+        this.active.composition.update(this.app.scene, this.app.camera, this.active.characters, time, delta);
+    };
+    return Compositions;
+}(Components_1.Components);
+exports.Compositions = Compositions;
+
+
+},{"../Abstract/Components":17,"../Compositions/Main":62,"../Compositions/Project":63}],53:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46717,6 +47860,9 @@ var __extends = undefined && undefined.__extends || function (d, b) {
 // require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
 require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
 //
+/**
+ * Class Controls
+ */
 var Controls = function (_super) {
     __extends(Controls, _super);
     /**
@@ -46766,7 +47912,7 @@ var Controls = function (_super) {
 exports.Controls = Controls;
 
 
-},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],19:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],54:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46826,7 +47972,7 @@ var EffectComposer = function (_super) {
 exports.EffectComposer = EffectComposer;
 
 
-},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],20:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],55:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46838,16 +47984,18 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Components_1 = require("../Abstract/Components");
+/**
+ * Class Light
+ */
 var Light = function (_super) {
     __extends(Light, _super);
     function Light() {
-        _super.call(this);
+        _super.apply(this, arguments);
     }
     Light.prototype.boot = function (app) {
         this.scene = app.scene;
         var light = new THREE.AmbientLight(0xffffff);
-        light.intensity = 3;
-        console.log(light);
+        light.intensity = 1.2;
         this.scene.add(light);
     };
     Light.prototype.update = function (time, delta) {};
@@ -46856,7 +48004,7 @@ var Light = function (_super) {
 exports.Light = Light;
 
 
-},{"../Abstract/Components":13}],21:[function(require,module,exports){
+},{"../Abstract/Components":17}],56:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46873,29 +48021,71 @@ var Helpers_1 = require("../../Helpers");
  * Loaders
  */
 require('../../../../../../node_modules/three/examples/js/loaders/FBXLoader');
+/**
+ * Loader Class
+ */
 var Loader = function (_super) {
     __extends(Loader, _super);
     function Loader() {
-        _super.call(this);
-        this.fbx = {};
+        _super.apply(this, arguments);
+        this.loaded = {};
+        this.queue = [];
+        this.working = false;
     }
     Loader.prototype.boot = function (app) {
-        this.fbx = new THREE.FBXLoader(app.manager);
+        // this.fbx = new THREE.FBXLoader(app.manager);
         this.json = new THREE.JSONLoader(app.manager);
+        this.anim = new THREE.XHRLoader(app.manager);
+        var imageLoader = new THREE.TextureLoader(app.manager);
+        this.png = imageLoader;
+        this.jpg = imageLoader;
     };
     Loader.prototype.load = function (path, callback) {
-        var ext = this[Helpers_1.extension(path)];
-        if (this.hasOwnProperty(ext)) {
-            return app.logger.error("Unknown loader", ext);
+        var loader = Helpers_1.extension(path);
+        if (!this.hasOwnProperty(loader)) {
+            return window['dreamsark'].logger.error("Unknown loader:", loader);
         }
-        this[Helpers_1.extension(path)].load(path, callback);
+        this.queue.push({
+            loader: loader, path: path, callback: callback
+        });
+    };
+    Loader.prototype.process = function () {
+        var _this = this;
+        if (this.working || this.queue.length < 1) return;
+        this.working = true;
+        var item = this.queue.shift();
+        if (this.loaded.hasOwnProperty(item.path)) {
+            item.callback(this.loaded[item.path].object, this.loaded[item.path].material);
+            window['dreamsark'].logger.info('Item already in cache, loading it instead.', item.path);
+            return this.working = false;
+        }
+        this[item.loader].load(item.path, function (object, material) {
+            /**
+             * Parse Json if loader is anim
+             */
+            if (item.loader === 'anim') {
+                object = JSON.parse(object);
+            }
+            /**
+             * Store an instance on memory
+             * @type {{object: any, material: any}}
+             */
+            _this.loaded[item.path] = {
+                object: object, material: material
+            };
+            item.callback(object, material);
+            _this.working = false;
+        }, function () {}, function (error) {
+            // this.queue.push(item);
+            _this.working = false;
+        });
     };
     return Loader;
 }(Components_1.Components);
 exports.Loader = Loader;
 
 
-},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":10,"../Abstract/Components":13}],22:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":11,"../Abstract/Components":17}],57:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46906,15 +48096,22 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/**
+ * Class Manager
+ */
 var Manager = function (_super) {
     __extends(Manager, _super);
-    function Manager() {
-        _super.call(this);
+    function Manager(app) {
+        _super.call(this, app);
+        console.log(this);
+        this.onLoad = function () {
+            // console.log('start Loading');
+        };
         this.onError = function () {
-            console.log('failed loading');
+            // console.log('failed loading');
         };
         this.onProgress = function () {
-            console.log('finished loading');
+            // console.log('finished loading');
         };
     }
     Manager.prototype.boot = function (app) {};
@@ -46923,7 +48120,7 @@ var Manager = function (_super) {
 exports.Manager = Manager;
 
 
-},{}],23:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46934,6 +48131,82 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Components_1 = require("../Abstract/Components");
+var Helpers_1 = require("../../Helpers");
+/**
+ * Material Class
+ */
+var Material = function (_super) {
+    __extends(Material, _super);
+    function Material() {
+        _super.apply(this, arguments);
+        /**
+         * List of Initialized Materials
+         */
+        this.initialized = {};
+        this.materials = {
+            baseMaterial: require('../Materials/BaseMaterial')
+        };
+    }
+    Material.prototype.boot = function (app) {
+        this.loader = app.loader;
+    };
+    /**
+     * Get Material
+     * @param name
+     * @returns {any}
+     */
+    Material.prototype.get = function (name) {
+        if (!this.materials.hasOwnProperty(name)) return window['dreamsark'].logger.error("No material found with the name: " + name);
+        if (this.initialized.hasOwnProperty(name)) return this.initialized[name];
+        return this.load(name, this.materials[name]);
+    };
+    Material.prototype.load = function (name, object) {
+        var material;
+        var _loop_1 = function _loop_1(i) {
+            var instance = new object[i]();
+            instance.boot(this_1.app);
+            material = instance.material();
+            var textures = instance.textures(),
+                counter = 1,
+                max = Helpers_1.countKeys(textures);
+            var _loop_2 = function _loop_2(name_1) {
+                this_1.loader.load(textures[name_1], function (texture) {
+                    texture.name = name_1;
+                    textures[name_1] = texture;
+                    if (counter !== max) return ++counter;
+                    instance.loaded(material, textures);
+                });
+            };
+            for (var name_1 in textures) {
+                _loop_2(name_1);
+            }
+        };
+        var this_1 = this;
+        for (var i in object) {
+            _loop_1(i);
+        }
+        return this.initialized[name] = material;
+    };
+    return Material;
+}(Components_1.Components);
+exports.Material = Material;
+
+
+},{"../../Helpers":11,"../Abstract/Components":17,"../Materials/BaseMaterial":64}],59:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+/**
+ * Class Renderer
+ */
 var Renderer = function (_super) {
     __extends(Renderer, _super);
     function Renderer(app) {
@@ -46958,7 +48231,7 @@ var Renderer = function (_super) {
 exports.Renderer = Renderer;
 
 
-},{}],24:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46969,19 +48242,22 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/**
+ * Scene Class
+ */
 var Scene = function (_super) {
     __extends(Scene, _super);
     function Scene() {
         _super.call(this);
         this.fog = new THREE.FogExp2(0xe1f8ff, .002345);
     }
-    Scene.prototype.boot = function () {};
+    Scene.prototype.boot = function (app) {};
     return Scene;
 }(THREE.Scene);
 exports.Scene = Scene;
 
 
-},{}],25:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -46999,7 +48275,7 @@ var Components_1 = require("../Abstract/Components");
 var Animator = function (_super) {
     __extends(Animator, _super);
     function Animator() {
-        _super.call(this);
+        _super.apply(this, arguments);
         this.animations = [];
     }
     /**
@@ -47036,7 +48312,147 @@ var Animator = function (_super) {
 exports.Animator = Animator;
 
 
-},{"../Abstract/Components":13}],26:[function(require,module,exports){
+},{"../Abstract/Components":17}],62:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AbstractComposition_1 = require("../Abstract/AbstractComposition");
+/**
+ * Main Composition
+ */
+var Main = function (_super) {
+    __extends(Main, _super);
+    function Main() {
+        _super.apply(this, arguments);
+    }
+    Main.prototype.characters = function () {
+        return [this.randomProfile];
+    };
+    Main.prototype.setup = function (app, container, randomProfile) {
+        var _this = this;
+        this.app = app;
+        this.randomProfile = randomProfile;
+        document.querySelector(container).addEventListener('click', function (e) {
+            var target = e.target;
+            if (target.dataset.hasOwnProperty('profileName')) {
+                _this.switch(target.dataset['profileName']);
+            }
+        });
+    };
+    Main.prototype.stage = function (scene, camera, characters) {
+        this.scene = scene;
+        scene.add(characters[this.randomProfile]);
+    };
+    Main.prototype.update = function (scene, camera, characters, time, delta) {};
+    Main.prototype.switch = function (name) {
+        var _this = this;
+        this.app.characters.get(name).then(function (profile) {
+            _this.scene.remove(_this.scene.children[1]);
+            _this.scene.add(profile);
+        });
+    };
+    return Main;
+}(AbstractComposition_1.AbstractComposition);
+exports.Main = Main;
+
+
+},{"../Abstract/AbstractComposition":14}],63:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AbstractComposition_1 = require("../Abstract/AbstractComposition");
+/**
+ * Project Class
+ */
+var Project = function (_super) {
+    __extends(Project, _super);
+    function Project() {
+        _super.apply(this, arguments);
+        this.chars = [];
+    }
+    Project.prototype.setup = function (app) {
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
+        this.chars = payload;
+        // app.controls.enabled = false
+        app.controls.enableZoom = true;
+        app.controls.enablePan = true;
+    };
+    Project.prototype.characters = function () {
+        return [
+        // '*',
+        'actor', 'actress', 'animation', 'director', 'art-director', 'editor', 'concept-artist', 'costume-designer', 'effects', 'executive-producer', 'lighting-artist', 'packaging-designer', 'pre-stage-project-coordinator', 'project-coordinator', 'prop', 'recording-artist', 'render-and-composite', 'set-designer', 'sound-effect', 'stage-manager', 'storyboard-artist', 'swing-gang', 'voice-artist'];
+    };
+    Project.prototype.stage = function (scene, camera, characters) {
+        var position = 0;
+        for (var i in characters) {
+            characters[i].position.setX(position);
+            position += 50;
+            scene.add(characters[i]);
+        }
+    };
+    Project.prototype.update = function (scene, camera, characters, time, delta) {};
+    return Project;
+}(AbstractComposition_1.AbstractComposition);
+exports.Project = Project;
+
+
+},{"../Abstract/AbstractComposition":14}],64:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AbstractMaterial_1 = require("../Abstract/AbstractMaterial");
+/**
+ * BaseMaterial Class
+ */
+var BaseMaterial = function (_super) {
+    __extends(BaseMaterial, _super);
+    function BaseMaterial() {
+        _super.apply(this, arguments);
+    }
+    BaseMaterial.prototype.textures = function () {
+        return {
+            base: '/models/texture.png'
+        };
+    };
+    BaseMaterial.prototype.loaded = function (material, textures) {
+        material.map = textures.base;
+        material.needsUpdate = true;
+    };
+    BaseMaterial.prototype.material = function () {
+        return new THREE.MeshBasicMaterial({
+            skinning: true
+        });
+    };
+    return BaseMaterial;
+}(AbstractMaterial_1.AbstractMaterial);
+exports.BaseMaterial = BaseMaterial;
+
+
+},{"../Abstract/AbstractMaterial":15}],65:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -47051,38 +48467,48 @@ var Plugins_1 = require("../Plugins");
 window['dreamsark'].exposes({
     THREE: require('three')
 });
+/**
+ * Profile Class
+ */
 var Profile = function (_super) {
     __extends(Profile, _super);
-    function Profile(app) {
+    function Profile(app, canvas) {
         _super.call(this);
-        this.canvas = document.querySelector('#canvas');
         this.components = {
             camera: require('./Classes/Camera'),
             browser: require('./Classes/Browser'),
             controls: require('./Classes/Controls'),
             scene: require('./Classes/Scene'),
+            compositions: require('./Classes/Compositions'),
             light: require('./Classes/Light'),
             renderer: require('./Classes/Renderer'),
             manager: require('./Classes/Manager'),
             loader: require('./Classes/Loader'),
             animator: require('./Classes/animator'),
             characters: require('./Classes/Characters'),
+            material: require('./Classes/Material'),
+            animation: require('./Classes/Animation'),
             effectComposer: require('./Classes/EffectComposer')
         };
+        if (canvas.constructor === String) {
+            canvas = document.querySelector(canvas);
+        }
+        this.canvas = canvas;
         app.bootstrap(this, this.components);
     }
-    Profile.prototype.init = function () {
-        var _this = this;
-        this.characters.get('designer').then(function (character) {
-            _this.scene.add(character);
-        });
-    };
     /**
      * Start The Interaction
      * @param item
      */
-    Profile.prototype.start = function () {
-        this.init();
+    Profile.prototype.start = function (composition) {
+        if (composition === void 0) {
+            composition = 'main';
+        }
+        var payload = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            payload[_i - 1] = arguments[_i];
+        }
+        this.compositions.start(composition, payload);
         this.animate();
     };
     /**
@@ -47095,9 +48521,11 @@ var Profile = function (_super) {
             loop = function loop(time) {
             var delta = clock.getDelta();
             requestAnimationFrame(loop);
+            _this.loader.process();
             _this.controls.update();
             _this.animator.update(time, delta);
             _this.light.update(time, delta);
+            _this.compositions.update(time, delta);
             _this.renderer.update(time, delta);
             // this.effectComposer.update(time, delta);
         };
@@ -47112,9 +48540,11 @@ exports.Profile = Profile;
 /**
  * Auto install itself
  */
-window['dreamsark'].install(Profile);
+window['dreamsark'].install({
+    Profile: Profile
+});
 
 
-},{"../Plugins":11,"./Classes/Browser":15,"./Classes/Camera":16,"./Classes/Characters":17,"./Classes/Controls":18,"./Classes/EffectComposer":19,"./Classes/Light":20,"./Classes/Loader":21,"./Classes/Manager":22,"./Classes/Renderer":23,"./Classes/Scene":24,"./Classes/animator":25,"three":1}]},{},[26]);
+},{"../Plugins":12,"./Classes/Animation":48,"./Classes/Browser":49,"./Classes/Camera":50,"./Classes/Characters":51,"./Classes/Compositions":52,"./Classes/Controls":53,"./Classes/EffectComposer":54,"./Classes/Light":55,"./Classes/Loader":56,"./Classes/Manager":57,"./Classes/Material":58,"./Classes/Renderer":59,"./Classes/Scene":60,"./Classes/animator":61,"three":1}]},{},[65]);
 
 //# sourceMappingURL=Profile.js.map

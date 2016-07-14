@@ -66,7 +66,6 @@ export class Common extends AbstractPage {
 
         }
 
-
     }
 
 }

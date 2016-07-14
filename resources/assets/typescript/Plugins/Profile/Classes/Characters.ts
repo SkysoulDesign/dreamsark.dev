@@ -21,6 +21,27 @@ export class Characters extends Components {
         require('../Characters/ScreenWriter'),
         require('../Characters/Director'),
         require('../Characters/Editor'),
+        require('../Characters/CameraDirector'),
+        require('../Characters/ConceptArtist'),
+        require('../Characters/CostumeDesigner'),
+        require('../Characters/Effects'),
+        require('../Characters/ExecutiveProducer'),
+        require('../Characters/LightingArtist'),
+        require('../Characters/PackagingDesigner'),
+        require('../Characters/PreStageProjectCoordinator'),
+        require('../Characters/ProjectCoordinator'),
+        require('../Characters/Prop'),
+        require('../Characters/RecordingArtist'),
+        require('../Characters/RenderAndComposite'),
+        require('../Characters/RiggingArtist'),
+        require('../Characters/ScriptSupervisor'),
+        require('../Characters/SetDesigner'),
+        require('../Characters/SoundEffect'),
+        require('../Characters/StageManager'),
+        require('../Characters/StoryboardArtist'),
+        require('../Characters/SwingGang'),
+        require('../Characters/VoiceArtist'),
+
     ]
 
     /**
@@ -135,10 +156,13 @@ export class Characters extends Components {
                         accept(character.object)
                     });
 
+                } else {
+                    accept(this.initialized[name].object)
                 }
 
             } else {
                 console.log(`There is no character called: ${name}`);
+                reject(name);
             }
 
         })

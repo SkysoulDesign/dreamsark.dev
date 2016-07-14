@@ -4,7 +4,7 @@
 
     @include('user.partials.header', ['header' => false])
 
-    <div id="root" class="profile-page__header --profile-pick" v-on:click="selectProfile">
+    <div id="vueRoot" class="profile-page__header --profile-pick">
 
         <div class="profile-page__header__overlay"></div>
 
@@ -17,22 +17,22 @@
                 </header>
             </div>
 
-            <div id="canvas" class="small-12 columns align-middle profile-page__canvas">
-                {{--<img src="{{ asset('img/temp/profile-1.png') }}" alt="">--}}
-            </div>
+            <ark-animation :payload="['#characters', '{{ $profiles->random()->name }}']" composition="main"
+                           class="small-12 columns align-middle profile-page__canvas"></ark-animation>
 
             <div class="small-12 align-bottom columns +z-1">
-                <div class="row">
-                    @foreach(range(1,56) as $index)
-                        <div class="columns profile-page__palette --color-{{ rand(1,20) }}">
-                            <div class="profile-page__palette__item " data-position="{{ $index }}">
+                <div id="characters" class="row">
+                    @foreach($profiles as $profile)
+                        <div data-profile-name="{{ $profile->name }}"
+                             class="columns profile-page__palette --color-{{ rand(1,20) }}">
+                            <div class="profile-page__palette__item">
                                 @php $rand = rand(1,8) @endphp
                                 <img src="{{ asset("img/profile/$rand.png") }}" alt="">
-                                <span>Profile {{ $index }}</span>
+                                <span>@lang("positions.$profile->name")</span>
                             </div>
                         </div>
                     @endforeach
-                    <div class="columns profile-page__palette__select">
+                    <div class="small-12 columns profile-page__palette__select">
                         <button id="selectProfile" class="button --fit --hollow">@lang('forms.select')</button>
                     </div>
                 </div>

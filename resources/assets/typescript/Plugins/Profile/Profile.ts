@@ -54,7 +54,7 @@ export class Profile extends Plugins {
 
         super();
 
-        if(canvas instanceof String){
+        if(canvas.constructor === String){
             canvas = <HTMLCanvasElement>document.querySelector(canvas);
         }
 

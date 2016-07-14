@@ -102,12 +102,11 @@
 
   @include part(palette) {
 
+    flex-wrap: wrap;
     user-select: none;
-    //border-radius: 5px;
-
-    &:hover {
-      background: color($color: black, $alpha: 22);
-    }
+    cursor: pointer;
+    flex-basis: 100px;
+    max-width: 100px;
 
     $colors: (
             1: #E91E63,
@@ -158,8 +157,8 @@
     }
 
     @include part(item) {
+
       color: white;
-      cursor: pointer;
       position: relative;
       width: 50px;
       height: 50px;
@@ -167,6 +166,7 @@
       margin: 1em auto;
       background: color($color: pure-black, $alpha: 10);
       border-radius: 100%;
+      pointer-events: none;
 
       img {
         position: relative;
@@ -177,20 +177,20 @@
 
       & span {
         display: none;
-
         position: absolute;
         border-radius: .3em;
         transform: scale(2);
-        padding:1em;
-        font-size: .4em;
-        white-space: nowrap;
+        padding: 1em;
+        width: auto;
+        font-size: .35em;
+        //white-space: nowrap;
         top: -100%;
         left: 0;
         right: 0;
-        width: 100%;
         font-weight: bolder;
         text-transform: uppercase;
-        background: color($color:pure-black, $alpha: 70);
+        background: color($color: pure-black, $alpha: 70);
+
       }
 
     }

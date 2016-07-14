@@ -5,18 +5,15 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Correct the line height in all browsers.
- * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  line-height: 1.15;
-  /* 2 */
   -ms-text-size-adjust: 100%;
-  /* 3 */
+  /* 2 */
   -webkit-text-size-adjust: 100%;
-  /* 3 */ }
+  /* 2 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -229,7 +226,6 @@ input,
 textarea,
 .select,
 select,
-optgroup,
 select,
 textarea {
   font: inherit;
@@ -5370,13 +5366,17 @@ header, .header {
   background: url("/img/profile/dreamsArkRef89.png") center center; }
 
 .profile-page__palette {
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer;
+  -ms-flex-preferred-size: 100px;
+  flex-basis: 100px;
+  max-width: 100px;
   transition: .15s; }
-  .profile-page__palette:hover {
-    background: rgba(53, 56, 50, 0.22); }
   .profile-page__palette.\--color-1:hover {
     background: #E91E63; }
   .profile-page__palette.\--color-2:hover {
@@ -5426,14 +5426,14 @@ header, .header {
     transform: scale(0.9); }
   .profile-page__palette__item {
     color: white;
-    cursor: pointer;
     position: relative;
     width: 50px;
     height: 50px;
     padding: .2em;
     margin: 1em auto;
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 100%; }
+    border-radius: 100%;
+    pointer-events: none; }
     .profile-page__palette__item img {
       position: relative;
       left: 0;
@@ -5445,12 +5445,11 @@ header, .header {
       border-radius: .3em;
       transform: scale(2);
       padding: 1em;
-      font-size: .4em;
-      white-space: nowrap;
+      width: auto;
+      font-size: .35em;
       top: -100%;
       left: 0;
       right: 0;
-      width: 100%;
       font-weight: bolder;
       text-transform: uppercase;
       background: rgba(0, 0, 0, 0.7); }

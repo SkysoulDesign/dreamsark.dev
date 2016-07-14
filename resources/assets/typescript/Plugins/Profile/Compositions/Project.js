@@ -26,13 +26,30 @@ var Project = (function (_super) {
     };
     Project.prototype.characters = function () {
         return [
-            // 'editor',
-            // 'director',
-            'THREEDArtist',
-            // 'actress',
-            // 'animation',
-            // 'art-director',
+            // '*',
             'actor',
+            'actress',
+            'animation',
+            'director',
+            'art-director',
+            'editor',
+            'concept-artist',
+            'costume-designer',
+            'effects',
+            'executive-producer',
+            'lighting-artist',
+            'packaging-designer',
+            'pre-stage-project-coordinator',
+            'project-coordinator',
+            'prop',
+            'recording-artist',
+            'render-and-composite',
+            'set-designer',
+            'sound-effect',
+            'stage-manager',
+            'storyboard-artist',
+            'swing-gang',
+            'voice-artist'
         ];
     };
     Project.prototype.stage = function (scene, camera, characters) {

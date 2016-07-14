@@ -27,6 +27,26 @@ var Characters = (function (_super) {
             require('../Characters/ScreenWriter'),
             require('../Characters/Director'),
             require('../Characters/Editor'),
+            require('../Characters/CameraDirector'),
+            require('../Characters/ConceptArtist'),
+            require('../Characters/CostumeDesigner'),
+            require('../Characters/Effects'),
+            require('../Characters/ExecutiveProducer'),
+            require('../Characters/LightingArtist'),
+            require('../Characters/PackagingDesigner'),
+            require('../Characters/PreStageProjectCoordinator'),
+            require('../Characters/ProjectCoordinator'),
+            require('../Characters/Prop'),
+            require('../Characters/RecordingArtist'),
+            require('../Characters/RenderAndComposite'),
+            require('../Characters/RiggingArtist'),
+            require('../Characters/ScriptSupervisor'),
+            require('../Characters/SetDesigner'),
+            require('../Characters/SoundEffect'),
+            require('../Characters/StageManager'),
+            require('../Characters/StoryboardArtist'),
+            require('../Characters/SwingGang'),
+            require('../Characters/VoiceArtist'),
         ];
         /**
          * List of Initialized Object
@@ -101,9 +121,13 @@ var Characters = (function (_super) {
                         accept(character.object);
                     });
                 }
+                else {
+                    accept(_this.initialized[name].object);
+                }
             }
             else {
                 console.log("There is no character called: " + name);
+                reject(name);
             }
         });
     };

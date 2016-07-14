@@ -31,7 +31,7 @@ var Profile = (function (_super) {
             animation: require('./Classes/Animation'),
             effectComposer: require('./Classes/EffectComposer')
         };
-        if (canvas instanceof String) {
+        if (canvas.constructor === String) {
             canvas = document.querySelector(canvas);
         }
         this.canvas = canvas;

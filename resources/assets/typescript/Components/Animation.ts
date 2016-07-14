@@ -10,6 +10,7 @@ export class Animation implements ComponentInterface {
         vue.component('ark-animation', {
             template: require('../templates/animation/animation.html'),
             props: {
+                class: String,
                 composition: {
                     type: String,
                     required: true,

@@ -15,18 +15,39 @@ export class Project extends AbstractComposition {
     }
 
     characters() {
-
         return [
-            // 'editor',
-            // 'director',
-            'THREEDArtist',
-            // 'actress',
-            // 'animation',
-            // 'art-director',
+            // '*',
             'actor',
-            // 'screen-writer',
-            // 'art-director',
-            // 'animation',
+            'actress',
+            'animation',
+            'director',
+            'art-director',
+            'editor',
+            'concept-artist',
+            'costume-designer',
+            'effects',
+            'executive-producer',
+            'lighting-artist',
+            'packaging-designer',
+            'pre-stage-project-coordinator',
+            'project-coordinator',
+            'prop',
+            'recording-artist',
+            'render-and-composite',
+            'set-designer',
+            'sound-effect',
+            'stage-manager',
+            'storyboard-artist',
+            'swing-gang',
+            'voice-artist'
+
+            //Not Okay
+            // 'camera-director',
+            // 'THREEDArtist',
+            // 'screen-writer'
+            // 'rigging-artist',
+            // 'script-supervisor', /// no-animation
+
         ];
     }
 
@@ -49,6 +70,7 @@ export class Project extends AbstractComposition {
     }
 
     update(scene, camera, characters, time, delta) {
+
     }
 
 }
