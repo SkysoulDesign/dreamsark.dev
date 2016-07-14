@@ -1,19 +1,13 @@
 @extends('layouts.master', ['footer' => false])
 
 @section('content')
-    @php
-        $routeName = request()->route()->getName();
-        $flipTagArr = ['front', 'back'];
-        if($routeName == 'register')
-            $flipTagArr = array_reverse($flipTagArr);
-        list($loginTag, $registerTag) = $flipTagArr;
-    @endphp
 
     <div class="login-page">
 
-        <ark-flipper class="row align-middle align-right +full-height">
+        @set($name, request()->route()->getName())
 
-            <ark-flipper-{{ $loginTag }} class="small-12 medium-6 large-4 columns card">
+        <ark-flipper class="row align-middle align-right +full-height">
+            <ark-flipper-content side="{{ $name == 'register' ? 'back' : 'front' }}" class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -50,9 +44,8 @@
                     </div>
                 </div>
 
-            </ark-flipper-{{ $loginTag }}>
-
-            <ark-flipper-{{ $registerTag }} class="small-12 medium-6 large-4 columns card">
+            </ark-flipper-content>
+            <ark-flipper-content side="{{ $name == 'register' ? 'front' : 'back' }}" class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -136,10 +129,8 @@
                     </div>
                 </div>
 
-            </ark-flipper-{{ $registerTag }}>
-
+            </ark-flipper-content>
         </ark-flipper>
-
 
     </div>
 

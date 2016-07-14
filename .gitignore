@@ -4,11 +4,10 @@ vendor
 
 #Ignore All Javascript Files
 *.map
-/public/**/**.*
+/public/**/**
 !/public/img/**/**.*
 !/public/**.*
 /resources/assets/typescript/**/**.js
-
 
 #Ignore Env Files
 .env
