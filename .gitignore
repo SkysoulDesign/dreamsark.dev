@@ -7,6 +7,8 @@ vendor
 /public/**/**
 !/public/img/**/**.*
 !/public/**.*
+!/public/animations/**.*
+!/public/models/**.*
 /resources/assets/typescript/**/**.js
 
 #Ignore Env Files
