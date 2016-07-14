@@ -97,6 +97,7 @@ var Nav = (function () {
             ready: function () {
                 this.$emit('nav.tab.click', 'test');
                 this.$emit('test', 'test');
+                var hashValue = window.location.hash.replace('#', '');
                 this.$children.forEach(function (child, index) {
                     /**
                      * If not instance of Tab content wont be available
@@ -105,6 +106,8 @@ var Nav = (function () {
                     if (!child.content)
                         return;
                     var element = document.querySelector("#" + child.content);
+                    if (hashValue)
+                        child.active = hashValue === child.content;
                     child.$set('element', element);
                     if (!child.active)
                         element.classList.add('+hidden');

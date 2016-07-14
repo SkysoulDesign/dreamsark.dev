@@ -20,6 +20,8 @@ var Characters = (function (_super) {
          */
         this.collection = [
             require('../Characters/Actor'),
+            require('../Characters/Actress'),
+            require('../Characters/3DArtist'),
             require('../Characters/Animation'),
             require('../Characters/ArtDirector'),
             require('../Characters/ScreenWriter'),

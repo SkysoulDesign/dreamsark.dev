@@ -28,6 +28,7 @@ var Profile = (function (_super) {
             animator: require('./Classes/animator'),
             characters: require('./Classes/Characters'),
             material: require('./Classes/Material'),
+            animation: require('./Classes/Animation'),
             effectComposer: require('./Classes/EffectComposer')
         };
         if (canvas instanceof String) {

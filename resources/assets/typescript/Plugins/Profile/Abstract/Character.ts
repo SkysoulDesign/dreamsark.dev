@@ -7,9 +7,12 @@ export abstract class Character implements CharacterInterface {
 
     public animator;
     public material;
+    public animation;
+    public defer:Boolean = true;
 
     constructor(app) {
         this.animator = app.animator
+        this.animation = app.animation
         this.material = app.material
     }
 

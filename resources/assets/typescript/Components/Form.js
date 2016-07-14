@@ -92,6 +92,7 @@ var Form = (function () {
                         _this.$dispatch.apply(_this, ['ajax.button.success'].concat([e, button]));
                     }, function (e) {
                         button.disabled = false;
+                        _this.$dispatch.apply(_this, ['ajax.button.fail'].concat([e, button]));
                         console.log(e);
                     });
                 }
@@ -163,6 +164,12 @@ var Form = (function () {
                 errors: {
                     type: [Object, Array],
                     coerce: function (data) { return JSON.parse(data); }
+                }
+            },
+            events: {
+                'ajax.button.fail': function (e, button) {
+                    if (e.status == 422)
+                        this.errors = e.json();
                 }
             }
         });

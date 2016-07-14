@@ -6,32 +6,28 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Character_1 = require("../Abstract/Character");
 /**
- * Character: Actor
+ * Character: Actress
  */
-var ArtDirector = (function (_super) {
-    __extends(ArtDirector, _super);
-    function ArtDirector() {
+var Actress = (function (_super) {
+    __extends(Actress, _super);
+    function Actress() {
         _super.apply(this, arguments);
     }
-    ArtDirector.prototype.models = function () {
+    Actress.prototype.models = function () {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/Actress.json',
         };
     };
-    ArtDirector.prototype.create = function (models) {
+    Actress.prototype.create = function (models) {
         var materials = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
         var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
         var actions = {}, mixer = this.animator.create(mesh);
-        console.log(models.character);
         this.animation.get('baseAnimation', models.character.bones, mixer).then(function (animations) {
-            // animations.base.idleBody.play();
-            console.log(animations);
-            // animations.base.idle.play();
-            animations.base.idle.play();
-            // animations.base.lookAround.play();
+            animations.base.idleBody.play();
+            animations.base.lookAround.play();
         });
         /**
          * Play All Animations
@@ -42,10 +38,10 @@ var ArtDirector = (function (_super) {
             actions[animation.name].play();
         });
         mesh.position.setY(-25);
-        // mesh.rotation.y = Math.PI
+        mesh.rotation.y = Math.PI;
         return mesh;
     };
-    return ArtDirector;
+    return Actress;
 }(Character_1.Character));
-exports.ArtDirector = ArtDirector;
-//# sourceMappingURL=ArtDirector.js.map
+exports.Actress = Actress;
+//# sourceMappingURL=Actress.js.map

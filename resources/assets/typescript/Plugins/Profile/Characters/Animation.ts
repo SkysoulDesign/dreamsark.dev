@@ -5,9 +5,6 @@ import {Character} from "../Abstract/Character";
  */
 export class Animation extends Character {
 
-    public defer:Boolean = true;
-    public animator;
-
     models() {
         return {
             character: '/models/Animation.json',
@@ -21,25 +18,28 @@ export class Animation extends Character {
             this.material.get('baseMaterial')
         );
 
-        let action = {};
+        let actions = {},
+            mixer = this.animator.create(mesh);
 
-        let mixer = this.animator.create(mesh);
+        this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
+            animations.base.idle.play();
+            animations.base.lookAround.play();
+        })
 
-        action.idle = mixer.clipAction(models.character.animations[0]);
-        action.idle.setEffectiveWeight(1);
-        action.idle.play();
+        /**
+         * Play All Animations
+         */
+        models.character.animations.forEach(function (animation) {
+            animation.skinning = true;
+            actions[animation.name] = mixer.clipAction(animation);
+            actions[animation.name].play();
+        })
 
         mesh.position.setY(-25)
         mesh.rotation.y = Math.PI
 
         return mesh;
 
-    }
-
-    material() {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
-        });
     }
 
 }

@@ -7,6 +7,8 @@ export class Director extends Character {
 
     public defer:Boolean = true;
     public animator;
+    public animation;
+    public material;
 
     models() {
         return {
@@ -21,27 +23,17 @@ export class Director extends Character {
             this.material.get('baseMaterial')
         );
 
-        let action = {};
-
         let mixer = this.animator.create(mesh);
 
-        action.idle = mixer.clipAction(models.character.animations[0]);
-        action.idle.setEffectiveWeight(1);
-        action.idle.play();
+        this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
+            animations.base.directorIdle.play();
+        })
 
         mesh.position.setY(-25)
         mesh.rotation.y = Math.PI
 
-        console.log(models.character.animations)
-
         return mesh;
 
-    }
-
-    material() {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
-        });
     }
 
 }

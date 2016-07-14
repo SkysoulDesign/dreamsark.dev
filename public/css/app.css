@@ -5,15 +5,18 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  -ms-text-size-adjust: 100%;
+  line-height: 1.15;
   /* 2 */
+  -ms-text-size-adjust: 100%;
+  /* 3 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */ }
+  /* 3 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -226,6 +229,7 @@ input,
 textarea,
 .select,
 select,
+optgroup,
 select,
 textarea {
   font: inherit;
@@ -5305,7 +5309,7 @@ header, .header {
 .login-page {
   height: 100%;
   width: 100%;
-  background: url("/img/login/dreamsArkRef39.png") no-repeat center center;
+  background: url("/img/login/dreamsArkRef93.png") no-repeat center center;
   background-size: cover; }
 
 .profile-page a:hover {

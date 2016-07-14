@@ -46,6 +46,7 @@ export class Profile extends Plugins {
         animator: require('./Classes/animator'),
         characters: require('./Classes/Characters'),
         material: require('./Classes/Material'),
+        animation: require('./Classes/Animation'),
         effectComposer: require('./Classes/EffectComposer')
     }
 

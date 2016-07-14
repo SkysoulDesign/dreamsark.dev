@@ -15,6 +15,7 @@ export class Loader extends Components {
     public json;
     public png;
     public jpg;
+    public anim;
 
     public loaded:any = {};
     private queue = [];
@@ -23,6 +24,7 @@ export class Loader extends Components {
     boot(app) {
         // this.fbx = new THREE.FBXLoader(app.manager);
         this.json = new THREE.JSONLoader(app.manager)
+        this.anim = new THREE.XHRLoader(app.manager)
 
         let imageLoader = new THREE.TextureLoader(app.manager);
 
@@ -68,6 +70,13 @@ export class Loader extends Components {
         this[item.loader].load(item.path, (object, material) => {
 
             /**
+             * Parse Json if loader is anim
+             */
+            if (item.loader === 'anim') {
+                object = JSON.parse(object)
+            }
+
+            /**
              * Store an instance on memory
              * @type {{object: any, material: any}}
              */
@@ -79,7 +88,8 @@ export class Loader extends Components {
 
             this.working = false;
 
-        }, () => {}, (error) => {
+        }, () => {
+        }, (error) => {
             // this.queue.push(item);
             this.working = false;
         });

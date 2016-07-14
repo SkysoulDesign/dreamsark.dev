@@ -20,7 +20,7 @@ var Common = (function (_super) {
         this.languageSwitcher();
     };
     Common.prototype.languageSwitcher = function () {
-        if (this.is('login'))
+        if (this.is(['login', 'register']))
             return;
         document.querySelector('#language-switcher')
             .addEventListener('change', function (e) {
@@ -38,16 +38,20 @@ var Common = (function (_super) {
         var dropdown = document.querySelectorAll('.dropdown');
         for (var i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener('click', function (event) {
+                clearAll();
                 this.classList.toggle('--show');
             });
         }
+        var clearAll = function () {
+            for (var i = 0; i < dropdown.length; i++) {
+                if (dropdown[i].classList.contains('--show')) {
+                    dropdown[i].classList.remove('--show');
+                }
+            }
+        };
         window.onclick = function (event) {
             if (!event.target.matches('.dropdown__trigger')) {
-                for (var i = 0; i < dropdown.length; i++) {
-                    if (dropdown[i].classList.contains('--show')) {
-                        dropdown[i].classList.remove('--show');
-                    }
-                }
+                clearAll();
             }
         };
     };

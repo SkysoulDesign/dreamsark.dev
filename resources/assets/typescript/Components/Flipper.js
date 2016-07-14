@@ -11,6 +11,9 @@ var Flipper = (function () {
         };
         vue.component('ark-flipper', {
             template: require('../templates/flipper/flipper.html'),
+            props: {
+                class: String,
+            },
             methods: {
                 flip: function () {
                     this.$children.forEach(function (child) {
@@ -20,18 +23,15 @@ var Flipper = (function () {
                 },
             }
         });
-        vue.component('ark-flipper-front', {
-            template: require('../templates/flipper/front.html'),
-            ready: function () {
-                var _this = this;
-                getTrigger(this.$el).addEventListener('click', function (event) {
-                    event.preventDefault();
-                    _this.$parent.flip();
-                });
-            }
-        });
-        vue.component('ark-flipper-back', {
-            template: require('../templates/flipper/back.html'),
+        vue.component('ark-flipper-content', {
+            template: require('../templates/flipper/side.html'),
+            props: {
+                class: String,
+                side: {
+                    type: String,
+                    required: true
+                },
+            },
             ready: function () {
                 var _this = this;
                 getTrigger(this.$el).addEventListener('click', function (event) {

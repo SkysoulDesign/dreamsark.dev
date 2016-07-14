@@ -1,12 +1,9 @@
 import {Character} from "../Abstract/Character";
 
 /**
- * Character: Designer
+ * Character: Actor
  */
 export class Actor extends Character {
-
-    public defer:Boolean = true;
-    public animator;
 
     models() {
         return {
@@ -21,27 +18,41 @@ export class Actor extends Character {
             this.material.get('baseMaterial')
         );
 
-        let action = {};
+        let actions = {},
+            mixer = this.animator.create(mesh);
 
-        let mixer = this.animator.create(mesh);
+        console.log('achor')
+        console.log(models.character.bones)
 
-        action.idle = mixer.clipAction(models.character.animations[0]);
-        action.idle.setEffectiveWeight(1);
-        action.idle.play();
+        this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
+            animations.base.idle.play();
+            // animations.base.lookAround.play();
+        })
+
+        /**
+         * Play All Animations
+         */
+        models.character.animations.forEach(function (animation) {
+            animation.skinning = true;
+            actions[animation.name] = mixer.clipAction(animation);
+            actions[animation.name].play();
+        })
 
         mesh.position.setY(-25)
         mesh.rotation.y = Math.PI
 
-        console.log(models.character.animations)
+        var text = document.createElement( 'div' );
+        text.style.position = 'absolute';
+        text.style.color = 'black';
+        text.innerHTML = 'Oh hai!';
+//
+        text.style.left = mesh.position.x + 'px';
+        text.style.top = mesh.position.y + 'px';
+
+        document.body.appendChild(text)
 
         return mesh;
 
-    }
-
-    material() {
-        return new THREE.MeshBasicMaterial({
-            color: 0xff0000, wireframe: true
-        });
     }
 
 }

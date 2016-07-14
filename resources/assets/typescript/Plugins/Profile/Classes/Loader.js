@@ -24,6 +24,7 @@ var Loader = (function (_super) {
     Loader.prototype.boot = function (app) {
         // this.fbx = new THREE.FBXLoader(app.manager);
         this.json = new THREE.JSONLoader(app.manager);
+        this.anim = new THREE.XHRLoader(app.manager);
         var imageLoader = new THREE.TextureLoader(app.manager);
         this.png = imageLoader;
         this.jpg = imageLoader;
@@ -50,6 +51,12 @@ var Loader = (function (_super) {
         }
         this[item.loader].load(item.path, function (object, material) {
             /**
+             * Parse Json if loader is anim
+             */
+            if (item.loader === 'anim') {
+                object = JSON.parse(object);
+            }
+            /**
              * Store an instance on memory
              * @type {{object: any, material: any}}
              */
@@ -58,7 +65,8 @@ var Loader = (function (_super) {
             };
             item.callback(object, material);
             _this.working = false;
-        }, function () { }, function (error) {
+        }, function () {
+        }, function (error) {
             // this.queue.push(item);
             _this.working = false;
         });

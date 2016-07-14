@@ -3,11 +3,11 @@ import {Character} from "../Abstract/Character";
 /**
  * Character: Actor
  */
-export class ArtDirector extends Character {
+export class THREEDArtist extends Character {
 
     models() {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/3DArtist.json',
         }
     }
 
@@ -21,13 +21,12 @@ export class ArtDirector extends Character {
         let actions = {},
             mixer = this.animator.create(mesh);
 
-        console.log(models.character)
-
         this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
-            // animations.base.idleBody.play();
-            console.log(animations);
-            // animations.base.idle.play();
             animations.base.idle.play();
+            animations.base.lookAround.play();
+
+            console.log('test');
+
             // animations.base.lookAround.play();
         })
 
@@ -41,7 +40,17 @@ export class ArtDirector extends Character {
         })
 
         mesh.position.setY(-25)
-        // mesh.rotation.y = Math.PI
+        mesh.rotation.y = Math.PI
+
+        var text = document.createElement( 'div' );
+        text.style.position = 'absolute';
+        text.style.color = 'black';
+        text.innerHTML = 'Oh hai!';
+//
+        text.style.left = mesh.position.x + 'px';
+        text.style.top = mesh.position.y + 'px';
+
+        document.body.appendChild(text)
 
         return mesh;
 

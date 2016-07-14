@@ -20,17 +20,19 @@ var Project = (function (_super) {
             payload[_i - 1] = arguments[_i];
         }
         this.chars = payload;
-        app.controls.enabled = false;
+        // app.controls.enabled = false
+        app.controls.enableZoom = true;
+        app.controls.enablePan = true;
     };
     Project.prototype.characters = function () {
-        console.log(this.chars);
         return [
-            'editor',
-            'director',
+            // 'editor',
+            // 'director',
+            'THREEDArtist',
+            // 'actress',
+            // 'animation',
+            // 'art-director',
             'actor',
-            'screen-writer',
-            'art-director',
-            'animation',
         ];
     };
     Project.prototype.stage = function (scene, camera, characters) {

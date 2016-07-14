@@ -1,13 +1,13 @@
 import {Character} from "../Abstract/Character";
 
 /**
- * Character: Actor
+ * Character: Actress
  */
-export class ArtDirector extends Character {
+export class Actress extends Character {
 
     models() {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/Actress.json',
         }
     }
 
@@ -21,14 +21,9 @@ export class ArtDirector extends Character {
         let actions = {},
             mixer = this.animator.create(mesh);
 
-        console.log(models.character)
-
         this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
-            // animations.base.idleBody.play();
-            console.log(animations);
-            // animations.base.idle.play();
-            animations.base.idle.play();
-            // animations.base.lookAround.play();
+            animations.base.idleBody.play();
+            animations.base.lookAround.play();
         })
 
         /**
@@ -41,7 +36,7 @@ export class ArtDirector extends Character {
         })
 
         mesh.position.setY(-25)
-        // mesh.rotation.y = Math.PI
+        mesh.rotation.y = Math.PI
 
         return mesh;
 

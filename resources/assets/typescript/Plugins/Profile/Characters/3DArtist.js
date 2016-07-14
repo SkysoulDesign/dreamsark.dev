@@ -8,29 +8,27 @@ var Character_1 = require("../Abstract/Character");
 /**
  * Character: Actor
  */
-var ArtDirector = (function (_super) {
-    __extends(ArtDirector, _super);
-    function ArtDirector() {
+var THREEDArtist = (function (_super) {
+    __extends(THREEDArtist, _super);
+    function THREEDArtist() {
         _super.apply(this, arguments);
     }
-    ArtDirector.prototype.models = function () {
+    THREEDArtist.prototype.models = function () {
         return {
-            character: '/models/ArtDirector.json',
+            character: '/models/3DArtist.json',
         };
     };
-    ArtDirector.prototype.create = function (models) {
+    THREEDArtist.prototype.create = function (models) {
         var materials = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             materials[_i - 1] = arguments[_i];
         }
         var mesh = new THREE.SkinnedMesh(models.character, this.material.get('baseMaterial'));
         var actions = {}, mixer = this.animator.create(mesh);
-        console.log(models.character);
         this.animation.get('baseAnimation', models.character.bones, mixer).then(function (animations) {
-            // animations.base.idleBody.play();
-            console.log(animations);
-            // animations.base.idle.play();
             animations.base.idle.play();
+            animations.base.lookAround.play();
+            console.log('test');
             // animations.base.lookAround.play();
         });
         /**
@@ -42,10 +40,18 @@ var ArtDirector = (function (_super) {
             actions[animation.name].play();
         });
         mesh.position.setY(-25);
-        // mesh.rotation.y = Math.PI
+        mesh.rotation.y = Math.PI;
+        var text = document.createElement('div');
+        text.style.position = 'absolute';
+        text.style.color = 'black';
+        text.innerHTML = 'Oh hai!';
+        //
+        text.style.left = mesh.position.x + 'px';
+        text.style.top = mesh.position.y + 'px';
+        document.body.appendChild(text);
         return mesh;
     };
-    return ArtDirector;
+    return THREEDArtist;
 }(Character_1.Character));
-exports.ArtDirector = ArtDirector;
-//# sourceMappingURL=ArtDirector.js.map
+exports.THREEDArtist = THREEDArtist;
+//# sourceMappingURL=3DArtist.js.map
