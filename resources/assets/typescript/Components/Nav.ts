@@ -54,7 +54,7 @@ export class Nav implements ComponentInterface {
                     /**
                      * If the selected tab is already selected return
                      */
-                    if(this.active)
+                    if (this.active)
                         return;
 
                     this.$dispatch(`nav.${this.content}.click`, ...[e, this.element]);
@@ -111,6 +111,8 @@ export class Nav implements ComponentInterface {
                 this.$emit('nav.tab.click', 'test')
                 this.$emit('test', 'test')
 
+                let hashValue = window.location.hash.replace('#', '');
+
                 this.$children.forEach((child, index) => {
 
                     /**
@@ -120,6 +122,9 @@ export class Nav implements ComponentInterface {
                     if (!child.content) return;
 
                     let element = <HTMLElement>document.querySelector(`#${child.content}`);
+
+                    if(hashValue)
+                        child.active = hashValue === child.content;
 
                     child.$set('element', element);
 

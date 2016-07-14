@@ -24,9 +24,9 @@ class UserCreationMobile extends Request
     public function rules()
     {
         return [
-            'username' => 'required|unique:users',
+            'mobile' => 'required|unique:users',
             'password' => 'required|min:6',
-            'sms_code'    => 'required',
+            'code'    => 'required',
         ];
     }
 }

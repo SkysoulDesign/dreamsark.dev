@@ -41,7 +41,6 @@ class SessionController extends Controller
     }
 
 
-
     /**
      * Dispatch command to create User
      *
@@ -51,13 +50,14 @@ class SessionController extends Controller
     public function storeMobile(UserCreationMobile $request)
     {
 
-        $mobile = $request->get('username');
-        if ($request->session()->get('mobile-' . $mobile) != $request->get('sms_code'))
+        $mobile = $request->get('mobile');
+        if ($request->session()->get('mobile-' . $mobile) != $request->get('code'))
             return redirect()->back()->withErrors(trans('auth.invalid-verify-code'));
         /**
          * Create User
          */
-        $user = $this->dispatch(new CreateUserJob($request->except('sms_code')));
+        $inputArr = ['username' => $mobile, 'password' => $request->get('password')];
+        $user = $this->dispatch(new CreateUserJob($inputArr));
 
         $message = trans('auth.account-created') . '. ' . trans('auth.please-update-your-personal-details');
 
@@ -72,7 +72,7 @@ class SessionController extends Controller
         /**
          * Validate Mobile
          */
-         $this->validate($request, [
+        $this->validate($request, [
             'mobile' => 'required|numeric'
         ]);
 

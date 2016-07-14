@@ -103,6 +103,7 @@ export class Form implements ComponentInterface {
                             this.$dispatch('ajax.button.success', ...[e, button]);
                         }, e => {
                             button.disabled = false;
+                            this.$dispatch('ajax.button.fail', ...[e, button]);
                             console.log(e)
                         })
 
@@ -184,6 +185,12 @@ export class Form implements ComponentInterface {
                 errors: {
                     type: [Object, Array],
                     coerce: data => JSON.parse(data)
+                }
+            },
+            events: {
+                'ajax.button.fail': function (e, button) {
+                    if (e.status == 422)
+                        this.errors = e.json()
                 }
             }
         });

@@ -7,7 +7,8 @@
         @set($name, request()->route()->getName())
 
         <ark-flipper class="row align-middle align-right +full-height">
-            <ark-flipper-content side="{{ $name == 'register' ? 'back' : 'front' }}" class="small-12 medium-6 large-4 columns card">
+            <ark-flipper-content side="{{ $name == 'register' ? 'back' : 'front' }}"
+                                 class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -45,7 +46,8 @@
                 </div>
 
             </ark-flipper-content>
-            <ark-flipper-content side="{{ $name == 'register' ? 'front' : 'back' }}" class="small-12 medium-6 large-4 columns card">
+            <ark-flipper-content side="{{ $name == 'register' ? 'front' : 'back' }}"
+                                 class="small-12 medium-6 large-4 columns card">
 
                 <div class="card__content">
 
@@ -63,7 +65,7 @@
                             @lang('auth.register-standard')
                             @push('tab-item')
                             <div id="tab-standard">
-                                <ark-form action="{{ route('login.store') }}"
+                                <ark-form action="{{ route('register.store') }}#tab-standard"
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
@@ -82,7 +84,7 @@
                             @push('tab-item')
                             <div id="tab-mobile">
                                 <ark-form id="mobile-login-form"
-                                          action="{{ route('register.store') }}"
+                                          action="{{ route('mobile.register.store') }}#tab-mobile"
                                           token="{{ csrf_token() }}"
                                           errors="{{ $errors->toJson() }}">
 
@@ -162,5 +164,11 @@
             }
         }
     });
+    /*dreamsark.on('ajax.button.fail', function (e, button) {
+        if (e.status == 422) {
+            var responseData = e.json();
+            console.dir(responseData)
+        }
+    });*/
 </script>
 @endpush
