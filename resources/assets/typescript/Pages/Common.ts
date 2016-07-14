@@ -45,18 +45,23 @@ export class Common extends AbstractPage {
 
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener('click', function (event:MouseEvent) {
+                clearAll()
                 this.classList.toggle('--show');
             })
+        }
+
+        let clearAll = function(){
+            for (let i = 0; i < dropdown.length; i++) {
+                if (dropdown[i].classList.contains('--show')) {
+                    dropdown[i].classList.remove('--show');
+                }
+            }
         }
 
         window.onclick = function (event:MouseEvent) {
 
             if (!event.target.matches('.dropdown__trigger')) {
-                for (let i = 0; i < dropdown.length; i++) {
-                    if (dropdown[i].classList.contains('--show')) {
-                        dropdown[i].classList.remove('--show');
-                    }
-                }
+                clearAll()
             }
 
         }

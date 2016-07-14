@@ -1,40 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://dreamsark.dev/schema">
 <head>
     <meta charset="UTF-8">
     <title>DreamsArk</title>
 
+    @yield('meta-tags')
+
     @yield('styles')
 
-
-    <link rel="stylesheet" media="all" href="{{ asset('css/semantic.min.css') }}">
-    <link rel="stylesheet" media="all" href="{{ asset('css/grid.css') }}">
+    <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=no">
 
 </head>
-<body class="main">
+<body id="app-root" {!! isset($class) ? "class=\"$class\"" : '' !!}>
 
 
-@yield('header')
+@include('partials.navigation.admin-menu')
 
-<div class="ui container">
+@include('errors.errors')
 
-    @include('layouts.top-bar-admin')
+<input type="hidden" name="app_token" value="{{ csrf_token() }}">
 
-    @include('errors.errors')
-
-    <input type="hidden" name="app_token" value="{{ csrf_token() }}">
-
-    @yield('content')
-    @yield('footer')
+<div class="row">
+    <div class="small-12">
+        @yield('content')
+    </div>
 </div>
 
-@yield('scripts')
+<script src="{{ asset('js/App.js') }}"></script>
+<script src="{{ asset('translation-assets/jquery.min.js') }}"></script>
 
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('js/semantic.min.js') }}"></script>
-<script src="{{ asset('js/common-functions.js') }}"></script>
+@stack('scripts')
 
-@yield('pos-scripts')
+<script>
+    dreamsark.page("{{ request()->route()->getName() }}");
+</script>
+@yield('pos-scripts', 'pos-scripts')
 
 </body>
 </html>

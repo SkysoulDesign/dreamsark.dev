@@ -42,6 +42,13 @@
 
                 <div class="dropdown__content">
                     <a href="{{ route('user.account') }}" class="dropdown__content__item">@lang('navbar.account')</a>
+                    @can('see-admin-section', auth()->user())
+                        <a class="dropdown__content__item" href="{{ route('admin.index') }}">@lang('navbar.admin')</a>
+                    @endcan
+
+                    @can('see-committee-section', auth()->user())
+                        <a class="dropdown__content__item" href="{{ route('committee.index') }}">@lang('navbar.committee')</a>
+                    @endcan
                     <div class="dropdown__content__item">@lang('navbar.settings')</div>
                     <a href="{{ route('logout') }}" class="dropdown__content__item">
                         @lang('navbar.logout')

@@ -2,28 +2,14 @@
 
 @section('content')
     <h2>@lang('general.site-admin')</h2>
-    <div class="ui segment">
-        <div class="ui link list">
-            @foreach($routes as $route)
-                <div class="item">
-                    <i class="folder icon"></i>
-                    <div class="content">
-                        <div class="header">{{ $route['label'] }}</div>
-                        <div class="list">
-                            @foreach($route['list'] as $item)
-                                <div class="item">
-                                    <i class="file icon"></i>
-                                    <div class="content">
-                                        <div class="header">
-                                            <a href="{{ (isset($item['param'])?route($item['name'], $item['param']):route($item['name'])) }}">{{ $item['label'] }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+    @foreach($routes as $route)
+        <h4>{{ $route['label'] }}</h4>
+        <ul>
+            @foreach($route['list'] as $item)
+                <li>
+                    <a href="{{ (isset($item['param'])?route($item['name'], $item['param']):route($item['name'])) }}">{{ $item['label'] }}</a>
+                </li>
             @endforeach
-        </div>
-    </div>
+        </ul>
+    @endforeach
 @endsection
