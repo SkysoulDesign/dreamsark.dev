@@ -2,6 +2,9 @@
 
 @section('content')
 
+    <h2>&nbsp;</h2>
+    <h2>@lang('navbar.discover-project')</h2>
+    <h2>&nbsp;</h2>
     <div class="column">
 
 

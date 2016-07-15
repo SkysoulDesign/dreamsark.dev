@@ -1,7 +1,7 @@
 <div class="ui inverted blue menu">
-    <div class="header item">
-        <a href="{{ route('admin.index') }}">
-            <img class="ui" src="{{ asset('dreamsark-assets/logo.png') }}" alt="">
+    <div class="header item small-3 columns">
+        <a href="{{ route('home') }}">
+            <img class="ui" src="{{ asset('img/temp/dreamsark-white.png') }}" alt="">
         </a>
     </div>
     @if(auth()->user()->can('see-admin-section'))

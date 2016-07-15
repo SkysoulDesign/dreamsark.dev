@@ -18,7 +18,7 @@ export class Common extends AbstractPage {
 
     languageSwitcher() {
 
-        if (this.is(['login', 'register']))
+        if (this.is(['login', 'register']) || this.toString().indexOf('admin.'))
             return;
 
         document.querySelector('#language-switcher')
