@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'no-data' => 'There are no reports at the moment',
-  'reports' => 'Reports',
+  'no-data' => '目前没有任何报告',
+  'reports' => '报告',
 );

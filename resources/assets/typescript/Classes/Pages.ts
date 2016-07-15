@@ -176,6 +176,7 @@ export class Pages extends Application {
                     && this.except[currentRoute].includes(name)) {
                     return;
                 }
+
                 this.initialized[name].route = currentRoute;
                 this.initialized[name].boot();
                 

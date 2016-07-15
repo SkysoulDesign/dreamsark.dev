@@ -21,9 +21,6 @@ var BaseCharacter = (function (_super) {
             animations.base.idle.play();
             animations.base.lookAround.play();
         });
-        this.characters.get('base').then(function (base) {
-            mesh.add(new THREE.Mesh(base));
-        });
         /**
          * Play All Animations
          */

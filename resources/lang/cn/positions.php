@@ -2,9 +2,9 @@
 
 return array (
   'actress' => '女演员',
-  'location' => 'Location',
-  'rent' => 'Rent',
-  'food' => 'Food',
+  'location' => '地点',
+  'rent' => '租赁',
+  'food' => '伙食',
   'director' => '导演',
   'executive-producer' => '制片',
   'camera-director' => '摄像',

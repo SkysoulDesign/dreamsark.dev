@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractComposition_1 = require("../Abstract/AbstractComposition");
+var Helpers_1 = require("../../../Helpers");
 /**
  * Main Composition
  */
@@ -15,13 +16,14 @@ var Main = (function (_super) {
     }
     Main.prototype.characters = function () {
         return [
-            this.randomProfile
+            'base',
+            this.activeProfile
         ];
     };
-    Main.prototype.setup = function (app, container, randomProfile) {
+    Main.prototype.setup = function (app, container, activeProfile) {
         var _this = this;
         this.app = app;
-        this.randomProfile = randomProfile;
+        this.activeProfile = Helpers_1.toCamelCase(activeProfile);
         document.querySelector(container).addEventListener('click', function (e) {
             var target = e.target;
             if (target.dataset.hasOwnProperty('profileName')) {
@@ -31,15 +33,21 @@ var Main = (function (_super) {
     };
     Main.prototype.stage = function (scene, camera, characters) {
         this.scene = scene;
-        scene.add(characters[this.randomProfile]);
+        characters.base.position.set(0, -25, 2);
+        characters.base.rotation.y = Math.PI;
+        scene.add(characters[this.activeProfile], characters.base);
     };
     Main.prototype.update = function (scene, camera, characters, time, delta) {
     };
     Main.prototype.switch = function (name) {
         var _this = this;
         this.app.characters.get(name).then(function (profile) {
-            _this.scene.remove(_this.scene.children[1]);
+            if (_this.activeProfile == profile.name)
+                return console.log('already active');
+            var current = _this.scene.getObjectByName(_this.activeProfile);
+            _this.scene.remove(_this.scene.remove(current));
             _this.scene.add(profile);
+            _this.activeProfile = profile.name;
         });
     };
     return Main;

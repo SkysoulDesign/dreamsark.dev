@@ -4,16 +4,16 @@
 
     @include('user.partials.header', ['header' => false])
 
-    <div id="root" class="base-page__header --profile-pick" v-on:click="selectProfile">
+    <div class="base-page__header --default --animated">
 
         <div class="base-page__header__overlay"></div>
 
-        <div id="wrapper" class="row align-middle +full-height +center">
+        <div class="row align-middle +full-height +center">
 
             <div class="small-12 columns">
                 <header class="header --inverted +text-shadow">
                     <small>@lang('project.project')</small>
-                    <h1 class="+uppercase">The books is on The Table</h1>
+                    <h1 class="+uppercase">@lang('project.creation')</h1>
                 </header>
             </div>
 
@@ -21,15 +21,15 @@
 
     </div>
 
-    <form class="row align-center --overlapped" method="post" action="{{ route('user.project.store') }}">
-
-        {{ csrf_field() }}
+    <ark-form class="row align-center --overlapped"
+              action="{{ route('user.project.store') }}"
+              token="{{ csrf_token() }}" errors="{{ $errors->toJson() }}">
 
         <div class="small-11 medium-9 columns form__header --rounded">
-            this is a very nice form header
+            @lang('project.start-project')
         </div>
 
-        <div class="small-11 medium-9 columns form__content --rounded">
+        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">
 
             <div class="row">
 
@@ -39,7 +39,7 @@
                 </h3>
 
                 <div class="small-12 columns form__field --required">
-                    <input name="name" type="text" placeholder="{{ trans('project.name') }}">
+                    <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
                 </div>
 
                 <h3 class="small-12 columns form__step">
@@ -48,10 +48,8 @@
                 </h3>
 
                 <div class="small-12 columns form__field --required">
-                    <textarea name="content" rows="5"></textarea>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aliquam amet
-                        consectetur deserunt dignissimos dolorum excepturi facilis ipsum laboriosam minima
-                        mollitia nisi pariatur, quos recusandae totam vel veniam voluptas voluptatibus.</span>
+                    <ark-textarea name="description" :rows="5" placeholder="@lang('forms.description')"></ark-textarea>
+                    <span>@lang('project.form-description')</span>
                 </div>
 
                 <h3 class="small-12 columns form__step">
@@ -59,45 +57,47 @@
                     @lang('project.reward')
                 </h3>
 
-                <div class="small-12 medium-4 columns form__field --required">
-                    <label for="">@lang('forms.idea-stage')</label>
-                    <input name="reward[idea]" type="text" />
-                </div>
+                <ark-fields>
+                    <ark-input name="reward[idea]"
+                               required
+                               placeholder="@lang('project.name')"
+                               label="@lang('forms.idea-stage')">
+                    </ark-input>
 
-                <div class="small-12 medium-4 columns form__field --optional">
-                    <label for="">@lang('forms.synapse-stage')</label>
-                    <input name="reward[synapse]" type="text" />
-                </div>
+                    <ark-input name="reward[synapse]"
+                               optional
+                               placeholder="@lang('project.name')"
+                               label="@lang('forms.synapse-stage')">
+                    </ark-input>
 
-                <div class="small-12 medium-4 columns form__field --optional">
-                    <label for="">@lang('forms.script-stage')</label>
-                    <input name="reward[script]" type="text" />
-                </div>
+                    <ark-input name="reward[script]"
+                               optional
+                               placeholder="@lang('project.name')"
+                               label="@lang('forms.script-stage')">
+                    </ark-input>
+                </ark-fields>
 
-                <div class="small-12 columns form__field --required">
-                    <label for="">@lang('forms.due-date')</label>
-                    <input name="voting_date" type="date" placeholder="{{ trans('forms.due-date') }}">
-                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet beatae,
-                        cum distinctio doloribus eius.</span>
-                </div>
+                <ark-input name="voting_date"
+                           type="date"
+                           placeholder="@lang('project.name')"
+                           caption="@lang('project.creation-voting-description')"
+                           label="@lang('forms.due-date')">
+                </ark-input>
 
                 <div class="small-12 columns divider --simple"></div>
 
-                <div class="small-12 columns form__field +center-on-mobile">
-                    <button class="button --success --fit">@lang('forms.create-project')</button>
-                </div>
+                <ark-button state="success" class="+center-on-mobile">
+                    @lang('forms.create-project')
+                </ark-button>
 
                 <div class="small-12 columns form__description +center-on-mobile">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi architecto consequuntur
-                    deserunt dicta doloremque enim illum ipsam itaque iusto molestiae mollitia nihil quaerat, quas
-                    sapiente similique, tempora! Aperiam, tempore!
+                    @lang('project.creation.notes')
                 </div>
 
             </div>
 
         </div>
 
-    </form>
-
+    </ark-form>
 
 @endsection

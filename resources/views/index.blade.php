@@ -151,7 +151,7 @@
 
         <div class="small-12 columns">
             <header class="header --light --small">
-                Learm more about Dreamsark
+                @lang('general.lear-more-about-dreamsark')
                 <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate officia omnis quasi repellat?
                     Adipisci aperiam assumenda debitis distinctio dolore eaque exercitationem libero natus quas, rem
                     rerum

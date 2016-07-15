@@ -17,12 +17,6 @@ export abstract class BaseCharacter extends Character {
             animations.base.lookAround.play();
         })
 
-        this.characters.get('base').then(base => {
-            mesh.add(
-                new THREE.Mesh(base)
-            )
-        })
-
         /**
          * Play All Animations
          */

@@ -24,7 +24,8 @@ var BaseMaterial = (function (_super) {
     };
     BaseMaterial.prototype.material = function () {
         return new THREE.MeshBasicMaterial({
-            skinning: true
+            skinning: true,
+            shading: THREE.FlatShading
         });
     };
     return BaseMaterial;

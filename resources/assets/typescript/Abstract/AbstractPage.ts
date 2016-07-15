@@ -14,10 +14,15 @@ export abstract class AbstractPage implements PageInterface {
     public is(route:any) {
 
         if (route instanceof Array) {
-            return route.includes(this.route);
-        }
 
-        return this.route === route;
+            return !route.every(
+                item => {
+                    return !(this.route.match(`^${item}`))
+                }
+            );
+
+        }
+        // return route.match(`^${this.route}`);
     }
 
     public only(route:any) {

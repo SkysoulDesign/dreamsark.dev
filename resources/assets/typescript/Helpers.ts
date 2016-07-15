@@ -50,7 +50,7 @@ export var extend = (defaults:any, object:any):any => {
  * @returns {string}
  */
 export var toCamelCase = (str:string) => {
-    return str.replace(/^([A-Z])|[\s-_](\w)/g, function(match, p1, p2, offset) {
+    return str.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
         if (p2) return p2.toUpperCase();
         return p1.toLowerCase();
     });
@@ -58,4 +58,15 @@ export var toCamelCase = (str:string) => {
 
 export var captalize = (str:string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
+ * Firefox have an issue to submit form if its not appended to the body
+ * @param form
+ */
+export var submitForm = (form:HTMLFormElement) => {
+
+    document.body.appendChild(form);
+    form.submit();
+
 }

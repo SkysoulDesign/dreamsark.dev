@@ -18,7 +18,8 @@ export class BaseMaterial extends AbstractMaterial {
 
     material() {
         return new THREE.MeshBasicMaterial({
-            skinning: true
+            skinning: true,
+            shading: THREE.FlatShading
         })
     }
 

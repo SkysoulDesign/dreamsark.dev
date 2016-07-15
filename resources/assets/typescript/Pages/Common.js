@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractPage_1 = require("../Abstract/AbstractPage");
+var Helpers_1 = require("../Helpers");
 /**
  * Common Page
  */
@@ -20,15 +21,16 @@ var Common = (function (_super) {
         this.languageSwitcher();
     };
     Common.prototype.languageSwitcher = function () {
-        if (this.is(['login', 'register']))
+        if (this.is(['login', 'register', 'admin.*', 'committee.*'])) {
             return;
+        }
         document.querySelector('#language-switcher')
             .addEventListener('change', function (e) {
             var form = document.createElement('form'), element = e.target;
             form.method = 'post';
             form.action = element.dataset['action'];
             form.appendChild(element);
-            form.submit();
+            Helpers_1.submitForm(form);
         });
     };
     /**

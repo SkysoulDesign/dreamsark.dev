@@ -1410,7 +1410,7 @@ module.exports = plugin;
 },{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.25
+ * Vue.js v1.0.26
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -4820,7 +4820,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if (isA || isO) {
+  if ((isA || isO) && Object.isExtensible(val)) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -6306,13 +6306,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
+    if (!inDoc(el)) {
+      nextTick(this.forceUpdate);
+    }
   },
 
   update: function update(value) {
     var el = this.el;
-    if (!inDoc(el)) {
-      return nextTick(this.forceUpdate);
-    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -11260,7 +11260,13 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
+    var length = args.length;
+    if (length > 1) {
+      var index = value % 10 - 1;
+      return index in args ? args[index] : args[length - 1];
+    } else {
+      return args[0] + (value === 1 ? '' : 's');
+    }
   },
 
   /**
@@ -11462,7 +11468,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.25';
+Vue.version = '1.0.26';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -11488,10 +11494,13 @@ var AbstractPage = function () {
         this.app = app;
     }
     AbstractPage.prototype.is = function (route) {
+        var _this = this;
         if (route instanceof Array) {
-            return route.includes(this.route);
+            return !route.every(function (item) {
+                return !_this.route.match("^" + item);
+            });
         }
-        return this.route === route;
+        // return route.match(`^${this.route}`);
     };
     AbstractPage.prototype.only = function (route) {
         return !this.is(route);
@@ -12114,6 +12123,7 @@ var Flipper = function () {
                     event.preventDefault();
                     _this.$parent.flip();
                 });
+                this.$dispatch.apply(this, ['flipper.block.enabled'].concat([this]));
             }
         });
     };
@@ -12151,9 +12161,11 @@ var Form = function () {
                     type: String,
                     default: 'submit'
                 },
+                state: {
+                    type: String
+                },
                 class: {
-                    type: String,
-                    default: '--default'
+                    type: String
                 }
             }
         });
@@ -12230,8 +12242,57 @@ var Form = function () {
         vue.component('ark-input', {
             template: require('../templates/form/input.html'),
             props: {
+                name: String,
+                required: Boolean,
+                optional: Boolean,
+                caption: String,
+                placeholder: {
+                    type: String,
+                    default: function _default() {
+                        return this.name;
+                    }
+                },
+                type: {
+                    type: String,
+                    default: 'text'
+                },
+                title: {
+                    type: String,
+                    default: function _default() {
+                        return this.name;
+                    }
+                },
+                readOnly: {
+                    type: Boolean,
+                    default: false
+                },
+                value: {
+                    type: String
+                },
+                label: {
+                    type: String
+                }
+            },
+            computed: {
+                errors: function errors() {
+                    var parent = this.$parent;
+                    /**
+                     * In Case its an instance of ArkFields
+                     */
+                    if (this.$parent.constructor.name !== 'ArkForm') parent = parent.$parent;
+                    return Helpers_1.popByKey(parent.errors, this.name);
+                }
+            }
+        });
+        vue.component('ark-textarea', {
+            template: require('../templates/form/textarea.html'),
+            props: {
                 name: {
                     type: String
+                },
+                rows: {
+                    type: Number,
+                    default: 3
                 },
                 placeholder: {
                     type: String,
@@ -12303,7 +12364,7 @@ var Form = function () {
 exports.Form = Form;
 
 
-},{"../Helpers":22,"../templates/form/ajax-button.html":31,"../templates/form/button.html":32,"../templates/form/fields.html":33,"../templates/form/form.html":34,"../templates/form/input.html":35,"vue-resource":2}],14:[function(require,module,exports){
+},{"../Helpers":22,"../templates/form/ajax-button.html":31,"../templates/form/button.html":32,"../templates/form/fields.html":33,"../templates/form/form.html":34,"../templates/form/input.html":35,"../templates/form/textarea.html":36,"vue-resource":2}],14:[function(require,module,exports){
 "use strict";
 /**
  * Form Component
@@ -12346,7 +12407,7 @@ var Modal = function () {
 exports.Modal = Modal;
 
 
-},{"../templates/modal/modal.html":36}],15:[function(require,module,exports){
+},{"../templates/modal/modal.html":37}],15:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -12466,7 +12527,7 @@ var Nav = function () {
 exports.Nav = Nav;
 
 
-},{"../templates/nav/item.html":37,"../templates/nav/nav.html":38,"../templates/nav/tab.html":39}],16:[function(require,module,exports){
+},{"../templates/nav/item.html":38,"../templates/nav/nav.html":39,"../templates/nav/tab.html":40}],16:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -12509,7 +12570,7 @@ var Progress = function () {
 exports.Progress = Progress;
 
 
-},{"../templates/progress.html":40}],17:[function(require,module,exports){
+},{"../templates/progress.html":41}],17:[function(require,module,exports){
 "use strict";
 /**
  * Quote Component
@@ -12556,7 +12617,7 @@ var Quote = function () {
 exports.Quote = Quote;
 
 
-},{"../templates/quote/quote.html":41}],18:[function(require,module,exports){
+},{"../templates/quote/quote.html":42}],18:[function(require,module,exports){
 "use strict";
 /**
  * Nav Component
@@ -12638,7 +12699,7 @@ exports.Ripple = Ripple;
 // {{--<script src="http://tympanus.net/Tutorials/SVGRipples/js/ripple-config.js"></script>--}}
 
 
-},{"../templates/ripple-button.html":42}],19:[function(require,module,exports){
+},{"../templates/ripple-button.html":43}],19:[function(require,module,exports){
 "use strict";
 /**
  * Form Component
@@ -12701,7 +12762,7 @@ var Social = function () {
 exports.Social = Social;
 
 
-},{"../templates/social-login/qq.html":43,"../templates/social-login/social-login.html":44,"../templates/social-login/wechat.html":45,"../templates/social-login/weibo.html":46,"vue-resource":2}],20:[function(require,module,exports){
+},{"../templates/social-login/qq.html":44,"../templates/social-login/social-login.html":45,"../templates/social-login/wechat.html":46,"../templates/social-login/weibo.html":47,"vue-resource":2}],20:[function(require,module,exports){
 "use strict";
 /**
  * Statistics Component
@@ -12731,7 +12792,7 @@ var Statistics = function () {
 exports.Statistics = Statistics;
 
 
-},{"../templates/statistics/item.html":47,"../templates/statistics/statistics.html":48}],21:[function(require,module,exports){
+},{"../templates/statistics/item.html":48,"../templates/statistics/statistics.html":49}],21:[function(require,module,exports){
 "use strict";
 /**
  * Steps Component
@@ -12778,7 +12839,7 @@ var Steps = function () {
 exports.Steps = Steps;
 
 
-},{"../templates/steps/step.html":49,"../templates/steps/steps.html":50}],22:[function(require,module,exports){
+},{"../templates/steps/step.html":50,"../templates/steps/steps.html":51}],22:[function(require,module,exports){
 "use strict";
 /**
  * For Loop
@@ -12832,6 +12893,14 @@ exports.toCamelCase = function (str) {
 exports.captalize = function (str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
+/**
+ * Firefox have an issue to submit form if its not appended to the body
+ * @param form
+ */
+exports.submitForm = function (form) {
+    document.body.appendChild(form);
+    form.submit();
+};
 
 
 },{}],23:[function(require,module,exports){
@@ -12846,6 +12915,7 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractPage_1 = require("../Abstract/AbstractPage");
+var Helpers_1 = require("../Helpers");
 /**
  * Common Page
  */
@@ -12861,14 +12931,16 @@ var Common = function (_super) {
         this.languageSwitcher();
     };
     Common.prototype.languageSwitcher = function () {
-        if (this.is(['login', 'register'])) return;
+        if (this.is(['login', 'register', 'admin.*', 'committee.*'])) {
+            return;
+        }
         document.querySelector('#language-switcher').addEventListener('change', function (e) {
             var form = document.createElement('form'),
                 element = e.target;
             form.method = 'post';
             form.action = element.dataset['action'];
             form.appendChild(element);
-            form.submit();
+            Helpers_1.submitForm(form);
         });
     };
     /**
@@ -12900,7 +12972,7 @@ var Common = function (_super) {
 exports.Common = Common;
 
 
-},{"../Abstract/AbstractPage":4}],24:[function(require,module,exports){
+},{"../Abstract/AbstractPage":4,"../Helpers":22}],24:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -12950,6 +13022,7 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractPage_1 = require("../Abstract/AbstractPage");
+var Helpers_1 = require("../Helpers");
 /**
  * Profile
  */
@@ -12999,15 +13072,9 @@ var Purchase = function (_super) {
                         input.setAttribute('value', response.data[name_1]);
                         form.appendChild(input);
                     }
-                    /**
-                     * Fix for Firefox
-                     */
-                    if (navigator.userAgent.includes('Firefox')) {
-                        document.body.appendChild(form);
-                    }
                     form.action = response.target;
                     form.method = response.method;
-                    form.submit();
+                    Helpers_1.submitForm(form);
                 }
             },
             ready: function ready() {
@@ -13026,7 +13093,7 @@ var Purchase = function (_super) {
 exports.Purchase = Purchase;
 
 
-},{"../Abstract/AbstractPage":4,"vue-resource":2}],26:[function(require,module,exports){
+},{"../Abstract/AbstractPage":4,"../Helpers":22,"vue-resource":2}],26:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -13048,7 +13115,7 @@ var Test = function (_super) {
         this.routes = ['user.profile.index'];
     }
     Test.prototype.boot = function () {
-        console.log('I Only run in profile');
+        console.log('Im a test');
     };
     return Test;
 }(AbstractPage_1.AbstractPage);
@@ -13140,42 +13207,44 @@ module.exports = '<div :class="[ \'flipper__\'+side, { \'+hidden\' : side == \'b
 },{}],31:[function(require,module,exports){
 module.exports = '<div class="form__field">\n    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],32:[function(require,module,exports){
-module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
+module.exports = '<div class="form__field">\n    <button :type="type" class="button --fit" :class="[class, \'--\' + state]">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],33:[function(require,module,exports){
 module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],34:[function(require,module,exports){
 module.exports = '<form :id="id" :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>\n';
 },{}],35:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{ \'--error\': errors }"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],36:[function(require,module,exports){
-module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea :class="{ \'--error\': errors }"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :value="value"\n              :rows="rows"\n              :readOnly="readOnly"></textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],37:[function(require,module,exports){
-module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
+module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],38:[function(require,module,exports){
-module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>\n';
+module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
 },{}],39:[function(require,module,exports){
-module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
+module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">\n\n            <slot></slot>\n\n        </div>\n\n    </div>\n\n</div>\n';
 },{}],40:[function(require,module,exports){
-module.exports = '<div class="progress">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="style">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
+module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
 },{}],41:[function(require,module,exports){
-module.exports = '<div @click="expand" class="quote" data-expend-text="{{ expandText }}">\n    <slot></slot>\n</div>\n';
+module.exports = '<div class="progress">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="style">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
 },{}],42:[function(require,module,exports){
-module.exports = '<button @click="submit" :type="type" id="js-ripple-btn" class="button --ripple">\n\n    <slot></slot>\n\n    <svg class="ripple-obj" id="js-ripple">\n        <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>\n    </svg>\n\n</button>\n<div style="height: 0; width: 0; position: absolute; visibility: hidden;"\n     aria-hidden="true">\n    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"\n         xmlns:xlink="http://www.w3.org/1999/xlink"\n         focusable="false">\n        <symbol id="dreamsark-polygon" viewBox="0 0 100 100">\n            <g>\n                <polygon\n                        points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.35)"\n                         transform="scale(0.5), translate(50, 50)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.25)"\n                         transform="scale(0.25), translate(145, 145)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n            </g>\n        </symbol>\n    </svg>\n</div>';
+module.exports = '<div @click="expand" class="quote" data-expend-text="{{ expandText }}">\n    <slot></slot>\n</div>\n';
 },{}],43:[function(require,module,exports){
-module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#FFC107" d="M17.5,44c-3.6,0-6.5-1.6-6.5-3.5s2.9-3.5,6.5-3.5s6.5,1.6,6.5,3.5S21.1,44,17.5,44z M37,40.5  c0-1.9-2.9-3.5-6.5-3.5S24,38.6,24,40.5s2.9,3.5,6.5,3.5S37,42.4,37,40.5z"/>\n<path fill="#37474F" d="M37.2,22.2c-0.1-0.3-0.2-0.6-0.3-1c0.1-0.5,0.1-1,0.1-1.5c0-1.4-0.1-2.6-0.1-3.6C36.9,9.4,31.1,4,24,4  S11,9.4,11,16.1c0,0.9,0,2.2,0,3.6c0,0.5,0,1,0.1,1.5c-0.1,0.3-0.2,0.6-0.3,1c-1.9,2.7-3.8,6-3.8,8.5C7,35.5,8.4,35,8.4,35  c0.6,0,1.6-1,2.5-2.1C13,38.8,18,43,24,43s11-4.2,13.1-10.1C38,34,39,35,39.6,35c0,0,1.4,0.5,1.4-4.3C41,28.2,39.1,24.8,37.2,22.2z"/>\n<path fill="#ECEFF1" d="M14.7,23c-0.5,1.5-0.7,3.1-0.7,4.8C14,35.1,18.5,41,24,41s10-5.9,10-13.2c0-1.7-0.3-3.3-0.7-4.8H14.7z"/>\n<path fill="#FFFFFF" d="M23,13.5c0,1.9-1.1,3.5-2.5,3.5S18,15.4,18,13.5s1.1-3.5,2.5-3.5S23,11.6,23,13.5z M27.5,10  c-1.4,0-2.5,1.6-2.5,3.5s1.1,3.5,2.5,3.5s2.5-1.6,2.5-3.5S28.9,10,27.5,10z"/>\n<path fill="#37474F" d="M22,13.5c0,0.8-0.4,1.5-1,1.5s-1-0.7-1-1.5s0.4-1.5,1-1.5S22,12.7,22,13.5z M27,12c-0.6,0-1,0.7-1,1.5  s0.4-0.5,1-0.5s1,1.3,1,0.5S27.6,12,27,12z"/>\n<path fill="#FFC107" d="M32,19.5c0,0.8-3.6,2.5-8,2.5s-8-1.7-8-2.5s3.6-1.5,8-1.5S32,18.7,32,19.5z"/>\n<path fill="#FF3D00" d="M38.7,21.2c-0.4-1.5-1-2.2-2.1-1.3c0,0-5.9,3.1-12.5,3.1v0.1l0-0.1c-6.6,0-12.5-3.1-12.5-3.1  c-1.1-0.8-1.7-0.2-2.1,1.3c-0.4,1.5-0.7,2,0.7,2.8c0.1,0.1,1.4,0.8,3.4,1.7c-0.6,3.5-0.5,6.8-0.5,7c0.1,1.5,1.3,1.3,2.9,1.3  c1.6-0.1,2.9,0,2.9-1.6c0-0.9,0-2.9,0.3-5c1.6,0.3,3.2,0.6,5,0.6l0,0v0c7.3,0,13.7-3.9,13.9-4C39.3,23.3,39,22.8,38.7,21.2z"/>\n<path fill="#DD2C00" d="M13.2,27.7c1.6,0.6,3.5,1.3,5.6,1.7c0-0.6,0.1-1.3,0.2-2c-2.1-0.5-4-1.1-5.5-1.7  C13.4,26.4,13.3,27.1,13.2,27.7z"/>\n</svg>\n</li>\n';
+module.exports = '<button @click="submit" :type="type" id="js-ripple-btn" class="button --ripple">\n\n    <slot></slot>\n\n    <svg class="ripple-obj" id="js-ripple">\n        <use width="4" height="4" xlink:href="#dreamsark-polygon" class="js-ripple"></use>\n    </svg>\n\n</button>\n<div style="height: 0; width: 0; position: absolute; visibility: hidden;"\n     aria-hidden="true">\n    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"\n         xmlns:xlink="http://www.w3.org/1999/xlink"\n         focusable="false">\n        <symbol id="dreamsark-polygon" viewBox="0 0 100 100">\n            <g>\n                <polygon\n                        points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.35)"\n                         transform="scale(0.5), translate(50, 50)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n                <polygon fill="rgba(255,255,255,0.25)"\n                         transform="scale(0.25), translate(145, 145)"\n                         points="5.6,77.4 0,29 39.1,0 83.8,19.3 89.4,67.7 50.3,96.7"></polygon>\n            </g>\n        </symbol>\n    </svg>\n</div>';
 },{}],44:[function(require,module,exports){
-module.exports = '<div class="row align-center social-login">\n    <ul class="ul --inline --tight">\n        <slot></slot>\n    </ul>\n</div>\n';
+module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#FFC107" d="M17.5,44c-3.6,0-6.5-1.6-6.5-3.5s2.9-3.5,6.5-3.5s6.5,1.6,6.5,3.5S21.1,44,17.5,44z M37,40.5  c0-1.9-2.9-3.5-6.5-3.5S24,38.6,24,40.5s2.9,3.5,6.5,3.5S37,42.4,37,40.5z"/>\n<path fill="#37474F" d="M37.2,22.2c-0.1-0.3-0.2-0.6-0.3-1c0.1-0.5,0.1-1,0.1-1.5c0-1.4-0.1-2.6-0.1-3.6C36.9,9.4,31.1,4,24,4  S11,9.4,11,16.1c0,0.9,0,2.2,0,3.6c0,0.5,0,1,0.1,1.5c-0.1,0.3-0.2,0.6-0.3,1c-1.9,2.7-3.8,6-3.8,8.5C7,35.5,8.4,35,8.4,35  c0.6,0,1.6-1,2.5-2.1C13,38.8,18,43,24,43s11-4.2,13.1-10.1C38,34,39,35,39.6,35c0,0,1.4,0.5,1.4-4.3C41,28.2,39.1,24.8,37.2,22.2z"/>\n<path fill="#ECEFF1" d="M14.7,23c-0.5,1.5-0.7,3.1-0.7,4.8C14,35.1,18.5,41,24,41s10-5.9,10-13.2c0-1.7-0.3-3.3-0.7-4.8H14.7z"/>\n<path fill="#FFFFFF" d="M23,13.5c0,1.9-1.1,3.5-2.5,3.5S18,15.4,18,13.5s1.1-3.5,2.5-3.5S23,11.6,23,13.5z M27.5,10  c-1.4,0-2.5,1.6-2.5,3.5s1.1,3.5,2.5,3.5s2.5-1.6,2.5-3.5S28.9,10,27.5,10z"/>\n<path fill="#37474F" d="M22,13.5c0,0.8-0.4,1.5-1,1.5s-1-0.7-1-1.5s0.4-1.5,1-1.5S22,12.7,22,13.5z M27,12c-0.6,0-1,0.7-1,1.5  s0.4-0.5,1-0.5s1,1.3,1,0.5S27.6,12,27,12z"/>\n<path fill="#FFC107" d="M32,19.5c0,0.8-3.6,2.5-8,2.5s-8-1.7-8-2.5s3.6-1.5,8-1.5S32,18.7,32,19.5z"/>\n<path fill="#FF3D00" d="M38.7,21.2c-0.4-1.5-1-2.2-2.1-1.3c0,0-5.9,3.1-12.5,3.1v0.1l0-0.1c-6.6,0-12.5-3.1-12.5-3.1  c-1.1-0.8-1.7-0.2-2.1,1.3c-0.4,1.5-0.7,2,0.7,2.8c0.1,0.1,1.4,0.8,3.4,1.7c-0.6,3.5-0.5,6.8-0.5,7c0.1,1.5,1.3,1.3,2.9,1.3  c1.6-0.1,2.9,0,2.9-1.6c0-0.9,0-2.9,0.3-5c1.6,0.3,3.2,0.6,5,0.6l0,0v0c7.3,0,13.7-3.9,13.9-4C39.3,23.3,39,22.8,38.7,21.2z"/>\n<path fill="#DD2C00" d="M13.2,27.7c1.6,0.6,3.5,1.3,5.6,1.7c0-0.6,0.1-1.3,0.2-2c-2.1-0.5-4-1.1-5.5-1.7  C13.4,26.4,13.3,27.1,13.2,27.7z"/>\n</svg>\n</li>\n';
 },{}],45:[function(require,module,exports){
-module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#8BC34A" d="M18,6C9.2,6,2,12,2,19.5c0,4.3,2.3,8,6,10.5l-2,6l6.3-3.9C14,32.7,16,33,18,33c8.8,0,16-6,16-13.5  C34,12,26.8,6,18,6z"/>\n<path fill="#7CB342" d="M20,29c0-6.1,5.8-11,13-11c0.3,0,0.6,0,0.9,0c-0.1-0.7-0.3-1.4-0.5-2c-0.1,0-0.3,0-0.4,0  c-8.3,0-15,5.8-15,13c0,1.4,0.3,2.7,0.7,4c0.7,0,1.4-0.1,2.1-0.2C20.3,31.6,20,30.3,20,29z"/>\n<path fill="#CFD8DC" d="M46,29c0-6.1-5.8-11-13-11c-7.2,0-13,4.9-13,11s5.8,11,13,11c1.8,0,3.5-0.3,5-0.8l5,2.8l-1.4-4.8  C44.3,35.2,46,32.3,46,29z"/>\n<path fill="#33691E" d="M14,15c0,1.1-0.9,2-2,2s-2-0.9-2-2s0.9-2,2-2S14,13.9,14,15z M24,13c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2  S25.1,13,24,13z"/>\n<path fill="#546E7A" d="M30,26.5c0,0.8-0.7,1.5-1.5,1.5S27,27.3,27,26.5s0.7-1.5,1.5-1.5S30,25.7,30,26.5z M37.5,25  c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5S38.3,25,37.5,25z"/>\n</svg>\n</li>\n';
+module.exports = '<div class="row align-center social-login">\n    <ul class="ul --inline --tight">\n        <slot></slot>\n    </ul>\n</div>\n';
 },{}],46:[function(require,module,exports){
-module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#FFFFFF" d="M34,29c-0.6-5.8-7.6-9.8-16-8.9c-4.9,0.5-9.4,2.6-11.9,5.6C4.5,27.6,3.8,29.8,4,32c0.5,5.3,6.4,9,13.8,9  c0.7,0,1.4,0,2.2-0.1c4.9-0.5,9.4-2.6,11.9-5.6C33.5,33.4,34.2,31.2,34,29z"/>\n<path fill="#D32F2F" d="M19.8,38.9C12.7,39.6,6.5,36.4,6,31.8c-0.5-4.6,5-9,12.1-9.7c7.2-0.7,13.3,2.5,13.8,7.1  C32.4,33.9,27,38.2,19.8,38.9 M34.7,23.9c-0.6-0.2-1-0.3-0.7-1.1c0.7-1.7,0.8-3.2,0-4.3c-1.4-2-5.3-1.9-9.7-0.1c0,0-1.4,0.6-1-0.5  c0.7-2.2,0.6-4-0.5-5C20.4,10.5,14,13,8.5,18.4C4.4,22.5,2,26.8,2,30.5C2,37.7,11.2,42,20.3,42C32.1,42,40,35.2,40,29.8  C40,26.5,37.2,24.7,34.7,23.9"/>\n<path fill="#263238" d="M20.9,30.4c-0.3,0.5-0.9,0.8-1.4,0.6c-0.5-0.2-0.6-0.8-0.4-1.3c0.3-0.5,0.9-0.8,1.3-0.5  C21,29.3,21.1,29.8,20.9,30.4 M17.6,32.8c-0.7,1-2.3,1.5-3.5,1c-1.2-0.5-1.5-1.7-0.8-2.6c0.7-1,2.2-1.4,3.4-1  C18,30.6,18.4,31.8,17.6,32.8 M20.5,25.2c-3.5-0.9-7.4,0.8-8.9,3.8c-1.5,3.1-0.1,6.5,3.5,7.6c3.6,1.2,7.9-0.6,9.4-3.9  C26,29.5,24.1,26.1,20.5,25.2"/>\n<circle fill="#F9A825" cx="43.9" cy="21.5" r="1.5"/>\n<path fill="#F9A825" d="M45.3,22C45.3,22,45.3,22,45.3,22c-0.2,0.6-0.8,1-1.4,1c-0.8,0-1.5-0.7-1.5-1.5c0-0.2,0-0.4,0.1-0.6  C42.8,20,43,19,43,18c0-5-4-9-9-9c-0.4,0-0.9,0-1.3,0.1c0,0,0,0-0.1,0c0,0-0.1,0-0.1,0c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5  c0,0,0,0,0,0C33,6,33.5,6,34,6c6.6,0,12,5.4,12,12C46,19.4,45.8,20.7,45.3,22z M40,18c0-3.3-2.7-6-6-6c-0.2,0-0.4,0-0.7,0  c0,0,0,0-0.1,0c-0.7,0.1-1.3,0.7-1.3,1.5c0,0.8,0.7,1.5,1.5,1.5c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.3,0,0.4,0c1.7,0,3,1.3,3,3  c0,0.3-0.1,0.7-0.2,1c0,0,0,0,0,0c-0.1,0.2-0.1,0.3-0.1,0.5c0,0.8,0.7,1.5,1.5,1.5c0.6,0,1.1-0.4,1.4-0.9c0,0,0,0,0,0  c0,0,0-0.1,0-0.1c0-0.1,0-0.1,0.1-0.2C39.9,19.2,40,18.6,40,18z"/>\n</svg>\n</li>\n';
+module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#8BC34A" d="M18,6C9.2,6,2,12,2,19.5c0,4.3,2.3,8,6,10.5l-2,6l6.3-3.9C14,32.7,16,33,18,33c8.8,0,16-6,16-13.5  C34,12,26.8,6,18,6z"/>\n<path fill="#7CB342" d="M20,29c0-6.1,5.8-11,13-11c0.3,0,0.6,0,0.9,0c-0.1-0.7-0.3-1.4-0.5-2c-0.1,0-0.3,0-0.4,0  c-8.3,0-15,5.8-15,13c0,1.4,0.3,2.7,0.7,4c0.7,0,1.4-0.1,2.1-0.2C20.3,31.6,20,30.3,20,29z"/>\n<path fill="#CFD8DC" d="M46,29c0-6.1-5.8-11-13-11c-7.2,0-13,4.9-13,11s5.8,11,13,11c1.8,0,3.5-0.3,5-0.8l5,2.8l-1.4-4.8  C44.3,35.2,46,32.3,46,29z"/>\n<path fill="#33691E" d="M14,15c0,1.1-0.9,2-2,2s-2-0.9-2-2s0.9-2,2-2S14,13.9,14,15z M24,13c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2  S25.1,13,24,13z"/>\n<path fill="#546E7A" d="M30,26.5c0,0.8-0.7,1.5-1.5,1.5S27,27.3,27,26.5s0.7-1.5,1.5-1.5S30,25.7,30,26.5z M37.5,25  c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5S38.3,25,37.5,25z"/>\n</svg>\n</li>\n';
 },{}],47:[function(require,module,exports){
-module.exports = '<div class="shrink columns statistic">\n    <div class="statistic__item">\n        {{ data }}\n        <span>\n            <slot></slot>\n        </span>\n    </div>\n</div>';
+module.exports = '<li @click="login">\n    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve" width="48" height="48">\n<path fill="#FFFFFF" d="M34,29c-0.6-5.8-7.6-9.8-16-8.9c-4.9,0.5-9.4,2.6-11.9,5.6C4.5,27.6,3.8,29.8,4,32c0.5,5.3,6.4,9,13.8,9  c0.7,0,1.4,0,2.2-0.1c4.9-0.5,9.4-2.6,11.9-5.6C33.5,33.4,34.2,31.2,34,29z"/>\n<path fill="#D32F2F" d="M19.8,38.9C12.7,39.6,6.5,36.4,6,31.8c-0.5-4.6,5-9,12.1-9.7c7.2-0.7,13.3,2.5,13.8,7.1  C32.4,33.9,27,38.2,19.8,38.9 M34.7,23.9c-0.6-0.2-1-0.3-0.7-1.1c0.7-1.7,0.8-3.2,0-4.3c-1.4-2-5.3-1.9-9.7-0.1c0,0-1.4,0.6-1-0.5  c0.7-2.2,0.6-4-0.5-5C20.4,10.5,14,13,8.5,18.4C4.4,22.5,2,26.8,2,30.5C2,37.7,11.2,42,20.3,42C32.1,42,40,35.2,40,29.8  C40,26.5,37.2,24.7,34.7,23.9"/>\n<path fill="#263238" d="M20.9,30.4c-0.3,0.5-0.9,0.8-1.4,0.6c-0.5-0.2-0.6-0.8-0.4-1.3c0.3-0.5,0.9-0.8,1.3-0.5  C21,29.3,21.1,29.8,20.9,30.4 M17.6,32.8c-0.7,1-2.3,1.5-3.5,1c-1.2-0.5-1.5-1.7-0.8-2.6c0.7-1,2.2-1.4,3.4-1  C18,30.6,18.4,31.8,17.6,32.8 M20.5,25.2c-3.5-0.9-7.4,0.8-8.9,3.8c-1.5,3.1-0.1,6.5,3.5,7.6c3.6,1.2,7.9-0.6,9.4-3.9  C26,29.5,24.1,26.1,20.5,25.2"/>\n<circle fill="#F9A825" cx="43.9" cy="21.5" r="1.5"/>\n<path fill="#F9A825" d="M45.3,22C45.3,22,45.3,22,45.3,22c-0.2,0.6-0.8,1-1.4,1c-0.8,0-1.5-0.7-1.5-1.5c0-0.2,0-0.4,0.1-0.6  C42.8,20,43,19,43,18c0-5-4-9-9-9c-0.4,0-0.9,0-1.3,0.1c0,0,0,0-0.1,0c0,0-0.1,0-0.1,0c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5  c0,0,0,0,0,0C33,6,33.5,6,34,6c6.6,0,12,5.4,12,12C46,19.4,45.8,20.7,45.3,22z M40,18c0-3.3-2.7-6-6-6c-0.2,0-0.4,0-0.7,0  c0,0,0,0-0.1,0c-0.7,0.1-1.3,0.7-1.3,1.5c0,0.8,0.7,1.5,1.5,1.5c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.3,0,0.4,0c1.7,0,3,1.3,3,3  c0,0.3-0.1,0.7-0.2,1c0,0,0,0,0,0c-0.1,0.2-0.1,0.3-0.1,0.5c0,0.8,0.7,1.5,1.5,1.5c0.6,0,1.1-0.4,1.4-0.9c0,0,0,0,0,0  c0,0,0-0.1,0-0.1c0-0.1,0-0.1,0.1-0.2C39.9,19.2,40,18.6,40,18z"/>\n</svg>\n</li>\n';
 },{}],48:[function(require,module,exports){
-module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
+module.exports = '<div class="shrink columns statistic">\n    <div class="statistic__item">\n        {{ data }}\n        <span>\n            <slot></slot>\n        </span>\n    </div>\n</div>';
 },{}],49:[function(require,module,exports){
-module.exports = '<div class="steps__step" :class="{ \'--active\' : active }">\n\n    <div class="steps__step__container">\n        <slot v-if="!done"></slot>\n        <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    </div>\n\n    <div class="steps__step__description">{{ description }}</div>\n\n</div>\n';
+module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
 },{}],50:[function(require,module,exports){
+module.exports = '<div class="steps__step" :class="{ \'--active\' : active }">\n\n    <div class="steps__step__container">\n        <slot v-if="!done"></slot>\n        <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    </div>\n\n    <div class="steps__step__description">{{ description }}</div>\n\n</div>\n';
+},{}],51:[function(require,module,exports){
 module.exports = '<div class="steps">\n    <slot></slot>\n</div>\n';
 },{}]},{},[6]);
 

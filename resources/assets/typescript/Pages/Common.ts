@@ -1,4 +1,5 @@
 import {AbstractPage} from "../Abstract/AbstractPage";
+import {submitForm} from "../Helpers";
 
 /**
  * Common Page
@@ -18,8 +19,9 @@ export class Common extends AbstractPage {
 
     languageSwitcher() {
 
-        if (this.is(['login', 'register']) || this.toString().indexOf('admin.'))
-            return;
+        if (this.is(['login', 'register', 'admin.*', 'committee.*'])) {
+            return
+        }
 
         document.querySelector('#language-switcher')
             .addEventListener('change', (e:MouseEvent) => {
@@ -30,9 +32,11 @@ export class Common extends AbstractPage {
                 form.method = 'post';
                 form.action = element.dataset['action'];
                 form.appendChild(element);
-                form.submit();
+
+                submitForm(form)
 
             })
+
 
     }
 
@@ -50,7 +54,7 @@ export class Common extends AbstractPage {
             })
         }
 
-        let clearAll = function(){
+        let clearAll = function () {
             for (let i = 0; i < dropdown.length; i++) {
                 if (dropdown[i].classList.contains('--show')) {
                     dropdown[i].classList.remove('--show');

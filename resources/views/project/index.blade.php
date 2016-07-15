@@ -85,7 +85,8 @@
 
                 @foreach($projects as $index => $project)
                     <div href="#" class="small-12 medium-3 columns project-page__list__item">
-                        <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}" alt="">
+                        <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}"
+                             alt="">
                         <a href="{{ route('project.show', $project) }}">
                             <h1>{{ $project->name }}</h1>
                         </a>
@@ -98,7 +99,7 @@
                 @endforeach
 
                 <div href="#" class="small-12 columns project-page__list__load-more +center">
-                    <button class="button --primary --rounded --medium">Load More</button>
+                    <button class="button --primary --rounded --medium">@lang('dashboard.load-more')</button>
                 </div>
             </div>
 

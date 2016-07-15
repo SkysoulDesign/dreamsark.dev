@@ -32,9 +32,11 @@ export class Form implements ComponentInterface {
                         type: String,
                         default: 'submit'
                     },
+                    state: {
+                        type: String
+                    },
                     class: {
-                        type: String,
-                        default: '--default'
+                        type: String
                     }
                 }
             }
@@ -123,8 +125,62 @@ export class Form implements ComponentInterface {
         vue.component('ark-input', {
             template: require('../templates/form/input.html'),
             props: {
+                name: String,
+                required: Boolean,
+                optional: Boolean,
+                caption: String,
+                placeholder: {
+                    type: String,
+                    default: function () {
+                        return this.name
+                    }
+                },
+                type: {
+                    type: String,
+                    default: 'text'
+                },
+                title: {
+                    type: String,
+                    default: function () {
+                        return this.name
+                    }
+                },
+                readOnly: {
+                    type: Boolean,
+                    default: false
+                },
+                value: {
+                    type: String,
+                },
+                label: {
+                    type: String
+                }
+            },
+            computed: {
+                errors: function () {
+
+                    let parent = this.$parent;
+
+                    /**
+                     * In Case its an instance of ArkFields
+                     */
+                    if (this.$parent.constructor.name !== 'ArkForm')
+                        parent = parent.$parent;
+
+                    return popByKey(parent.errors, this.name);
+                }
+            }
+        });
+
+        vue.component('ark-textarea', {
+            template: require('../templates/form/textarea.html'),
+            props: {
                 name: {
                     type: String
+                },
+                rows: {
+                    type: Number,
+                    default: 3
                 },
                 placeholder: {
                     type: String,

@@ -38,6 +38,7 @@ var Flipper = (function () {
                     event.preventDefault();
                     _this.$parent.flip();
                 });
+                this.$dispatch.apply(this, ['flipper.block.enabled'].concat([this]));
             }
         });
     };

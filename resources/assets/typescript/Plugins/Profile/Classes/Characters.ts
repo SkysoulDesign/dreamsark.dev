@@ -72,8 +72,6 @@ export class Characters extends Components {
 
         })
 
-        console.log(this.initialized)
-
     }
 
     init(name:string, character) {
@@ -123,7 +121,7 @@ export class Characters extends Components {
 
                     character.loaded = true;
                     character.object = character.object.init(
-                        character.object.name, geometry, textures, materials
+                        character.name, geometry, textures, materials
                     )
 
                     this.initialized[character.name] = character

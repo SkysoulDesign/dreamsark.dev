@@ -5,15 +5,18 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
   font-family: sans-serif;
   /* 1 */
-  -ms-text-size-adjust: 100%;
+  line-height: 1.15;
   /* 2 */
+  -ms-text-size-adjust: 100%;
+  /* 3 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */ }
+  /* 3 */ }
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -226,6 +229,7 @@ input,
 textarea,
 .select,
 select,
+optgroup,
 select,
 textarea {
   font: inherit;
@@ -4178,7 +4182,8 @@ button, .button {
     z-index: 10; }
   .form__content {
     background: white;
-    padding: 1em 1.5em 1.5em 1.5em; }
+    padding: 1em 1.5em 1.5em 1.5em;
+    border-radius: 0 0 1em 1em; }
     @media only screen and (min-width: 1000px) {
       .form__content {
         padding: 1em 3.2em 2em 3.2em; } }
@@ -4205,47 +4210,50 @@ button, .button {
     text-transform: uppercase; }
     .form__header.\--rounded {
       border-radius: .5em .5em 0 0; }
-  .form__field:not(:nth-child(1)), .form__fields:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
-    margin: .8em 0; }
-  .form__field:nth-last-child(-n + 1), .form__fields:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
-    margin-top: .8em;
-    margin-bottom: 0; }
-  .form__field__error {
-    color: #d90d12; }
-    .form__field__error ul {
-      list-style: none;
-      padding: 0; }
-      .form__field__error ul li {
-        font-size: 0.8em; }
-  .form__field label, .form__fields label, .form__description label {
-    font-size: .8em;
-    font-weight: bold;
-    padding: 0 0 1em .2em;
-    display: block;
-    color: #757b6e; }
-  .form__field span, .form__fields span, .form__description span {
-    display: block;
-    padding-top: 0 !important; }
-  .form__field.\--required label, .\--required.form__fields label, .\--required.form__description label, .form__field span.\--required label {
-    position: relative; }
-    .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
-      content: '*';
-      color: #d90d12;
-      padding: .2em;
-      font-size: 1.5em;
-      position: absolute;
-      margin-top: -.3em; }
-  .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional {
-    opacity: 0.6;
-    transition: opacity 0.25s; }
-    .form__field.\--optional:hover, .\--optional.form__fields:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
-      opacity: 1; }
+  .form__field, .form__fields, .form__description, .form__field span {
+    -ms-flex: 100%;
+    flex: 100%; }
+    .form__field:not(:nth-child(1)), .form__fields:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
+      margin: .8em 0; }
+    .form__field:nth-last-child(-n + 1), .form__fields:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
+      margin-top: .8em;
+      margin-bottom: 0; }
+    .form__field__error {
+      color: #d90d12; }
+      .form__field__error ul {
+        list-style: none;
+        padding: 0; }
+        .form__field__error ul li {
+          font-size: 0.8em; }
+    .form__field label, .form__fields label, .form__description label {
+      font-size: .8em;
+      font-weight: bold;
+      padding: 0 0 1em .2em;
+      display: block;
+      color: #757b6e; }
+    .form__field span, .form__fields span, .form__description span {
+      display: block;
+      padding-top: 0 !important; }
+    .form__field.\--required label, .\--required.form__fields label, .\--required.form__description label, .form__field span.\--required label {
+      position: relative; }
+      .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
+        content: '*';
+        color: #d90d12;
+        padding: .2em;
+        font-size: 1.5em;
+        position: absolute;
+        margin-top: -.3em; }
+    .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional {
+      opacity: 0.6;
+      transition: opacity 0.25s; }
+      .form__field.\--optional:hover, .\--optional.form__fields:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
+        opacity: 1; }
   .form__fields {
     display: -ms-flexbox;
     display: flex; }
     .form__fields .form__field, .form__fields .form__fields, .form__fields .form__description, .form__fields .form__field span, .form__field .form__fields span {
-      -ms-flex: 1;
-      flex: 1; }
+      -ms-flex: 1 !important;
+      flex: 1 !important; }
       .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
         margin: 0 0 0 .8em; }
     .form__fields.\--gap-normal .form__field:not(:nth-child(1)), .form__fields.\--gap-normal .form__fields:not(:nth-child(1)), .form__fields.\--gap-normal .form__description:not(:nth-child(1)), .form__fields.\--gap-normal .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-normal span:not(:nth-child(1)) {
@@ -4741,6 +4749,12 @@ header, .header {
 #app-root .\+margin-top {
   margin-top: 2em; }
 
+#app-root .\+margin-bottom {
+  margin-bottom: 2em; }
+
+#app-root .\+large-margin-bottom {
+  margin-bottom: 10em; }
+
 #app-root .\+no-margin-top {
   margin-top: 0; }
 
@@ -4797,6 +4811,27 @@ header, .header {
     color: #0095ff; }
   #app-root .\+profile-color-designer svg {
     fill: #0095ff; }
+
+#app-root .\+profile-color-animation {
+  color: #e91e63; }
+  #app-root .\+profile-color-animation a:hover {
+    color: #e91e63; }
+  #app-root .\+profile-color-animation svg {
+    fill: #e91e63; }
+
+#app-root .\+profile-color-screenwriter {
+  color: #4caf50; }
+  #app-root .\+profile-color-screenwriter a:hover {
+    color: #4caf50; }
+  #app-root .\+profile-color-screenwriter svg {
+    fill: #4caf50; }
+
+#app-root .\+profile-color-art-director {
+  color: #607d8b; }
+  #app-root .\+profile-color-art-director a:hover {
+    color: #607d8b; }
+  #app-root .\+profile-color-art-director svg {
+    fill: #607d8b; }
 
 #app-root .\+z-1 {
   z-index: 1; }
@@ -4924,6 +4959,12 @@ header, .header {
     fill: #d90d12; }
   .hex-icon.\--designer svg {
     fill: #0095ff; }
+  .hex-icon.\--animation svg {
+    fill: #e91e63; }
+  .hex-icon.\--screenwriter svg {
+    fill: #4caf50; }
+  .hex-icon.\--art-director svg {
+    fill: #607d8b; }
 
 .modal {
   position: relative;
@@ -5026,11 +5067,18 @@ header, .header {
         color: #0083ff; }
   .ul.\--inline, ul.\--inline {
     -ms-flex-direction: row;
-    flex-direction: row; }
+    flex-direction: row;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 1em 0; }
     .ul.\--inline li:not(:nth-child(1)), ul.\--inline li:not(:nth-child(1)) {
       padding-left: 1em; }
   .ul.\--tight li:not(:nth-child(1)), ul.\--tight li:not(:nth-child(1)) {
     padding-left: 0; }
+  .ul.\--bold, ul.\--bold {
+    font-size: smaller;
+    font-weight: bolder;
+    text-transform: uppercase; }
   .ul.\--divided li:after, ul.\--divided li:after {
     margin: 0;
     padding: 0;
@@ -5261,9 +5309,14 @@ header, .header {
   z-index: 1;
   background-size: cover;
   padding: 1em; }
+  .base-page__header.\--animated, .\--animated.profile-page__header {
+    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: height; }
+    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover {
+      height: 30em; }
   .base-page__header.\--default, .\--default.profile-page__header {
-    background: url("/img/temp/2.jpg") center center; }
-    @media only screen and (min-width: 1000px) {
+    background: url("/img/headers/header-3.jpg") center center no-repeat; }
+    @media screen and (min-width: 40em) {
       .base-page__header.\--default, .\--default.profile-page__header {
         height: 15em; } }
   .base-page__header__overlay, .profile-page__header__overlay {
@@ -5274,7 +5327,11 @@ header, .header {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: rgba(128, 193, 255, 0.5); }
+    background-color: rgba(128, 193, 255, 0.3);
+    transition: background-color .2s;
+    will-change: background-color; }
+    .base-page__header__overlay:hover, .profile-page__header__overlay:hover {
+      background-color: rgba(128, 193, 255, 0); }
   .base-page__header__avatar img {
     height: 7em;
     width: 7em;
@@ -5352,6 +5409,21 @@ header, .header {
       border: 0.1em dashed rgba(128, 202, 255, 0.2); }
       .profile-page__profiles li.\--designer:hover h3 {
         color: #0095ff; }
+    .profile-page__profiles li.\--animation:hover {
+      background: rgba(233, 30, 99, 0.08);
+      border: 0.1em dashed rgba(244, 146, 180, 0.2); }
+      .profile-page__profiles li.\--animation:hover h3 {
+        color: #e91e63; }
+    .profile-page__profiles li.\--screenwriter:hover {
+      background: rgba(76, 175, 80, 0.08);
+      border: 0.1em dashed rgba(163, 215, 165, 0.2); }
+      .profile-page__profiles li.\--screenwriter:hover h3 {
+        color: #4caf50; }
+    .profile-page__profiles li.\--art-director:hover {
+      background: rgba(96, 125, 139, 0.08);
+      border: 0.1em dashed rgba(168, 186, 195, 0.2); }
+      .profile-page__profiles li.\--art-director:hover h3 {
+        color: #607d8b; }
     @media only screen and (min-width: 1000px) {
       .profile-page__profiles li:hover {
         transform: scale(1.1); } }
@@ -5366,17 +5438,22 @@ header, .header {
   background: url("/img/profile/dreamsArkRef89.png") center center; }
 
 .profile-page__palette {
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
-  -ms-flex-preferred-size: 100px;
-  flex-basis: 100px;
   max-width: 100px;
-  transition: .15s; }
+  max-height: 100px;
+  height: 100px;
+  width: 100px;
+  transition: .15s;
+  border-radius: 100px;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center; }
   .profile-page__palette.\--color-1:hover {
     background: #E91E63; }
   .profile-page__palette.\--color-2:hover {
@@ -5418,27 +5495,26 @@ header, .header {
   .profile-page__palette.\--color-20:hover {
     background: #004D40; }
   .profile-page__palette:hover {
-    transform: scale(1.1);
-    border-radius: .3em; }
+    transform: scale(1.2); }
+    .profile-page__palette:hover .profile-page__palette__item {
+      background: rgba(0, 0, 0, 0.3); }
     .profile-page__palette:hover span {
       display: block; }
   .profile-page__palette:active {
     transform: scale(0.9); }
+    .profile-page__palette:active .profile-page__palette__item {
+      background: rgba(0, 0, 0, 0.5); }
   .profile-page__palette__item {
     color: white;
-    position: relative;
-    width: 50px;
-    height: 50px;
     padding: .2em;
-    margin: 1em auto;
+    padding: 0;
+    margin: 0;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 100%;
-    pointer-events: none; }
+    pointer-events: none;
+    width: 100px; }
     .profile-page__palette__item img {
-      position: relative;
-      left: 0;
-      right: 0;
-      transform: scale(1.2); }
+      border-radius: 100em; }
     .profile-page__palette__item span {
       display: none;
       position: absolute;
@@ -5447,7 +5523,7 @@ header, .header {
       padding: 1em;
       width: auto;
       font-size: .35em;
-      top: -100%;
+      top: -30%;
       left: 0;
       right: 0;
       font-weight: bolder;

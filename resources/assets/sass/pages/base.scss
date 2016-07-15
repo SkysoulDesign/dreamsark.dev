@@ -25,16 +25,29 @@
     background-size: cover;
     padding: 1em;
 
-    @include option(default) {
-      background: url("/img/temp/2.jpg") center center;
+    @include option(animated) {
 
-      @include respond-to(desktop) {
+      transition: height .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: height;
+
+      &:hover {
+        height: 30em;
+      }
+
+    }
+
+    @include option(default) {
+
+      background: url("/img/headers/header-3.jpg") center center no-repeat;
+
+      @include breakpoint(medium up) {
         height: 15em;
       }
 
     }
 
     @include part(overlay) {
+
       left: 0;
       top: 0;
       display: block;
@@ -42,12 +55,21 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: color($color: primary, $tone: light, $alpha: 50);
+      background-color: color($color: primary, $tone: light, $alpha: 30);
+
+      transition: background-color .2s;
+      will-change: background-color;
+
+      &:hover {
+        background-color: color($color: primary, $tone: light, $alpha: 0);
+      }
+
     }
 
     @include part(avatar) {
 
       img {
+
         height: 7em;
         width: 7em;
         border-radius: 100%;

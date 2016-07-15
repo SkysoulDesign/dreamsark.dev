@@ -7,6 +7,7 @@
     <div class="row">
 
         <div class="small-12 columns">
+
             <header class="header --light --with-divider --full">
                 User Account
             </header>

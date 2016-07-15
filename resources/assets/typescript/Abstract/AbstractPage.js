@@ -6,10 +6,13 @@ var AbstractPage = (function () {
         this.app = app;
     }
     AbstractPage.prototype.is = function (route) {
+        var _this = this;
         if (route instanceof Array) {
-            return route.includes(this.route);
+            return !route.every(function (item) {
+                return !(_this.route.match("^" + item));
+            });
         }
-        return this.route === route;
+        // return route.match(`^${this.route}`);
     };
     AbstractPage.prototype.only = function (route) {
         return !this.is(route);

@@ -1,5 +1,6 @@
 import {AbstractPage} from "../Abstract/AbstractPage";
 import {AlipayInterface, PaymentInterface, UnionPayInterface, WechatInterface} from "../Interfaces/PaymentInterface";
+import {submitForm} from "../Helpers";
 
 /**
  * Profile
@@ -66,16 +67,10 @@ export class Purchase extends AbstractPage {
 
                     }
 
-                    /**
-                     * Fix for Firefox
-                     */
-                    if (navigator.userAgent.includes('Firefox')){
-                        document.body.appendChild(form);
-                    }
-
                     form.action = response.target;
                     form.method = response.method;
-                    form.submit();
+
+                    submitForm(form);
 
                 }
             },

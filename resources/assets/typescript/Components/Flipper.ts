@@ -44,6 +44,8 @@ export class Flipper implements ComponentInterface {
                     this.$parent.flip()
                 });
 
+                this.$dispatch('flipper.block.enabled', ...[this])
+
             }
 
         });

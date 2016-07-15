@@ -2,7 +2,7 @@
     <div class="small-12 medium-10 columns">
         <div class="row">
             <div class="small-6">
-                ABOUT DREAMSARK
+                @lang('general.about-dreamsark')
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra mattis arcu, a congue leo
                     malesuada eu. Nam nec mauris ut odio tristique varius et eu metus. Quisque massa purus, aliquet quis
                     blandit et,</p>
@@ -27,12 +27,12 @@
                 </ul>
             </div>
             <div class="small-3">
-                Technical Support Hot-Line
+                @lang('general.technical-support')
                 <h2 class="h2 +profile-color-actor">400-001-1236</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
             <div class="small-12">
-                <div class="divider --hair-line">Dreamsark Copyright © 2011-2016</div>
+                <div class="divider --hair-line">@lang('general.dreamsark-copyright')</div>
             </div>
             <div class="small-6 footer__logo">
                 <img src="{{ asset('img/temp/dreamsark-white.png') }}" alt="">

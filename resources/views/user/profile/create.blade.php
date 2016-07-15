@@ -17,7 +17,8 @@
                 </header>
             </div>
 
-            <ark-animation :payload="['#characters', '{{ $profiles->random()->name }}']" composition="main"
+            <ark-animation composition="main"
+                           :payload="['#characters', '{{ $profiles->random()->name }}']"
                            class="small-12 columns align-middle profile-page__canvas"></ark-animation>
 
             <div class="small-12 align-bottom columns +z-1">
@@ -27,7 +28,7 @@
                              class="columns profile-page__palette --color-{{ rand(1,20) }}">
                             <div class="profile-page__palette__item">
                                 @php $rand = rand(1,8) @endphp
-                                <img src="{{ asset("img/profile/$rand.png") }}" alt="">
+                                <img src="{{ asset("img/profile/$profile->name.png") }}" alt="">
                                 <span>@lang("positions.$profile->name")</span>
                             </div>
                         </div>

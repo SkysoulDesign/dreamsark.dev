@@ -1,5 +1,5 @@
 <div class="form__field">
-    <button :type="type" class="button" :class="class">
+    <button :type="type" class="button --fit" :class="[class, '--' + state]">
         <slot></slot>
     </button>
 </div>

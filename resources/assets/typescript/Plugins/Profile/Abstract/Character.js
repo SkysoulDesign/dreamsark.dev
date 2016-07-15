@@ -11,6 +11,8 @@ var Character = (function () {
         this.characters = app.characters;
     }
     Character.prototype.init = function (name, models, textures, materials) {
+        console.log('whats the name');
+        console.log(name);
         var character = this.create(models, textures, materials);
         character.name = name;
         return character;

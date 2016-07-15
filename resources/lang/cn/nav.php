@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'projects' => 'Projects',
-  'talents' => 'Talents',
+  'projects' => '项目',
+  'talents' => '精英',
 );

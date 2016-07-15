@@ -13,17 +13,20 @@
                     eveniet excepturi in laborum molestias nobis optio recusandae.</p>
             </header>
         </div>
+
         <div class="small-12 columns">
 
-            <ul class="section__nav --right">
-                <li class="section__nav__item --active">
+            <ul class="ul --inline --bold --right">
+                <li class="li --active">
                     <a href="#">@lang('project.published')</a>
                 </li>
-                <li class="section__nav__item">
+                <li>
                     <a href="#">@lang('project.failed')</a>
                 </li>
-                <li class="section__nav__item --as-button">
-                    <a href="{{ route('user.project.create') }}">@lang('forms.create-project')</a>
+                <li>
+                    <a class="button --primary --medium" href="{{ route('user.project.create') }}">
+                        @lang('forms.create-project')
+                    </a>
                 </li>
             </ul>
 

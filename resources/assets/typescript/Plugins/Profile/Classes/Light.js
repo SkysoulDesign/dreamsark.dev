@@ -16,8 +16,19 @@ var Light = (function (_super) {
     Light.prototype.boot = function (app) {
         this.scene = app.scene;
         var light = new THREE.AmbientLight(0xffffff);
-        light.intensity = 1.2;
-        this.scene.add(light);
+        light.intensity = .9;
+        // let hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9)
+        // let ambientLight = new THREE.AmbientLight(0xffffff, .9);
+        var hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9), ambientLight = new THREE.AmbientLight(0xffffff, .3), shadowLight = new THREE.DirectionalLight(0xffffff, .3);
+        shadowLight.name = 'shadowLight';
+        shadowLight.position.set(0, 100, -350);
+        shadowLight.castShadow = false;
+        // hemisphereLight.position.setZ(-300)
+        // hemisphereLight.position.setZ(-300)
+        // let helper = new THREE.HemisphereLightHelper(hemisphereLight, 10)
+        // this.scene.add(
+        //     hemisphereLight, ambientLight, shadowLight
+        // );
     };
     Light.prototype.update = function (time, delta) {
     };

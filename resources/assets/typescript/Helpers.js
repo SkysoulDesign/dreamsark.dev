@@ -51,4 +51,12 @@ exports.toCamelCase = function (str) {
 exports.captalize = function (str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
+/**
+ * Firefox have an issue to submit form if its not appended to the body
+ * @param form
+ */
+exports.submitForm = function (form) {
+    document.body.appendChild(form);
+    form.submit();
+};
 //# sourceMappingURL=Helpers.js.map

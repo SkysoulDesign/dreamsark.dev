@@ -72,7 +72,6 @@ var Characters = (function (_super) {
                 }
             }
         });
-        console.log(this.initialized);
     };
     Characters.prototype.init = function (name, character) {
         var _this = this;
@@ -102,7 +101,7 @@ var Characters = (function (_super) {
                             geometry[i] = object[i];
                     }
                     character.loaded = true;
-                    character.object = character.object.init(character.object.name, geometry, textures, materials);
+                    character.object = character.object.init(character.name, geometry, textures, materials);
                     _this.initialized[character.name] = character;
                     return accept(character);
                 });

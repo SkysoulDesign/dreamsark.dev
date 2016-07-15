@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractPage_1 = require("../Abstract/AbstractPage");
+var Helpers_1 = require("../Helpers");
 /**
  * Profile
  */
@@ -59,15 +60,9 @@ var Purchase = (function (_super) {
                         input.setAttribute('value', response.data[name_1]);
                         form.appendChild(input);
                     }
-                    /**
-                     * Fix for Firefox
-                     */
-                    if (navigator.userAgent.includes('Firefox')) {
-                        document.body.appendChild(form);
-                    }
                     form.action = response.target;
                     form.method = response.method;
-                    form.submit();
+                    Helpers_1.submitForm(form);
                 }
             },
             ready: function () {

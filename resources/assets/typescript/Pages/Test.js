@@ -17,7 +17,7 @@ var Test = (function (_super) {
         ];
     }
     Test.prototype.boot = function () {
-        console.log('I Only run in profile');
+        console.log('Im a test');
     };
     return Test;
 }(AbstractPage_1.AbstractPage));

@@ -10,7 +10,7 @@ export class Test extends AbstractPage {
     ]
 
     boot() {
-        console.log('I Only run in profile')
+        console.log('Im a test')
     }
 
 }

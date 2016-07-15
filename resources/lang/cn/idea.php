@@ -9,5 +9,5 @@ return array (
   'bid-now' => '支持这项目',
   'submit-your-idea' => '提交',
   'reward' => '奖励',
-  'submission-content-title' => 'Submission Title',
+  'submission-content-title' => '提交标题',
 );

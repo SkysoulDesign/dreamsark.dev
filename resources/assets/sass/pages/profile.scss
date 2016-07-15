@@ -101,11 +101,18 @@
 
   @include part(palette) {
 
-    flex-wrap: wrap;
     user-select: none;
     cursor: pointer;
-    flex-basis: 100px;
+    //flex-basis: 100px;
     max-width: 100px;
+    max-height: 100px;
+    height: 100px;
+    width: 100px;
+    transition: .15s;
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
 
     $colors: (
             1: #E91E63,
@@ -140,38 +147,45 @@
 
     }
 
-    transition: .15s;
-
     &:hover {
-      transform: scale(1.1);
-      border-radius: .3em;
+
+      transform: scale(1.2);
+
+      & .profile-page__palette__item {
+        background: color($color: pure-black, $alpha: 30);
+      }
 
       & span {
         display: block;
       }
+
     }
 
     &:active {
       transform: scale(.9);
+      & .profile-page__palette__item {
+        background: color($color: pure-black, $alpha: 50);
+      }
     }
 
     @include part(item) {
-
       color: white;
-      position: relative;
-      width: 50px;
-      height: 50px;
       padding: .2em;
-      margin: 1em auto;
+      padding: 0;
+      margin: 0;
       background: color($color: pure-black, $alpha: 10);
       border-radius: 100%;
       pointer-events: none;
 
+      width: 100px;
+
       img {
-        position: relative;
-        left: 0;
-        right: 0;
-        transform: scale(1.2);
+
+        //position: relative;
+        //left: 0;
+        //right: 0;
+        //transform: scale(1.2);
+        border-radius: 100em;
       }
 
       & span {
@@ -183,7 +197,7 @@
         width: auto;
         font-size: .35em;
         //white-space: nowrap;
-        top: -100%;
+        top: -30%;
         left: 0;
         right: 0;
         font-weight: bolder;
