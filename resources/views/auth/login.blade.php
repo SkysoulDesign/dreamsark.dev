@@ -164,11 +164,13 @@
             }
         }
     });
-    /*dreamsark.on('ajax.button.fail', function (e, button) {
-        if (e.status == 422) {
-            var responseData = e.json();
-            console.dir(responseData)
+    let hashValue  = window.location.hash;
+    let currentUrl = window.location.href;
+    dreamsark.on('flipper.block.enabled', function (element) {
+        if (currentUrl.indexOf('/login') != -1 && hashValue.indexOf('#tab-') != -1 && element.side == 'front') {
+            let anchorElem = element.$el.querySelector('[data-flipper-trigger]');
+            anchorElem.click();
         }
-    });*/
+    });
 </script>
 @endpush

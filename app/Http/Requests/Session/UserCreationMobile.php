@@ -24,7 +24,7 @@ class UserCreationMobile extends Request
     public function rules()
     {
         return [
-            'mobile' => 'required|unique:users',
+            'mobile' => 'required|unique:users,username',
             'password' => 'required|min:6',
             'code'    => 'required',
         ];
