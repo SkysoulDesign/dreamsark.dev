@@ -1,6 +1,7 @@
 import {Character} from "../Abstract/Character";
 
 export abstract class BaseCharacter extends Character {
+
     create(models, ...materials) {
 
         let mesh = new THREE.SkinnedMesh(
@@ -16,13 +17,20 @@ export abstract class BaseCharacter extends Character {
             animations.base.lookAround.play();
         })
 
+        this.characters.get('base').then(base => {
+            mesh.add(
+                new THREE.Mesh(base)
+            )
+        })
+
         /**
          * Play All Animations
          */
-        models.character.animations.forEach(function (animation) {
-            actions[animation.name] = mixer.clipAction(animation);
-            actions[animation.name].play();
-        })
+        if (models.character.animations)
+            models.character.animations.forEach(function (animation) {
+                actions[animation.name] = mixer.clipAction(animation);
+                actions[animation.name].play();
+            })
 
         mesh.position.setY(-25)
         mesh.rotation.y = Math.PI

@@ -21,13 +21,17 @@ var BaseCharacter = (function (_super) {
             animations.base.idle.play();
             animations.base.lookAround.play();
         });
+        this.characters.get('base').then(function (base) {
+            mesh.add(new THREE.Mesh(base));
+        });
         /**
          * Play All Animations
          */
-        models.character.animations.forEach(function (animation) {
-            actions[animation.name] = mixer.clipAction(animation);
-            actions[animation.name].play();
-        });
+        if (models.character.animations)
+            models.character.animations.forEach(function (animation) {
+                actions[animation.name] = mixer.clipAction(animation);
+                actions[animation.name].play();
+            });
         mesh.position.setY(-25);
         mesh.rotation.y = Math.PI;
         //         var text = document.createElement('div');

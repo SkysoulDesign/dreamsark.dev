@@ -1,9 +1,9 @@
 import {BaseCharacter} from "./BaseCharacter";
 
 /**
- * Character: THREEDArtist
+ * Character: Artist3d
  */
-export class THREEDArtist extends BaseCharacter {
+export class Artist3d extends BaseCharacter {
 
     models() {
         return {

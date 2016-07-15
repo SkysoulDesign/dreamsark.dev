@@ -21,7 +21,7 @@ var Characters = (function (_super) {
         this.collection = [
             require('../Characters/Actor'),
             require('../Characters/Actress'),
-            require('../Characters/3DArtist'),
+            require('../Characters/Artist3D'),
             require('../Characters/Animation'),
             require('../Characters/ArtDirector'),
             require('../Characters/ScreenWriter'),
@@ -47,6 +47,11 @@ var Characters = (function (_super) {
             require('../Characters/StoryboardArtist'),
             require('../Characters/SwingGang'),
             require('../Characters/VoiceArtist'),
+            require('../Characters/MakeUpArtist'),
+            /**
+             * Object
+             */
+            require('../Characters/Base'),
         ];
         /**
          * List of Initialized Object
@@ -67,6 +72,7 @@ var Characters = (function (_super) {
                 }
             }
         });
+        console.log(this.initialized);
     };
     Characters.prototype.init = function (name, character) {
         var _this = this;

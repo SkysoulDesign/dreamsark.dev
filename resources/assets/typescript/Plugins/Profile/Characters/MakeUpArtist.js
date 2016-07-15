@@ -6,19 +6,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var BaseCharacter_1 = require("./BaseCharacter");
 /**
- * Character: THREEDArtist
+ * Character: MakeUpArtist
  */
-var THREEDArtist = (function (_super) {
-    __extends(THREEDArtist, _super);
-    function THREEDArtist() {
+var MakeUpArtist = (function (_super) {
+    __extends(MakeUpArtist, _super);
+    function MakeUpArtist() {
         _super.apply(this, arguments);
     }
-    THREEDArtist.prototype.models = function () {
+    MakeUpArtist.prototype.models = function () {
         return {
-            character: '/models/3DArtist.json',
+            character: '/models/MakeUpArtist.json',
         };
     };
-    return THREEDArtist;
+    return MakeUpArtist;
 }(BaseCharacter_1.BaseCharacter));
-exports.THREEDArtist = THREEDArtist;
-//# sourceMappingURL=3DArtist.js.map
+exports.MakeUpArtist = MakeUpArtist;
+//# sourceMappingURL=MakeUpArtist.js.map

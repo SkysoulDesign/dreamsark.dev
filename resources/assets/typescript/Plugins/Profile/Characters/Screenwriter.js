@@ -6,19 +6,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var BaseCharacter_1 = require("./BaseCharacter");
 /**
- * Character: ScreenWriter
+ * Character: Screenwriter
  */
-var ScreenWriter = (function (_super) {
-    __extends(ScreenWriter, _super);
-    function ScreenWriter() {
+var Screenwriter = (function (_super) {
+    __extends(Screenwriter, _super);
+    function Screenwriter() {
         _super.apply(this, arguments);
     }
-    ScreenWriter.prototype.models = function () {
+    Screenwriter.prototype.models = function () {
         return {
-            character: '/models/ScreenWriter.json',
+            character: '/models/Screenwriter.json',
         };
     };
-    return ScreenWriter;
+    return Screenwriter;
 }(BaseCharacter_1.BaseCharacter));
-exports.ScreenWriter = ScreenWriter;
-//# sourceMappingURL=ScreenWriter.js.map
+exports.Screenwriter = Screenwriter;
+//# sourceMappingURL=Screenwriter.js.map

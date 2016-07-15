@@ -8,6 +8,7 @@ var Character = (function () {
         this.animator = app.animator;
         this.animation = app.animation;
         this.material = app.material;
+        this.characters = app.characters;
     }
     Character.prototype.init = function (name, models, textures, materials) {
         var character = this.create(models, textures, materials);

@@ -57,6 +57,7 @@ export class Main extends AbstractComposition {
             this.scene.add(profile);
             
         })
+
     }
 
 }

@@ -17,37 +17,35 @@ export class Project extends AbstractComposition {
     characters() {
         return [
             // '*',
+            'artist3D',
             'actor',
             'actress',
             'animation',
-            'director',
             'art-director',
-            'editor',
+            'camera-director',
             'concept-artist',
             'costume-designer',
+            'director',
+            'editor',
             'effects',
             'executive-producer',
             'lighting-artist',
+            'make-up-artist',
             'packaging-designer',
             'pre-stage-project-coordinator',
             'project-coordinator',
             'prop',
             'recording-artist',
             'render-and-composite',
+            'rigging-artist',
+            'screenwriter',
+            'script-supervisor',
             'set-designer',
             'sound-effect',
             'stage-manager',
             'storyboard-artist',
             'swing-gang',
-            'voice-artist'
-
-            //Not Okay
-            // 'camera-director',
-            // 'THREEDArtist',
-            // 'screen-writer'
-            // 'rigging-artist',
-            // 'script-supervisor', /// no-animation
-
+            'voice-artist',
         ];
     }
 

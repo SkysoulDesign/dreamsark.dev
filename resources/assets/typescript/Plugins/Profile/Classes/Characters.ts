@@ -15,7 +15,7 @@ export class Characters extends Components {
     private collection = [
         require('../Characters/Actor'),
         require('../Characters/Actress'),
-        require('../Characters/3DArtist'),
+        require('../Characters/Artist3D'),
         require('../Characters/Animation'),
         require('../Characters/ArtDirector'),
         require('../Characters/ScreenWriter'),
@@ -41,7 +41,12 @@ export class Characters extends Components {
         require('../Characters/StoryboardArtist'),
         require('../Characters/SwingGang'),
         require('../Characters/VoiceArtist'),
+        require('../Characters/MakeUpArtist'),
 
+        /**
+         * Object
+         */
+        require('../Characters/Base'),
     ]
 
     /**
@@ -66,6 +71,8 @@ export class Characters extends Components {
             }
 
         })
+
+        console.log(this.initialized)
 
     }
 

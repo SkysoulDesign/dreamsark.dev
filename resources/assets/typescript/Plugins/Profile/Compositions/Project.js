@@ -27,29 +27,35 @@ var Project = (function (_super) {
     Project.prototype.characters = function () {
         return [
             // '*',
+            'artist3D',
             'actor',
             'actress',
             'animation',
-            'director',
             'art-director',
-            'editor',
+            'camera-director',
             'concept-artist',
             'costume-designer',
+            'director',
+            'editor',
             'effects',
             'executive-producer',
             'lighting-artist',
+            'make-up-artist',
             'packaging-designer',
             'pre-stage-project-coordinator',
             'project-coordinator',
             'prop',
             'recording-artist',
             'render-and-composite',
+            'rigging-artist',
+            'screenwriter',
+            'script-supervisor',
             'set-designer',
             'sound-effect',
             'stage-manager',
             'storyboard-artist',
             'swing-gang',
-            'voice-artist'
+            'voice-artist',
         ];
     };
     Project.prototype.stage = function (scene, camera, characters) {
