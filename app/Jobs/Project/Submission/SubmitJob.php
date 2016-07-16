@@ -8,6 +8,11 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 
+/**
+ * Class SubmitJob
+ *
+ * @package DreamsArk\Jobs\Project\Submission
+ */
 class SubmitJob extends Job
 {
     /**
@@ -50,7 +55,9 @@ class SubmitJob extends Job
         /**
          * Submit To Project Stage
          */
-        $submission = $repository->submit($this->project->stage, $this->user->id, $this->fields);
+        $submission = $repository->submit(
+            $this->project->stage, $this->user->id, $this->fields
+        );
 
         /**
          * Announce Submission was Sent

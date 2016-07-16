@@ -132,23 +132,35 @@ var Form = (function () {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String,
-                },
                 label: {
                     type: String
                 }
             },
-            computed: {
-                errors: function () {
-                    var parent = this.$parent;
-                    /**
-                     * In Case its an instance of ArkFields
-                     */
-                    if (this.$parent.constructor.name !== 'ArkForm')
-                        parent = parent.$parent;
-                    return Helpers_1.popByKey(parent.errors, this.name);
+            methods: {
+                getParentForm: function (parent) {
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+                    if (parent)
+                        return this.getParentForm(parent.$parent);
+                    return this.getParentForm(this.$parent);
                 }
+            },
+            computed: {
+                value: function () {
+                    return this.getParentForm().old(this.name);
+                },
+                errors: function () {
+                    var form = this.getParentForm();
+                    if (sessionStorage.getItem('form-action') === form.action) {
+                        if (form.errors instanceof Array && form.errors.length) {
+                            form.errors.shift().forEach(function (e) {
+                                form.globalErrors.push(e);
+                            });
+                        }
+                        return Helpers_1.popByKey(form.errors, this.name);
+                    }
+                },
             }
         });
         vue.component('ark-textarea', {
@@ -181,14 +193,24 @@ var Form = (function () {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String,
-                },
                 label: {
                     type: String
                 }
             },
+            methods: {
+                getParentForm: function (parent) {
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+                    if (parent)
+                        return this.getParentForm(parent.$parent);
+                    return this.getParentForm(this.$parent);
+                }
+            },
             computed: {
+                value: function () {
+                    return this.getParentForm().old(this.name);
+                },
                 errors: function () {
                     var parent = this.$parent;
                     /**
@@ -202,6 +224,12 @@ var Form = (function () {
         });
         vue.component('ark-form', {
             template: require('../templates/form/form.html'),
+            data: function () {
+                return {
+                    globalErrors: [],
+                    oldInput: JSON.parse(document.querySelector('meta[name="form-data"]').content)
+                };
+            },
             props: {
                 id: String,
                 token: String,
@@ -212,10 +240,25 @@ var Form = (function () {
                 method: {
                     type: String,
                     default: 'post'
-                },
-                errors: {
-                    type: [Object, Array],
-                    coerce: function (data) { return JSON.parse(data); }
+                }
+            },
+            methods: {
+                old: function (name, defaults) {
+                    var _this = this;
+                    if (defaults === void 0) { defaults = null; }
+                    var result;
+                    name.match(/([\w\s]+)/g).forEach(function (name) {
+                        if (result instanceof Object) {
+                            return result = result[name];
+                        }
+                        result = _this.oldInput[name];
+                    });
+                    return result;
+                }
+            },
+            computed: {
+                errors: function () {
+                    return JSON.parse(document.querySelector('meta[name="form-errors"]').content);
                 }
             },
             events: {
@@ -223,6 +266,28 @@ var Form = (function () {
                     if (e.status == 422)
                         this.errors = e.json();
                 }
+            },
+            ready: function () {
+                var _this = this;
+                this.$el.addEventListener('submit', function (e) {
+                    /**
+                     * Store Which form reference to display errors correctly later
+                     */
+                    sessionStorage.setItem('form-action', _this.action);
+                    /**
+                     * Only for post Method
+                     */
+                    if (_this.method !== 'post') {
+                        return;
+                    }
+                    e.preventDefault();
+                    var token = document.querySelector('meta[name="csrf-token"]'), input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', '_token');
+                    input.setAttribute('value', token.content);
+                    _this.$el.appendChild(input);
+                    _this.$el.submit();
+                });
             }
         });
     };

@@ -1,12 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.master', ['class' => 'project-page'])
 
 @section('content')
 
     @include("project.partials." . class_basename($project->stage))
 
-    <div class="base-page__background">
+    <div class="project-page__background">
 
-        <div class="base-page__background__overlay"></div>
+        <div class="project-page__background__overlay"></div>
 
         @include('partials.navigation.menu', ['translucent' => true])
 

@@ -4,24 +4,32 @@ namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests;
-use DreamsArk\Http\Requests\Project\Submission\Submissioning;
+use DreamsArk\Http\Requests\Project\Submission\SubmissionCreation;
 use DreamsArk\Jobs\Project\Submission\SubmitJob;
 use DreamsArk\Models\Project\Project;
 
+/**
+ * Class SubmissionController
+ *
+ * @package DreamsArk\Http\Controllers\Project
+ */
 class SubmissionController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      *
      * @param Project $project
-     * @param Submissioning $request
+     * @param SubmissionCreation $request
      * @return \Illuminate\Http\Response
      * @internal param Idea $idea
      */
-    public function store(Project $project, Submissioning $request)
+    public function store(SubmissionCreation $request, Project $project)
     {
-        $command = new SubmitJob($project, $request->user(), $request->all());
-        $this->dispatch($command);
+
+        $this->dispatch(
+            new SubmitJob($project, $request->user(), $request->all())
+        );
+
         return redirect()->back();
     }
 }

@@ -33,7 +33,7 @@ class CommitteeController extends Controller
      */
     public function projectsInReviewStage(Review $review)
     {
-        return view('committee.project.review-index')->with('reviews', $this->getListWithPagination($review));
+        return view('committee.project.review.index')->with('reviews', $this->getListWithPagination($review));
     }
 
     /**
@@ -51,7 +51,7 @@ class CommitteeController extends Controller
      */
     public function projectsInDistributionStage(Distribution $distribution)
     {
-        return view('committee.project.distribute.index')->with('distributions', $this->getListWithPagination($distribution));
+        return view('committee.project.distribution.index')->with('distributions', $this->getListWithPagination($distribution));
     }
 
     /**
@@ -82,7 +82,7 @@ class CommitteeController extends Controller
     {
         $distribution = $this->loadProjectData($distribution);
 
-        return view('committee.project.distribute.view', compact('distribution'));
+        return view('committee.project.distribution.view', compact('distribution'));
     }
 
     /**

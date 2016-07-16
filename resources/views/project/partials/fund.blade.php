@@ -6,7 +6,6 @@
         <div id="tab-project" class="row project-page +margin-top">
 
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
-
                 <section>
                     <header class="header --with-divider --full --small +no-margin-top">Description</header>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, ad, architecto, ex fuga id

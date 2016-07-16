@@ -1,10 +1,16 @@
-@extends('layouts.master-admin')
+@extends('layouts.master', ['class' => 'admin-page'])
 
 @section('content')
+
+    @include('admin.partials.header')
+
+    <div class="row">
+
+        <div class="small-12 columns">
     @include('admin.partials.question-menu')
 
     <div class="ui segment">
-        <form class="ui form warning error" action="{{ route('admin.question.store') }}" method="POST">
+        <form class="ui form warning error" action="{{ route('admin.profile.question.store') }}" method="POST">
 
             {{ csrf_field() }}
 
@@ -34,14 +40,16 @@
 
             <button class="ui submit button primary" type="submit">@lang('forms.create')</button>
 
-            <a href="{{ route('admin.question.index') }}" class="ui button ui-icon-cancel">
+            <a href="{{ route('admin.profile.question.index') }}" class="ui button ui-icon-cancel">
                 @lang('forms.cancel')
             </a>
 
         </form>
     </div>
+        </div>
+    </div>
 @endsection
 
-@section('pos-scripts')
-    @include('admin.question.scripts')
-@endsection
+@push('scripts')
+    @include('admin.profile.question.scripts')
+@endpush

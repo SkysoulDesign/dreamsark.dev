@@ -3,7 +3,7 @@
   @include part(background) {
 
     position: relative;
-    background: url("/img/temp/1.jpg") center center;
+    background: get-url('login/dreamsArkRef43.jpg') center center;
     background-size: cover;
     z-index: 1;
 
@@ -38,7 +38,7 @@
 
     @include option(default) {
 
-      background: url("/img/headers/header-3.jpg") center center no-repeat;
+      background: get-url("headers/header-3.jpg") center center no-repeat;
 
       @include breakpoint(medium up) {
         height: 15em;
@@ -57,12 +57,12 @@
       z-index: -1;
       background-color: color($color: primary, $tone: light, $alpha: 30);
 
-      transition: background-color .2s;
-      will-change: background-color;
+      //transition: background-color .2s;
+      //will-change: background-color;
 
-      &:hover {
-        background-color: color($color: primary, $tone: light, $alpha: 0);
-      }
+      //&:hover {
+      //  background-color: color($color: primary, $tone: light, $alpha: 0);
+      //}
 
     }
 

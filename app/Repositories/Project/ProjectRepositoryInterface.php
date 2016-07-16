@@ -72,8 +72,6 @@ interface ProjectRepositoryInterface
      * @param $user_id
      * @param array $fields
      * @return Collection
-     * @internal param Model $stage
-     * @internal param Model $model
      */
     public function submit(Model $model, $user_id, array $fields);
 

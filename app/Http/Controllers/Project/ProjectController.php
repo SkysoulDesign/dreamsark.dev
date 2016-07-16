@@ -43,15 +43,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * @param ProjectRepositoryInterface $repository
-     * @return mixed
-     */
-    public function adminIndex(ProjectRepositoryInterface $repository)
-    {
-        return view('admin.project.index')->with('projects', $repository->paginate())->with('project_count', $repository->all()->count());
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

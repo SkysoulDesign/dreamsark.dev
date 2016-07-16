@@ -4,7 +4,12 @@ namespace DreamsArk\Http\Requests\Project\Submission;
 
 use DreamsArk\Http\Requests\Request;
 
-class Submissioning extends Request
+/**
+ * Class SubmissionCreation
+ *
+ * @package DreamsArk\Http\Requests\Project\Submission
+ */
+class SubmissionCreation extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

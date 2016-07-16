@@ -13,13 +13,12 @@ use DreamsArk\Models\User\User;
 use Illuminate\Http\Request;
 
 /**
- * Class AdminUserController
+ * Class UserController
  *
- * @package DreamsArk\Http\Controllers\Admin
+ * @package DreamsArk\Http\Controllers\Admin\User
  */
 class UserController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -29,9 +28,11 @@ class UserController extends Controller
      */
     public function index(User $user)
     {
-        $users = $user->orderBy('updated_at', 'desc')->paginate(config('defaults.general.pagination.per_page'));
+        $users = $user->orderBy('updated_at', 'desc')->paginate(
+            config('defaults.general.pagination.per_page')
+        );
 
-        return view('admin.users.index')->with('users', $users);
+        return view('admin.user.index')->with('users', $users);
     }
 
     /**
@@ -43,7 +44,7 @@ class UserController extends Controller
      */
     public function create(Role $role)
     {
-        return view('admin.users.create')->with('roles', $role->all());
+        return view('admin.user.create')->with('roles', $role->all());
     }
 
     /**
@@ -89,7 +90,7 @@ class UserController extends Controller
      */
     public function edit(User $user, Role $role)
     {
-        return view('admin.users.edit')->with('user', $user)->with('roles', $role->all());
+        return view('admin.user.edit')->with('user', $user)->with('roles', $role->all());
     }
 
     /**

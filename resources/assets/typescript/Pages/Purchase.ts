@@ -11,7 +11,9 @@ export class Purchase extends AbstractPage {
         'user.purchase.index'
     ]
 
-    boot(vue, app) {
+    boot() {
+
+        let app = this.app;
 
         app.vue({
             plugins: [
@@ -60,8 +62,8 @@ export class Purchase extends AbstractPage {
                     for (let name in response.data) {
 
                         let input = document.createElement('input');
-                            input.name = name;
-                            input.setAttribute('value', response.data[name]);
+                        input.name = name;
+                        input.setAttribute('value', response.data[name]);
 
                         form.appendChild(input);
 

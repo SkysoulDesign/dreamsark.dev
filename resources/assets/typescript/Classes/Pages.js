@@ -65,11 +65,7 @@ var Pages = (function (_super) {
      * Init
      * @param string routeName
      */
-    Pages.prototype.init = function (routeName) {
-        var payload = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            payload[_i - 1] = arguments[_i];
-        }
+    Pages.prototype.init = function (routeName, payload) {
         this.app.logger.info("Current Route", routeName);
         var route = this.currentRoute = Helpers_1.toCamelCase(routeName);
         if (!this.routes.hasOwnProperty(route)) {
@@ -78,10 +74,10 @@ var Pages = (function (_super) {
              * If there is no class listening to this request then only
              * run the common classes That has been set to listen to all {*}
              */
-            this.create(this.routes['all']);
+            this.create(this.routes['all'], payload);
             return this.start();
         }
-        this.create(this.routes['all'].concat(this.routes[route]));
+        this.create(this.routes['all'].concat(this.routes[route]), payload);
         this.start();
     };
     /**
@@ -124,7 +120,7 @@ var Pages = (function (_super) {
      *
      * @param routes
      */
-    Pages.prototype.create = function (routes) {
+    Pages.prototype.create = function (routes, payload) {
         var _this = this;
         if (routes instanceof Array)
             return routes.forEach(function (name) {
@@ -137,7 +133,8 @@ var Pages = (function (_super) {
                     return;
                 }
                 _this.initialized[name].route = currentRoute;
-                _this.initialized[name].boot();
+                (_a = _this.initialized[name]).boot.apply(_a, payload);
+                var _a;
             });
         this.app.logger.error('The Current route doesn\'t contain any bootable instances.');
     };

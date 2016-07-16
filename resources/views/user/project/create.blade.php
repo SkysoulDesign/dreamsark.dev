@@ -1,10 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.master', [])
 
 @section('content')
 
     @include('user.partials.header', ['header' => false])
 
-    <div class="base-page__header --default --animated">
+    <div class="base-page__header">
 
         <div class="base-page__header__overlay"></div>
 
@@ -22,8 +22,7 @@
     </div>
 
     <ark-form class="row align-center --overlapped"
-              action="{{ route('user.project.store') }}"
-              token="{{ csrf_token() }}" errors="{{ $errors->toJson() }}">
+              action="{{ route('user.project.store') }}">
 
         <div class="small-11 medium-9 columns form__header --rounded">
             @lang('project.start-project')
@@ -38,19 +37,18 @@
                     @lang('project.name')
                 </h3>
 
-                <div class="small-12 columns form__field --required">
-                    <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
-                </div>
+                <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
 
                 <h3 class="small-12 columns form__step">
                     <span>2</span>
-                    @lang('project.description')
+                    @lang('project.content')
                 </h3>
 
-                <div class="small-12 columns form__field --required">
-                    <ark-textarea name="description" :rows="5" placeholder="@lang('forms.description')"></ark-textarea>
-                    <span>@lang('project.form-description')</span>
-                </div>
+                <ark-textarea name="content"
+                              :rows="5"
+                              placeholder="@lang('forms.content')"
+                              caption="@lang('project.form-description')">
+                </ark-textarea>
 
                 <h3 class="small-12 columns form__step">
                     <span>3</span>

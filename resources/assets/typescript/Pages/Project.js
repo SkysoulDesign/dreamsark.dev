@@ -16,17 +16,27 @@ var Project = (function (_super) {
             'project.show',
         ];
     }
-    Project.prototype.boot = function () {
+    Project.prototype.boot = function (stage) {
+        if (this.hasOwnProperty(stage))
+            this[stage]();
+    };
+    Project.prototype.idea = function () {
+        this.initChart();
+    };
+    Project.prototype.fund = function () {
+        this.initChart();
+        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
+    };
+    Project.prototype.initCrew = function (e, element) {
+        // console.log(animation)
+    };
+    Project.prototype.initChart = function () {
         var element = document.querySelector('.chart');
         new Chart(element, {
             easing: 'easeOutBounce',
             barColor: '#5eb404',
             trackColor: '#e3e3e3',
         });
-        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
-    };
-    Project.prototype.initCrew = function (e, element) {
-        // console.log(animation)
     };
     return Project;
 }(AbstractPage_1.AbstractPage));

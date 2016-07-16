@@ -1,33 +1,33 @@
-@extends('layouts.master-admin')
+@extends('layouts.master', ['class' => 'admin-page'])
 
 @section('content')
 
-    <h2>&nbsp;</h2>
-    <h2>@lang('navbar.discover-project')</h2>
-    <h2>&nbsp;</h2>
-    <div class="column">
+    @include('admin.partials.header')
 
+    <div class="row">
 
-        <table class="ui celled striped table">
-            <thead>
-            <tr>
-                <th>@lang('project.stage')</th>
-                <th>@lang('project.name')</th>
-                <th>@lang('project.reward')</th>
-                <th>@lang('project.vote-date')</th>
-                <th>@lang('project.status')</th>
-                <th>@lang('project.action')</th>
-            </tr>
-            </thead>
-            <tbody>
-            @if($projects->isEmpty())
+        <div class="small-12 columns">
+
+            <header class="header --light --with-divider --full">
+                @lang('admin.project-list')
+            </header>
+
+        </div>
+
+        <div class="small-12 columns">
+            <table class="ui celled striped table">
+                <thead>
                 <tr>
-                    <th colspan="6" class="ui error message">
-                        @lang('project.no-project')
-                    </th>
+                    <th>@lang('project.stage')</th>
+                    <th>@lang('project.name')</th>
+                    <th>@lang('project.reward')</th>
+                    <th>@lang('project.vote-date')</th>
+                    <th>@lang('project.status')</th>
+                    <th>@lang('project.action')</th>
                 </tr>
-            @else
-                @foreach($projects as $project)
+                </thead>
+                <tbody>
+                @forelse($projects as $project)
                     <tr>
                         <td>
                             @if($project->type=='fund')
@@ -74,15 +74,20 @@
                         </td>
 
                     </tr>
-                @endforeach
-            @endif
-            </tbody>
-            @include('partials.paginate-links', ['resultSet' => $projects, 'colSpan' => 6])
-        </table>
+                @empty
+                    <tr>
+                        <th colspan="6" class="ui error message">
+                            @lang('project.no-project')
+                        </th>
+                    </tr>
+                @endforelse
+                </tbody>
+                @include('partials.paginate-links', ['resultSet' => $projects, 'colSpan' => 6])
+            </table>
+        </div>
 
     </div>
 
+
 @endsection
-@section('pos-scripts')
-    @include('partials.embed-show-project-script')
-@endsection
+

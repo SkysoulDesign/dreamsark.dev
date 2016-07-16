@@ -28,7 +28,7 @@ class QuestionController extends Controller
      */
     public function index(Question $question)
     {
-        return view('admin.question.index')->with('questions', $question->load('type')->paginate(config('defaults.general.pagination.per_page')));
+        return view('admin.profile.question.index')->with('questions', $question->load('type')->paginate(config('defaults.general.pagination.per_page')));
     }
 
     /**
@@ -41,7 +41,7 @@ class QuestionController extends Controller
      */
     public function create(Type $type, Option $option)
     {
-        return view('admin.question.create')
+        return view('admin.profile.question.create')
             ->with('types', $type->all())
             ->with('options', $option->all());
     }
@@ -62,7 +62,7 @@ class QuestionController extends Controller
             $request->get('options', [])
         ));
 
-        return redirect()->route('admin.question.index')->withSuccess(trans('profile.question-created'));
+        return redirect()->route('admin.profile.question.index')->withSuccess(trans('profile.question-created'));
 
     }
 
@@ -75,7 +75,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question, Type $type, Option $option)
     {
-        return view('admin.question.edit')
+        return view('admin.profile.question.edit')
             ->with('question', $question->load('options'))
             ->with('types', $type->all())
             ->with('options', $option->all());
@@ -121,7 +121,7 @@ class QuestionController extends Controller
          */
         $this->dispatch(new DeleteQuestionJob($question));
 
-        return redirect()->route('admin.question.index')->withSuccess(trans('profile.question-deleted'));
+        return redirect()->route('admin.profile.question.index')->withSuccess(trans('profile.question-deleted'));
 
     }
 

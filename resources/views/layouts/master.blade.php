@@ -3,14 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="form-errors" content="{{ $errors->toJson() }}">
+    <meta name="form-data" content="{{ json_encode(array_except(old(), ['password', '_token'])) }}">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=no">
+
     <title>DreamsArk</title>
 
     @yield('meta-tags')
 
     @yield('styles')
 
+    <!-- Temporarily -->
+    <link rel="stylesheet" media="all" href="{{ asset('translation-assets/semantic.min.css') }}">
+
     <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=no">
+
 
 </head>
 
@@ -23,6 +31,11 @@
 @if($footer ?? true)
     @include('partials.footer.common')
 @endif
+
+<!-- Temporarily -->
+<script src="{{ asset('translation-assets/jquery.min.js') }}"></script>
+<script src="{{ asset('translation-assets/semantic.min.js') }}"></script>
+<script src="{{ asset('js/common-functions.js') }}"></script>
 
 <script src="{{ asset('js/App.js') }}"></script>
 

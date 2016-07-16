@@ -17,7 +17,8 @@ var Purchase = (function (_super) {
             'user.purchase.index'
         ];
     }
-    Purchase.prototype.boot = function (vue, app) {
+    Purchase.prototype.boot = function () {
+        var app = this.app;
         app.vue({
             plugins: [
                 require('vue-resource')

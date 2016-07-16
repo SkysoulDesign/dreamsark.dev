@@ -74,6 +74,7 @@ class AuthController extends Controller
      */
     public function loginStore(Request $request)
     {
+
         /**
          * Determines if it`s an email otherwise consider being a username
          */

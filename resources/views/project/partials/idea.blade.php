@@ -1,113 +1,34 @@
 @push('tabs')
 <ark-nav>
-    <ark-tab content="tab-project" active>
+
+    <ark-tab content="tab-project" active icon="star">
+
         @lang('project.project')
         @push('tab-item')
-        <div id="tab-project" class="row project-page --margin-top">
+
+        <div id="tab-project" class="row +margin-top">
 
             <div class="small-12 medium-8 columns">
-
-                <div class="row">
-
-                    <div class="small-12 columns">
-                        <header class="header --full --small --light --with-divider +uppercase +no-margin-top">
-                            @lang('project.mission-requirements')
-                        </header>
-                        <section>
-                            {{ $project->idea->content }}
-                        </section>
-                    </div>
-
-                    <divider class="small-12 columns divider">Comments</divider>
-
-                    <div class="comments">
-                        @foreach(range(1,8) as $index)
-                            <div class="small-12 columns comments__item">
-                                <div class="row">
-                                    <div class="small-1 columns comments__item__author">
-                                        <img src="{{ asset('img/temp/avatar.png') }}" alt="">
-                                    </div>
-                                    <div class="small-11 columns comments__item__content">
-                                        <ul class="ul --inline --divided">
-                                            <li><a href="#">Rafael Milewski</a></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cumque ex
-                                            laudantium molestiae pariatur, placeat ratione sequi. Cum, ex, similique!
-                                            magnam quasi totam.Assumenda earum eos illum quis?</p>
-                                    </div>
-                                    <div class="small-11 small-offset-1 columns comments__item__meta">
-
-                                        <ul class="ul --inline --divided --right">
-                                            <li>March, 20, 2016 - 16:99:30</li>
-                                            <li><a href="#">edit</a></li>
-                                            <li><a href="#">delete</a></li>
-                                            <li><a href="#">report</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <divider class="small-12 columns divider">Comments</divider>
-
-                    <div class="small-12 columns">
-                        <div class="row">
-                            <form method="post" action="#">
-
-                                {{ csrf_field() }}
-
-                                <div class="small-12 medium-12 columns form__content --rounded">
-
-                                    <div class="row">
-
-                                        <h3 class="small-12 columns form__step">
-                                            Comments
-                                        </h3>
-
-                                        <div class="small-12 columns form__field">
-                                            <textarea name="comment" id="" cols="30" rows="10"></textarea>
-                                        </div>
-
-                                        <div class="small-12 columns divider --simple"></div>
-
-                                        <div class="small-12 columns form__field +center-on-mobile">
-                                            <button class="button --success --fit">Leave a Comment</button>
-                                        </div>
-
-                                        <div class="small-12 columns form__description +center-on-mobile">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi
-                                            sapiente similique, tempora! Aperiam, tempore!
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-
+                <header class="header --full --small --light --with-divider +uppercase +no-margin-top">
+                    @lang('project.mission-requirements')
+                </header>
+                <section>
+                    {{ $project->idea->content }}
+                </section>
             </div>
+            <div class="small-12 medium-4 columns project-page__info">
 
-            <div class="small-12 medium-4 small-order-1 medium-order-2 columns project-page__info">
-                <img src="{{ asset('img/temp/2.jpg') }}" alt="">
                 <div class="project-page__info__overlay">
 
-                    <div>
-                        @lang('project.creator')
-                        <span>
-                            <a href="#">{{ $project->creator->name }}</a>
-                        </span>
-                    </div>
+                    <h2>{{ $project->name }}</h2>
 
-                    <div>
-                        @lang('project.reward')
-                        <span>
-                            3000
-                        </span>
+                    <span class="chart --centered" data-percent="100">
+                        <span class="chart__content --reward">5000</span>
+                    </span>
+
+                    <div class="project-page__info__overlay__spacer">
+                        <ark-progress :data="5" :max="30" symbol="days" label="Time Left"
+                                      color="ternary"></ark-progress>
                     </div>
 
                     <div>
@@ -121,116 +42,155 @@
                     </div>
 
                     <ark-statistics>
-                        <statistic-item data="{{ $project->stage->submissions->count() }}">Submissions</statistic-item>
-                        <statistic-item data="{{ $project->present()->getRemainingDays() }}">Days to go</statistic-item>
+                        <statistic-item data="{{ $project->stage->submissions->count() }}">
+                            @lang('project.submissions')
+                        </statistic-item>
+                        <statistic-item data="{{ $project->present()->getRemainingDays() }}">
+                            @lang('project.days-to-go')
+                        </statistic-item>
                     </ark-statistics>
 
                     <div>
                         <button class="button --white --inverted" data-modal-trigger="submission">
                             @lang('project.submit')
                         </button>
-                        <ark-modal trigger="submission" header="Idea Submission Form">
-                            <form class="row" method="post" action="">
-
-                                {{ csrf_field() }}
-
-                                <div class="small-12 columns form__content --rounded">
-
-                                    <div class="row">
-
-                                        <h3 class="small-12 columns form__step">
-                                            Make a Submission
-                                        </h3>
-
-                                        <div class="small-12 columns form__field">
-                                            <select name="visibility">
-                                                <option value="0">@lang('project.private')</option>
-                                                <option value="1">@lang('project.public')</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="small-12 columns form__field">
-                                            <textarea name="" id="" cols="30" rows="10"></textarea>
-                                        </div>
-
-                                        <div class="small-12 columns divider --simple"></div>
-
-                                        <div class="small-12 columns form__field +center-on-mobile">
-                                            <button class="button --success --fit">
-                                                @lang('project.submit')
-                                            </button>
-                                        </div>
-
-                                        <div class="small-12 columns form__description +center-on-mobile">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi
-                                            architecto consequuntur deserunt dicta doloremque enim illum ipsam itaque
-                                            iusto molestiae mollitia nihil quaerat, quas sapiente similique, tempora!
-                                            Aperiam, tempore!
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </form>
-                        </ark-modal>
                     </div>
 
                 </div>
             </div>
 
-        </div>
-        @endpush
-    </ark-tab>
-    <ark-tab content="tab-submission">
-        Submission
-        @push('tab-item')
-        <div id="tab-submission" class="row align-center project-page --tab-comments">
+            <div class="small-12 columns divider">@lang('general.comments')</div>
+            <div class="comments">
+                @foreach(range(1,4) as $index)
 
-            @foreach(range(1,15) as $index)
-                <section class="small-12 columns">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cumque ex laudantium molestiae
-                    pariatur, placeat ratione sequi. Cum, ex, similique! Architecto aspernatur magnam quasi totam.
-                    Assumenda
-                    earum eos illum quis?
-                </section>
-            @endforeach
+                    <div class="small-12 columns comments__item">
+                        <div class="row">
+                            <div class="small-1 columns comments__item__author">
+                                <img src="{{ asset('img/temp/avatar.png') }}" alt="">
+                            </div>
+                            <div class="small-11 columns comments__item__content">
+                                <ul class="ul --inline --divided">
+                                    <li><a href="#">Rafael Milewski</a></li>
+                                </ul>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cumque ex
+                                    laudantium molestiae pariatur, placeat ratione sequi. Cum, ex, similique!
+                                    magnam quasi totam.Assumenda earum eos illum quis?</p>
+                            </div>
+                            <div class="small-11 small-offset-1 columns comments__item__meta">
 
-            <form method="post" action="#">
+                                <ul class="ul --inline --divided --right">
+                                    <li>March, 20, 2016 - 16:99:30</li>
+                                    <li><a href="#">edit</a></li>
+                                    <li><a href="#">delete</a></li>
+                                    <li><a href="#">report</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
-                {{ csrf_field() }}
+                @endforeach
+            </div>
+            <div class="small-12 columns divider">@lang('general.comments')</div>
+            <div class="small-12 columns">
+                <div class="row">
+                    <form method="post" action="#">
 
-                <div class="small-12 medium-12 columns form__content --rounded">
+                        {{ csrf_field() }}
 
-                    <div class="row">
+                        <div class="small-12 medium-12 columns form__content --rounded">
 
-                        <h3 class="small-12 columns form__step">
-                            Comments
-                        </h3>
+                            <div class="row">
 
-                        <div class="small-12 columns form__field">
-                            <textarea name="comment" id="" cols="30" rows="10"></textarea>
+                                <h3 class="small-12 columns form__step">
+                                    Comments
+                                </h3>
+
+                                <div class="small-12 columns form__field">
+                                    <textarea name="comment" id="" cols="30" rows="10"></textarea>
+                                </div>
+
+                                <div class="small-12 columns divider --simple"></div>
+
+                                <div class="small-12 columns form__field +center-on-mobile">
+                                    <button class="button --success --fit">Leave a Comment</button>
+                                </div>
+
+                                <div class="small-12 columns form__description +center-on-mobile">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi
+                                    sapiente similique, tempora! Aperiam, tempore!
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <div class="small-12 columns divider --simple"></div>
+                    </form>
+                </div>
+            </div>
 
-                        <div class="small-12 columns form__field +center-on-mobile">
-                            <button class="button --success --fit">Leave a Comment</button>
-                        </div>
+            <ark-modal trigger="submission" header="@lang('project.idea-submission-form')">
+                <ark-form action="{{ route('project.idea.submission.store', $project) }}" class="row">
+                    <div class="columns form__content --rounded">
+                        <div class="row">
 
-                        <div class="small-12 columns form__description +center-on-mobile">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi architecto
-                            consequuntur
-                            deserunt dicta doloremque enim illum ipsam itaque iusto molestiae mollitia nihil quaerat,
-                            quas
-                            sapiente similique, tempora! Aperiam, tempore!
+                            <h3 class="small-12 columns form__step">
+                                <span>1</span>
+                                @lang('form.make-a-submission')
+                            </h3>
+
+                            <div class="small-12 columns form__field">
+                                <select name="visibility">
+                                    <option value="0">@lang('project.private')</option>
+                                    <option value="1">@lang('project.public')</option>
+                                </select>
+                            </div>
+
+                            <h3 class="small-12 columns form__step">
+                                <span>2</span>
+                                @lang('project.content')
+                            </h3>
+
+                            <ark-textarea name="content"
+                                          :rows="5"
+                                          placeholder="@lang('forms.content')"
+                                          caption="@lang('project.form-description')">
+                            </ark-textarea>
+
+                            <ark-button state="success" class="+center-on-mobile">
+                                @lang('forms.submit-idea')
+                            </ark-button>
+
+                            <div class="small-12 columns form__description +center-on-mobile">
+                                @lang('project.idea-submission.notes')
+                            </div>
+
                         </div>
 
                     </div>
+                </ark-form>
+            </ark-modal>
 
-                </div>
+        </div>
 
-            </form>
+        @endpush
+
+    </ark-tab>
+
+    <ark-tab content="tab-submission" icon="paper-plane">
+        Submission
+        @push('tab-item')
+        <div id="tab-submission" class="row +margin-top">
+
+            @forelse($submissions as $submission)
+                <section class="small-12 columns">
+                   {{ $submission->content }}
+                </section>
+            @empty
+                <section class="small-12 columns">
+                    @lang('project.no-submissions')
+                </section>
+            @endforelse
+
         </div>
         @endpush
     </ark-tab>
@@ -240,3 +200,12 @@
 @section('tab-content')
     @stack('tab-item')
 @endsection
+
+
+@section('pos-scripts')
+
+    <script>
+        dreamsark.page("{{ request()->route()->getName() }}", 'idea');
+    </script>
+
+@overwrite

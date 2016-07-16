@@ -12,7 +12,7 @@
             @lang('navbar.discover-project')
             <div class="menu">
                 <div class="header"></div>
-                <a class="item" href="{{ route('admin.projects') }}">@lang('navbar.discover-project')</a>
+                <a class="item" href="{{ route('admin.project.index') }}">@lang('navbar.discover-project')</a>
             </div>
         </div>
 
@@ -36,9 +36,9 @@
         @lang('navbar.transactions')
         <div class="menu">
             <a class="item"
-               href="{{ route('admin.transactions.purchases', 'all') }}">@lang('navbar.purchases')</a>
+               href="{{ route('admin.transaction.purchase', 'all') }}">@lang('navbar.purchases')</a>
             <a class="item"
-               href="{{ route('admin.transactions.withdraw', 'all') }}">@lang('navbar.withdrawals')</a>
+               href="{{ route('admin.transaction.withdraw', 'all') }}">@lang('navbar.withdrawals')</a>
         </div>
     </div>
     @if(auth()->user()->can('see-admin-section'))
@@ -46,7 +46,7 @@
             @lang('navbar.configuration')
             <div class="menu">
                 <div class="header"></div>
-                <a class="item" href="{{ route('admin.question.index') }}">@lang('navbar.questions')</a>
+                <a class="item" href="{{ route('admin.profile.question.index') }}">@lang('navbar.questions')</a>
                 <a class="item" href="{{ route('admin.profile.index') }}">@lang('navbar.profile')</a>
                 <a class="item" href="{{ route('admin.user.index') }}">@lang('navbar.users')</a>
             </div>

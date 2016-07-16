@@ -1,0 +1,8 @@
+@include page(admin) {
+
+  @include part(header) {
+    @extend .base-page__header;
+    background: get-url('login/dreamsArkRef43.jpg') center center;
+  }
+
+}

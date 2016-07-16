@@ -11940,11 +11940,7 @@ var Pages = function (_super) {
      * Init
      * @param string routeName
      */
-    Pages.prototype.init = function (routeName) {
-        var payload = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            payload[_i - 1] = arguments[_i];
-        }
+    Pages.prototype.init = function (routeName, payload) {
         this.app.logger.info("Current Route", routeName);
         var route = this.currentRoute = Helpers_1.toCamelCase(routeName);
         if (!this.routes.hasOwnProperty(route)) {
@@ -11953,10 +11949,10 @@ var Pages = function (_super) {
              * If there is no class listening to this request then only
              * run the common classes That has been set to listen to all {*}
              */
-            this.create(this.routes['all']);
+            this.create(this.routes['all'], payload);
             return this.start();
         }
-        this.create(this.routes['all'].concat(this.routes[route]));
+        this.create(this.routes['all'].concat(this.routes[route]), payload);
         this.start();
     };
     /**
@@ -11997,7 +11993,7 @@ var Pages = function (_super) {
      *
      * @param routes
      */
-    Pages.prototype.create = function (routes) {
+    Pages.prototype.create = function (routes, payload) {
         var _this = this;
         if (routes instanceof Array) return routes.forEach(function (name) {
             var currentRoute = _this.currentRoute;
@@ -12008,7 +12004,8 @@ var Pages = function (_super) {
                 return;
             }
             _this.initialized[name].route = currentRoute;
-            _this.initialized[name].boot();
+            (_a = _this.initialized[name]).boot.apply(_a, payload);
+            var _a;
         });
         this.app.logger.error('The Current route doesn\'t contain any bootable instances.');
     };
@@ -12266,21 +12263,33 @@ var Form = function () {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String
-                },
                 label: {
                     type: String
                 }
             },
+            methods: {
+                getParentForm: function getParentForm(parent) {
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+                    if (parent) return this.getParentForm(parent.$parent);
+                    return this.getParentForm(this.$parent);
+                }
+            },
             computed: {
+                value: function value() {
+                    return this.getParentForm().old(this.name);
+                },
                 errors: function errors() {
-                    var parent = this.$parent;
-                    /**
-                     * In Case its an instance of ArkFields
-                     */
-                    if (this.$parent.constructor.name !== 'ArkForm') parent = parent.$parent;
-                    return Helpers_1.popByKey(parent.errors, this.name);
+                    var form = this.getParentForm();
+                    if (sessionStorage.getItem('form-action') === form.action) {
+                        if (form.errors instanceof Array && form.errors.length) {
+                            form.errors.shift().forEach(function (e) {
+                                form.globalErrors.push(e);
+                            });
+                        }
+                        return Helpers_1.popByKey(form.errors, this.name);
+                    }
                 }
             }
         });
@@ -12314,14 +12323,23 @@ var Form = function () {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String
-                },
                 label: {
                     type: String
                 }
             },
+            methods: {
+                getParentForm: function getParentForm(parent) {
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+                    if (parent) return this.getParentForm(parent.$parent);
+                    return this.getParentForm(this.$parent);
+                }
+            },
             computed: {
+                value: function value() {
+                    return this.getParentForm().old(this.name);
+                },
                 errors: function errors() {
                     var parent = this.$parent;
                     /**
@@ -12334,6 +12352,12 @@ var Form = function () {
         });
         vue.component('ark-form', {
             template: require('../templates/form/form.html'),
+            data: function data() {
+                return {
+                    globalErrors: [],
+                    oldInput: JSON.parse(document.querySelector('meta[name="form-data"]').content)
+                };
+            },
             props: {
                 id: String,
                 token: String,
@@ -12344,18 +12368,56 @@ var Form = function () {
                 method: {
                     type: String,
                     default: 'post'
-                },
-                errors: {
-                    type: [Object, Array],
-                    coerce: function coerce(data) {
-                        return JSON.parse(data);
+                }
+            },
+            methods: {
+                old: function old(name, defaults) {
+                    var _this = this;
+                    if (defaults === void 0) {
+                        defaults = null;
                     }
+                    var result;
+                    name.match(/([\w\s]+)/g).forEach(function (name) {
+                        if (result instanceof Object) {
+                            return result = result[name];
+                        }
+                        result = _this.oldInput[name];
+                    });
+                    return result;
+                }
+            },
+            computed: {
+                errors: function errors() {
+                    return JSON.parse(document.querySelector('meta[name="form-errors"]').content);
                 }
             },
             events: {
                 'ajax.button.fail': function ajaxButtonFail(e, button) {
                     if (e.status == 422) this.errors = e.json();
                 }
+            },
+            ready: function ready() {
+                var _this = this;
+                this.$el.addEventListener('submit', function (e) {
+                    /**
+                     * Store Which form reference to display errors correctly later
+                     */
+                    sessionStorage.setItem('form-action', _this.action);
+                    /**
+                     * Only for post Method
+                     */
+                    if (_this.method !== 'post') {
+                        return;
+                    }
+                    e.preventDefault();
+                    var token = document.querySelector('meta[name="csrf-token"]'),
+                        input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', '_token');
+                    input.setAttribute('value', token.content);
+                    _this.$el.appendChild(input);
+                    _this.$el.submit();
+                });
             }
         });
     };
@@ -12993,17 +13055,26 @@ var Project = function (_super) {
         _super.apply(this, arguments);
         this.routes = ['project.show'];
     }
-    Project.prototype.boot = function () {
+    Project.prototype.boot = function (stage) {
+        if (this.hasOwnProperty(stage)) this[stage]();
+    };
+    Project.prototype.idea = function () {
+        this.initChart();
+    };
+    Project.prototype.fund = function () {
+        this.initChart();
+        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
+    };
+    Project.prototype.initCrew = function (e, element) {
+        // console.log(animation)
+    };
+    Project.prototype.initChart = function () {
         var element = document.querySelector('.chart');
         new Chart(element, {
             easing: 'easeOutBounce',
             barColor: '#5eb404',
             trackColor: '#e3e3e3'
         });
-        this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
-    };
-    Project.prototype.initCrew = function (e, element) {
-        // console.log(animation)
     };
     return Project;
 }(AbstractPage_1.AbstractPage);
@@ -13032,7 +13103,8 @@ var Purchase = function (_super) {
         _super.apply(this, arguments);
         this.routes = ['user.purchase.index'];
     }
-    Purchase.prototype.boot = function (vue, app) {
+    Purchase.prototype.boot = function () {
+        var app = this.app;
         app.vue({
             plugins: [require('vue-resource')],
             methods: {
@@ -13211,11 +13283,11 @@ module.exports = '<div class="form__field">\n    <button :type="type" class="but
 },{}],33:[function(require,module,exports){
 module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],34:[function(require,module,exports){
-module.exports = '<form :id="id" :action="action" :method="method">\n   <input v-if="method == \'post\'" type="hidden" name="_token" value="{{ token }}">\n\n   <div v-if="errors" class="form__field__error">\n      <ul v-for="error in errors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n   <slot></slot>\n</form>\n';
+module.exports = '<form :id="id" :action="action" :method="method">\n   <slot></slot>\n\n   <div v-if="globalErrors"  class="form__field__error">\n      <ul v-for="error in globalErrors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n</form>\n';
 },{}],35:[function(require,module,exports){
 module.exports = '<div class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],36:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea :class="{ \'--error\': errors }"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :value="value"\n              :rows="rows"\n              :readOnly="readOnly"></textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea :class="{ \'--error\': errors }"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :rows="rows"\n              :readOnly="readOnly">{{ value }}</textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],37:[function(require,module,exports){
 module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],38:[function(require,module,exports){

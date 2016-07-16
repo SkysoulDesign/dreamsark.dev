@@ -1,5 +1,5 @@
-<link rel="stylesheet" media="all" href="{{ asset('dist/css/select2.min.css') }}">
-<script type="text/javascript" src="{{ asset('dist/js/select2.js') }}"></script>
+<link rel="stylesheet" media="all" href="{{ asset('css/select2.min.css') }}">
+<script type="text/javascript" src="{{ asset('js/select2.js') }}"></script>
 <script>
     $("#options").select2({
         tags: true

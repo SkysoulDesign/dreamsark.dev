@@ -14,6 +14,7 @@
 use DreamsArk\Http\Controllers\Admin\AdminController;
 use DreamsArk\Http\Controllers\Admin\Payment\TransactionController;
 use DreamsArk\Http\Controllers\Admin\Profile\ProfileController as AdminProfileController;
+use DreamsArk\Http\Controllers\Admin\Project\ProjectController as AdminProjectController;
 use DreamsArk\Http\Controllers\Admin\Question\QuestionController;
 use DreamsArk\Http\Controllers\Admin\User\UserController;
 use DreamsArk\Http\Controllers\Auth\AuthController;
@@ -102,6 +103,23 @@ $app->group(['middleware' => 'web'], function () use ($app) {
 
         $app->get('/', ProjectController::class . '@index')->name('index');
         $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+
+        /**
+         * Project Idea Routes
+         */
+        $app->group(['prefix' => '{project}/idea', 'as' => 'idea.'], function () use ($app) {
+
+            $app->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($app) {
+
+                /**
+                 * Submission Controller
+                 */
+                $app->post('store', SubmissionController::class . '@store')->name('store');
+                $app->post('idea/submission/vote/{submission}/store', SubmissionIdeaController::class . '@vote')->name('project.idea.submission.vote.store');
+
+            });
+
+        });
 
         /**
          * Vote Controller
@@ -234,6 +252,140 @@ $app->group(['middleware' => 'web'], function () use ($app) {
 
     });
 
+    /*
+    |--------------------------------------------------------------------------
+    | Committee Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is listed all routes prefixed with committee.
+    |
+    */
+    $app->group(['middleware' => ['auth', 'can:see-committee-section'], 'prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
+
+        $app->get('/', CommitteeController::class . '@index')->name('index');
+
+
+        /**
+         * Project Controller
+         */
+        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+
+            $app->get('review', CommitteeController::class . '@projectsInReviewStage')->name('review.index');
+            $app->get('fund', CommitteeController::class . '@projectsInFundStage')->name('fund.index');
+            $app->get('distribution', CommitteeController::class . '@projectsInDistributionStage')->name('distribution.index');
+            
+            $app->post('{project}/expense/store', ExpenseController::class . '@store')->name('expense.store');
+            $app->post('{project}/crew/store', CrewController::class . '@store')->name('crew.store');
+
+        });
+
+        /**
+         * Committee Staff Controller
+         */
+        $app->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
+
+
+        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
+        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
+        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
+        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
+        /**
+         * Project Cast Controller
+         */
+        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
+        /**
+         * Project Crew Controller
+         */
+        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
+
+        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+            $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+
+                $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
+            });
+
+            $app->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($app) {
+               
+                $app->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
+            });
+        });
+
+
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is listed all routes prefixed with admin.
+    |
+    */
+    $app->group(['middleware' => ['auth', 'can:see-admin-section'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
+
+        $app->get('/', AdminController::class . '@index')->name('index');
+
+        /**
+         * Profile Controller
+         */
+        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+            
+            $app->get('/', AdminProfileController::class . '@index')->name('index');
+            $app->get('create', AdminProfileController::class . '@create')->name('create');
+            $app->post('store', AdminProfileController::class . '@store')->name('store');
+            $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
+            $app->patch('{profile}/update', AdminProfileController::class . '@update')->name('update');
+            $app->delete('{profile}/destroy', AdminProfileController::class . '@destroy')->name('destroy');
+
+            /**
+             * Questions Controller
+             */
+            $app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
+                $app->get('/', QuestionController::class . '@index')->name('index');
+                $app->get('create', QuestionController::class . '@create')->name('create');
+                $app->post('store', QuestionController::class . '@store')->name('store');
+                $app->get('{question}/edit', QuestionController::class . '@edit')->name('edit');
+                $app->patch('{question}/update', QuestionController::class . '@update')->name('update');
+                $app->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
+            });
+            
+        });
+
+        /**
+         * Projects Controller
+         */
+        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+            $app->get('/', AdminProjectController::class . '@index')->name('index');
+        });
+
+        
+
+        /**
+         * Users Controller
+         */
+        $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
+            $app->get('/', UserController::class . '@index')->name('index');
+            $app->get('create', UserController::class . '@create')->name('create');
+            $app->post('store', UserController::class . '@store')->name('store');
+            $app->get('{user}/edit', UserController::class . '@edit')->name('edit');
+            $app->patch('{user}/update', UserController::class . '@update')->name('update');
+            $app->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
+        });
+
+
+        /**
+         * Transaction Controller
+         */
+        $app->group(['prefix' => 'transaction', 'as' => 'transaction.'], function () use ($app) {
+            $app->get('/', TransactionController::class . '@index')->name('index');
+            $app->get('purchases/{trans_status}', TransactionController::class . '@getPurchaseList')->name('purchase');
+            $app->get('withdrawals/{trans_status}', TransactionController::class . '@getWithdrawList')->name('withdraw');
+            $app->get('update/{new_status}', TransactionController::class . '@updateAndProcess')->name('update');
+        });
+
+    });
+
+
     /**
      * Payment Related Routes
      */
@@ -278,11 +430,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     $app->get('votes', VoteController::class . '@index')->name('votes');
     $app->get('vote/show/{vote}', VoteController::class . '@show')->name('vote.show');
 
-    /**
-     * Submission Controller
-     */
-    $app->post('idea/submission/store/{project}', SubmissionController::class . '@store')->name('project.submission.store');
-    $app->post('idea/submission/vote/{submission}/store', SubmissionIdeaController::class . '@vote')->name('project.idea.submission.vote.store');
 
     /**
      * Project Controller
@@ -372,101 +519,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     });
 
 
-    /**
-     * Admin Section Routes
-     */
-    $app->group(['middleware' => ['auth', 'can:see-admin-section'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
 
-        $app->get('/', AdminController::class . '@index')->name('index');
-
-        /**
-         * Profile Controller
-         */
-        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
-            $app->get('/', AdminProfileController::class . '@index')->name('index');
-            $app->get('create', AdminProfileController::class . '@create')->name('create');
-            $app->post('store', AdminProfileController::class . '@store')->name('store');
-            $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
-            $app->patch('{profile}/update', AdminProfileController::class . '@update')->name('update');
-            $app->delete('{profile}/destroy', AdminProfileController::class . '@destroy')->name('destroy');
-        });
-
-        /**
-         * Questions Controller
-         */
-        $app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
-            $app->get('/', QuestionController::class . '@index')->name('index');
-            $app->get('create', QuestionController::class . '@create')->name('create');
-            $app->post('store', QuestionController::class . '@store')->name('store');
-            $app->get('{question}/edit', QuestionController::class . '@edit')->name('edit');
-            $app->patch('{question}/update', QuestionController::class . '@update')->name('update');
-            $app->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
-        });
-
-        /**
-         * Users Controller
-         */
-        $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
-            $app->get('/', UserController::class . '@index')->name('index');
-            $app->get('create', UserController::class . '@create')->name('create');
-            $app->post('store', UserController::class . '@store')->name('store');
-            $app->get('{user}/edit', UserController::class . '@edit')->name('edit');
-            $app->patch('{user}/update', UserController::class . '@update')->name('update');
-            $app->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
-        });
-
-        /** Admin projects */
-        $app->get('projects', ProjectController::class . '@adminIndex')->name('projects');
-
-        /** Payments/Transaction related */
-        $app->group(['prefix' => 'transactions', 'as' => 'transactions.'], function () use ($app) {
-            $app->get('purchases/{trans_status}', TransactionController::class . '@getPurchaseList')->name('purchases');
-            $app->get('withdrawals/{trans_status}', TransactionController::class . '@getWithdrawList')->name('withdraw');
-            $app->get('update/{new_status}', TransactionController::class . '@updateAndProcess')->name('update');
-        });
-
-    });
-
-    /**
-     * Committee Section Routes
-     */
-    $app->group(['middleware' => ['auth', 'can:see-committee-section'], 'prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
-        $app->get('/', CommitteeController::class . '@index')->name('index')->middleware();
-        $app->get('project/review', CommitteeController::class . '@projectsInReviewStage')->name('project.review.list');
-        /**
-         * Committee Staff Controller
-         */
-        $app->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
-        $app->post('project/expense/store/{project}', ExpenseController::class . '@store')->name('project.expense.store');
-        $app->post('project/crew/store/{project}', CrewController::class . '@store')->name('project.crew.store');
-
-        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
-        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
-        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
-        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
-        /**
-         * Project Cast Controller
-         */
-        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
-        /**
-         * Project Crew Controller
-         */
-        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
-
-        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
-            $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
-                $app->get('/', CommitteeController::class . '@projectsInFundStage')->name('list');
-                $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
-            });
-
-            $app->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($app) {
-                $app->get('/', CommitteeController::class . '@projectsInDistributionStage')->name('list');
-                $app->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
-            });
-        });
-
-
-    });
 
 });
 

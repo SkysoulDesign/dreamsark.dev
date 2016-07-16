@@ -4287,44 +4287,44 @@ button, .button {
     font-size: small;
     color: #8f9587; }
 
-header, .header {
+.header, header {
   margin: 2em 0;
   font-size: 1.8em;
   font-weight: bold;
   text-align: center; }
-  header h1, .header h1 {
+  .header h1, header h1 {
     margin: 0; }
-  header p, .header p {
+  .header p, header p {
     padding-top: 1.2em;
     font-size: .6em;
     font-weight: normal;
     line-height: 1.4em; }
     @media only screen and (min-width: 1000px) {
-      header p, .header p {
+      .header p, header p {
         width: 60%;
         margin: 0 auto; } }
-  header.\--left, .header.\--left {
+  .header.\--left, header.\--left {
     text-align: left; }
-  header.\--full, .header.\--full {
+  .header.\--full, header.\--full {
     text-align: left; }
-    header.\--full p, .header.\--full p {
+    .header.\--full p, header.\--full p {
       width: 100%; }
-  header.\--centered, .header.\--centered {
+  .header.\--centered, header.\--centered {
     text-align: center; }
-  header.\--classic, .header.\--classic {
+  .header.\--classic, header.\--classic {
     font-size: 1.8em;
     font-weight: 300;
     color: #b5b9b0; }
-    header.\--classic p, .header.\--classic p {
+    .header.\--classic p, header.\--classic p {
       margin: 10px 0 0 0;
       font-size: medium; }
-  header.\--small, .header.\--small {
+  .header.\--small, header.\--small {
     margin: 1em 0; }
-    header.\--small p, .header.\--small p {
+    .header.\--small p, header.\--small p {
       padding: 0; }
-  header.\--light, .header.\--light {
+  .header.\--light, header.\--light {
     font-weight: normal; }
-  header.\--with-divider, .header.\--with-divider {
+  .header.\--with-divider, header.\--with-divider {
     border-bottom: 1px solid #f4f5f4; }
 
 .divider {
@@ -4705,7 +4705,7 @@ header, .header {
     .progress__bar.\--color-golden .progress__bar__completion {
       background: #ffc326; }
 
-#app-root .\+white, #app-root header.\--inverted, #app-root header.\--inverted p, header.\--inverted #app-root p, #app-root .header.\--inverted, #app-root .header.\--inverted p, .header.\--inverted #app-root p, #app-root .card__caption.\--white, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a {
+#app-root .\+white, #app-root .header.\--inverted, #app-root header.\--inverted, #app-root .header.\--inverted p, .header.\--inverted #app-root p, #app-root header.\--inverted p, header.\--inverted #app-root p, #app-root .card__caption.\--white, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a {
   color: white; }
 
 #app-root .\+align-right {
@@ -5292,32 +5292,32 @@ header, .header {
 /**
 * Pages
 */
-.base-page__background, .home-page__background {
+.base-page__background, .home-page__background, .project-page__background {
   position: relative;
-  background: url("/img/temp/1.jpg") center center;
+  background: url("/img/login/dreamsArkRef43.jpg") center center;
   background-size: cover;
   z-index: 1; }
-  .base-page__background__overlay, .home-page__background__overlay {
+  .base-page__background__overlay, .home-page__background__overlay, .project-page__background__overlay {
     position: absolute;
     min-width: 100%;
     min-height: 100%;
     z-index: -1;
     background-color: rgba(0, 131, 255, 0.66); }
 
-.base-page__header, .profile-page__header {
+.base-page__header, .profile-page__header, .admin-page__header {
   position: relative;
   z-index: 1;
   background-size: cover;
   padding: 1em; }
-  .base-page__header.\--animated, .\--animated.profile-page__header {
+  .base-page__header.\--animated, .\--animated.profile-page__header, .\--animated.admin-page__header {
     transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: height; }
-    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover {
+    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .\--animated.admin-page__header:hover {
       height: 30em; }
-  .base-page__header.\--default, .\--default.profile-page__header {
+  .base-page__header.\--default, .\--default.profile-page__header, .\--default.admin-page__header {
     background: url("/img/headers/header-3.jpg") center center no-repeat; }
     @media screen and (min-width: 40em) {
-      .base-page__header.\--default, .\--default.profile-page__header {
+      .base-page__header.\--default, .\--default.profile-page__header, .\--default.admin-page__header {
         height: 15em; } }
   .base-page__header__overlay, .profile-page__header__overlay {
     left: 0;
@@ -5327,11 +5327,7 @@ header, .header {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-color: rgba(128, 193, 255, 0.3);
-    transition: background-color .2s;
-    will-change: background-color; }
-    .base-page__header__overlay:hover, .profile-page__header__overlay:hover {
-      background-color: rgba(128, 193, 255, 0); }
+    background-color: rgba(128, 193, 255, 0.3); }
   .base-page__header__avatar img {
     height: 7em;
     width: 7em;
@@ -5534,6 +5530,10 @@ header, .header {
 
 .project-page {
   padding-bottom: 5em; }
+  .project-page__background {
+    background: url("/img/login/dreamsArkRef43.jpg") center bottom; }
+    .project-page__background__overlay {
+      background: rgba(0, 131, 255, 0.4); }
   .project-page__featured {
     position: relative;
     height: 500px; }
@@ -5612,6 +5612,9 @@ header, .header {
           font-weight: normal; }
       .project-page__info__overlay__spacer {
         padding-bottom: 1em; }
+
+.admin-page__header {
+  background: url("/img/login/dreamsArkRef43.jpg") center center; }
 
 /**
 * Initiate things up

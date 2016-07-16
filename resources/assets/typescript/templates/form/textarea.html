@@ -7,9 +7,8 @@
               :name="name"
               :title="title"
               :placeholder="placeholder || name"
-              :value="value"
               :rows="rows"
-              :readOnly="readOnly"></textarea>
+              :readOnly="readOnly">{{ value }}</textarea>
 
     <div v-if="errors" class="form__field__error">
         <ul v-for="error in errors">

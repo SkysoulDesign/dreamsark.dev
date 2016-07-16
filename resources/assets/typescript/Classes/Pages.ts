@@ -73,7 +73,7 @@ export class Pages extends Application {
      * Init
      * @param string routeName
      */
-    public init(routeName, ...payload) {
+    public init(routeName, payload) {
 
         this.app.logger.info(
             `Current Route`, routeName
@@ -90,7 +90,7 @@ export class Pages extends Application {
              * run the common classes That has been set to listen to all {*}
              */
             this.create(
-                this.routes['all']
+                this.routes['all'], payload
             );
 
             return this.start();
@@ -98,7 +98,7 @@ export class Pages extends Application {
         }
 
         this.create(
-            this.routes['all'].concat(this.routes[route])
+            this.routes['all'].concat(this.routes[route]), payload
         );
 
         this.start();
@@ -162,7 +162,7 @@ export class Pages extends Application {
      *
      * @param routes
      */
-    private create(routes:string[]):void {
+    private create(routes:string[], payload):void {
 
         if (routes instanceof Array)
             return routes.forEach(name => {
@@ -178,7 +178,7 @@ export class Pages extends Application {
                 }
 
                 this.initialized[name].route = currentRoute;
-                this.initialized[name].boot();
+                this.initialized[name].boot(...payload);
                 
             });
 

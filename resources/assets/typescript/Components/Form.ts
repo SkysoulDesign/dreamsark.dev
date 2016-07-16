@@ -149,27 +149,48 @@ export class Form implements ComponentInterface {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String,
-                },
                 label: {
                     type: String
                 }
             },
+            methods: {
+                getParentForm(parent){
+
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+
+                    if (parent)
+                        return this.getParentForm(parent.$parent)
+
+                    return this.getParentForm(this.$parent);
+
+                }
+            },
             computed: {
+                value: function () {
+                    return this.getParentForm().old(this.name);
+                },
                 errors: function () {
 
-                    let parent = this.$parent;
+                    let form = this.getParentForm();
 
-                    /**
-                     * In Case its an instance of ArkFields
-                     */
-                    if (this.$parent.constructor.name !== 'ArkForm')
-                        parent = parent.$parent;
+                    if (sessionStorage.getItem('form-action') === form.action) {
 
-                    return popByKey(parent.errors, this.name);
-                }
+                        if (form.errors instanceof Array && form.errors.length) {
+                            form.errors.shift().forEach(function (e) {
+                                form.globalErrors.push(e)
+                            })
+                        }
+
+                        return popByKey(form.errors, this.name);
+
+                    }
+
+                },
+
             }
+
         });
 
         vue.component('ark-textarea', {
@@ -202,14 +223,28 @@ export class Form implements ComponentInterface {
                     type: Boolean,
                     default: false
                 },
-                value: {
-                    type: String,
-                },
                 label: {
                     type: String
                 }
             },
+            methods: {
+                getParentForm(parent){
+
+                    if (parent && parent.constructor.name === 'ArkForm') {
+                        return parent;
+                    }
+
+                    if (parent)
+                        return this.getParentForm(parent.$parent)
+
+                    return this.getParentForm(this.$parent);
+
+                }
+            },
             computed: {
+                value: function () {
+                    return this.getParentForm().old(this.name);
+                },
                 errors: function () {
 
                     let parent = this.$parent;
@@ -227,6 +262,14 @@ export class Form implements ComponentInterface {
 
         vue.component('ark-form', {
             template: require('../templates/form/form.html'),
+            data: function () {
+                return {
+                    globalErrors: [],
+                    oldInput: JSON.parse(
+                        (<HTMLMetaElement>document.querySelector('meta[name="form-data"]')).content
+                    )
+                }
+            },
             props: {
                 id: String,
                 token: String,
@@ -237,17 +280,75 @@ export class Form implements ComponentInterface {
                 method: {
                     type: String,
                     default: 'post'
-                },
-                errors: {
-                    type: [Object, Array],
-                    coerce: data => JSON.parse(data)
                 }
+            },
+            methods: {
+
+                old(name, defaults = null){
+
+                    var result;
+
+                    name.match(/([\w\s]+)/g).forEach((name) => {
+
+                        if (result instanceof Object) {
+                            return result = result[name];
+                        }
+
+                        result = this.oldInput[name];
+
+                    })
+
+                    return result;
+
+                }
+            },
+            computed: {
+                errors: function () {
+                    return JSON.parse(
+                        (<HTMLMetaElement>document.querySelector('meta[name="form-errors"]')).content
+                    )
+                }
+
             },
             events: {
                 'ajax.button.fail': function (e, button) {
                     if (e.status == 422)
                         this.errors = e.json()
                 }
+            },
+            ready(){
+
+                this.$el.addEventListener('submit', (e:Event) => {
+
+                    /**
+                     * Store Which form reference to display errors correctly later
+                     */
+                    sessionStorage.setItem('form-action', this.action);
+
+                    /**
+                     * Only for post Method
+                     */
+                    if (this.method !== 'post') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    let token = <HTMLMetaElement>document.querySelector('meta[name="csrf-token"]'),
+                        input = <HTMLInputElement>document.createElement('input');
+
+                    input.setAttribute('type', 'hidden')
+                    input.setAttribute('name', '_token')
+                    input.setAttribute('value', token.content)
+
+                    this.$el.appendChild(
+                        input
+                    )
+
+                    this.$el.submit();
+
+                })
+
             }
         });
 

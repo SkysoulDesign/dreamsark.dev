@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
 
+    public function index()
+    {
+        return view('admin.transaction.index');
+    }
+
     /**
      * @param Request $request
      * @param TransactionRepository $transaction
@@ -25,7 +30,7 @@ class TransactionController extends Controller
     {
         $purchases = $transaction->purchases($request->trans_status ?: '');
 
-        return view('admin.payment.transaction.purchases-list', compact('purchases'));
+        return view('admin.transaction.purchase.index', compact('purchases'));
     }
 
     /**
@@ -56,9 +61,9 @@ class TransactionController extends Controller
                 $response = ['message' => trans('payment.transaction-canceled-success')];
             } else if ($request->new_status == 'approve' && !$transaction->isPaid()) {
                 $response = [
-                    'result'    => 'ok',
-                    'data'      => $transaction->message->request,
-                    'target'    => $transaction->payment->getConfig('gateway_url'),
+                    'result' => 'ok',
+                    'data' => $transaction->message->request,
+                    'target' => $transaction->payment->getConfig('gateway_url'),
                     'buildForm' => true
                 ];
             }
