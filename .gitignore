@@ -30,3 +30,4 @@ _ide_helper.php
 
 #Ignore Referencies
 /referencies
+packages/SkysoulPayment/Payment/src/Implementations/Key/
