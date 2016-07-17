@@ -28,10 +28,14 @@ export class Progress implements ComponentInterface {
                 flat: Boolean,
                 animated: Boolean,
                 mini: Boolean,
+                mode: {
+                    type: String,
+                    default: 'normal'
+                }
             },
             computed: {
                 percentage: function () {
-                    return (this.data / this.max) * 100;
+                    return Math.round((this.data / this.max) * 100);
                 }
             }
         });

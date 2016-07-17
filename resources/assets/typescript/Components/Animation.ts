@@ -24,6 +24,8 @@ export class Animation implements ComponentInterface {
                 let animation = app.plugin('profile', this.$el)
                     animation.start(this.composition, ...this.payload)
 
+                this.$dispatch('animation.started', ...this.payload);
+
             }
         });
 

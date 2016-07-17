@@ -38,7 +38,7 @@ export class Main extends AbstractComposition {
 
         this.scene = scene;
 
-        characters.base.position.set(0,-25,2)
+        characters.base.position.set(0, -25, 2)
         characters.base.rotation.y = Math.PI;
 
         scene.add(
@@ -53,6 +53,8 @@ export class Main extends AbstractComposition {
     }
 
     private switch(name) {
+
+        window['dreamsark'].vueInstance.$set('position', name);
 
         this.app.characters.get(name).then(profile => {
 

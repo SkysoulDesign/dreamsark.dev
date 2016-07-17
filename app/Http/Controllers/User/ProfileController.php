@@ -66,6 +66,7 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request, Profile $profile)
     {
+
         $user = dispatch(new CreateProfileJob(
             $request->all(),
             $request->user(),
@@ -166,6 +167,24 @@ class ProfileController extends Controller
         return view('user.activity.earning-list', compact('pagination'))
             ->with('projectEarnings', $currentResultSet)
             ->with('earningTotal', $this->earningTotal);
+    }
+
+    /**
+     * Get all the characters questions as json
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \DreamsArk\Models\Master\Profile $profile
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fields(Request $request, Profile $profile)
+    {
+        
+        $profile = $profile->whereName($request->input('profile'))->firstOrFail();
+
+        return response()->json(
+            $profile->questions->load('type')
+        );
+
     }
 
 }

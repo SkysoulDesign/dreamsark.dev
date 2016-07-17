@@ -48445,6 +48445,7 @@ var Main = function (_super) {
     Main.prototype.update = function (scene, camera, characters, time, delta) {};
     Main.prototype.switch = function (name) {
         var _this = this;
+        window['dreamsark'].vueInstance.$set('position', name);
         this.app.characters.get(name).then(function (profile) {
             if (_this.activeProfile == profile.name) return console.log('already active');
             var current = _this.scene.getObjectByName(_this.activeProfile);
@@ -48597,9 +48598,6 @@ var Profile = function (_super) {
      * @param item
      */
     Profile.prototype.start = function (composition) {
-        if (composition === void 0) {
-            composition = 'main';
-        }
         var payload = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             payload[_i - 1] = arguments[_i];
@@ -48607,10 +48605,6 @@ var Profile = function (_super) {
         this.compositions.start(composition, payload);
         this.animate();
     };
-    /**
-     * Switch Character
-     */
-    Profile.prototype.switch = function (id) {};
     Profile.prototype.animate = function () {
         var _this = this;
         var clock = new THREE.Clock(),

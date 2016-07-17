@@ -68,16 +68,9 @@ export class Profile extends Plugins {
      * Start The Interaction
      * @param item
      */
-    start(composition:string = 'main', ...payload) {
+    start(composition:string, ...payload) {
         this.compositions.start(composition, payload);
         this.animate();
-    }
-
-    /**
-     * Switch Character
-     */
-    switch(id:number) {
-
     }
 
     animate() {

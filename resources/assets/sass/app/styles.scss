@@ -24,15 +24,23 @@
   @include part(header) {
 
     @extend .base-page__header;
-    @extend .base-page__header.\--animated;
-    @extend .base-page__header.\--default;
 
     background: get-url('headers/header-3.jpg') center center no-repeat;
     @content;
 
+    @include option(animated){
+      @extend .base-page__header.\--animated;
+    }
+
+    @include option(default){
+      @extend .base-page__header.\--default;
+    }
+
     @include part(overlay) {
       @extend .base-page__header__overlay;
-      @extend .base-page__header__overlay.\--animated;
+      @include option(animated){
+        @extend .base-page__header__overlay.\--animated;
+      }
     }
 
   }

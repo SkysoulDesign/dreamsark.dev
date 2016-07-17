@@ -38,6 +38,19 @@ class StoreProfileRequest extends Request
 
         $rules = [];
 
+        /**
+         * Hack to inject the profile
+         * Find a better place to put this logic..
+         * clean up this mess
+         */
+        $profile = Profile::whereId($this->input('profile_id'))->firstOrFail();
+
+        app()->instance(
+            Profile::class, $profile
+        );
+
+        $this->route()->setParameter('profile', $profile);
+
         foreach ($this->profile->questions as $question) {
             array_set($rules, "question_$question->id", $this->getRules($question));
         }
@@ -67,7 +80,7 @@ class StoreProfileRequest extends Request
 
         $rules = [];
 
-        array_push($rules, ($question->pivot->required?'required':'sometimes'));
+        array_push($rules, ($question->pivot->required ? 'required' : 'sometimes'));
 
         switch ($question->type->name) {
             case "text":

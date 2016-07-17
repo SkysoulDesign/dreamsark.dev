@@ -10,14 +10,25 @@ export class Profile extends AbstractPage {
         'user.profile.create'
     ]
 
-    boot() {
+    boot(profileRoute) {
 
-        // this.initProfileSelection();
+        this.initProfileSelection(profileRoute);
         this.initThreeJs();
+
+        this.app.on('animation.started', function (id, position) {
+            this.$set('position', position)
+        })
+
+        this.app.vue({
+            data: {
+                position: null
+            }
+        })
 
     }
 
-    initProfileSelection() {
+    initProfileSelection(profileRoute) {
+
 
         /**
          * Handle The Display of The Profile Selection
@@ -25,17 +36,65 @@ export class Profile extends AbstractPage {
          * @type {Element}
          */
         let button = document.querySelector('#selectProfile');
-        button.addEventListener('click', function () {
 
-            let container = <HTMLElement>document.querySelector('#wrapper');
+        button.addEventListener('click', e => {
 
-            for (let i = 1; i < container.childElementCount; i++) {
-                let child = <HTMLElement>container.children.item(i);
-                child.style.display = 'none';
-            }
 
-            let form = document.querySelector('form');
-            form.classList.remove('+hidden');
+            let request = this.app.vueInstance.$http.get(profileRoute, {
+                params: {
+                    profile: this.app.vueInstance.position
+                }
+            })
+
+            request.then(response => {
+
+                // console.log()
+
+                let form = document.querySelector('form'),
+                    container = <HTMLElement>document.querySelector('#wrapper'),
+                    header = document.querySelector('.profile-page__header');
+
+                header.classList.add('--extended')
+                form.classList.remove('+hidden');
+
+                let formContainer = form.children.item(2).children.item(0).children.item(0);
+
+                let profile_input = document.createElement('input');
+                profile_input.setAttribute('name', 'profile_id');
+                profile_input.setAttribute('type', 'hidden');
+
+
+                response.json().forEach(function(item, index){
+
+
+                    let h3 = document.createElement('h3');
+                        h3.classList.add('small-12', 'columns', 'form__step');
+                        h3.innerHTML = `<span>${index + 1}</span>${item.question}`;
+
+                    let field = document.createElement('div');
+                        field.classList.add('small-12', 'columns', 'form__field');
+
+                    let input = document.createElement('input');
+                        input.setAttribute('type', item.type.name)
+                        input.setAttribute('name', 'question_' + item.id)
+                        input.setAttribute('placeholder', item.question);
+
+                        profile_input.setAttribute('value', item.pivot.profile_id);
+
+                    field.appendChild(input)
+                    formContainer.appendChild(h3)
+                    formContainer.appendChild(field)
+
+                })
+
+                formContainer.appendChild(profile_input);
+
+                for (let i = 1; i < container.childElementCount; i++) {
+                    let child = <HTMLElement>container.children.item(i);
+                    child.style.display = 'none';
+                }
+
+            })
 
         });
 

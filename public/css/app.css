@@ -4675,6 +4675,7 @@ button, .button {
       position: relative;
       height: 1.2em;
       width: 100%;
+      max-width: 100%;
       background: #0bbc62; }
     .progress__bar.\--flat {
       border-radius: 0; }
@@ -5335,15 +5336,15 @@ button, .button {
   z-index: 1;
   background-size: cover;
   padding: 1em; }
-  .base-page__header.\--animated, .\--animated.profile-page__header, .project-page__header, .\--animated.admin-page__header {
+  .base-page__header.\--animated, .\--animated.profile-page__header, .\--animated.project-page__header, .\--animated.admin-page__header {
     transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: height; }
-    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .project-page__header:hover, .\--animated.admin-page__header:hover {
+    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .\--animated.project-page__header:hover, .\--animated.admin-page__header:hover {
       height: 30em; }
-  .base-page__header.\--default, .\--default.profile-page__header, .project-page__header, .\--default.admin-page__header {
+  .base-page__header.\--default, .\--default.profile-page__header, .\--default.project-page__header, .\--default.admin-page__header {
     background: url("/img/headers/header-3.jpg") center center no-repeat; }
     @media screen and (min-width: 40em) {
-      .base-page__header.\--default, .\--default.profile-page__header, .project-page__header, .\--default.admin-page__header {
+      .base-page__header.\--default, .\--default.profile-page__header, .\--default.project-page__header, .\--default.admin-page__header {
         height: 15em; } }
   .base-page__header__overlay, .profile-page__header__overlay, .project-page__header__overlay {
     left: 0;
@@ -5354,10 +5355,10 @@ button, .button {
     height: 100%;
     z-index: -1;
     background-color: rgba(128, 193, 255, 0.3); }
-    .base-page__header__overlay.\--animated, .\--animated.profile-page__header__overlay, .project-page__header__overlay {
+    .base-page__header__overlay.\--animated, .\--animated.profile-page__header__overlay, .\--animated.project-page__header__overlay {
       transition: background-color .2s;
       will-change: background-color; }
-      .base-page__header__overlay.\--animated:hover, .\--animated.profile-page__header__overlay:hover, .project-page__header__overlay:hover {
+      .base-page__header__overlay.\--animated:hover, .\--animated.profile-page__header__overlay:hover, .\--animated.project-page__header__overlay:hover {
         background-color: rgba(128, 193, 255, 0); }
   .base-page__header__avatar img {
     height: 7em;
@@ -5461,8 +5462,16 @@ button, .button {
   max-height: 500px;
   pointer-events: auto; }
 
-.profile-page__header.\--profile-pick {
-  background: url("/img/profile/dreamsArkRef89.png") center center; }
+.profile-page__header {
+  background: url("/img/headers/header-3.jpg") center center no-repeat;
+  background: url("/img/profile/dreamsArkRef89.png") center 20%;
+  transition: height .35s;
+  transition-property: background-position-y, height; }
+  .profile-page__header.\--extended {
+    height: 300px; }
+    .profile-page__header.\--extended:hover {
+      height: 400px;
+      background-position-y: 50%; }
 
 .profile-page__palette {
   -webkit-user-select: none;

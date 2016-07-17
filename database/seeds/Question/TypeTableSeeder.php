@@ -3,6 +3,9 @@
 use DreamsArk\Jobs\Admin\Question\Type\CreateTypeJob;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class QuestionTypeTableSeeder
+ */
 class QuestionTypeTableSeeder extends Seeder
 {
     /**

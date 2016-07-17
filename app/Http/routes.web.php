@@ -231,10 +231,11 @@ $app->group(['middleware' => 'web'], function () use ($app) {
 
             $app->get('/', ProfileController::class . '@index')->name('index');
             $app->get('create', ProfileController::class . '@create')->name('create');
-            $app->post('{profile}/store', ProfileController::class . '@store')->name('store');
+            $app->post('store', ProfileController::class . '@store')->name('store');
             $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
             $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
             $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
+            $app->get('getFields', ProfileController::class . '@fields')->name('fields');
 
             /**
              * Test.. what is this?

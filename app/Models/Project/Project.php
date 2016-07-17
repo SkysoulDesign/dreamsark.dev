@@ -26,6 +26,7 @@ use Illuminate\Database\Query\Builder;
  */
 class Project extends Model
 {
+    
     use PresentableTrait;
 
     /**

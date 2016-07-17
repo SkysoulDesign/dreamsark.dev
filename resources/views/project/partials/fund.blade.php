@@ -56,13 +56,15 @@
 
                     <h2>{{ $project->name }}</h2>
 
-                    <span class="chart --centered" data-percent="100">
-                        <span class="chart__content --reward">5000</span>
+                    @set($cost, $project->expenditures->pluck('expenditurable')->sum('cost'))
+
+                    <span class="chart --centered" data-percent="{{ ($project->totalCollected() / $cost) * 100 }}">
+                        <span class="chart__content --reward">{{ $cost }}</span>
                     </span>
 
                     <div class="project-page__info__overlay__spacer">
-                        <ark-progress :data="3000" :max="5000" symbol="¥" label="Budget" color="success"></ark-progress>
-                        <ark-progress :data="10" label="Goal" color="secondary"></ark-progress>
+                        <ark-progress :data="{{ $cost }}" :max="{{ $cost }}" symbol="¥" label="Budget" color="success"></ark-progress>
+                        <ark-progress :data="{{ $project->totalCollected() }}" label="Goal" :max="{{ $cost }}" mode="percentage" color="secondary"></ark-progress>
                         <ark-progress :data="5" :max="30" symbol="days" label="Time Left"
                                       color="ternary"></ark-progress>
                     </div>

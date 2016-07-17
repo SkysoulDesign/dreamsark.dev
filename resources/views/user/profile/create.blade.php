@@ -4,7 +4,7 @@
 
     @include('user.partials.header', ['header' => false])
 
-    <div id="vueRoot" class="profile-page__header --profile-pick">
+    <div class="profile-page__header">
 
         <div class="profile-page__header__overlay"></div>
 
@@ -43,31 +43,20 @@
 
     </div>
 
-    <form class="row align-center --overlapped +hidden" method="post"
-          action="{{ route('user.profile.store', $profiles->first()->name) }}">
+    <ark-form class="row align-center --overlapped +hidden"
+              action="{{ route('user.profile.store') }}">
 
         {{ csrf_field() }}
 
         <div class="small-11 medium-9 columns form__header --rounded">
-            this is a very nice form header
+            @lang('profile.profile-creation-form')
         </div>
 
         <div class="small-11 medium-9 columns form__content --rounded">
 
             <div class="row">
 
-                @foreach($profiles->first()->questions as $index => $question)
-
-                    <h3 class="small-12 columns form__step">
-                        <span>{{ $index + 1 }}</span>
-                        {{ $question->question }}
-                    </h3>
-
-                    <div class="small-12 columns form__field">
-                        <input type="{{ $question->type->name }}" placeholder="{{ $question->question }}">
-                    </div>
-
-                @endforeach
+                <div></div>
 
                 <div class="small-12 columns divider --simple"></div>
 
@@ -76,19 +65,25 @@
                 </div>
 
                 <div class="small-12 columns form__description +center-on-mobile">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi architecto consequuntur
-                    deserunt dicta doloremque enim illum ipsam itaque iusto molestiae mollitia nihil quaerat, quas
-                    sapiente similique, tempora! Aperiam, tempore!
+                    @lang('profile.profile-creation-form-notes')
                 </div>
 
             </div>
 
         </div>
 
-    </form>
+    </ark-form>
 
 @endsection
 
 @push('scripts')
 <script src="{{ asset('js/plugins/Profile.js') }}"></script>
 @endpush
+
+@section('pos-scripts')
+
+    <script>
+        dreamsark.page("{{ request()->route()->getName() }}", "{{ route('user.profile.fields') }}");
+    </script>
+
+@overwrite

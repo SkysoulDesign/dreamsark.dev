@@ -41,6 +41,7 @@ var Main = (function (_super) {
     };
     Main.prototype.switch = function (name) {
         var _this = this;
+        window['dreamsark'].vueInstance.$set('position', name);
         this.app.characters.get(name).then(function (profile) {
             if (_this.activeProfile == profile.name)
                 return console.log('already active');

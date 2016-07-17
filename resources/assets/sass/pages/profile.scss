@@ -83,18 +83,22 @@
     pointer-events: auto;
   }
 
-  @include part(header) {
+  @include base-header() {
 
-    @extend .base-page__header;
+    background: get-url('profile/dreamsArkRef89.png') center 20%;
 
-    //height: 100%;
+    transition: height .35s;
+    transition-property: background-position-y, height;
 
-    @include part(overlay) {
-      @extend .base-page__header__overlay;
-    }
+    @include option(extended) {
 
-    @include option(profile-pick) {
-      background: get-url('profile/dreamsArkRef89.png') center center;
+      height: 300px;
+
+      &:hover {
+        height: 400px;
+        background-position-y: 50%;
+      }
+
     }
 
   }

@@ -42,18 +42,12 @@ var Profile = (function (_super) {
      * @param item
      */
     Profile.prototype.start = function (composition) {
-        if (composition === void 0) { composition = 'main'; }
         var payload = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             payload[_i - 1] = arguments[_i];
         }
         this.compositions.start(composition, payload);
         this.animate();
-    };
-    /**
-     * Switch Character
-     */
-    Profile.prototype.switch = function (id) {
     };
     Profile.prototype.animate = function () {
         var _this = this;

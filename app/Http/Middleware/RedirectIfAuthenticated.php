@@ -5,6 +5,11 @@ namespace DreamsArk\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
+/**
+ * Class RedirectIfAuthenticated
+ *
+ * @package DreamsArk\Http\Middleware
+ */
 class RedirectIfAuthenticated
 {
     /**
