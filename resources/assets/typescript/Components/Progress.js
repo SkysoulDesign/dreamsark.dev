@@ -11,6 +11,7 @@ var Progress = (function () {
             props: {
                 data: Number,
                 label: String,
+                class: String,
                 max: {
                     type: Number,
                     default: 100
@@ -24,13 +25,12 @@ var Progress = (function () {
                     default: '%'
                 },
                 flat: Boolean,
+                animated: Boolean,
+                mini: Boolean,
             },
             computed: {
                 percentage: function () {
                     return (this.data / this.max) * 100;
-                },
-                style: function () {
-                    return ("--color-" + this.color) + (this.flat ? '--flat' : '');
                 }
             }
         });

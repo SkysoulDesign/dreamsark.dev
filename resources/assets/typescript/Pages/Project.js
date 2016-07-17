@@ -17,11 +17,15 @@ var Project = (function (_super) {
         ];
     }
     Project.prototype.boot = function (stage) {
-        if (this.hasOwnProperty(stage))
-            this[stage]();
+        this[stage]();
     };
     Project.prototype.idea = function () {
         this.initChart();
+    };
+    Project.prototype.review = function () {
+        this.initChart();
+    };
+    Project.prototype.distribution = function () {
     };
     Project.prototype.fund = function () {
         this.initChart();

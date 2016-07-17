@@ -20,8 +20,6 @@ export abstract class Character implements CharacterInterface {
 
     public init(name, models, textures, materials) {
 
-        console.log('whats the name')
-        console.log(name)
         let character = this.create(models, textures, materials);
             character.name = name;
 

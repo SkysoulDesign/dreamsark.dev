@@ -8,7 +8,7 @@ return [
     'settings' => [
         'language' => 'cn',
     ],
-    'general'  => [
+    'general' => [
         'pagination' => [
             'per_page' => 10
         ],
@@ -18,7 +18,7 @@ return [
 
         'voting_span_time' => 1, /* Defined in Minutes */
 
-        'idea'    => [
+        'idea' => [
             /**
              * Defines the minimum of submission this model
              * should have to be considered not failed
@@ -28,19 +28,19 @@ return [
         'synapse' => [
             'minimum_of_submissions' => 1
         ],
-        'script'  => [
+        'script' => [
             'minimum_of_submissions' => 1
         ]
     ],
     'profile' => [
         'image' => 'user-profiles/images/',
         'video' => 'user-profiles/videos/',
-        'file'  => 'user-profiles/files/',
+        'file' => 'user-profiles/files/',
     ],
     'payment' => [
-        'prefix'      => ['pay' => 'DAPG', 'withdraw' => 'DAWG'],
+        'prefix' => ['pay' => 'DAPG', 'withdraw' => 'DAWG'],
         'credentials' => [
-            'alipay'   => [
+            'alipay' => [
                 'partner_id' => '2088221979483694'
             ],
             'unionpay' => [

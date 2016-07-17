@@ -13,7 +13,7 @@
                     @lang('project.mission-requirements')
                 </header>
                 <section>
-                    {{ $project->idea->content }}
+                    {{ $project->synapse->content }}
                 </section>
             </div>
             <div class="small-12 medium-4 columns project-page__info">
@@ -189,7 +189,7 @@
 
             @forelse($submissions as $submission)
                 <section class="small-12 columns">
-                    {{ $submission->content }}
+                   {{ $submission->content }}
                 </section>
             @empty
                 <section class="small-12 columns">

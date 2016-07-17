@@ -30,4 +30,15 @@ trait ProjectableTrait
     {
         return $this->project->user();
     }
+
+    /**
+     * Get Name of the Current Stage
+     *
+     * @return bool
+     */
+    public function getStageName()
+    {
+        return strtolower(class_basename($this));
+    }
+
 }

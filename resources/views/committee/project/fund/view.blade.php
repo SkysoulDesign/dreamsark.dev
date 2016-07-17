@@ -1,6 +1,11 @@
-@extends('layouts.master-admin')
+@extends('layouts.master', ['class' => 'admin-page'])
 
 @section('content')
+
+    @include('committee.partials.header')
+
+    <div class="row +margin-top +margin-bottom">
+        <div class="small-12">
     <div class="column">
         <div class="ui menu">
             <div class="header item">
@@ -36,13 +41,14 @@
             </div>
         </div>
     </div>
+        </div>
 @endsection
 
-@section('pos-scripts')
+@push('scripts')
     @include('partials.embed-show-project-script')
     <style>
         .tabular.menu i.icon {
             font-size: 2em;
         }
     </style>
-@endsection
+@endpush

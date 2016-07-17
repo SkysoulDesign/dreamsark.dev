@@ -26,18 +26,19 @@
     margin: 1em 0;
 
     li {
-      @include all-but(1) {
-        padding-left: 1em;
-      }
+      //@include all-but(1) {
+      //  padding: 0;
+      //}
     }
+
   }
 
   @include option(tight) {
-    li {
-      @include all-but(1) {
-        padding-left: 0;
-      }
-    }
+    //li {
+    //  @include all-but(1) {
+    //    padding-left: 0;
+    //  }
+    //}
   }
 
   @include option(bold){

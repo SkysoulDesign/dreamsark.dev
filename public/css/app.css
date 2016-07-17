@@ -4648,10 +4648,18 @@ button, .button {
       border-radius: 0; }
 
 .progress {
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   margin: .8em 0; }
-  .progress:hover {
-    transform: scale(1.05); }
+  .progress.\--animated {
+    transition: transform 0.25s;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .progress.\--animated:hover {
+      transform: scale(1.05); }
+    .progress.\--animated:active {
+      transform: scale(0.875); }
+  .progress.\--mini .progress__label {
+    font-size: .8em; }
+  .progress.\--mini .progress__bar__completion {
+    height: .3em; }
   .progress__label {
     padding: .3em 0;
     font-weight: normal; }
@@ -5065,16 +5073,12 @@ button, .button {
       color: #0083ff; }
       .ul li.\--active a, ul li.\--active a, ul li.\--active .menu a, .menu ul li.\--active a {
         color: #0083ff; }
-  .ul.\--inline, ul.\--inline {
+  .ul.\--inline, ul.\--inline, .label__wrapper__items ul {
     -ms-flex-direction: row;
     flex-direction: row;
     -ms-flex-align: center;
     align-items: center;
     margin: 1em 0; }
-    .ul.\--inline li:not(:nth-child(1)), ul.\--inline li:not(:nth-child(1)) {
-      padding-left: 1em; }
-  .ul.\--tight li:not(:nth-child(1)), ul.\--tight li:not(:nth-child(1)) {
-    padding-left: 0; }
   .ul.\--bold, ul.\--bold {
     font-size: smaller;
     font-weight: bolder;
@@ -5265,6 +5269,28 @@ button, .button {
       .steps__step.\--done .steps__step__container:after {
         background: #0bbc62; }
 
+.label__wrapper__items {
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row; }
+  .label__wrapper__items ul {
+    position: absolute;
+    padding: 1em !important;
+    bottom: 0; }
+    .label__wrapper__items ul li {
+      display: -ms-flexbox;
+      display: flex;
+      color: white;
+      padding: .5em !important;
+      margin: .3em;
+      font-size: .8em;
+      border-radius: .1em;
+      font-weight: bolder;
+      background: #0083ff;
+      text-transform: uppercase; }
+
 /**
 * Layout
 */
@@ -5304,22 +5330,22 @@ button, .button {
     z-index: -1;
     background-color: rgba(0, 131, 255, 0.66); }
 
-.base-page__header, .profile-page__header, .admin-page__header {
+.base-page__header, .profile-page__header, .project-page__header, .admin-page__header {
   position: relative;
   z-index: 1;
   background-size: cover;
   padding: 1em; }
-  .base-page__header.\--animated, .\--animated.profile-page__header, .\--animated.admin-page__header {
+  .base-page__header.\--animated, .\--animated.profile-page__header, .project-page__header, .\--animated.admin-page__header {
     transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: height; }
-    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .\--animated.admin-page__header:hover {
+    .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .project-page__header:hover, .\--animated.admin-page__header:hover {
       height: 30em; }
-  .base-page__header.\--default, .\--default.profile-page__header, .\--default.admin-page__header {
+  .base-page__header.\--default, .\--default.profile-page__header, .project-page__header, .\--default.admin-page__header {
     background: url("/img/headers/header-3.jpg") center center no-repeat; }
     @media screen and (min-width: 40em) {
-      .base-page__header.\--default, .\--default.profile-page__header, .\--default.admin-page__header {
+      .base-page__header.\--default, .\--default.profile-page__header, .project-page__header, .\--default.admin-page__header {
         height: 15em; } }
-  .base-page__header__overlay, .profile-page__header__overlay {
+  .base-page__header__overlay, .profile-page__header__overlay, .project-page__header__overlay {
     left: 0;
     top: 0;
     display: block;
@@ -5328,6 +5354,11 @@ button, .button {
     height: 100%;
     z-index: -1;
     background-color: rgba(128, 193, 255, 0.3); }
+    .base-page__header__overlay.\--animated, .\--animated.profile-page__header__overlay, .project-page__header__overlay {
+      transition: background-color .2s;
+      will-change: background-color; }
+      .base-page__header__overlay.\--animated:hover, .\--animated.profile-page__header__overlay:hover, .project-page__header__overlay:hover {
+        background-color: rgba(128, 193, 255, 0); }
   .base-page__header__avatar img {
     height: 7em;
     width: 7em;
@@ -5530,6 +5561,8 @@ button, .button {
 
 .project-page {
   padding-bottom: 5em; }
+  .project-page__header {
+    background: url("/img/headers/header-3.jpg") center center no-repeat; }
   .project-page__background {
     background: url("/img/login/dreamsArkRef43.jpg") center bottom; }
     .project-page__background__overlay {
@@ -5556,11 +5589,23 @@ button, .button {
         margin: 0;
         padding: 0; }
   .project-page__highlights {
-    padding: 2em 0; }
+    padding: 2em 0;
+    text-align: center; }
+    .project-page__highlights a {
+      transition: transform 0.25s;
+      z-index: 9; }
+      .project-page__highlights a img {
+        object-fit: cover;
+        width: 100%;
+        height: 400px; }
+      .project-page__highlights a > div, .project-page__highlights .menu a > div {
+        padding-top: 1.3em; }
+      .project-page__highlights a:hover {
+        transform: scale(1.05); }
+      .project-page__highlights a:active {
+        transform: scale(0.875); }
   .project-page__list {
     line-height: normal; }
-    .project-page__list img {
-      border-radius: .3em; }
     .project-page__list h1 {
       font-size: 1.5em; }
     .project-page__list ul {
@@ -5575,9 +5620,36 @@ button, .button {
     .project-page__list__load-more {
       padding: 2em; }
     .project-page__list__item {
-      margin-bottom: 2em; }
+      margin-bottom: 2em;
+      border-radius: .3em;
+      border: solid 1px transparent; }
+      .project-page__list__item img {
+        margin-top: 1em;
+        border-radius: .2em;
+        object-fit: cover;
+        width: 100%;
+        height: 300px; }
+      .project-page__list__item a > div, .project-page__list__item .menu a > div {
+        padding: 1em 0; }
+        .project-page__list__item a > div p, .project-page__list__item .menu a > div p {
+          font-size: .9em; }
       .project-page__list__item:nth-last-child(-n + 2) {
         margin-bottom: 0; }
+      .project-page__list__item.\--stage-idea:hover {
+        background: rgba(0, 131, 255, 0.03);
+        border: dashed 1px rgba(0, 131, 255, 0.2); }
+      .project-page__list__item.\--stage-synapse:hover {
+        background: rgba(175, 1, 1, 0.03);
+        border: dashed 1px rgba(175, 1, 1, 0.2); }
+      .project-page__list__item.\--stage-script:hover {
+        background: rgba(158, 175, 21, 0.03);
+        border: dashed 1px rgba(158, 175, 21, 0.2); }
+      .project-page__list__item.\--stage-review:hover {
+        background: rgba(11, 188, 98, 0.03);
+        border: dashed 1px rgba(11, 188, 98, 0.2); }
+      .project-page__list__item.\--stage-distribution:hover {
+        background: rgba(53, 56, 50, 0.03);
+        border: dashed 1px rgba(53, 56, 50, 0.2); }
   .project-page__info {
     border-radius: .3em;
     color: white;

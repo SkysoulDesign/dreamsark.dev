@@ -12,6 +12,7 @@ export class Progress implements ComponentInterface {
             props: {
                 data: Number,
                 label: String,
+                class: String,
                 max: {
                     type: Number,
                     default: 100
@@ -25,13 +26,12 @@ export class Progress implements ComponentInterface {
                     default: '%'
                 },
                 flat: Boolean,
+                animated: Boolean,
+                mini: Boolean,
             },
             computed: {
-                percentage: function() {
+                percentage: function () {
                     return (this.data / this.max) * 100;
-                },
-                style: function () {
-                    return `--color-${ this.color }` + (this.flat ? '--flat' : '')
                 }
             }
         });

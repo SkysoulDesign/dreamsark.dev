@@ -4,6 +4,11 @@ namespace DreamsArk\Http\Requests\Idea;
 
 use DreamsArk\Http\Requests\Request;
 
+/**
+ * Class SubmissionVoting
+ *
+ * @package DreamsArk\Http\Requests\Idea
+ */
 class SubmissionVoting extends Request
 {
     /**

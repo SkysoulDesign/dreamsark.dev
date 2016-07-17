@@ -12603,6 +12603,7 @@ var Progress = function () {
             props: {
                 data: Number,
                 label: String,
+                class: String,
                 max: {
                     type: Number,
                     default: 100
@@ -12615,14 +12616,13 @@ var Progress = function () {
                     type: String,
                     default: '%'
                 },
-                flat: Boolean
+                flat: Boolean,
+                animated: Boolean,
+                mini: Boolean
             },
             computed: {
                 percentage: function percentage() {
                     return this.data / this.max * 100;
-                },
-                style: function style() {
-                    return "--color-" + this.color + (this.flat ? '--flat' : '');
                 }
             }
         });
@@ -13056,11 +13056,15 @@ var Project = function (_super) {
         this.routes = ['project.show'];
     }
     Project.prototype.boot = function (stage) {
-        if (this.hasOwnProperty(stage)) this[stage]();
+        this[stage]();
     };
     Project.prototype.idea = function () {
         this.initChart();
     };
+    Project.prototype.review = function () {
+        this.initChart();
+    };
+    Project.prototype.distribution = function () {};
     Project.prototype.fund = function () {
         this.initChart();
         this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
@@ -13297,7 +13301,7 @@ module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <
 },{}],40:[function(require,module,exports){
 module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
 },{}],41:[function(require,module,exports){
-module.exports = '<div class="progress">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="style">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
+module.exports = '<div class="progress" :class="[{ \'--animated\' : animated }, { \'--mini\': mini }]">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="[ \'--color-\'+color, { \'--flat\': flat }]">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
 },{}],42:[function(require,module,exports){
 module.exports = '<div @click="expand" class="quote" data-expend-text="{{ expandText }}">\n    <slot></slot>\n</div>\n';
 },{}],43:[function(require,module,exports){

@@ -1,12 +1,12 @@
-@extends('layouts.master', [])
+@extends('layouts.master', ['class'=>'project-page'])
 
 @section('content')
 
     @include('user.partials.header', ['header' => false])
 
-    <div class="base-page__header">
+    <div class="project-page__header --animated">
 
-        <div class="base-page__header__overlay"></div>
+        <div class="project-page__header__overlay --animated"></div>
 
         <div class="row align-middle +full-height +center">
 

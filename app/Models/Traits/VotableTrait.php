@@ -52,14 +52,4 @@ trait VotableTrait
         return strtolower(class_basename($this)) === last($this->order);
     }
 
-    /**
-     * Check if is the last Stage
-     *
-     * @return bool
-     */
-    public function getStageName()
-    {
-        return strtolower(class_basename($this));
-    }
-
 }

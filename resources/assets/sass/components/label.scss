@@ -1,0 +1,35 @@
+@include component(label) {
+
+  @include part(wrapper) {
+
+    @include part(items) {
+
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+
+      ul {
+        @extend .ul.\--inline;
+        position: absolute;
+        padding: 1em !important;
+
+        li {
+          display: flex;
+          color: white;
+          padding: .5em !important;
+          margin: .3em;
+          font-size: .8em;
+          border-radius: .1em;
+          font-weight: bolder;
+          background: color(primary);
+          text-transform: uppercase;
+        }
+
+        ////top: 0;
+        bottom: 0;
+        //padding: .4em;
+      }
+    }
+
+  }
+}

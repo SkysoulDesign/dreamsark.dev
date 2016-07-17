@@ -43,7 +43,7 @@ class StaffController extends Controller
             return redirect()->back()->withErrors(trans('project.unable-publish-no-cast-crew-data', ['project_name' => $review->project->name]));
         $this->dispatch(new PublishProjectReviewJob($review));
 
-        return redirect()->route('committee.project.review.list');// dashboard
+        return redirect()->route('committee.project.review.index');
     }
 
     /**

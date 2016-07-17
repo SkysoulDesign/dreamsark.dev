@@ -26,6 +26,9 @@ class ProjectController extends Controller
 {
     private $isIFrameCall = false;
 
+    /**
+     * ProjectController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['show', 'index']]);
@@ -69,10 +72,12 @@ class ProjectController extends Controller
 
     }
 
-    public function showIframe(Project $project, ProjectRepositoryInterface $repository){
+    public function showIframe(Project $project, ProjectRepositoryInterface $repository)
+    {
         $this->isIFrameCall = true;
         return $this->show($project, $repository);
     }
+
     /**
      * Show a specific project.
      *
@@ -95,7 +100,7 @@ class ProjectController extends Controller
         }
 
         return view('project.show', compact('isIFrameCall'))
-                ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
+            ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
 
     }
 
@@ -107,7 +112,7 @@ class ProjectController extends Controller
      */
     public function next(Project $project)
     {
-        return view('project.' . $project->nextStageName() . '.create')->with('project', $project);
+        return view('user.project.' . $project->nextStageName() . '.create')->with('project', $project);
     }
 
     /**

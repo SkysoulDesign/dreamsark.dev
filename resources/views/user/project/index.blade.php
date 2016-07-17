@@ -50,7 +50,12 @@
                         <td>{{ $project->name }}</td>
                         <td>{{ $project->reward }}</td>
                         <td class="table__action">
-                            <button class="button --small --primary">@lang('forms.view')</button>
+                            @if($project->stage->submission)
+                                <a href="{{ route('project.next.create', $project) }}" class="ui olive button">
+                                    @lang('project.start-next-stage')
+                                </a>
+                            @endif
+                            <a href="{{ route('project.show', $project) }}" class="button --small --primary">@lang('forms.view')</a>
                             <button class="button --small --primary">@lang('forms.edit')</button>
                         </td>
                     </tr>

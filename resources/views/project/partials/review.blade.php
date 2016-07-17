@@ -7,10 +7,8 @@
 
             <div class="small-12 medium-8 small-order-2 medium-order-1 columns">
                 <section>
-                    <header class="header --with-divider --full --small +no-margin-top">Description</header>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, ad, architecto, ex fuga id
-                    inventore natus officia quae quibusdam reiciendis reprehenderit sit vel voluptas. Accusantium est
-                    porro quos veritatis voluptatem.
+                    <header class="header --with-divider --full --small +no-margin-top">@lang('project.description')</header>
+                    @lang('project.project-is-currently-being-reviewed')
 
                     <h4>@lang('project.idea')</h4>
                     <ark-quote expand-text="@lang('forms.expand')">
@@ -90,40 +88,11 @@
                     </ark-statistics>
 
                     <div>
-                        <a class="button --white --inverted"
-                           href="{{ route('project.fund.create', $project) }}">
-                            Back this project
-                        </a>
 
-                    </div>
-
-                    <div>
-                        <a class="button --white --inverted"
-                           href="{{ route('project.enroll.create', $project) }}">
-                            Enrol
-                        </a>
                     </div>
 
                 </div>
             </div>
-        </div>
-        @endpush
-    </ark-tab>
-    <ark-tab content="tab-crew" icon="users">
-        @lang('project.crew')
-        @push('tab-item')
-        <div id="tab-crew" class="row project-page +margin-top">
-
-            <div class="small-12 columns">
-                <section>
-
-                    <ark-animation composition="project"
-                                   :payload="{{ json_encode($project->enrollable->pluck('expenditurable.profile.name')) }}">
-                    </ark-animation>
-
-                </section>
-            </div>
-
         </div>
         @endpush
     </ark-tab>
@@ -185,8 +154,3 @@
 @section('tab-content')
     @stack('tab-item')
 @endsection
-
-@push('scripts')
-<script src="{{ asset('js/plugins/Profile.js') }}"></script>
-@endpush
-

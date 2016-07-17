@@ -1,9 +1,9 @@
-<div class="progress">
+<div class="progress" :class="[{ '--animated' : animated }, { '--mini': mini }]">
     <div v-if="label" class="progress__label">
         {{ label }}
         <span>{{ data }} {{ symbol }}</span>
     </div>
-    <div class="progress__bar" :class="style">
+    <div class="progress__bar" :class="[ '--color-'+color, { '--flat': flat }]">
         <div class="progress__bar__completion" :style="{ width: percentage + '%' }"></div>
     </div>
 </div>

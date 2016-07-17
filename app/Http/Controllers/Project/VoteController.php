@@ -3,6 +3,7 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
@@ -18,7 +19,6 @@ class VoteController extends Controller
      * Display a listing of the resource.
      *
      * @param VoteRepositoryInterface $repository
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(VoteRepositoryInterface $repository)
@@ -30,7 +30,6 @@ class VoteController extends Controller
      * Display the specified resource.
      *
      * @param Vote $vote
-     *
      * @return \Illuminate\Http\Response
      */
     public function show(Vote $vote)
@@ -49,6 +48,15 @@ class VoteController extends Controller
 
         return view('project.vote.show')
             ->with('model', $vote->votable)
+            ->with('submissions', $submissions);
+    }
+
+    public function create(Project $project)
+    {
+        $submissions = $project->stage->submissions->load('user', 'votes');
+
+        return view("project.{$project->stage->getStageName()}.vote.create")
+            ->with('project', $project)
             ->with('submissions', $submissions);
     }
 

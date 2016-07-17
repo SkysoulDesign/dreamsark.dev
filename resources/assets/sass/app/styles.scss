@@ -18,3 +18,37 @@
   }
 
 }
+
+@mixin base-header() {
+
+  @include part(header) {
+
+    @extend .base-page__header;
+    @extend .base-page__header.\--animated;
+    @extend .base-page__header.\--default;
+
+    background: get-url('headers/header-3.jpg') center center no-repeat;
+    @content;
+
+    @include part(overlay) {
+      @extend .base-page__header__overlay;
+      @extend .base-page__header__overlay.\--animated;
+    }
+
+  }
+}
+
+@mixin base-scalable($scale: 1.2, $time: .25, $active-scale: 20) {
+
+  transition: transform $time+s;
+  @content;
+
+  &:hover {
+    transform: scale($scale);
+  }
+
+  &:active{
+    transform: scale(($scale / (100 + $active-scale)) * 100);
+  }
+
+}

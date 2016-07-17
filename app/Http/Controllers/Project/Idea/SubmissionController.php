@@ -7,9 +7,14 @@ use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Idea\IdeaSubmission;
 use DreamsArk\Http\Requests\Idea\SubmissionVoting;
-use DreamsArk\Models\Project\Stages\Idea;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Submission;
 
+/**
+ * Class SubmissionController
+ *
+ * @package DreamsArk\Http\Controllers\Project\Idea
+ */
 class SubmissionController extends Controller
 {
 
@@ -17,14 +22,18 @@ class SubmissionController extends Controller
     /**
      * Vote on a Submission
      *
-     * @param Submission $submission
      * @param SubmissionVoting $request
+     * @param \DreamsArk\Models\Project\Project $project
+     * @param Submission $submission
      * @return \Illuminate\Http\Response
      */
-    public function vote(Submission $submission, SubmissionVoting $request)
+    public function vote(SubmissionVoting $request, Project $project, Submission $submission)
     {
-        $command = new VoteOnSubmissionCommand($request->get('amount'), $submission, $request->user());
-        $this->dispatch($command);
+
+        $this->dispatch(
+            new VoteOnSubmissionCommand($request->get('amount'), $submission, $request->user())
+        );
+
         return redirect()->back();
     }
 

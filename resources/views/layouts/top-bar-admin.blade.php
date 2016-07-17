@@ -23,11 +23,11 @@
             <div class="menu">
                 <div class="header"></div>
                 <a class="item"
-                   href="{{ route('committee.project.review.list') }}">@lang('navbar.project-in-review')</a>
+                   href="{{ route('committee.project.review.index') }}">@lang('navbar.project-in-review')</a>
                 <a class="item"
-                   href="{{ route('committee.project.fund.list') }}">@lang('navbar.project-in-fund')</a>
+                   href="{{ route('committee.project.fund.index') }}">@lang('navbar.project-in-fund')</a>
                 <a class="item"
-                   href="{{ route('committee.project.distribute.list') }}">@lang('navbar.project-in-distribute')</a>
+                   href="{{ route('committee.project.distribution.index') }}">@lang('navbar.project-in-distribute')</a>
 
             </div>
         </div>

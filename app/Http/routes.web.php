@@ -109,24 +109,23 @@ $app->group(['middleware' => 'web'], function () use ($app) {
          */
         $app->group(['prefix' => '{project}/idea', 'as' => 'idea.'], function () use ($app) {
 
+            /**
+             * Submission Controller
+             */
             $app->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($app) {
-
-                /**
-                 * Submission Controller
-                 */
                 $app->post('store', SubmissionController::class . '@store')->name('store');
-                $app->post('idea/submission/vote/{submission}/store', SubmissionIdeaController::class . '@vote')->name('project.idea.submission.vote.store');
-
+                $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('vote.store');
             });
 
-        });
+            /**
+             * Vote Controller
+             */
+            $app->group(['prefix' => 'vote', 'as' => 'vote.'], function () use ($app) {
+                $app->get('/', VoteController::class . '@index')->name('index');
+                $app->get('show/{vote}', VoteController::class . '@show')->name('show');
+                $app->get('create', VoteController::class . '@create')->name('create');
+            });
 
-        /**
-         * Vote Controller
-         */
-        $app->group(['prefix' => 'vote', 'as' => 'vote.'], function () use ($app) {
-            $app->get('/', VoteController::class . '@index')->name('index');
-            $app->get('show/{vote}', VoteController::class . '@show')->name('show');
         });
 
     });
@@ -180,7 +179,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->post('store', UserProjectController::class . '@store')->name('store');
 
             $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
-            $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
+            $app->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');
             $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
             $app->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
             $app->post('update/{draft}', ProjectController::class . '@update')->name('update');
@@ -200,7 +199,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             /**
              * Enroll Controller
              */
-            $app->get('enroll/create/{project}', EnrollController::class . '@create')->name('enroll.create');
+            $app->get('{project}/enroll/create', EnrollController::class . '@create')->name('enroll.create');
             $app->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
             $app->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
 
@@ -273,7 +272,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('review', CommitteeController::class . '@projectsInReviewStage')->name('review.index');
             $app->get('fund', CommitteeController::class . '@projectsInFundStage')->name('fund.index');
             $app->get('distribution', CommitteeController::class . '@projectsInDistributionStage')->name('distribution.index');
-            
+
             $app->post('{project}/expense/store', ExpenseController::class . '@store')->name('expense.store');
             $app->post('{project}/crew/store', CrewController::class . '@store')->name('crew.store');
 
@@ -283,7 +282,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
          * Committee Staff Controller
          */
         $app->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
-
 
         $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
         $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
@@ -305,7 +303,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             });
 
             $app->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($app) {
-               
+
                 $app->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
             });
         });
@@ -329,7 +327,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
          * Profile Controller
          */
         $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
-            
+
             $app->get('/', AdminProfileController::class . '@index')->name('index');
             $app->get('create', AdminProfileController::class . '@create')->name('create');
             $app->post('store', AdminProfileController::class . '@store')->name('store');
@@ -348,7 +346,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
                 $app->patch('{question}/update', QuestionController::class . '@update')->name('update');
                 $app->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
             });
-            
+
         });
 
         /**
@@ -358,7 +356,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('/', AdminProjectController::class . '@index')->name('index');
         });
 
-        
 
         /**
          * Users Controller
@@ -429,7 +426,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
      */
     $app->get('votes', VoteController::class . '@index')->name('votes');
     $app->get('vote/show/{vote}', VoteController::class . '@show')->name('vote.show');
-
 
     /**
      * Project Controller
@@ -517,8 +513,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     $app->get('docs', function () {
         return View::make('docs.api.v1.index');
     });
-
-
 
 
 });

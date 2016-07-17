@@ -10,14 +10,19 @@ export class Project extends AbstractPage {
     ]
 
     boot(stage) {
-
-        if (this.hasOwnProperty(stage))
-            this[stage]();
-
+        this[stage]();
     }
 
     idea() {
         this.initChart();
+    }
+
+    review() {
+        this.initChart();
+    }
+
+    distribution() {
+
     }
 
     fund() {

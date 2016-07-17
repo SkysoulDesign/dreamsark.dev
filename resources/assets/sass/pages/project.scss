@@ -2,6 +2,8 @@
 
   padding-bottom: 5em;
 
+  @include base-header();
+
   @include part(background) {
 
     @extend .base-page__background;
@@ -55,13 +57,28 @@
 
   @include part(highlights) {
     padding: 2em 0;
+    text-align: center;
+
+    a {
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 400px;
+      }
+
+      & > div {
+        padding-top: 1.3em;
+      }
+
+      @include base-scalable($scale: 1.05) {
+        z-index: 9;
+      }
+
+    }
   }
 
   @include part(list) {
-
-    img {
-      border-radius: .3em;
-    }
 
     line-height: normal;
 
@@ -93,8 +110,67 @@
 
       margin-bottom: 2em;
 
+      border-radius: .3em;
+      border: solid 1px transparent;
+
+      img {
+        margin-top: 1em;
+        border-radius: .2em;
+        object-fit: cover;
+        width: 100%;
+        height: 300px;
+      }
+
+      a {
+
+        & > div {
+          padding: 1em 0;
+
+          & p {
+            font-size: .9em;
+          }
+
+        }
+
+      }
+
       @include last(2) {
         margin-bottom: 0;
+      }
+
+      @include option(stage-idea) {
+        &:hover {
+          background: color(primary, base, 3);
+          border: dashed 1px color(primary, base, 20);
+        }
+      }
+
+      @include option(stage-synapse) {
+        &:hover {
+          background: color(secondary, base, 3);
+          border: dashed 1px color(secondary, base, 20);
+        }
+      }
+
+      @include option(stage-script) {
+        &:hover {
+          background: color(ternary, base, 3);
+          border: dashed 1px color(ternary, base, 20);
+        }
+      }
+
+      @include option(stage-review) {
+        &:hover {
+          background: color(success, base, 3);
+          border: dashed 1px color(success, base, 20);
+        }
+      }
+
+      @include option(stage-distribution) {
+        &:hover {
+          background: color(black, base, 3);
+          border: dashed 1px color(black, base, 20);
+        }
       }
 
     }

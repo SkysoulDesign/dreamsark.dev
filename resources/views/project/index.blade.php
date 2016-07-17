@@ -40,28 +40,28 @@
     </div>
 
     <div class="row project-page__highlights +hidden-on-mobile">
-        <a class="small-3 columns">
+        <a href="#" class="small-3 columns">
             <img src="{{ asset('img/temp/movies/dreamsarkMref10.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a class="small-3 columns">
+        <a href="#" class="small-3 columns">
             <img src="{{ asset('img/temp/movies/dreamsarkMref04.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a class="small-3 columns">
+        <a href="#" class="small-3 columns">
             <img src="{{ asset('img/temp/movies/dreamsarkMref21.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a class="small-3 columns">
+        <a href="#" class="small-3 columns">
             <img src="{{ asset('img/temp/movies/dreamsarkMref32.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
@@ -74,27 +74,54 @@
 
         <div class="small-12 medium-10 columns">
 
-            <header class="header +center">
-                Projects
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque eligendi fuga laborum modi
-                    necessitatibus
-                    officiis pariatur quam repellendus?</p>
+            <header class="header">
+                @lang('project.project')
+                <p>@lang('project.header-description')</p>
             </header>
 
             <div class="row align-center project-page__list">
 
                 @foreach($projects as $index => $project)
-                    <div href="#" class="small-12 medium-3 columns project-page__list__item">
-                        <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}"
-                             alt="">
+
+                    <div class="small-12 medium-3 columns project-page__list__item --stage-{{ $project->stage->getStageName() }}">
                         <a href="{{ route('project.show', $project) }}">
-                            <h1>{{ $project->name }}</h1>
+                            <div class="label">
+                                <div class="label__wrapper">
+                                    <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}"
+                                         alt="">
+                                    <div class="label__wrapper__items">
+                                        <ul>
+                                            <li>{{ $project->stage->getStageName() }}</li>
+                                            @if($project->stage->vote->active ?? false)
+                                                <li>@lang('project.voting')</li>
+                                            @else
+                                                <li>@lang('project.failed')</li>
+                                            @endif
+                                            @if($project->stage->submission)
+                                                <li>@lang('project.finished')</li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4>{{ $project->name }}</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi assumenda dolore
+                                    mollitia neque nulla possimus qui quis, quo reiciendis repellendus saepe sint,
+                                    veniam voluptatibus. Aperiam consectetur ea eligendi odio repellendus?</p>
+                            </div>
+                            <ark-progress label="@lang('project.progress')" :data="{{rand(0,100)}}" mini></ark-progress>
+                            <ark-statistics>
+                                <statistic-item data="{{ $project->stage->reward->amount or 0}}">
+                                    @lang('project.reward')
+                                </statistic-item>
+                                @if($project->stage->submissions)
+                                    <statistic-item data="{{ $project->stage->submissions->count() }}">
+                                        @lang('project.submissions')
+                                    </statistic-item>
+                                @endif
+                            </ark-statistics>
                         </a>
-                        <ul>
-                            <li>User: <a href="#">milewski</a></li>
-                            <li>Comments: 50</li>
-                            <li>Likes: 50</li>
-                        </ul>
                     </div>
                 @endforeach
 

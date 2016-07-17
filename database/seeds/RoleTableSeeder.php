@@ -4,6 +4,9 @@ use DreamsArk\Jobs\User\Role\CreateRoleJob;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class RoleTableSeeder
+ */
 class RoleTableSeeder extends Seeder
 {
 

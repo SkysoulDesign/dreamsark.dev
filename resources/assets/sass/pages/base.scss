@@ -57,12 +57,16 @@
       z-index: -1;
       background-color: color($color: primary, $tone: light, $alpha: 30);
 
-      //transition: background-color .2s;
-      //will-change: background-color;
+      @include option(animated) {
 
-      //&:hover {
-      //  background-color: color($color: primary, $tone: light, $alpha: 0);
-      //}
+        transition: background-color .2s;
+        will-change: background-color;
+
+        &:hover {
+          background-color: color($color: primary, $tone: light, $alpha: 0);
+        }
+
+      }
 
     }
 

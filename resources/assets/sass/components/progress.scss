@@ -1,11 +1,23 @@
 @include component(progress) {
 
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
   margin: .8em 0;
 
-  &:hover {
-    transform: scale(1.05);
+  @include option(animated) {
+    @include base-scalable($scale: 1.05) {
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  }
+
+  @include option(mini) {
+
+    & .progress__label {
+      font-size: .8em;
+    }
+
+    & .progress__bar__completion {
+      height: .3em;
+    }
+
   }
 
   @include part(label) {
