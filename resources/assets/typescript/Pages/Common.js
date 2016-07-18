@@ -37,25 +37,6 @@ var Common = (function (_super) {
      * Initialize Dropdown
      */
     Common.prototype.dropdown = function () {
-        var dropdown = document.querySelectorAll('.dropdown');
-        for (var i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener('click', function (event) {
-                clearAll();
-                this.classList.toggle('--show');
-            });
-        }
-        var clearAll = function () {
-            for (var i = 0; i < dropdown.length; i++) {
-                if (dropdown[i].classList.contains('--show')) {
-                    dropdown[i].classList.remove('--show');
-                }
-            }
-        };
-        window.onclick = function (event) {
-            if (!event.target.matches('.dropdown__trigger')) {
-                clearAll();
-            }
-        };
     };
     return Common;
 }(AbstractPage_1.AbstractPage));

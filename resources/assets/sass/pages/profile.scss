@@ -27,6 +27,16 @@
       border-radius: 10px;
       border: .1em solid transparent;
 
+      a {
+
+        color: color(black) !important;
+
+        &:hover {
+          color: inherit;
+        }
+
+      }
+
       @include respond-to(desktop) {
         padding: 2em;
         transition: .25s;
@@ -35,17 +45,18 @@
       @include option(active) {
         background: color(gray, base, 10);
         border: .1em dashed color(gray);
+        porra: 'merda'
       }
 
       @each $color in $profile-colors {
 
-        @include option($color) {
+        @include option(color-#{$color}) {
 
           $color: nth($color, 1);
 
           &:hover {
 
-            background: profile-color($color: $color, $alpha: 8);
+            background-color: profile-color($color: $color, $alpha: 8);
             border: .1em dashed profile-color($color, light, 20);
 
             & h3 {
@@ -58,11 +69,7 @@
 
       }
 
-      &:hover {
-        @include respond-to(desktop) {
-          transform: scale(1.1);
-        }
-      }
+      @include base-scalable();
 
     }
 
@@ -97,6 +104,31 @@
       &:hover {
         height: 400px;
         background-position-y: 50%;
+      }
+
+    }
+
+    @include part(avatar) {
+
+      img {
+
+        height: 7em;
+        width: 7em;
+        border-radius: 100%;
+        border: .3em solid color($color: white, $alpha: 10);
+
+        @include respond-to(desktop) {
+          height: 9em;
+          width: 9em;
+        }
+
+        transition: 0.25s;
+
+        &:hover {
+          transform: scale(1.1);
+          border: .3em solid color($color: white, $alpha: 100);
+        }
+
       }
 
     }

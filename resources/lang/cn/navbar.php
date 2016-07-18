@@ -41,7 +41,7 @@ return array (
   'project-in-review' => '审查中项目',
   'project-in-fund' => 'Projects in Fund',
   'project-in-distribute' => 'Projects in Distribution',
-  'transactions' => 'Transactions',
+  'transactions' => '交易',
   'purchases' => 'Purchases',
   'withdrawals' => 'Withdrawals',
   'project' => '项目',

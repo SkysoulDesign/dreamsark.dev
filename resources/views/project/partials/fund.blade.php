@@ -63,8 +63,10 @@
                     </span>
 
                     <div class="project-page__info__overlay__spacer">
-                        <ark-progress :data="{{ $cost }}" :max="{{ $cost }}" symbol="¥" label="Budget" color="success"></ark-progress>
-                        <ark-progress :data="{{ $project->totalCollected() }}" label="Goal" :max="{{ $cost }}" mode="percentage" color="secondary"></ark-progress>
+                        <ark-progress :data="{{ $cost }}" :max="{{ $cost }}" symbol="¥" label="Budget"
+                                      color="success"></ark-progress>
+                        <ark-progress :data="{{ $project->totalCollected() }}" label="Goal" :max="{{ $cost }}"
+                                      mode="percentage" color="secondary"></ark-progress>
                         <ark-progress :data="5" :max="30" symbol="days" label="Time Left"
                                       color="ternary"></ark-progress>
                     </div>
@@ -91,20 +93,25 @@
                         <statistic-item data="2">CREW MEMBERS</statistic-item>
                     </ark-statistics>
 
-                    <div>
+                    @if($project->stage->vote->active)
                         <a class="button --white --inverted"
-                           href="{{ route('project.fund.create', $project) }}">
-                            Back this project
+                           href="{{ route('vote.show', $project->stage->vote) }}">
+                            Vote
                         </a>
-
-                    </div>
-
-                    <div>
-                        <a class="button --white --inverted"
-                           href="{{ route('project.enroll.create', $project) }}">
-                            Enrol
-                        </a>
-                    </div>
+                    @else
+                        <div>
+                            <a class="button --white --inverted"
+                               href="{{ route('project.fund.create', $project) }}">
+                                Back this project
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button --white --inverted"
+                               href="{{ route('project.enroll.create', $project) }}">
+                                Enrol
+                            </a>
+                        </div>
+                    @endif
 
                 </div>
             </div>

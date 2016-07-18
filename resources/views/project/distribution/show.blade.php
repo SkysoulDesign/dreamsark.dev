@@ -4,7 +4,7 @@
         <div class="ui segment">
             <div class="ui embed" data-source="youtube" data-id="HcgJRQWxKnw" style="width: 2500px"></div>
         </div>
-        <div class="ui segment" style="width: 1500px">
+        <div class="ui segment">
 
             <h1 class="ui header">{{ $project->name }}</h1>
 

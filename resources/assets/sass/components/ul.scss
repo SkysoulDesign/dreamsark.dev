@@ -26,9 +26,11 @@
     margin: 1em 0;
 
     li {
-      //@include all-but(1) {
-      //  padding: 0;
-      //}
+
+      @include option(start) {
+        margin-right: auto;
+      }
+
     }
 
   }
@@ -41,7 +43,7 @@
     //}
   }
 
-  @include option(bold){
+  @include option(bold) {
     font-size: smaller;
     font-weight: bolder;
     text-transform: uppercase;

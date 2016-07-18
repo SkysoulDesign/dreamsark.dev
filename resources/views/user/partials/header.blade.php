@@ -1,28 +1,27 @@
-<div class="base-page">
+@include('partials.navigation.menu')
 
-    @include('partials.navigation.menu')
+@if(!isset($header))
 
-    @if(!isset($header))
+    <div class="profile-page__header --default">
 
-        <div class="base-page__header --default">
+        <div class="profile-page__header__overlay"></div>
 
-            <div class="row align-middle +full-height">
-                <div class="small-12 medium-3 columns +center-on-mobile">
-                    <div class="base-page__header__avatar">
-                        <img class="+shadow" src="{{asset('img/temp/avatar-huge.png')}}" alt="">
-                    </div>
-                </div>
-                <div class="small-12 medium-9 columns">
-                    something here
+        <div class="row align-middle +full-height">
+            <div class="small-12 medium-3 columns +center-on-mobile">
+                <div class="profile-page__header__avatar">
+                    <img class="+shadow" src="{{asset('img/temp/avatar-huge.png')}}" alt="">
                 </div>
             </div>
-
+            <div class="small-12 medium-9 columns">
+                something here
+            </div>
         </div>
 
-        @if(!isset($nav))
-            @include('user.partials.nav')
-        @endif
+    </div>
 
+    @if(!isset($nav))
+        @include('user.partials.nav')
     @endif
 
-</div>
+@endif
+

@@ -10,15 +10,14 @@
 
     <title>DreamsArk</title>
 
-    @yield('meta-tags')
+@yield('meta-tags')
 
-    @yield('styles')
+@yield('styles')
 
-    <!-- Temporarily -->
+<!-- Temporarily -->
     <link rel="stylesheet" media="all" href="{{ asset('translation-assets/semantic.min.css') }}">
 
     <link rel="stylesheet" media="all" href="{{ asset('css/app.css') }}">
-
 
 </head>
 
@@ -26,7 +25,13 @@
 
 @include('errors.errors')
 
-@yield('content')
+@if($container ?? true)
+    <div class="container">
+        @yield('content')
+    </div>
+@else
+    @yield('content')
+@endif
 
 @if($footer ?? true)
     @include('partials.footer.common')

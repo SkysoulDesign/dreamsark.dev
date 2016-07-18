@@ -34,28 +34,33 @@
             <a href="{{ route('project.index') }}" class="menu__item +round +transparent">@lang('nav.projects')</a>
             <a href="#" class="menu__item +round +transparent">@lang('nav.talents')</a>
 
-            <div class="dropdown +z-10">
+            <ark-dropdown title="{{ auth()->user()->username }}" mode="simple">
 
-                <div class="dropdown__trigger">
-                    {{ auth()->user()->username }}
-                </div>
+                <ark-dropdown-option href="{{ route('user.account') }}">
+                    @lang('navbar.account')
+                </ark-dropdown-option>
 
-                <div class="dropdown__content">
-                    <a href="{{ route('user.account') }}" class="dropdown__content__item">@lang('navbar.account')</a>
-                    @can('see-admin-section', auth()->user())
-                        <a class="dropdown__content__item" href="{{ route('admin.index') }}">@lang('navbar.admin')</a>
-                    @endcan
+                @can('see-admin-section', auth()->user())
+                    <ark-dropdown-option href="{{ route('admin.index') }}">
+                        @lang('navbar.admin')
+                    </ark-dropdown-option>
+                @endcan
 
-                    @can('see-committee-section', auth()->user())
-                        <a class="dropdown__content__item" href="{{ route('committee.index') }}">@lang('navbar.committee')</a>
-                    @endcan
-                    <div class="dropdown__content__item">@lang('navbar.settings')</div>
-                    <a href="{{ route('logout') }}" class="dropdown__content__item">
-                        @lang('navbar.logout')
-                    </a>
-                </div>
+                @can('see-committee-section', auth()->user())
+                    <ark-dropdown-option href="{{ route('committee.index') }}">
+                        @lang('navbar.committee')
+                    </ark-dropdown-option>
+                @endcan
 
-            </div>
+                <ark-dropdown-option>
+                    @lang('navbar.settings')
+                </ark-dropdown-option>
+
+                <ark-dropdown-option href="{{ route('logout') }}">
+                    @lang('navbar.logout')
+                </ark-dropdown-option>
+
+            </ark-dropdown>
 
         </div>
     </div>

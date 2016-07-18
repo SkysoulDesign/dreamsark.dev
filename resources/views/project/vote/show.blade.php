@@ -59,9 +59,9 @@
 
     {{--</div>--}}
 
-    {{--@if($model instanceof DreamsArk\Models\Project\Stages\Fund)--}}
-    {{--@include('project.fund.vote.create')--}}
-    {{--@endif--}}
+    @if($model instanceof DreamsArk\Models\Project\Stages\Fund)
+        @include('project.fund.vote.create')
+    @endif
 
     @if($model instanceof DreamsArk\Models\Project\Stages\Idea ||
     $model instanceof DreamsArk\Models\Project\Stages\Synapse ||

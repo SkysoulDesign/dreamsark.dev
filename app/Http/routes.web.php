@@ -117,15 +117,15 @@ $app->group(['middleware' => 'web'], function () use ($app) {
                 $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('vote.store');
             });
 
-            /**
-             * Vote Controller
-             */
-            $app->group(['prefix' => 'vote', 'as' => 'vote.'], function () use ($app) {
-                $app->get('/', VoteController::class . '@index')->name('index');
-                $app->get('show/{vote}', VoteController::class . '@show')->name('show');
-                $app->get('create', VoteController::class . '@create')->name('create');
-            });
+        });
 
+        /**
+         * Vote Controller
+         */
+        $app->group(['prefix' => '{project}/vote', 'as' => 'vote.'], function () use ($app) {
+            $app->get('/', VoteController::class . '@index')->name('index');
+            $app->get('show/{vote}', VoteController::class . '@show')->name('show');
+            $app->get('create', VoteController::class . '@create')->name('create');
         });
 
     });

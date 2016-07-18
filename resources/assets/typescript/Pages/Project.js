@@ -22,6 +22,12 @@ var Project = (function (_super) {
     Project.prototype.idea = function () {
         this.initChart();
     };
+    Project.prototype.synapse = function () {
+        this.initChart();
+    };
+    Project.prototype.script = function () {
+        this.initChart();
+    };
     Project.prototype.review = function () {
         this.initChart();
     };

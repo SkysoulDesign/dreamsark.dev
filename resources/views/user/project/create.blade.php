@@ -4,7 +4,7 @@
 
     @include('user.partials.header', ['header' => false])
 
-    <div class="project-page__header --animated">
+    <div class="project-page__header --default --animated">
 
         <div class="project-page__header__overlay --animated"></div>
 

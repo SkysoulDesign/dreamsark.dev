@@ -17,6 +17,14 @@ export class Project extends AbstractPage {
         this.initChart();
     }
 
+    synapse() {
+        this.initChart();
+    }
+
+    script() {
+        this.initChart();
+    }
+
     review() {
         this.initChart();
     }

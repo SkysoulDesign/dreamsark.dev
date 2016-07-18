@@ -101,4 +101,13 @@ return array (
   'synapse-stage' => '大纲阶段',
   'script-stage' => '剧本阶段',
   'stage' => '阶段',
+  'expand' => NULL,
+  'read-mode' => NULL,
+  'download-as-pdf' => NULL,
+  'download' => NULL,
+  'submit-idea' => NULL,
+  'date' => NULL,
+  'submissions' => NULL,
+  'a-to-z' => NULL,
+  'search' => NULL,
 );

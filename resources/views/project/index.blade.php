@@ -71,6 +71,30 @@
     </div>
 
     <div class="row align-center --fluid --white-background">
+        <div class="small-12 medium-10 columns">
+            <ul class="ul --inline --right">
+                <li class="li --start"><h3>@lang('project.project')</h3></li>
+                <li>
+                    <ark-dropdown title="Project Stage" icon="video-camera">
+                        <ark-dropdown-option>@lang('project.idea')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('project.synapse')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('project.script')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('project.fund')</ark-dropdown-option>
+                    </ark-dropdown>
+                </li>
+                <li>
+                    <ark-dropdown title="Sort by" icon="sort-amount-desc">
+                        <ark-dropdown-option>@lang('forms.date')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('forms.reward')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('forms.submissions')</ark-dropdown-option>
+                        <ark-dropdown-option>@lang('forms.a-to-z')</ark-dropdown-option>
+                    </ark-dropdown>
+                </li>
+                <li><input type="search" placeholder="@lang('forms.search')"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row align-center --fluid --white-background">
 
         <div class="small-12 medium-10 columns">
 

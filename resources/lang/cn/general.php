@@ -10,4 +10,9 @@ return array (
   'required' => '必须的',
   'site-admin' => '追梦方舟管理员',
   'site-committee' => '追梦方舟委员会',
+  'lear-more-about-dreamsark' => NULL,
+  'about-dreamsark' => NULL,
+  'technical-support' => NULL,
+  'dreamsark-copyright' => NULL,
+  'comments' => NULL,
 );

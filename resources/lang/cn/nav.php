@@ -2,5 +2,5 @@
 
 return array (
   'projects' => '项目',
-  'talents' => '精英',
+  'talents' => '影视精英',
 );

@@ -30,4 +30,8 @@ return array (
   'pick-position' => 'Pick your position',
   'create-profile' => 'Create Profile',
   'new-profile' => 'New Profile',
+  'profile-creation-form' => NULL,
+  'profile-creation-form-notes' => NULL,
+  'profile-description' => NULL,
+  'new-profile-description' => NULL,
 );

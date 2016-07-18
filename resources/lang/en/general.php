@@ -10,4 +10,9 @@ return array (
   'required' => 'Required',
   'site-admin' => 'DreamsArk Admin',
   'site-committee' => 'DreamsArk Committee',
+  'lear-more-about-dreamsark' => NULL,
+  'about-dreamsark' => NULL,
+  'technical-support' => NULL,
+  'dreamsark-copyright' => NULL,
+  'comments' => NULL,
 );

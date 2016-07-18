@@ -10,7 +10,22 @@ var Form = (function () {
         app.vue({
             plugins: [
                 require('vue-resource')
-            ]
+            ],
+            ready: function () {
+                var _this = this;
+                var active = null;
+                this.$on('dropdown-open', function (dropdown) {
+                    active = dropdown;
+                    _this.$children.forEach(function (child) {
+                        if (child.constructor.name === 'ArkDropdown' && child !== dropdown)
+                            child.$set('active', false);
+                    });
+                });
+                window.onclick = function (event) {
+                    if (!event.target.classList.contains('dropdown__trigger') && active)
+                        active.$set('active', false);
+                };
+            }
         });
         vue.component('ark-fields', {
             template: require('../templates/form/fields.html'),
@@ -162,6 +177,48 @@ var Form = (function () {
                     }
                 },
             }
+        });
+        vue.component('ark-dropdown-option', {
+            template: require('../templates/form/dropdown-option.html'),
+            props: {
+                icon: String,
+                href: String
+            },
+            methods: {
+                select: function () {
+                    this.$dispatch('dropdown-option-selected', this.$el.innerText);
+                    if (this.href)
+                        window.location = this.href;
+                    this.$parent.$set('title', this.$el.innerText);
+                    this.$parent.$set('active', false);
+                }
+            }
+        });
+        vue.component('ark-dropdown', {
+            template: require('../templates/form/dropdown.html'),
+            data: function () {
+                return {
+                    active: false
+                };
+            },
+            props: {
+                avatar: String,
+                icon: String,
+                mode: {
+                    type: String,
+                    default: 'button' //Simple, Button
+                },
+                title: {
+                    type: String,
+                    required: true
+                }
+            },
+            methods: {
+                open: function () {
+                    this.$set('active', !this.active);
+                    this.$dispatch('dropdown-open', this);
+                }
+            },
         });
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['footer' => false])
+@extends('layouts.master', ['footer' => false , 'container' => false])
 
 @section('content')
 

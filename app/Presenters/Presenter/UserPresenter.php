@@ -35,7 +35,7 @@ class UserPresenter extends Presenter
      */
     public function avatar()
     {
-        return asset('img/avatar/male.png');
+        return asset('img/temp/avatar.png');
     }
 
 }

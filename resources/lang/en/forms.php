@@ -101,4 +101,13 @@ return array (
   'synapse-stage' => 'Synapse Stage',
   'script-stage' => 'Script Stage',
   'stage' => 'Stage',
+  'expand' => NULL,
+  'read-mode' => NULL,
+  'download-as-pdf' => NULL,
+  'download' => NULL,
+  'submit-idea' => NULL,
+  'date' => NULL,
+  'submissions' => NULL,
+  'a-to-z' => NULL,
+  'search' => NULL,
 );

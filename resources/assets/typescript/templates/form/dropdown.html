@@ -1,0 +1,20 @@
+<div class="dropdown">
+
+    <a @click.prevent="open" class="dropdown__trigger" href="#" :class="[{ '--avatar' : avatar }, '--mode-'+mode ]">
+
+        <div v-if="avatar" class="dropdown__trigger__avatar">
+            <img :src="avatar" alt="">
+        </div>
+
+        <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>
+        {{ title }}
+
+        <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+
+    </a>
+
+    <ul class="dropdown__options" :class="{ '--open' : active }">
+        <slot></slot>
+    </ul>
+
+</div>

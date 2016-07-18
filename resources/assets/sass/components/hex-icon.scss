@@ -6,7 +6,6 @@
     background: center;
     width: 100%;
     height: 100%;
-    fill: color(black);
   }
 
   span {
@@ -20,15 +19,4 @@
     background-size: 55% 55%
   }
 
-  @each $color in $profile-colors {
-
-    $color: nth($color, 1);
-
-    @include option($color) {
-      svg {
-        fill: profile-color($color);
-      }
-    }
-
-  }
 }

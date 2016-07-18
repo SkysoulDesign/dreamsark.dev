@@ -4127,42 +4127,81 @@ button, .button {
 .dropdown {
   position: relative;
   display: inline-block;
-  color: #353832; }
-  .dropdown.\--show .dropdown__trigger {
-    color: #0083ff; }
-  .dropdown.\--show .dropdown__content {
-    display: block; }
-  .dropdown__trigger {
-    cursor: pointer;
-    font-weight: bold; }
-    .dropdown__trigger, .dropdown__trigger a {
-      color: #353832;
-      text-decoration: none; }
-    .dropdown__trigger:hover, .dropdown__trigger a:hover {
-      color: #0083ff; }
-  .dropdown__content {
+  margin: 0 .1em; }
+  .dropdown i {
+    pointer-events: none; }
+  .dropdown__trigger.\--mode-button {
+    color: #353832;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .3em;
+    padding: .8em 1.2em;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.42857143;
+    transition: color .25s;
+    transition-property: color, background-color, box-shadow, border-color; }
+    .dropdown__trigger.\--mode-button:hover {
+      color: black;
+      background-color: #f4f5f4;
+      border-color: #b5b9b0; }
+    .dropdown__trigger.\--mode-button:active {
+      background-image: none;
+      outline: 0;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.12);
+      border-color: rgba(181, 185, 176, 0.7); }
+  .dropdown__trigger.\--mode-simple {
+    color: inherit;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: inherit;
+    line-height: inherit; }
+  .dropdown__trigger__avatar {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    line-height: normal; }
+    .dropdown__trigger__avatar img {
+      margin-right: .8em;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%; }
+  .dropdown__options {
+    display: none;
     position: absolute;
-    margin-top: 1em;
-    background-color: white;
-    box-shadow: 0 8px 16px 0 rgba(53, 56, 50, 0.2);
-    border: 1px solid rgba(181, 185, 176, 0.4);
-    border-radius: .2em;
-    cursor: pointer;
-    white-space: nowrap;
+    top: 100%;
     right: 0;
-    display: none; }
-    .dropdown__content a {
-      text-decoration: none;
-      color: #353832;
+    z-index: 1000;
+    min-width: 100px;
+    width: 100%;
+    padding: .5em 0;
+    margin: .8em 0 0;
+    font-size: 1em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+    .dropdown__options.\--open {
       display: block; }
-    .dropdown__content__item {
+    .dropdown__options li {
       text-align: left;
-      padding: .8em 1.8em;
-      border-bottom: 1px solid rgba(181, 185, 176, 0.5); }
-      .dropdown__content__item:hover {
-        background-color: rgba(181, 185, 176, 0.2); }
-      .dropdown__content__item:nth-last-child(-n + 1) {
-        border-bottom: transparent; }
+      transition: color .25s;
+      transition-property: color, background-color;
+      color: #353832;
+      font-size: .9em;
+      width: 100%;
+      padding: .5em .8em !important;
+      font-weight: 400;
+      cursor: pointer; }
+      .dropdown__options li:hover {
+        color: black;
+        background-color: #f4f5f4; }
+      .dropdown__options li i {
+        font-size: .9em;
+        margin-right: .5em; }
 
 .select, select {
   height: 3.5em; }
@@ -4454,6 +4493,10 @@ button, .button {
 }
 
 */
+.container {
+  min-height: 100vh;
+  padding-bottom: 5em; }
+
 .row.\--fluid {
   max-width: 100%; }
 
@@ -4793,54 +4836,208 @@ button, .button {
 /**
 * profile-color-actor...
 */
+#app-root .\+profile-color-artist3D {
+  color: #f44336; }
+  #app-root .\+profile-color-artist3D a:hover {
+    color: #f44336; }
+  #app-root .\+profile-color-artist3D svg {
+    fill: #f44336; }
+
 #app-root .\+profile-color-actor {
-  color: #ffc326; }
-  #app-root .\+profile-color-actor a:hover {
-    color: #ffc326; }
-  #app-root .\+profile-color-actor svg {
-    fill: #ffc326; }
-
-#app-root .\+profile-color-director {
-  color: #6900a5; }
-  #app-root .\+profile-color-director a:hover {
-    color: #6900a5; }
-  #app-root .\+profile-color-director svg {
-    fill: #6900a5; }
-
-#app-root .\+profile-color-camera-man {
-  color: #d90d12; }
-  #app-root .\+profile-color-camera-man a:hover {
-    color: #d90d12; }
-  #app-root .\+profile-color-camera-man svg {
-    fill: #d90d12; }
-
-#app-root .\+profile-color-designer {
-  color: #0095ff; }
-  #app-root .\+profile-color-designer a:hover {
-    color: #0095ff; }
-  #app-root .\+profile-color-designer svg {
-    fill: #0095ff; }
-
-#app-root .\+profile-color-animation {
   color: #e91e63; }
-  #app-root .\+profile-color-animation a:hover {
+  #app-root .\+profile-color-actor a:hover {
     color: #e91e63; }
-  #app-root .\+profile-color-animation svg {
+  #app-root .\+profile-color-actor svg {
     fill: #e91e63; }
 
-#app-root .\+profile-color-screenwriter {
-  color: #4caf50; }
-  #app-root .\+profile-color-screenwriter a:hover {
-    color: #4caf50; }
-  #app-root .\+profile-color-screenwriter svg {
-    fill: #4caf50; }
+#app-root .\+profile-color-actress {
+  color: #9c27b0; }
+  #app-root .\+profile-color-actress a:hover {
+    color: #9c27b0; }
+  #app-root .\+profile-color-actress svg {
+    fill: #9c27b0; }
+
+#app-root .\+profile-color-animation {
+  color: #673ab7; }
+  #app-root .\+profile-color-animation a:hover {
+    color: #673ab7; }
+  #app-root .\+profile-color-animation svg {
+    fill: #673ab7; }
 
 #app-root .\+profile-color-art-director {
-  color: #607d8b; }
+  color: #3f51b5; }
   #app-root .\+profile-color-art-director a:hover {
-    color: #607d8b; }
+    color: #3f51b5; }
   #app-root .\+profile-color-art-director svg {
+    fill: #3f51b5; }
+
+#app-root .\+profile-color-camera-director {
+  color: #2196f3; }
+  #app-root .\+profile-color-camera-director a:hover {
+    color: #2196f3; }
+  #app-root .\+profile-color-camera-director svg {
+    fill: #2196f3; }
+
+#app-root .\+profile-color-concept-artist {
+  color: #03a9f4; }
+  #app-root .\+profile-color-concept-artist a:hover {
+    color: #03a9f4; }
+  #app-root .\+profile-color-concept-artist svg {
+    fill: #03a9f4; }
+
+#app-root .\+profile-color-costume-designer {
+  color: #00bcd4; }
+  #app-root .\+profile-color-costume-designer a:hover {
+    color: #00bcd4; }
+  #app-root .\+profile-color-costume-designer svg {
+    fill: #00bcd4; }
+
+#app-root .\+profile-color-director {
+  color: #009688; }
+  #app-root .\+profile-color-director a:hover {
+    color: #009688; }
+  #app-root .\+profile-color-director svg {
+    fill: #009688; }
+
+#app-root .\+profile-color-editor {
+  color: #4caf50; }
+  #app-root .\+profile-color-editor a:hover {
+    color: #4caf50; }
+  #app-root .\+profile-color-editor svg {
+    fill: #4caf50; }
+
+#app-root .\+profile-color-effects {
+  color: #8bc34a; }
+  #app-root .\+profile-color-effects a:hover {
+    color: #8bc34a; }
+  #app-root .\+profile-color-effects svg {
+    fill: #8bc34a; }
+
+#app-root .\+profile-color-executive-producer {
+  color: #cddc39; }
+  #app-root .\+profile-color-executive-producer a:hover {
+    color: #cddc39; }
+  #app-root .\+profile-color-executive-producer svg {
+    fill: #cddc39; }
+
+#app-root .\+profile-color-lighting-artist {
+  color: #ffeb3b; }
+  #app-root .\+profile-color-lighting-artist a:hover {
+    color: #ffeb3b; }
+  #app-root .\+profile-color-lighting-artist svg {
+    fill: #ffeb3b; }
+
+#app-root .\+profile-color-make-up-artist {
+  color: #ffc107; }
+  #app-root .\+profile-color-make-up-artist a:hover {
+    color: #ffc107; }
+  #app-root .\+profile-color-make-up-artist svg {
+    fill: #ffc107; }
+
+#app-root .\+profile-color-packaging-designer {
+  color: #ff9800; }
+  #app-root .\+profile-color-packaging-designer a:hover {
+    color: #ff9800; }
+  #app-root .\+profile-color-packaging-designer svg {
+    fill: #ff9800; }
+
+#app-root .\+profile-color-pre-stage-project-coordinator {
+  color: #ff5722; }
+  #app-root .\+profile-color-pre-stage-project-coordinator a:hover {
+    color: #ff5722; }
+  #app-root .\+profile-color-pre-stage-project-coordinator svg {
+    fill: #ff5722; }
+
+#app-root .\+profile-color-project-coordinator {
+  color: #795548; }
+  #app-root .\+profile-color-project-coordinator a:hover {
+    color: #795548; }
+  #app-root .\+profile-color-project-coordinator svg {
+    fill: #795548; }
+
+#app-root .\+profile-color-prop {
+  color: #9e9e9e; }
+  #app-root .\+profile-color-prop a:hover {
+    color: #9e9e9e; }
+  #app-root .\+profile-color-prop svg {
+    fill: #9e9e9e; }
+
+#app-root .\+profile-color-recording-artist {
+  color: #607d8b; }
+  #app-root .\+profile-color-recording-artist a:hover {
+    color: #607d8b; }
+  #app-root .\+profile-color-recording-artist svg {
     fill: #607d8b; }
+
+#app-root .\+profile-color-render-and-composite {
+  color: #f57f17; }
+  #app-root .\+profile-color-render-and-composite a:hover {
+    color: #f57f17; }
+  #app-root .\+profile-color-render-and-composite svg {
+    fill: #f57f17; }
+
+#app-root .\+profile-color-rigging-artist {
+  color: #1b5e20; }
+  #app-root .\+profile-color-rigging-artist a:hover {
+    color: #1b5e20; }
+  #app-root .\+profile-color-rigging-artist svg {
+    fill: #1b5e20; }
+
+#app-root .\+profile-color-screenwriter {
+  color: #004d40; }
+  #app-root .\+profile-color-screenwriter a:hover {
+    color: #004d40; }
+  #app-root .\+profile-color-screenwriter svg {
+    fill: #004d40; }
+
+#app-root .\+profile-color-script-supervisor {
+  color: #01579b; }
+  #app-root .\+profile-color-script-supervisor a:hover {
+    color: #01579b; }
+  #app-root .\+profile-color-script-supervisor svg {
+    fill: #01579b; }
+
+#app-root .\+profile-color-set-designer {
+  color: #1a237e; }
+  #app-root .\+profile-color-set-designer a:hover {
+    color: #1a237e; }
+  #app-root .\+profile-color-set-designer svg {
+    fill: #1a237e; }
+
+#app-root .\+profile-color-sound-effect {
+  color: #311b92; }
+  #app-root .\+profile-color-sound-effect a:hover {
+    color: #311b92; }
+  #app-root .\+profile-color-sound-effect svg {
+    fill: #311b92; }
+
+#app-root .\+profile-color-stage-manager {
+  color: #4a148c; }
+  #app-root .\+profile-color-stage-manager a:hover {
+    color: #4a148c; }
+  #app-root .\+profile-color-stage-manager svg {
+    fill: #4a148c; }
+
+#app-root .\+profile-color-storyboard-artist {
+  color: #880e4f; }
+  #app-root .\+profile-color-storyboard-artist a:hover {
+    color: #880e4f; }
+  #app-root .\+profile-color-storyboard-artist svg {
+    fill: #880e4f; }
+
+#app-root .\+profile-color-swing-gang {
+  color: #b71c1c; }
+  #app-root .\+profile-color-swing-gang a:hover {
+    color: #b71c1c; }
+  #app-root .\+profile-color-swing-gang svg {
+    fill: #b71c1c; }
+
+#app-root .\+profile-color-voice-artist {
+  color: #212121; }
+  #app-root .\+profile-color-voice-artist a:hover {
+    color: #212121; }
+  #app-root .\+profile-color-voice-artist svg {
+    fill: #212121; }
 
 #app-root .\+z-1 {
   z-index: 1; }
@@ -4949,8 +5146,7 @@ button, .button {
   .hex-icon svg {
     background: center;
     width: 100%;
-    height: 100%;
-    fill: #353832; }
+    height: 100%; }
   .hex-icon span {
     position: absolute;
     z-index: 1;
@@ -4960,20 +5156,6 @@ button, .button {
     height: 100%;
     background: url("/img/temp/notes.svg") no-repeat center;
     background-size: 55% 55%; }
-  .hex-icon.\--actor svg {
-    fill: #ffc326; }
-  .hex-icon.\--director svg {
-    fill: #6900a5; }
-  .hex-icon.\--camera-man svg {
-    fill: #d90d12; }
-  .hex-icon.\--designer svg {
-    fill: #0095ff; }
-  .hex-icon.\--animation svg {
-    fill: #e91e63; }
-  .hex-icon.\--screenwriter svg {
-    fill: #4caf50; }
-  .hex-icon.\--art-director svg {
-    fill: #607d8b; }
 
 .modal {
   position: relative;
@@ -5080,6 +5262,8 @@ button, .button {
     -ms-flex-align: center;
     align-items: center;
     margin: 1em 0; }
+    .ul.\--inline li.\--start, ul.\--inline li.\--start, .label__wrapper__items ul li.\--start {
+      margin-right: auto; }
   .ul.\--bold, ul.\--bold {
     font-size: smaller;
     font-weight: bolder;
@@ -5360,19 +5544,6 @@ button, .button {
       will-change: background-color; }
       .base-page__header__overlay.\--animated:hover, .\--animated.profile-page__header__overlay:hover, .\--animated.project-page__header__overlay:hover {
         background-color: rgba(128, 193, 255, 0); }
-  .base-page__header__avatar img {
-    height: 7em;
-    width: 7em;
-    border-radius: 100%;
-    border: 0.3em solid rgba(255, 255, 255, 0.1);
-    transition: 0.25s; }
-    @media only screen and (min-width: 1000px) {
-      .base-page__header__avatar img {
-        height: 9em;
-        width: 9em; } }
-    .base-page__header__avatar img:hover {
-      transform: scale(1.1);
-      border: 0.3em solid white; }
 
 .home-page__background {
   background: url("/img/profile/dreamsArkRef89.png") center 20%; }
@@ -5409,52 +5580,169 @@ button, .button {
     margin: 1em 0;
     padding: 1em;
     border-radius: 10px;
-    border: .1em solid transparent; }
+    border: .1em solid transparent;
+    transition: transform 0.25s; }
+    .profile-page__profiles li a {
+      color: #353832 !important; }
+      .profile-page__profiles li a:hover {
+        color: inherit; }
     @media only screen and (min-width: 1000px) {
       .profile-page__profiles li {
         padding: 2em;
         transition: .25s; } }
     .profile-page__profiles li.\--active {
       background: rgba(181, 185, 176, 0.1);
-      border: 0.1em dashed #b5b9b0; }
-    .profile-page__profiles li.\--actor:hover {
-      background: rgba(255, 195, 38, 0.08);
-      border: 0.1em dashed rgba(255, 230, 166, 0.2); }
-      .profile-page__profiles li.\--actor:hover h3 {
-        color: #ffc326; }
-    .profile-page__profiles li.\--director:hover {
-      background: rgba(105, 0, 165, 0.08);
-      border: 0.1em dashed rgba(176, 38, 255, 0.2); }
-      .profile-page__profiles li.\--director:hover h3 {
-        color: #6900a5; }
-    .profile-page__profiles li.\--camera-man:hover {
-      background: rgba(217, 13, 18, 0.08);
-      border: 0.1em dashed rgba(246, 111, 114, 0.2); }
-      .profile-page__profiles li.\--camera-man:hover h3 {
-        color: #d90d12; }
-    .profile-page__profiles li.\--designer:hover {
-      background: rgba(0, 149, 255, 0.08);
-      border: 0.1em dashed rgba(128, 202, 255, 0.2); }
-      .profile-page__profiles li.\--designer:hover h3 {
-        color: #0095ff; }
-    .profile-page__profiles li.\--animation:hover {
-      background: rgba(233, 30, 99, 0.08);
+      border: 0.1em dashed #b5b9b0;
+      porra: 'merda'; }
+    .profile-page__profiles li.\--color-artist3D:hover {
+      background-color: rgba(244, 67, 54, 0.08);
+      border: 0.1em dashed rgba(251, 180, 175, 0.2); }
+      .profile-page__profiles li.\--color-artist3D:hover h3 {
+        color: #f44336; }
+    .profile-page__profiles li.\--color-actor:hover {
+      background-color: rgba(233, 30, 99, 0.08);
       border: 0.1em dashed rgba(244, 146, 180, 0.2); }
-      .profile-page__profiles li.\--animation:hover h3 {
+      .profile-page__profiles li.\--color-actor:hover h3 {
         color: #e91e63; }
-    .profile-page__profiles li.\--screenwriter:hover {
-      background: rgba(76, 175, 80, 0.08);
+    .profile-page__profiles li.\--color-actress:hover {
+      background-color: rgba(156, 39, 176, 0.08);
+      border: 0.1em dashed rgba(209, 118, 225, 0.2); }
+      .profile-page__profiles li.\--color-actress:hover h3 {
+        color: #9c27b0; }
+    .profile-page__profiles li.\--color-animation:hover {
+      background-color: rgba(103, 58, 183, 0.08);
+      border: 0.1em dashed rgba(174, 148, 221, 0.2); }
+      .profile-page__profiles li.\--color-animation:hover h3 {
+        color: #673ab7; }
+    .profile-page__profiles li.\--color-art-director:hover {
+      background-color: rgba(63, 81, 181, 0.08);
+      border: 0.1em dashed rgba(152, 162, 219, 0.2); }
+      .profile-page__profiles li.\--color-art-director:hover h3 {
+        color: #3f51b5; }
+    .profile-page__profiles li.\--color-camera-director:hover {
+      background-color: rgba(33, 150, 243, 0.08);
+      border: 0.1em dashed rgba(154, 207, 250, 0.2); }
+      .profile-page__profiles li.\--color-camera-director:hover h3 {
+        color: #2196f3; }
+    .profile-page__profiles li.\--color-concept-artist:hover {
+      background-color: rgba(3, 169, 244, 0.08);
+      border: 0.1em dashed rgba(121, 212, 253, 0.2); }
+      .profile-page__profiles li.\--color-concept-artist:hover h3 {
+        color: #03a9f4; }
+    .profile-page__profiles li.\--color-costume-designer:hover {
+      background-color: rgba(0, 188, 212, 0.08);
+      border: 0.1em dashed rgba(85, 236, 255, 0.2); }
+      .profile-page__profiles li.\--color-costume-designer:hover h3 {
+        color: #00bcd4; }
+    .profile-page__profiles li.\--color-director:hover {
+      background-color: rgba(0, 150, 136, 0.08);
+      border: 0.1em dashed rgba(23, 255, 233, 0.2); }
+      .profile-page__profiles li.\--color-director:hover h3 {
+        color: #009688; }
+    .profile-page__profiles li.\--color-editor:hover {
+      background-color: rgba(76, 175, 80, 0.08);
       border: 0.1em dashed rgba(163, 215, 165, 0.2); }
-      .profile-page__profiles li.\--screenwriter:hover h3 {
+      .profile-page__profiles li.\--color-editor:hover h3 {
         color: #4caf50; }
-    .profile-page__profiles li.\--art-director:hover {
-      background: rgba(96, 125, 139, 0.08);
+    .profile-page__profiles li.\--color-effects:hover {
+      background-color: rgba(139, 195, 74, 0.08);
+      border: 0.1em dashed rgba(200, 227, 170, 0.2); }
+      .profile-page__profiles li.\--color-effects:hover h3 {
+        color: #8bc34a; }
+    .profile-page__profiles li.\--color-executive-producer:hover {
+      background-color: rgba(205, 220, 57, 0.08);
+      border: 0.1em dashed rgba(232, 239, 165, 0.2); }
+      .profile-page__profiles li.\--color-executive-producer:hover h3 {
+        color: #cddc39; }
+    .profile-page__profiles li.\--color-lighting-artist:hover {
+      background-color: rgba(255, 235, 59, 0.08);
+      border: 0.1em dashed rgba(255, 248, 187, 0.2); }
+      .profile-page__profiles li.\--color-lighting-artist:hover h3 {
+        color: #ffeb3b; }
+    .profile-page__profiles li.\--color-make-up-artist:hover {
+      background-color: rgba(255, 193, 7, 0.08);
+      border: 0.1em dashed rgba(255, 225, 135, 0.2); }
+      .profile-page__profiles li.\--color-make-up-artist:hover h3 {
+        color: #ffc107; }
+    .profile-page__profiles li.\--color-packaging-designer:hover {
+      background-color: rgba(255, 152, 0, 0.08);
+      border: 0.1em dashed rgba(255, 204, 128, 0.2); }
+      .profile-page__profiles li.\--color-packaging-designer:hover h3 {
+        color: #ff9800; }
+    .profile-page__profiles li.\--color-pre-stage-project-coordinator:hover {
+      background-color: rgba(255, 87, 34, 0.08);
+      border: 0.1em dashed rgba(255, 184, 162, 0.2); }
+      .profile-page__profiles li.\--color-pre-stage-project-coordinator:hover h3 {
+        color: #ff5722; }
+    .profile-page__profiles li.\--color-project-coordinator:hover {
+      background-color: rgba(121, 85, 72, 0.08);
+      border: 0.1em dashed rgba(184, 149, 136, 0.2); }
+      .profile-page__profiles li.\--color-project-coordinator:hover h3 {
+        color: #795548; }
+    .profile-page__profiles li.\--color-prop:hover {
+      background-color: rgba(158, 158, 158, 0.08);
+      border: 0.1em dashed rgba(222, 222, 222, 0.2); }
+      .profile-page__profiles li.\--color-prop:hover h3 {
+        color: #9e9e9e; }
+    .profile-page__profiles li.\--color-recording-artist:hover {
+      background-color: rgba(96, 125, 139, 0.08);
       border: 0.1em dashed rgba(168, 186, 195, 0.2); }
-      .profile-page__profiles li.\--art-director:hover h3 {
+      .profile-page__profiles li.\--color-recording-artist:hover h3 {
         color: #607d8b; }
-    @media only screen and (min-width: 1000px) {
-      .profile-page__profiles li:hover {
-        transform: scale(1.1); } }
+    .profile-page__profiles li.\--color-render-and-composite:hover {
+      background-color: rgba(245, 127, 23, 0.08);
+      border: 0.1em dashed rgba(250, 194, 145, 0.2); }
+      .profile-page__profiles li.\--color-render-and-composite:hover h3 {
+        color: #f57f17; }
+    .profile-page__profiles li.\--color-rigging-artist:hover {
+      background-color: rgba(27, 94, 32, 0.08);
+      border: 0.1em dashed rgba(55, 193, 66, 0.2); }
+      .profile-page__profiles li.\--color-rigging-artist:hover h3 {
+        color: #1b5e20; }
+    .profile-page__profiles li.\--color-screenwriter:hover {
+      background-color: rgba(0, 77, 64, 0.08);
+      border: 0.1em dashed rgba(0, 205, 170, 0.2); }
+      .profile-page__profiles li.\--color-screenwriter:hover h3 {
+        color: #004d40; }
+    .profile-page__profiles li.\--color-script-supervisor:hover {
+      background-color: rgba(1, 87, 155, 0.08);
+      border: 0.1em dashed rgba(30, 155, 254, 0.2); }
+      .profile-page__profiles li.\--color-script-supervisor:hover h3 {
+        color: #01579b; }
+    .profile-page__profiles li.\--color-set-designer:hover {
+      background-color: rgba(26, 35, 126, 0.08);
+      border: 0.1em dashed rgba(64, 78, 216, 0.2); }
+      .profile-page__profiles li.\--color-set-designer:hover h3 {
+        color: #1a237e; }
+    .profile-page__profiles li.\--color-sound-effect:hover {
+      background-color: rgba(49, 27, 146, 0.08);
+      border: 0.1em dashed rgba(105, 78, 222, 0.2); }
+      .profile-page__profiles li.\--color-sound-effect:hover h3 {
+        color: #311b92; }
+    .profile-page__profiles li.\--color-stage-manager:hover {
+      background-color: rgba(74, 20, 140, 0.08);
+      border: 0.1em dashed rgba(135, 60, 227, 0.2); }
+      .profile-page__profiles li.\--color-stage-manager:hover h3 {
+        color: #4a148c; }
+    .profile-page__profiles li.\--color-storyboard-artist:hover {
+      background-color: rgba(136, 14, 79, 0.08);
+      border: 0.1em dashed rgba(233, 44, 145, 0.2); }
+      .profile-page__profiles li.\--color-storyboard-artist:hover h3 {
+        color: #880e4f; }
+    .profile-page__profiles li.\--color-swing-gang:hover {
+      background-color: rgba(183, 28, 28, 0.08);
+      border: 0.1em dashed rgba(232, 106, 106, 0.2); }
+      .profile-page__profiles li.\--color-swing-gang:hover h3 {
+        color: #b71c1c; }
+    .profile-page__profiles li.\--color-voice-artist:hover {
+      background-color: rgba(33, 33, 33, 0.08);
+      border: 0.1em dashed rgba(97, 97, 97, 0.2); }
+      .profile-page__profiles li.\--color-voice-artist:hover h3 {
+        color: #212121; }
+    .profile-page__profiles li:hover {
+      transform: scale(1.2); }
+    .profile-page__profiles li:active {
+      transform: scale(1); }
 
 .profile-page__canvas {
   padding: 0;
@@ -5472,6 +5760,19 @@ button, .button {
     .profile-page__header.\--extended:hover {
       height: 400px;
       background-position-y: 50%; }
+  .profile-page__header__avatar img {
+    height: 7em;
+    width: 7em;
+    border-radius: 100%;
+    border: 0.3em solid rgba(255, 255, 255, 0.1);
+    transition: 0.25s; }
+    @media only screen and (min-width: 1000px) {
+      .profile-page__header__avatar img {
+        height: 9em;
+        width: 9em; } }
+    .profile-page__header__avatar img:hover {
+      transform: scale(1.1);
+      border: 0.3em solid white; }
 
 .profile-page__palette {
   -webkit-user-select: none;

@@ -23,11 +23,12 @@
                     <h2>{{ $project->name }}</h2>
 
                     <span class="chart --centered" data-percent="100">
-                        <span class="chart__content --reward">5000</span>
+                        <span class="chart__content --reward">{{ $project->stage->reward->amount }}</span>
                     </span>
 
                     <div class="project-page__info__overlay__spacer">
-                        <ark-progress :data="5" :max="30" symbol="days" label="Time Left"
+                        <ark-progress :data="{{ $project->present()->getRemainingDays() }}"
+                                      :max="30" symbol="@lang('project.days')" label="@lang('project.time-left')"
                                       color="ternary"></ark-progress>
                     </div>
 
@@ -51,15 +52,20 @@
                     </ark-statistics>
 
                     <div>
+
                         @if($project->stage->vote->active)
-                            <a href="{{ route('project.idea.vote.create', $project) }}" class="button --white --inverted">
+                            <a href="{{ route('project.vote.create', $project) }}"
+                               class="button --white --inverted">
                                 @lang('project.voting')
                             </a>
-                        @else
+                        @elseif(!$project->stage->submission)
                             <button class="button --white --inverted" data-modal-trigger="submission">
                                 @lang('project.submit')
                             </button>
+                        @else
+                            @lang('project.waiting-for-availability')
                         @endif
+
                     </div>
 
                 </div>
@@ -189,7 +195,7 @@
 
             @forelse($submissions as $submission)
                 <section class="small-12 columns">
-                   {{ $submission->content }}
+                    {{ $submission->content }}
                 </section>
             @empty
                 <section class="small-12 columns">

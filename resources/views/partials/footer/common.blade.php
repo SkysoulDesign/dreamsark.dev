@@ -11,19 +11,19 @@
             </div>
             <div class="small-3 footer__links">
                 <ul>
-                    <li class="li --title">Some Links</li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
+                    <li class="li --title">@lang('footer.dreamsark')</li>
+                    <li><a href="#">@lang('footer.our-mission')</a></li>
+                    <li><a href="#">@lang('footer.our-team')</a></li>
+                    <li><a href="#">@lang('footer.our-history')</a></li>
+                    <li><a href="#">@lang('footer.help-center')</a></li>
                 </ul>
                 <ul>
-                    <li class="li --title">Some Links</li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
-                    <li><a href="#">links</a></li>
+                    <li class="li --title">@lang('footer.legal')</li>
+                    <li><a href="#">@lang('footer.terms')</a></li>
+                    <li><a href="#">@lang('footer.privacy-notice')</a></li>
+                    <li><a href="#">@lang('footer.careers')</a></li>
+                    <li><a href="#">@lang('footer.contact')</a></li>
+                    <li><a href="#">@lang('footer.press')</a></li>
                 </ul>
             </div>
             <div class="small-3">

@@ -1,71 +1,195 @@
+//@include component(dropdown) {
+//
+//  position: relative;
+//  display: inline-block;
+//  color: color(black);
+//
+//  @include option(show) {
+//
+//    & .dropdown__trigger {
+//      color: color(primary);
+//    }
+//
+//    & .dropdown__content {
+//      display: block;
+//    }
+//  }
+//
+//  @include part(trigger) {
+//
+//    cursor: pointer;
+//    font-weight: bold;
+//
+//    &, a {
+//      color: color(black);
+//      text-decoration: none;
+//    }
+//
+//    &:hover, a:hover {
+//      color: color(primary);
+//    }
+//
+//  }
+//
+//  @include part(content) {
+//
+//    position: absolute;
+//    margin-top: 1em;
+//    background-color: color(white);
+//    box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
+//    border: 1px solid color($color: gray, $alpha: 40);
+//    border-radius: .2em;
+//    cursor: pointer;
+//    white-space: nowrap;
+//    right: 0;
+//
+//    display: none;
+//
+//    a {
+//      text-decoration: none;
+//      color: color(black);
+//      display: block;
+//    }
+//
+//    @include part(item) {
+//
+//      text-align: left;
+//
+//      padding: .8em 1.8em;
+//      border-bottom: 1px solid color($color: gray, $alpha: 50);
+//
+//      &:hover {
+//        background-color: color($color: gray, $alpha: 20);
+//      }
+//
+//      @include last(1) {
+//        border-bottom: transparent;
+//      }
+//
+//    }
+//
+//  }
+//
+//}
+
 @include component(dropdown) {
 
   position: relative;
   display: inline-block;
-  color: color(black);
+  margin: 0 .1em;
 
-  @include option(show) {
-
-    & .dropdown__trigger {
-      color: color(primary);
-    }
-
-    & .dropdown__content {
-      display: block;
-    }
+  i {
+    pointer-events: none;
   }
 
   @include part(trigger) {
 
-    cursor: pointer;
-    font-weight: bold;
+    @include option(mode-button) {
 
-    &, a {
       color: color(black);
-      text-decoration: none;
+      border: 1px solid color($color: pure-black, $alpha: 10);
+      border-radius: .3em;
+      padding: .8em 1.2em;
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1.42857143;
+
+      transition: color .25s;
+      transition-property: color, background-color, box-shadow, border-color;
+
+      &:hover {
+        color: color(pure-black);
+        background-color: color(gray, light);
+        border-color: color(gray)
+      }
+
+      &:active {
+        background-image: none;
+        outline: 0;
+        box-shadow: inset 0 3px 5px color($color: pure-black, $alpha: 12);
+        border-color: color($color:gray, $alpha: 70)
+      }
+
     }
 
-    &:hover, a:hover {
-      color: color(primary);
+    @include option(mode-simple) {
+      color: inherit;
+      border: none;
+      font-size: inherit;
+      font-weight: inherit;
+      padding: inherit;
+      line-height: inherit;
+    }
+
+    @include part(avatar) {
+
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      line-height: normal;
+
+      img {
+        margin-right: .8em;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+
     }
 
   }
 
-  @include part(content) {
-
-    position: absolute;
-    margin-top: 1em;
-    background-color: color(white);
-    box-shadow: 0 8px 16px 0 color($color: black, $alpha: 20);
-    border: 1px solid color($color: gray, $alpha: 40);
-    border-radius: .2em;
-    cursor: pointer;
-    white-space: nowrap;
-    right: 0;
+  @include part(options) {
 
     display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    min-width: 100px;
 
-    a {
-      text-decoration: none;
-      color: color(black);
+    width: 100%;
+    padding: .5em 0;
+    margin: .8em 0 0;
+    font-size: 1em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+
+    @include option(open) {
       display: block;
     }
 
-    @include part(item) {
+    li {
 
       text-align: left;
+      transition: color .25s;
+      transition-property: color, background-color;
 
-      padding: .8em 1.8em;
-      border-bottom: 1px solid color($color: gray, $alpha: 50);
+      color: color(black);
+      font-size: .9em;
+      width: 100%;
+      padding: .5em .8em !important;
+      font-weight: 400;
+      cursor: pointer;
 
       &:hover {
-        background-color: color($color: gray, $alpha: 20);
+        color: color(pure-black);
+        background-color: color(gray, light);
       }
 
-      @include last(1) {
-        border-bottom: transparent;
+      i {
+        font-size: .9em;
+        margin-right: .5em;
       }
 
     }
+
   }
+
 }
