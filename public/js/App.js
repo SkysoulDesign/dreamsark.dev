@@ -12311,15 +12311,27 @@ var Form = function () {
             template: require('../templates/form/dropdown-option.html'),
             props: {
                 icon: String,
-                href: String
+                href: String,
+                selected: Boolean
+            },
+            computed: {
+                content: function content() {
+                    return this.$el.innerText.trim();
+                }
             },
             methods: {
                 select: function select() {
                     this.$dispatch('dropdown-option-selected', this.$el.innerText);
                     if (this.href) window.location = this.href;
-                    this.$parent.$set('title', this.$el.innerText);
+                    this.$parent.$set('title', this.content);
                     this.$parent.$set('active', false);
                 }
+            },
+            ready: function ready() {
+                /**
+                 * if this is selected then set parent title as this content
+                 */
+                if (this.selected) this.$parent.$set('title', this.content);
             }
         });
         vue.component('ark-dropdown', {
@@ -12336,16 +12348,23 @@ var Form = function () {
                     type: String,
                     default: 'button' //Simple, Button
                 },
-                title: {
+                pop: {
                     type: String,
-                    required: true
-                }
+                    default: 'down' // up, down
+                },
+                title: String
             },
             methods: {
                 open: function open() {
                     this.$set('active', !this.active);
                     this.$dispatch('dropdown-open', this);
                 }
+            },
+            ready: function ready() {
+                /**
+                 * If no tittle, then select the first element
+                 */
+                if (!this.title) this.$set('title', this.$children[0].content);
             }
         });
         vue.component('ark-textarea', {
@@ -13036,7 +13055,6 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AbstractPage_1 = require("../Abstract/AbstractPage");
-var Helpers_1 = require("../Helpers");
 /**
  * Common Page
  */
@@ -13049,20 +13067,24 @@ var Common = function (_super) {
     Common.prototype.boot = function () {
         this.app.logger.info('This class {Common} will run on every request');
         this.dropdown();
-        this.languageSwitcher();
+        // this.languageSwitcher();
     };
     Common.prototype.languageSwitcher = function () {
         if (this.is(['login', 'register', 'admin.*', 'committee.*'])) {
             return;
         }
-        document.querySelector('#language-switcher').addEventListener('change', function (e) {
-            var form = document.createElement('form'),
-                element = e.target;
-            form.method = 'post';
-            form.action = element.dataset['action'];
-            form.appendChild(element);
-            Helpers_1.submitForm(form);
-        });
+        // document.querySelector('#language-switcher')
+        //     .addEventListener('change', (e:MouseEvent) => {
+        //
+        //         let form = document.createElement('form'),
+        //             element = <HTMLSelectElement>e.target;
+        //
+        //         form.method = 'post';
+        //         form.action = element.dataset['action'];
+        //         form.appendChild(element);
+        //
+        //         submitForm(form)
+        // })
     };
     /**
      * Initialize Dropdown
@@ -13073,7 +13095,7 @@ var Common = function (_super) {
 exports.Common = Common;
 
 
-},{"../Abstract/AbstractPage":4,"../Helpers":22}],24:[function(require,module,exports){
+},{"../Abstract/AbstractPage":4}],24:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -13371,7 +13393,7 @@ module.exports = '<div class="form__field">\n    <button :type="type" class="but
 },{}],33:[function(require,module,exports){
 module.exports = '<li @click.prevent="select">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>\n    <slot></slot>\n</li>\n';
 },{}],34:[function(require,module,exports){
-module.exports = '<div class="dropdown">\n\n    <a @click.prevent="open" class="dropdown__trigger" href="#" :class="[{ \'--avatar\' : avatar }, \'--mode-\'+mode ]">\n\n        <div v-if="avatar" class="dropdown__trigger__avatar">\n            <img :src="avatar" alt="">\n        </div>\n\n        <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>\n        {{ title }}\n\n        <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>\n\n    </a>\n\n    <ul class="dropdown__options" :class="{ \'--open\' : active }">\n        <slot></slot>\n    </ul>\n\n</div>\n';
+module.exports = '<div class="dropdown">\n\n    <a @click.prevent="open" class="dropdown__trigger" href="#" :class="[{ \'--avatar\' : avatar }, \'--mode-\'+mode ]">\n\n        <div v-if="avatar" class="dropdown__trigger__avatar">\n            <img :src="avatar" alt="">\n        </div>\n\n        <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>\n        {{ title }}\n        <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>\n\n    </a>\n\n    <ul class="dropdown__options" :class="[{ \'--open\' : active }, \'--pop-\'+pop ]">\n        <slot></slot>\n    </ul>\n\n</div>\n';
 },{}],35:[function(require,module,exports){
 module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],36:[function(require,module,exports){

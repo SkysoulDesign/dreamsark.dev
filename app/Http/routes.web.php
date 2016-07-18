@@ -60,7 +60,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     /**
      * Switch Language
      */
-    $app->post('change-language', HomeController::class . '@changeLanguage')->name('language');
+    $app->get('change-language/{lang}', HomeController::class . '@changeLanguage')->name('language');
 
     /**
      * Dashboard Controller

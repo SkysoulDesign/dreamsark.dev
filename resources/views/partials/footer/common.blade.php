@@ -39,11 +39,16 @@
             </div>
             <div class="small-6 footer__social +align-right">
                 @lang('footer.icp')
-                <select id="language-switcher" data-action="{{ route('language') }}" name="language"
-                        class="select --simple">
-                    <option value="en" {{ session('language') == 'en' ? 'selected' : '' }}>@lang('forms.english')</option>
-                    <option value="cn" {{ session('language') == 'cn' ? 'selected' : '' }}>@lang('forms.chinese')</option>
-                </select>
+                <ark-dropdown pop="up" mode="simple">
+                    <ark-dropdown-option
+                            {{ session('language') == 'en' ? 'selected' : '' }} href="{{ route('language', 'en') }}">
+                        @lang('forms.english')
+                    </ark-dropdown-option>
+                    <ark-dropdown-option
+                            {{ session('language') == 'cn' ? 'selected' : '' }} href="{{ route('language', 'cn') }}">
+                        @lang('forms.chinese')
+                    </ark-dropdown-option>
+                </ark-dropdown>
             </div>
         </div>
     </div>

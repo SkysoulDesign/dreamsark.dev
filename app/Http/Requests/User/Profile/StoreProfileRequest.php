@@ -55,9 +55,6 @@ class StoreProfileRequest extends Request
             array_set($rules, "question_$question->id", $this->getRules($question));
         }
 
-//        print_r($this->all());
-//        dd($rules);
-
         return $rules;
 
 //        return [

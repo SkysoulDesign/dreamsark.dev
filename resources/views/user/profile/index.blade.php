@@ -52,7 +52,7 @@
                                     <svg viewBox="0 0 572 650">
                                         <use xlink:href="#logo-shape"/>
                                     </svg>
-                                    <span></span>
+                                    <img src="{{ asset("img/profile/$profile->name.png") }}">
                                 </div>
                             </div>
                             <div class="small-9 columns">

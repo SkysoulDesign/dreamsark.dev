@@ -107,7 +107,7 @@
         background-image: none;
         outline: 0;
         box-shadow: inset 0 3px 5px color($color: pure-black, $alpha: 12);
-        border-color: color($color:gray, $alpha: 70)
+        border-color: color($color: gray, $alpha: 70)
       }
 
     }
@@ -163,6 +163,11 @@
 
     @include option(open) {
       display: block;
+    }
+
+    @include option(pop-up) {
+      margin-top: -100%;
+      top: -100%;
     }
 
     li {

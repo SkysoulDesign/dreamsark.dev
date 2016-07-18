@@ -47616,61 +47616,6 @@ var __extends = undefined && undefined.__extends || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Components_1 = require("../Abstract/Components");
-/**
- * Animator Class
- */
-var Animator = function (_super) {
-    __extends(Animator, _super);
-    function Animator() {
-        _super.apply(this, arguments);
-        this.animations = [];
-    }
-    /**
-     * Create a new Animation
-     *
-     * @param mesh
-     * @returns {THREE.AnimationMixer}
-     */
-    Animator.prototype.create = function (mesh) {
-        var mixer = new THREE.AnimationMixer(mesh);
-        this.animations.push(mixer);
-        return mixer;
-    };
-    Animator.prototype.push = function (name, mixer) {
-        this.animations.push({
-            name: name,
-            mixer: mixer
-        });
-    };
-    /**
-     * Update Animations
-     * @param time
-     * @param delta
-     */
-    Animator.prototype.update = function (time, delta) {
-        if (this.animations.length > 0) {
-            for (var i = 0; i < this.animations.length; i++) {
-                this.animations[i].update(delta);
-            }
-        }
-    };
-    return Animator;
-}(Components_1.Components);
-exports.Animator = Animator;
-
-
-},{"../Abstract/Components":17}],52:[function(require,module,exports){
-"use strict";
-
-var __extends = undefined && undefined.__extends || function (d, b) {
-    for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-    }function __() {
-        this.constructor = d;
-    }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Components_1 = require("../Abstract/Components");
 var Browser = function (_super) {
     __extends(Browser, _super);
     function Browser(app) {
@@ -47726,7 +47671,7 @@ var Browser = function (_super) {
 exports.Browser = Browser;
 
 
-},{"../Abstract/Components":17}],53:[function(require,module,exports){
+},{"../Abstract/Components":17}],52:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -47758,7 +47703,7 @@ var Camera = function (_super) {
 exports.Camera = Camera;
 
 
-},{}],54:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -47891,7 +47836,7 @@ var Characters = function (_super) {
 exports.Characters = Characters;
 
 
-},{"../../../Helpers":10,"../../Helpers":11,"../Abstract/Components":17,"../Characters/Actor":19,"../Characters/Actress":20,"../Characters/Animation":21,"../Characters/ArtDirector":22,"../Characters/Artist3D":23,"../Characters/Base":24,"../Characters/CameraDirector":26,"../Characters/ConceptArtist":27,"../Characters/CostumeDesigner":28,"../Characters/Director":29,"../Characters/Editor":30,"../Characters/Effects":31,"../Characters/ExecutiveProducer":32,"../Characters/LightingArtist":33,"../Characters/MakeUpArtist":34,"../Characters/PackagingDesigner":35,"../Characters/PreStageProjectCoordinator":36,"../Characters/ProjectCoordinator":37,"../Characters/Prop":38,"../Characters/RecordingArtist":39,"../Characters/RenderAndComposite":40,"../Characters/RiggingArtist":41,"../Characters/ScreenWriter":42,"../Characters/ScriptSupervisor":43,"../Characters/SetDesigner":44,"../Characters/SoundEffect":45,"../Characters/StageManager":46,"../Characters/StoryboardArtist":47,"../Characters/SwingGang":48,"../Characters/VoiceArtist":49}],55:[function(require,module,exports){
+},{"../../../Helpers":10,"../../Helpers":11,"../Abstract/Components":17,"../Characters/Actor":19,"../Characters/Actress":20,"../Characters/Animation":21,"../Characters/ArtDirector":22,"../Characters/Artist3D":23,"../Characters/Base":24,"../Characters/CameraDirector":26,"../Characters/ConceptArtist":27,"../Characters/CostumeDesigner":28,"../Characters/Director":29,"../Characters/Editor":30,"../Characters/Effects":31,"../Characters/ExecutiveProducer":32,"../Characters/LightingArtist":33,"../Characters/MakeUpArtist":34,"../Characters/PackagingDesigner":35,"../Characters/PreStageProjectCoordinator":36,"../Characters/ProjectCoordinator":37,"../Characters/Prop":38,"../Characters/RecordingArtist":39,"../Characters/RenderAndComposite":40,"../Characters/RiggingArtist":41,"../Characters/ScreenWriter":42,"../Characters/ScriptSupervisor":43,"../Characters/SetDesigner":44,"../Characters/SoundEffect":45,"../Characters/StageManager":46,"../Characters/StoryboardArtist":47,"../Characters/SwingGang":48,"../Characters/VoiceArtist":49}],54:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -47974,7 +47919,7 @@ var Compositions = function (_super) {
 exports.Compositions = Compositions;
 
 
-},{"../Abstract/Components":17,"../Compositions/Main":64,"../Compositions/Project":65}],56:[function(require,module,exports){
+},{"../Abstract/Components":17,"../Compositions/Main":64,"../Compositions/Project":65}],55:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48043,7 +47988,7 @@ var Controls = function (_super) {
 exports.Controls = Controls;
 
 
-},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],57:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/controls/OrbitControls":2}],56:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48103,7 +48048,7 @@ var EffectComposer = function (_super) {
 exports.EffectComposer = EffectComposer;
 
 
-},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],58:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/postprocessing/EffectComposer":4,"../../../../../../node_modules/three/examples/js/postprocessing/MaskPass":5,"../../../../../../node_modules/three/examples/js/postprocessing/RenderPass":6,"../../../../../../node_modules/three/examples/js/postprocessing/ShaderPass":7,"../../../../../../node_modules/three/examples/js/shaders/CopyShader":8,"../../../../../../node_modules/three/examples/js/shaders/SSAOShader":9}],57:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48148,7 +48093,7 @@ var Light = function (_super) {
 exports.Light = Light;
 
 
-},{"../Abstract/Components":17}],59:[function(require,module,exports){
+},{"../Abstract/Components":17}],58:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48229,7 +48174,7 @@ var Loader = function (_super) {
 exports.Loader = Loader;
 
 
-},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":11,"../Abstract/Components":17}],60:[function(require,module,exports){
+},{"../../../../../../node_modules/three/examples/js/loaders/FBXLoader":3,"../../Helpers":11,"../Abstract/Components":17}],59:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48264,7 +48209,7 @@ var Manager = function (_super) {
 exports.Manager = Manager;
 
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48337,7 +48282,7 @@ var Material = function (_super) {
 exports.Material = Material;
 
 
-},{"../../Helpers":11,"../Abstract/Components":17,"../Materials/BaseMaterial":66}],62:[function(require,module,exports){
+},{"../../Helpers":11,"../Abstract/Components":17,"../Materials/BaseMaterial":66}],61:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48375,7 +48320,7 @@ var Renderer = function (_super) {
 exports.Renderer = Renderer;
 
 
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48401,7 +48346,62 @@ var Scene = function (_super) {
 exports.Scene = Scene;
 
 
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
+"use strict";
+
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Components_1 = require("../Abstract/Components");
+/**
+ * Animator Class
+ */
+var Animator = function (_super) {
+    __extends(Animator, _super);
+    function Animator() {
+        _super.apply(this, arguments);
+        this.animations = [];
+    }
+    /**
+     * Create a new Animation
+     *
+     * @param mesh
+     * @returns {THREE.AnimationMixer}
+     */
+    Animator.prototype.create = function (mesh) {
+        var mixer = new THREE.AnimationMixer(mesh);
+        this.animations.push(mixer);
+        return mixer;
+    };
+    Animator.prototype.push = function (name, mixer) {
+        this.animations.push({
+            name: name,
+            mixer: mixer
+        });
+    };
+    /**
+     * Update Animations
+     * @param time
+     * @param delta
+     */
+    Animator.prototype.update = function (time, delta) {
+        if (this.animations.length > 0) {
+            for (var i = 0; i < this.animations.length; i++) {
+                this.animations[i].update(delta);
+            }
+        }
+    };
+    return Animator;
+}(Components_1.Components);
+exports.Animator = Animator;
+
+
+},{"../Abstract/Components":17}],64:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function (d, b) {
@@ -48635,6 +48635,6 @@ window['dreamsark'].install({
 });
 
 
-},{"../Plugins":12,"./Classes/Animation":50,"./Classes/Browser":52,"./Classes/Camera":53,"./Classes/Characters":54,"./Classes/Compositions":55,"./Classes/Controls":56,"./Classes/EffectComposer":57,"./Classes/Light":58,"./Classes/Loader":59,"./Classes/Manager":60,"./Classes/Material":61,"./Classes/Renderer":62,"./Classes/Scene":63,"./Classes/animator":51,"three":1}]},{},[67]);
+},{"../Plugins":12,"./Classes/Animation":50,"./Classes/Browser":51,"./Classes/Camera":52,"./Classes/Characters":53,"./Classes/Compositions":54,"./Classes/Controls":55,"./Classes/EffectComposer":56,"./Classes/Light":57,"./Classes/Loader":58,"./Classes/Manager":59,"./Classes/Material":60,"./Classes/Renderer":61,"./Classes/Scene":62,"./Classes/animator":63,"three":1}]},{},[67]);
 
 //# sourceMappingURL=Profile.js.map

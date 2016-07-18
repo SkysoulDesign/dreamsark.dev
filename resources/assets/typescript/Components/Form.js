@@ -182,16 +182,29 @@ var Form = (function () {
             template: require('../templates/form/dropdown-option.html'),
             props: {
                 icon: String,
-                href: String
+                href: String,
+                selected: Boolean
+            },
+            computed: {
+                content: function () {
+                    return this.$el.innerText.trim();
+                }
             },
             methods: {
                 select: function () {
                     this.$dispatch('dropdown-option-selected', this.$el.innerText);
                     if (this.href)
                         window.location = this.href;
-                    this.$parent.$set('title', this.$el.innerText);
+                    this.$parent.$set('title', this.content);
                     this.$parent.$set('active', false);
-                }
+                },
+            },
+            ready: function () {
+                /**
+                 * if this is selected then set parent title as this content
+                 */
+                if (this.selected)
+                    this.$parent.$set('title', this.content);
             }
         });
         vue.component('ark-dropdown', {
@@ -208,10 +221,11 @@ var Form = (function () {
                     type: String,
                     default: 'button' //Simple, Button
                 },
-                title: {
+                pop: {
                     type: String,
-                    required: true
-                }
+                    default: 'down' // up, down
+                },
+                title: String
             },
             methods: {
                 open: function () {
@@ -219,6 +233,13 @@ var Form = (function () {
                     this.$dispatch('dropdown-open', this);
                 }
             },
+            ready: function () {
+                /**
+                 * If no tittle, then select the first element
+                 */
+                if (!this.title)
+                    this.$set('title', this.$children[0].content);
+            }
         });
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),

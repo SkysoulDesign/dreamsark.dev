@@ -8,12 +8,11 @@
 
         <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>
         {{ title }}
-
         <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 
     </a>
 
-    <ul class="dropdown__options" :class="{ '--open' : active }">
+    <ul class="dropdown__options" :class="[{ '--open' : active }, '--pop-'+pop ]">
         <slot></slot>
     </ul>
 

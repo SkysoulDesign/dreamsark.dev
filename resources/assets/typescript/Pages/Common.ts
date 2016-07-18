@@ -13,7 +13,7 @@ export class Common extends AbstractPage {
         this.app.logger.info('This class {Common} will run on every request');
 
         this.dropdown();
-        this.languageSwitcher();
+        // this.languageSwitcher();
 
     }
 
@@ -23,19 +23,19 @@ export class Common extends AbstractPage {
             return
         }
 
-        document.querySelector('#language-switcher')
-            .addEventListener('change', (e:MouseEvent) => {
+        // document.querySelector('#language-switcher')
+        //     .addEventListener('change', (e:MouseEvent) => {
+        //
+        //         let form = document.createElement('form'),
+        //             element = <HTMLSelectElement>e.target;
+        //
+        //         form.method = 'post';
+        //         form.action = element.dataset['action'];
+        //         form.appendChild(element);
+        //
+        //         submitForm(form)
 
-                let form = document.createElement('form'),
-                    element = <HTMLSelectElement>e.target;
-
-                form.method = 'post';
-                form.action = element.dataset['action'];
-                form.appendChild(element);
-
-                submitForm(form)
-
-            })
+            // })
 
 
     }

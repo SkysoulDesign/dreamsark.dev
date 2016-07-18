@@ -46,18 +46,15 @@ class HomeController extends Controller
      * Change Language
      *
      * @param \Illuminate\Http\Request $request
+     * @param $language
      * @param \Illuminate\Foundation\Application $application
+     * @return
      */
-    public function changeLanguage(Request $request, Application $application)
+    public function changeLanguage(Request $request, $language, Application $application)
     {
 
-        $request->session()->set('language',
-            $request->input('language', config('app.fallback_locale'))
-        );
-
-        $application->setLocale(
-            $request->session()->get('language')
-        );
+        $request->session()->set('language', $language);
+        $application->setLocale($language);
 
         return redirect()->back()->withStatus(
             trans('notifications.language-changed-success')
