@@ -8,9 +8,8 @@
 
         <div class="small-12 columns">
             <header class="header --centered">
-                Lorem ipsum dolor sit
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci delectus dicta dolores eaque
-                    eveniet excepturi in laborum molestias nobis optio recusandae.</p>
+                @lang('project.project-title')
+                <p>@lang('project.project-description')</p>
             </header>
         </div>
 
@@ -55,7 +54,8 @@
                                     @lang('project.start-next-stage')
                                 </a>
                             @endif
-                            <a href="{{ route('project.show', $project) }}" class="button --small --primary">@lang('forms.view')</a>
+                            <a href="{{ route('project.show', $project) }}"
+                               class="button --small --primary">@lang('forms.view')</a>
                             <button class="button --small --primary">@lang('forms.edit')</button>
                         </td>
                     </tr>

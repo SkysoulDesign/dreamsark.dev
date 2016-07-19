@@ -23,6 +23,18 @@ class ProfileController extends Controller
     private $isIFrameCall = false;
 
     /**
+     * @param UserProfileRepositoryInterface $profileRepositoryInterface
+     * @return mixed
+     */
+    public function index(UserProfileRepositoryInterface $profileRepositoryInterface)
+    {
+        $profileList = $profileRepositoryInterface->all(['id', 'name', 'display_name']);
+        $profileWithData = $profileRepositoryInterface->all();
+
+        return view('profile.index', compact('profileList', 'profileWithData'));
+    }
+
+    /**
      * @param Request $request
      * @param Profile $profile
      * @param Option $option
@@ -77,18 +89,7 @@ class ProfileController extends Controller
         return $this->showPublicProfile($request, $profile, $option);
     }
 
-    /**
-     * @param UserProfileRepositoryInterface $profileRepositoryInterface
-     * @return mixed
-     */
-    public function index(UserProfileRepositoryInterface $profileRepositoryInterface)
-    {
-        $profileList = $profileRepositoryInterface->all(['id', 'name', 'display_name']);
-//        dd($profileList);
-        $profileWithData = $profileRepositoryInterface->all();
 
-        return view('profile.index', compact('profileList', 'profileWithData'));
-    }
 
     /**
      * @param Profile $profile

@@ -1,103 +1,157 @@
-@mixin dreamsark-menu() {
+@include component(menu) {
 
-  @include component(menu) {
+  padding: 1.5em .2em;
 
-    padding: 1.5em .2em;
+  a {
+
+    @extend a;
+
+    &:hover {
+      @extend a:hover;
+    }
+
+  }
+
+  @include respond-to(desktop) {
+    padding: 2em;
+  }
+
+  @include option(inverted) {
+    a {
+      @extend .\+white;
+    }
+  }
+
+  @include option(translucent) {
+
+    background: color($color: pure-black, $alpha: 10);
+
+    padding: .3em;
 
     a {
+      @extend a.\--inverted
+    }
 
-      @extend a;
+  }
 
-      &:hover {
-        @extend a:hover;
+  @include option(compact) {
+    padding: .5em;
+    border-bottom: .2em solid color(gray, dark, 10);
+  }
+
+  @include option(white-background) {
+    background: color(white);
+  }
+
+  @include part(brand) {
+
+    img {
+
+      height: auto;
+      width: 7em;
+
+      @include respond-to(desktop) {
+        width: 10em;
       }
 
     }
+  }
 
-    @include option(inverted) {
-      a {
-        @extend .\+white;
-      }
+  @include part(item) {
+
+    padding: .5em 1em;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: normal;
+
+    &:hover {
+      color: color(primary, x-light, 70);
+      background: color(primary, dark, 60);
     }
 
-    @include option(translucent) {
+    @include font-style('links');
 
-      background: color($color: pure-black, $alpha: 10);
-
-      padding: .3em;
-
-      a {
-        @extend a.\--inverted
-      }
-
+    @include option(active) {
+      background: color(primary, dark, 50);
     }
 
-    @include respond-to(desktop) {
-      padding: 2em;
-    }
-
-    @include option(compact) {
-      padding: .5em;
-      border-bottom: .2em solid color(gray, dark, 10);
-    }
-
-    @include option(white-background) {
-      background: color(white);
-    }
-
-    @include part(brand) {
-
-      img {
-
-        height: auto;
-        width: 7em;
-
-        @include respond-to(desktop) {
-          width: 10em;
-        }
-
-      }
-    }
-
-    @include part(item) {
-
-      padding: .5em 1em;
-      text-decoration: none;
-      white-space: nowrap;
-      line-height: normal;
-
-      &:hover {
-        color: color(primary, x-light, 70);
-        background: color(primary, dark, 60);
-      }
-
-      @include option(active) {
-        background: color(primary, dark, 50);
-      }
-
-      @include font-style('links');
-
-    }
-
-    @include part(avatar) {
+    @include option(image) {
 
       cursor: pointer;
+      display: inline-block;
+      color: black;
+      position: relative;
+      padding: 0 .8em;
+
+      transition: background-color .15s;
+      border-radius: 100em;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-left: 1px solid color($color: gray, $alpha: 50);
+        transition: left .5s;
+      }
+
+      &:hover {
+
+        background-color: color(yellow);
+
+        &:before {
+          left: -7%;
+        }
+
+        span {
+          padding-right: 1em;
+          color: color(pure-black);
+          &:before {
+            content: attr(data-currency-symbol);
+            display: inline-block;
+            margin-right: .2em;
+          }
+
+        }
+
+      }
+
+      span {
+        text-align: left;
+        margin-right: .4em;
+        transition: padding .25s;
+        color: color(black);
+      }
 
       img {
-        border: .22em solid color($color: primary, $tone: x-light, $alpha: 80);
-        width: 4em;
-        border-radius: 4em;
-        text-align: center;
-        transition: .1s;
+        padding: .5em;
+        width: 50px;
+        height: 50px;
+      }
 
-        &:hover {
-          transform: scale(1.1);
-        }
+    }
 
-        &:active {
-          transform: scale(.9);
-        }
+  }
 
+  @include part(avatar) {
+
+    cursor: pointer;
+
+    img {
+
+      border: .22em solid color($color: primary, $tone: x-light, $alpha: 80);
+      width: 4em;
+      border-radius: 4em;
+      text-align: center;
+      transition: .1s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(.9);
       }
 
     }

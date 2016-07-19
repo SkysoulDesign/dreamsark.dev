@@ -1,8 +1,8 @@
 <?php
 
 return array (
-  'committee-section' => NULL,
-  'project-review' => NULL,
-  'project-fund' => NULL,
-  'project-distribution' => NULL,
+  'committee-section' => 'Committee',
+  'project-review' => 'Project Review',
+  'project-fund' => 'Project Fund',
+  'project-distribution' => 'Project Distribution',
 );

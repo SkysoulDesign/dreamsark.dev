@@ -9,4 +9,3 @@
         @endforeach
     </div>
 </div>
-<div class="ui vertical no-content divider"></div>

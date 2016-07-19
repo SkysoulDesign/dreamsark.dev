@@ -1,4 +1,4 @@
-@extends('layouts.master', ['class' => 'profile-page'])
+@extends('layouts.master', ['class' => 'profile-page', 'container' => false])
 
 @section('content')
 

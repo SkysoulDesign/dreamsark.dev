@@ -13114,10 +13114,20 @@ var Project = function (_super) {
     __extends(Project, _super);
     function Project() {
         _super.apply(this, arguments);
-        this.routes = ['project.show'];
+        this.routes = ['project.show', 'user.project.create'];
     }
     Project.prototype.boot = function (stage) {
-        this[stage]();
+        if (stage) this[stage]();
+        if (this.only('user.project.create')) {
+            this.app.vue({
+                data: {
+                    name: 'test'
+                },
+                ready: function ready() {
+                    console.log('im borm');
+                }
+            });
+        }
     };
     Project.prototype.idea = function () {
         this.initChart();
@@ -13399,7 +13409,7 @@ module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot
 },{}],36:[function(require,module,exports){
 module.exports = '<form :id="id" :action="action" :method="method">\n   <slot></slot>\n\n   <div v-if="globalErrors"  class="form__field__error">\n      <ul v-for="error in globalErrors">\n         <li>{{ error }}</li>\n      </ul>\n   </div>\n\n</form>\n';
 },{}],37:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<div  class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],38:[function(require,module,exports){
 module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea :class="{ \'--error\': errors }"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :rows="rows"\n              :readOnly="readOnly">{{ value }}</textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],39:[function(require,module,exports){

@@ -21,8 +21,7 @@
 
     </div>
 
-    <ark-form class="row align-center --overlapped"
-              action="{{ route('user.project.store') }}">
+    <ark-form class="row align-center --overlapped" action="{{ route('user.project.store') }}">
 
         <div class="small-11 medium-9 columns form__header --rounded">
             @lang('project.start-project')

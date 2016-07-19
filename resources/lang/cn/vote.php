@@ -9,7 +9,7 @@ return array (
   'action' => 'Action',
   'reward' => '奖励:',
   'vote' => '投票',
-  'candidate' => 'Candidates',
+  'candidate' => '候选人',
   'expect-cost' => '预期的费用',
-  'is-not-open' => 'Voting is not active for this project',
+  'is-not-open' => '这项目投票选项还未开放',
 );

@@ -12,8 +12,24 @@
                     <img class="+shadow" src="{{asset('img/temp/avatar-huge.png')}}" alt="">
                 </div>
             </div>
-            <div class="small-12 medium-9 columns">
-                something here
+            <div class="small-12 medium-9 columns align-self-bottom">
+                <ul class="badges --inline --right">
+                    <li>
+                        <img src="{{ asset('img/badges/book.png') }}" alt=""> 200
+                    </li>
+                    <li>
+                        <img src="{{ asset('img/badges/book-2.png') }}" alt=""> 500
+                    </li>
+                    <li>
+                        <img src="{{ asset('img/badges/potion.png') }}" alt=""> 10
+                    </li>
+                    <li>
+                        <img src="{{ asset('img/badges/ring.png') }}" alt=""> 18
+                    </li>
+                    <li>
+                        <img src="{{ asset('img/badges/glass.png') }}" alt=""> 9
+                    </li>
+                </ul>
             </div>
         </div>
 

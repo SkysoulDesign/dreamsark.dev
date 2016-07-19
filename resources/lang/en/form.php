@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'make-a-submission' => NULL,
+  'make-a-submission' => 'Make Submission',
 );

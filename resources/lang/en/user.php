@@ -30,4 +30,7 @@ return array (
   'social-media' => 'Social Networks',
   'linked-accounts' => 'Linked Accounts',
   'password-no-change' => 'Leave blank if don\'t want to change password',
+  'my-backed-list-description' => NULL,
+  'my-earning-list-description' => NULL,
+  'purchases-description' => NULL,
 );

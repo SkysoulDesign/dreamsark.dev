@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'purchase' => NULL,
+  'purchase' => '购买',
   'withdraw' => NULL,
 );

@@ -1,12 +1,12 @@
 <?php
 
 return array (
-  'admin-section' => NULL,
-  'dashboard' => NULL,
-  'projects' => NULL,
-  'transactions' => NULL,
-  'users' => NULL,
-  'profile' => NULL,
-  'question' => NULL,
-  'project-list' => NULL,
+  'admin-section' => 'Admin Dashboard',
+  'dashboard' => 'Dashboard',
+  'projects' => 'Projects',
+  'transactions' => 'Transactions',
+  'users' => 'Users',
+  'profile' => 'Profile',
+  'question' => 'Question',
+  'project-list' => 'Project List',
 );

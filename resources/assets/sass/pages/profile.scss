@@ -92,7 +92,13 @@
 
   @include base-header() {
 
-    background: get-url('profile/dreamsArkRef89.png') center 20%;
+    background: get-url('profile/dreamsArkRef89.png') center 78% no-repeat;
+    background-size: cover;
+
+    @include option(default) {
+      background: get-url('headers/dreamsArkRef83.jpg') center 78% no-repeat;
+      background-size: cover;
+    }
 
     transition: height .35s;
     transition-property: background-position-y, height;

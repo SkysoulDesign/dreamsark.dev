@@ -68,4 +68,6 @@ return array (
   'detail' => 'Detail',
   'buy' => 'Buy',
   'no-purchase' => 'There isn\'t anything here, please make a purchase first to see some history',
+  'add-coin-modal-footer' => NULL,
+  'yuan-currency-symbol' => NULL,
 );

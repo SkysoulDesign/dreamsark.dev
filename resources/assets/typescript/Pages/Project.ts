@@ -7,10 +7,25 @@ export class Project extends AbstractPage {
 
     public routes = [
         'project.show',
+        'user.project.create'
     ]
 
     boot(stage) {
-        this[stage]();
+
+        if (stage)
+            this[stage]();
+
+        if (this.only('user.project.create')) {
+            this.app.vue({
+                data: {
+                    name: 'test'
+                },
+                ready(){
+                    console.log('im borm')
+                }
+            })
+        }
+
     }
 
     idea() {

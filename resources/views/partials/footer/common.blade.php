@@ -1,15 +1,13 @@
 <div class="row --fluid align-center footer">
     <div class="small-12 medium-10 columns">
         <div class="row">
-            <div class="small-6">
-                @lang('general.about-dreamsark')
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra mattis arcu, a congue leo
-                    malesuada eu. Nam nec mauris ut odio tristique varius et eu metus. Quisque massa purus, aliquet quis
-                    blandit et,</p>
-
-                <p>mollis sed lorem. Sed vel tincidunt elit. Phasellus at varius odio, sit amet fermentum mauris.</p>
+            <div class="small-5 footer__links">
+                <ul>
+                    <li class="li --title"> @lang('general.about-dreamsark')</li>
+                    <li>@lang('general.about-dreamsark-description')</li>
+                </ul>
             </div>
-            <div class="small-3 footer__links">
+            <div class="small-3 small-offset-1 footer__links">
                 <ul>
                     <li class="li --title">@lang('footer.dreamsark')</li>
                     <li><a href="#">@lang('footer.our-mission')</a></li>
@@ -29,7 +27,7 @@
             <div class="small-3">
                 @lang('general.technical-support')
                 <h2 class="h2 +profile-color-actor">400-001-1236</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>@lang('general.technical-support-description')</p>
             </div>
             <div class="small-12">
                 <div class="divider --hair-line">@lang('general.dreamsark-copyright')</div>

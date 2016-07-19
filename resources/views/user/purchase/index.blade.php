@@ -8,29 +8,32 @@
         <div class="small-12 columns">
             <header class="header --full">
                 @lang('user.purchases')
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad aliquam aliquid aspernatur autem
-                    beatae culpa dolor dolore dolorem doloribus fugit illum iusto mollitia natus non, odit provident
-                    quisquam ratione.</p>
+                <p>@lang('user.purchases-description')</p>
                 <div class="divider --straight"></div>
             </header>
         </div>
 
         <div class="small-12 columns">
 
-            <ul class="section__nav --right">
-                <li class="section__nav__item --active">
+            <ul class="ul --inline --bold --right">
+                <li class="li --active">
                     <a href="#">@lang('payment.purchase')</a>
                 </li>
-                <li class="section__nav__item --active">
+                <li>
                     <a href="#">@lang('payment.withdraw')</a>
                 </li>
-                <li class="section__nav__item --as-button">
-                    <a href="#" data-modal-trigger="add-coin">@lang('payment.add-coins')</a>
+                <li>
+                    <a class="button --primary --medium" href="#" data-modal-trigger="add-coin">
+                        @lang('payment.add-coins')
+                    </a>
                 </li>
-                <li class="section__nav__item --as-button">
-                    <a href="#" data-modal-trigger="withdraw-coin">@lang('payment.withdraw-coins')</a>
+                <li>
+                    <a class="button --primary --medium" href="#" data-modal-trigger="withdraw-coin">
+                        @lang('payment.withdraw-coins')
+                    </a>
                 </li>
             </ul>
+
         </div>
 
         <div class="small-12 columns">
@@ -68,7 +71,7 @@
 
     </div>
 
-    <ark-modal trigger="add-coin">
+    <ark-modal trigger="add-coin" header="@lang('Add Coin Form')">
 
         <form id="purchase-coin" class="row align-center" method="post"
               action="{{ route('user.purchase.coin.store') }}">
@@ -87,7 +90,7 @@
                     <div class="small-12 columns form__field">
                         <select name="payment_method">
                             <option value="alipay">@lang('payment.alipay')</option>
-                            <option value="unionpay">@lang('payment.unionpay')</option>
+                            <option value="unionPay">@lang('payment.unionpay')</option>
                             <option value="wechat">@lang('payment.wechat')</option>
                         </select>
                     </div>
@@ -108,9 +111,7 @@
                     </div>
 
                     <div class="small-12 columns form__description +center-on-mobile">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi architecto consequuntur
-                        deserunt dicta doloremque enim illum ipsam itaque iusto molestiae mollitia nihil quaerat, quas
-                        sapiente similique, tempora! Aperiam, tempore!
+                       @lang('payment.add-coin-modal-footer')
                     </div>
 
                 </div>

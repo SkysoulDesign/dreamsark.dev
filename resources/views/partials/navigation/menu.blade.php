@@ -32,7 +32,12 @@
         <div class="small-6 columns +align-right menu +hidden-on-mobile">
 
             <a href="{{ route('project.index') }}" class="menu__item +round +transparent">@lang('nav.projects')</a>
-            <a href="#" class="menu__item +round +transparent">@lang('nav.talents')</a>
+            <a href="{{ route('public.profile.index') }}" class="menu__item +round +transparent">@lang('nav.talents')</a>
+
+            <div class="menu__item --image">
+                <img src="{{ asset('img/badges/coin.png') }}" alt="">
+                <span data-currency-symbol="@lang('payment.yuan-currency-symbol')">{{ $user->bag->coins or 0 }}</span>
+            </div>
 
             <ark-dropdown title="{{ auth()->user()->username }}" mode="simple">
 

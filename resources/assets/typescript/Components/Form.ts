@@ -192,6 +192,7 @@ export class Form implements ComponentInterface {
             },
             computed: {
                 value: function () {
+
                     return this.getParentForm().old(this.name);
                 },
                 errors: function () {
@@ -213,7 +214,6 @@ export class Form implements ComponentInterface {
                 },
 
             }
-
         });
 
         vue.component('ark-dropdown-option', {

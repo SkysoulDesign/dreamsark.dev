@@ -19,7 +19,9 @@ var Base = (function (_super) {
         };
     };
     Base.prototype.create = function (models) {
-        return new THREE.Mesh(models.base);
+        var material = this.material.get('baseMaterial').clone();
+        material.skinning = false;
+        return new THREE.Mesh(models.base, material);
     };
     return Base;
 }(Character_1.Character));

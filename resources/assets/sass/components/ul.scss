@@ -27,6 +27,8 @@
 
     li {
 
+      padding: .2em;
+
       @include option(start) {
         margin-right: auto;
       }

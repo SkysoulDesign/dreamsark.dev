@@ -14,10 +14,22 @@ var Project = (function (_super) {
         _super.apply(this, arguments);
         this.routes = [
             'project.show',
+            'user.project.create'
         ];
     }
     Project.prototype.boot = function (stage) {
-        this[stage]();
+        if (stage)
+            this[stage]();
+        if (this.only('user.project.create')) {
+            this.app.vue({
+                data: {
+                    name: 'test'
+                },
+                ready: function () {
+                    console.log('im borm');
+                }
+            });
+        }
     };
     Project.prototype.idea = function () {
         this.initChart();

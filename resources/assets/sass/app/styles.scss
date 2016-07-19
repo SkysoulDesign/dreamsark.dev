@@ -25,7 +25,6 @@
 
     @extend .base-page__header;
 
-    background: get-url('headers/header-3.jpg') center center no-repeat;
     @content;
 
     @include option(animated){

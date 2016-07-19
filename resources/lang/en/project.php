@@ -142,4 +142,6 @@ return array (
   'days' => NULL,
   'time-left' => NULL,
   'waiting-for-availability' => NULL,
+  'project-title' => NULL,
+  'project-description' => NULL,
 );

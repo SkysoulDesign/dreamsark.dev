@@ -1,0 +1,55 @@
+@include component(badges) {
+
+  @extend ul;
+
+  @include option(inline) {
+    @extend .ul.\--inline;
+  }
+
+  &:hover {
+  }
+
+  li {
+
+    display: flex;
+    align-items: center;
+    margin: 0 .2em;
+    font-size: smaller;
+    cursor: pointer;
+    user-select: none;
+    color: color(white);
+
+    border-radius: 5em;
+    padding-right: .5em !important;
+    border: 1px solid transparent;
+    font-weight: bold;
+
+    transition: border .25s;
+    transition-property: border, background-color, background-color, font-weight;
+    @include base-scalable(2);
+
+    &:hover {
+      font-weight: normal;
+      color: color(black);
+      background-color: color(yellow);
+      border: 1px solid color(yellow, dark);
+      img {
+        background-color: color($color: yellow, $tone: dark);
+      }
+    }
+
+    img {
+
+      transition: background-color .25s;
+
+      margin-right: .2em;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      background-color: color($color: white, $alpha: 10);
+      object-fit: cover;
+    }
+
+  }
+
+}

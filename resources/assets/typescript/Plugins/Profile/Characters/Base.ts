@@ -12,9 +12,12 @@ export class Base extends Character {
     }
 
     create(models){
+
+        let material = this.material.get('baseMaterial').clone();
+        material.skinning = false;
+
         return new THREE.Mesh(
-            models.base,
-            // this.material.get('baseMaterial')
+            models.base, material
         )
     }
 

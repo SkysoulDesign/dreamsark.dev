@@ -23,9 +23,11 @@ var BaseMaterial = (function (_super) {
         material.needsUpdate = true;
     };
     BaseMaterial.prototype.material = function () {
-        return new THREE.MeshBasicMaterial({
+        return new THREE.MeshStandardMaterial({
             skinning: true,
-            shading: THREE.FlatShading
+            shading: THREE.FlatShading,
+            roughness: 1,
+            metalness: 1
         });
     };
     return BaseMaterial;

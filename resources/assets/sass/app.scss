@@ -53,6 +53,9 @@ $csstyle-root-id: 'app-root';
 @import 'components/quote';
 @import 'components/steps';
 @import 'components/label';
+@import 'components/badges';
+@import 'components/menu';
+@import 'components/animations';
 
 /**
 * Layout
@@ -75,7 +78,6 @@ $csstyle-root-id: 'app-root';
 */
 @include dreamsark-global;
 //@include dreamsark-segment;
-@include dreamsark-menu;
 
 //
 ///**
