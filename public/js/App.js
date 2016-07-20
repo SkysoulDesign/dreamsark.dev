@@ -12678,6 +12678,10 @@ var Progress = function () {
                 data: Number,
                 label: String,
                 class: String,
+                size: {
+                    type: String,
+                    default: 'normal' //normal, medium, large
+                },
                 max: {
                     type: Number,
                     default: 100
@@ -13130,7 +13134,7 @@ var Project = function (_super) {
         }
     };
     Project.prototype.idea = function () {
-        this.initChart();
+        // this.initChart();
     };
     Project.prototype.synapse = function () {
         this.initChart();
@@ -13421,7 +13425,7 @@ module.exports = '<div :class="style">\n\n    <div class="columns">\n\n        <
 },{}],42:[function(require,module,exports){
 module.exports = '<a href="#{{ content }}" @click.prevent="selectTab" class="shrink columns nav__content__item" :class="style">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n    <slot></slot>\n</a>\n';
 },{}],43:[function(require,module,exports){
-module.exports = '<div class="progress" :class="[{ \'--animated\' : animated }, { \'--mini\': mini }]">\n    <div v-if="label" class="progress__label">\n        {{ label }}\n        <span>{{ mode == \'percentage\' ? percentage : null || data }} {{ symbol }}</span>\n    </div>\n    <div class="progress__bar" :class="[ \'--color-\'+color, { \'--flat\': flat }]">\n        <div class="progress__bar__completion" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
+module.exports = '<div class="progress" :class="[{ \'--animated\' : animated }, { \'--mini\': mini }, class]">\n\n    <div v-if="label && size !== \'large\'" class="progress__label">\n        {{ label }}\n        <span>{{ mode == \'percentage\' ? percentage : null || data }} {{ symbol }}</span>\n    </div>\n\n    <div v-if="label && size === \'large\'"\n         class="progress__label --size-large"\n         :class="[ \'--size-\'+size ]"\n         :style="{ width: percentage + \'%\' }">\n        {{ percentage > 19 ? label : \'\' }}\n        <span>{{ data + symbol }}</span>\n    </div>\n\n    <div class="progress__bar" :class="[ \'--color-\'+color, { \'--flat\': flat } ]">\n        <div class="progress__bar__completion" :class="[ \'--size-\'+size ]" :style="{ width: percentage + \'%\' }"></div>\n    </div>\n</div>\n';
 },{}],44:[function(require,module,exports){
 module.exports = '<div @click="expand" class="quote" data-expend-text="{{ expandText }}">\n    <slot></slot>\n</div>\n';
 },{}],45:[function(require,module,exports){

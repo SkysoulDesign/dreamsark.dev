@@ -5,17 +5,24 @@
   font-size: $h1;
   font-weight: bold;
   text-align: center;
+  color: color(black);
+  position: relative;
 
   h1 {
     margin: 0;
   }
 
+  span {
+    font-weight: normal;
+  }
+
   p {
 
-    padding-top: 1.2em;
-    font-size: .6em;
+    color: color(black);
+    //padding-top: 1.2em;
+    //font-size: .6em;
     font-weight: normal;
-    line-height: 1.4em;
+    line-height: .8em;
 
     @include respond-to(desktop) {
       width: 60%;
@@ -72,7 +79,8 @@
   }
 
   @include option(with-divider) {
-    border-bottom: 1px solid color(gray, light);
+    padding-bottom: .7em;
+    border-bottom: 1px solid color(black, light);
   }
 
 }

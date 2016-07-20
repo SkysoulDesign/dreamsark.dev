@@ -13,6 +13,10 @@ export class Progress implements ComponentInterface {
                 data: Number,
                 label: String,
                 class: String,
+                size: {
+                    type: String,
+                    default: 'normal' //normal, medium, large
+                },
                 max: {
                     type: Number,
                     default: 100

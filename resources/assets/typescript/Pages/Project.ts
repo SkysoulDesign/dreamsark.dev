@@ -29,7 +29,7 @@ export class Project extends AbstractPage {
     }
 
     idea() {
-        this.initChart();
+        // this.initChart();
     }
 
     synapse() {

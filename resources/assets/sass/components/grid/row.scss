@@ -9,4 +9,14 @@
     border-top: 1px solid color($color: gray, $alpha: 55);
   }
 
+  @include option(large-padding){
+    padding: 3em;
+  }
+
+  .column, .columns {
+
+  }
+
+
+
 }

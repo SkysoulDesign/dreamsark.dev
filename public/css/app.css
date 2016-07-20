@@ -3734,6 +3734,20 @@ button {
 /**
 * Banner
 */
+@font-face {
+  font-family: 'robotobold';
+  src: url("/fonts/roboto/roboto-bold-webfont.eot");
+  src: url("/fonts/roboto/roboto-bold-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-bold-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-bold-webfont.woff") format("woff"), url("/fonts/roboto/roboto-bold-webfont.svg#robotobold") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'robotoregular';
+  src: url("/fonts/roboto/roboto-regular-webfont.eot");
+  src: url("/fonts/roboto/roboto-regular-webfont.eot?#iefix") format("embedded-opentype"), url("/fonts/roboto/roboto-regular-webfont.woff2") format("woff2"), url("/fonts/roboto/roboto-regular-webfont.woff") format("woff"), url("/fonts/roboto/roboto-regular-webfont.svg#robotoregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
 input, .text-area, textarea, .select, select, .input {
   font-size: 1em;
   font-weight: normal;
@@ -4331,14 +4345,17 @@ button, .button {
   margin: 2em 0;
   font-size: 1.8em;
   font-weight: bold;
-  text-align: center; }
+  text-align: center;
+  color: #353832;
+  position: relative; }
   .header h1, header h1 {
     margin: 0; }
+  .header span, header span {
+    font-weight: normal; }
   .header p, header p {
-    padding-top: 1.2em;
-    font-size: .6em;
+    color: #353832;
     font-weight: normal;
-    line-height: 1.4em; }
+    line-height: .8em; }
     @media only screen and (min-width: 1000px) {
       .header p, header p {
         width: 60%;
@@ -4365,7 +4382,22 @@ button, .button {
   .header.\--light, header.\--light {
     font-weight: normal; }
   .header.\--with-divider, header.\--with-divider {
-    border-bottom: 1px solid #f4f5f4; }
+    padding-bottom: .7em;
+    border-bottom: 1px solid #757b6e; }
+
+.segment {
+  border-radius: .2em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: white;
+  font-size: 1em;
+  color: #42453e;
+  line-height: 1.643;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin: 1em 0; }
+  .segment.\--primary {
+    color: white;
+    background: #0083ff; }
 
 .divider {
   display: -ms-flexbox;
@@ -4586,6 +4618,9 @@ button, .button {
   background: white;
   border-top: 1px solid rgba(181, 185, 176, 0.55); }
 
+.row.\--large-padding {
+  padding: 3em; }
+
 .nav {
   border: 1px solid #f4f5f4;
   background: white;
@@ -4773,7 +4808,9 @@ button, .button {
       border-radius: 0; }
 
 .progress {
-  margin: .8em 0; }
+  position: relative;
+  margin: .8em 0;
+  padding: 0; }
   .progress.\--animated {
     transition: transform 0.25s;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -4788,13 +4825,32 @@ button, .button {
   .progress__label {
     padding: .3em 0;
     font-weight: normal; }
+    .progress__label.\--size-large {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 100%;
+      position: absolute;
+      z-index: 999;
+      margin: auto;
+      color: white;
+      font-weight: bold;
+      padding: 0 1em;
+      text-transform: uppercase; }
+      .progress__label.\--size-large span {
+        -ms-flex: 1;
+        flex: 1;
+        display: block;
+        right: 0;
+        text-align: right !important; }
     .progress__label span {
       float: right; }
   .progress__bar {
     font-size: smaller;
     font-weight: bold;
     border-radius: 1em;
-    background: #b5b9b0; }
+    background: white; }
     .progress__bar__completion {
       border-radius: 1em;
       position: relative;
@@ -4802,10 +4858,12 @@ button, .button {
       width: 100%;
       max-width: 100%;
       background: #0bbc62; }
+      .progress__bar__completion.\--size-large {
+        height: 4em; }
     .progress__bar.\--flat {
-      border-radius: 0; }
+      border-radius: .2em; }
       .progress__bar.\--flat > div {
-        border-radius: 0; }
+        border-radius: .2em 0 0 .2em; }
     .progress__bar.\--color-neutral .progress__bar__completion {
       background: #f1f1f1; }
     .progress__bar.\--color-white .progress__bar__completion {
@@ -4850,6 +4908,9 @@ button, .button {
 
 #app-root .\+transparent {
   background: transparent; }
+
+#app-root .\+bold {
+  font-weight: bold; }
 
 #app-root .\+full-height {
   height: 100%; }
@@ -5339,18 +5400,33 @@ button, .button {
   -ms-flex-align: start;
   align-items: flex-start;
   list-style: none; }
+  .ul.\--with-bullets, ul.\--with-bullets, .\--with-bullets.badges {
+    list-style: disc;
+    padding: 0 1em;
+    line-height: normal; }
+  .ul.\--evenly, ul.\--evenly, .\--evenly.badges {
+    -ms-flex-pack: distribute;
+    justify-content: space-around; }
+  .ul.\--tight li, ul.\--tight li, .\--tight.badges li {
+    padding: 0; }
   .ul li, ul li, .badges li {
     padding: .2em 0; }
     .ul li.\--active, ul li.\--active, .badges li.\--active {
       color: #0083ff; }
       .ul li.\--active a, ul li.\--active a, .badges li.\--active a, ul li.\--active .menu a, .menu ul li.\--active a {
         color: #0083ff; }
+    .ul li.\--title, ul li.\--title, .badges li.\--title {
+      padding: 0;
+      list-style: none;
+      text-transform: uppercase;
+      margin-left: -1em;
+      margin-bottom: 1em;
+      font-weight: bold; }
   .ul.\--inline, ul.\--inline, .\--inline.badges, .label__wrapper__items ul, .label__wrapper__items .badges {
     -ms-flex-direction: row;
     flex-direction: row;
     -ms-flex-align: center;
-    align-items: center;
-    margin: 1em 0; }
+    align-items: center; }
     .ul.\--inline li, ul.\--inline li, .\--inline.badges li, .label__wrapper__items ul li, .label__wrapper__items .badges li {
       padding: .2em; }
       .ul.\--inline li.\--start, ul.\--inline li.\--start, .\--inline.badges li.\--start, .label__wrapper__items ul li.\--start, .label__wrapper__items .badges li.\--start {
@@ -6097,7 +6173,9 @@ button, .button {
     padding: 2em; }
 
 .project-page {
-  padding-bottom: 5em; }
+  padding-bottom: 5em;
+  position: relative;
+  z-index: 2; }
   .project-page__background {
     background: url("/img/login/dreamsArkRef43.jpg") center bottom; }
     .project-page__background__overlay {
@@ -6219,6 +6297,33 @@ button, .button {
           font-weight: normal; }
       .project-page__info__overlay__spacer {
         padding-bottom: 1em; }
+  .project-page__avatar {
+    position: relative;
+    margin: 2em 0;
+    width: 100px;
+    text-align: center;
+    z-index: 3; }
+  .project-page__achievements {
+    margin-bottom: 1em;
+    width: 7em; }
+  .project-page__right-divider {
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: 100%; }
+  .project-page__top-animation {
+    width: auto;
+    margin: 0 auto;
+    height: 300px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1; }
+    .project-page__top-animation__content {
+      width: 100%;
+      height: 300px;
+      margin: 50px auto 0; }
+      .project-page__top-animation__content img {
+        object-fit: cover; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }
@@ -6234,7 +6339,8 @@ html, body {
   /* Make the body to be as tall as browser window */
   height: 100%;
   background-color: #f1f1f1;
-  font-size: 20px; }
+  font-size: 14px;
+  font-family: 'robotoregular'; }
   @media only screen and (min-width: 1000px) {
     html, body {
       font-size: 15px; } }

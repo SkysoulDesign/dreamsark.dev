@@ -32,7 +32,7 @@ var Project = (function (_super) {
         }
     };
     Project.prototype.idea = function () {
-        this.initChart();
+        // this.initChart();
     };
     Project.prototype.synapse = function () {
         this.initChart();

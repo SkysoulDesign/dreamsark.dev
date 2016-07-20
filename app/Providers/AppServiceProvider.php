@@ -29,8 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(BladeCompiler $blade)
     {
 
-        Collection::class
-
         $blade->directive('set', function ($expression) {
             list($name, $val) = explode(',', $expression);
             return "<?php {$name} = {$val}; ?>";

@@ -1,6 +1,7 @@
 @include page(project) {
 
   padding-bottom: 5em;
+  position: relative;
 
   @include base-header();
 
@@ -255,5 +256,47 @@
     }
 
   }
+
+  @include part(avatar) {
+    position: relative;
+    margin: 2em 0;
+    width: 100px;
+    text-align: center;
+    z-index: 3;
+  }
+
+  @include part(achievements) {
+    margin-bottom: 1em;
+    width: 7em;
+  }
+
+  @include part(right-divider) {
+    border-right: 1px solid color($color: white, $alpha: 50);
+    width: 100%;
+    height: 100%;
+  }
+
+  @include part(top-animation) {
+
+    width: auto;
+    margin: 0 auto;
+    height: 300px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    @include part(content) {
+      width: 100%;
+      height: 300px;
+      margin: 50px auto 0;
+      img{
+        object-fit: cover;
+      }
+    }
+
+  }
+
+  z-index: 2;
 
 }

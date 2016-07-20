@@ -1,9 +1,19 @@
-<div class="progress" :class="[{ '--animated' : animated }, { '--mini': mini }]">
-    <div v-if="label" class="progress__label">
+<div class="progress" :class="[{ '--animated' : animated }, { '--mini': mini }, class]">
+
+    <div v-if="label && size !== 'large'" class="progress__label">
         {{ label }}
         <span>{{ mode == 'percentage' ? percentage : null || data }} {{ symbol }}</span>
     </div>
-    <div class="progress__bar" :class="[ '--color-'+color, { '--flat': flat }]">
-        <div class="progress__bar__completion" :style="{ width: percentage + '%' }"></div>
+
+    <div v-if="label && size === 'large'"
+         class="progress__label --size-large"
+         :class="[ '--size-'+size ]"
+         :style="{ width: percentage + '%' }">
+        {{ percentage > 19 ? label : '' }}
+        <span>{{ data + symbol }}</span>
+    </div>
+
+    <div class="progress__bar" :class="[ '--color-'+color, { '--flat': flat } ]">
+        <div class="progress__bar__completion" :class="[ '--size-'+size ]" :style="{ width: percentage + '%' }"></div>
     </div>
 </div>

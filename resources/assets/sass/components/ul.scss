@@ -7,6 +7,22 @@
   align-items: flex-start;
   list-style: none;
 
+  @include option(with-bullets) {
+    list-style: disc;
+    padding: 0 1em;
+    line-height: normal;
+  }
+
+  @include option(evenly){
+    justify-content: space-around;
+  }
+
+  @include option(tight) {
+    li {
+      padding: 0;
+    }
+  }
+
   li {
 
     padding: .2em 0;
@@ -18,12 +34,23 @@
       }
     }
 
+    @include option(title) {
+
+      padding: 0;
+      list-style: none;
+      text-transform: uppercase;
+      margin-left: -1em;
+      margin-bottom: 1em;
+      font-weight: bold;
+
+    }
+
   }
 
   @include option(inline) {
     flex-direction: row;
     align-items: center;
-    margin: 1em 0;
+    //margin: 1em 0;
 
     li {
 
