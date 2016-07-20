@@ -110,4 +110,8 @@ return array (
   'submissions' => 'Submissions',
   'a-to-z' => 'A-Z',
   'search' => 'Search',
+  'report' => NULL,
+  'comments' => NULL,
+  'leave-a-comment' => NULL,
+  'comments-note' => NULL,
 );

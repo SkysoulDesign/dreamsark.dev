@@ -64,7 +64,7 @@ return array (
   'activity-list' => 'Activity List',
   'account-settings' => '账户设置',
   'social-media' => '社交媒体',
-  'explorer' => 'Explorer',
+  'explorer' => '探索者',
   'sign-in' => '登录',
   'account' => '账户',
   'settings' => '设置',

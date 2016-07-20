@@ -4,6 +4,11 @@ namespace DreamsArk\Models\Project\Stages;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Vote
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Vote extends Model
 {
     /**

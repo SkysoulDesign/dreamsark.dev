@@ -110,4 +110,8 @@ return array (
   'submissions' => '所有提案',
   'a-to-z' => 'A-Z',
   'search' => '搜索',
+  'report' => NULL,
+  'comments' => NULL,
+  'leave-a-comment' => NULL,
+  'comments-note' => NULL,
 );

@@ -5425,7 +5425,7 @@ button, .button {
       margin-left: 0.1em;
       font-size: .8em; }
     .chart__content.\--reward:before {
-      content: '¥';
+      content: attr(data-currency-simbol);
       margin-right: .2em;
       font-size: 1em; }
   .chart.\--centered {

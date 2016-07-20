@@ -1,4 +1,4 @@
-@extends('layouts.master', ['class' => 'home-page'])
+@extends('layouts.master', ['class' => 'home-page', 'container' => false])
 
 @section('meta-tags')
     <meta property="qc:admins" content="302711632664251531236375"/>

@@ -72,73 +72,8 @@
             </div>
 
             <div class="small-12 columns divider">@lang('general.comments')</div>
-            <div class="comments">
-                @foreach(range(1,4) as $index)
 
-                    <div class="small-12 columns comments__item">
-                        <div class="row">
-                            <div class="small-1 columns comments__item__author">
-                                <img src="{{ asset('img/temp/avatar.png') }}" alt="">
-                            </div>
-                            <div class="small-11 columns comments__item__content">
-                                <ul class="ul --inline --divided">
-                                    <li><a href="#">Rafael Milewski</a></li>
-                                </ul>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cumque ex
-                                    laudantium molestiae pariatur, placeat ratione sequi. Cum, ex, similique!
-                                    magnam quasi totam.Assumenda earum eos illum quis?</p>
-                            </div>
-                            <div class="small-11 small-offset-1 columns comments__item__meta">
-
-                                <ul class="ul --inline --divided --right">
-                                    <li>March, 20, 2016 - 16:99:30</li>
-                                    <li><a href="#">edit</a></li>
-                                    <li><a href="#">delete</a></li>
-                                    <li><a href="#">report</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                @endforeach
-            </div>
-            <div class="small-12 columns divider">@lang('general.comments')</div>
-            <div class="small-12 columns">
-                <div class="row">
-                    <form method="post" action="#">
-
-                        {{ csrf_field() }}
-
-                        <div class="small-12 medium-12 columns form__content --rounded">
-
-                            <div class="row">
-
-                                <h3 class="small-12 columns form__step">
-                                    Comments
-                                </h3>
-
-                                <div class="small-12 columns form__field">
-                                    <textarea name="comment" id="" cols="30" rows="10"></textarea>
-                                </div>
-
-                                <div class="small-12 columns divider --simple"></div>
-
-                                <div class="small-12 columns form__field +center-on-mobile">
-                                    <button class="button --success --fit">Leave a Comment</button>
-                                </div>
-
-                                <div class="small-12 columns form__description +center-on-mobile">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi
-                                    sapiente similique, tempora! Aperiam, tempore!
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+            @include('project.partials.comments')
 
             <ark-modal trigger="submission" header="@lang('project.idea-submission-form')">
                 <ark-form action="{{ route('project.idea.submission.store', $project) }}" class="row">

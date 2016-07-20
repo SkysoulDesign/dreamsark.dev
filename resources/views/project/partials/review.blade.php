@@ -55,7 +55,9 @@
                     <h2>{{ $project->name }}</h2>
 
                     <span class="chart --centered" data-percent="100">
-                        <span class="chart__content --reward">5000</span>
+                        <span class="chart__content">
+                           @lang('project.waiting')
+                        </span>
                     </span>
 
                     <div class="project-page__info__overlay__spacer">

@@ -27,8 +27,8 @@ return array (
   'navbar' => 'Nav Bar',
   'layout' => 'Layout',
   'passwords' => '密码',
-  'vote' => 'Vote',
+  'vote' => '投票',
   'audition' => 'Audition',
   'payment' => 'Payment',
-  'dashboard' => 'Dashboard',
+  'dashboard' => '控制中心',
 );

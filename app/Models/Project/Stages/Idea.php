@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
+use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\RewardableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Idea extends Model
 {
-    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait;
+    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait, CommentableTrait;
 
     /**
      * Defines the minimum of submission this model

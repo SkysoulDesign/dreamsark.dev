@@ -27,6 +27,7 @@ use DreamsArk\Http\Controllers\Committee\Project\StaffController;
 use DreamsArk\Http\Controllers\Dashboard\DashboardController;
 use DreamsArk\Http\Controllers\Home\HomeController;
 use DreamsArk\Http\Controllers\Payment\PaymentController;
+use DreamsArk\Http\Controllers\Project\CommentController;
 use DreamsArk\Http\Controllers\Project\EnrollController;
 use DreamsArk\Http\Controllers\Project\FundController;
 use DreamsArk\Http\Controllers\Project\Idea\SubmissionController as SubmissionIdeaController;
@@ -117,7 +118,13 @@ $app->group(['middleware' => 'web'], function () use ($app) {
                 $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('vote.store');
             });
 
+
         });
+
+        /**
+         * Temporarily
+         */
+        $app->post('comments/{project}/{commentable_type}', CommentController::class . '@store')->name('comment.store');
 
         /**
          * Vote Controller
@@ -161,6 +168,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
                 $app->post('store', CoinController::class . '@store')->name('store');
                 $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
             });
+
         });
 
         /**

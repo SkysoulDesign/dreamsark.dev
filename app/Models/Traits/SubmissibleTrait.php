@@ -4,6 +4,11 @@ namespace DreamsArk\Models\Traits;
 
 use DreamsArk\Models\Project\Submission;
 
+/**
+ * Class SubmissibleTrait
+ *
+ * @package DreamsArk\Models\Traits
+ */
 trait SubmissibleTrait
 {
     /**

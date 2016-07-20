@@ -36,7 +36,7 @@
 
             <div class="menu__item --image">
                 <img src="{{ asset('img/badges/coin.png') }}" alt="">
-                <span data-currency-symbol="@lang('payment.yuan-currency-symbol')">{{ $user->bag->coins or 0 }}</span>
+                <span data-currency-symbol="@lang('payment.yuan-currency-symbol')">{{ auth()->user()->bag->coins }}</span>
             </div>
 
             <ark-dropdown title="{{ auth()->user()->username }}" mode="simple">

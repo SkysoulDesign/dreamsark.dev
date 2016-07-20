@@ -5,6 +5,11 @@ namespace DreamsArk\Presenters\Presenter;
 use Carbon\Carbon;
 use DreamsArk\Presenters\Presenter;
 
+/**
+ * Class IdeaPresenter
+ *
+ * @package DreamsArk\Presenters\Presenter
+ */
 class IdeaPresenter extends Presenter
 {
 

@@ -30,7 +30,7 @@
 
     @include option(reward) {
       &:before {
-        content: '¥';
+        content: attr(data-currency-simbol);
         margin-right: .2em;
         font-size: 1em;
       }

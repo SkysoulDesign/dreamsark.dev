@@ -6,9 +6,11 @@ use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Jobs\Project\CompleteProjectJob;
+use DreamsArk\Jobs\Project\CreateCommentJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
+use DreamsArk\Models\Project\Comment;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Draft;
@@ -87,6 +89,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project, ProjectRepositoryInterface $repository)
     {
+
         $isIFrameCall = $this->isIFrameCall;
 
         if ($project->stage instanceof Review) {

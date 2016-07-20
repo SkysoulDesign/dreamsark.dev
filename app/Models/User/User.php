@@ -4,6 +4,7 @@ namespace DreamsArk\Models\User;
 
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Payment\Transaction;
+use DreamsArk\Models\Project\Comment;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
 /**
@@ -204,5 +206,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Transaction::class)->orderBy('updated_at', 'desc');
     }
 
+    /**
+     * Comments Relationship
+     *
+     * @return HasMany
+     */
+    public function comments() : hasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 
 }
