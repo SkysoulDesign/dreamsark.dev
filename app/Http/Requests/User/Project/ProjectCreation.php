@@ -30,7 +30,7 @@ class ProjectCreation extends Request
     {
         return [
             'name' => 'required',
-            'reward.*' => 'sometimes|integer|min:1',
+            'reward.*' => 'sometimes|integer|max:' . auth()->user()->bag->coins,
             'reward.idea' => 'required',
             'content' => 'required',
             'voting_date' => 'required|date|after:today',

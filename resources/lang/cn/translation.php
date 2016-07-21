@@ -18,7 +18,7 @@ return array (
   'forms' => '表格',
   'idea' => '创意',
   'auth' => 'Auth',
-  'positions' => 'Positions',
+  'positions' => '职位',
   'response' => 'Response',
   'project' => '项目',
   'pagination' => 'Pagination',

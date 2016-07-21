@@ -4,7 +4,7 @@
     <div class="column">
         <div class="ui menu">
             <div class="header item">
-                @lang('project.view-fund'):&nbsp;{{ $distribution->project->name }}
+                {{ $distribution->project->name }}
             </div>
             <div class="right menu">
                 @include('admin.partials.project.view-project-button', ['project_id' => $distribution->project_id, 'class' => ' item'])

@@ -8,9 +8,17 @@
   height: 100%;
   line-height: normal;
   padding: 15%;
+  display: block;
+  font-size: 4em !important;
 
-  @include respond-to(desktop){
+  @include respond-to(desktop) {
     font-size: 3em;
+  }
+
+  p {
+    display: block;
+    color: color(white);
+    font-size: .5em;
   }
 
 }

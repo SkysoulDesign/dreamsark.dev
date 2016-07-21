@@ -29,8 +29,8 @@
 
             <ark-steps>
                 <ark-step {{ active($stage, 'idea') }} description="@lang('project.idea')">1</ark-step>
-                <ark-step {{ active($stage, 'script') }} description="@lang('project.script')">2</ark-step>
                 <ark-step {{ active($stage, 'synapse') }} description="@lang('project.synapse')">3</ark-step>
+                <ark-step {{ active($stage, 'script') }} description="@lang('project.script')">2</ark-step>
                 <ark-step {{ active($stage, 'review') }} description="@lang('project.review')">4</ark-step>
                 <ark-step {{ active($stage, 'fund') }} description="@lang('project.fund')">4</ark-step>
                 <ark-step {{ active($stage, 'distribution') }} description="@lang('project.distribution')">5</ark-step>

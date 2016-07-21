@@ -14,5 +14,5 @@ return array (
   'what-popular' => '热门项目',
   'latest-project' => '最新项目',
   'site-welcome' => '欢迎搭乘追梦方舟',
-  'site-welcome-description' => '一个让您梦想成真的地方 ',
+  'site-welcome-description' => '带您到一个梦想起飞的地方 ',
 );

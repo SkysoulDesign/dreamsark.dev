@@ -14,7 +14,7 @@
 
         <div class="row align-center slider">
             @lang('dashboard.site-welcome')
-            <small>@lang('dashboard.site-welcome-description')</small>
+            <p>@lang('dashboard.site-welcome-description')</p>
         </div>
 
     </div>
@@ -30,14 +30,16 @@
                     </header>
                 </div>
 
-                @foreach(range(1,4) as $item)
-                    <div class="small-12 medium-4 large-3 columns card">
+                @foreach($projects as $index => $project)
+                    <a href="{{ route('project.show', $project) }}" class="small-12 medium-4 large-3 columns card">
 
                         <div class="card__image">
-                            <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
-                            <div class="card__image__stage">Script</div>
+                            <img src="{{ asset("img/temp/movies/dreamsarkMref0{$index}.jpg") }}" alt="">
+                            <div class="card__image__stage">
+                                @lang("project.{$project->stage->getStageName()}")
+                            </div>
                             <div class="card__image__avatar">
-                                <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
+                                <img src="{{ asset('img/svg/person-flat.svg') }}" alt="">
                             </div>
                         </div>
 
@@ -55,7 +57,7 @@
                             Dear,
                             Tycho, ...
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
             @endpush
@@ -76,7 +78,7 @@
                             <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
                             <div class="card__image__stage">Script</div>
                             <div class="card__image__avatar">
-                                <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
+                                <img src="{{ asset('img/svg/person-flat.svg') }}" alt="">
                             </div>
                         </div>
 
@@ -109,14 +111,14 @@
                     </header>
                 </div>
 
-                @foreach(range(1,4) as $item)
+                @foreach(range(1,4) as $index => $item)
                     <div class="small-12 medium-4 large-3 columns card">
 
                         <div class="card__image">
-                            <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
+                            <img src="{{ asset("img/temp/movies/dreamsarkMref0$index.jpg") }}" alt="">
                             <div class="card__image__stage">Script</div>
                             <div class="card__image__avatar">
-                                <img src="{{ asset('img/temp/cover.jpeg') }}" alt="">
+                                <img src="{{ asset('img/svg/person-flat.svg') }}" alt="">
                             </div>
                         </div>
 
@@ -152,10 +154,7 @@
         <div class="small-12 columns">
             <header class="header --light --small">
                 @lang('general.lear-more-about-dreamsark')
-                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate officia omnis quasi repellat?
-                    Adipisci aperiam assumenda debitis distinctio dolore eaque exercitationem libero natus quas, rem
-                    rerum
-                    similique veniam veritatis. Expedita?</p>
+                <p></p>
             </header>
 
         </div>

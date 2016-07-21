@@ -27,7 +27,7 @@ var Main = (function (_super) {
         document.querySelector(container).addEventListener('click', function (e) {
             var target = e.target;
             if (target.dataset.hasOwnProperty('profileName')) {
-                _this.switch(target.dataset['profileName']);
+                _this.switch(target.dataset['profileName'], target.dataset['localizedName']);
             }
         });
     };
@@ -37,9 +37,8 @@ var Main = (function (_super) {
         characters.base.rotation.y = Math.PI;
         scene.add(characters[this.activeProfile], characters.base);
     };
-    Main.prototype.update = function (scene, camera, characters, time, delta) {
-    };
-    Main.prototype.switch = function (name) {
+    Main.prototype.update = function (scene, camera, characters, time, delta) { };
+    Main.prototype.switch = function (name, localized) {
         var _this = this;
         window['dreamsark'].vueInstance.$set('position', name);
         this.app.characters.get(name).then(function (profile) {

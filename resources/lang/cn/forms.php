@@ -110,8 +110,9 @@ return array (
   'submissions' => '所有提案',
   'a-to-z' => 'A-Z',
   'search' => '搜索',
-  'report' => NULL,
-  'comments' => NULL,
-  'leave-a-comment' => NULL,
-  'comments-note' => NULL,
+  'report' => '报告',
+  'comments' => '评论',
+  'leave-a-comment' => '欢迎评论',
+  'comments-note' => '评论纪录',
+  'voting-date' => '投票日期',
 );

@@ -3,6 +3,7 @@
 namespace DreamsArk\Http\Controllers\Home;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Models\Project\Project;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -18,12 +19,13 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param \DreamsArk\Http\Controllers\Home\Project $project
+     * @return \Illuminate\Http\Response
      * @internal param Request $request
      */
-    public function index()
+    public function index(Project $project)
     {
-        return view('index');
+        return view('index')->with('projects', $project->take(4)->get());
     }
 
     /**

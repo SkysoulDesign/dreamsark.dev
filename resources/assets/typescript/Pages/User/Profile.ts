@@ -15,8 +15,13 @@ export class Profile extends AbstractPage {
         this.initProfileSelection(profileRoute);
         this.initThreeJs();
 
+        /**
+         * initialize the position with the first element
+         */
         this.app.on('animation.started', function (id, position) {
-            this.$set('position', position)
+            this.$set('position',
+                document.querySelector(`[data-profile-name="${position}"]`).dataset['localizedName']
+            )
         })
 
         this.app.vue({
@@ -29,7 +34,6 @@ export class Profile extends AbstractPage {
 
     initProfileSelection(profileRoute) {
 
-
         /**
          * Handle The Display of The Profile Selection
          *
@@ -38,7 +42,6 @@ export class Profile extends AbstractPage {
         let button = document.querySelector('#selectProfile');
 
         button.addEventListener('click', e => {
-
 
             let request = this.app.vueInstance.$http.get(profileRoute, {
                 params: {
@@ -64,22 +67,22 @@ export class Profile extends AbstractPage {
                 profile_input.setAttribute('type', 'hidden');
 
 
-                response.json().forEach(function(item, index){
+                response.json().forEach(function (item, index) {
 
 
                     let h3 = document.createElement('h3');
-                        h3.classList.add('small-12', 'columns', 'form__step');
-                        h3.innerHTML = `<span>${index + 1}</span>${item.question}`;
+                    h3.classList.add('small-12', 'columns', 'form__step');
+                    h3.innerHTML = `<span>${index + 1}</span>${item.question}`;
 
                     let field = document.createElement('div');
-                        field.classList.add('small-12', 'columns', 'form__field');
+                    field.classList.add('small-12', 'columns', 'form__field');
 
                     let input = document.createElement('input');
-                        input.setAttribute('type', item.type.name)
-                        input.setAttribute('name', 'question_' + item.id)
-                        input.setAttribute('placeholder', item.question);
+                    input.setAttribute('type', item.type.name)
+                    input.setAttribute('name', 'question_' + item.id)
+                    input.setAttribute('placeholder', item.question);
 
-                        profile_input.setAttribute('value', item.pivot.profile_id);
+                    profile_input.setAttribute('value', item.pivot.profile_id);
 
                     field.appendChild(input)
                     formContainer.appendChild(h3)

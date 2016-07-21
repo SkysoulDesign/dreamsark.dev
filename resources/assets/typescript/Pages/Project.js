@@ -26,7 +26,7 @@ var Project = (function (_super) {
                     name: 'test'
                 },
                 ready: function () {
-                    console.log('im borm');
+                    console.log('ready to go');
                 }
             });
         }

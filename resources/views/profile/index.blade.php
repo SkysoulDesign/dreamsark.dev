@@ -14,7 +14,8 @@
                 @foreach($profileWithData as $profile)
                     @if($profile->users->isEmpty())
                     @else
-                        <h3>{{ $profile->display_name }}
+                        <h3>
+                            @lang("positions.$profile->name")
                             {{--<a href="{{ route('public.profile.list', [$profile->name]) }}" class="ui right labeled icon button">
                                 <i class="right arrow icon"></i>
                                 @lang('navbar.view-all')
@@ -36,7 +37,7 @@
                                         <div class="ui small images">
                                             <img src="{{ asset('img/avatar/holder.png') }}">
                                         </div>
-                                        <b>{{ $user->name or $user->username }}</b>
+                                        <b>{{ $user->present()->name  }}</b>
                                     </a>
                                 </div>
                             @endforeach

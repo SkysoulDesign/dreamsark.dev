@@ -27,7 +27,7 @@ export class Main extends AbstractComposition {
             let target = <HTMLElement>e.target;
 
             if (target.dataset.hasOwnProperty('profileName')) {
-                this.switch(target.dataset['profileName'])
+                this.switch(target.dataset['profileName'], target.dataset['localizedName'])
             }
 
         })
@@ -38,21 +38,18 @@ export class Main extends AbstractComposition {
 
         this.scene = scene;
 
-        characters.base.position.set(0, -25, 2)
+        characters.base.position.set(0, -25, 2);
         characters.base.rotation.y = Math.PI;
 
         scene.add(
-            characters[this.activeProfile],
-            characters.base
+            characters[this.activeProfile], characters.base
         );
 
     }
 
-    update(scene, camera, characters, time, delta) {
+    update(scene, camera, characters, time, delta) {}
 
-    }
-
-    private switch(name) {
+    private switch(name, localized) {
 
         window['dreamsark'].vueInstance.$set('position', name);
 

@@ -37,8 +37,9 @@ return array (
   'no-member' => '您还未成会员吗?',
   'already-member' => '您已是会员吗?',
   'click-to-register' => '点击这里注册',
-  'go-to-login' => '点击这里登录',
-  'click-to-login' => '您是在寻找登录吗?',
+  'go-to-login' => '前往登录',
+  'click-to-login' => '点击这里登录',
   'sms-code' => '短信验证码',
   'sms-verify-code-template' => '追梦方舟：:verifyCode 是您手机号码 :mobile 尾号的手机号码验证码',
+  'please-signup' => '请注册登录后才能搭乘方舟',
 );

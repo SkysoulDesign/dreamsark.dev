@@ -21,7 +21,7 @@ export class Project extends AbstractPage {
                     name: 'test'
                 },
                 ready(){
-                    console.log('im borm')
+                    console.log('ready to go')
                 }
             })
         }

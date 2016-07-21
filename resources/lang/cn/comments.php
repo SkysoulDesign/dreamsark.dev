@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'comment-created-success' => NULL,
+  'comment-created-success' => '留言成功',
 );

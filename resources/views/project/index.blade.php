@@ -8,12 +8,12 @@
         <a href="{{ route('project.show', 1) }}" class="small-12 medium-5 project-page__featured">
             <img src="{{ asset('img/temp/movies/dreamsarkMref05.jpg') }}" alt="">
             <div class="project-page__featured__overlay">
-                <h1>The Avangers</h1>
+                <h1>DreamsArk</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
         <a href="#" class="small-12 medium-4 project-page__featured">
-            <img src="{{ asset('img/temp/movies/dreamsarkMref00.jpg') }}" alt="">
+            <img src="{{ asset('img/temp/movies/cover-1.jpg') }}" alt="">
             <div class="project-page__featured__overlay">
                 <h1>The Jungle Book</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>

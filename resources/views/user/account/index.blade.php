@@ -9,14 +9,14 @@
         <div class="small-12 columns">
 
             <header class="header --light --with-divider --full">
-                User Account
+                @lang('user.account')
             </header>
 
             <section>
                 <ark-form action="#" errors="{{ json_encode($errors) }}">
 
                     <header class="header --light --full --mini +no-margin-top">
-                        Personal
+                        @lang('user.personal')
                     </header>
 
                     <ark-fields gap="large">
@@ -25,7 +25,7 @@
                     </ark-fields>
 
                     <ark-fields gap="large">
-                        <ark-input label="Username" read-only>helllo world</ark-input>
+                        <ark-input label="Username" read-only>test</ark-input>
                         <ark-input name="confirm_password" label="Password Confirmation"></ark-input>
                     </ark-fields>
 

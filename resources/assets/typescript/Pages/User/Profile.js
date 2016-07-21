@@ -19,8 +19,11 @@ var Profile = (function (_super) {
     Profile.prototype.boot = function (profileRoute) {
         this.initProfileSelection(profileRoute);
         this.initThreeJs();
+        /**
+         * initialize the position with the first element
+         */
         this.app.on('animation.started', function (id, position) {
-            this.$set('position', position);
+            this.$set('position', document.querySelector("[data-profile-name=\"" + position + "\"]").dataset['localizedName']);
         });
         this.app.vue({
             data: {

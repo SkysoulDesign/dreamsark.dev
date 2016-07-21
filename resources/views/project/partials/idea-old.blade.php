@@ -124,7 +124,7 @@
     </ark-tab>
 
     <ark-tab content="tab-submission" icon="paper-plane">
-        Submission
+        @lang('project.submissions)
         @push('tab-item')
         <div id="tab-submission" class="row +margin-top">
 

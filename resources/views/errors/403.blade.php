@@ -21,6 +21,8 @@
             text-align: center;
             display: table-cell;
             vertical-align: middle;
+            background: url('/img/errors/dreamsArkRef39.png') center center no-repeat;
+            background-size: cover;
         }
 
         .content {
@@ -30,16 +32,24 @@
 
         .title {
             font-size: 48px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            color: black;
+            font-weight: bold;
+
         }
-        a { font-size: 36px; text-decoration: none; }
+
+        a {
+            font-size: 36px;
+            text-decoration: none;
+            color: dodgerblue;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="content">
-        <div class="title">You don't have permission to access this URL.</div>
-        <a href="{{ request()->server('HTTP_REFERER') }}">Go Back</a>
+        <div class="title">@lang('auth.please-signup')</div>
+        <a href="{{ route('login')  }}">@lang('auth.click-to-login')</a>
     </div>
 </div>
 </body>

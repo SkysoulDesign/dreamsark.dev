@@ -1,4 +1,50 @@
-@include component(comments) {
+@include component(comment) {
+
+  @include part(avatar) {
+    margin-top: 1em;
+  }
+
+  @include part(content) {
+    position: relative;
+
+    @include part(author) {
+      //position: absolute;
+      //top: -2em;
+      font-weight: bold;
+      left: 0;
+      text-transform: uppercase;
+      margin-bottom: .7em;
+
+      ul li {
+        @include all-but(1) {
+          color: color(gray);
+          font-size: x-small;
+          color: color(gray, dark);
+          text-transform: uppercase;
+          padding: 0 .5em;
+
+          a {
+            color: color(gray);
+            &:hover {
+              color: color(gray, dark);
+            }
+          }
+
+        }
+      }
+
+      //font-weight: normal;
+
+      //font-size: .8em;
+      //
+
+      //display: flex;
+      //align-items: center;
+      //align-self: center;
+
+    }
+
+  }
 
   @include part(item) {
 

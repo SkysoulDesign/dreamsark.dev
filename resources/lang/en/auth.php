@@ -41,4 +41,5 @@ return array (
   'sms-code' => 'sms code',
   'send-code' => 'Send Code',
   'sms-verify-code-template' => 'DreamsArk: :verifyCode is your verification code for mobile number ending with :mobile',
+  'please-signup' => NULL,
 );

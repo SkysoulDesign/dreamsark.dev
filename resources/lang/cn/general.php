@@ -10,7 +10,7 @@ return array (
   'required' => '必须的',
   'site-admin' => '追梦方舟管理员',
   'site-committee' => '追梦方舟委员会',
-  'lear-more-about-dreamsark' => '想了解更多有关追梦方舟',
+  'lear-more-about-dreamsark' => '想了解更多追梦方舟',
   'about-dreamsark' => '关于追梦方舟',
   'technical-support' => '技术服务',
   'dreamsark-copyright' => 'Copyright © 2011-2016 Dreamsark追梦方舟版权所有 ',

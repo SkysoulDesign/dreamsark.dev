@@ -114,4 +114,5 @@ return array (
   'comments' => NULL,
   'leave-a-comment' => NULL,
   'comments-note' => NULL,
+  'voting-date' => NULL,
 );

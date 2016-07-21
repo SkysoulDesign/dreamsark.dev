@@ -13,7 +13,12 @@
 
   @include option(primary) {
     color: color(white);
-    background: color(primary);
+    background-color: color(primary);
+  }
+
+  @include option(transparent) {
+    box-shadow: none;
+    background-color: transparent;
   }
 
 }

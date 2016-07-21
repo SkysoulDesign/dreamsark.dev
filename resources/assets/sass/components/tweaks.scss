@@ -6,6 +6,13 @@
   text-align: right;
 }
 
+@include tweak(currency) {
+  &:before {
+    content: attr(data-curency-symbol);
+    margin-right: .1em;
+  }
+}
+
 @include tweak(round) {
   border-radius: 100px;
 }

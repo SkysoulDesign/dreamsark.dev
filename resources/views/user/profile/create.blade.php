@@ -25,6 +25,7 @@
                 <div id="characters" class="row">
                     @foreach($profiles as $profile)
                         <div data-profile-name="{{ $profile->name }}"
+                             data-localized-name="@lang("positions.$profile->name")"
                              class="columns profile-page__palette --color-{{ rand(1,20) }}">
                             <div class="profile-page__palette__item">
                                 @php $rand = rand(1,8) @endphp
