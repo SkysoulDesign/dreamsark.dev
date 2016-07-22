@@ -5,4 +5,24 @@
     background: get-url('login/dreamsArkRef43.jpg') center center;
   }
 
+  @include part(top) {
+
+    padding-top: 1em;
+    background-color: color(black);
+    color: color(white);
+
+    @include a(true, $color: gray);
+
+    @include part(brand) {
+      img {
+        width: 80%;
+      }
+    }
+
+    @include part(content) {
+      padding-top: 5em;
+    }
+
+  }
+
 }

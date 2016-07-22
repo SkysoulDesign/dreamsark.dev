@@ -19,12 +19,23 @@
 
 $csstyle-root-id: 'app-root';
 
+
 @import 'app/functions';
 @import 'app/colors';
 @import 'app/variables';
 @import 'app/fonts';
 @import 'app/typography';
 @import 'app/styles';
+
+
+
+/**
+* Mixins
+*/
+@import "mixins/tab";
+@import "mixins/font";
+@import "mixins/a";
+
 @import 'components/form/forms';
 @import 'components/global';
 @import 'components/header';
@@ -56,6 +67,7 @@ $csstyle-root-id: 'app-root';
 @import 'components/badges';
 @import 'components/menu';
 @import 'components/animations';
+@import 'components/code';
 
 /**
 * Layout
@@ -72,6 +84,8 @@ $csstyle-root-id: 'app-root';
 @import 'pages/profile';
 @import 'pages/project';
 @import 'pages/admin';
+
+
 
 /**
 * Initiate things up

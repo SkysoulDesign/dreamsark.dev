@@ -36,6 +36,7 @@ var Component = (function (_super) {
             require('../Components/Steps'),
             require('../Components/Quote'),
             require('../Components/Animation'),
+            require('../Components/Code'),
         ];
         this.components.forEach(function (component) {
             for (var name_1 in component) {

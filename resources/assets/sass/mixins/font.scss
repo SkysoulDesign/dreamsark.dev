@@ -1,0 +1,33 @@
+%font-base {
+  font-family: robotoregular;
+}
+
+@each $size in $font-sizes {
+  %font-size-#{nth($size, 1)} {
+    font-size: nth($size, 2);
+  }
+}
+
+%font-weight {
+  font-weight: normal;
+}
+
+@mixin font-size($size:null) {
+
+  @each $font in $font-sizes {
+
+    @if $size == nth($font, 2) {
+      @extend %font-size-#{nth($font, 1)}
+    }
+
+  }
+
+  @if index(map_values($font-sizes), $size) == null {
+    font-size: $size;
+  }
+
+}
+
+@mixin font-weight($style: null) {
+  @extend %font-weight;
+}

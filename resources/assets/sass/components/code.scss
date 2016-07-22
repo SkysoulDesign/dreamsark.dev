@@ -1,0 +1,25 @@
+@include component(code) {
+
+  color: color(black);
+  display: block;
+  background: color(gray, light);
+  padding: 1em;
+  border-radius: .2em;
+  border: solid 1px color(gray);
+  //text-indent: 50px;
+
+  transition: border-color .25s;
+
+  &:hover {
+    border: solid 1px color(gray, dark);
+  }
+
+  @include part(highlight) {
+    color: color(red);
+  }
+
+}
+
+code {
+  @extend .code;
+}

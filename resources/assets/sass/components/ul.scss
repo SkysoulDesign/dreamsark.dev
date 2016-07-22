@@ -13,7 +13,7 @@
     line-height: normal;
   }
 
-  @include option(evenly){
+  @include option(evenly) {
     justify-content: space-around;
   }
 
@@ -109,6 +109,15 @@
     color: color(gray);
 
     @include a-meta();
+
+  }
+
+  @include option(tab) {
+
+    li {
+      @include tab($stroke-color: white);
+      padding: 1em;
+    }
 
   }
 

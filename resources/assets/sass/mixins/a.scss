@@ -1,0 +1,51 @@
+%a-positive {
+
+  a {
+
+    color: color(pure-black);
+
+    &:hover {
+      color: color(black, dark);
+    }
+
+  }
+
+}
+
+%a-negative {
+
+  a {
+
+    color: color(white);
+
+    &:hover {
+      color: color(white, dark);
+    }
+
+  }
+
+}
+
+@mixin a($inverted:false, $color:null, $hover-color:null) {
+
+  @if ($inverted) {
+    @extend %a-negative;
+  } @else {
+    @extend %a-positive;
+  }
+
+  @if ($color) {
+    a {
+      color: color($color)
+    }
+  }
+
+  @if ($hover-color) {
+    a:hover {
+      color: color($hover-color)
+    }
+  }
+
+  @content;
+
+}

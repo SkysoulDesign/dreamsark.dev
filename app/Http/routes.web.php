@@ -50,6 +50,10 @@ $app->get('info', function () {
     phpinfo();
 });
 
+$app->get('kitchen-sink/{section?}', function ($section) {
+    return view('kitchen-sink.index', compact('section'));
+})->name('kitchen-sink')->middleware('web');
+
 /** @var $app \Illuminate\Routing\Router */
 $app->group(['middleware' => 'web'], function () use ($app) {
 
