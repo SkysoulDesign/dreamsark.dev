@@ -1,20 +1,15 @@
 @include component(segment) {
 
-  border-radius: .2em;
-  box-shadow: 0 1px 2px color($color: pure-black, $alpha: 20);
-  background: white;
+  background-color: color(white);
 
-  font-size: 1em;
-  color: color(black, mid-light);
-  line-height: 1.643;
+  @include border-radius(tiny);
+  @include box-shadow();
+
   padding-top: 1em;
   padding-bottom: 1em;
-  margin: 1em auto;
+  margin-bottom: .5em;
 
-  @include option(primary) {
-    color: color(white);
-    background-color: color(primary);
-  }
+  @include colors($background-color: true);
 
   @include option(fluid) {
     border-radius: 0;
@@ -23,6 +18,20 @@
   @include option(transparent) {
     box-shadow: none;
     background-color: transparent;
+  }
+
+  @include option(hover) {
+
+    @include transition(super-fast) {
+      transition-property: box-shadow, border;
+    }
+
+    border-width: 1px;
+
+    &:hover {
+      @include box-shadow(0, 0, 2em, color($color: pure-black, $alpha: 15));
+    }
+
   }
 
 }

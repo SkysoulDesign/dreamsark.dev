@@ -7,8 +7,8 @@
         </div>
 
         <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>
-        {{ title }}
-        <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+        {{ mode == 'icon' ? '' : title }}
+        <i v-if="mode != 'icon'" class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 
     </a>
 

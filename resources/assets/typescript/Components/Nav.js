@@ -66,17 +66,11 @@ var Nav = (function () {
         vue.component('ark-nav', {
             template: require('../templates/nav/nav.html'),
             props: {
-                class: {
+                class: String,
+                basic: Boolean,
+                color: {
                     type: String,
-                    default: 'row --fluid nav --hover align-center'
-                },
-                basic: {
-                    type: Boolean,
-                },
-            },
-            computed: {
-                style: function () {
-                    return this.basic ? 'row nav --basic' : this.class;
+                    default: 'white'
                 }
             },
             methods: {

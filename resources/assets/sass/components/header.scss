@@ -1,15 +1,26 @@
 @include component(header) {
 
+  @include font-size(medium);
+  @include font-weight(bold);
+
+  @include option(uppercase) {
+    @extend .\+uppercase;
+  }
+
+  span {
+    @include font-weight(normal);
+  }
+
+  @include option(small) {
+    @include font-size(h2);
+  }
+
   //margin: 2em 0;
 
   //font-size: $h1;
   //font-weight: bold;
 
-  @include font-size(1em);
-  @include font-weight(bold);
-
   //text-align: center;
-  position: relative;
 
   //h1 {
   //  margin: 0;
@@ -70,12 +81,7 @@
 
   }
 
-  @include option(small) {
-    margin: 1em 0;
-    p {
-      padding: 0;
-    }
-  }
+
 
   @include option(light) {
     font-weight: normal;

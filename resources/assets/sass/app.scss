@@ -28,13 +28,16 @@ $csstyle-root-id: 'app-root';
 @import 'app/styles';
 
 
-
 /**
 * Mixins
 */
-@import "mixins/tab";
+@import "mixins/transition";
 @import "mixins/font";
 @import "mixins/a";
+@import "mixins/border";
+@import "mixins/box-shadow";
+@import "mixins/colors";
+@import "mixins/tab";
 
 @import 'components/form/forms';
 @import 'components/global';
@@ -68,6 +71,9 @@ $csstyle-root-id: 'app-root';
 @import 'components/menu';
 @import 'components/animations';
 @import 'components/code';
+@import 'components/pagination';
+
+@import 'components/views/item';
 
 /**
 * Layout

@@ -65,7 +65,7 @@
 }
 
 @include tweak(margin-top) {
-  margin-top: 2em;
+  margin-top: 4em;
 }
 
 @include tweak(margin-bottom) {
@@ -122,6 +122,10 @@
   @include tweak('profile-color-'+$color) {
 
     color: profile-color($color);
+
+    img {
+      background: profile-color($color);
+    }
 
     a:hover {
       color: profile-color($color);

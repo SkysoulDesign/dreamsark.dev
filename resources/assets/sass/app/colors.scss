@@ -1,7 +1,7 @@
 $colors: (
         neutral: Color(#f1f1f1),
         white: Color(#ffffff),
-        gray: Color(#b5b9b0),
+        gray: Color(#DEDEDE),
         primary: Color(#0083ff),
         secondary: Color(#af0101),
         ternary: Color(#9eaf15),
@@ -15,10 +15,12 @@ $colors: (
         purple: Color(#6900a5),
         tomato: Color(#af0101),
         golden: Color(#ffc326),
+  //special
+        transparent-white: Color(#ffffff),
 ) !default;
 
 $profile-colors: (
-        artist3D: Color(#f44336),
+        "3d-artist": Color(#f44336),
         actor: Color(#E91E63),
         actress: Color(#9C27B0),
         animation: Color(#673AB7),

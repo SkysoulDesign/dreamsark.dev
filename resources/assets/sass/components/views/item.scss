@@ -1,0 +1,25 @@
+@include component(item) {
+
+  @extend .small-12;
+  @extend .align-middle;
+  @extend .segment;
+
+  @include border();
+
+  display: flex;
+  box-shadow: none;
+  margin-bottom: 0.9375rem;
+  margin-top: 0.9375rem;
+
+  @include part(image) {
+
+    img {
+      height: auto;
+      width: 100%;
+      object-fit: cover;
+      @include border-radius(circle);
+    }
+
+  }
+
+}

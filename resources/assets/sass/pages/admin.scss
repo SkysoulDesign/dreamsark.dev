@@ -8,10 +8,24 @@
   @include part(top) {
 
     padding-top: 1em;
+    padding-bottom: 2em;
     background-color: color(black);
     color: color(white);
 
     @include a(true, $color: gray);
+    position: relative;
+    //margin-bottom: 3em;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: .2em;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to right, color(primary) 0%, color(secondary) 100%);
+    }
 
     @include part(brand) {
       img {

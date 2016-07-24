@@ -12,7 +12,7 @@
     height: 100%;
     background-color: color(neutral);
     font-size: 14px;
-    font-family: 'robotoregular';
+    font-family: 'Roboto';
 
     @include respond-to(desktop) {
       font-size: 15px;

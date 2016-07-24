@@ -1,7 +1,9 @@
 @include component(row) {
 
   @include option(fluid) {
-    max-width: 100%
+    max-width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
   }
 
   @include option(white-background) {
@@ -9,14 +11,12 @@
     border-top: 1px solid color($color: gray, $alpha: 55);
   }
 
-  @include option(large-padding){
+  @include option(large-padding) {
     padding: 3em;
   }
 
   .column, .columns {
 
   }
-
-
 
 }

@@ -1,5 +1,6 @@
 <div class="form__field">
-    <button :type="type" class="button --fit" :class="[class, '--' + state]">
+    <button :type="type" class="button" :class="[class, '--color-' + color]">
+        <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>
         <slot></slot>
     </button>
 </div>

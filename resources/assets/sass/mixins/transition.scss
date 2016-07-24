@@ -1,0 +1,13 @@
+@each $time in $transition-times {
+  %transition-duration-#{nth($time, 1)} {
+    transition-duration: nth($time, 2);
+  }
+}
+
+@mixin transition($speed:fast) {
+
+  @extend %transition-duration-#{$speed};
+
+  @content;
+
+}

@@ -1,0 +1,17 @@
+<div class="pagination --right">
+
+    <div class="pagination__item" :class="[ { '--disabled' : data.prev_page_url == null } ]">
+        <a href="{{ data.prev_page_url }}">Previous</a>
+    </div>
+    <div class="pagination__item"
+         :class="[ { '--disabled' : data.current_page == item+1 } ]"
+         v-for="item in data.last_page">
+        <a href="{{ item + 1 > data.current_page ? data.next_page_url : data.prev_page_url }}">
+            {{ item + 1 }}
+        </a>
+    </div>
+
+    <div class="pagination__item" :class="[ { '--disabled' : data.next_page_url == null } ]">
+        <a href="{{ data.next_page_url }}">Next</a>
+    </div>
+</div>

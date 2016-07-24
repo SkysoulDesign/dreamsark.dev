@@ -27,6 +27,7 @@ export class Component extends Application {
         require('../Components/Quote'),
         require('../Components/Animation'),
         require('../Components/Code'),
+        require('../Components/Pagination'),
     ];
 
     /**

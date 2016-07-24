@@ -1,5 +1,6 @@
 <div class="shrink columns statistic">
     <div class="statistic__item">
+        <i v-if="icon" class="fa fa-{{ icon }}"></i>
         {{ data }}
         <span>
             <slot></slot>

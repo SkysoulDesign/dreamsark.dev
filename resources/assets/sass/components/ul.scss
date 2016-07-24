@@ -45,9 +45,14 @@
 
     }
 
+    @include option(sub-tittle) {
+      color: color(gray, dark);
+    }
+
   }
 
   @include option(inline) {
+
     flex-direction: row;
     align-items: center;
     //margin: 1em 0;
@@ -56,20 +61,20 @@
 
       padding: .2em;
 
+      @include first(1) {
+        padding-left: 0;
+      }
+
+      @include last(1) {
+        padding-right: 0;
+      }
+
       @include option(start) {
         margin-right: auto;
       }
 
     }
 
-  }
-
-  @include option(tight) {
-    //li {
-    //  @include all-but(1) {
-    //    padding-left: 0;
-    //  }
-    //}
   }
 
   @include option(bold) {

@@ -2,17 +2,43 @@
   font-family: robotoregular;
 }
 
+//Font Weights
+@each $weight in $font-weights {
+  %font-weight-#{nth($weight, 1)} {
+    font-weight: nth($weight, 2);
+  }
+}
+
+//Usage: light, bold... or 100, 200.. prefer using the words instead of numbers
+@mixin font-weight($weight: normal) {
+
+  @if (type-of($weight) == number) {
+    font-weight: $weight;
+  } @else {
+    @extend %font-weight-#{$weight};
+  }
+
+}
+
+//Font Sizes
 @each $size in $font-sizes {
   %font-size-#{nth($size, 1)} {
     font-size: nth($size, 2);
   }
 }
 
-%font-weight {
-  font-weight: normal;
-}
+//Usage: h1,h2... or 13px, 1em..
+@mixin font-size($size:h1) {
 
-@mixin font-size($size:null) {
+  @if (type-of($size) == string) {
+
+    $size: map_get($font-sizes, $size);
+
+    @if $size == null {
+      @debug The Font Size specified is invalid;
+    }
+
+  }
 
   @each $font in $font-sizes {
 
@@ -28,6 +54,4 @@
 
 }
 
-@mixin font-weight($style: null) {
-  @extend %font-weight;
-}
+

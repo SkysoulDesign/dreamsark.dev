@@ -12,6 +12,7 @@ var Statistics = (function () {
         var item = Vue.component('statistic-item', {
             template: require('../templates/statistics/item.html'),
             props: {
+                icon: String,
                 data: {
                     type: String,
                     required: true

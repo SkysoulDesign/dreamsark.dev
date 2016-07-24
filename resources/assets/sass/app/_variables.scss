@@ -1,15 +1,42 @@
-/**
-*Top Menu
-*/
-$top-menu-height: rem-calc(90);
-$border-radius: rem-calc(5);
+$font-sizes: (
+        h1: 1.8em,
+        h2: 1.4em,
+        h3: 1.2em,
+        h4: 1em,
+        h5: .8em,
+        h6: .4em,
+        h7: .2em,
+        large: 3em,
+        medium: 2em,
+        normal: 1em,
+        small: .9em,
+) !default;
 
-/**
-* Header
-*/
-$header-bar-height: rem-calc(50);
+$font-weights: (
+        lighter: 100,
+        light: 300,
+        normal: 400,
+        bold: 600,
+        bolder: 900
+) !default;
 
-/**
-* Banner
-*/
-$banner-basic-height: rem-calc(80);
+$border-types: (
+        suttle: color(gray),
+        dark: color(gray, dark),
+) !default;
+
+$border-radius-sizes: (
+        tiny: .2em,
+        small: .4em,
+        medium: .8em,
+        circle: 100%
+) !default;
+
+$transition-times: (
+        slow: .5s,
+        fast: .25s,
+        super-fast: .15s,
+        super-slow: 1s
+) !default;
+
+

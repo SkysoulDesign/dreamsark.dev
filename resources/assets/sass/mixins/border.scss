@@ -1,0 +1,27 @@
+//Border Radius
+@each $size in $border-radius-sizes {
+  %border-radius-#{nth($size, 1)} {
+    border-radius: nth($size, 2);
+  }
+}
+
+//Usage: tiny, small, medium, circle..
+@mixin border-radius($size: normal) {
+
+  @if (type-of($size) == number) {
+    border-radius: $size;
+  } @else {
+    @extend %border-radius-#{$size};
+  }
+
+}
+
+@each $color in $border-types {
+  %border-type-#{nth($color, 1)} {
+    border: 1px solid nth($color, 2);
+  }
+}
+
+@mixin border($type:suttle) {
+  @extend %border-type-#{$type};
+}

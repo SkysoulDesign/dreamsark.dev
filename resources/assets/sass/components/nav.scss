@@ -1,13 +1,33 @@
 @include component(nav) {
 
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-
-  border: 1px solid color(gray, light);
-  background: color(white);
-
   text-align: center;
+  @include box-shadow();
+
+  @include colors($background-color: true) {
+
+    @include option(basic) {
+      @if lightness(color($color)) < 50 {
+        @extend %color-white;
+      }
+    }
+
+    @include part(content) {
+
+      @include part(item) {
+
+        @if $background-color == white {
+          $background-color: primary !global;
+        } @else {
+          $background-color: color($background-color, dark);
+        }
+
+        @include tab(
+                $text-color: $color,
+                $stroke-color: $background-color);
+
+      }
+    }
+  }
 
   @include part(content) {
 
@@ -24,37 +44,17 @@
 
       padding: 1em;
       margin: 0 .2em;
-      transition: .25s;
       white-space: nowrap;
 
-      @include option(active) {
-        a {
-          color: color(primary);
-        }
-        box-shadow: inset 0 -3px 0 0 color(primary);
-      }
-
-      &:hover {
-        box-shadow: inset 0 -3px 0 0 color(primary);
-      }
+      @include tab();
 
     }
 
-  }
-
-  @include option(hover) {
-    li {
-      &:hover {
-        &, a {
-          color: color(primary);
-        }
-        background-color: color($color: primary, $alpha: 3);
-      }
-    }
   }
 
   @include option(basic) {
-    border: none;
+    background: none;
+    box-shadow: none;
   }
 
 }

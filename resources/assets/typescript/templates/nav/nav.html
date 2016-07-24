@@ -1,8 +1,9 @@
-<div :class="style">
+<div class="row --fluid nav align-left" :class="[ { '--basic' : basic }, '--color-' + color ]">
 
     <div class="columns">
 
-        <div class="row medium-uncollapse nav__content +center-on-mobile align-center">
+        <div class="row medium-uncollapse nav__content +center-on-mobile"
+             :class="[ { 'align-center' : !basic } ]">
 
             <slot></slot>
 

@@ -1,0 +1,49 @@
+@include component(pagination) {
+
+  display: flex;
+  user-select: none;
+
+  @include option(right) {
+    justify-content: flex-end;
+  }
+
+  @include part(item) {
+
+    background: color(white);
+    margin: 0 .1em;
+    flex-basis: 2em;
+
+    @include border-radius(tiny);
+    @include border();
+
+    a {
+      text-transform: uppercase;
+      padding: .3em .8em;
+      display: block;
+      text-align: center;
+      height: 100%;
+      width: 100%;
+
+      @include font-size(small);
+      @include transition(fast) {
+        transition-property: box-shadow;
+      }
+
+      &:hover {
+        background-color: color(gray, light);
+        @include box-shadow();
+      }
+
+    }
+
+    @include option(disabled) {
+      a {
+        pointer-events: none;
+        color: color(gray);
+        background: color(gray, light);
+      }
+    }
+
+  }
+
+}

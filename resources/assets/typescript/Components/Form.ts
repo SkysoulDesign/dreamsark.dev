@@ -55,12 +55,12 @@ export class Form implements ComponentInterface {
                         type: String,
                         default: 'submit'
                     },
-                    state: {
-                        type: String
+                    color: {
+                        type: String,
+                        default: 'gray'
                     },
-                    class: {
-                        type: String
-                    }
+                    icon: String,
+                    class: String
                 }
             }
         );
@@ -262,7 +262,7 @@ export class Form implements ComponentInterface {
                     icon: String,
                     mode: {
                         type: String,
-                        default: 'button' //Simple, Button
+                        default: 'button' //Simple, Button, Icon
                     },
                     pop: {
                         type: String,

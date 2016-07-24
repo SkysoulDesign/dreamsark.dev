@@ -8,15 +8,9 @@
   color: color(white);
   cursor: pointer;
   white-space: nowrap;
-
   line-height: normal;
-
   appearance: none;
-  //box-shadow: inset 1px 1px 1px color(white, base, 30), 0 3px 3px color(black, base, 15), 0 3px 2px -2px color(black, base, 20);
-  //text-shadow: 0 -0.5px 1px color(black, base, 15);
-
   padding: 1em;
-  //position: relative;
 
   text-transform: uppercase;
   text-align: center;
@@ -185,10 +179,116 @@
 
 }
 
+%button-base{
+
+  @include colors($background-color: true, $hover: true) {
+    border: 1px solid color($background-color);
+  }
+
+  white-space: nowrap;
+  cursor: pointer;
+  text-align: center;
+
+  &:focus {
+    outline: 0;
+  }
+
+}
+
 button, .button {
 
-  @include dreamsark-button-base;
-  @include dreamsark-button-colors;
-  @include dreamsark-button-ripple;
+  @extend %input-base;
+  @extend %button-base;
+
+  //border: none;
+  //border-radius: 5px;
+  //width: 100%;
+  //color: color(white);
+  //
+  //line-height: normal;
+  //appearance: none;
+  //padding: 1em;
+  //
+  //text-transform: uppercase;
+  //
+  //@include option(inverted) {
+  //  color: color(black);
+  //  &:hover {
+  //    color: color(primary);
+  //  }
+  //}
+  //
+  //&:hover {
+  //  color: color(white);
+  //}
+  //
+
+  //
+  //&:active {
+  //  outline: 0;
+  //}
+  //
+  //@include option(fit) {
+  //
+  //  width: auto;
+  //  margin: 1em 0;
+  //  padding-left: 2em;
+  //  padding-right: 2em;
+  //
+  //  @include respond-to(desktop) {
+  //    margin: 0;
+  //  }
+  //
+  //}
+  //
+  //@include option(rounded) {
+  //  border-radius: 5em;
+  //}
+  //
+  //@include option(small) {
+  //
+  //  @extend .\--fit;
+  //
+  //  padding: .5em;
+  //  font-size: .8em;
+  //
+  //}
+  //
+  //@include option(medium) {
+  //
+  //  @extend .\--fit;
+  //
+  //  padding: .6em;
+  //  font-size: 1em;
+  //
+  //}
+  //
+  //@include option(hollow) {
+  //  background-color: #00AA00;
+  //}
+  //
+  //@include option(default) {
+  //
+  //  background-color: color(gray);
+  //  display: flex;
+  //  line-height: 3em;
+  //  padding: 0 .8em;
+  //  text-align: center;
+  //  vertical-align: middle;
+  //
+  //  height: 100%;
+  //
+  //  box-shadow: none;
+  //  text-shadow: none;
+  //
+  //  &:hover {
+  //    background-color: color(gray, dark);
+  //  }
+  //
+  //  &:active {
+  //    background-color: color(black, light);
+  //  }
+
+  //}
 
 }

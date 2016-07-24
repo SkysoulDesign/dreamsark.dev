@@ -1,0 +1,18 @@
+%box-shadow {
+  box-shadow: 0 1px 2px color($color: pure-black, $alpha: 20);
+}
+
+@mixin box-shadow($position-x: null, $position-y: null,  $blur: null, $color: null) {
+
+  @if $color or $blur or $position-x or $position-y {
+
+    @if map_has_key($colors, $color) {
+      $color: color($color);
+    }
+
+    box-shadow: $position-x $position-y $blur $color;
+  } @else {
+    @extend %box-shadow;
+  }
+
+}

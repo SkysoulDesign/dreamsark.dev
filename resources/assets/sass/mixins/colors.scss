@@ -1,0 +1,70 @@
+@each $color in $colors {
+  %color-#{nth($color, 1)} {
+    $temp: map_get(nth($color, 2), base);
+
+    @if lightness(color(nth($color, 1))) > 40 {
+      $temp: map_get(nth($color, 2), x-light);
+    }
+
+    color: $temp;
+
+    a {
+      color: $temp;
+    }
+
+  }
+
+  %background-color-#{nth($color, 1)} {
+    background-color: map_get(nth($color, 2), base);
+  }
+
+  %background-color-hover-#{nth($color, 1)} {
+    a:hover, &:hover {
+
+      @if lightness(map_get(nth($color, 2), light)) < 40 {
+        color: map_get(nth($color, 2), xx-light);
+      } @else {
+        color: map_get(nth($color, 2), dark);
+      }
+
+      background-color: map_get(nth($color, 2), light);
+    }
+  }
+}
+
+$color: null !global;
+
+@mixin colors($color: true, $background-color: false, $hover: false) {
+
+  @each $color in $colors {
+
+    @include option(color-#{nth($color, 1)}) {
+
+      @if $background-color {
+
+        @if lightness(map_get(nth($color, 2), base)) > 50 {
+          $color: black !global;
+          @extend %color-black;
+        } @else {
+          $color: white !global;
+          @extend %color-white;
+        }
+
+        @if ($hover) {
+          @extend %background-color-hover-#{nth($color, 1)};
+        }
+
+        $background-color: nth($color, 1) !global;
+        @extend %background-color-#{nth($color, 1)};
+
+      } @else {
+        @extend %color-#{nth($color, 1)};
+      }
+
+      @content;
+
+    }
+
+  }
+
+}
