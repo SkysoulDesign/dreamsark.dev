@@ -3132,7 +3132,7 @@ button {
     -ms-flex-order: 6;
     order: 6; } }
 
-.row {
+.row, .form, form {
   max-width: 75rem;
   margin-left: auto;
   margin-right: auto;
@@ -3140,17 +3140,17 @@ button {
   display: flex;
   -ms-flex-flow: row wrap;
   flex-flow: row wrap; }
-  .row .row {
+  .row .row, .form .row, form .row, .row .form, .form .form, form .form, .row form, .form form, form form {
     max-width: none;
     margin-left: -0.625rem;
     margin-right: -0.625rem; }
     @media screen and (min-width: 40em) {
-      .row .row {
+      .row .row, .form .row, form .row, .row .form, .form .form, form .form, .row form, .form form, form form {
         margin-left: -0.9375rem;
         margin-right: -0.9375rem; } }
-  .row.expanded {
+  .row.expanded, .expanded.form, form.expanded {
     max-width: none; }
-  .row.collapse > .column, .row.collapse > .columns {
+  .row.collapse > .column, .collapse.form > .column, form.collapse > .column, .row.collapse > .columns, .collapse.form > .columns, form.collapse > .columns {
     padding-left: 0;
     padding-right: 0; }
 
@@ -3165,10 +3165,10 @@ button {
       padding-left: 0.9375rem;
       padding-right: 0.9375rem; } }
 
-.column.row.row, .row.row.columns {
+.column.row.row, .row.row.columns, .columns.form, form.columns, .column.form, form.column {
   float: none;
   display: block; }
-  .row .column.row.row, .row .row.row.columns {
+  .row .column.row.row, .form .column.row.row, form .column.row.row, .row .row.row.columns, .form .row.row.columns, form .row.row.columns, .row .columns.form, .form .columns.form, form .columns.form, .row form.columns, .form form.columns, form form.columns, .row .column.form, .form .column.form, form .column.form, .row form.column, .form form.column, form form.column {
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;
@@ -3519,11 +3519,11 @@ button {
     -ms-flex: 1 1 0px;
     flex: 1 1 0px; } }
 
-.row.medium-unstack > .column, .row.medium-unstack > .columns {
+.row.medium-unstack > .column, .medium-unstack.form > .column, form.medium-unstack > .column, .row.medium-unstack > .columns, .medium-unstack.form > .columns, form.medium-unstack > .columns {
   -ms-flex: 0 0 100%;
   flex: 0 0 100%; }
   @media screen and (min-width: 40em) {
-    .row.medium-unstack > .column, .row.medium-unstack > .columns {
+    .row.medium-unstack > .column, .medium-unstack.form > .column, form.medium-unstack > .column, .row.medium-unstack > .columns, .medium-unstack.form > .columns, form.medium-unstack > .columns {
       -ms-flex: 1 1 0px;
       flex: 1 1 0px; } }
 
@@ -3688,11 +3688,11 @@ button {
     -ms-flex: 1 1 0px;
     flex: 1 1 0px; } }
 
-.row.large-unstack > .column, .row.large-unstack > .columns {
+.row.large-unstack > .column, .large-unstack.form > .column, form.large-unstack > .column, .row.large-unstack > .columns, .large-unstack.form > .columns, form.large-unstack > .columns {
   -ms-flex: 0 0 100%;
   flex: 0 0 100%; }
   @media screen and (min-width: 64em) {
-    .row.large-unstack > .column, .row.large-unstack > .columns {
+    .row.large-unstack > .column, .large-unstack.form > .column, form.large-unstack > .column, .row.large-unstack > .columns, .large-unstack.form > .columns, form.large-unstack > .columns {
       -ms-flex: 1 1 0px;
       flex: 1 1 0px; } }
 
@@ -3774,10 +3774,22 @@ button {
 .nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .dropdown__options li, .pagination__item a {
   transition-duration: 0.25s; }
 
-button, .button, .dropdown__trigger.\--mode-button, .segment.\--hover, .\--hover.item {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .segment.\--hover, .\--hover.item {
   transition-duration: 0.15s; }
 
-button, .button, .dropdown__trigger.\--mode-button, .dropdown__options li, .header span, header span {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .segment, .item, .pagination__item {
+  border-radius: 0.2em; }
+
+.item__image img {
+  border-radius: 100%; }
+
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .pagination__item, .item {
+  border: 1px solid #dedede; }
+
+input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
+  border: 1px solid #f8878a; }
+
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options li, .header span, header span, .header.\--light, header.\--light {
   font-weight: 400; }
 
 .header, header {
@@ -3786,158 +3798,264 @@ button, .button, .dropdown__trigger.\--mode-button, .dropdown__options li, .head
 .header.\--small, header.\--small {
   font-size: 1.4em; }
 
-button, .button, .dropdown__trigger.\--mode-button, .dropdown__options {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .divider {
   font-size: 1em; }
+
+.header p, header p {
+  font-size: 0.5em; }
 
 .header, header {
   font-size: 2em; }
 
-button, .button, .dropdown__trigger.\--mode-button, .dropdown__options {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .divider {
   font-size: 1em; }
 
-.dropdown__options li, .dropdown__options li i, .pagination__item a {
+.dropdown__options li, .dropdown__options li i, .divider.\--mini, .pagination__item a {
   font-size: 0.9em; }
+
+.header p, header p {
+  font-size: 0.5em; }
 
 .admin-page__top a {
   color: white; }
   .admin-page__top a:hover {
     color: #d9d9d9; }
 
-button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .segment, .item, .pagination__item {
-  border-radius: 0.2em; }
-
-.item__image img {
-  border-radius: 100%; }
-
-button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .pagination__item, .item {
-  border: 1px solid #dedede; }
-
 .segment, .item, .nav, .pagination__item a:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 
-button.\--color-neutral, .\--color-neutral.button, .segment.\--color-neutral, .\--color-neutral.item, .nav.\--color-neutral {
+#app-root .\+color-neutral {
+  color: white; }
+  #app-root .\+color-neutral a {
+    color: white; }
+    #app-root .\+color-neutral a:hover {
+      color: #0083ff; }
+
+button.\--color-neutral, .\--color-neutral.button, .form__header.\--color-neutral, .segment.\--color-neutral, .\--color-neutral.item, .nav.\--color-neutral {
   background-color: #f1f1f1; }
 
 button.\--color-neutral a:hover, .\--color-neutral.button a:hover, button.\--color-neutral:hover, .\--color-neutral.button:hover {
   color: #cbcbcb;
   background-color: white; }
 
-button.\--color-primary, .\--color-primary.button, button.\--color-secondary, .\--color-secondary.button, button.\--color-ternary, .\--color-ternary.button, button.\--color-danger, .\--color-danger.button, button.\--color-success, .\--color-success.button, button.\--color-black, .\--color-black.button, button.\--color-pure-black, .\--color-pure-black.button, button.\--color-red, .\--color-red.button, button.\--color-yellow, .\--color-yellow.button, button.\--color-green, .\--color-green.button, button.\--color-purple, .\--color-purple.button, button.\--color-tomato, .\--color-tomato.button, .segment.\--color-primary, .\--color-primary.item, .segment.\--color-secondary, .\--color-secondary.item, .segment.\--color-ternary, .\--color-ternary.item, .segment.\--color-danger, .\--color-danger.item, .segment.\--color-success, .\--color-success.item, .segment.\--color-black, .\--color-black.item, .segment.\--color-pure-black, .\--color-pure-black.item, .segment.\--color-red, .\--color-red.item, .segment.\--color-yellow, .\--color-yellow.item, .segment.\--color-green, .\--color-green.item, .segment.\--color-purple, .\--color-purple.item, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-neutral.\--basic, .nav.\--color-white.\--basic, .nav.\--color-gray.\--basic, .nav.\--color-primary, .nav.\--color-secondary, .nav.\--color-ternary, .nav.\--color-danger, .nav.\--color-success, .nav.\--color-black, .nav.\--color-pure-black, .nav.\--color-red, .nav.\--color-yellow, .nav.\--color-green, .nav.\--color-purple, .nav.\--color-tomato, .nav.\--color-golden.\--basic, .nav.\--color-transparent-white.\--basic {
+button.\--color-primary, .\--color-primary.button, button.\--color-secondary, .\--color-secondary.button, button.\--color-ternary, .\--color-ternary.button, button.\--color-danger, .\--color-danger.button, button.\--color-success, .\--color-success.button, button.\--color-black, .\--color-black.button, button.\--color-pure-black, .\--color-pure-black.button, button.\--color-red, .\--color-red.button, button.\--color-yellow, .\--color-yellow.button, button.\--color-green, .\--color-green.button, button.\--color-purple, .\--color-purple.button, button.\--color-tomato, .\--color-tomato.button, .form__header.\--color-primary, .form__header.\--color-secondary, .form__header.\--color-ternary, .form__header.\--color-danger, .form__header.\--color-success, .form__header.\--color-black, .form__header.\--color-pure-black, .form__header.\--color-red, .form__header.\--color-yellow, .form__header.\--color-green, .form__header.\--color-purple, .form__header.\--color-tomato, .segment.\--color-primary, .\--color-primary.item, .segment.\--color-secondary, .\--color-secondary.item, .segment.\--color-ternary, .\--color-ternary.item, .segment.\--color-danger, .\--color-danger.item, .segment.\--color-success, .\--color-success.item, .segment.\--color-black, .\--color-black.item, .segment.\--color-pure-black, .\--color-pure-black.item, .segment.\--color-red, .\--color-red.item, .segment.\--color-yellow, .\--color-yellow.item, .segment.\--color-green, .\--color-green.item, .segment.\--color-purple, .\--color-purple.item, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-neutral.\--basic, .nav.\--color-white.\--basic, .nav.\--color-gray.\--basic, .nav.\--color-primary, .nav.\--color-secondary, .nav.\--color-ternary, .nav.\--color-danger, .nav.\--color-success, .nav.\--color-black, .nav.\--color-pure-black, .nav.\--color-red, .nav.\--color-yellow, .nav.\--color-green, .nav.\--color-purple, .nav.\--color-tomato, .nav.\--color-golden.\--basic, .nav.\--color-transparent-white.\--basic, #app-root .\+color-white {
   color: white; }
-  button.\--color-primary a, .\--color-primary.button a, button.\--color-secondary a, .\--color-secondary.button a, button.\--color-ternary a, .\--color-ternary.button a, button.\--color-danger a, .\--color-danger.button a, button.\--color-success a, .\--color-success.button a, button.\--color-black a, .\--color-black.button a, button.\--color-pure-black a, .\--color-pure-black.button a, button.\--color-red a, .\--color-red.button a, button.\--color-yellow a, .\--color-yellow.button a, button.\--color-green a, .\--color-green.button a, button.\--color-purple a, .\--color-purple.button a, button.\--color-tomato a, .\--color-tomato.button a, .segment.\--color-primary a, .\--color-primary.item a, .segment.\--color-secondary a, .\--color-secondary.item a, .segment.\--color-ternary a, .\--color-ternary.item a, .segment.\--color-danger a, .\--color-danger.item a, .segment.\--color-success a, .\--color-success.item a, .segment.\--color-black a, .\--color-black.item a, .segment.\--color-pure-black a, .\--color-pure-black.item a, .segment.\--color-red a, .\--color-red.item a, .segment.\--color-yellow a, .\--color-yellow.item a, .segment.\--color-green a, .\--color-green.item a, .segment.\--color-purple a, .\--color-purple.item a, .segment.\--color-tomato a, .\--color-tomato.item a, .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic a, .nav.\--color-primary a, .nav.\--color-secondary a, .nav.\--color-ternary a, .nav.\--color-danger a, .nav.\--color-success a, .nav.\--color-black a, .nav.\--color-pure-black a, .nav.\--color-red a, .nav.\--color-yellow a, .nav.\--color-green a, .nav.\--color-purple a, .nav.\--color-tomato a, .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic a, button.\--color-primary .menu a, .menu button.\--color-primary a, .\--color-primary.button .menu a, .menu .\--color-primary.button a, button.\--color-secondary .menu a, .menu button.\--color-secondary a, .\--color-secondary.button .menu a, .menu .\--color-secondary.button a, button.\--color-ternary .menu a, .menu button.\--color-ternary a, .\--color-ternary.button .menu a, .menu .\--color-ternary.button a, button.\--color-danger .menu a, .menu button.\--color-danger a, .\--color-danger.button .menu a, .menu .\--color-danger.button a, button.\--color-success .menu a, .menu button.\--color-success a, .\--color-success.button .menu a, .menu .\--color-success.button a, button.\--color-black .menu a, .menu button.\--color-black a, .\--color-black.button .menu a, .menu .\--color-black.button a, button.\--color-pure-black .menu a, .menu button.\--color-pure-black a, .\--color-pure-black.button .menu a, .menu .\--color-pure-black.button a, button.\--color-red .menu a, .menu button.\--color-red a, .\--color-red.button .menu a, .menu .\--color-red.button a, button.\--color-yellow .menu a, .menu button.\--color-yellow a, .\--color-yellow.button .menu a, .menu .\--color-yellow.button a, button.\--color-green .menu a, .menu button.\--color-green a, .\--color-green.button .menu a, .menu .\--color-green.button a, button.\--color-purple .menu a, .menu button.\--color-purple a, .\--color-purple.button .menu a, .menu .\--color-purple.button a, button.\--color-tomato .menu a, .menu button.\--color-tomato a, .\--color-tomato.button .menu a, .menu .\--color-tomato.button a, .segment.\--color-primary .menu a, .menu .segment.\--color-primary a, .\--color-primary.item .menu a, .menu .\--color-primary.item a, .segment.\--color-secondary .menu a, .menu .segment.\--color-secondary a, .\--color-secondary.item .menu a, .menu .\--color-secondary.item a, .segment.\--color-ternary .menu a, .menu .segment.\--color-ternary a, .\--color-ternary.item .menu a, .menu .\--color-ternary.item a, .segment.\--color-danger .menu a, .menu .segment.\--color-danger a, .\--color-danger.item .menu a, .menu .\--color-danger.item a, .segment.\--color-success .menu a, .menu .segment.\--color-success a, .\--color-success.item .menu a, .menu .\--color-success.item a, .segment.\--color-black .menu a, .menu .segment.\--color-black a, .\--color-black.item .menu a, .menu .\--color-black.item a, .segment.\--color-pure-black .menu a, .menu .segment.\--color-pure-black a, .\--color-pure-black.item .menu a, .menu .\--color-pure-black.item a, .segment.\--color-red .menu a, .menu .segment.\--color-red a, .\--color-red.item .menu a, .menu .\--color-red.item a, .segment.\--color-yellow .menu a, .menu .segment.\--color-yellow a, .\--color-yellow.item .menu a, .menu .\--color-yellow.item a, .segment.\--color-green .menu a, .menu .segment.\--color-green a, .\--color-green.item .menu a, .menu .\--color-green.item a, .segment.\--color-purple .menu a, .menu .segment.\--color-purple a, .\--color-purple.item .menu a, .menu .\--color-purple.item a, .segment.\--color-tomato .menu a, .menu .segment.\--color-tomato a, .\--color-tomato.item .menu a, .menu .\--color-tomato.item a, .nav.\--color-neutral.\--basic .menu a, .menu .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic .menu a, .menu .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic .menu a, .menu .nav.\--color-gray.\--basic a, .nav.\--color-primary .menu a, .menu .nav.\--color-primary a, .nav.\--color-secondary .menu a, .menu .nav.\--color-secondary a, .nav.\--color-ternary .menu a, .menu .nav.\--color-ternary a, .nav.\--color-danger .menu a, .menu .nav.\--color-danger a, .nav.\--color-success .menu a, .menu .nav.\--color-success a, .nav.\--color-black .menu a, .menu .nav.\--color-black a, .nav.\--color-pure-black .menu a, .menu .nav.\--color-pure-black a, .nav.\--color-red .menu a, .menu .nav.\--color-red a, .nav.\--color-yellow .menu a, .menu .nav.\--color-yellow a, .nav.\--color-green .menu a, .menu .nav.\--color-green a, .nav.\--color-purple .menu a, .menu .nav.\--color-purple a, .nav.\--color-tomato .menu a, .menu .nav.\--color-tomato a, .nav.\--color-golden.\--basic .menu a, .menu .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic .menu a, .menu .nav.\--color-transparent-white.\--basic a {
+  button.\--color-primary a, .\--color-primary.button a, button.\--color-secondary a, .\--color-secondary.button a, button.\--color-ternary a, .\--color-ternary.button a, button.\--color-danger a, .\--color-danger.button a, button.\--color-success a, .\--color-success.button a, button.\--color-black a, .\--color-black.button a, button.\--color-pure-black a, .\--color-pure-black.button a, button.\--color-red a, .\--color-red.button a, button.\--color-yellow a, .\--color-yellow.button a, button.\--color-green a, .\--color-green.button a, button.\--color-purple a, .\--color-purple.button a, button.\--color-tomato a, .\--color-tomato.button a, .form__header.\--color-primary a, .form__header.\--color-secondary a, .form__header.\--color-ternary a, .form__header.\--color-danger a, .form__header.\--color-success a, .form__header.\--color-black a, .form__header.\--color-pure-black a, .form__header.\--color-red a, .form__header.\--color-yellow a, .form__header.\--color-green a, .form__header.\--color-purple a, .form__header.\--color-tomato a, .segment.\--color-primary a, .\--color-primary.item a, .segment.\--color-secondary a, .\--color-secondary.item a, .segment.\--color-ternary a, .\--color-ternary.item a, .segment.\--color-danger a, .\--color-danger.item a, .segment.\--color-success a, .\--color-success.item a, .segment.\--color-black a, .\--color-black.item a, .segment.\--color-pure-black a, .\--color-pure-black.item a, .segment.\--color-red a, .\--color-red.item a, .segment.\--color-yellow a, .\--color-yellow.item a, .segment.\--color-green a, .\--color-green.item a, .segment.\--color-purple a, .\--color-purple.item a, .segment.\--color-tomato a, .\--color-tomato.item a, .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic a, .nav.\--color-primary a, .nav.\--color-secondary a, .nav.\--color-ternary a, .nav.\--color-danger a, .nav.\--color-success a, .nav.\--color-black a, .nav.\--color-pure-black a, .nav.\--color-red a, .nav.\--color-yellow a, .nav.\--color-green a, .nav.\--color-purple a, .nav.\--color-tomato a, .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white a, button.\--color-primary .menu a, .menu button.\--color-primary a, .\--color-primary.button .menu a, .menu .\--color-primary.button a, button.\--color-secondary .menu a, .menu button.\--color-secondary a, .\--color-secondary.button .menu a, .menu .\--color-secondary.button a, button.\--color-ternary .menu a, .menu button.\--color-ternary a, .\--color-ternary.button .menu a, .menu .\--color-ternary.button a, button.\--color-danger .menu a, .menu button.\--color-danger a, .\--color-danger.button .menu a, .menu .\--color-danger.button a, button.\--color-success .menu a, .menu button.\--color-success a, .\--color-success.button .menu a, .menu .\--color-success.button a, button.\--color-black .menu a, .menu button.\--color-black a, .\--color-black.button .menu a, .menu .\--color-black.button a, button.\--color-pure-black .menu a, .menu button.\--color-pure-black a, .\--color-pure-black.button .menu a, .menu .\--color-pure-black.button a, button.\--color-red .menu a, .menu button.\--color-red a, .\--color-red.button .menu a, .menu .\--color-red.button a, button.\--color-yellow .menu a, .menu button.\--color-yellow a, .\--color-yellow.button .menu a, .menu .\--color-yellow.button a, button.\--color-green .menu a, .menu button.\--color-green a, .\--color-green.button .menu a, .menu .\--color-green.button a, button.\--color-purple .menu a, .menu button.\--color-purple a, .\--color-purple.button .menu a, .menu .\--color-purple.button a, button.\--color-tomato .menu a, .menu button.\--color-tomato a, .\--color-tomato.button .menu a, .menu .\--color-tomato.button a, .form__header.\--color-primary .menu a, .menu .form__header.\--color-primary a, .form__header.\--color-secondary .menu a, .menu .form__header.\--color-secondary a, .form__header.\--color-ternary .menu a, .menu .form__header.\--color-ternary a, .form__header.\--color-danger .menu a, .menu .form__header.\--color-danger a, .form__header.\--color-success .menu a, .menu .form__header.\--color-success a, .form__header.\--color-black .menu a, .menu .form__header.\--color-black a, .form__header.\--color-pure-black .menu a, .menu .form__header.\--color-pure-black a, .form__header.\--color-red .menu a, .menu .form__header.\--color-red a, .form__header.\--color-yellow .menu a, .menu .form__header.\--color-yellow a, .form__header.\--color-green .menu a, .menu .form__header.\--color-green a, .form__header.\--color-purple .menu a, .menu .form__header.\--color-purple a, .form__header.\--color-tomato .menu a, .menu .form__header.\--color-tomato a, .segment.\--color-primary .menu a, .menu .segment.\--color-primary a, .\--color-primary.item .menu a, .menu .\--color-primary.item a, .segment.\--color-secondary .menu a, .menu .segment.\--color-secondary a, .\--color-secondary.item .menu a, .menu .\--color-secondary.item a, .segment.\--color-ternary .menu a, .menu .segment.\--color-ternary a, .\--color-ternary.item .menu a, .menu .\--color-ternary.item a, .segment.\--color-danger .menu a, .menu .segment.\--color-danger a, .\--color-danger.item .menu a, .menu .\--color-danger.item a, .segment.\--color-success .menu a, .menu .segment.\--color-success a, .\--color-success.item .menu a, .menu .\--color-success.item a, .segment.\--color-black .menu a, .menu .segment.\--color-black a, .\--color-black.item .menu a, .menu .\--color-black.item a, .segment.\--color-pure-black .menu a, .menu .segment.\--color-pure-black a, .\--color-pure-black.item .menu a, .menu .\--color-pure-black.item a, .segment.\--color-red .menu a, .menu .segment.\--color-red a, .\--color-red.item .menu a, .menu .\--color-red.item a, .segment.\--color-yellow .menu a, .menu .segment.\--color-yellow a, .\--color-yellow.item .menu a, .menu .\--color-yellow.item a, .segment.\--color-green .menu a, .menu .segment.\--color-green a, .\--color-green.item .menu a, .menu .\--color-green.item a, .segment.\--color-purple .menu a, .menu .segment.\--color-purple a, .\--color-purple.item .menu a, .menu .\--color-purple.item a, .segment.\--color-tomato .menu a, .menu .segment.\--color-tomato a, .\--color-tomato.item .menu a, .menu .\--color-tomato.item a, .nav.\--color-neutral.\--basic .menu a, .menu .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic .menu a, .menu .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic .menu a, .menu .nav.\--color-gray.\--basic a, .nav.\--color-primary .menu a, .menu .nav.\--color-primary a, .nav.\--color-secondary .menu a, .menu .nav.\--color-secondary a, .nav.\--color-ternary .menu a, .menu .nav.\--color-ternary a, .nav.\--color-danger .menu a, .menu .nav.\--color-danger a, .nav.\--color-success .menu a, .menu .nav.\--color-success a, .nav.\--color-black .menu a, .menu .nav.\--color-black a, .nav.\--color-pure-black .menu a, .menu .nav.\--color-pure-black a, .nav.\--color-red .menu a, .menu .nav.\--color-red a, .nav.\--color-yellow .menu a, .menu .nav.\--color-yellow a, .nav.\--color-green .menu a, .menu .nav.\--color-green a, .nav.\--color-purple .menu a, .menu .nav.\--color-purple a, .nav.\--color-tomato .menu a, .menu .nav.\--color-tomato a, .nav.\--color-golden.\--basic .menu a, .menu .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic .menu a, .menu .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white .menu a, .menu #app-root .\+color-white a {
     color: white; }
+    button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color-success a:hover, .\--color-success.button a:hover, button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color-tomato a:hover, .\--color-tomato.button a:hover, .form__header.\--color-primary a:hover, .form__header.\--color-secondary a:hover, .form__header.\--color-ternary a:hover, .form__header.\--color-danger a:hover, .form__header.\--color-success a:hover, .form__header.\--color-black a:hover, .form__header.\--color-pure-black a:hover, .form__header.\--color-red a:hover, .form__header.\--color-yellow a:hover, .form__header.\--color-green a:hover, .form__header.\--color-purple a:hover, .form__header.\--color-tomato a:hover, .segment.\--color-primary a:hover, .\--color-primary.item a:hover, .segment.\--color-secondary a:hover, .\--color-secondary.item a:hover, .segment.\--color-ternary a:hover, .\--color-ternary.item a:hover, .segment.\--color-danger a:hover, .\--color-danger.item a:hover, .segment.\--color-success a:hover, .\--color-success.item a:hover, .segment.\--color-black a:hover, .\--color-black.item a:hover, .segment.\--color-pure-black a:hover, .\--color-pure-black.item a:hover, .segment.\--color-red a:hover, .\--color-red.item a:hover, .segment.\--color-yellow a:hover, .\--color-yellow.item a:hover, .segment.\--color-green a:hover, .\--color-green.item a:hover, .segment.\--color-purple a:hover, .\--color-purple.item a:hover, .segment.\--color-tomato a:hover, .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary a:hover, .nav.\--color-secondary a:hover, .nav.\--color-ternary a:hover, .nav.\--color-danger a:hover, .nav.\--color-success a:hover, .nav.\--color-black a:hover, .nav.\--color-pure-black a:hover, .nav.\--color-red a:hover, .nav.\--color-yellow a:hover, .nav.\--color-green a:hover, .nav.\--color-purple a:hover, .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white a:hover, button.\--color-primary .menu a:hover, .menu button.\--color-primary a:hover, .\--color-primary.button .menu a:hover, .menu .\--color-primary.button a:hover, button.\--color-secondary .menu a:hover, .menu button.\--color-secondary a:hover, .\--color-secondary.button .menu a:hover, .menu .\--color-secondary.button a:hover, button.\--color-ternary .menu a:hover, .menu button.\--color-ternary a:hover, .\--color-ternary.button .menu a:hover, .menu .\--color-ternary.button a:hover, button.\--color-danger .menu a:hover, .menu button.\--color-danger a:hover, .\--color-danger.button .menu a:hover, .menu .\--color-danger.button a:hover, button.\--color-success .menu a:hover, .menu button.\--color-success a:hover, .\--color-success.button .menu a:hover, .menu .\--color-success.button a:hover, button.\--color-black .menu a:hover, .menu button.\--color-black a:hover, .\--color-black.button .menu a:hover, .menu .\--color-black.button a:hover, button.\--color-pure-black .menu a:hover, .menu button.\--color-pure-black a:hover, .\--color-pure-black.button .menu a:hover, .menu .\--color-pure-black.button a:hover, button.\--color-red .menu a:hover, .menu button.\--color-red a:hover, .\--color-red.button .menu a:hover, .menu .\--color-red.button a:hover, button.\--color-yellow .menu a:hover, .menu button.\--color-yellow a:hover, .\--color-yellow.button .menu a:hover, .menu .\--color-yellow.button a:hover, button.\--color-green .menu a:hover, .menu button.\--color-green a:hover, .\--color-green.button .menu a:hover, .menu .\--color-green.button a:hover, button.\--color-purple .menu a:hover, .menu button.\--color-purple a:hover, .\--color-purple.button .menu a:hover, .menu .\--color-purple.button a:hover, button.\--color-tomato .menu a:hover, .menu button.\--color-tomato a:hover, .\--color-tomato.button .menu a:hover, .menu .\--color-tomato.button a:hover, .form__header.\--color-primary .menu a:hover, .menu .form__header.\--color-primary a:hover, .form__header.\--color-secondary .menu a:hover, .menu .form__header.\--color-secondary a:hover, .form__header.\--color-ternary .menu a:hover, .menu .form__header.\--color-ternary a:hover, .form__header.\--color-danger .menu a:hover, .menu .form__header.\--color-danger a:hover, .form__header.\--color-success .menu a:hover, .menu .form__header.\--color-success a:hover, .form__header.\--color-black .menu a:hover, .menu .form__header.\--color-black a:hover, .form__header.\--color-pure-black .menu a:hover, .menu .form__header.\--color-pure-black a:hover, .form__header.\--color-red .menu a:hover, .menu .form__header.\--color-red a:hover, .form__header.\--color-yellow .menu a:hover, .menu .form__header.\--color-yellow a:hover, .form__header.\--color-green .menu a:hover, .menu .form__header.\--color-green a:hover, .form__header.\--color-purple .menu a:hover, .menu .form__header.\--color-purple a:hover, .form__header.\--color-tomato .menu a:hover, .menu .form__header.\--color-tomato a:hover, .segment.\--color-primary .menu a:hover, .menu .segment.\--color-primary a:hover, .\--color-primary.item .menu a:hover, .menu .\--color-primary.item a:hover, .segment.\--color-secondary .menu a:hover, .menu .segment.\--color-secondary a:hover, .\--color-secondary.item .menu a:hover, .menu .\--color-secondary.item a:hover, .segment.\--color-ternary .menu a:hover, .menu .segment.\--color-ternary a:hover, .\--color-ternary.item .menu a:hover, .menu .\--color-ternary.item a:hover, .segment.\--color-danger .menu a:hover, .menu .segment.\--color-danger a:hover, .\--color-danger.item .menu a:hover, .menu .\--color-danger.item a:hover, .segment.\--color-success .menu a:hover, .menu .segment.\--color-success a:hover, .\--color-success.item .menu a:hover, .menu .\--color-success.item a:hover, .segment.\--color-black .menu a:hover, .menu .segment.\--color-black a:hover, .\--color-black.item .menu a:hover, .menu .\--color-black.item a:hover, .segment.\--color-pure-black .menu a:hover, .menu .segment.\--color-pure-black a:hover, .\--color-pure-black.item .menu a:hover, .menu .\--color-pure-black.item a:hover, .segment.\--color-red .menu a:hover, .menu .segment.\--color-red a:hover, .\--color-red.item .menu a:hover, .menu .\--color-red.item a:hover, .segment.\--color-yellow .menu a:hover, .menu .segment.\--color-yellow a:hover, .\--color-yellow.item .menu a:hover, .menu .\--color-yellow.item a:hover, .segment.\--color-green .menu a:hover, .menu .segment.\--color-green a:hover, .\--color-green.item .menu a:hover, .menu .\--color-green.item a:hover, .segment.\--color-purple .menu a:hover, .menu .segment.\--color-purple a:hover, .\--color-purple.item .menu a:hover, .menu .\--color-purple.item a:hover, .segment.\--color-tomato .menu a:hover, .menu .segment.\--color-tomato a:hover, .\--color-tomato.item .menu a:hover, .menu .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic .menu a:hover, .menu .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic .menu a:hover, .menu .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic .menu a:hover, .menu .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary .menu a:hover, .menu .nav.\--color-primary a:hover, .nav.\--color-secondary .menu a:hover, .menu .nav.\--color-secondary a:hover, .nav.\--color-ternary .menu a:hover, .menu .nav.\--color-ternary a:hover, .nav.\--color-danger .menu a:hover, .menu .nav.\--color-danger a:hover, .nav.\--color-success .menu a:hover, .menu .nav.\--color-success a:hover, .nav.\--color-black .menu a:hover, .menu .nav.\--color-black a:hover, .nav.\--color-pure-black .menu a:hover, .menu .nav.\--color-pure-black a:hover, .nav.\--color-red .menu a:hover, .menu .nav.\--color-red a:hover, .nav.\--color-yellow .menu a:hover, .menu .nav.\--color-yellow a:hover, .nav.\--color-green .menu a:hover, .menu .nav.\--color-green a:hover, .nav.\--color-purple .menu a:hover, .menu .nav.\--color-purple a:hover, .nav.\--color-tomato .menu a:hover, .menu .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic .menu a:hover, .menu .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic .menu a:hover, .menu .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white .menu a:hover, .menu #app-root .\+color-white a:hover {
+      color: #0083ff; }
 
-button.\--color-white, .\--color-white.button, .segment.\--color-white, .\--color-white.item, .nav.\--color-white {
+button.\--color-white, .\--color-white.button, .form__header.\--color-white, .segment.\--color-white, .\--color-white.item, .nav.\--color-white {
   background-color: #ffffff; }
 
 button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-white:hover, .\--color-white.button:hover {
   color: #d9d9d9;
   background-color: white; }
 
-button.\--color-gray, .\--color-gray.button, .segment.\--color-gray, .\--color-gray.item, .nav.\--color-gray {
+#app-root .\+color-gray {
+  color: white; }
+  #app-root .\+color-gray a {
+    color: white; }
+    #app-root .\+color-gray a:hover {
+      color: #0083ff; }
+
+button.\--color-gray, .\--color-gray.button, .form__header.\--color-gray, .segment.\--color-gray, .\--color-gray.item, .nav.\--color-gray {
   background-color: #DEDEDE; }
 
 button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-gray:hover, .\--color-gray.button:hover {
   color: #b8b8b8;
   background-color: #f8f8f8; }
 
-button.\--color-primary, .\--color-primary.button, .segment.\--color-primary, .\--color-primary.item, .nav.\--color-primary {
+#app-root .\+color-primary {
+  color: #99cdff; }
+  #app-root .\+color-primary a {
+    color: #99cdff; }
+    #app-root .\+color-primary a:hover {
+      color: #0083ff; }
+
+button.\--color-primary, .\--color-primary.button, .form__header.\--color-primary, .segment.\--color-primary, .\--color-primary.item, .nav.\--color-primary {
   background-color: #0083ff; }
 
 button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--color-primary:hover, .\--color-primary.button:hover {
   color: #005cb3;
   background-color: #339cff; }
 
-button.\--color-secondary, .\--color-secondary.button, .segment.\--color-secondary, .\--color-secondary.item, .nav.\--color-secondary {
+#app-root .\+color-secondary {
+  color: #af0101; }
+  #app-root .\+color-secondary a {
+    color: #af0101; }
+    #app-root .\+color-secondary a:hover {
+      color: #0083ff; }
+
+button.\--color-secondary, .\--color-secondary.button, .form__header.\--color-secondary, .segment.\--color-secondary, .\--color-secondary.item, .nav.\--color-secondary {
   background-color: #af0101; }
 
 button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\--color-secondary:hover, .\--color-secondary.button:hover {
   color: #630101;
   background-color: #e20101; }
 
-button.\--color-ternary, .\--color-ternary.button, .segment.\--color-ternary, .\--color-ternary.item, .nav.\--color-ternary {
+#app-root .\+color-ternary {
+  color: #9eaf15; }
+  #app-root .\+color-ternary a {
+    color: #9eaf15; }
+    #app-root .\+color-ternary a:hover {
+      color: #0083ff; }
+
+button.\--color-ternary, .\--color-ternary.button, .form__header.\--color-ternary, .segment.\--color-ternary, .\--color-ternary.item, .nav.\--color-ternary {
   background-color: #9eaf15; }
 
 button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--color-ternary:hover, .\--color-ternary.button:hover {
   color: #606b0d;
   background-color: #c7dd1a; }
 
-button.\--color-danger, .\--color-danger.button, .segment.\--color-danger, .\--color-danger.item, .nav.\--color-danger {
+#app-root .\+color-danger {
+  color: #f8878a; }
+  #app-root .\+color-danger a {
+    color: #f8878a; }
+    #app-root .\+color-danger a:hover {
+      color: #0083ff; }
+
+button.\--color-danger, .\--color-danger.button, .form__header.\--color-danger, .segment.\--color-danger, .\--color-danger.item, .nav.\--color-danger {
   background-color: #d90d12; }
 
 button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color-danger:hover, .\--color-danger.button:hover {
   color: #91090c;
   background-color: #f2272c; }
 
-button.\--color-success, .\--color-success.button, .segment.\--color-success, .\--color-success.item, .nav.\--color-success {
+#app-root .\+color-success {
+  color: #0bbc62; }
+  #app-root .\+color-success a {
+    color: #0bbc62; }
+    #app-root .\+color-success a:hover {
+      color: #0083ff; }
+
+button.\--color-success, .\--color-success.button, .form__header.\--color-success, .segment.\--color-success, .\--color-success.item, .nav.\--color-success {
   background-color: #0bbc62; }
 
 button.\--color-success a:hover, .\--color-success.button a:hover, button.\--color-success:hover, .\--color-success.button:hover {
   color: #07743c;
   background-color: #0eec7b; }
 
-button.\--color-neutral, .\--color-neutral.button, button.\--color-white, .\--color-white.button, button.\--color-gray, .\--color-gray.button, button.\--color-golden, .\--color-golden.button, button.\--color-transparent-white, .\--color-transparent-white.button, .segment.\--color-neutral, .\--color-neutral.item, .segment.\--color-white, .\--color-white.item, .segment.\--color-gray, .\--color-gray.item, .segment.\--color-golden, .\--color-golden.item, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-neutral, .nav.\--color-white, .nav.\--color-gray, .nav.\--color-golden, .nav.\--color-transparent-white {
+button.\--color-neutral, .\--color-neutral.button, button.\--color-white, .\--color-white.button, button.\--color-gray, .\--color-gray.button, button.\--color-golden, .\--color-golden.button, button.\--color-transparent-white, .\--color-transparent-white.button, .form__header.\--color-neutral, .form__header.\--color-white, .form__header.\--color-gray, .form__header.\--color-golden, .form__header.\--color-transparent-white, .segment.\--color-neutral, .\--color-neutral.item, .segment.\--color-white, .\--color-white.item, .segment.\--color-gray, .\--color-gray.item, .segment.\--color-golden, .\--color-golden.item, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-neutral, .nav.\--color-white, .nav.\--color-gray, .nav.\--color-golden, .nav.\--color-transparent-white, #app-root .\+color-black {
   color: #323542; }
-  button.\--color-neutral a, .\--color-neutral.button a, button.\--color-white a, .\--color-white.button a, button.\--color-gray a, .\--color-gray.button a, button.\--color-golden a, .\--color-golden.button a, button.\--color-transparent-white a, .\--color-transparent-white.button a, .segment.\--color-neutral a, .\--color-neutral.item a, .segment.\--color-white a, .\--color-white.item a, .segment.\--color-gray a, .\--color-gray.item a, .segment.\--color-golden a, .\--color-golden.item a, .segment.\--color-transparent-white a, .\--color-transparent-white.item a, .nav.\--color-neutral a, .nav.\--color-white a, .nav.\--color-gray a, .nav.\--color-golden a, .nav.\--color-transparent-white a {
+  button.\--color-neutral a, .\--color-neutral.button a, button.\--color-white a, .\--color-white.button a, button.\--color-gray a, .\--color-gray.button a, button.\--color-golden a, .\--color-golden.button a, button.\--color-transparent-white a, .\--color-transparent-white.button a, .form__header.\--color-neutral a, .form__header.\--color-white a, .form__header.\--color-gray a, .form__header.\--color-golden a, .form__header.\--color-transparent-white a, .segment.\--color-neutral a, .\--color-neutral.item a, .segment.\--color-white a, .\--color-white.item a, .segment.\--color-gray a, .\--color-gray.item a, .segment.\--color-golden a, .\--color-golden.item a, .segment.\--color-transparent-white a, .\--color-transparent-white.item a, .nav.\--color-neutral a, .nav.\--color-white a, .nav.\--color-gray a, .nav.\--color-golden a, .nav.\--color-transparent-white a, #app-root .\+color-black a {
     color: #323542; }
+    button.\--color-neutral a:hover, .\--color-neutral.button a:hover, button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:hover, .form__header.\--color-neutral a:hover, .form__header.\--color-white a:hover, .form__header.\--color-gray a:hover, .form__header.\--color-golden a:hover, .form__header.\--color-transparent-white a:hover, .segment.\--color-neutral a:hover, .\--color-neutral.item a:hover, .segment.\--color-white a:hover, .\--color-white.item a:hover, .segment.\--color-gray a:hover, .\--color-gray.item a:hover, .segment.\--color-golden a:hover, .\--color-golden.item a:hover, .segment.\--color-transparent-white a:hover, .\--color-transparent-white.item a:hover, .nav.\--color-neutral a:hover, .nav.\--color-white a:hover, .nav.\--color-gray a:hover, .nav.\--color-golden a:hover, .nav.\--color-transparent-white a:hover, #app-root .\+color-black a:hover {
+      color: #0083ff; }
 
-button.\--color-black, .\--color-black.button, .segment.\--color-black, .\--color-black.item, .nav.\--color-black {
+button.\--color-black, .\--color-black.button, .form__header.\--color-black, .segment.\--color-black, .\--color-black.item, .nav.\--color-black {
   background-color: #323542; }
 
 button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-black:hover, .\--color-black.button:hover {
   color: #b0b4c3;
   background-color: #484c5f; }
 
-button.\--color-pure-black, .\--color-pure-black.button, .segment.\--color-pure-black, .\--color-pure-black.item, .nav.\--color-pure-black {
+#app-root .\+color-pure-black {
+  color: #000000; }
+  #app-root .\+color-pure-black a {
+    color: #000000; }
+    #app-root .\+color-pure-black a:hover {
+      color: #0083ff; }
+
+button.\--color-pure-black, .\--color-pure-black.button, .form__header.\--color-pure-black, .segment.\--color-pure-black, .\--color-pure-black.item, .nav.\--color-pure-black {
   background-color: #000000; }
 
 button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.\--color-pure-black:hover, .\--color-pure-black.button:hover {
   color: gray;
   background-color: #1a1a1a; }
 
-button.\--color-red, .\--color-red.button, .segment.\--color-red, .\--color-red.item, .nav.\--color-red {
+#app-root .\+color-red {
+  color: #f8878a; }
+  #app-root .\+color-red a {
+    color: #f8878a; }
+    #app-root .\+color-red a:hover {
+      color: #0083ff; }
+
+button.\--color-red, .\--color-red.button, .form__header.\--color-red, .segment.\--color-red, .\--color-red.item, .nav.\--color-red {
   background-color: #d90d12; }
 
 button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-red:hover, .\--color-red.button:hover {
   color: #91090c;
   background-color: #f2272c; }
 
-button.\--color-yellow, .\--color-yellow.button, .segment.\--color-yellow, .\--color-yellow.item, .nav.\--color-yellow {
+#app-root .\+color-yellow {
+  color: #ffef84; }
+  #app-root .\+color-yellow a {
+    color: #ffef84; }
+    #app-root .\+color-yellow a:hover {
+      color: #0083ff; }
+
+button.\--color-yellow, .\--color-yellow.button, .form__header.\--color-yellow, .segment.\--color-yellow, .\--color-yellow.item, .nav.\--color-yellow {
   background-color: #eacc00; }
 
 button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color-yellow:hover, .\--color-yellow.button:hover {
   color: #9e8900;
   background-color: #ffe21e; }
 
-button.\--color-green, .\--color-green.button, .segment.\--color-green, .\--color-green.item, .nav.\--color-green {
+#app-root .\+color-green {
+  color: #9eff84; }
+  #app-root .\+color-green a {
+    color: #9eff84; }
+    #app-root .\+color-green a:hover {
+      color: #0083ff; }
+
+button.\--color-green, .\--color-green.button, .form__header.\--color-green, .segment.\--color-green, .\--color-green.item, .nav.\--color-green {
   background-color: #32ea00; }
 
 button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-green:hover, .\--color-green.button:hover {
   color: #229e00;
   background-color: #4eff1e; }
 
-button.\--color-purple, .\--color-purple.button, .segment.\--color-purple, .\--color-purple.item, .nav.\--color-purple {
+#app-root .\+color-purple {
+  color: #6900a5; }
+  #app-root .\+color-purple a {
+    color: #6900a5; }
+    #app-root .\+color-purple a:hover {
+      color: #0083ff; }
+
+button.\--color-purple, .\--color-purple.button, .form__header.\--color-purple, .segment.\--color-purple, .\--color-purple.item, .nav.\--color-purple {
   background-color: #6900a5; }
 
 button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color-purple:hover, .\--color-purple.button:hover {
   color: #380059;
   background-color: #8900d8; }
 
-button.\--color-tomato, .\--color-tomato.button, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-tomato {
+#app-root .\+color-tomato {
+  color: #af0101; }
+  #app-root .\+color-tomato a {
+    color: #af0101; }
+    #app-root .\+color-tomato a:hover {
+      color: #0083ff; }
+
+button.\--color-tomato, .\--color-tomato.button, .form__header.\--color-tomato, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-tomato {
   background-color: #af0101; }
 
 button.\--color-tomato a:hover, .\--color-tomato.button a:hover, button.\--color-tomato:hover, .\--color-tomato.button:hover {
   color: #630101;
   background-color: #e20101; }
 
-button.\--color-golden, .\--color-golden.button, .segment.\--color-golden, .\--color-golden.item, .nav.\--color-golden {
+#app-root .\+color-golden {
+  color: #ffedbf; }
+  #app-root .\+color-golden a {
+    color: #ffedbf; }
+    #app-root .\+color-golden a:hover {
+      color: #0083ff; }
+
+button.\--color-golden, .\--color-golden.button, .form__header.\--color-golden, .segment.\--color-golden, .\--color-golden.item, .nav.\--color-golden {
   background-color: #ffc326; }
 
 button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color-golden:hover, .\--color-golden.button:hover {
   color: #d99d00;
   background-color: #ffd159; }
 
-button.\--color-transparent-white, .\--color-transparent-white.button, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-transparent-white {
+#app-root .\+color-transparent-white {
+  color: white; }
+  #app-root .\+color-transparent-white a {
+    color: white; }
+    #app-root .\+color-transparent-white a:hover {
+      color: #0083ff; }
+
+button.\--color-transparent-white, .\--color-transparent-white.button, .form__header.\--color-transparent-white, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-transparent-white {
   background-color: #ffffff; }
 
 button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:hover, button.\--color-transparent-white:hover, .\--color-transparent-white.button:hover {
@@ -3957,44 +4075,36 @@ button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:
   .nav.\--color-neutral .nav__content__item:hover, .nav.\--color-white .nav__content__item:hover, .nav.\--color-gray .nav__content__item:hover, .nav.\--color-primary .nav__content__item:hover, .nav.\--color-secondary .nav__content__item:hover, .nav.\--color-ternary .nav__content__item:hover, .nav.\--color-danger .nav__content__item:hover, .nav.\--color-success .nav__content__item:hover, .nav.\--color-black .nav__content__item:hover, .nav.\--color-pure-black .nav__content__item:hover, .nav.\--color-red .nav__content__item:hover, .nav.\--color-yellow .nav__content__item:hover, .nav.\--color-green .nav__content__item:hover, .nav.\--color-purple .nav__content__item:hover, .nav.\--color-tomato .nav__content__item:hover, .nav.\--color-golden .nav__content__item:hover, .nav.\--color-transparent-white .nav__content__item:hover, .nav__content__item:hover, .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
     box-shadow: inset 0 -3px 0 0 #0083ff; }
 
-button, .button, .dropdown__trigger.\--mode-button {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button {
   padding: .8em 1.2em;
+  color: #b8b8b8;
+  background: #f8f8f8;
   transition-property: color, background-color, box-shadow, border-color; }
-  button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover {
+  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover, button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover {
     color: black;
-    background-color: #f8f8f8;
-    border-color: #dedede; }
-  button:active, .button:active, .dropdown__trigger.\--mode-button:active {
+    background-color: #dedede;
+    border-color: #b8b8b8; }
+  input:active, .text-area:active, textarea:active, .select:active, select:active, .input:active, button:active, .button:active, .dropdown__trigger.\--mode-button:active {
     background-image: none;
     outline: 0;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.12);
     border-color: rgba(222, 222, 222, 0.7); }
+  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus, button:focus, .button:focus, .dropdown__trigger.\--mode-button:focus {
+    outline: 0; }
 
 input, .text-area, textarea, .select, select, .input {
-  font-size: 1em;
-  font-weight: normal;
-  color: #b8b8b8;
-  width: 100%;
-  padding: 1em;
-  margin: 0;
-  background: rgba(248, 248, 248, 0.3);
-  border: 1px solid rgba(248, 248, 248, 0.8);
-  border-radius: .5em; }
-  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover {
-    background: rgba(248, 248, 248, 0.5);
-    color: #9e9e9e; }
-  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus {
-    outline: 0; }
-  input:active, .text-area:active, textarea:active, .select:active, select:active, .input:active {
-    outline: 0; }
+  width: 100%; }
   input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
-    color: #d90d12;
-    border: 1px solid rgba(242, 39, 44, 0.8); }
+    color: #d90d12; }
+    input.\--error:hover, .\--error.text-area:hover, textarea.\--error:hover, .\--error.select:hover, select.\--error:hover, .input.\--error:hover {
+      border-color: #d90d12;
+      background-color: transparent; }
 
 button, .button {
   white-space: nowrap;
   cursor: pointer;
-  text-align: center; }
+  text-align: center;
+  height: 100%; }
   button.\--color-neutral, .\--color-neutral.button {
     border: 1px solid #f1f1f1; }
   button.\--color-white, .\--color-white.button {
@@ -4031,6 +4141,10 @@ button, .button {
     border: 1px solid white; }
   button:focus, .button:focus {
     outline: 0; }
+  button.\--fluid, .\--fluid.button {
+    width: 100%; }
+  button.\--medium, .\--medium.button {
+    padding: 1.2em; }
 
 .dropdown {
   position: relative;
@@ -4099,138 +4213,131 @@ button, .button {
     background: none;
     width: auto; }
 
-.form, form {
-  padding: 0;
-  margin: 0; }
-  .form.\--overlapped, form.\--overlapped {
-    position: relative;
-    margin-top: -3.5em;
-    z-index: 10; }
-  .form__content {
-    background: white;
-    padding: 1em 1.5em 1.5em 1.5em;
-    border-radius: 0 0 1em 1em; }
-    @media only screen and (min-width: 1000px) {
-      .form__content {
-        padding: 1em 3.2em 2em 3.2em; } }
-  .form__step.\--rounded {
-    border-radius: 0 0 .5em .5em; }
-  .form__step span {
-    border: solid 2px #0bbc62;
-    color: #0bbc62;
-    height: 30px;
-    width: 30px;
-    line-height: 26px;
-    margin: -2px 10px 0 0px;
-    text-align: center;
-    display: inline-block;
-    border-radius: 100%; }
-  .form__header {
-    background: #0bbc62;
-    padding: 1em;
-    position: relative;
-    font-size: 1.4em;
-    text-align: center;
-    color: white;
+.form.\--overlapped, form.\--overlapped {
+  position: relative;
+  margin-top: -3.5em;
+  z-index: 10; }
+
+.form__content {
+  background: white;
+  padding: 1em 1.5em 1.5em 1.5em;
+  border-radius: 0 0 1em 1em; }
+  @media only screen and (min-width: 1000px) {
+    .form__content {
+      padding: 1em 3.2em 2em 3.2em; } }
+
+.form__step.\--rounded {
+  border-radius: 0 0 .5em .5em; }
+
+.form__step span {
+  border: solid 2px #0bbc62;
+  color: #0bbc62;
+  height: 30px;
+  width: 30px;
+  line-height: 26px;
+  margin: -2px 10px 0 0px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 100%; }
+
+.form__header {
+  padding: 1em;
+  position: relative;
+  font-size: 1.4em;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase; }
+  .form__header.\--rounded {
+    border-radius: .5em .5em 0 0; }
+
+.form__field, .form__fields, .form__description, .form__field span {
+  -ms-flex: 100%;
+  flex: 100%; }
+  .form__field:not(:nth-child(1)), .form__fields:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
+    margin: .8em 0; }
+  .form__field:nth-last-child(-n + 1), .form__fields:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
+    margin-top: .8em;
+    margin-bottom: 0; }
+  .form__field:only-child, .form__fields:only-child, .form__description:only-child, .form__field span:only-child {
+    margin: 0; }
+  .form__field__error {
+    color: #d90d12; }
+    .form__field__error ul, .form__field__error .badges {
+      list-style: none;
+      padding: 0; }
+      .form__field__error ul li, .form__field__error .badges li {
+        font-size: 0.8em; }
+  .form__field label, .form__fields label, .form__description label {
+    font-size: .8em;
     font-weight: bold;
-    text-transform: uppercase; }
-    .form__header.\--rounded {
-      border-radius: .5em .5em 0 0; }
-  .form__field, .form__fields, .form__description, .form__field span {
-    -ms-flex: 100%;
-    flex: 100%; }
-    .form__field:not(:nth-child(1)), .form__fields:not(:nth-child(1)), .form__description:not(:nth-child(1)), .form__field span:not(:nth-child(1)) {
-      margin: .8em 0; }
-    .form__field:nth-last-child(-n + 1), .form__fields:nth-last-child(-n + 1), .form__description:nth-last-child(-n + 1), .form__field span:nth-last-child(-n + 1) {
-      margin-top: .8em;
-      margin-bottom: 0; }
-    .form__field:only-child, .form__fields:only-child, .form__description:only-child, .form__field span:only-child {
-      margin: 0; }
-    .form__field__error {
-      color: #d90d12; }
-      .form__field__error ul, .form__field__error .badges {
-        list-style: none;
-        padding: 0; }
-        .form__field__error ul li, .form__field__error .badges li {
-          font-size: 0.8em; }
-    .form__field label, .form__fields label, .form__description label {
-      font-size: .8em;
-      font-weight: bold;
-      padding: 0 0 1em .2em;
-      display: block;
-      color: #484c5f; }
-    .form__field span, .form__fields span, .form__description span {
-      display: block;
-      padding-top: 0 !important; }
-    .form__field.\--required label, .\--required.form__fields label, .\--required.form__description label, .form__field span.\--required label {
-      position: relative; }
-      .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
-        content: '*';
-        color: #d90d12;
-        padding: .2em;
-        font-size: 1.5em;
-        position: absolute;
-        margin-top: -.3em; }
-    .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional {
-      opacity: 0.6;
-      transition: opacity 0.25s; }
-      .form__field.\--optional:hover, .\--optional.form__fields:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
-        opacity: 1; }
-  .form__fields {
-    display: -ms-flexbox;
-    display: flex; }
-    .form__fields .form__field, .form__fields .form__fields, .form__fields .form__description, .form__fields .form__field span, .form__field .form__fields span {
-      -ms-flex: 1 !important;
-      flex: 1 !important; }
-      .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
-        margin: 0 0 0 .8em; }
-    .form__fields.\--gap-normal .form__field:not(:nth-child(1)), .form__fields.\--gap-normal .form__fields:not(:nth-child(1)), .form__fields.\--gap-normal .form__description:not(:nth-child(1)), .form__fields.\--gap-normal .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-normal span:not(:nth-child(1)) {
-      margin: 0 0 0 0.8em; }
-    .form__fields.\--gap-small .form__field:not(:nth-child(1)), .form__fields.\--gap-small .form__fields:not(:nth-child(1)), .form__fields.\--gap-small .form__description:not(:nth-child(1)), .form__fields.\--gap-small .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-small span:not(:nth-child(1)) {
-      margin: 0 0 0 5em; }
-    .form__fields.\--gap-medium .form__field:not(:nth-child(1)), .form__fields.\--gap-medium .form__fields:not(:nth-child(1)), .form__fields.\--gap-medium .form__description:not(:nth-child(1)), .form__fields.\--gap-medium .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-medium span:not(:nth-child(1)) {
-      margin: 0 0 0 8em; }
-    .form__fields.\--gap-large .form__field:not(:nth-child(1)), .form__fields.\--gap-large .form__fields:not(:nth-child(1)), .form__fields.\--gap-large .form__description:not(:nth-child(1)), .form__fields.\--gap-large .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-large span:not(:nth-child(1)) {
-      margin: 0 0 0 10em; }
-    .form__fields.\--gap-huge .form__field:not(:nth-child(1)), .form__fields.\--gap-huge .form__fields:not(:nth-child(1)), .form__fields.\--gap-huge .form__description:not(:nth-child(1)), .form__fields.\--gap-huge .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-huge span:not(:nth-child(1)) {
-      margin: 0 0 0 15em; }
-  .form__message {
-    background: rgba(217, 13, 18, 0.1);
-    padding: 1em;
-    border: 1px solid rgba(217, 13, 18, 0.2); }
-    .form__message__header {
-      font-weight: 500; }
-    .form__message__items {
-      font-weight: 300;
-      padding: 0 1.125em;
-      margin: 10px 0 0 0;
-      font-size: 0.8em; }
-      .form__message__items li {
-        margin: 0;
-        padding: 0; }
-    .form__message.\--error {
-      color: #d90d12; }
-  .form__description, .form__field span, .form__fields span, .form__description span {
-    padding-top: 1em;
-    font-size: small;
-    color: #b8b8b8; }
+    padding: 0 0 1em .2em;
+    display: block;
+    color: #484c5f; }
+  .form__field span, .form__fields span, .form__description span {
+    display: block;
+    padding-top: 0 !important; }
+  .form__field.\--required label, .\--required.form__fields label, .\--required.form__description label, .form__field span.\--required label {
+    position: relative; }
+    .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
+      content: '*';
+      color: #d90d12;
+      padding: .2em;
+      font-size: 1.5em;
+      position: absolute;
+      margin-top: -.3em; }
+  .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional {
+    opacity: 0.6;
+    transition: opacity 0.25s; }
+    .form__field.\--optional:hover, .\--optional.form__fields:hover, .\--optional.form__description:hover, .form__field span.\--optional:hover {
+      opacity: 1; }
+
+.form__fields {
+  display: -ms-flexbox;
+  display: flex; }
+  .form__fields .form__field, .form__fields .form__fields, .form__fields .form__description, .form__fields .form__field span, .form__field .form__fields span {
+    -ms-flex: 1 !important;
+    flex: 1 !important; }
+    .form__fields .form__field:not(:nth-child(1)), .form__fields .form__fields:not(:nth-child(1)), .form__fields .form__description:not(:nth-child(1)), .form__fields .form__field span:not(:nth-child(1)), .form__field .form__fields span:not(:nth-child(1)) {
+      margin: 0 0 0 .8em; }
+  .form__fields.\--gap-normal .form__field:not(:nth-child(1)), .form__fields.\--gap-normal .form__fields:not(:nth-child(1)), .form__fields.\--gap-normal .form__description:not(:nth-child(1)), .form__fields.\--gap-normal .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-normal span:not(:nth-child(1)) {
+    margin: 0 0 0 0.8em; }
+  .form__fields.\--gap-small .form__field:not(:nth-child(1)), .form__fields.\--gap-small .form__fields:not(:nth-child(1)), .form__fields.\--gap-small .form__description:not(:nth-child(1)), .form__fields.\--gap-small .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-small span:not(:nth-child(1)) {
+    margin: 0 0 0 5em; }
+  .form__fields.\--gap-medium .form__field:not(:nth-child(1)), .form__fields.\--gap-medium .form__fields:not(:nth-child(1)), .form__fields.\--gap-medium .form__description:not(:nth-child(1)), .form__fields.\--gap-medium .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-medium span:not(:nth-child(1)) {
+    margin: 0 0 0 8em; }
+  .form__fields.\--gap-large .form__field:not(:nth-child(1)), .form__fields.\--gap-large .form__fields:not(:nth-child(1)), .form__fields.\--gap-large .form__description:not(:nth-child(1)), .form__fields.\--gap-large .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-large span:not(:nth-child(1)) {
+    margin: 0 0 0 10em; }
+  .form__fields.\--gap-huge .form__field:not(:nth-child(1)), .form__fields.\--gap-huge .form__fields:not(:nth-child(1)), .form__fields.\--gap-huge .form__description:not(:nth-child(1)), .form__fields.\--gap-huge .form__field span:not(:nth-child(1)), .form__field .form__fields.\--gap-huge span:not(:nth-child(1)) {
+    margin: 0 0 0 15em; }
+
+.form__message {
+  background: rgba(217, 13, 18, 0.1);
+  padding: 1em;
+  border: 1px solid rgba(217, 13, 18, 0.2); }
+  .form__message__header {
+    font-weight: 500; }
+  .form__message__items {
+    font-weight: 300;
+    padding: 0 1.125em;
+    margin: 10px 0 0 0;
+    font-size: 0.8em; }
+    .form__message__items li {
+      margin: 0;
+      padding: 0; }
+  .form__message.\--error {
+    color: #d90d12; }
+
+.form__description, .form__field span, .form__fields span, .form__description span {
+  padding-top: 1em;
+  font-size: small;
+  color: #b8b8b8; }
 
 .header p, header p {
-  color: #323542;
-  font-weight: normal;
-  line-height: .8em; }
-  @media only screen and (min-width: 1000px) {
-    .header p, header p {
-      width: 60%;
-      margin: 0 auto; } }
+  line-height: normal;
+  font-weight: normal; }
 
-.header.\--left, header.\--left {
-  text-align: left; }
-
-.header.\--full, header.\--full {
-  text-align: left; }
-  .header.\--full p, header.\--full p {
-    width: 100%; }
+.header.\--light, header.\--light {
+  color: #b8b8b8; }
 
 .header.\--centered, header.\--centered {
   text-align: center; }
@@ -4242,9 +4349,6 @@ button, .button {
   .header.\--classic p, header.\--classic p {
     margin: 10px 0 0 0;
     font-size: medium; }
-
-.header.\--light, header.\--light {
-  font-weight: normal; }
 
 .header.\--with-divider, header.\--with-divider {
   padding-bottom: .7em;
@@ -4269,35 +4373,30 @@ button, .button {
 .divider {
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: row;
-  flex-direction: row;
   -ms-flex-pack: center;
   justify-content: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
-  font-size: 1em;
   text-transform: uppercase;
-  color: #dedede;
+  color: #b8b8b8;
+  width: 100%;
   margin: 1em 0; }
   .divider:before, .divider:after {
     content: '';
     -ms-flex: 1;
     flex: 1;
-    background: #f8f8f8;
+    background: #dedede;
     height: 1px; }
   .divider:before {
     margin: 0 .25em 0 0; }
   .divider:after {
     margin: 0 0 0 .25em; }
-  .divider.\--mini {
-    font-size: 0.8em; }
   .divider.\--spaced {
     margin: 1.5em 0; }
   .divider.\--hair-line {
     opacity: .2; }
   .divider.\--straight {
-    background: #f8f8f8; }
+    background: #dedede; }
   .divider.\--simple:before {
     margin: 0; }
   .divider.\--simple:after {
@@ -4331,7 +4430,7 @@ button, .button {
     font-weight: 600;
     color: white; }
     .menu__item:hover {
-      color: rgba(153, 205, 255, 0.7);
+      color: #0083ff;
       background: rgba(0, 92, 179, 0.6); }
     .menu__item.\--active {
       background: rgba(0, 92, 179, 0.5); }
@@ -4484,16 +4583,16 @@ button, .button {
   min-height: 100vh;
   padding-bottom: 5em; }
 
-.row.\--fluid {
-  max-width: 100%;
+.row.\--fluid, .\--fluid.form, form.\--fluid {
+  min-width: 100%;
   padding-left: 1em;
   padding-right: 1em; }
 
-.row.\--white-background {
+.row.\--white-background, .\--white-background.form, form.\--white-background {
   background: white;
   border-top: 1px solid rgba(222, 222, 222, 0.55); }
 
-.row.\--large-padding {
+.row.\--large-padding, .\--large-padding.form, form.\--large-padding {
   padding: 3em; }
 
 .nav {
@@ -4634,6 +4733,11 @@ button, .button {
         color: white; }
     .nav.\--color-transparent-white .nav__content__item:hover {
       box-shadow: inset 0 -3px 0 0 white; }
+    .nav.\--color-transparent-white .nav__content__item:hover {
+      color: #d9d9d9 !important; }
+  .nav.\--color-transparent {
+    background-color: none;
+    box-shadow: none; }
   .nav__content {
     margin: 0;
     padding: 0;
@@ -4901,7 +5005,7 @@ button, .button {
     .progress__bar.\--color-transparent-white .progress__bar__completion {
       background: white; }
 
-#app-root .\+white, #app-root .header.\--inverted, #app-root header.\--inverted, #app-root .header.\--inverted p, .header.\--inverted #app-root p, #app-root header.\--inverted p, header.\--inverted #app-root p, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a, #app-root .card__caption.\--white {
+#app-root .\+white, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a, #app-root .card__caption.\--white {
   color: white; }
 
 #app-root .\+align-right {
@@ -4954,6 +5058,9 @@ button, .button {
 
 #app-root .\+margin-bottom {
   margin-bottom: 2em; }
+
+#app-root .\+margin-bottom-small {
+  margin-bottom: 1em; }
 
 #app-root .\+large-margin-bottom {
   margin-bottom: 10em; }
@@ -5395,35 +5502,30 @@ button, .button {
 .divider {
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: row;
-  flex-direction: row;
   -ms-flex-pack: center;
   justify-content: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
-  font-size: 1em;
   text-transform: uppercase;
-  color: #dedede;
+  color: #b8b8b8;
+  width: 100%;
   margin: 1em 0; }
   .divider:before, .divider:after {
     content: '';
     -ms-flex: 1;
     flex: 1;
-    background: #f8f8f8;
+    background: #dedede;
     height: 1px; }
   .divider:before {
     margin: 0 .25em 0 0; }
   .divider:after {
     margin: 0 0 0 .25em; }
-  .divider.\--mini {
-    font-size: 0.8em; }
   .divider.\--spaced {
     margin: 1.5em 0; }
   .divider.\--hair-line {
     opacity: .2; }
   .divider.\--straight {
-    background: #f8f8f8; }
+    background: #dedede; }
   .divider.\--simple:before {
     margin: 0; }
   .divider.\--simple:after {
@@ -5813,7 +5915,7 @@ button, .button {
     font-weight: 600;
     color: white; }
     .menu__item:hover {
-      color: rgba(153, 205, 255, 0.7);
+      color: #0083ff;
       background: rgba(0, 92, 179, 0.6); }
     .menu__item.\--active {
       background: rgba(0, 92, 179, 0.5); }
@@ -6019,6 +6121,15 @@ button, .button {
   width: 100%;
   background: url("/img/login/dreamsArkRef93.png") no-repeat center center;
   background-size: cover; }
+  .login-page__register-avatar {
+    position: relative;
+    left: 0;
+    right: 0;
+    width: 10em;
+    margin: 0 auto -7em auto;
+    top: -7em; }
+    .login-page__register-avatar img {
+      border-radius: 100em; }
 
 .profile-page a:hover {
   color: #323542; }

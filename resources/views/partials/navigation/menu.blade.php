@@ -25,7 +25,7 @@
 
         <div class="small-12 medium-6 columns menu__brand +center-on-mobile">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('img/temp/dreamsark-blue.png') }}">
+                <img src="{{ asset('img/svg/logo.svg') }}">
             </a>
         </div>
 

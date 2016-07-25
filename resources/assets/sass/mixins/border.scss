@@ -24,4 +24,5 @@
 
 @mixin border($type:suttle) {
   @extend %border-type-#{$type};
+  @content;
 }

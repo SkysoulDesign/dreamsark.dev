@@ -1,6 +1,8 @@
-%input-base{
+%input-base {
 
   padding: .8em 1.2em;
+  color: color(gray, dark);
+  background: color(gray, light);
 
   @include border();
   @include font-size(normal);
@@ -12,8 +14,8 @@
 
   &:hover {
     color: color(pure-black);
-    background-color: color(gray, light);
-    border-color: color(gray)
+    background-color: color(gray);
+    border-color: color(gray, dark)
   }
 
   &:active {
@@ -23,38 +25,29 @@
     border-color: color($color: gray, $alpha: 70);
   }
 
-}
-
-input, .input {
-
-  font-size: 1em;
-  font-weight: normal;
-  color: color(gray, dark);
-
-  width: 100%;
-  padding: 1em;
-  margin: 0;
-
-  background: color(gray, light, 30);
-  border: 1px solid color(gray, light, 80);
-  border-radius: .5em;
-
-  &:hover {
-    background: color(gray, light, 50);
-    color: color(gray, x-dark);
-  }
-
   &:focus {
     outline: 0;
   }
 
-  &:active {
-    outline: 0;
-  }
+}
+
+input, .input {
+
+  @extend %input-base;
+
+  width: 100%;
 
   @include option(error) {
+
     color: color(danger);
-    border: 1px solid color(danger, light, 80);
+
+    @include border(error) {
+      &:hover {
+        border-color: color(danger);
+        background-color: transparent;
+      }
+    }
+
   }
 
 }

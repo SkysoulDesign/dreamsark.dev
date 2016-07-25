@@ -286,6 +286,16 @@ export class Form implements ComponentInterface {
             }
         );
 
+        vue.component('ark-form-header', {
+            template: require('../templates/form/modal-form/form-header.html'),
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                }
+            }
+        });
+
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
@@ -397,6 +407,11 @@ export class Form implements ComponentInterface {
 
                     return result;
 
+                },
+                slotExists (slotName) {
+                    if (!this['_slotContents'])
+                        return false
+                    return this._slotContents[slotName];
                 }
             },
             computed: {
@@ -441,9 +456,9 @@ export class Form implements ComponentInterface {
                     if (['patch', 'put', 'delete'].includes(this.method)) {
 
                         let method = input.cloneNode();
-                            method.setAttribute('type', 'hidden')
-                            method.setAttribute('name', '_method');
-                            method.setAttribute('value', this.method);
+                        method.setAttribute('type', 'hidden')
+                        method.setAttribute('name', '_method');
+                        method.setAttribute('value', this.method);
 
                         this.$el.appendChild(
                             method

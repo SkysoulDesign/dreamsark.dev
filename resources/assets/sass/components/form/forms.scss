@@ -10,8 +10,7 @@ form {
 
 @include component(form) {
 
-  padding: 0;
-  margin: 0;
+  @extend .row;
 
   @include option(overlapped) {
     position: relative;
@@ -53,18 +52,18 @@ form {
 
   @include part(header) {
 
-    background: color(success);
     padding: 1em;
     position: relative;
     font-size: $h2;
     text-align: center;
-    color: color(white);
     font-weight: bold;
     text-transform: uppercase;
 
     @include option(rounded) {
       border-radius: .5em .5em 0 0;
     }
+
+    @include colors($background-color: true);
 
   }
 
@@ -84,7 +83,6 @@ form {
     @include unique() {
       margin: 0;
     }
-
 
     @include part(error) {
 

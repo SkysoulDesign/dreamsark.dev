@@ -25,6 +25,12 @@
                 $text-color: $color,
                 $stroke-color: $background-color);
 
+        @if $background-color == transparent-white {
+          &:hover {
+            color: color(white, dark) !important
+          }
+        }
+
       }
     }
   }

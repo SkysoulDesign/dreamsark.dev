@@ -241,6 +241,15 @@ var Form = (function () {
                     this.$set('title', this.$children[0].content);
             }
         });
+        vue.component('ark-form-header', {
+            template: require('../templates/form/modal-form/form-header.html'),
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                }
+            }
+        });
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
@@ -336,6 +345,11 @@ var Form = (function () {
                         return this.bind[name];
                     }
                     return result;
+                },
+                slotExists: function (slotName) {
+                    if (!this['_slotContents'])
+                        return false;
+                    return this._slotContents[slotName];
                 }
             },
             computed: {

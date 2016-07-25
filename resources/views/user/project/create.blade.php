@@ -11,8 +11,8 @@
         <div class="row align-middle +full-height +center">
 
             <div class="small-12 columns">
-                <header class="header --inverted +text-shadow">
-                    <small>@lang('project.project')</small>
+                <header class="header +color-white +text-shadow">
+                    @lang('project.project')
                     <h1 class="+uppercase">@lang('project.creation')</h1>
                 </header>
             </div>
@@ -21,14 +21,13 @@
 
     </div>
 
-    <ark-form class="row align-center --overlapped" action="{{ route('user.project.store') }}">
+    <ark-form class="align-center --overlapped" action="{{ route('user.project.store') }}">
 
-        <div class="small-11 medium-9 columns form__header --rounded">
+        <ark-form-header>
             @lang('project.start-project')
-        </div>
+        </ark-form-header>
 
         <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">
-
             <div class="row">
 
                 <h3 class="small-12 columns form__step">
@@ -92,7 +91,6 @@
                 </div>
 
             </div>
-
         </div>
 
     </ark-form>

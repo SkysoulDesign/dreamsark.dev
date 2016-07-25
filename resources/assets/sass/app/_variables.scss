@@ -24,6 +24,7 @@ $font-weights: (
 $border-types: (
         suttle: color(gray),
         dark: color(gray, dark),
+        error: color(danger, x-light),
 ) !default;
 
 $border-radius-sizes: (

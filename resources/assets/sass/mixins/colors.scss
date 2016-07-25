@@ -1,4 +1,5 @@
 @each $color in $colors {
+
   %color-#{nth($color, 1)} {
 
     $temp: map_get(nth($color, 2), base);
@@ -41,7 +42,7 @@
 
 $color: null !global;
 
-@mixin colors($color: true, $background-color: false, $hover: false) {
+@mixin colors($text-color: true, $background-color: false, $hover: false) {
 
   @each $color in $colors {
 
@@ -49,22 +50,26 @@ $color: null !global;
 
       @if $background-color {
 
-        @if lightness(map_get(nth($color, 2), base)) > 50 {
-          $color: black !global;
-          @extend %color-black;
-        } @else {
-          $color: white !global;
-          @extend %color-white;
+        @if $text-color {
+
+          @if lightness(map_get(nth($color, 2), base)) > 50 {
+            $color: black !global;
+            @extend %color-black;
+          } @else {
+            $color: white !global;
+            @extend %color-white;
+          }
+
         }
 
-        @if ($hover) {
+        @if $hover {
           @extend %background-color-hover-#{nth($color, 1)};
         }
 
         $background-color: nth($color, 1) !global;
         @extend %background-color-#{nth($color, 1)};
 
-      } @else {
+      } @else if $text-color {
         @extend %color-#{nth($color, 1)};
       }
 

@@ -1,10 +1,10 @@
 <form :id="id" :action="action" :method="method === 'get' ? 'get' : 'post'">
-   <slot></slot>
+    <slot></slot>
 
-   <div v-if="globalErrors"  class="form__field__error">
-      <ul v-for="error in globalErrors">
-         <li>{{ error }}</li>
-      </ul>
-   </div>
+    <div v-if="globalErrors" class="form__field__error">
+        <ul v-for="error in globalErrors">
+            <li>{{ error }}</li>
+        </ul>
+    </div>
 
 </form>

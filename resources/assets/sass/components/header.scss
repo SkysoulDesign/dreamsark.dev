@@ -43,26 +43,18 @@
   //  font-weight: normal;
   //}
 
-  @include option(left) {
-    text-align: left;
-  }
+  //@include option(left) {
+  //  text-align: left;
+  //}
 
-  @include option(full) {
-
-    text-align: left;
-
-    p {
-      width: 100%;
-    }
-  }
-
-  @include option(inverted) {
-
-    &, p {
-      @extend .\+white;
-    }
-
-  }
+  //@include option(full) {
+  //
+  //  text-align: left;
+  //
+  //  p {
+  //    width: 100%;
+  //  }
+  //}
 
   @include option(centered) {
     text-align: center;
