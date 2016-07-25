@@ -12468,7 +12468,12 @@ var Form = function () {
             props: {
                 id: String,
                 token: String,
-                bind: Object,
+                bind: {
+                    type: Object,
+                    default: function _default() {
+                        return {};
+                    }
+                },
                 action: {
                     type: String,
                     required: true

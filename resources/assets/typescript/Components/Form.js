@@ -320,7 +320,12 @@ var Form = (function () {
             props: {
                 id: String,
                 token: String,
-                bind: Object,
+                bind: {
+                    type: Object,
+                    default: function () {
+                        return {};
+                    }
+                },
                 action: {
                     type: String,
                     required: true
