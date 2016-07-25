@@ -1,5 +1,18 @@
 <form :id="id" :action="action" :method="method === 'get' ? 'get' : 'post'">
-    <slot></slot>
+
+    <template v-if="slotExists('content')">
+
+        <slot></slot>
+
+        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">
+            <slot name="content"></slot>
+        </div>
+
+    </template>
+
+    <div class="columns" v-else>
+        <slot></slot>
+    </div>
 
     <div v-if="globalErrors" class="form__field__error">
         <ul v-for="error in globalErrors">

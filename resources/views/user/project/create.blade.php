@@ -27,70 +27,74 @@
             @lang('project.start-project')
         </ark-form-header>
 
-        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">
-            <div class="row">
+        <div slot="content">
 
-                <h3 class="small-12 columns form__step">
-                    <span>1</span>
-                    @lang('project.name')
-                </h3>
+            <ark-form-step>
+                @lang('project.name')
+            </ark-form-step>
 
-                <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
+            <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
 
-                <h3 class="small-12 columns form__step">
-                    <span>2</span>
-                    @lang('project.content')
-                </h3>
+            <ark-form-step>
+                @lang('project.content')
+            </ark-form-step>
 
-                <ark-textarea name="content"
-                              :rows="5"
-                              placeholder="@lang('forms.content')"
-                              caption="@lang('project.form-description')">
-                </ark-textarea>
+            <ark-textarea name="content"
+                          :rows="5"
+                          placeholder="@lang('forms.content')"
+                          caption="@lang('project.form-description')">
+            </ark-textarea>
 
-                <h3 class="small-12 columns form__step">
-                    <span>3</span>
-                    @lang('project.reward')
-                </h3>
+            <ark-form-step>
+                @lang('project.reward')
+            </ark-form-step>
 
-                <ark-fields>
-                    <ark-input name="reward[idea]"
-                               required
-                               placeholder="@lang('project.name')"
-                               label="@lang('forms.idea-stage')">
-                    </ark-input>
-
-                    <ark-input name="reward[synapse]"
-                               optional
-                               placeholder="@lang('project.name')"
-                               label="@lang('forms.synapse-stage')">
-                    </ark-input>
-
-                    <ark-input name="reward[script]"
-                               optional
-                               placeholder="@lang('project.name')"
-                               label="@lang('forms.script-stage')">
-                    </ark-input>
-                </ark-fields>
-
-                <ark-input name="voting_date"
-                           type="date"
-                           placeholder="@lang('project.name')"
-                           caption="@lang('project.creation-voting-description')"
-                           label="@lang('forms.due-date')">
+            <ark-fields>
+                <ark-input name="reward[idea]"
+                           required
+                           type="number"
+                           :min="0"
+                           :max="{{ auth()->user()->bag->coins }}"
+                           placeholder="@lang('project.amount')"
+                           label="@lang('forms.idea-stage')">
                 </ark-input>
 
-                <div class="small-12 columns divider --simple"></div>
+                <ark-input name="reward[synapse]"
+                           optional
+                           type="number"
+                           :min="0"
+                           :max="{{ auth()->user()->bag->coins }}"
+                           placeholder="@lang('project.amount')"
+                           label="@lang('forms.synapse-stage')">
+                </ark-input>
 
-                <ark-button state="success" class="+center-on-mobile">
-                    @lang('forms.create-project')
-                </ark-button>
+                <ark-input name="reward[script]"
+                           optional
+                           type="number"
+                           :min="0"
+                           :max="{{ auth()->user()->bag->coins }}"
+                           placeholder="@lang('project.amount')"
+                           label="@lang('forms.script-stage')">
+                </ark-input>
+            </ark-fields>
 
-                <div class="small-12 columns form__description +center-on-mobile">
-                    @lang('project.creation.notes')
-                </div>
+            <ark-input name="voting_date"
+                       type="date"
+                       placeholder="@lang('project.name')"
+                       caption="@lang('project.creation-voting-description')"
+                       label="@lang('forms.due-date')">
+            </ark-input>
 
+            <div class="small-12 columns divider --simple"></div>
+
+            <ark-button color="success" class="--fluid --medium" class="+center-on-mobile">
+                @lang('forms.create-project')
+            </ark-button>
+
+            <div class="small-12 columns form__description +center-on-mobile">
+                @lang('project.creation.notes')
             </div>
+
         </div>
 
     </ark-form>

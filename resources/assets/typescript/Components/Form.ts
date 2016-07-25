@@ -6,7 +6,21 @@ import {popByKey} from "../Helpers";
  */
 export class Form implements ComponentInterface {
 
+
     register(vue, app) {
+
+        let getParentForm = (object, parent = null) => {
+
+            if (parent && parent.constructor.name === 'ArkForm') {
+                return parent;
+            }
+
+            if (parent)
+                return getParentForm(object, parent.$parent)
+
+            return getParentForm(object, object.$parent);
+
+        }
 
         app.vue({
             plugins: [
@@ -112,7 +126,7 @@ export class Form implements ComponentInterface {
                     }
                 },
                 methods: {
-                    send(e: MouseEvent){
+                    send(e:MouseEvent){
                         e.preventDefault();
                         if (this.setDisabled == 'yes')
                             this.disabled = true;
@@ -152,6 +166,8 @@ export class Form implements ComponentInterface {
                 required: Boolean,
                 optional: Boolean,
                 caption: String,
+                min: Number,
+                max: Number,
                 placeholder: {
                     type: String,
                     default: function () {
@@ -296,6 +312,22 @@ export class Form implements ComponentInterface {
             }
         });
 
+        vue.component('ark-form-step', {
+            template: require('../templates/form/modal-form/form-step.html'),
+            data: function () {
+                return {
+                    step: getParentForm(this).steps++
+                }
+            },
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                }
+            }
+
+        });
+
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
@@ -359,6 +391,7 @@ export class Form implements ComponentInterface {
                         parent = parent.$parent;
 
                     return popByKey(parent.errors, this.name);
+
                 }
             }
         });
@@ -367,6 +400,7 @@ export class Form implements ComponentInterface {
             template: require('../templates/form/form.html'),
             data: function () {
                 return {
+                    steps: 1,
                     globalErrors: [],
                     oldInput: JSON.parse(
                         (<HTMLMetaElement>document.querySelector('meta[name="form-data"]')).content
@@ -433,7 +467,8 @@ export class Form implements ComponentInterface {
                 }
             },
             ready(){
-                this.$el.addEventListener('submit', (e: Event) => {
+
+                this.$el.addEventListener('submit', (e:Event) => {
 
                     /**
                      * Store Which form reference to display errors correctly later

@@ -7,6 +7,15 @@ var Form = (function () {
     function Form() {
     }
     Form.prototype.register = function (vue, app) {
+        var getParentForm = function (object, parent) {
+            if (parent === void 0) { parent = null; }
+            if (parent && parent.constructor.name === 'ArkForm') {
+                return parent;
+            }
+            if (parent)
+                return getParentForm(object, parent.$parent);
+            return getParentForm(object, object.$parent);
+        };
         app.vue({
             plugins: [
                 require('vue-resource')
@@ -127,6 +136,8 @@ var Form = (function () {
                 required: Boolean,
                 optional: Boolean,
                 caption: String,
+                min: Number,
+                max: Number,
                 placeholder: {
                     type: String,
                     default: function () {
@@ -250,6 +261,20 @@ var Form = (function () {
                 }
             }
         });
+        vue.component('ark-form-step', {
+            template: require('../templates/form/modal-form/form-step.html'),
+            data: function () {
+                return {
+                    step: getParentForm(this).steps++
+                };
+            },
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                }
+            }
+        });
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
@@ -313,6 +338,7 @@ var Form = (function () {
             template: require('../templates/form/form.html'),
             data: function () {
                 return {
+                    steps: 1,
                     globalErrors: [],
                     oldInput: JSON.parse(document.querySelector('meta[name="form-data"]').content)
                 };

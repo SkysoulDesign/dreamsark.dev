@@ -14,38 +14,45 @@ form {
 
   @include option(overlapped) {
     position: relative;
-    margin-top: -3.5em;
+    margin-top: -3em;
     z-index: 10;
+  }
+
+  [slot="content"] {
+    @extend .row;
+    margin-top: 2em;
   }
 
   @include part(content) {
 
     background: color(white);
-    padding: 1em 1.5em 1.5em 1.5em;
-    border-radius: 0 0 1em 1em;
-
-    @include respond-to(desktop) {
-      padding: 1em 3.2em 2em 3.2em;
-    }
+    border-radius: 0 0 .3em .3em;
+    padding: 1em 3.2em 2em 3.2em;
 
   }
 
   @include part(step) {
 
-    @include option(rounded) {
-      border-radius: 0 0 .5em .5em;
-    }
+    padding: 0;
 
     span {
-      border: solid 2px color(success);
-      color: color(success);
+
       height: 30px;
       width: 30px;
-      line-height: 26px;
       margin: -2px 10px 0 0px;
       text-align: center;
       display: inline-block;
-      border-radius: 100%;
+
+      @include border-radius(circle);
+
+    }
+
+    @include colors() {
+
+      span {
+        border: solid 2px $color;
+      }
+
     }
 
   }
@@ -54,13 +61,14 @@ form {
 
     padding: 1em;
     position: relative;
-    font-size: $h2;
     text-align: center;
-    font-weight: bold;
     text-transform: uppercase;
 
+    @include font-size(h2);
+    @include font-weight(bold);
+
     @include option(rounded) {
-      border-radius: .5em .5em 0 0;
+      border-radius: .3em .3em 0 0;
     }
 
     @include colors($background-color: true);
@@ -94,7 +102,7 @@ form {
         padding: 0;
 
         li {
-          font-size: $h5;
+          @include font-size(h5);
         }
 
       }
@@ -102,11 +110,11 @@ form {
     }
 
     label {
-      font-size: .8em;
-      font-weight: bold;
+      @include font-size(small);
+      @include font-weight(bold);
+      color: color(black, light);
       padding: 0 0 1em .2em;
       display: block;
-      color: color(black, light);
     }
 
     span {
@@ -123,7 +131,7 @@ form {
           content: '*';
           color: color(danger);
           padding: .2em;
-          font-size: 1.5em;
+          @include font-size(h3);
           position: absolute;
           margin-top: -.3em;
         }
@@ -132,8 +140,11 @@ form {
 
     @include option(optional) {
 
-      opacity: 0.6;
-      transition: opacity 0.25s;
+      opacity: 0.7;
+
+      @include transition(fast) {
+        transition-property: opacity;
+      }
 
       &:hover {
         opacity: 1
@@ -177,7 +188,7 @@ form {
 
   @include part(message) {
 
-    background: color($color: danger, $alpha: 10);
+    background-color: color($color: danger, $alpha: 10);
     padding: 1em;
     border: 1px solid color($color: danger, $alpha: 20);
 
@@ -187,12 +198,11 @@ form {
 
     @include part(items) {
 
-      font-weight: 300;
+      @include font-weight(normal);
+      @include font-size(h5);
 
       padding: 0 1.125em;
       margin: 10px 0 0 0;
-
-      font-size: $h5;
 
       li {
         margin: 0;
@@ -204,6 +214,7 @@ form {
     @include option(error) {
       color: color($color: danger);
     }
+
   }
 
   @include part(description) {
@@ -211,7 +222,9 @@ form {
     @extend .form__field;
 
     padding-top: 1em;
-    font-size: small;
+    padding-left: 0;
+
+    @include font-size(small);
     color: color(gray, dark);
 
   }
