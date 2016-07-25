@@ -1,7 +1,7 @@
 @include component(row) {
 
   @include option(fluid) {
-    max-width: 100%;
+    min-width: 100%;
     padding-left: 1em;
     padding-right: 1em;
   }

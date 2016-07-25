@@ -1,21 +1,20 @@
 @include component(divider) {
 
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 
-  width: 100%;
-
-  font-size: $h4;
+  @include font-size(normal);
   text-transform: uppercase;
-  color: color(gray);
+  color: color(gray, dark);
+
+  width: 100%;
   margin: 1em 0;
 
   &:before, &:after {
     content: '';
     flex: 1;
-    background: color(gray, light);
+    background: color(gray);
     height: 1px;
   }
 
@@ -28,7 +27,7 @@
   }
 
   @include option(mini) {
-    font-size: $h5;
+    @include font-size(small)
   }
 
   @include option(spaced) {
@@ -40,7 +39,7 @@
   }
 
   @include option(straight) {
-    background: color(gray, light);
+    background: color(gray);
   }
 
   @include option(simple) {

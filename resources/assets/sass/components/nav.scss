@@ -29,6 +29,11 @@
     }
   }
 
+  @include option(color-transparent) {
+    background-color: none;
+    box-shadow: none;
+  }
+
   @include part(content) {
 
     margin: 0;

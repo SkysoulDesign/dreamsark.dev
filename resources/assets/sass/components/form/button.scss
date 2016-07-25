@@ -179,7 +179,7 @@
 
 }
 
-%button-base{
+%button-base {
 
   @include colors($background-color: true, $hover: true) {
     border: 1px solid color($background-color);
@@ -188,9 +188,18 @@
   white-space: nowrap;
   cursor: pointer;
   text-align: center;
+  height: 100%;
 
   &:focus {
     outline: 0;
+  }
+
+  @include option(fluid) {
+    width: 100%;
+  }
+
+  @include option(medium) {
+    padding: 1.2em;
   }
 
 }

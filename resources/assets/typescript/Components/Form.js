@@ -311,6 +311,7 @@ var Form = (function () {
             props: {
                 id: String,
                 token: String,
+                bind: Object,
                 action: {
                     type: String,
                     required: true
@@ -331,6 +332,9 @@ var Form = (function () {
                         }
                         result = _this.oldInput[name];
                     });
+                    if (!result && this.bind.hasOwnProperty(name)) {
+                        return this.bind[name];
+                    }
                     return result;
                 }
             },
@@ -353,16 +357,25 @@ var Form = (function () {
                      */
                     sessionStorage.setItem('form-action', _this.action);
                     /**
-                     * Only for post Method
+                     * Not for get
                      */
-                    if (_this.method !== 'post') {
+                    if (_this.method === 'get')
                         return;
-                    }
                     e.preventDefault();
                     var token = document.querySelector('meta[name="csrf-token"]'), input = document.createElement('input');
                     input.setAttribute('type', 'hidden');
                     input.setAttribute('name', '_token');
                     input.setAttribute('value', token.content);
+                    /**
+                     * if its other than post
+                     */
+                    if (['patch', 'put', 'delete'].includes(_this.method)) {
+                        var method = input.cloneNode();
+                        method.setAttribute('type', 'hidden');
+                        method.setAttribute('name', '_method');
+                        method.setAttribute('value', _this.method);
+                        _this.$el.appendChild(method);
+                    }
                     _this.$el.appendChild(input);
                     _this.$el.submit();
                 });

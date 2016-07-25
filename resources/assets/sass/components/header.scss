@@ -11,6 +11,19 @@
     @include font-weight(normal);
   }
 
+  p {
+
+    @include font-size(smaller);
+    line-height: normal;
+    font-weight: normal;
+
+  }
+
+  @include option(light) {
+    @include font-weight(normal);
+    color: color(gray, dark);
+  }
+
   @include option(small) {
     @include font-size(h2);
   }
@@ -29,21 +42,6 @@
   //span {
   //  font-weight: normal;
   //}
-
-  p {
-
-    color: color(black);
-    //padding-top: 1.2em;
-    //font-size: .6em;
-    font-weight: normal;
-    line-height: .8em;
-
-    @include respond-to(desktop) {
-      width: 60%;
-      margin: 0 auto;
-    }
-
-  }
 
   @include option(left) {
     text-align: left;
@@ -79,12 +77,6 @@
       font-size: medium;
     }
 
-  }
-
-
-
-  @include option(light) {
-    font-weight: normal;
   }
 
   @include option(with-divider) {

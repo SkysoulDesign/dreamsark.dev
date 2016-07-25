@@ -1,5 +1,6 @@
 @each $color in $colors {
   %color-#{nth($color, 1)} {
+
     $temp: map_get(nth($color, 2), base);
 
     @if lightness(color(nth($color, 1))) > 40 {
@@ -9,7 +10,13 @@
     color: $temp;
 
     a {
+
       color: $temp;
+
+      &:hover {
+        color: color(primary);
+      }
+
     }
 
   }

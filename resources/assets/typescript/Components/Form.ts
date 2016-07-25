@@ -112,7 +112,7 @@ export class Form implements ComponentInterface {
                     }
                 },
                 methods: {
-                    send(e:MouseEvent){
+                    send(e: MouseEvent){
                         e.preventDefault();
                         if (this.setDisabled == 'yes')
                             this.disabled = true;
@@ -192,7 +192,6 @@ export class Form implements ComponentInterface {
             },
             computed: {
                 value: function () {
-
                     return this.getParentForm().old(this.name);
                 },
                 errors: function () {
@@ -212,7 +211,6 @@ export class Form implements ComponentInterface {
                     }
 
                 },
-
             }
         });
 
@@ -368,6 +366,7 @@ export class Form implements ComponentInterface {
             props: {
                 id: String,
                 token: String,
+                bind: Object,
                 action: {
                     type: String,
                     required: true
@@ -378,7 +377,6 @@ export class Form implements ComponentInterface {
                 }
             },
             methods: {
-
                 old(name, defaults = null){
 
                     var result;
@@ -393,6 +391,10 @@ export class Form implements ComponentInterface {
 
                     })
 
+                    if (!result && this.bind.hasOwnProperty(name)) {
+                        return this.bind[name];
+                    }
+
                     return result;
 
                 }
@@ -403,7 +405,6 @@ export class Form implements ComponentInterface {
                         (<HTMLMetaElement>document.querySelector('meta[name="form-errors"]')).content
                     )
                 }
-
             },
             events: {
                 'ajax.button.fail': function (e, button) {
@@ -412,8 +413,7 @@ export class Form implements ComponentInterface {
                 }
             },
             ready(){
-
-                this.$el.addEventListener('submit', (e:Event) => {
+                this.$el.addEventListener('submit', (e: Event) => {
 
                     /**
                      * Store Which form reference to display errors correctly later
@@ -421,11 +421,10 @@ export class Form implements ComponentInterface {
                     sessionStorage.setItem('form-action', this.action);
 
                     /**
-                     * Only for post Method
+                     * Not for get
                      */
-                    if (this.method !== 'post') {
+                    if (this.method === 'get')
                         return;
-                    }
 
                     e.preventDefault();
 
@@ -436,6 +435,22 @@ export class Form implements ComponentInterface {
                     input.setAttribute('name', '_token')
                     input.setAttribute('value', token.content)
 
+                    /**
+                     * if its other than post
+                     */
+                    if (['patch', 'put', 'delete'].includes(this.method)) {
+
+                        let method = input.cloneNode();
+                            method.setAttribute('type', 'hidden')
+                            method.setAttribute('name', '_method');
+                            method.setAttribute('value', this.method);
+
+                        this.$el.appendChild(
+                            method
+                        );
+
+                    }
+
                     this.$el.appendChild(
                         input
                     )
@@ -443,7 +458,6 @@ export class Form implements ComponentInterface {
                     this.$el.submit();
 
                 })
-
             }
         });
 

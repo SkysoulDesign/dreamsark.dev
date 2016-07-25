@@ -5,4 +5,19 @@
   background: get-url('login/dreamsArkRef93.png') no-repeat center center;
   background-size: cover;
 
+  @include part(register-avatar) {
+
+    position: relative;
+    left: 0;
+    right: 0;
+    width: 10em;
+    margin: 0 auto -7em auto;
+    top: -7em;
+
+    img {
+      border-radius: 100em;
+    }
+
+  }
+
 }
