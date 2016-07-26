@@ -51,21 +51,17 @@ export class Profile extends AbstractPage {
 
             request.then(response => {
 
-                // console.log()
-
                 let form = document.querySelector('form'),
                     container = <HTMLElement>document.querySelector('#wrapper'),
+                    formContainer = form.querySelector('#form-container'),
                     header = document.querySelector('.profile-page__header');
 
                 header.classList.add('--extended')
                 form.classList.remove('+hidden');
 
-                let formContainer = form.children.item(2).children.item(0).children.item(0);
-
                 let profile_input = document.createElement('input');
                 profile_input.setAttribute('name', 'profile_id');
                 profile_input.setAttribute('type', 'hidden');
-
 
                 response.json().forEach(function (item, index) {
 

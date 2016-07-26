@@ -10,9 +10,9 @@
 
         @include('partials.navigation.menu', ['translucent' => true])
 
-        <div class="row">
-            <div class="small-12">
-                <header class="header --inverted +center">
+        <div class="row project-page__header">
+            <div class="small-12 columns">
+                <header class="header --color-white --centered --large">
                     {{ $project->name }}
                 </header>
             </div>

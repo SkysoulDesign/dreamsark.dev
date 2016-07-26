@@ -49,26 +49,22 @@
 
         {{ csrf_field() }}
 
-        <div class="small-11 medium-9 columns form__header --rounded">
+        <ark-form-header>
             @lang('profile.profile-creation-form')
-        </div>
+        </ark-form-header>
 
-        <div class="small-11 medium-9 columns form__content --rounded">
+        <div slot="content">
 
-            <div class="row">
+            <div id="form-container"></div>
 
-                <div></div>
+            <div class="small-12 columns divider --simple"></div>
 
-                <div class="small-12 columns divider --simple"></div>
+            <ark-button>
+                @lang('profile.create-profile')
+            </ark-button>
 
-                <div class="small-12 columns form__field +center-on-mobile">
-                    <button class="button --success --fit">@lang('profile.create-profile')</button>
-                </div>
-
-                <div class="small-12 columns form__description +center-on-mobile">
-                    @lang('profile.profile-creation-form-notes')
-                </div>
-
+            <div class="small-12 columns form__description +center-on-mobile">
+                @lang('profile.profile-creation-form-notes')
             </div>
 
         </div>

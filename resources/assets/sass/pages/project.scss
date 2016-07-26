@@ -2,8 +2,11 @@
 
   padding-bottom: 5em;
   position: relative;
+  z-index: 2;
 
-  @include base-header();
+  @include base-header(){
+    height: 300px;
+  };
 
   @include part(background) {
 
@@ -297,6 +300,5 @@
 
   }
 
-  z-index: 2;
 
 }

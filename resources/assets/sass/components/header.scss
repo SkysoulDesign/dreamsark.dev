@@ -28,6 +28,16 @@
     @include font-size(h2);
   }
 
+  @include option(large) {
+    @include font-size(large);
+  }
+
+  @include option(centered) {
+    text-align: center;
+  }
+
+  @include colors();
+
   //margin: 2em 0;
 
   //font-size: $h1;
@@ -56,25 +66,23 @@
   //  }
   //}
 
-  @include option(centered) {
-    text-align: center;
-  }
 
-  @include option(classic) {
 
-    @include title($size: large);
-
-    p {
-      margin: 10px 0 0 0;
-      font-size: medium;
-    }
-
-  }
-
-  @include option(with-divider) {
-    padding-bottom: .7em;
-    border-bottom: 1px solid color(black, light);
-  }
+  //@include option(classic) {
+  //
+  //  @include title($size: large);
+  //
+  //  p {
+  //    margin: 10px 0 0 0;
+  //    font-size: medium;
+  //  }
+  //
+  //}
+  //
+  //@include option(with-divider) {
+  //  padding-bottom: .7em;
+  //  border-bottom: 1px solid color(black, light);
+  //}
 
 }
 

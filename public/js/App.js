@@ -13433,13 +13433,12 @@ var Profile = function (_super) {
                 }
             });
             request.then(function (response) {
-                // console.log()
                 var form = document.querySelector('form'),
                     container = document.querySelector('#wrapper'),
+                    formContainer = form.querySelector('#form-container'),
                     header = document.querySelector('.profile-page__header');
                 header.classList.add('--extended');
                 form.classList.remove('+hidden');
-                var formContainer = form.children.item(2).children.item(0).children.item(0);
                 var profile_input = document.createElement('input');
                 profile_input.setAttribute('name', 'profile_id');
                 profile_input.setAttribute('type', 'hidden');
