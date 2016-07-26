@@ -16,14 +16,7 @@ export class Project extends AbstractPage {
             this[stage]();
 
         if (this.only('user.project.create')) {
-            this.app.vue({
-                data: {
-                    name: 'test'
-                },
-                ready(){
-                    console.log('ready to go')
-                }
-            })
+
         }
 
     }

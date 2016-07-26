@@ -13,7 +13,7 @@
             <div class="small-12 columns">
                 <header class="header +color-white +text-shadow">
                     @lang('project.project')
-                    <h1 class="+uppercase">@lang('project.creation')</h1>
+                    <h1 class="+uppercase">@{{ model.name || '@lang('project.creation')' }}</h1>
                 </header>
             </div>
 
@@ -33,7 +33,7 @@
                 @lang('project.name')
             </ark-form-step>
 
-            <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
+            <ark-input model name="name" placeholder="@lang('project.name')"></ark-input>
 
             <ark-form-step>
                 @lang('project.content')
@@ -87,7 +87,7 @@
 
             <div class="small-12 columns divider --simple"></div>
 
-            <ark-button color="success" class="--fluid --medium" class="+center-on-mobile">
+            <ark-button color="success" class="--medium" class="+center-on-mobile">
                 @lang('forms.create-project')
             </ark-button>
 

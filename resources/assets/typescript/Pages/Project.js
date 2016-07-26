@@ -21,14 +21,6 @@ var Project = (function (_super) {
         if (stage)
             this[stage]();
         if (this.only('user.project.create')) {
-            this.app.vue({
-                data: {
-                    name: 'test'
-                },
-                ready: function () {
-                    console.log('ready to go');
-                }
-            });
         }
     };
     Project.prototype.idea = function () {

@@ -1,8 +1,21 @@
-<div  class="form__field" :class="[{ '--error': errors }, {'--required': required}, {'--optional': optional}]">
+<div class="form__field" :class="[{ '--error': errors }, {'--required': required}, {'--optional': optional}]">
 
     <label v-if="label" :for="name">{{ label }}</label>
 
-    <input :class="{'--error': errors}"
+    <input v-if="model"
+           v-model="$root.$data.model[name]"
+           :class="{'--error': errors}"
+           :type="type || 'text'"
+           :name="name"
+           :title="title"
+           :placeholder="placeholder || name"
+           :value="value"
+           :min="min"
+           :max="max"
+           :readOnly="readOnly">
+
+    <input v-else
+           :class="{'--error': errors}"
            :type="type || 'text'"
            :name="name"
            :title="title"

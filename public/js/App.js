@@ -12176,6 +12176,9 @@ var Form = function () {
         };
         app.vue({
             plugins: [require('vue-resource')],
+            data: {
+                model: {}
+            },
             ready: function ready() {
                 var _this = this;
                 var active = null;
@@ -12291,6 +12294,7 @@ var Form = function () {
                 required: Boolean,
                 optional: Boolean,
                 caption: String,
+                model: Boolean,
                 min: Number,
                 max: Number,
                 placeholder: {
@@ -13230,16 +13234,7 @@ var Project = function (_super) {
     }
     Project.prototype.boot = function (stage) {
         if (stage) this[stage]();
-        if (this.only('user.project.create')) {
-            this.app.vue({
-                data: {
-                    name: 'test'
-                },
-                ready: function ready() {
-                    console.log('ready to go');
-                }
-            });
-        }
+        if (this.only('user.project.create')) {}
     };
     Project.prototype.idea = function () {
         // this.initChart();
@@ -13526,7 +13521,7 @@ module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot
 },{}],39:[function(require,module,exports){
 module.exports = '<form :id="id" :action="action" :method="method === \'get\' ? \'get\' : \'post\'">\n\n    <template v-if="slotExists(\'content\')">\n\n        <slot></slot>\n\n        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">\n            <slot name="content"></slot>\n        </div>\n\n    </template>\n\n    <div class="columns" v-else>\n        <slot></slot>\n    </div>\n\n    <div v-if="globalErrors" class="form__field__error">\n        <ul v-for="error in globalErrors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</form>\n';
 },{}],40:[function(require,module,exports){
-module.exports = '<div  class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :min="min"\n           :max="max"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input v-if="model"\n           v-model="$root.$data.model[name]"\n           :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :min="min"\n           :max="max"\n           :readOnly="readOnly">\n\n    <input v-else\n           :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :min="min"\n           :max="max"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],41:[function(require,module,exports){
 module.exports = '<div class="small-11 medium-9 columns form__header --rounded" :class="[ \'--color-\' + color ]">\n    <slot></slot>\n</div>\n';
 },{}],42:[function(require,module,exports){

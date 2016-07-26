@@ -20,6 +20,9 @@ var Form = (function () {
             plugins: [
                 require('vue-resource')
             ],
+            data: {
+                model: {}
+            },
             ready: function () {
                 var _this = this;
                 var active = null;
@@ -136,6 +139,7 @@ var Form = (function () {
                 required: Boolean,
                 optional: Boolean,
                 caption: String,
+                model: Boolean,
                 min: Number,
                 max: Number,
                 placeholder: {

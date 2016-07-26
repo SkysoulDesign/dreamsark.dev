@@ -26,6 +26,9 @@ export class Form implements ComponentInterface {
             plugins: [
                 require('vue-resource')
             ],
+            data: {
+                model: {}
+            },
             ready(){
 
                 let active = null;
@@ -126,7 +129,7 @@ export class Form implements ComponentInterface {
                     }
                 },
                 methods: {
-                    send(e:MouseEvent){
+                    send(e: MouseEvent){
                         e.preventDefault();
                         if (this.setDisabled == 'yes')
                             this.disabled = true;
@@ -166,6 +169,7 @@ export class Form implements ComponentInterface {
                 required: Boolean,
                 optional: Boolean,
                 caption: String,
+                model: Boolean,
                 min: Number,
                 max: Number,
                 placeholder: {
@@ -467,8 +471,7 @@ export class Form implements ComponentInterface {
                 }
             },
             ready(){
-
-                this.$el.addEventListener('submit', (e:Event) => {
+                this.$el.addEventListener('submit', (e: Event) => {
 
                     /**
                      * Store Which form reference to display errors correctly later
