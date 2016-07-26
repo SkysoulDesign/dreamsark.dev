@@ -10,9 +10,9 @@
 
         <div id="wrapper" class="row align-middle +full-height +center">
 
-            <div class="small-12 align-top columns">
-                <header class="header --inverted +text-shadow +no-margin-bottom">
-                    <small>@lang('profile.pick-position'):</small>
+            <div class="small-12 align-middle columns">
+                <header class="header --color-white +text-shadow">
+                    @lang('profile.pick-position')
                     <h1 class="+uppercase">@{{ position }}</h1>
                 </header>
             </div>
