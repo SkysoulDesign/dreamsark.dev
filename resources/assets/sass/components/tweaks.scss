@@ -60,12 +60,24 @@
   padding: 0;
 }
 
+@include tweak(padding-top) {
+  padding-top: 4em;
+}
+
+@include tweak(padding-top-small) {
+  padding-top: 2em;
+}
+
 @include tweak(no-margin) {
   margin: 0;
 }
 
 @include tweak(margin-top) {
   margin-top: 4em;
+}
+
+@include tweak(margin-top-small) {
+  margin-top: 2em;
 }
 
 @include tweak(margin-bottom) {

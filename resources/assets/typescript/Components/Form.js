@@ -60,7 +60,16 @@ var Form = (function () {
                     default: 'gray'
                 },
                 icon: String,
-                class: String
+                class: String,
+                href: String,
+            },
+            methods: {
+                click: function (event) {
+                    if (this.href) {
+                        event.preventDefault();
+                        window.location = this.href;
+                    }
+                }
             }
         });
         vue.component('ark-ajax-button', {
@@ -282,9 +291,7 @@ var Form = (function () {
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
-                name: {
-                    type: String
-                },
+                name: String,
                 rows: {
                     type: Number,
                     default: 3
@@ -309,9 +316,10 @@ var Form = (function () {
                     type: Boolean,
                     default: false
                 },
-                label: {
-                    type: String
-                }
+                label: String,
+                class: String,
+                richText: Boolean,
+                richOptions: Object
             },
             methods: {
                 getParentForm: function (parent) {
@@ -335,6 +343,11 @@ var Form = (function () {
                     if (this.$parent.constructor.name !== 'ArkForm')
                         parent = parent.$parent;
                     return Helpers_1.popByKey(parent.errors, this.name);
+                }
+            },
+            ready: function () {
+                if (this.richText) {
+                    app.plugin('medium', this.$els.textarea, this.richOptions);
                 }
             }
         });

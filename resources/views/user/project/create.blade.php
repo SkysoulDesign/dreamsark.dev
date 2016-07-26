@@ -39,8 +39,9 @@
                 @lang('project.content')
             </ark-form-step>
 
-            <ark-textarea name="content"
-                          :rows="5"
+            <ark-textarea rich-text
+                          name="content"
+                          :rows="5" class="editable"
                           placeholder="@lang('forms.content')"
                           caption="@lang('project.form-description')">
             </ark-textarea>
@@ -100,3 +101,11 @@
     </ark-form>
 
 @endsection
+
+@push('styles')
+<link rel="stylesheet" media="all" href="{{ asset('css/plugins/medium/medium.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/plugins/Medium.js') }}"></script>
+@endpush

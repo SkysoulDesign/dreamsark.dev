@@ -1,0 +1,31 @@
+@include component(message) {
+
+  @extend .segment;
+  box-shadow: none;
+
+  @include colors($text-color: false) {
+    color: darken($color, 30);
+    border: 1px solid $color;
+    background-color: lighten($color, 45);
+  }
+
+  @include option(fixed) {
+    position: fixed;
+    z-index: 10;
+    width: 50%;
+    padding: 1em;
+    left: 0;
+    right: 0;
+    margin: 5em auto;
+
+    @include transition(fast) {
+      transition-property: opacity;
+    }
+
+    &:hover {
+      opacity: 0;
+    }
+
+  }
+
+}

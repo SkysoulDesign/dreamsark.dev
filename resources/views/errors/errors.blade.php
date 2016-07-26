@@ -1,11 +1,10 @@
 @if($errors->any())
 
-    <div class="ui error message">
-        <i class="close icon"></i>
-        <div class="header">
+    <div class="message --color-danger --fixed">
+        <div class="message__header">
             Ooooops
         </div>
-        <ul class="list">
+        <ul>
             @foreach($errors->all() as $error)
                 <li>{{$error}}</li>
             @endforeach
@@ -16,9 +15,8 @@
 
 @if(session()->has('success'))
 
-    <div class="ui success message">
-        <i class="close icon"></i>
-        <div class="header">
+    <div class="message --color-success --fixed">
+        <div class="message__header">
             Success
         </div>
         <p>{{ session()->get('success') }}</p>
@@ -27,8 +25,8 @@
 @endif
 
 @if(session()->has('warning'))
-    <div class="ui warning message">
-        <div class="header">
+    <div class="message --color-warning --fixed">
+        <div class="message__header">
             &nbsp;
         </div>
         <p>{{ session()->get('warning') }}</p>

@@ -12,7 +12,7 @@
 
 @yield('meta-tags')
 
-@yield('styles')
+@stack('styles')
 
 <!-- Temporarily -->
     <link rel="stylesheet" media="all" href="{{ asset('translation-assets/semantic.min.css') }}">

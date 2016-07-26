@@ -9,9 +9,12 @@ export class Steps implements ComponentInterface {
 
         vue.component('ark-steps', {
                 template: require('../templates/steps/steps.html'),
-                props: {},
+                data: function () {
+                    return {
+                        steps: 1
+                    }
+                },
                 ready(){
-
                     this.$children.every(function (child) {
 
                         if (!child.active)
@@ -29,6 +32,7 @@ export class Steps implements ComponentInterface {
                 template: require('../templates/steps/step.html'),
                 data: function () {
                     return {
+                        step: this.$parent.steps++,
                         done: false
                     }
                 },

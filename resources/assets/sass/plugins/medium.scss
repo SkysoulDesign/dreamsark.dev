@@ -1,0 +1,11 @@
+@include component(medium-editor-element) {
+  @extend %input-base;
+  height: auto;
+  min-height: 100px;
+
+  &:hover {
+    background-color: inherit;
+    border-color: color(gray, dark);
+  }
+
+}

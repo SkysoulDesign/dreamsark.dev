@@ -36,7 +36,17 @@
     text-align: center;
   }
 
-  @include colors();
+  @include colors() {
+    p {
+      color: $color
+    }
+  }
+
+  @include option(with-divider) {
+    padding-bottom: .3em;
+    border-bottom: 1px solid color(gray);
+    margin: 1em 0;
+  }
 
   //margin: 2em 0;
 
@@ -66,8 +76,6 @@
   //  }
   //}
 
-
-
   //@include option(classic) {
   //
   //  @include title($size: large);
@@ -79,10 +87,7 @@
   //
   //}
   //
-  //@include option(with-divider) {
-  //  padding-bottom: .7em;
-  //  border-bottom: 1px solid color(black, light);
-  //}
+
 
 }
 

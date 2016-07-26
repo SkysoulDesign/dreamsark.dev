@@ -12214,7 +12214,16 @@ var Form = function () {
                     default: 'gray'
                 },
                 icon: String,
-                class: String
+                class: String,
+                href: String
+            },
+            methods: {
+                click: function click(event) {
+                    if (this.href) {
+                        event.preventDefault();
+                        window.location = this.href;
+                    }
+                }
             }
         });
         vue.component('ark-ajax-button', {
@@ -12433,9 +12442,7 @@ var Form = function () {
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
-                name: {
-                    type: String
-                },
+                name: String,
                 rows: {
                     type: Number,
                     default: 3
@@ -12460,9 +12467,10 @@ var Form = function () {
                     type: Boolean,
                     default: false
                 },
-                label: {
-                    type: String
-                }
+                label: String,
+                class: String,
+                richText: Boolean,
+                richOptions: Object
             },
             methods: {
                 getParentForm: function getParentForm(parent) {
@@ -12484,6 +12492,11 @@ var Form = function () {
                      */
                     if (this.$parent.constructor.name !== 'ArkForm') parent = parent.$parent;
                     return Helpers_1.popByKey(parent.errors, this.name);
+                }
+            },
+            ready: function ready() {
+                if (this.richText) {
+                    app.plugin('medium', this.$els.textarea, this.richOptions);
                 }
             }
         });
@@ -12593,8 +12606,8 @@ exports.Form = Form;
 
 var Modal = function () {
     function Modal() {}
-    Modal.prototype.register = function (Vue) {
-        Vue.component('ark-modal', {
+    Modal.prototype.register = function (vue, app) {
+        vue.component('ark-modal', {
             template: require('../templates/modal/modal.html'),
             props: {
                 trigger: {
@@ -13059,7 +13072,11 @@ var Steps = function () {
     Steps.prototype.register = function (vue, app) {
         vue.component('ark-steps', {
             template: require('../templates/steps/steps.html'),
-            props: {},
+            data: function data() {
+                return {
+                    steps: 1
+                };
+            },
             ready: function ready() {
                 this.$children.every(function (child) {
                     if (!child.active) child.setDone();
@@ -13071,6 +13088,7 @@ var Steps = function () {
             template: require('../templates/steps/step.html'),
             data: function data() {
                 return {
+                    step: this.$parent.steps++,
                     done: false
                 };
             },
@@ -13510,7 +13528,7 @@ module.exports = '<div :class="[ \'flipper__\'+side, { \'+hidden\' : side == \'b
 },{}],34:[function(require,module,exports){
 module.exports = '<div class="form__field">\n    <button :disabled="disabled" @click="send" :type="type" class="button" :class="class">\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],35:[function(require,module,exports){
-module.exports = '<div class="form__field">\n    <button :type="type" class="button" :class="[class, \'--color-\' + color]">\n        <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n        <slot></slot>\n    </button>\n</div>\n';
+module.exports = '<div class="form__field">\n    <button @click="click" :type="type" class="button" :class="[class, \'--color-\' + color]">\n        <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>\n        <slot></slot>\n    </button>\n</div>\n';
 },{}],36:[function(require,module,exports){
 module.exports = '<li @click.prevent="select">\n    <i v-if="icon" class="fa fa-{{ icon }} fa-fw"></i>\n    <slot></slot>\n</li>\n';
 },{}],37:[function(require,module,exports){
@@ -13518,7 +13536,7 @@ module.exports = '<div class="dropdown">\n\n    <a @click.prevent="open" class="
 },{}],38:[function(require,module,exports){
 module.exports = '<div class="form__fields --gap-{{ gap }}">\n\n    <slot></slot>\n\n</div>\n';
 },{}],39:[function(require,module,exports){
-module.exports = '<form :id="id" :action="action" :method="method === \'get\' ? \'get\' : \'post\'">\n\n    <template v-if="slotExists(\'content\')">\n\n        <slot></slot>\n\n        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">\n            <slot name="content"></slot>\n        </div>\n\n    </template>\n\n    <div class="columns" v-else>\n        <slot></slot>\n    </div>\n\n    <div v-if="globalErrors" class="form__field__error">\n        <ul v-for="error in globalErrors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</form>\n';
+module.exports = '<form :id="id" :action="action" :method="method === \'get\' ? \'get\' : \'post\'">\n\n    <template v-if="slotExists(\'content\')">\n\n        <slot></slot>\n\n        <div class="small-11 medium-9 columns form__content --rounded +shadow +large-margin-bottom">\n            <slot name="content"></slot>\n        </div>\n\n    </template>\n\n    <div class="columns" v-else>\n        <slot></slot>\n    </div>\n\n    <template v-if="slotExists(\'body\')">\n        <div class="small-12 columns form__content">\n            <slot name="body"></slot>\n        </div>\n    </template>\n\n    <div v-if="globalErrors" class="form__field__error">\n        <ul v-for="error in globalErrors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</form>\n';
 },{}],40:[function(require,module,exports){
 module.exports = '<div class="form__field" :class="[{ \'--error\': errors }, {\'--required\': required}, {\'--optional\': optional}]">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <input v-if="model"\n           v-model="$root.$data.model[name]"\n           :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :min="min"\n           :max="max"\n           :readOnly="readOnly">\n\n    <input v-else\n           :class="{\'--error\': errors}"\n           :type="type || \'text\'"\n           :name="name"\n           :title="title"\n           :placeholder="placeholder || name"\n           :value="value"\n           :min="min"\n           :max="max"\n           :readOnly="readOnly">\n\n    <span v-if="caption">{{ caption }}</span>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],41:[function(require,module,exports){
@@ -13526,9 +13544,9 @@ module.exports = '<div class="small-11 medium-9 columns form__header --rounded" 
 },{}],42:[function(require,module,exports){
 module.exports = '<h3 class="small-12 columns form__step" :class="[ \'--color-\' + color ]">\n    <span>{{ step }}</span>\n    <slot></slot>\n</h3>\n';
 },{}],43:[function(require,module,exports){
-module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea :class="{ \'--error\': errors }"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :rows="rows"\n              :readOnly="readOnly">{{ value }}</textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
+module.exports = '<div class="form__field" :class="{ \'--error\': errors }">\n\n    <label v-if="label" :for="name">{{ label }}</label>\n\n    <textarea v-el:textarea :class="[{ \'--error\': errors }, class]"\n              :type="type || \'text\'"\n              :name="name"\n              :title="title"\n              :placeholder="placeholder || name"\n              :rows="rows"\n              :readOnly="readOnly">{{ value }}</textarea>\n\n    <div v-if="errors" class="form__field__error">\n        <ul v-for="error in errors">\n            <li>{{ error }}</li>\n        </ul>\n    </div>\n\n</div>\n';
 },{}],44:[function(require,module,exports){
-module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
+module.exports = '<div class="row --fluid modal">\n\n    <div class="row align-middle align-center modal__window">\n\n        <div class="small-12 medium-8">\n\n            <div class="row">\n\n                <div @click="close" class="small-12 columns form__header --color-success --rounded">\n                    {{ header }}\n                </div>\n\n                <div class="small-12 columns form__content --rounded">\n                    <slot></slot>\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n</div>\n';
 },{}],45:[function(require,module,exports){
 module.exports = '<a href="{{ url }}" class="shrink columns nav__content__item" :class="style">\n    <slot></slot>\n</a>\n';
 },{}],46:[function(require,module,exports){
@@ -13558,7 +13576,7 @@ module.exports = '<div class="shrink columns statistic">\n    <div class="statis
 },{}],58:[function(require,module,exports){
 module.exports = '<div class="row align-middle">\n  <slot></slot>\n</div>';
 },{}],59:[function(require,module,exports){
-module.exports = '<div class="steps__step" :class="{ \'--active\' : active }">\n\n    <div class="steps__step__container">\n        <slot v-if="!done"></slot>\n        <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    </div>\n\n    <div class="steps__step__description">{{ description }}</div>\n\n</div>\n';
+module.exports = '<div class="steps__step" :class="{ \'--active\' : active }">\n\n    <div class="steps__step__container">\n        {{ step }}\n        <i v-if="done" class="fa fa-check" aria-hidden="true"></i>\n    </div>\n\n    <div class="steps__step__description">{{ description }}</div>\n\n</div>\n';
 },{}],60:[function(require,module,exports){
 module.exports = '<div class="steps">\n    <slot></slot>\n</div>\n';
 },{}]},{},[6]);

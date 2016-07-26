@@ -27,6 +27,13 @@ elixir(function (mix) {
         .browserify("./resources/assets/typescript/Plugins/Chart.js", pluginsPath)
         .browserify("./resources/assets/typescript/Plugins/ProgressBar.js", pluginsPath)
 
+        .browserify("./resources/assets/typescript/Plugins/Medium.js", pluginsPath)
+        .styles([
+            './node_modules/medium-editor/dist/css/medium-editor.min.css',
+            './node_modules/medium-editor/dist/css/themes/default.min.css',
+            './node_modules/medium-editor-tables/dist/css/medium-editor-tables.css',
+        ], 'public/css/plugins/medium/medium.css')
+
     /**
      * Copy FontAwesome Font
      */

@@ -5,9 +5,9 @@ import {ComponentInterface} from "../Interfaces/ComponentInterface";
  */
 export class Modal implements ComponentInterface {
 
-    register(Vue) {
+    register(vue, app) {
 
-        Vue.component('ark-modal', {
+        vue.component('ark-modal', {
             template: require('../templates/modal/modal.html'),
             props: {
                 trigger: {

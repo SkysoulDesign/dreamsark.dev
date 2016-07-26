@@ -3771,28 +3771,28 @@ button {
 /**
 * Mixins
 */
-.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a {
+.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a, .message.\--fixed {
   transition-duration: 0.25s; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .segment.\--hover, .\--hover.item {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .segment.\--hover, .\--hover.message, .\--hover.item {
   transition-duration: 0.15s; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .segment, .item, .pagination__item {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .segment, .message, .item, .pagination__item {
   border-radius: 0.2em; }
 
 .form__step span, .item__image img {
   border-radius: 100%; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .pagination__item, .item {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .pagination__item, .item {
   border: 1px solid #dedede; }
 
 input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
   border: 1px solid #f8878a; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light {
   font-weight: 400; }
 
-.form__header, .form__field label, .form__fields label, .form__description label, .header, header {
+.form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
   font-weight: 600; }
 
 .form__header, .header.\--small, header.\--small {
@@ -3801,7 +3801,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
   font-size: 1.2em; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .divider {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
 
 .form__field__error ul li, .form__field__error .badges li, .form__message__items {
@@ -3816,7 +3816,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .header, header {
   font-size: 2em; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .dropdown__options, .divider {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
 
 .dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .divider.\--mini, .pagination__item a {
@@ -3830,7 +3830,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
   .admin-page__top a:hover {
     color: #d9d9d9; }
 
-.segment, .item, .nav, .pagination__item a:hover {
+.segment, .message, .item, .nav, .pagination__item a:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 
 .form__step.\--color-neutral, .header.\--color-neutral, header.\--color-neutral, #app-root .\+color-neutral {
@@ -3840,21 +3840,21 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
     .form__step.\--color-neutral a:hover, .header.\--color-neutral a:hover, header.\--color-neutral a:hover, #app-root .\+color-neutral a:hover {
       color: #0083ff; }
 
-button.\--color-neutral, .\--color-neutral.button, .form__header.\--color-neutral, .segment.\--color-neutral, .\--color-neutral.item, .nav.\--color-neutral {
+button.\--color-neutral, .\--color-neutral.button, .form__header.\--color-neutral, .segment.\--color-neutral, .\--color-neutral.message, .\--color-neutral.item, .nav.\--color-neutral {
   background-color: #f1f1f1; }
 
 button.\--color-neutral a:hover, .\--color-neutral.button a:hover, button.\--color-neutral:hover, .\--color-neutral.button:hover {
   color: #cbcbcb;
   background-color: white; }
 
-button.\--color-primary, .\--color-primary.button, button.\--color-secondary, .\--color-secondary.button, button.\--color-ternary, .\--color-ternary.button, button.\--color-danger, .\--color-danger.button, button.\--color-success, .\--color-success.button, button.\--color-black, .\--color-black.button, button.\--color-pure-black, .\--color-pure-black.button, button.\--color-red, .\--color-red.button, button.\--color-yellow, .\--color-yellow.button, button.\--color-green, .\--color-green.button, button.\--color-purple, .\--color-purple.button, button.\--color-tomato, .\--color-tomato.button, .form__step.\--color-white, .form__header.\--color-primary, .form__header.\--color-secondary, .form__header.\--color-ternary, .form__header.\--color-danger, .form__header.\--color-success, .form__header.\--color-black, .form__header.\--color-pure-black, .form__header.\--color-red, .form__header.\--color-yellow, .form__header.\--color-green, .form__header.\--color-purple, .form__header.\--color-tomato, .header.\--color-white, header.\--color-white, .segment.\--color-primary, .\--color-primary.item, .segment.\--color-secondary, .\--color-secondary.item, .segment.\--color-ternary, .\--color-ternary.item, .segment.\--color-danger, .\--color-danger.item, .segment.\--color-success, .\--color-success.item, .segment.\--color-black, .\--color-black.item, .segment.\--color-pure-black, .\--color-pure-black.item, .segment.\--color-red, .\--color-red.item, .segment.\--color-yellow, .\--color-yellow.item, .segment.\--color-green, .\--color-green.item, .segment.\--color-purple, .\--color-purple.item, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-neutral.\--basic, .nav.\--color-white.\--basic, .nav.\--color-gray.\--basic, .nav.\--color-primary, .nav.\--color-secondary, .nav.\--color-ternary, .nav.\--color-danger, .nav.\--color-success, .nav.\--color-black, .nav.\--color-pure-black, .nav.\--color-red, .nav.\--color-yellow, .nav.\--color-green, .nav.\--color-purple, .nav.\--color-tomato, .nav.\--color-golden.\--basic, .nav.\--color-transparent-white.\--basic, #app-root .\+color-white {
+button.\--color-primary, .\--color-primary.button, button.\--color-secondary, .\--color-secondary.button, button.\--color-ternary, .\--color-ternary.button, button.\--color-danger, .\--color-danger.button, button.\--color-success, .\--color-success.button, button.\--color-black, .\--color-black.button, button.\--color-pure-black, .\--color-pure-black.button, button.\--color-red, .\--color-red.button, button.\--color-yellow, .\--color-yellow.button, button.\--color-green, .\--color-green.button, button.\--color-purple, .\--color-purple.button, button.\--color-tomato, .\--color-tomato.button, .form__step.\--color-white, .form__header.\--color-primary, .form__header.\--color-secondary, .form__header.\--color-ternary, .form__header.\--color-danger, .form__header.\--color-success, .form__header.\--color-black, .form__header.\--color-pure-black, .form__header.\--color-red, .form__header.\--color-yellow, .form__header.\--color-green, .form__header.\--color-purple, .form__header.\--color-tomato, .header.\--color-white, header.\--color-white, .segment.\--color-primary, .\--color-primary.message, .\--color-primary.item, .segment.\--color-secondary, .\--color-secondary.message, .\--color-secondary.item, .segment.\--color-ternary, .\--color-ternary.message, .\--color-ternary.item, .segment.\--color-danger, .\--color-danger.message, .\--color-danger.item, .segment.\--color-success, .\--color-success.message, .\--color-success.item, .segment.\--color-black, .\--color-black.message, .\--color-black.item, .segment.\--color-pure-black, .\--color-pure-black.message, .\--color-pure-black.item, .segment.\--color-red, .\--color-red.message, .\--color-red.item, .segment.\--color-yellow, .\--color-yellow.message, .\--color-yellow.item, .segment.\--color-green, .\--color-green.message, .\--color-green.item, .segment.\--color-purple, .\--color-purple.message, .\--color-purple.item, .segment.\--color-tomato, .\--color-tomato.message, .\--color-tomato.item, .nav.\--color-neutral.\--basic, .nav.\--color-white.\--basic, .nav.\--color-gray.\--basic, .nav.\--color-primary, .nav.\--color-secondary, .nav.\--color-ternary, .nav.\--color-danger, .nav.\--color-success, .nav.\--color-warning.\--basic, .nav.\--color-black, .nav.\--color-pure-black, .nav.\--color-red, .nav.\--color-yellow, .nav.\--color-green, .nav.\--color-purple, .nav.\--color-tomato, .nav.\--color-golden.\--basic, .nav.\--color-transparent-white.\--basic, #app-root .\+color-white {
   color: white; }
-  button.\--color-primary a, .\--color-primary.button a, button.\--color-secondary a, .\--color-secondary.button a, button.\--color-ternary a, .\--color-ternary.button a, button.\--color-danger a, .\--color-danger.button a, button.\--color-success a, .\--color-success.button a, button.\--color-black a, .\--color-black.button a, button.\--color-pure-black a, .\--color-pure-black.button a, button.\--color-red a, .\--color-red.button a, button.\--color-yellow a, .\--color-yellow.button a, button.\--color-green a, .\--color-green.button a, button.\--color-purple a, .\--color-purple.button a, button.\--color-tomato a, .\--color-tomato.button a, .form__step.\--color-white a, .form__header.\--color-primary a, .form__header.\--color-secondary a, .form__header.\--color-ternary a, .form__header.\--color-danger a, .form__header.\--color-success a, .form__header.\--color-black a, .form__header.\--color-pure-black a, .form__header.\--color-red a, .form__header.\--color-yellow a, .form__header.\--color-green a, .form__header.\--color-purple a, .form__header.\--color-tomato a, .header.\--color-white a, header.\--color-white a, .segment.\--color-primary a, .\--color-primary.item a, .segment.\--color-secondary a, .\--color-secondary.item a, .segment.\--color-ternary a, .\--color-ternary.item a, .segment.\--color-danger a, .\--color-danger.item a, .segment.\--color-success a, .\--color-success.item a, .segment.\--color-black a, .\--color-black.item a, .segment.\--color-pure-black a, .\--color-pure-black.item a, .segment.\--color-red a, .\--color-red.item a, .segment.\--color-yellow a, .\--color-yellow.item a, .segment.\--color-green a, .\--color-green.item a, .segment.\--color-purple a, .\--color-purple.item a, .segment.\--color-tomato a, .\--color-tomato.item a, .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic a, .nav.\--color-primary a, .nav.\--color-secondary a, .nav.\--color-ternary a, .nav.\--color-danger a, .nav.\--color-success a, .nav.\--color-black a, .nav.\--color-pure-black a, .nav.\--color-red a, .nav.\--color-yellow a, .nav.\--color-green a, .nav.\--color-purple a, .nav.\--color-tomato a, .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white a, button.\--color-primary .menu a, .menu button.\--color-primary a, .\--color-primary.button .menu a, .menu .\--color-primary.button a, button.\--color-secondary .menu a, .menu button.\--color-secondary a, .\--color-secondary.button .menu a, .menu .\--color-secondary.button a, button.\--color-ternary .menu a, .menu button.\--color-ternary a, .\--color-ternary.button .menu a, .menu .\--color-ternary.button a, button.\--color-danger .menu a, .menu button.\--color-danger a, .\--color-danger.button .menu a, .menu .\--color-danger.button a, button.\--color-success .menu a, .menu button.\--color-success a, .\--color-success.button .menu a, .menu .\--color-success.button a, button.\--color-black .menu a, .menu button.\--color-black a, .\--color-black.button .menu a, .menu .\--color-black.button a, button.\--color-pure-black .menu a, .menu button.\--color-pure-black a, .\--color-pure-black.button .menu a, .menu .\--color-pure-black.button a, button.\--color-red .menu a, .menu button.\--color-red a, .\--color-red.button .menu a, .menu .\--color-red.button a, button.\--color-yellow .menu a, .menu button.\--color-yellow a, .\--color-yellow.button .menu a, .menu .\--color-yellow.button a, button.\--color-green .menu a, .menu button.\--color-green a, .\--color-green.button .menu a, .menu .\--color-green.button a, button.\--color-purple .menu a, .menu button.\--color-purple a, .\--color-purple.button .menu a, .menu .\--color-purple.button a, button.\--color-tomato .menu a, .menu button.\--color-tomato a, .\--color-tomato.button .menu a, .menu .\--color-tomato.button a, .form__step.\--color-white .menu a, .menu .form__step.\--color-white a, .form__header.\--color-primary .menu a, .menu .form__header.\--color-primary a, .form__header.\--color-secondary .menu a, .menu .form__header.\--color-secondary a, .form__header.\--color-ternary .menu a, .menu .form__header.\--color-ternary a, .form__header.\--color-danger .menu a, .menu .form__header.\--color-danger a, .form__header.\--color-success .menu a, .menu .form__header.\--color-success a, .form__header.\--color-black .menu a, .menu .form__header.\--color-black a, .form__header.\--color-pure-black .menu a, .menu .form__header.\--color-pure-black a, .form__header.\--color-red .menu a, .menu .form__header.\--color-red a, .form__header.\--color-yellow .menu a, .menu .form__header.\--color-yellow a, .form__header.\--color-green .menu a, .menu .form__header.\--color-green a, .form__header.\--color-purple .menu a, .menu .form__header.\--color-purple a, .form__header.\--color-tomato .menu a, .menu .form__header.\--color-tomato a, .header.\--color-white .menu a, .menu .header.\--color-white a, header.\--color-white .menu a, .menu header.\--color-white a, .segment.\--color-primary .menu a, .menu .segment.\--color-primary a, .\--color-primary.item .menu a, .menu .\--color-primary.item a, .segment.\--color-secondary .menu a, .menu .segment.\--color-secondary a, .\--color-secondary.item .menu a, .menu .\--color-secondary.item a, .segment.\--color-ternary .menu a, .menu .segment.\--color-ternary a, .\--color-ternary.item .menu a, .menu .\--color-ternary.item a, .segment.\--color-danger .menu a, .menu .segment.\--color-danger a, .\--color-danger.item .menu a, .menu .\--color-danger.item a, .segment.\--color-success .menu a, .menu .segment.\--color-success a, .\--color-success.item .menu a, .menu .\--color-success.item a, .segment.\--color-black .menu a, .menu .segment.\--color-black a, .\--color-black.item .menu a, .menu .\--color-black.item a, .segment.\--color-pure-black .menu a, .menu .segment.\--color-pure-black a, .\--color-pure-black.item .menu a, .menu .\--color-pure-black.item a, .segment.\--color-red .menu a, .menu .segment.\--color-red a, .\--color-red.item .menu a, .menu .\--color-red.item a, .segment.\--color-yellow .menu a, .menu .segment.\--color-yellow a, .\--color-yellow.item .menu a, .menu .\--color-yellow.item a, .segment.\--color-green .menu a, .menu .segment.\--color-green a, .\--color-green.item .menu a, .menu .\--color-green.item a, .segment.\--color-purple .menu a, .menu .segment.\--color-purple a, .\--color-purple.item .menu a, .menu .\--color-purple.item a, .segment.\--color-tomato .menu a, .menu .segment.\--color-tomato a, .\--color-tomato.item .menu a, .menu .\--color-tomato.item a, .nav.\--color-neutral.\--basic .menu a, .menu .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic .menu a, .menu .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic .menu a, .menu .nav.\--color-gray.\--basic a, .nav.\--color-primary .menu a, .menu .nav.\--color-primary a, .nav.\--color-secondary .menu a, .menu .nav.\--color-secondary a, .nav.\--color-ternary .menu a, .menu .nav.\--color-ternary a, .nav.\--color-danger .menu a, .menu .nav.\--color-danger a, .nav.\--color-success .menu a, .menu .nav.\--color-success a, .nav.\--color-black .menu a, .menu .nav.\--color-black a, .nav.\--color-pure-black .menu a, .menu .nav.\--color-pure-black a, .nav.\--color-red .menu a, .menu .nav.\--color-red a, .nav.\--color-yellow .menu a, .menu .nav.\--color-yellow a, .nav.\--color-green .menu a, .menu .nav.\--color-green a, .nav.\--color-purple .menu a, .menu .nav.\--color-purple a, .nav.\--color-tomato .menu a, .menu .nav.\--color-tomato a, .nav.\--color-golden.\--basic .menu a, .menu .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic .menu a, .menu .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white .menu a, .menu #app-root .\+color-white a {
+  button.\--color-primary a, .\--color-primary.button a, button.\--color-secondary a, .\--color-secondary.button a, button.\--color-ternary a, .\--color-ternary.button a, button.\--color-danger a, .\--color-danger.button a, button.\--color-success a, .\--color-success.button a, button.\--color-black a, .\--color-black.button a, button.\--color-pure-black a, .\--color-pure-black.button a, button.\--color-red a, .\--color-red.button a, button.\--color-yellow a, .\--color-yellow.button a, button.\--color-green a, .\--color-green.button a, button.\--color-purple a, .\--color-purple.button a, button.\--color-tomato a, .\--color-tomato.button a, .form__step.\--color-white a, .form__header.\--color-primary a, .form__header.\--color-secondary a, .form__header.\--color-ternary a, .form__header.\--color-danger a, .form__header.\--color-success a, .form__header.\--color-black a, .form__header.\--color-pure-black a, .form__header.\--color-red a, .form__header.\--color-yellow a, .form__header.\--color-green a, .form__header.\--color-purple a, .form__header.\--color-tomato a, .header.\--color-white a, header.\--color-white a, .segment.\--color-primary a, .\--color-primary.message a, .\--color-primary.item a, .segment.\--color-secondary a, .\--color-secondary.message a, .\--color-secondary.item a, .segment.\--color-ternary a, .\--color-ternary.message a, .\--color-ternary.item a, .segment.\--color-danger a, .\--color-danger.message a, .\--color-danger.item a, .segment.\--color-success a, .\--color-success.message a, .\--color-success.item a, .segment.\--color-black a, .\--color-black.message a, .\--color-black.item a, .segment.\--color-pure-black a, .\--color-pure-black.message a, .\--color-pure-black.item a, .segment.\--color-red a, .\--color-red.message a, .\--color-red.item a, .segment.\--color-yellow a, .\--color-yellow.message a, .\--color-yellow.item a, .segment.\--color-green a, .\--color-green.message a, .\--color-green.item a, .segment.\--color-purple a, .\--color-purple.message a, .\--color-purple.item a, .segment.\--color-tomato a, .\--color-tomato.message a, .\--color-tomato.item a, .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic a, .nav.\--color-primary a, .nav.\--color-secondary a, .nav.\--color-ternary a, .nav.\--color-danger a, .nav.\--color-success a, .nav.\--color-warning.\--basic a, .nav.\--color-black a, .nav.\--color-pure-black a, .nav.\--color-red a, .nav.\--color-yellow a, .nav.\--color-green a, .nav.\--color-purple a, .nav.\--color-tomato a, .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white a, button.\--color-primary .menu a, .menu button.\--color-primary a, .\--color-primary.button .menu a, .menu .\--color-primary.button a, button.\--color-secondary .menu a, .menu button.\--color-secondary a, .\--color-secondary.button .menu a, .menu .\--color-secondary.button a, button.\--color-ternary .menu a, .menu button.\--color-ternary a, .\--color-ternary.button .menu a, .menu .\--color-ternary.button a, button.\--color-danger .menu a, .menu button.\--color-danger a, .\--color-danger.button .menu a, .menu .\--color-danger.button a, button.\--color-success .menu a, .menu button.\--color-success a, .\--color-success.button .menu a, .menu .\--color-success.button a, button.\--color-black .menu a, .menu button.\--color-black a, .\--color-black.button .menu a, .menu .\--color-black.button a, button.\--color-pure-black .menu a, .menu button.\--color-pure-black a, .\--color-pure-black.button .menu a, .menu .\--color-pure-black.button a, button.\--color-red .menu a, .menu button.\--color-red a, .\--color-red.button .menu a, .menu .\--color-red.button a, button.\--color-yellow .menu a, .menu button.\--color-yellow a, .\--color-yellow.button .menu a, .menu .\--color-yellow.button a, button.\--color-green .menu a, .menu button.\--color-green a, .\--color-green.button .menu a, .menu .\--color-green.button a, button.\--color-purple .menu a, .menu button.\--color-purple a, .\--color-purple.button .menu a, .menu .\--color-purple.button a, button.\--color-tomato .menu a, .menu button.\--color-tomato a, .\--color-tomato.button .menu a, .menu .\--color-tomato.button a, .form__step.\--color-white .menu a, .menu .form__step.\--color-white a, .form__header.\--color-primary .menu a, .menu .form__header.\--color-primary a, .form__header.\--color-secondary .menu a, .menu .form__header.\--color-secondary a, .form__header.\--color-ternary .menu a, .menu .form__header.\--color-ternary a, .form__header.\--color-danger .menu a, .menu .form__header.\--color-danger a, .form__header.\--color-success .menu a, .menu .form__header.\--color-success a, .form__header.\--color-black .menu a, .menu .form__header.\--color-black a, .form__header.\--color-pure-black .menu a, .menu .form__header.\--color-pure-black a, .form__header.\--color-red .menu a, .menu .form__header.\--color-red a, .form__header.\--color-yellow .menu a, .menu .form__header.\--color-yellow a, .form__header.\--color-green .menu a, .menu .form__header.\--color-green a, .form__header.\--color-purple .menu a, .menu .form__header.\--color-purple a, .form__header.\--color-tomato .menu a, .menu .form__header.\--color-tomato a, .header.\--color-white .menu a, .menu .header.\--color-white a, header.\--color-white .menu a, .menu header.\--color-white a, .segment.\--color-primary .menu a, .menu .segment.\--color-primary a, .\--color-primary.message .menu a, .menu .\--color-primary.message a, .\--color-primary.item .menu a, .menu .\--color-primary.item a, .segment.\--color-secondary .menu a, .menu .segment.\--color-secondary a, .\--color-secondary.message .menu a, .menu .\--color-secondary.message a, .\--color-secondary.item .menu a, .menu .\--color-secondary.item a, .segment.\--color-ternary .menu a, .menu .segment.\--color-ternary a, .\--color-ternary.message .menu a, .menu .\--color-ternary.message a, .\--color-ternary.item .menu a, .menu .\--color-ternary.item a, .segment.\--color-danger .menu a, .menu .segment.\--color-danger a, .\--color-danger.message .menu a, .menu .\--color-danger.message a, .\--color-danger.item .menu a, .menu .\--color-danger.item a, .segment.\--color-success .menu a, .menu .segment.\--color-success a, .\--color-success.message .menu a, .menu .\--color-success.message a, .\--color-success.item .menu a, .menu .\--color-success.item a, .segment.\--color-black .menu a, .menu .segment.\--color-black a, .\--color-black.message .menu a, .menu .\--color-black.message a, .\--color-black.item .menu a, .menu .\--color-black.item a, .segment.\--color-pure-black .menu a, .menu .segment.\--color-pure-black a, .\--color-pure-black.message .menu a, .menu .\--color-pure-black.message a, .\--color-pure-black.item .menu a, .menu .\--color-pure-black.item a, .segment.\--color-red .menu a, .menu .segment.\--color-red a, .\--color-red.message .menu a, .menu .\--color-red.message a, .\--color-red.item .menu a, .menu .\--color-red.item a, .segment.\--color-yellow .menu a, .menu .segment.\--color-yellow a, .\--color-yellow.message .menu a, .menu .\--color-yellow.message a, .\--color-yellow.item .menu a, .menu .\--color-yellow.item a, .segment.\--color-green .menu a, .menu .segment.\--color-green a, .\--color-green.message .menu a, .menu .\--color-green.message a, .\--color-green.item .menu a, .menu .\--color-green.item a, .segment.\--color-purple .menu a, .menu .segment.\--color-purple a, .\--color-purple.message .menu a, .menu .\--color-purple.message a, .\--color-purple.item .menu a, .menu .\--color-purple.item a, .segment.\--color-tomato .menu a, .menu .segment.\--color-tomato a, .\--color-tomato.message .menu a, .menu .\--color-tomato.message a, .\--color-tomato.item .menu a, .menu .\--color-tomato.item a, .nav.\--color-neutral.\--basic .menu a, .menu .nav.\--color-neutral.\--basic a, .nav.\--color-white.\--basic .menu a, .menu .nav.\--color-white.\--basic a, .nav.\--color-gray.\--basic .menu a, .menu .nav.\--color-gray.\--basic a, .nav.\--color-primary .menu a, .menu .nav.\--color-primary a, .nav.\--color-secondary .menu a, .menu .nav.\--color-secondary a, .nav.\--color-ternary .menu a, .menu .nav.\--color-ternary a, .nav.\--color-danger .menu a, .menu .nav.\--color-danger a, .nav.\--color-success .menu a, .menu .nav.\--color-success a, .nav.\--color-warning.\--basic .menu a, .menu .nav.\--color-warning.\--basic a, .nav.\--color-black .menu a, .menu .nav.\--color-black a, .nav.\--color-pure-black .menu a, .menu .nav.\--color-pure-black a, .nav.\--color-red .menu a, .menu .nav.\--color-red a, .nav.\--color-yellow .menu a, .menu .nav.\--color-yellow a, .nav.\--color-green .menu a, .menu .nav.\--color-green a, .nav.\--color-purple .menu a, .menu .nav.\--color-purple a, .nav.\--color-tomato .menu a, .menu .nav.\--color-tomato a, .nav.\--color-golden.\--basic .menu a, .menu .nav.\--color-golden.\--basic a, .nav.\--color-transparent-white.\--basic .menu a, .menu .nav.\--color-transparent-white.\--basic a, #app-root .\+color-white .menu a, .menu #app-root .\+color-white a {
     color: white; }
-    button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color-success a:hover, .\--color-success.button a:hover, button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color-tomato a:hover, .\--color-tomato.button a:hover, .form__step.\--color-white a:hover, .form__header.\--color-primary a:hover, .form__header.\--color-secondary a:hover, .form__header.\--color-ternary a:hover, .form__header.\--color-danger a:hover, .form__header.\--color-success a:hover, .form__header.\--color-black a:hover, .form__header.\--color-pure-black a:hover, .form__header.\--color-red a:hover, .form__header.\--color-yellow a:hover, .form__header.\--color-green a:hover, .form__header.\--color-purple a:hover, .form__header.\--color-tomato a:hover, .header.\--color-white a:hover, header.\--color-white a:hover, .segment.\--color-primary a:hover, .\--color-primary.item a:hover, .segment.\--color-secondary a:hover, .\--color-secondary.item a:hover, .segment.\--color-ternary a:hover, .\--color-ternary.item a:hover, .segment.\--color-danger a:hover, .\--color-danger.item a:hover, .segment.\--color-success a:hover, .\--color-success.item a:hover, .segment.\--color-black a:hover, .\--color-black.item a:hover, .segment.\--color-pure-black a:hover, .\--color-pure-black.item a:hover, .segment.\--color-red a:hover, .\--color-red.item a:hover, .segment.\--color-yellow a:hover, .\--color-yellow.item a:hover, .segment.\--color-green a:hover, .\--color-green.item a:hover, .segment.\--color-purple a:hover, .\--color-purple.item a:hover, .segment.\--color-tomato a:hover, .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary a:hover, .nav.\--color-secondary a:hover, .nav.\--color-ternary a:hover, .nav.\--color-danger a:hover, .nav.\--color-success a:hover, .nav.\--color-black a:hover, .nav.\--color-pure-black a:hover, .nav.\--color-red a:hover, .nav.\--color-yellow a:hover, .nav.\--color-green a:hover, .nav.\--color-purple a:hover, .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white a:hover, button.\--color-primary .menu a:hover, .menu button.\--color-primary a:hover, .\--color-primary.button .menu a:hover, .menu .\--color-primary.button a:hover, button.\--color-secondary .menu a:hover, .menu button.\--color-secondary a:hover, .\--color-secondary.button .menu a:hover, .menu .\--color-secondary.button a:hover, button.\--color-ternary .menu a:hover, .menu button.\--color-ternary a:hover, .\--color-ternary.button .menu a:hover, .menu .\--color-ternary.button a:hover, button.\--color-danger .menu a:hover, .menu button.\--color-danger a:hover, .\--color-danger.button .menu a:hover, .menu .\--color-danger.button a:hover, button.\--color-success .menu a:hover, .menu button.\--color-success a:hover, .\--color-success.button .menu a:hover, .menu .\--color-success.button a:hover, button.\--color-black .menu a:hover, .menu button.\--color-black a:hover, .\--color-black.button .menu a:hover, .menu .\--color-black.button a:hover, button.\--color-pure-black .menu a:hover, .menu button.\--color-pure-black a:hover, .\--color-pure-black.button .menu a:hover, .menu .\--color-pure-black.button a:hover, button.\--color-red .menu a:hover, .menu button.\--color-red a:hover, .\--color-red.button .menu a:hover, .menu .\--color-red.button a:hover, button.\--color-yellow .menu a:hover, .menu button.\--color-yellow a:hover, .\--color-yellow.button .menu a:hover, .menu .\--color-yellow.button a:hover, button.\--color-green .menu a:hover, .menu button.\--color-green a:hover, .\--color-green.button .menu a:hover, .menu .\--color-green.button a:hover, button.\--color-purple .menu a:hover, .menu button.\--color-purple a:hover, .\--color-purple.button .menu a:hover, .menu .\--color-purple.button a:hover, button.\--color-tomato .menu a:hover, .menu button.\--color-tomato a:hover, .\--color-tomato.button .menu a:hover, .menu .\--color-tomato.button a:hover, .form__step.\--color-white .menu a:hover, .menu .form__step.\--color-white a:hover, .form__header.\--color-primary .menu a:hover, .menu .form__header.\--color-primary a:hover, .form__header.\--color-secondary .menu a:hover, .menu .form__header.\--color-secondary a:hover, .form__header.\--color-ternary .menu a:hover, .menu .form__header.\--color-ternary a:hover, .form__header.\--color-danger .menu a:hover, .menu .form__header.\--color-danger a:hover, .form__header.\--color-success .menu a:hover, .menu .form__header.\--color-success a:hover, .form__header.\--color-black .menu a:hover, .menu .form__header.\--color-black a:hover, .form__header.\--color-pure-black .menu a:hover, .menu .form__header.\--color-pure-black a:hover, .form__header.\--color-red .menu a:hover, .menu .form__header.\--color-red a:hover, .form__header.\--color-yellow .menu a:hover, .menu .form__header.\--color-yellow a:hover, .form__header.\--color-green .menu a:hover, .menu .form__header.\--color-green a:hover, .form__header.\--color-purple .menu a:hover, .menu .form__header.\--color-purple a:hover, .form__header.\--color-tomato .menu a:hover, .menu .form__header.\--color-tomato a:hover, .header.\--color-white .menu a:hover, .menu .header.\--color-white a:hover, header.\--color-white .menu a:hover, .menu header.\--color-white a:hover, .segment.\--color-primary .menu a:hover, .menu .segment.\--color-primary a:hover, .\--color-primary.item .menu a:hover, .menu .\--color-primary.item a:hover, .segment.\--color-secondary .menu a:hover, .menu .segment.\--color-secondary a:hover, .\--color-secondary.item .menu a:hover, .menu .\--color-secondary.item a:hover, .segment.\--color-ternary .menu a:hover, .menu .segment.\--color-ternary a:hover, .\--color-ternary.item .menu a:hover, .menu .\--color-ternary.item a:hover, .segment.\--color-danger .menu a:hover, .menu .segment.\--color-danger a:hover, .\--color-danger.item .menu a:hover, .menu .\--color-danger.item a:hover, .segment.\--color-success .menu a:hover, .menu .segment.\--color-success a:hover, .\--color-success.item .menu a:hover, .menu .\--color-success.item a:hover, .segment.\--color-black .menu a:hover, .menu .segment.\--color-black a:hover, .\--color-black.item .menu a:hover, .menu .\--color-black.item a:hover, .segment.\--color-pure-black .menu a:hover, .menu .segment.\--color-pure-black a:hover, .\--color-pure-black.item .menu a:hover, .menu .\--color-pure-black.item a:hover, .segment.\--color-red .menu a:hover, .menu .segment.\--color-red a:hover, .\--color-red.item .menu a:hover, .menu .\--color-red.item a:hover, .segment.\--color-yellow .menu a:hover, .menu .segment.\--color-yellow a:hover, .\--color-yellow.item .menu a:hover, .menu .\--color-yellow.item a:hover, .segment.\--color-green .menu a:hover, .menu .segment.\--color-green a:hover, .\--color-green.item .menu a:hover, .menu .\--color-green.item a:hover, .segment.\--color-purple .menu a:hover, .menu .segment.\--color-purple a:hover, .\--color-purple.item .menu a:hover, .menu .\--color-purple.item a:hover, .segment.\--color-tomato .menu a:hover, .menu .segment.\--color-tomato a:hover, .\--color-tomato.item .menu a:hover, .menu .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic .menu a:hover, .menu .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic .menu a:hover, .menu .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic .menu a:hover, .menu .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary .menu a:hover, .menu .nav.\--color-primary a:hover, .nav.\--color-secondary .menu a:hover, .menu .nav.\--color-secondary a:hover, .nav.\--color-ternary .menu a:hover, .menu .nav.\--color-ternary a:hover, .nav.\--color-danger .menu a:hover, .menu .nav.\--color-danger a:hover, .nav.\--color-success .menu a:hover, .menu .nav.\--color-success a:hover, .nav.\--color-black .menu a:hover, .menu .nav.\--color-black a:hover, .nav.\--color-pure-black .menu a:hover, .menu .nav.\--color-pure-black a:hover, .nav.\--color-red .menu a:hover, .menu .nav.\--color-red a:hover, .nav.\--color-yellow .menu a:hover, .menu .nav.\--color-yellow a:hover, .nav.\--color-green .menu a:hover, .menu .nav.\--color-green a:hover, .nav.\--color-purple .menu a:hover, .menu .nav.\--color-purple a:hover, .nav.\--color-tomato .menu a:hover, .menu .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic .menu a:hover, .menu .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic .menu a:hover, .menu .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white .menu a:hover, .menu #app-root .\+color-white a:hover {
+    button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color-success a:hover, .\--color-success.button a:hover, button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color-tomato a:hover, .\--color-tomato.button a:hover, .form__step.\--color-white a:hover, .form__header.\--color-primary a:hover, .form__header.\--color-secondary a:hover, .form__header.\--color-ternary a:hover, .form__header.\--color-danger a:hover, .form__header.\--color-success a:hover, .form__header.\--color-black a:hover, .form__header.\--color-pure-black a:hover, .form__header.\--color-red a:hover, .form__header.\--color-yellow a:hover, .form__header.\--color-green a:hover, .form__header.\--color-purple a:hover, .form__header.\--color-tomato a:hover, .header.\--color-white a:hover, header.\--color-white a:hover, .segment.\--color-primary a:hover, .\--color-primary.message a:hover, .\--color-primary.item a:hover, .segment.\--color-secondary a:hover, .\--color-secondary.message a:hover, .\--color-secondary.item a:hover, .segment.\--color-ternary a:hover, .\--color-ternary.message a:hover, .\--color-ternary.item a:hover, .segment.\--color-danger a:hover, .\--color-danger.message a:hover, .\--color-danger.item a:hover, .segment.\--color-success a:hover, .\--color-success.message a:hover, .\--color-success.item a:hover, .segment.\--color-black a:hover, .\--color-black.message a:hover, .\--color-black.item a:hover, .segment.\--color-pure-black a:hover, .\--color-pure-black.message a:hover, .\--color-pure-black.item a:hover, .segment.\--color-red a:hover, .\--color-red.message a:hover, .\--color-red.item a:hover, .segment.\--color-yellow a:hover, .\--color-yellow.message a:hover, .\--color-yellow.item a:hover, .segment.\--color-green a:hover, .\--color-green.message a:hover, .\--color-green.item a:hover, .segment.\--color-purple a:hover, .\--color-purple.message a:hover, .\--color-purple.item a:hover, .segment.\--color-tomato a:hover, .\--color-tomato.message a:hover, .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary a:hover, .nav.\--color-secondary a:hover, .nav.\--color-ternary a:hover, .nav.\--color-danger a:hover, .nav.\--color-success a:hover, .nav.\--color-warning.\--basic a:hover, .nav.\--color-black a:hover, .nav.\--color-pure-black a:hover, .nav.\--color-red a:hover, .nav.\--color-yellow a:hover, .nav.\--color-green a:hover, .nav.\--color-purple a:hover, .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white a:hover, button.\--color-primary .menu a:hover, .menu button.\--color-primary a:hover, .\--color-primary.button .menu a:hover, .menu .\--color-primary.button a:hover, button.\--color-secondary .menu a:hover, .menu button.\--color-secondary a:hover, .\--color-secondary.button .menu a:hover, .menu .\--color-secondary.button a:hover, button.\--color-ternary .menu a:hover, .menu button.\--color-ternary a:hover, .\--color-ternary.button .menu a:hover, .menu .\--color-ternary.button a:hover, button.\--color-danger .menu a:hover, .menu button.\--color-danger a:hover, .\--color-danger.button .menu a:hover, .menu .\--color-danger.button a:hover, button.\--color-success .menu a:hover, .menu button.\--color-success a:hover, .\--color-success.button .menu a:hover, .menu .\--color-success.button a:hover, button.\--color-black .menu a:hover, .menu button.\--color-black a:hover, .\--color-black.button .menu a:hover, .menu .\--color-black.button a:hover, button.\--color-pure-black .menu a:hover, .menu button.\--color-pure-black a:hover, .\--color-pure-black.button .menu a:hover, .menu .\--color-pure-black.button a:hover, button.\--color-red .menu a:hover, .menu button.\--color-red a:hover, .\--color-red.button .menu a:hover, .menu .\--color-red.button a:hover, button.\--color-yellow .menu a:hover, .menu button.\--color-yellow a:hover, .\--color-yellow.button .menu a:hover, .menu .\--color-yellow.button a:hover, button.\--color-green .menu a:hover, .menu button.\--color-green a:hover, .\--color-green.button .menu a:hover, .menu .\--color-green.button a:hover, button.\--color-purple .menu a:hover, .menu button.\--color-purple a:hover, .\--color-purple.button .menu a:hover, .menu .\--color-purple.button a:hover, button.\--color-tomato .menu a:hover, .menu button.\--color-tomato a:hover, .\--color-tomato.button .menu a:hover, .menu .\--color-tomato.button a:hover, .form__step.\--color-white .menu a:hover, .menu .form__step.\--color-white a:hover, .form__header.\--color-primary .menu a:hover, .menu .form__header.\--color-primary a:hover, .form__header.\--color-secondary .menu a:hover, .menu .form__header.\--color-secondary a:hover, .form__header.\--color-ternary .menu a:hover, .menu .form__header.\--color-ternary a:hover, .form__header.\--color-danger .menu a:hover, .menu .form__header.\--color-danger a:hover, .form__header.\--color-success .menu a:hover, .menu .form__header.\--color-success a:hover, .form__header.\--color-black .menu a:hover, .menu .form__header.\--color-black a:hover, .form__header.\--color-pure-black .menu a:hover, .menu .form__header.\--color-pure-black a:hover, .form__header.\--color-red .menu a:hover, .menu .form__header.\--color-red a:hover, .form__header.\--color-yellow .menu a:hover, .menu .form__header.\--color-yellow a:hover, .form__header.\--color-green .menu a:hover, .menu .form__header.\--color-green a:hover, .form__header.\--color-purple .menu a:hover, .menu .form__header.\--color-purple a:hover, .form__header.\--color-tomato .menu a:hover, .menu .form__header.\--color-tomato a:hover, .header.\--color-white .menu a:hover, .menu .header.\--color-white a:hover, header.\--color-white .menu a:hover, .menu header.\--color-white a:hover, .segment.\--color-primary .menu a:hover, .menu .segment.\--color-primary a:hover, .\--color-primary.message .menu a:hover, .menu .\--color-primary.message a:hover, .\--color-primary.item .menu a:hover, .menu .\--color-primary.item a:hover, .segment.\--color-secondary .menu a:hover, .menu .segment.\--color-secondary a:hover, .\--color-secondary.message .menu a:hover, .menu .\--color-secondary.message a:hover, .\--color-secondary.item .menu a:hover, .menu .\--color-secondary.item a:hover, .segment.\--color-ternary .menu a:hover, .menu .segment.\--color-ternary a:hover, .\--color-ternary.message .menu a:hover, .menu .\--color-ternary.message a:hover, .\--color-ternary.item .menu a:hover, .menu .\--color-ternary.item a:hover, .segment.\--color-danger .menu a:hover, .menu .segment.\--color-danger a:hover, .\--color-danger.message .menu a:hover, .menu .\--color-danger.message a:hover, .\--color-danger.item .menu a:hover, .menu .\--color-danger.item a:hover, .segment.\--color-success .menu a:hover, .menu .segment.\--color-success a:hover, .\--color-success.message .menu a:hover, .menu .\--color-success.message a:hover, .\--color-success.item .menu a:hover, .menu .\--color-success.item a:hover, .segment.\--color-black .menu a:hover, .menu .segment.\--color-black a:hover, .\--color-black.message .menu a:hover, .menu .\--color-black.message a:hover, .\--color-black.item .menu a:hover, .menu .\--color-black.item a:hover, .segment.\--color-pure-black .menu a:hover, .menu .segment.\--color-pure-black a:hover, .\--color-pure-black.message .menu a:hover, .menu .\--color-pure-black.message a:hover, .\--color-pure-black.item .menu a:hover, .menu .\--color-pure-black.item a:hover, .segment.\--color-red .menu a:hover, .menu .segment.\--color-red a:hover, .\--color-red.message .menu a:hover, .menu .\--color-red.message a:hover, .\--color-red.item .menu a:hover, .menu .\--color-red.item a:hover, .segment.\--color-yellow .menu a:hover, .menu .segment.\--color-yellow a:hover, .\--color-yellow.message .menu a:hover, .menu .\--color-yellow.message a:hover, .\--color-yellow.item .menu a:hover, .menu .\--color-yellow.item a:hover, .segment.\--color-green .menu a:hover, .menu .segment.\--color-green a:hover, .\--color-green.message .menu a:hover, .menu .\--color-green.message a:hover, .\--color-green.item .menu a:hover, .menu .\--color-green.item a:hover, .segment.\--color-purple .menu a:hover, .menu .segment.\--color-purple a:hover, .\--color-purple.message .menu a:hover, .menu .\--color-purple.message a:hover, .\--color-purple.item .menu a:hover, .menu .\--color-purple.item a:hover, .segment.\--color-tomato .menu a:hover, .menu .segment.\--color-tomato a:hover, .\--color-tomato.message .menu a:hover, .menu .\--color-tomato.message a:hover, .\--color-tomato.item .menu a:hover, .menu .\--color-tomato.item a:hover, .nav.\--color-neutral.\--basic .menu a:hover, .menu .nav.\--color-neutral.\--basic a:hover, .nav.\--color-white.\--basic .menu a:hover, .menu .nav.\--color-white.\--basic a:hover, .nav.\--color-gray.\--basic .menu a:hover, .menu .nav.\--color-gray.\--basic a:hover, .nav.\--color-primary .menu a:hover, .menu .nav.\--color-primary a:hover, .nav.\--color-secondary .menu a:hover, .menu .nav.\--color-secondary a:hover, .nav.\--color-ternary .menu a:hover, .menu .nav.\--color-ternary a:hover, .nav.\--color-danger .menu a:hover, .menu .nav.\--color-danger a:hover, .nav.\--color-success .menu a:hover, .menu .nav.\--color-success a:hover, .nav.\--color-warning.\--basic .menu a:hover, .menu .nav.\--color-warning.\--basic a:hover, .nav.\--color-black .menu a:hover, .menu .nav.\--color-black a:hover, .nav.\--color-pure-black .menu a:hover, .menu .nav.\--color-pure-black a:hover, .nav.\--color-red .menu a:hover, .menu .nav.\--color-red a:hover, .nav.\--color-yellow .menu a:hover, .menu .nav.\--color-yellow a:hover, .nav.\--color-green .menu a:hover, .menu .nav.\--color-green a:hover, .nav.\--color-purple .menu a:hover, .menu .nav.\--color-purple a:hover, .nav.\--color-tomato .menu a:hover, .menu .nav.\--color-tomato a:hover, .nav.\--color-golden.\--basic .menu a:hover, .menu .nav.\--color-golden.\--basic a:hover, .nav.\--color-transparent-white.\--basic .menu a:hover, .menu .nav.\--color-transparent-white.\--basic a:hover, #app-root .\+color-white .menu a:hover, .menu #app-root .\+color-white a:hover {
       color: #0083ff; }
 
-button.\--color-white, .\--color-white.button, .form__header.\--color-white, .segment.\--color-white, .\--color-white.item, .nav.\--color-white {
+button.\--color-white, .\--color-white.button, .form__header.\--color-white, .segment.\--color-white, .\--color-white.message, .\--color-white.item, .nav.\--color-white {
   background-color: #ffffff; }
 
 button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-white:hover, .\--color-white.button:hover {
@@ -3868,7 +3868,7 @@ button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-w
     .form__step.\--color-gray a:hover, .header.\--color-gray a:hover, header.\--color-gray a:hover, #app-root .\+color-gray a:hover {
       color: #0083ff; }
 
-button.\--color-gray, .\--color-gray.button, .form__header.\--color-gray, .segment.\--color-gray, .\--color-gray.item, .nav.\--color-gray {
+button.\--color-gray, .\--color-gray.button, .form__header.\--color-gray, .segment.\--color-gray, .\--color-gray.message, .\--color-gray.item, .nav.\--color-gray {
   background-color: #DEDEDE; }
 
 button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-gray:hover, .\--color-gray.button:hover {
@@ -3882,7 +3882,7 @@ button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-gra
     .form__step.\--color-primary a:hover, .header.\--color-primary a:hover, header.\--color-primary a:hover, #app-root .\+color-primary a:hover {
       color: #0083ff; }
 
-button.\--color-primary, .\--color-primary.button, .form__header.\--color-primary, .segment.\--color-primary, .\--color-primary.item, .nav.\--color-primary {
+button.\--color-primary, .\--color-primary.button, .form__header.\--color-primary, .segment.\--color-primary, .\--color-primary.message, .\--color-primary.item, .nav.\--color-primary {
   background-color: #0083ff; }
 
 button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--color-primary:hover, .\--color-primary.button:hover {
@@ -3896,7 +3896,7 @@ button.\--color-primary a:hover, .\--color-primary.button a:hover, button.\--col
     .form__step.\--color-secondary a:hover, .header.\--color-secondary a:hover, header.\--color-secondary a:hover, #app-root .\+color-secondary a:hover {
       color: #0083ff; }
 
-button.\--color-secondary, .\--color-secondary.button, .form__header.\--color-secondary, .segment.\--color-secondary, .\--color-secondary.item, .nav.\--color-secondary {
+button.\--color-secondary, .\--color-secondary.button, .form__header.\--color-secondary, .segment.\--color-secondary, .\--color-secondary.message, .\--color-secondary.item, .nav.\--color-secondary {
   background-color: #af0101; }
 
 button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\--color-secondary:hover, .\--color-secondary.button:hover {
@@ -3910,7 +3910,7 @@ button.\--color-secondary a:hover, .\--color-secondary.button a:hover, button.\-
     .form__step.\--color-ternary a:hover, .header.\--color-ternary a:hover, header.\--color-ternary a:hover, #app-root .\+color-ternary a:hover {
       color: #0083ff; }
 
-button.\--color-ternary, .\--color-ternary.button, .form__header.\--color-ternary, .segment.\--color-ternary, .\--color-ternary.item, .nav.\--color-ternary {
+button.\--color-ternary, .\--color-ternary.button, .form__header.\--color-ternary, .segment.\--color-ternary, .\--color-ternary.message, .\--color-ternary.item, .nav.\--color-ternary {
   background-color: #9eaf15; }
 
 button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--color-ternary:hover, .\--color-ternary.button:hover {
@@ -3924,7 +3924,7 @@ button.\--color-ternary a:hover, .\--color-ternary.button a:hover, button.\--col
     .form__step.\--color-danger a:hover, .header.\--color-danger a:hover, header.\--color-danger a:hover, #app-root .\+color-danger a:hover {
       color: #0083ff; }
 
-button.\--color-danger, .\--color-danger.button, .form__header.\--color-danger, .segment.\--color-danger, .\--color-danger.item, .nav.\--color-danger {
+button.\--color-danger, .\--color-danger.button, .form__header.\--color-danger, .segment.\--color-danger, .\--color-danger.message, .\--color-danger.item, .nav.\--color-danger {
   background-color: #d90d12; }
 
 button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color-danger:hover, .\--color-danger.button:hover {
@@ -3938,21 +3938,35 @@ button.\--color-danger a:hover, .\--color-danger.button a:hover, button.\--color
     .form__step.\--color-success a:hover, .header.\--color-success a:hover, header.\--color-success a:hover, #app-root .\+color-success a:hover {
       color: #0083ff; }
 
-button.\--color-success, .\--color-success.button, .form__header.\--color-success, .segment.\--color-success, .\--color-success.item, .nav.\--color-success {
+button.\--color-success, .\--color-success.button, .form__header.\--color-success, .segment.\--color-success, .\--color-success.message, .\--color-success.item, .nav.\--color-success {
   background-color: #0bbc62; }
 
 button.\--color-success a:hover, .\--color-success.button a:hover, button.\--color-success:hover, .\--color-success.button:hover {
   color: #07743c;
   background-color: #0eec7b; }
 
-button.\--color-neutral, .\--color-neutral.button, button.\--color-white, .\--color-white.button, button.\--color-gray, .\--color-gray.button, button.\--color-golden, .\--color-golden.button, button.\--color-transparent-white, .\--color-transparent-white.button, .form__step.\--color-black, .form__header.\--color-neutral, .form__header.\--color-white, .form__header.\--color-gray, .form__header.\--color-golden, .form__header.\--color-transparent-white, .header.\--color-black, header.\--color-black, .segment.\--color-neutral, .\--color-neutral.item, .segment.\--color-white, .\--color-white.item, .segment.\--color-gray, .\--color-gray.item, .segment.\--color-golden, .\--color-golden.item, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-neutral, .nav.\--color-white, .nav.\--color-gray, .nav.\--color-golden, .nav.\--color-transparent-white, #app-root .\+color-black {
-  color: #323542; }
-  button.\--color-neutral a, .\--color-neutral.button a, button.\--color-white a, .\--color-white.button a, button.\--color-gray a, .\--color-gray.button a, button.\--color-golden a, .\--color-golden.button a, button.\--color-transparent-white a, .\--color-transparent-white.button a, .form__step.\--color-black a, .form__header.\--color-neutral a, .form__header.\--color-white a, .form__header.\--color-gray a, .form__header.\--color-golden a, .form__header.\--color-transparent-white a, .header.\--color-black a, header.\--color-black a, .segment.\--color-neutral a, .\--color-neutral.item a, .segment.\--color-white a, .\--color-white.item a, .segment.\--color-gray a, .\--color-gray.item a, .segment.\--color-golden a, .\--color-golden.item a, .segment.\--color-transparent-white a, .\--color-transparent-white.item a, .nav.\--color-neutral a, .nav.\--color-white a, .nav.\--color-gray a, .nav.\--color-golden a, .nav.\--color-transparent-white a, #app-root .\+color-black a, header.\--color-black .menu a, .menu header.\--color-black a {
-    color: #323542; }
-    button.\--color-neutral a:hover, .\--color-neutral.button a:hover, button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:hover, .form__step.\--color-black a:hover, .form__header.\--color-neutral a:hover, .form__header.\--color-white a:hover, .form__header.\--color-gray a:hover, .form__header.\--color-golden a:hover, .form__header.\--color-transparent-white a:hover, .header.\--color-black a:hover, header.\--color-black a:hover, .segment.\--color-neutral a:hover, .\--color-neutral.item a:hover, .segment.\--color-white a:hover, .\--color-white.item a:hover, .segment.\--color-gray a:hover, .\--color-gray.item a:hover, .segment.\--color-golden a:hover, .\--color-golden.item a:hover, .segment.\--color-transparent-white a:hover, .\--color-transparent-white.item a:hover, .nav.\--color-neutral a:hover, .nav.\--color-white a:hover, .nav.\--color-gray a:hover, .nav.\--color-golden a:hover, .nav.\--color-transparent-white a:hover, #app-root .\+color-black a:hover {
+.form__step.\--color-warning, .header.\--color-warning, header.\--color-warning, #app-root .\+color-warning {
+  color: #ffe7a0; }
+  .form__step.\--color-warning a, .header.\--color-warning a, header.\--color-warning a, #app-root .\+color-warning a, header.\--color-warning .menu a, .menu header.\--color-warning a {
+    color: #ffe7a0; }
+    .form__step.\--color-warning a:hover, .header.\--color-warning a:hover, header.\--color-warning a:hover, #app-root .\+color-warning a:hover {
       color: #0083ff; }
 
-button.\--color-black, .\--color-black.button, .form__header.\--color-black, .segment.\--color-black, .\--color-black.item, .nav.\--color-black {
+button.\--color-warning, .\--color-warning.button, .form__header.\--color-warning, .segment.\--color-warning, .\--color-warning.message, .\--color-warning.item, .nav.\--color-warning {
+  background-color: #FFC107; }
+
+button.\--color-warning a:hover, .\--color-warning.button a:hover, button.\--color-warning:hover, .\--color-warning.button:hover {
+  color: #ba8b00;
+  background-color: #ffce3a; }
+
+button.\--color-neutral, .\--color-neutral.button, button.\--color-white, .\--color-white.button, button.\--color-gray, .\--color-gray.button, button.\--color-warning, .\--color-warning.button, button.\--color-golden, .\--color-golden.button, button.\--color-transparent-white, .\--color-transparent-white.button, .form__step.\--color-black, .form__header.\--color-neutral, .form__header.\--color-white, .form__header.\--color-gray, .form__header.\--color-warning, .form__header.\--color-golden, .form__header.\--color-transparent-white, .header.\--color-black, header.\--color-black, .segment.\--color-neutral, .\--color-neutral.message, .\--color-neutral.item, .segment.\--color-white, .\--color-white.message, .\--color-white.item, .segment.\--color-gray, .\--color-gray.message, .\--color-gray.item, .segment.\--color-warning, .\--color-warning.message, .\--color-warning.item, .segment.\--color-golden, .\--color-golden.message, .\--color-golden.item, .segment.\--color-transparent-white, .\--color-transparent-white.message, .\--color-transparent-white.item, .nav.\--color-neutral, .nav.\--color-white, .nav.\--color-gray, .nav.\--color-warning, .nav.\--color-golden, .nav.\--color-transparent-white, #app-root .\+color-black {
+  color: #323542; }
+  button.\--color-neutral a, .\--color-neutral.button a, button.\--color-white a, .\--color-white.button a, button.\--color-gray a, .\--color-gray.button a, button.\--color-warning a, .\--color-warning.button a, button.\--color-golden a, .\--color-golden.button a, button.\--color-transparent-white a, .\--color-transparent-white.button a, .form__step.\--color-black a, .form__header.\--color-neutral a, .form__header.\--color-white a, .form__header.\--color-gray a, .form__header.\--color-warning a, .form__header.\--color-golden a, .form__header.\--color-transparent-white a, .header.\--color-black a, header.\--color-black a, .segment.\--color-neutral a, .\--color-neutral.message a, .\--color-neutral.item a, .segment.\--color-white a, .\--color-white.message a, .\--color-white.item a, .segment.\--color-gray a, .\--color-gray.message a, .\--color-gray.item a, .segment.\--color-warning a, .\--color-warning.message a, .\--color-warning.item a, .segment.\--color-golden a, .\--color-golden.message a, .\--color-golden.item a, .segment.\--color-transparent-white a, .\--color-transparent-white.message a, .\--color-transparent-white.item a, .nav.\--color-neutral a, .nav.\--color-white a, .nav.\--color-gray a, .nav.\--color-warning a, .nav.\--color-golden a, .nav.\--color-transparent-white a, #app-root .\+color-black a, button.\--color-neutral .menu a, .menu button.\--color-neutral a, .\--color-neutral.button .menu a, .menu .\--color-neutral.button a, button.\--color-white .menu a, .menu button.\--color-white a, .\--color-white.button .menu a, .menu .\--color-white.button a, button.\--color-gray .menu a, .menu button.\--color-gray a, .\--color-gray.button .menu a, .menu .\--color-gray.button a, button.\--color-warning .menu a, .menu button.\--color-warning a, .\--color-warning.button .menu a, .menu .\--color-warning.button a, button.\--color-golden .menu a, .menu button.\--color-golden a, .\--color-golden.button .menu a, .menu .\--color-golden.button a, button.\--color-transparent-white .menu a, .menu button.\--color-transparent-white a, .\--color-transparent-white.button .menu a, .menu .\--color-transparent-white.button a, .form__step.\--color-black .menu a, .menu .form__step.\--color-black a, .form__header.\--color-neutral .menu a, .menu .form__header.\--color-neutral a, .form__header.\--color-white .menu a, .menu .form__header.\--color-white a, .form__header.\--color-gray .menu a, .menu .form__header.\--color-gray a, .form__header.\--color-warning .menu a, .menu .form__header.\--color-warning a, .form__header.\--color-golden .menu a, .menu .form__header.\--color-golden a, .form__header.\--color-transparent-white .menu a, .menu .form__header.\--color-transparent-white a, .header.\--color-black .menu a, .menu .header.\--color-black a, header.\--color-black .menu a, .menu header.\--color-black a, .segment.\--color-neutral .menu a, .menu .segment.\--color-neutral a, .\--color-neutral.message .menu a, .menu .\--color-neutral.message a, .\--color-neutral.item .menu a, .menu .\--color-neutral.item a, .segment.\--color-white .menu a, .menu .segment.\--color-white a, .\--color-white.message .menu a, .menu .\--color-white.message a, .\--color-white.item .menu a, .menu .\--color-white.item a, .segment.\--color-gray .menu a, .menu .segment.\--color-gray a, .\--color-gray.message .menu a, .menu .\--color-gray.message a, .\--color-gray.item .menu a, .menu .\--color-gray.item a, .segment.\--color-warning .menu a, .menu .segment.\--color-warning a, .\--color-warning.message .menu a, .menu .\--color-warning.message a, .\--color-warning.item .menu a, .menu .\--color-warning.item a, .segment.\--color-golden .menu a, .menu .segment.\--color-golden a, .\--color-golden.message .menu a, .menu .\--color-golden.message a, .\--color-golden.item .menu a, .menu .\--color-golden.item a, .segment.\--color-transparent-white .menu a, .menu .segment.\--color-transparent-white a, .\--color-transparent-white.message .menu a, .menu .\--color-transparent-white.message a, .\--color-transparent-white.item .menu a, .menu .\--color-transparent-white.item a, .nav.\--color-neutral .menu a, .menu .nav.\--color-neutral a, .nav.\--color-white .menu a, .menu .nav.\--color-white a, .nav.\--color-gray .menu a, .menu .nav.\--color-gray a, .nav.\--color-warning .menu a, .menu .nav.\--color-warning a, .nav.\--color-golden .menu a, .menu .nav.\--color-golden a, .nav.\--color-transparent-white .menu a, .menu .nav.\--color-transparent-white a, #app-root .\+color-black .menu a, .menu #app-root .\+color-black a {
+    color: #323542; }
+    button.\--color-neutral a:hover, .\--color-neutral.button a:hover, button.\--color-white a:hover, .\--color-white.button a:hover, button.\--color-gray a:hover, .\--color-gray.button a:hover, button.\--color-warning a:hover, .\--color-warning.button a:hover, button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:hover, .form__step.\--color-black a:hover, .form__header.\--color-neutral a:hover, .form__header.\--color-white a:hover, .form__header.\--color-gray a:hover, .form__header.\--color-warning a:hover, .form__header.\--color-golden a:hover, .form__header.\--color-transparent-white a:hover, .header.\--color-black a:hover, header.\--color-black a:hover, .segment.\--color-neutral a:hover, .\--color-neutral.message a:hover, .\--color-neutral.item a:hover, .segment.\--color-white a:hover, .\--color-white.message a:hover, .\--color-white.item a:hover, .segment.\--color-gray a:hover, .\--color-gray.message a:hover, .\--color-gray.item a:hover, .segment.\--color-warning a:hover, .\--color-warning.message a:hover, .\--color-warning.item a:hover, .segment.\--color-golden a:hover, .\--color-golden.message a:hover, .\--color-golden.item a:hover, .segment.\--color-transparent-white a:hover, .\--color-transparent-white.message a:hover, .\--color-transparent-white.item a:hover, .nav.\--color-neutral a:hover, .nav.\--color-white a:hover, .nav.\--color-gray a:hover, .nav.\--color-warning a:hover, .nav.\--color-golden a:hover, .nav.\--color-transparent-white a:hover, #app-root .\+color-black a:hover, button.\--color-neutral .menu a:hover, .menu button.\--color-neutral a:hover, .\--color-neutral.button .menu a:hover, .menu .\--color-neutral.button a:hover, button.\--color-white .menu a:hover, .menu button.\--color-white a:hover, .\--color-white.button .menu a:hover, .menu .\--color-white.button a:hover, button.\--color-gray .menu a:hover, .menu button.\--color-gray a:hover, .\--color-gray.button .menu a:hover, .menu .\--color-gray.button a:hover, button.\--color-warning .menu a:hover, .menu button.\--color-warning a:hover, .\--color-warning.button .menu a:hover, .menu .\--color-warning.button a:hover, button.\--color-golden .menu a:hover, .menu button.\--color-golden a:hover, .\--color-golden.button .menu a:hover, .menu .\--color-golden.button a:hover, button.\--color-transparent-white .menu a:hover, .menu button.\--color-transparent-white a:hover, .\--color-transparent-white.button .menu a:hover, .menu .\--color-transparent-white.button a:hover, .form__step.\--color-black .menu a:hover, .menu .form__step.\--color-black a:hover, .form__header.\--color-neutral .menu a:hover, .menu .form__header.\--color-neutral a:hover, .form__header.\--color-white .menu a:hover, .menu .form__header.\--color-white a:hover, .form__header.\--color-gray .menu a:hover, .menu .form__header.\--color-gray a:hover, .form__header.\--color-warning .menu a:hover, .menu .form__header.\--color-warning a:hover, .form__header.\--color-golden .menu a:hover, .menu .form__header.\--color-golden a:hover, .form__header.\--color-transparent-white .menu a:hover, .menu .form__header.\--color-transparent-white a:hover, .header.\--color-black .menu a:hover, .menu .header.\--color-black a:hover, header.\--color-black .menu a:hover, .menu header.\--color-black a:hover, .segment.\--color-neutral .menu a:hover, .menu .segment.\--color-neutral a:hover, .\--color-neutral.message .menu a:hover, .menu .\--color-neutral.message a:hover, .\--color-neutral.item .menu a:hover, .menu .\--color-neutral.item a:hover, .segment.\--color-white .menu a:hover, .menu .segment.\--color-white a:hover, .\--color-white.message .menu a:hover, .menu .\--color-white.message a:hover, .\--color-white.item .menu a:hover, .menu .\--color-white.item a:hover, .segment.\--color-gray .menu a:hover, .menu .segment.\--color-gray a:hover, .\--color-gray.message .menu a:hover, .menu .\--color-gray.message a:hover, .\--color-gray.item .menu a:hover, .menu .\--color-gray.item a:hover, .segment.\--color-warning .menu a:hover, .menu .segment.\--color-warning a:hover, .\--color-warning.message .menu a:hover, .menu .\--color-warning.message a:hover, .\--color-warning.item .menu a:hover, .menu .\--color-warning.item a:hover, .segment.\--color-golden .menu a:hover, .menu .segment.\--color-golden a:hover, .\--color-golden.message .menu a:hover, .menu .\--color-golden.message a:hover, .\--color-golden.item .menu a:hover, .menu .\--color-golden.item a:hover, .segment.\--color-transparent-white .menu a:hover, .menu .segment.\--color-transparent-white a:hover, .\--color-transparent-white.message .menu a:hover, .menu .\--color-transparent-white.message a:hover, .\--color-transparent-white.item .menu a:hover, .menu .\--color-transparent-white.item a:hover, .nav.\--color-neutral .menu a:hover, .menu .nav.\--color-neutral a:hover, .nav.\--color-white .menu a:hover, .menu .nav.\--color-white a:hover, .nav.\--color-gray .menu a:hover, .menu .nav.\--color-gray a:hover, .nav.\--color-warning .menu a:hover, .menu .nav.\--color-warning a:hover, .nav.\--color-golden .menu a:hover, .menu .nav.\--color-golden a:hover, .nav.\--color-transparent-white .menu a:hover, .menu .nav.\--color-transparent-white a:hover, #app-root .\+color-black .menu a:hover, .menu #app-root .\+color-black a:hover {
+      color: #0083ff; }
+
+button.\--color-black, .\--color-black.button, .form__header.\--color-black, .segment.\--color-black, .\--color-black.message, .\--color-black.item, .nav.\--color-black {
   background-color: #323542; }
 
 button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-black:hover, .\--color-black.button:hover {
@@ -3966,7 +3980,7 @@ button.\--color-black a:hover, .\--color-black.button a:hover, button.\--color-b
     .form__step.\--color-pure-black a:hover, .header.\--color-pure-black a:hover, header.\--color-pure-black a:hover, #app-root .\+color-pure-black a:hover {
       color: #0083ff; }
 
-button.\--color-pure-black, .\--color-pure-black.button, .form__header.\--color-pure-black, .segment.\--color-pure-black, .\--color-pure-black.item, .nav.\--color-pure-black {
+button.\--color-pure-black, .\--color-pure-black.button, .form__header.\--color-pure-black, .segment.\--color-pure-black, .\--color-pure-black.message, .\--color-pure-black.item, .nav.\--color-pure-black {
   background-color: #000000; }
 
 button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.\--color-pure-black:hover, .\--color-pure-black.button:hover {
@@ -3980,7 +3994,7 @@ button.\--color-pure-black a:hover, .\--color-pure-black.button a:hover, button.
     .form__step.\--color-red a:hover, .header.\--color-red a:hover, header.\--color-red a:hover, #app-root .\+color-red a:hover {
       color: #0083ff; }
 
-button.\--color-red, .\--color-red.button, .form__header.\--color-red, .segment.\--color-red, .\--color-red.item, .nav.\--color-red {
+button.\--color-red, .\--color-red.button, .form__header.\--color-red, .segment.\--color-red, .\--color-red.message, .\--color-red.item, .nav.\--color-red {
   background-color: #d90d12; }
 
 button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-red:hover, .\--color-red.button:hover {
@@ -3994,7 +4008,7 @@ button.\--color-red a:hover, .\--color-red.button a:hover, button.\--color-red:h
     .form__step.\--color-yellow a:hover, .header.\--color-yellow a:hover, header.\--color-yellow a:hover, #app-root .\+color-yellow a:hover {
       color: #0083ff; }
 
-button.\--color-yellow, .\--color-yellow.button, .form__header.\--color-yellow, .segment.\--color-yellow, .\--color-yellow.item, .nav.\--color-yellow {
+button.\--color-yellow, .\--color-yellow.button, .form__header.\--color-yellow, .segment.\--color-yellow, .\--color-yellow.message, .\--color-yellow.item, .nav.\--color-yellow {
   background-color: #eacc00; }
 
 button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color-yellow:hover, .\--color-yellow.button:hover {
@@ -4008,7 +4022,7 @@ button.\--color-yellow a:hover, .\--color-yellow.button a:hover, button.\--color
     .form__step.\--color-green a:hover, .header.\--color-green a:hover, header.\--color-green a:hover, #app-root .\+color-green a:hover {
       color: #0083ff; }
 
-button.\--color-green, .\--color-green.button, .form__header.\--color-green, .segment.\--color-green, .\--color-green.item, .nav.\--color-green {
+button.\--color-green, .\--color-green.button, .form__header.\--color-green, .segment.\--color-green, .\--color-green.message, .\--color-green.item, .nav.\--color-green {
   background-color: #32ea00; }
 
 button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-green:hover, .\--color-green.button:hover {
@@ -4022,7 +4036,7 @@ button.\--color-green a:hover, .\--color-green.button a:hover, button.\--color-g
     .form__step.\--color-purple a:hover, .header.\--color-purple a:hover, header.\--color-purple a:hover, #app-root .\+color-purple a:hover {
       color: #0083ff; }
 
-button.\--color-purple, .\--color-purple.button, .form__header.\--color-purple, .segment.\--color-purple, .\--color-purple.item, .nav.\--color-purple {
+button.\--color-purple, .\--color-purple.button, .form__header.\--color-purple, .segment.\--color-purple, .\--color-purple.message, .\--color-purple.item, .nav.\--color-purple {
   background-color: #6900a5; }
 
 button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color-purple:hover, .\--color-purple.button:hover {
@@ -4036,7 +4050,7 @@ button.\--color-purple a:hover, .\--color-purple.button a:hover, button.\--color
     .form__step.\--color-tomato a:hover, .header.\--color-tomato a:hover, header.\--color-tomato a:hover, #app-root .\+color-tomato a:hover {
       color: #0083ff; }
 
-button.\--color-tomato, .\--color-tomato.button, .form__header.\--color-tomato, .segment.\--color-tomato, .\--color-tomato.item, .nav.\--color-tomato {
+button.\--color-tomato, .\--color-tomato.button, .form__header.\--color-tomato, .segment.\--color-tomato, .\--color-tomato.message, .\--color-tomato.item, .nav.\--color-tomato {
   background-color: #af0101; }
 
 button.\--color-tomato a:hover, .\--color-tomato.button a:hover, button.\--color-tomato:hover, .\--color-tomato.button:hover {
@@ -4050,7 +4064,7 @@ button.\--color-tomato a:hover, .\--color-tomato.button a:hover, button.\--color
     .form__step.\--color-golden a:hover, .header.\--color-golden a:hover, header.\--color-golden a:hover, #app-root .\+color-golden a:hover {
       color: #0083ff; }
 
-button.\--color-golden, .\--color-golden.button, .form__header.\--color-golden, .segment.\--color-golden, .\--color-golden.item, .nav.\--color-golden {
+button.\--color-golden, .\--color-golden.button, .form__header.\--color-golden, .segment.\--color-golden, .\--color-golden.message, .\--color-golden.item, .nav.\--color-golden {
   background-color: #ffc326; }
 
 button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color-golden:hover, .\--color-golden.button:hover {
@@ -4064,41 +4078,41 @@ button.\--color-golden a:hover, .\--color-golden.button a:hover, button.\--color
     .form__step.\--color-transparent-white a:hover, .header.\--color-transparent-white a:hover, header.\--color-transparent-white a:hover, #app-root .\+color-transparent-white a:hover {
       color: #0083ff; }
 
-button.\--color-transparent-white, .\--color-transparent-white.button, .form__header.\--color-transparent-white, .segment.\--color-transparent-white, .\--color-transparent-white.item, .nav.\--color-transparent-white {
+button.\--color-transparent-white, .\--color-transparent-white.button, .form__header.\--color-transparent-white, .segment.\--color-transparent-white, .\--color-transparent-white.message, .\--color-transparent-white.item, .nav.\--color-transparent-white {
   background-color: #ffffff; }
 
 button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:hover, button.\--color-transparent-white:hover, .\--color-transparent-white.button:hover {
   color: #d9d9d9;
   background-color: white; }
 
-.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li {
+.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li {
   padding: 1em;
   margin: 0 .2em;
   white-space: nowrap;
   color: white;
   transition-property: box-shadow; }
-  .nav.\--color-neutral .\--active.nav__content__item, .nav.\--color-white .\--active.nav__content__item, .nav.\--color-gray .\--active.nav__content__item, .nav.\--color-primary .\--active.nav__content__item, .nav.\--color-secondary .\--active.nav__content__item, .nav.\--color-ternary .\--active.nav__content__item, .nav.\--color-danger .\--active.nav__content__item, .nav.\--color-success .\--active.nav__content__item, .nav.\--color-black .\--active.nav__content__item, .nav.\--color-pure-black .\--active.nav__content__item, .nav.\--color-red .\--active.nav__content__item, .nav.\--color-yellow .\--active.nav__content__item, .nav.\--color-green .\--active.nav__content__item, .nav.\--color-purple .\--active.nav__content__item, .nav.\--color-tomato .\--active.nav__content__item, .nav.\--color-golden .\--active.nav__content__item, .nav.\--color-transparent-white .\--active.nav__content__item, .\--active.nav__content__item, .ul.\--tab li.\--active, ul.\--tab li.\--active, .\--tab.badges li.\--active {
+  .nav.\--color-neutral .\--active.nav__content__item, .nav.\--color-white .\--active.nav__content__item, .nav.\--color-gray .\--active.nav__content__item, .nav.\--color-primary .\--active.nav__content__item, .nav.\--color-secondary .\--active.nav__content__item, .nav.\--color-ternary .\--active.nav__content__item, .nav.\--color-danger .\--active.nav__content__item, .nav.\--color-success .\--active.nav__content__item, .nav.\--color-warning .\--active.nav__content__item, .nav.\--color-black .\--active.nav__content__item, .nav.\--color-pure-black .\--active.nav__content__item, .nav.\--color-red .\--active.nav__content__item, .nav.\--color-yellow .\--active.nav__content__item, .nav.\--color-green .\--active.nav__content__item, .nav.\--color-purple .\--active.nav__content__item, .nav.\--color-tomato .\--active.nav__content__item, .nav.\--color-golden .\--active.nav__content__item, .nav.\--color-transparent-white .\--active.nav__content__item, .\--active.nav__content__item, .ul.\--tab li.\--active, ul.\--tab li.\--active, .\--tab.badges li.\--active {
     box-shadow: inset 0 -3px 0 0 #0083ff; }
-    .nav.\--color-neutral .\--active.nav__content__item a, .nav.\--color-white .\--active.nav__content__item a, .nav.\--color-gray .\--active.nav__content__item a, .nav.\--color-primary .\--active.nav__content__item a, .nav.\--color-secondary .\--active.nav__content__item a, .nav.\--color-ternary .\--active.nav__content__item a, .nav.\--color-danger .\--active.nav__content__item a, .nav.\--color-success .\--active.nav__content__item a, .nav.\--color-black .\--active.nav__content__item a, .nav.\--color-pure-black .\--active.nav__content__item a, .nav.\--color-red .\--active.nav__content__item a, .nav.\--color-yellow .\--active.nav__content__item a, .nav.\--color-green .\--active.nav__content__item a, .nav.\--color-purple .\--active.nav__content__item a, .nav.\--color-tomato .\--active.nav__content__item a, .nav.\--color-golden .\--active.nav__content__item a, .nav.\--color-transparent-white .\--active.nav__content__item a, .\--active.nav__content__item a, .ul.\--tab li.\--active a, ul.\--tab li.\--active a, .\--tab.badges li.\--active a {
+    .nav.\--color-neutral .\--active.nav__content__item a, .nav.\--color-white .\--active.nav__content__item a, .nav.\--color-gray .\--active.nav__content__item a, .nav.\--color-primary .\--active.nav__content__item a, .nav.\--color-secondary .\--active.nav__content__item a, .nav.\--color-ternary .\--active.nav__content__item a, .nav.\--color-danger .\--active.nav__content__item a, .nav.\--color-success .\--active.nav__content__item a, .nav.\--color-warning .\--active.nav__content__item a, .nav.\--color-black .\--active.nav__content__item a, .nav.\--color-pure-black .\--active.nav__content__item a, .nav.\--color-red .\--active.nav__content__item a, .nav.\--color-yellow .\--active.nav__content__item a, .nav.\--color-green .\--active.nav__content__item a, .nav.\--color-purple .\--active.nav__content__item a, .nav.\--color-tomato .\--active.nav__content__item a, .nav.\--color-golden .\--active.nav__content__item a, .nav.\--color-transparent-white .\--active.nav__content__item a, .\--active.nav__content__item a, .ul.\--tab li.\--active a, ul.\--tab li.\--active a, .\--tab.badges li.\--active a {
       color: #0083ff; }
-  .nav.\--color-neutral .nav__content__item:hover, .nav.\--color-white .nav__content__item:hover, .nav.\--color-gray .nav__content__item:hover, .nav.\--color-primary .nav__content__item:hover, .nav.\--color-secondary .nav__content__item:hover, .nav.\--color-ternary .nav__content__item:hover, .nav.\--color-danger .nav__content__item:hover, .nav.\--color-success .nav__content__item:hover, .nav.\--color-black .nav__content__item:hover, .nav.\--color-pure-black .nav__content__item:hover, .nav.\--color-red .nav__content__item:hover, .nav.\--color-yellow .nav__content__item:hover, .nav.\--color-green .nav__content__item:hover, .nav.\--color-purple .nav__content__item:hover, .nav.\--color-tomato .nav__content__item:hover, .nav.\--color-golden .nav__content__item:hover, .nav.\--color-transparent-white .nav__content__item:hover, .nav__content__item:hover, .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
+  .nav.\--color-neutral .nav__content__item:hover, .nav.\--color-white .nav__content__item:hover, .nav.\--color-gray .nav__content__item:hover, .nav.\--color-primary .nav__content__item:hover, .nav.\--color-secondary .nav__content__item:hover, .nav.\--color-ternary .nav__content__item:hover, .nav.\--color-danger .nav__content__item:hover, .nav.\--color-success .nav__content__item:hover, .nav.\--color-warning .nav__content__item:hover, .nav.\--color-black .nav__content__item:hover, .nav.\--color-pure-black .nav__content__item:hover, .nav.\--color-red .nav__content__item:hover, .nav.\--color-yellow .nav__content__item:hover, .nav.\--color-green .nav__content__item:hover, .nav.\--color-purple .nav__content__item:hover, .nav.\--color-tomato .nav__content__item:hover, .nav.\--color-golden .nav__content__item:hover, .nav.\--color-transparent-white .nav__content__item:hover, .nav__content__item:hover, .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
     box-shadow: inset 0 -3px 0 0 #0083ff; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element {
   padding: .8em 1.2em;
   color: #b8b8b8;
   background: #f8f8f8;
   transition-property: color, background-color, box-shadow, border-color; }
-  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover, button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover {
+  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover, button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover, .medium-editor-element:hover {
     color: black;
     background-color: #dedede;
     border-color: #b8b8b8; }
-  input:active, .text-area:active, textarea:active, .select:active, select:active, .input:active, button:active, .button:active, .dropdown__trigger.\--mode-button:active {
+  input:active, .text-area:active, textarea:active, .select:active, select:active, .input:active, button:active, .button:active, .dropdown__trigger.\--mode-button:active, .medium-editor-element:active {
     background-image: none;
     outline: 0;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.12);
     border-color: rgba(222, 222, 222, 0.7); }
-  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus, button:focus, .button:focus, .dropdown__trigger.\--mode-button:focus {
+  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus, button:focus, .button:focus, .dropdown__trigger.\--mode-button:focus, .medium-editor-element:focus {
     outline: 0; }
 
 input, .text-area, textarea, .select, select, .input {
@@ -4133,6 +4147,8 @@ button, .button {
     border: 1px solid #d90d12; }
   button.\--color-success, .\--color-success.button {
     border: 1px solid #0bbc62; }
+  button.\--color-warning, .\--color-warning.button {
+    border: 1px solid #ffc107; }
   button.\--color-black, .\--color-black.button {
     border: 1px solid #323542; }
   button.\--color-pure-black, .\--color-pure-black.button {
@@ -4262,6 +4278,8 @@ button, .button {
     border: solid 2px #d90d12; }
   .form__step.\--color-success span {
     border: solid 2px #0bbc62; }
+  .form__step.\--color-warning span {
+    border: solid 2px #FFC107; }
   .form__step.\--color-black span {
     border: solid 2px #323542; }
   .form__step.\--color-pure-black span {
@@ -4374,20 +4392,79 @@ button, .button {
 .header.\--centered, header.\--centered {
   text-align: center; }
 
-.segment, .item {
+.header.\--color-neutral p, header.\--color-neutral p {
+  color: #f1f1f1; }
+
+.header.\--color-white p, header.\--color-white p {
+  color: #ffffff; }
+
+.header.\--color-gray p, header.\--color-gray p {
+  color: #DEDEDE; }
+
+.header.\--color-primary p, header.\--color-primary p {
+  color: #0083ff; }
+
+.header.\--color-secondary p, header.\--color-secondary p {
+  color: #af0101; }
+
+.header.\--color-ternary p, header.\--color-ternary p {
+  color: #9eaf15; }
+
+.header.\--color-danger p, header.\--color-danger p {
+  color: #d90d12; }
+
+.header.\--color-success p, header.\--color-success p {
+  color: #0bbc62; }
+
+.header.\--color-warning p, header.\--color-warning p {
+  color: #FFC107; }
+
+.header.\--color-black p, header.\--color-black p {
+  color: #323542; }
+
+.header.\--color-pure-black p, header.\--color-pure-black p {
+  color: #000000; }
+
+.header.\--color-red p, header.\--color-red p {
+  color: #d90d12; }
+
+.header.\--color-yellow p, header.\--color-yellow p {
+  color: #eacc00; }
+
+.header.\--color-green p, header.\--color-green p {
+  color: #32ea00; }
+
+.header.\--color-purple p, header.\--color-purple p {
+  color: #6900a5; }
+
+.header.\--color-tomato p, header.\--color-tomato p {
+  color: #af0101; }
+
+.header.\--color-golden p, header.\--color-golden p {
+  color: #ffc326; }
+
+.header.\--color-transparent-white p, header.\--color-transparent-white p {
+  color: #ffffff; }
+
+.header.\--with-divider, header.\--with-divider {
+  padding-bottom: .3em;
+  border-bottom: 1px solid #dedede;
+  margin: 1em 0; }
+
+.segment, .message, .item {
   background-color: white;
   padding-top: 1em;
   padding-bottom: 1em;
   margin-bottom: .5em; }
-  .segment.\--fluid, .\--fluid.item {
+  .segment.\--fluid, .\--fluid.message, .\--fluid.item {
     border-radius: 0; }
-  .segment.\--transparent, .\--transparent.item {
+  .segment.\--transparent, .\--transparent.message, .\--transparent.item {
     box-shadow: none;
     background-color: transparent; }
-  .segment.\--hover, .\--hover.item {
+  .segment.\--hover, .\--hover.message, .\--hover.item {
     transition-property: box-shadow, border;
     border-width: 1px; }
-    .segment.\--hover:hover, .\--hover.item:hover {
+    .segment.\--hover:hover, .\--hover.message:hover, .\--hover.item:hover {
       box-shadow: 0 0 2em rgba(0, 0, 0, 0.15); }
 
 .divider {
@@ -4681,6 +4758,14 @@ button, .button {
         color: #0bbc62; }
     .nav.\--color-success .nav__content__item:hover {
       box-shadow: inset 0 -3px 0 0 #0bbc62; }
+  .nav.\--color-warning .nav__content__item {
+    color: #323542; }
+    .nav.\--color-warning .nav__content__item.\--active {
+      box-shadow: inset 0 -3px 0 0 #ffc107; }
+      .nav.\--color-warning .nav__content__item.\--active a {
+        color: #ffc107; }
+    .nav.\--color-warning .nav__content__item:hover {
+      box-shadow: inset 0 -3px 0 0 #ffc107; }
   .nav.\--color-black .nav__content__item {
     color: white; }
     .nav.\--color-black .nav__content__item.\--active {
@@ -4958,7 +5043,7 @@ button, .button {
       align-items: center;
       height: 100%;
       position: absolute;
-      z-index: 999;
+      z-index: 5;
       margin: auto;
       color: white;
       font-weight: bold;
@@ -5006,6 +5091,8 @@ button, .button {
       background: #d90d12; }
     .progress__bar.\--color-success .progress__bar__completion {
       background: #0bbc62; }
+    .progress__bar.\--color-warning .progress__bar__completion {
+      background: #ffc107; }
     .progress__bar.\--color-black .progress__bar__completion {
       background: #323542; }
     .progress__bar.\--color-pure-black .progress__bar__completion {
@@ -5070,11 +5157,20 @@ button, .button {
 #app-root .\+no-padding {
   padding: 0; }
 
+#app-root .\+padding-top {
+  padding-top: 4em; }
+
+#app-root .\+padding-top-small {
+  padding-top: 2em; }
+
 #app-root .\+no-margin {
   margin: 0; }
 
 #app-root .\+margin-top {
   margin-top: 4em; }
+
+#app-root .\+margin-top-small {
+  margin-top: 2em; }
 
 #app-root .\+margin-bottom {
   margin-bottom: 2em; }
@@ -5504,7 +5600,7 @@ button, .button {
   position: relative;
   display: none;
   color: #323542;
-  z-index: 1099999; }
+  z-index: 10; }
   .modal.\--open {
     display: block; }
   .modal__window {
@@ -5662,45 +5758,42 @@ button, .button {
     .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
       box-shadow: inset 0 -3px 0 0 white; }
 
-.comment__avatar {
-  margin-top: 1em; }
-
-.comment__content {
-  position: relative; }
-  .comment__content__author {
-    font-weight: bold;
-    left: 0;
-    text-transform: uppercase;
-    margin-bottom: .7em; }
-    .comment__content__author ul li:not(:nth-child(1)), .comment__content__author .badges li:not(:nth-child(1)) {
-      color: #dedede;
+.comment {
+  margin-bottom: 2em; }
+  .comment__avatar {
+    margin-top: 1em; }
+  .comment__content {
+    position: relative; }
+    .comment__content__author {
+      text-transform: uppercase;
+      margin-bottom: .7em; }
+      .comment__content__author ul li:not(:nth-child(1)), .comment__content__author .badges li:not(:nth-child(1)) {
+        font-size: x-small;
+        color: #b8b8b8;
+        text-transform: uppercase;
+        padding: 0 .5em; }
+        .comment__content__author ul li:not(:nth-child(1)) a, .comment__content__author .badges li:not(:nth-child(1)) a {
+          color: #dedede; }
+          .comment__content__author ul li:not(:nth-child(1)) a:hover, .comment__content__author .badges li:not(:nth-child(1)) a:hover {
+            color: #b8b8b8; }
+  .comment__item {
+    margin-left: 1em;
+    margin-right: 1em; }
+    .comment__item:not(:nth-child(1)) {
+      margin-top: 2em; }
+    .comment__item__author {
+      padding-left: 0; }
+      .comment__item__author img {
+        width: 100%;
+        border-radius: 100em; }
+    .comment__item__content p {
+      float: left;
+      color: #323542; }
+    .comment__item__meta {
       font-size: x-small;
       color: #b8b8b8;
-      text-transform: uppercase;
-      padding: 0 .5em; }
-      .comment__content__author ul li:not(:nth-child(1)) a, .comment__content__author .badges li:not(:nth-child(1)) a {
-        color: #dedede; }
-        .comment__content__author ul li:not(:nth-child(1)) a:hover, .comment__content__author .badges li:not(:nth-child(1)) a:hover {
-          color: #b8b8b8; }
-
-.comment__item {
-  margin-left: 1em;
-  margin-right: 1em; }
-  .comment__item:not(:nth-child(1)) {
-    margin-top: 2em; }
-  .comment__item__author {
-    padding-left: 0; }
-    .comment__item__author img {
-      width: 100%;
-      border-radius: 100em; }
-  .comment__item__content p {
-    float: left;
-    color: #323542; }
-  .comment__item__meta {
-    font-size: x-small;
-    color: #b8b8b8;
-    padding: 1em 0;
-    text-transform: uppercase; }
+      padding: 1em 0;
+      text-transform: uppercase; }
 
 .chart {
   position: relative;
@@ -6042,6 +6135,92 @@ button, .button {
       pointer-events: none;
       color: #dedede;
       background: #f8f8f8; }
+
+.message {
+  box-shadow: none; }
+  .message.\--color-neutral {
+    color: #a5a5a5;
+    border: 1px solid #f1f1f1;
+    background-color: white; }
+  .message.\--color-white {
+    color: #b3b3b3;
+    border: 1px solid #ffffff;
+    background-color: white; }
+  .message.\--color-gray {
+    color: #929292;
+    border: 1px solid #DEDEDE;
+    background-color: white; }
+  .message.\--color-primary {
+    color: #003466;
+    border: 1px solid #0083ff;
+    background-color: #e6f3ff; }
+  .message.\--color-secondary {
+    color: #170000;
+    border: 1px solid #af0101;
+    background-color: #fe9797; }
+  .message.\--color-ternary {
+    color: #232605;
+    border: 1px solid #9eaf15;
+    background-color: #eff6b4; }
+  .message.\--color-danger {
+    color: #490406;
+    border: 1px solid #d90d12;
+    background-color: #fccfd0; }
+  .message.\--color-success {
+    color: #032b17;
+    border: 1px solid #0bbc62;
+    background-color: #b2fad6; }
+  .message.\--color-warning {
+    color: #6d5200;
+    border: 1px solid #FFC107;
+    background-color: #fffaed; }
+  .message.\--color-black {
+    color: black;
+    border: 1px solid #323542;
+    background-color: #a1a6b8; }
+  .message.\--color-pure-black {
+    color: black;
+    border: 1px solid #000000;
+    background-color: #737373; }
+  .message.\--color-red {
+    color: #490406;
+    border: 1px solid #d90d12;
+    background-color: #fccfd0; }
+  .message.\--color-yellow {
+    color: #514700;
+    border: 1px solid #eacc00;
+    background-color: #fff9d1; }
+  .message.\--color-green {
+    color: #115100;
+    border: 1px solid #32ea00;
+    background-color: #daffd1; }
+  .message.\--color-purple {
+    color: #08000c;
+    border: 1px solid #6900a5;
+    background-color: #d58cff; }
+  .message.\--color-tomato {
+    color: #170000;
+    border: 1px solid #af0101;
+    background-color: #fe9797; }
+  .message.\--color-golden {
+    color: #8c6500;
+    border: 1px solid #ffc326;
+    background-color: white; }
+  .message.\--color-transparent-white {
+    color: #b3b3b3;
+    border: 1px solid #ffffff;
+    background-color: white; }
+  .message.\--fixed {
+    position: fixed;
+    z-index: 10;
+    width: 50%;
+    padding: 1em;
+    left: 0;
+    right: 0;
+    margin: 5em auto;
+    transition-property: opacity; }
+    .message.\--fixed:hover {
+      opacity: 0; }
 
 .item {
   display: -ms-flexbox;
@@ -6462,9 +6641,12 @@ button, .button {
 .project-page {
   padding-bottom: 5em;
   position: relative;
-  z-index: 2; }
+  z-index: 2;
+  /**
+  * Idea Partial
+  */ }
   .project-page__header {
-    height: 300px; }
+    height: 15em; }
   .project-page__background {
     background: url("/img/login/dreamsArkRef43.jpg") center bottom; }
     .project-page__background__overlay {
@@ -6600,19 +6782,23 @@ button, .button {
     width: 100%;
     height: 100%; }
   .project-page__top-animation {
-    width: auto;
-    margin: 0 auto;
-    height: 300px;
     position: absolute;
     left: 0;
     right: 0;
     z-index: 1; }
     .project-page__top-animation__content {
+      position: absolute;
       width: 100%;
-      height: 300px;
-      margin: 50px auto 0; }
+      margin: auto;
+      height: 100%;
+      top: -1.5em;
+      left: 0;
+      right: 0; }
       .project-page__top-animation__content img {
         object-fit: cover; }
+  .project-page__requirement-content {
+    margin-top: 1em;
+    padding-top: 3em; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }
@@ -6638,6 +6824,16 @@ button, .button {
     width: 80%; }
   .admin-page__top__content {
     padding-top: 5em; }
+
+/**
+* Plugins
+*/
+.medium-editor-element {
+  height: auto;
+  min-height: 100px; }
+  .medium-editor-element:hover {
+    background-color: inherit;
+    border-color: #b8b8b8; }
 
 /**
 * Initiate things up

@@ -4,9 +4,9 @@
   position: relative;
   z-index: 2;
 
-  @include base-header(){
-    height: 300px;
-  };
+  @include base-header() {
+    height: 15em;
+  }
 
   @include part(background) {
 
@@ -279,26 +279,37 @@
     height: 100%;
   }
 
+  /**
+  * Idea Partial
+  */
   @include part(top-animation) {
 
-    width: auto;
-    margin: 0 auto;
-    height: 300px;
     position: absolute;
     left: 0;
     right: 0;
     z-index: 1;
 
     @include part(content) {
+
+      position: absolute;
       width: 100%;
-      height: 300px;
-      margin: 50px auto 0;
-      img{
+      margin: auto;
+      height: 100%;
+      top: -1.5em;
+      left: 0;
+      right: 0;
+
+      img {
         object-fit: cover;
       }
+
     }
 
   }
 
+  @include part(requirement-content) {
+    margin-top: 1em;
+    padding-top: 3em;
+  }
 
 }

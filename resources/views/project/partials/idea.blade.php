@@ -27,11 +27,11 @@
 
             </div>
 
-            <div class="small-10 columns segment" style="padding-top: 5em">
-                {{ $project->stage->content }}
+            <div class="small-10 columns segment project-page__requirement-content">
+                {!! $project->stage->content !!}
             </div>
 
-            <div class="small-10 columns segment --primary">
+            <div class="small-10 columns segment --color-primary">
                 <div class="row align-center align-middle --large-padding">
                     <div class="small-4 columns project-page__right-divider">
                         <ul class="ul --with-bullets --tight +uppercase">
@@ -59,7 +59,8 @@
                                 <img class="project-page__achievements"
                                      src="{{ asset('img/svg/badge-simple-flat.svg') }}">
                                 <div class="+uppercase +bold">@lang('forms.reward')</div>
-                                <div class="+currency" data-curency-symbol="$">{{ $project->stage->reward->amount }}</div>
+                                <div class="+currency"
+                                     data-curency-symbol="$">{{ $project->stage->reward->amount }}</div>
                             </li>
                         </ul>
 
@@ -68,30 +69,31 @@
             </div>
 
             <ark-progress class="small-10 columns" :data="{{ $project->present()->getRemainingDays() }}" color="primary"
-                          size="large" label="10 days left" flat></ark-progress>
+                          size="large" label="@lang('project.time')" flat></ark-progress>
 
             <div class="small-3 columns segment --transparent">
 
                 @if($project->stage->vote->active)
-                    <a href="{{ route('project.vote.create', $project) }}"
-                       class="button --success">
+
+                    <ark-button color="success" class="--fluid --medium"
+                                href="{{ route('project.vote.create', $project) }}">
                         @lang('project.voting')
-                    </a>
+                    </ark-button>
 
                 @elseif(!$project->stage->submission)
-                    <button class="button --success"  data-modal-trigger="submission">
+                    <ark-button color="success" class="--fluid --medium" data-modal-trigger="submission">
                         @lang('project.submit')
-                    </button>
+                    </ark-button>
                 @else
-                    <div class="segment +center">
-                    @lang('project.waiting-for-availability')
+                    <div class="segment --color-danger +center">
+                        @lang('project.waiting-for-availability')
                     </div>
                 @endif
 
             </div>
 
             <div class="small-12 columns">
-                <header class="header --with-divider +uppercase">
+                <header class="header --with-divider +uppercase --centered">
                     @lang('project.user-comments')
                 </header>
             </div>
@@ -107,13 +109,13 @@
     </ark-tab>
 
     <ark-tab content="tab-submission" icon="paper-plane">
-        Submission
+        @lang('forms.submissions')
         @push('tab-item')
         <div id="tab-submission" class="row +margin-top">
 
             @forelse($submissions as $submission)
                 <section class="small-12 columns">
-                    {{ $submission->content }}
+                    {!! $submission->content !!}
                 </section>
             @empty
                 <section class="small-12 columns">
@@ -130,15 +132,16 @@
 
 @section('tab-content')
     @stack('tab-item')
-    <ark-modal trigger="submission" header="@lang('project.idea-submission-form')">
-        <ark-form action="{{ route('project.idea.submission.store', $project) }}" class="row">
-            <div class="columns form__content --rounded">
-                <div class="row">
 
-                    <h3 class="small-12 columns form__step">
-                        <span>1</span>
+    @if(!$project->stage->submission)
+        <ark-modal trigger="submission" header="@lang('project.idea-submission-form')">
+            <ark-form class="align-center align-middle" action="{{ route('project.idea.submission.store', $project) }}">
+
+                <div slot="body">
+
+                    <ark-form-step>
                         @lang('form.make-a-submission')
-                    </h3>
+                    </ark-form-step>
 
                     <div class="small-12 columns form__field">
                         <select name="visibility">
@@ -147,18 +150,15 @@
                         </select>
                     </div>
 
-                    <h3 class="small-12 columns form__step">
-                        <span>2</span>
-                        @lang('project.content')
-                    </h3>
-
-                    <ark-textarea name="content"
+                    <ark-textarea rich-text
+                                  name="content"
                                   :rows="5"
+                                  label="@lang('project.content')"
                                   placeholder="@lang('forms.content')"
                                   caption="@lang('project.form-description')">
                     </ark-textarea>
 
-                    <ark-button state="success" class="+center-on-mobile">
+                    <ark-button color="success">
                         @lang('forms.submit-idea')
                     </ark-button>
 
@@ -167,8 +167,16 @@
                     </div>
 
                 </div>
+            </ark-form>
+        </ark-modal>
+    @endif
 
-            </div>
-        </ark-form>
-    </ark-modal>
 @endsection
+
+@push('styles')
+<link rel="stylesheet" media="all" href="{{ asset('css/plugins/medium/medium.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/plugins/Medium.js') }}"></script>
+@endpush

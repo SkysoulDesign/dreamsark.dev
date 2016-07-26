@@ -14,6 +14,12 @@
         <slot></slot>
     </div>
 
+    <template v-if="slotExists('body')">
+        <div class="small-12 columns form__content">
+            <slot name="body"></slot>
+        </div>
+    </template>
+
     <div v-if="globalErrors" class="form__field__error">
         <ul v-for="error in globalErrors">
             <li>{{ error }}</li>

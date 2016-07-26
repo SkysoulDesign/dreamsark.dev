@@ -3,7 +3,7 @@
   position: relative;
   display: none;
   color: color(black);
-  z-index: 1099999;
+  z-index: 10;
 
   @include option(open) {
     display: block;

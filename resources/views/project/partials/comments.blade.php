@@ -31,48 +31,35 @@
 
 @empty
 
-    <div class="row align-center segment">
+    <div class="row align-center message --color-warning">
         @lang('project.no-comments')
     </div>
 
 @endforelse
 
-<div class="row align-right">
-    <div class="small-11 columns segment">
-        <form method="post"
-              action="{{ route('project.comment.store', [$project, $project->stage->getStageName()]) }}">
+<div class="small-12 divider --spaced --simple"></div>
 
-            {{ csrf_field() }}
+<ark-form class="align-center segment"
+          action="{{ route('project.comment.store', [$project, $project->stage->getStageName()]) }}">
 
-            <div class="small-12 medium-12 columns form__content --rounded">
+    <div slot="body">
 
-                <div class="row">
+        <ark-textarea name="content" :rows="5" label="@lang('forms.comments')"></ark-textarea>
 
-                    <h3 class="small-12 columns form__step">
-                        @lang('forms.comments')
-                    </h3>
+        <div class="small-12 divider --simple"></div>
 
-                    <div class="small-12 columns form__field">
-                        <textarea name="content" cols="30" rows="5"></textarea>
-                    </div>
+        <ark-button color="primary">
+            @lang('forms.leave-a-comment')
+        </ark-button>
 
-                    <div class="small-12 columns divider --simple"></div>
+        <div class="small-12 columns form__description +center-on-mobile">
+            @lang('forms.comments-note')
+        </div>
 
-                    <div class="small-12 columns form__field +center-on-mobile">
-                        <button class="button --success --fit">@lang('forms.leave-a-comment')</button>
-                    </div>
-
-                    <div class="small-12 columns form__description +center-on-mobile">
-                        @lang('forms.comments-note')
-                    </div>
-
-                </div>
-
-            </div>
-
-        </form>
     </div>
-</div>
+
+</ark-form>
+
 
 {{--<div class="comments">--}}
 

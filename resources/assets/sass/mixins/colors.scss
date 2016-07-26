@@ -72,6 +72,8 @@ $color: null !global;
       } @else if $text-color {
         $color: map_get(nth($color-list, 2), base) !global;
         @extend %color-#{nth($color-list, 1)};
+      } @else {
+        $color: map_get(nth($color-list, 2), base) !global;
       }
 
       @content;

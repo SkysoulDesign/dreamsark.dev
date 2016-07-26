@@ -77,7 +77,18 @@ export class Form implements ComponentInterface {
                         default: 'gray'
                     },
                     icon: String,
-                    class: String
+                    class: String,
+                    href: String,
+                },
+                methods: {
+                    click(event: MouseEvent){
+
+                        if (this.href) {
+                            event.preventDefault();
+                            window.location = this.href;
+                        }
+
+                    }
                 }
             }
         );
@@ -335,9 +346,7 @@ export class Form implements ComponentInterface {
         vue.component('ark-textarea', {
             template: require('../templates/form/textarea.html'),
             props: {
-                name: {
-                    type: String
-                },
+                name: String,
                 rows: {
                     type: Number,
                     default: 3
@@ -362,9 +371,10 @@ export class Form implements ComponentInterface {
                     type: Boolean,
                     default: false
                 },
-                label: {
-                    type: String
-                }
+                label: String,
+                class: String,
+                richText: Boolean,
+                richOptions: Object
             },
             methods: {
                 getParentForm(parent){
@@ -397,6 +407,13 @@ export class Form implements ComponentInterface {
                     return popByKey(parent.errors, this.name);
 
                 }
+            },
+            ready(){
+
+                if (this.richText) {
+                    app.plugin('medium', this.$els.textarea, this.richOptions);
+                }
+
             }
         });
 
