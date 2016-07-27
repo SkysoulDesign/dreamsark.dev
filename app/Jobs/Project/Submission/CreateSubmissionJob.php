@@ -9,11 +9,11 @@ use DreamsArk\Models\User\User;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 
 /**
- * Class SubmitJob
+ * Class CreateSubmissionJob
  *
  * @package DreamsArk\Jobs\Project\Submission
  */
-class SubmitJob extends Job
+class CreateSubmissionJob extends Job
 {
     /**
      * @var array
@@ -51,7 +51,6 @@ class SubmitJob extends Job
      */
     public function handle(ProjectRepositoryInterface $repository)
     {
-
         /**
          * Submit To Project Stage
          */
@@ -63,6 +62,5 @@ class SubmitJob extends Job
          * Announce Submission was Sent
          */
         event(new SubmissionWasSent($submission));
-
     }
 }

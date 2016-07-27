@@ -20,6 +20,10 @@
     background-color: transparent;
   }
 
+  @include option(large-padding) {
+    padding: 3em;
+  }
+
   @include option(hover) {
 
     @include transition(super-fast) {

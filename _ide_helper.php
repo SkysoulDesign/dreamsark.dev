@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.39 on 2016-07-16.
+ * Generated for Laravel 5.2.41 on 2016-07-26.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -3750,17 +3750,6 @@ namespace {
         }
         
         /**
-         * Get the deeply nested relations for a given top-level relation.
-         *
-         * @param string $relation
-         * @return array 
-         * @static 
-         */
-        public static function nestedRelations($relation){
-            return \Illuminate\Database\Eloquent\Builder::nestedRelations($relation);
-        }
-        
-        /**
          * Apply the callback's query changes if the given "value" is true.
          *
          * @param bool $value
@@ -3911,6 +3900,17 @@ namespace {
          */
         public static function withCount($relations){
             return \Illuminate\Database\Eloquent\Builder::withCount($relations);
+        }
+        
+        /**
+         * Add the given scopes to the current builder instance.
+         *
+         * @param array $scopes
+         * @return mixed 
+         * @static 
+         */
+        public static function scopes($scopes){
+            return \Illuminate\Database\Eloquent\Builder::scopes($scopes);
         }
         
         /**
@@ -8497,15 +8497,15 @@ namespace {
         }
         
         /**
-         * Set the encrypter instance.
+         * Set the encrypter implementation.
          *
-         * @param \Illuminate\Contracts\Encryption\Encrypter $crypt
+         * @param \Illuminate\Contracts\Encryption\Encrypter $encrypter
          * @return void 
          * @static 
          */
-        public static function setEncrypter($crypt){
+        public static function setEncrypter($encrypter){
             //Method inherited from \Illuminate\Queue\Queue            
-            \Illuminate\Queue\DatabaseQueue::setEncrypter($crypt);
+            \Illuminate\Queue\DatabaseQueue::setEncrypter($encrypter);
         }
         
     }
@@ -12266,11 +12266,12 @@ namespace {
         /**
          * Get the URL for the previous request.
          *
+         * @param mixed $fallback
          * @return string 
          * @static 
          */
-        public static function previous(){
-            return \Illuminate\Routing\UrlGenerator::previous();
+        public static function previous($fallback = false){
+            return \Illuminate\Routing\UrlGenerator::previous($fallback);
         }
         
         /**

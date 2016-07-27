@@ -12,7 +12,7 @@ use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
-use DreamsArk\Jobs\Project\Submission\SubmitJob;
+use DreamsArk\Jobs\Project\Submission\CreateSubmissionJob;
 use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Master\Profile;
@@ -227,7 +227,7 @@ class CreateDummyProject extends Seeder
         );
 
         collect(range(1, 6))->each(function () use ($project, $user, $fields) {
-            $this->dispatch(new SubmitJob($project, User::all()->random(), $fields));
+            $this->dispatch(new CreateSubmissionJob($project, User::all()->random(), $fields));
         });
 
         /**

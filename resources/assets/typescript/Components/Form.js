@@ -9,6 +9,12 @@ var Form = (function () {
     Form.prototype.register = function (vue, app) {
         var getParentForm = function (object, parent) {
             if (parent === void 0) { parent = null; }
+            /**
+             * If object parent is already vue instance then there will be no ArkForm
+             */
+            if (object.$parent.constructor.name === 'Vue') {
+                return false;
+            }
             if (parent && parent.constructor.name === 'ArkForm') {
                 return parent;
             }
@@ -175,22 +181,12 @@ var Form = (function () {
                     type: String
                 }
             },
-            methods: {
-                getParentForm: function (parent) {
-                    if (parent && parent.constructor.name === 'ArkForm') {
-                        return parent;
-                    }
-                    if (parent)
-                        return this.getParentForm(parent.$parent);
-                    return this.getParentForm(this.$parent);
-                }
-            },
             computed: {
                 value: function () {
-                    return this.getParentForm().old(this.name);
+                    return getParentForm(this).old(this.name);
                 },
                 errors: function () {
-                    var form = this.getParentForm();
+                    var form = getParentForm(this);
                     if (sessionStorage.getItem('form-action') === form.action) {
                         if (form.errors instanceof Array && form.errors.length) {
                             form.errors.shift().forEach(function (e) {
@@ -268,9 +264,48 @@ var Form = (function () {
         vue.component('ark-form-header', {
             template: require('../templates/form/modal-form/form-header.html'),
             props: {
+                class: String,
                 color: {
                     type: String,
                     default: 'success'
+                }
+            }
+        });
+        vue.component('ark-switcher', {
+            template: require('../templates/form/switcher.html'),
+            data: function () {
+                return {
+                    classes: ['--a', '--b'],
+                    active: null
+                };
+            },
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                },
+                name: {
+                    type: String,
+                    required: true
+                }
+            },
+            ready: function () {
+                if (!this.active)
+                    this.active = this.$children[0].$el;
+            }
+        });
+        vue.component('ark-switcher-option', {
+            template: require('../templates/form/switcher-option.html'),
+            props: {
+                value: String,
+                checked: Boolean,
+                name: String,
+                class: String,
+            },
+            ready: function () {
+                this.class = this.$parent.classes.shift();
+                if (this.checked) {
+                    this.$parent.active = this.$el;
                 }
             }
         });
@@ -319,30 +354,24 @@ var Form = (function () {
                 label: String,
                 class: String,
                 richText: Boolean,
-                richOptions: Object
-            },
-            methods: {
-                getParentForm: function (parent) {
-                    if (parent && parent.constructor.name === 'ArkForm') {
-                        return parent;
-                    }
-                    if (parent)
-                        return this.getParentForm(parent.$parent);
-                    return this.getParentForm(this.$parent);
-                }
+                richOptions: Object,
+                value: String
             },
             computed: {
-                value: function () {
-                    return this.getParentForm().old(this.name);
+                content: function () {
+                    /**
+                     * hacky
+                     */
+                    if (this._slotContents && this._slotContents.default) {
+                        return this._slotContents.default.textContent;
+                    }
+                    return getParentForm(this).old(this.name);
                 },
                 errors: function () {
-                    var parent = this.$parent;
-                    /**
-                     * In Case its an instance of ArkFields
-                     */
-                    if (this.$parent.constructor.name !== 'ArkForm')
-                        parent = parent.$parent;
-                    return Helpers_1.popByKey(parent.errors, this.name);
+                    var form = getParentForm(this);
+                    if (!form)
+                        return;
+                    return Helpers_1.popByKey(form.errors, this.name);
                 }
             },
             ready: function () {

@@ -2,13 +2,13 @@
 
     <label v-if="label" :for="name">{{ label }}</label>
 
-    <textarea v-el:textarea :class="[{ '--error': errors }, class]"
+    <textarea v-el:textarea :class="[{ '--error': errors }, 'text-area', class]"
               :type="type || 'text'"
               :name="name"
               :title="title"
               :placeholder="placeholder || name"
               :rows="rows"
-              :readOnly="readOnly">{{ value }}</textarea>
+              :readOnly="readOnly">{{ content }}</textarea>
 
     <div v-if="errors" class="form__field__error">
         <ul v-for="error in errors">

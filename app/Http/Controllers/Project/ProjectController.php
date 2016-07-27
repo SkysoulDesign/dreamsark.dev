@@ -6,16 +6,11 @@ use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Jobs\Project\CompleteProjectJob;
-use DreamsArk\Jobs\Project\CreateCommentJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
-use DreamsArk\Models\Project\Comment;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Draft;
-use DreamsArk\Models\Project\Stages\Fund;
-use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -83,27 +78,35 @@ class ProjectController extends Controller
     /**
      * Show a specific project.
      *
+     * @param \Illuminate\Http\Request $request
      * @param Project $project
      * @param ProjectRepositoryInterface $repository
      * @return \Illuminate\View\View
      */
-    public function show(Project $project, ProjectRepositoryInterface $repository)
+    public function show(Request $request, Project $project, ProjectRepositoryInterface $repository)
     {
 
-        $isIFrameCall = $this->isIFrameCall;
+        return view('project.show')
+            ->with('project', $project)
+            ->with('public_submissions',  $project->stage->submissions()->public()->get())
+            ->with('submissions',
+                 $project->stage->submissions()->ownedBy($request->user())->get()
+            );
 
-        if ($project->stage instanceof Review) {
-            return view('project.show', compact('project', 'isIFrameCall'));
-        }
+//        $isIFrameCall = $this->isIFrameCall;
 
-        if (!$project->stage instanceof Fund && !$project->stage instanceof Distribution) {
-            $submissions = $repository->submissions($project->id)->load('user');
+//        if ($project->stage instanceof Review) {
+//            return view('project.show', compact('project', 'isIFrameCall'));
+//        }
 
-            return view('project.show', compact('project', 'isIFrameCall'))->with('submissions', $submissions);
-        }
+//        if (!$project->stage instanceof Fund && !$project->stage instanceof Distribution) {
+//            $submissions = $repository->submissions($project->id)->load('user');
+//
+//            return view('project.show', compact('project', 'isIFrameCall'))->with('submissions', $submissions);
+//        }
 
-        return view('project.show', compact('isIFrameCall'))
-            ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
+//        return view('project.show', compact('isIFrameCall'))
+//            ->with('project', $project->load('expenditures.expenditurable', 'backers', 'enrollable.enrollers.enrollvotes'));
 
     }
 

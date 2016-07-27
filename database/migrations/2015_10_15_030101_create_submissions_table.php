@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
+/**
+ * Class CreateSubmissionsTable
+ */
 class CreateSubmissionsTable extends Migration
 {
     /**
@@ -14,7 +17,7 @@ class CreateSubmissionsTable extends Migration
     {
         Schema::create('submissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('content');
+            $table->longText('content');
             $table->boolean('visibility');
 
             $table->integer('submissible_id')->unsigned()->index();

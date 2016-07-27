@@ -12,7 +12,7 @@ use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
-use DreamsArk\Jobs\Project\Submission\SubmitJob;
+use DreamsArk\Jobs\Project\Submission\CreateSubmissionJob;
 use DreamsArk\Jobs\Project\VoteOnEnrollablePositionJob;
 use DreamsArk\Jobs\User\Profile\CreateProfileJob;
 use DreamsArk\Models\Project\Project;
@@ -242,7 +242,7 @@ class CreateProjectCompleteCycleTest extends TestCase
         );
 
         collect(range(1, 10))->each(function () use ($project, $user, $fields) {
-            dispatch(new SubmitJob($project, $user, $fields));
+            dispatch(new CreateSubmissionJob($project, $user, $fields));
         });
 
         /**

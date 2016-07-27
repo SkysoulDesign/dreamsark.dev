@@ -6,6 +6,11 @@ use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Submission
+ *
+ * @package DreamsArk\Models\Project
+ */
 class Submission extends Model
 {
     /**
@@ -42,6 +47,18 @@ class Submission extends Model
     public function scopePrivate($query)
     {
         return $query->where('visibility', false);
+    }
+
+    /**
+     * Scope a query to only show entries owned by an specific user.
+     *
+     * @param $query
+     * @param \DreamsArk\Models\User\User $user
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOwnedBy($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
     }
 
     /**

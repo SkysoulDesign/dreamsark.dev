@@ -11,6 +11,13 @@ export class Form implements ComponentInterface {
 
         let getParentForm = (object, parent = null) => {
 
+            /**
+             * If object parent is already vue instance then there will be no ArkForm
+             */
+            if (object.$parent.constructor.name === 'Vue') {
+                return false;
+            }
+
             if (parent && parent.constructor.name === 'ArkForm') {
                 return parent;
             }
@@ -207,27 +214,13 @@ export class Form implements ComponentInterface {
                     type: String
                 }
             },
-            methods: {
-                getParentForm(parent){
-
-                    if (parent && parent.constructor.name === 'ArkForm') {
-                        return parent;
-                    }
-
-                    if (parent)
-                        return this.getParentForm(parent.$parent)
-
-                    return this.getParentForm(this.$parent);
-
-                }
-            },
             computed: {
                 value: function () {
-                    return this.getParentForm().old(this.name);
+                    return getParentForm(this).old(this.name);
                 },
                 errors: function () {
 
-                    let form = this.getParentForm();
+                    let form = getParentForm(this);
 
                     if (sessionStorage.getItem('form-action') === form.action) {
 
@@ -320,10 +313,53 @@ export class Form implements ComponentInterface {
         vue.component('ark-form-header', {
             template: require('../templates/form/modal-form/form-header.html'),
             props: {
+                class: String,
                 color: {
                     type: String,
                     default: 'success'
                 }
+            }
+        });
+
+        vue.component('ark-switcher', {
+            template: require('../templates/form/switcher.html'),
+            data: function () {
+                return {
+                    classes: ['--a', '--b'],
+                    active: null
+                }
+            },
+            props: {
+                color: {
+                    type: String,
+                    default: 'success'
+                },
+                name: {
+                    type: String,
+                    required: true
+                }
+            },
+            ready(){
+                if (!this.active)
+                    this.active = this.$children[0].$el;
+            }
+        });
+
+        vue.component('ark-switcher-option', {
+            template: require('../templates/form/switcher-option.html'),
+            props: {
+                value: String,
+                checked: Boolean,
+                name: String,
+                class: String,
+            },
+            ready(){
+                this.class = this.$parent.classes.shift();
+
+                if (this.checked) {
+                    this.$parent.active = this.$el
+                }
+
             }
         });
 
@@ -374,37 +410,28 @@ export class Form implements ComponentInterface {
                 label: String,
                 class: String,
                 richText: Boolean,
-                richOptions: Object
-            },
-            methods: {
-                getParentForm(parent){
-
-                    if (parent && parent.constructor.name === 'ArkForm') {
-                        return parent;
-                    }
-
-                    if (parent)
-                        return this.getParentForm(parent.$parent)
-
-                    return this.getParentForm(this.$parent);
-
-                }
+                richOptions: Object,
+                value: String
             },
             computed: {
-                value: function () {
-                    return this.getParentForm().old(this.name);
+                content: function () {
+
+                    /**
+                     * hacky
+                     */
+                    if (this._slotContents && this._slotContents.default) {
+                        return this._slotContents.default.textContent;
+                    }
+
+                    return getParentForm(this).old(this.name);
                 },
                 errors: function () {
 
-                    let parent = this.$parent;
+                    let form = getParentForm(this);
 
-                    /**
-                     * In Case its an instance of ArkFields
-                     */
-                    if (this.$parent.constructor.name !== 'ArkForm')
-                        parent = parent.$parent;
+                    if (!form) return;
 
-                    return popByKey(parent.errors, this.name);
+                    return popByKey(form.errors, this.name);
 
                 }
             },

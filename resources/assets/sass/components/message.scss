@@ -7,6 +7,9 @@
     color: darken($color, 30);
     border: 1px solid $color;
     background-color: lighten($color, 45);
+    a {
+      color: darken($color, 30);
+    }
   }
 
   @include option(fixed) {

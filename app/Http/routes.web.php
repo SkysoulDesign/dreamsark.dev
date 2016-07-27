@@ -119,9 +119,9 @@ $app->group(['middleware' => 'web'], function () use ($app) {
              */
             $app->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($app) {
                 $app->post('store', SubmissionController::class . '@store')->name('store');
+                $app->patch('{submission}/update', SubmissionController::class . '@update')->name('update');
                 $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('vote.store');
             });
-
 
         });
 

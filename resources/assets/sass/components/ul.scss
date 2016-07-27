@@ -73,6 +73,10 @@
         margin-right: auto;
       }
 
+      @include option(end) {
+        margin-left: auto;
+      }
+
     }
 
   }

@@ -3780,10 +3780,13 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .segment, .message, .item, .pagination__item {
   border-radius: 0.2em; }
 
+.switcher, .switcher__toggle {
+  border-radius: 50em; }
+
 .form__step span, .item__image img {
   border-radius: 100%; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .pagination__item, .item {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .switcher, .pagination__item, .item {
   border: 1px solid #dedede; }
 
 input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
@@ -4125,6 +4128,14 @@ input, .text-area, textarea, .select, select, .input {
 
 .text-area, textarea {
   resize: vertical; }
+  .text-area.\--read-mode, textarea.\--read-mode {
+    border: none;
+    background-color: white;
+    padding: 3em; }
+    .text-area.\--read-mode h1, textarea.\--read-mode h1, .text-area.\--read-mode h2, textarea.\--read-mode h2, .text-area.\--read-mode p, textarea.\--read-mode p {
+      color: #323542; }
+    .text-area.\--read-mode:active, textarea.\--read-mode:active {
+      box-shadow: none; }
 
 button, .button {
   white-space: nowrap;
@@ -4240,6 +4251,114 @@ button, .button {
     border: none;
     background: none;
     width: auto; }
+
+.switcher {
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  height: 2em;
+  width: 10em; }
+  .switcher.\--fluid {
+    width: 100%; }
+  .switcher.\--color-neutral .switcher__toggle {
+    background: #f1f1f1; }
+  .switcher.\--color-neutral .switcher__label {
+    color: #f1f1f1; }
+  .switcher.\--color-white .switcher__toggle {
+    background: #ffffff; }
+  .switcher.\--color-white .switcher__label {
+    color: #ffffff; }
+  .switcher.\--color-gray .switcher__toggle {
+    background: #DEDEDE; }
+  .switcher.\--color-gray .switcher__label {
+    color: #DEDEDE; }
+  .switcher.\--color-primary .switcher__toggle {
+    background: #0083ff; }
+  .switcher.\--color-primary .switcher__label {
+    color: #0083ff; }
+  .switcher.\--color-secondary .switcher__toggle {
+    background: #af0101; }
+  .switcher.\--color-secondary .switcher__label {
+    color: #af0101; }
+  .switcher.\--color-ternary .switcher__toggle {
+    background: #9eaf15; }
+  .switcher.\--color-ternary .switcher__label {
+    color: #9eaf15; }
+  .switcher.\--color-danger .switcher__toggle {
+    background: #d90d12; }
+  .switcher.\--color-danger .switcher__label {
+    color: #d90d12; }
+  .switcher.\--color-success .switcher__toggle {
+    background: #0bbc62; }
+  .switcher.\--color-success .switcher__label {
+    color: #0bbc62; }
+  .switcher.\--color-warning .switcher__toggle {
+    background: #FFC107; }
+  .switcher.\--color-warning .switcher__label {
+    color: #FFC107; }
+  .switcher.\--color-black .switcher__toggle {
+    background: #323542; }
+  .switcher.\--color-black .switcher__label {
+    color: #323542; }
+  .switcher.\--color-pure-black .switcher__toggle {
+    background: #000000; }
+  .switcher.\--color-pure-black .switcher__label {
+    color: #000000; }
+  .switcher.\--color-red .switcher__toggle {
+    background: #d90d12; }
+  .switcher.\--color-red .switcher__label {
+    color: #d90d12; }
+  .switcher.\--color-yellow .switcher__toggle {
+    background: #eacc00; }
+  .switcher.\--color-yellow .switcher__label {
+    color: #eacc00; }
+  .switcher.\--color-green .switcher__toggle {
+    background: #32ea00; }
+  .switcher.\--color-green .switcher__label {
+    color: #32ea00; }
+  .switcher.\--color-purple .switcher__toggle {
+    background: #6900a5; }
+  .switcher.\--color-purple .switcher__label {
+    color: #6900a5; }
+  .switcher.\--color-tomato .switcher__toggle {
+    background: #af0101; }
+  .switcher.\--color-tomato .switcher__label {
+    color: #af0101; }
+  .switcher.\--color-golden .switcher__toggle {
+    background: #ffc326; }
+  .switcher.\--color-golden .switcher__label {
+    color: #ffc326; }
+  .switcher.\--color-transparent-white .switcher__toggle {
+    background: #ffffff; }
+  .switcher.\--color-transparent-white .switcher__label {
+    color: #ffffff; }
+  .switcher__input {
+    display: none; }
+    .switcher__input:checked + .switcher__label {
+      color: white; }
+    .switcher__input.\--b:checked ~ .switcher__toggle {
+      left: 48%; }
+  .switcher__label {
+    -ms-flex: 1;
+    flex: 1;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    line-height: 2em;
+    z-index: 10;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  .switcher__toggle {
+    position: absolute;
+    height: 80%;
+    width: 50%;
+    cursor: pointer;
+    left: 4px;
+    top: -8px;
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform; }
 
 .form.\--overlapped, form.\--overlapped {
   position: relative;
@@ -4461,6 +4580,8 @@ button, .button {
   .segment.\--transparent, .\--transparent.message, .\--transparent.item {
     box-shadow: none;
     background-color: transparent; }
+  .segment.\--large-padding, .\--large-padding.message, .\--large-padding.item {
+    padding: 3em; }
   .segment.\--hover, .\--hover.message, .\--hover.item {
     transition-property: box-shadow, border;
     border-width: 1px; }
@@ -5722,6 +5843,8 @@ button, .button {
         padding-right: 0; }
       .ul.\--inline li.\--start, ul.\--inline li.\--start, .\--inline.badges li.\--start, .label__wrapper__items ul li.\--start, .label__wrapper__items .badges li.\--start {
         margin-right: auto; }
+      .ul.\--inline li.\--end, ul.\--inline li.\--end, .\--inline.badges li.\--end, .label__wrapper__items ul li.\--end, .label__wrapper__items .badges li.\--end {
+        margin-left: auto; }
   .ul.\--bold, ul.\--bold, .\--bold.badges {
     font-size: smaller;
     font-weight: bolder;
@@ -6142,74 +6265,110 @@ button, .button {
     color: #a5a5a5;
     border: 1px solid #f1f1f1;
     background-color: white; }
+    .message.\--color-neutral a {
+      color: #a5a5a5; }
   .message.\--color-white {
     color: #b3b3b3;
     border: 1px solid #ffffff;
     background-color: white; }
+    .message.\--color-white a {
+      color: #b3b3b3; }
   .message.\--color-gray {
     color: #929292;
     border: 1px solid #DEDEDE;
     background-color: white; }
+    .message.\--color-gray a {
+      color: #929292; }
   .message.\--color-primary {
     color: #003466;
     border: 1px solid #0083ff;
     background-color: #e6f3ff; }
+    .message.\--color-primary a {
+      color: #003466; }
   .message.\--color-secondary {
     color: #170000;
     border: 1px solid #af0101;
     background-color: #fe9797; }
+    .message.\--color-secondary a {
+      color: #170000; }
   .message.\--color-ternary {
     color: #232605;
     border: 1px solid #9eaf15;
     background-color: #eff6b4; }
+    .message.\--color-ternary a {
+      color: #232605; }
   .message.\--color-danger {
     color: #490406;
     border: 1px solid #d90d12;
     background-color: #fccfd0; }
+    .message.\--color-danger a {
+      color: #490406; }
   .message.\--color-success {
     color: #032b17;
     border: 1px solid #0bbc62;
     background-color: #b2fad6; }
+    .message.\--color-success a {
+      color: #032b17; }
   .message.\--color-warning {
     color: #6d5200;
     border: 1px solid #FFC107;
     background-color: #fffaed; }
+    .message.\--color-warning a {
+      color: #6d5200; }
   .message.\--color-black {
     color: black;
     border: 1px solid #323542;
     background-color: #a1a6b8; }
+    .message.\--color-black a {
+      color: black; }
   .message.\--color-pure-black {
     color: black;
     border: 1px solid #000000;
     background-color: #737373; }
+    .message.\--color-pure-black a {
+      color: black; }
   .message.\--color-red {
     color: #490406;
     border: 1px solid #d90d12;
     background-color: #fccfd0; }
+    .message.\--color-red a {
+      color: #490406; }
   .message.\--color-yellow {
     color: #514700;
     border: 1px solid #eacc00;
     background-color: #fff9d1; }
+    .message.\--color-yellow a {
+      color: #514700; }
   .message.\--color-green {
     color: #115100;
     border: 1px solid #32ea00;
     background-color: #daffd1; }
+    .message.\--color-green a {
+      color: #115100; }
   .message.\--color-purple {
     color: #08000c;
     border: 1px solid #6900a5;
     background-color: #d58cff; }
+    .message.\--color-purple a {
+      color: #08000c; }
   .message.\--color-tomato {
     color: #170000;
     border: 1px solid #af0101;
     background-color: #fe9797; }
+    .message.\--color-tomato a {
+      color: #170000; }
   .message.\--color-golden {
     color: #8c6500;
     border: 1px solid #ffc326;
     background-color: white; }
+    .message.\--color-golden a {
+      color: #8c6500; }
   .message.\--color-transparent-white {
     color: #b3b3b3;
     border: 1px solid #ffffff;
     background-color: white; }
+    .message.\--color-transparent-white a {
+      color: #b3b3b3; }
   .message.\--fixed {
     position: fixed;
     z-index: 10;
@@ -6798,7 +6957,7 @@ button, .button {
         object-fit: cover; }
   .project-page__requirement-content {
     margin-top: 1em;
-    padding-top: 3em; }
+    padding: 5em 3em 3em; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }

@@ -1,6 +1,22 @@
 @include component(text-area) {
   @extend input;
   resize: vertical;
+
+  @include option(read-mode) {
+    border: none;
+    background-color: color(white);
+    padding: 3em;
+
+    h1, h2, p {
+      color: color(black);
+    }
+
+    &:active {
+      box-shadow: none;
+    }
+
+  }
+
 }
 
 textarea {

@@ -1,0 +1,6 @@
+<input type="radio" :name="$parent.name" :value="value" :id="value" class="switcher__input"
+       :class="class"
+       :checked="$parent.active === $el">
+<label :for="value" class="switcher__label">
+    <slot></slot>
+</label>
