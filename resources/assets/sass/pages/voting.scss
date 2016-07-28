@@ -1,0 +1,10 @@
+@include page(voting) {
+
+  @include part(illustration) {
+    position: absolute;
+    right: -10%;
+    top: -20%;
+    z-index: 10;
+  }
+
+}

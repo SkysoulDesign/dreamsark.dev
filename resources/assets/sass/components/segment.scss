@@ -20,6 +20,27 @@
     background-color: transparent;
   }
 
+  @include option(overlapped) {
+    @extend .\+overlapped;
+  }
+
+  @include option(attached) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+
+    & + .segment {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+  }
+
+  @include option(centered) {
+    @extend .\+center;
+    margin: auto;
+  }
+
   @include option(large-padding) {
     padding: 3em;
   }

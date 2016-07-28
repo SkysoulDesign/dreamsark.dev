@@ -88,14 +88,12 @@
 
     }
 
-    @each $color in $colors {
+    background: color(gray);
 
-      @include option(color-#{nth($color, 1)}) {
+    @include colors($text-color: false) {
 
-        & .progress__bar__completion {
-          background: color(nth($color, 1));
-        }
-
+      & .progress__bar__completion {
+        background: $color;
       }
 
     }

@@ -6,6 +6,12 @@
   text-align: right;
 }
 
+@include tweak(overlapped) {
+  position: relative;
+  margin-top: -3em;
+  z-index: 3;
+}
+
 @include tweak(currency) {
   &:before {
     content: attr(data-curency-symbol);

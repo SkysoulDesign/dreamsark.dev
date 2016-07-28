@@ -14,9 +14,7 @@ form {
   @extend .row;
 
   @include option(overlapped) {
-    position: relative;
-    margin-top: -3em;
-    z-index: 10;
+    @extend .\+overlapped
   }
 
   [slot="content"] {

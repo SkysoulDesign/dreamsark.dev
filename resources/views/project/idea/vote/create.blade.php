@@ -1,4 +1,4 @@
-@extends('layouts.master', ['class' => 'project-page'])
+@extends('layouts.master', ['class' => 'voting-page'])
 
 @section('content')
 
@@ -11,7 +11,7 @@
         <div class="row project-page__header">
             <div class="small-12 columns align-middle">
                 <header class="header --color-white --centered --large">
-                    {{ $project->name }}
+                    Voting Stage
                 </header>
             </div>
         </div>
@@ -20,83 +20,96 @@
 
     </div>
 
-    <div class="row align-center +margin-top">
+    <div class="row align-center">
 
-        <div class="small-10  columns segment">
-            hi
-        </div>
+        <div class="small-10 columns segment --attached --centered --overlapped --large-padding">
 
-    </div>
+            <img class="voting-page__illustration" src="{{ asset('img/temp/spider-man.png') }}" alt="">
+            <img class="project-page__achievements" src="{{ asset('img/svg/badge-simple-flat.svg') }}">
 
-    <div class="row">
-        <div class="small-12 column">
-            <div class="ui segment">
+            <div class="header --light-weight">
+                Winner will receive <span class="+color-success">{{ $project->stage->reward->amount }} coins</span>
+                <h2>Voting will go on until {{ $project->stage->vote->close_date }}</h2>
+            </div>
 
-                <div class="ui header">{{ $project->name }}</div>
-
-                <div class="ui segment">
-                    {{ $project->stage->content }}
-                </div>
-
-                <div class="ui  segment">
-                    @lang('vote.reward'): {{ $project->stage->reward->amount }}
-                </div>
-
-                <div class="ui center aligned segment">
-                    <div id="flipclock"
-                         data-time="{{ $project->stage->vote->close_date->diffInSeconds(\Carbon\Carbon::now()) }}"
-                         style="margin:2em;"></div>
-                </div>
-
-                <table class="ui celled table">
-                    <thead>
-                    <tr>
-                        <th>@lang('vote.user')</th>
-                        <th>@lang('vote.content')</th>
-                        <th class="collapsing">@lang('vote.votes')</th>
-                        <th class="collapsing">@lang('vote.action')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    @foreach($submissions as $submission)
-                        <tr>
-                            <td class="collapsing">
-                                <h4 class="ui image header">
-                                    <img src="{{ $submission->user->present()->avatar }}"
-                                         class="ui mini rounded image">
-
-                                    <div class="content">
-                                        {{ $submission->user->present()->name }}
-                                    </div>
-                                </h4>
-                            </td>
-                            <td>
-                                {{ $submission->content }}
-                            </td>
-                            <td>
-                                {{ $submission->votes->sum('pivot.amount') }}
-                            </td>
-                            <td class="collapsing">
-                                <form class="ui form" method="post"
-                                      action="{{ route('project.idea.submission.vote.store', [$project, $submission]) }}">
-                                    {{ csrf_field() }}
-                                    <div class="inline fields">
-                                        @include('partials.field', ['name' => 'amount', 'label' => trans('forms.amount')])
-                                        <button class="olive circular ui icon button">
-                                            <i class="icon thumbs up"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-
-
-                    </tbody>
-                </table>
-
+            <div class="row align-center">
+                <ark-progress class="small-10 columns"
+                              :data="10" color="warning"
+                              size="large" label="@lang('project.time')" flat></ark-progress>
             </div>
         </div>
+
+        <div class="small-10 columns segment --color-primary --centered --large-padding">
+            <div class="header --with-divider">Rewards</div>
+            <ul class="ul --inline --evenly +center">
+
+                @foreach(
+                 ['milky-way.svg', 'planet-earth.svg', 'moon.svg', 'mercury.svg', 'galaxy.svg',
+                  'stars.svg', 'venus.svg'] as $svg)
+                    <li>
+                        <img class="project-page__achievements"
+                             src="{{ asset("img/svg/$svg") }}">
+                        <div class="+uppercase +bold">{{ explode('.', $svg)[0] }}</div>
+                    </li>
+                @endforeach
+            </ul>
+
+        </div>
+
+        <div class="small-10 columns segment --centered --large-padding">
+            <h1>Original Request</h1>
+            {!! $project->stage->content !!}
+        </div>
+
+        <div class="small-12 columns +margin-top-small">
+            <header class="header --with-divider +uppercase --centered">
+                Submissions
+            </header>
+        </div>
+
+        <div class="small-10 ">
+
+            @foreach($project->stage->submissions as $submission)
+                <div class="item --hover">
+
+                    <div class="small-1 columns item__image">
+                        <img src="{{ $submission->user->present()->avatar }}" alt="">
+                    </div>
+
+                    <div class="small-1 columns">
+                        <a href="#hello">{{ $submission->user->present()->name }}</a>
+                    </div>
+
+                    <div class="columns">
+                        {!!  mb_strimwidth(strip_tags($submission->content), 0, 70, "...")   !!}
+                    </div>
+
+                    <div class="small-3 columns">
+                        <ark-statistics class="align-center">
+                            <statistic-item data="40" icon="eye">Number of Views</statistic-item>
+                            <statistic-item data="{{ $submission->votes->sum('pivot.amount') }}"
+                                            icon="heart">Number of Votes
+                            </statistic-item>
+                        </ark-statistics>
+                    </div>
+
+                </div>
+
+                <div class="small-12 columns segment --attached --centered --large-padding">
+                    {!! $submission->content !!}
+                </div>
+                <div class="small-12 columns segment --centered --large-padding">
+
+                    <ark-form action="{{ route('project.idea.submission.vote.store', [$project, $submission]) }}">
+                        {{ csrf_field() }}
+                        <ark-input type="number" name="amount" placeholder="@lang('forms.amount')"></ark-input>
+                        <ark-button color="primary">Vote on this idea</ark-button>
+                    </ark-form>
+                </div>
+
+            @endforeach
+        </div>
+
     </div>
+
 @endsection

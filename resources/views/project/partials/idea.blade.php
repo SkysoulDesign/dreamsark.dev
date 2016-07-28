@@ -56,7 +56,6 @@
                         </ul>
                     </div>
                     <div class="small-8 columns">
-
                         <ul class="ul --inline --evenly +center">
                             <li>
                                 <img class="project-page__achievements" src="{{ asset('img/svg/calendar-flat.svg') }}">
@@ -76,7 +75,6 @@
                                      data-curency-symbol="$">{{ $project->stage->reward->amount }}</div>
                             </li>
                         </ul>
-
                     </div>
                 </div>
             </div>

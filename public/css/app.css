@@ -3792,7 +3792,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select.\--error, .input.\--error {
   border: 1px solid #f8878a; }
 
-input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light {
+input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light, .header.\--light-weight, header.\--light-weight, .header.\--light-weight p, header.\--light-weight p, .header.\--light-weight span, header.\--light-weight span, .header.\--light-weight h1, header.\--light-weight h1, .header.\--light-weight h2, header.\--light-weight h2, .header.\--light-weight h3, header.\--light-weight h3, .header.\--light-weight h4, header.\--light-weight h4, .header.\--light-weight h5, header.\--light-weight h5, .header.\--light-weight h6, header.\--light-weight h6 {
   font-weight: 400; }
 
 .form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
@@ -4106,7 +4106,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
   color: #b8b8b8;
   background: #f8f8f8;
   transition-property: color, background-color, box-shadow, border-color; }
-  input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover, button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover, .medium-editor-element:hover {
+  input:focus, .text-area:focus, textarea:focus, .select:focus, select:focus, .input:focus, button:focus, .button:focus, .dropdown__trigger.\--mode-button:focus, .medium-editor-element:focus, input:hover, .text-area:hover, textarea:hover, .select:hover, select:hover, .input:hover, button:hover, .button:hover, .dropdown__trigger.\--mode-button:hover, .medium-editor-element:hover {
     color: black;
     background-color: #dedede;
     border-color: #b8b8b8; }
@@ -4360,11 +4360,6 @@ button, .button {
     transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform; }
 
-.form.\--overlapped, form.\--overlapped {
-  position: relative;
-  margin-top: -3em;
-  z-index: 10; }
-
 .form [slot="content"], form [slot="content"] {
   margin-top: 2em; }
 
@@ -4501,6 +4496,9 @@ button, .button {
   padding-left: 0;
   color: #b8b8b8; }
 
+.header h1, header h1, .header h2, header h2, .header h3, header h3, .header h4, header h4, .header h5, header h5, .header h6, header h6 {
+  margin: 0; }
+
 .header p, header p {
   line-height: normal;
   font-weight: normal; }
@@ -4567,8 +4565,8 @@ button, .button {
 
 .header.\--with-divider, header.\--with-divider {
   padding-bottom: .3em;
-  border-bottom: 1px solid #dedede;
-  margin: 1em 0; }
+  border-bottom: 1px solid rgba(222, 222, 222, 0.5);
+  margin-bottom: 1em; }
 
 .segment, .message, .item {
   background-color: white;
@@ -4580,6 +4578,15 @@ button, .button {
   .segment.\--transparent, .\--transparent.message, .\--transparent.item {
     box-shadow: none;
     background-color: transparent; }
+  .segment.\--attached, .\--attached.message, .\--attached.item {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0; }
+    .segment.\--attached + .segment, .\--attached.message + .segment, .\--attached.item + .segment, .segment.\--attached + .message, .\--attached.message + .message, .\--attached.item + .message, .segment.\--attached + .item, .\--attached.message + .item, .\--attached.item + .item {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0; }
+  .segment.\--centered, .\--centered.message, .\--centered.item {
+    margin: auto; }
   .segment.\--large-padding, .\--large-padding.message, .\--large-padding.item {
     padding: 3em; }
   .segment.\--hover, .\--hover.message, .\--hover.item {
@@ -5182,7 +5189,8 @@ button, .button {
     font-size: smaller;
     font-weight: bold;
     border-radius: 1em;
-    background: white; }
+    background: white;
+    background: #dedede; }
     .progress__bar__completion {
       border-radius: 1em;
       position: relative;
@@ -5199,9 +5207,9 @@ button, .button {
     .progress__bar.\--color-neutral .progress__bar__completion {
       background: #f1f1f1; }
     .progress__bar.\--color-white .progress__bar__completion {
-      background: white; }
+      background: #ffffff; }
     .progress__bar.\--color-gray .progress__bar__completion {
-      background: #dedede; }
+      background: #DEDEDE; }
     .progress__bar.\--color-primary .progress__bar__completion {
       background: #0083ff; }
     .progress__bar.\--color-secondary .progress__bar__completion {
@@ -5213,11 +5221,11 @@ button, .button {
     .progress__bar.\--color-success .progress__bar__completion {
       background: #0bbc62; }
     .progress__bar.\--color-warning .progress__bar__completion {
-      background: #ffc107; }
+      background: #FFC107; }
     .progress__bar.\--color-black .progress__bar__completion {
       background: #323542; }
     .progress__bar.\--color-pure-black .progress__bar__completion {
-      background: black; }
+      background: #000000; }
     .progress__bar.\--color-red .progress__bar__completion {
       background: #d90d12; }
     .progress__bar.\--color-yellow .progress__bar__completion {
@@ -5231,13 +5239,18 @@ button, .button {
     .progress__bar.\--color-golden .progress__bar__completion {
       background: #ffc326; }
     .progress__bar.\--color-transparent-white .progress__bar__completion {
-      background: white; }
+      background: #ffffff; }
 
 #app-root .\+white, #app-root .menu.\--inverted a, .menu.\--inverted #app-root a, #app-root .card__caption.\--white {
   color: white; }
 
 #app-root .\+align-right {
   text-align: right; }
+
+#app-root .\+overlapped, #app-root .form.\--overlapped, #app-root form.\--overlapped, #app-root .segment.\--overlapped, #app-root .\--overlapped.message, #app-root .\--overlapped.item {
+  position: relative;
+  margin-top: -3em;
+  z-index: 3; }
 
 #app-root .\+currency:before {
   content: attr(data-curency-symbol);
@@ -5261,7 +5274,7 @@ button, .button {
     #app-root .\+full-width-on-mobile {
       width: inherit; } }
 
-#app-root .\+center {
+#app-root .\+center, #app-root .segment.\--centered, #app-root .\--centered.message, #app-root .\--centered.item {
   text-align: center; }
 
 #app-root .\+justify {
@@ -6983,6 +6996,12 @@ button, .button {
     width: 80%; }
   .admin-page__top__content {
     padding-top: 5em; }
+
+.voting-page__illustration {
+  position: absolute;
+  right: -10%;
+  top: -20%;
+  z-index: 10; }
 
 /**
 * Plugins

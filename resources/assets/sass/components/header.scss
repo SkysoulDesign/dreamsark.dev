@@ -7,21 +7,33 @@
     @extend .\+uppercase;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+
   span {
     @include font-weight(normal);
   }
 
   p {
-
     @include font-size(smaller);
     line-height: normal;
     font-weight: normal;
-
   }
 
   @include option(light) {
     @include font-weight(normal);
     color: color(gray, dark);
+  }
+
+  @include option(light-weight) {
+
+    @include font-weight(normal);
+
+    p, span, h1, h2, h3, h4, h5, h6 {
+      @include font-weight(normal);
+    }
+
   }
 
   @include option(small) {
@@ -44,8 +56,8 @@
 
   @include option(with-divider) {
     padding-bottom: .3em;
-    border-bottom: 1px solid color(gray);
-    margin: 1em 0;
+    border-bottom: 1px solid color($color: gray, $alpha: 50);
+    margin-bottom: 1em;
   }
 
   //margin: 2em 0;
@@ -87,7 +99,6 @@
   //
   //}
   //
-
 
 }
 
