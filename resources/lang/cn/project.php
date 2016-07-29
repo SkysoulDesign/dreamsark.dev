@@ -42,7 +42,7 @@ return array (
   'unpublished' => '未发布',
   'published' => '已发布',
   'failed' => '未成功',
-  'name' => '姓名',
+  'name' => '項目名稱',
   'reward' => '奖励',
   'vote-date' => '投票日期',
   'publish' => '发布',

@@ -1,0 +1,6 @@
+<div @click="toggle">
+    <slot name="header"></slot>
+</div>
+<div v-if="show" transition="expand">
+    <slot></slot>
+</div>

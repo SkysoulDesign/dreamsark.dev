@@ -4,66 +4,221 @@
 
     @include('user.partials.header')
 
-    <div class="row">
+    <div class="row --fluid align-center +margin-top +color-black">
 
-        <div class="small-12 columns">
-            <header class="header --centered">
-                @lang('project.project-title')
-                <p>@lang('project.project-description')</p>
-            </header>
-        </div>
-
-        <div class="small-12 columns">
-
-            <ul class="ul --inline --bold --right">
-                <li class="li --active">
-                    <a href="#">@lang('project.published')</a>
+        <div class="small-10 columns segment --transparent">
+            <ul class="ul --inline --right">
+                <li class="li --start">
+                    <header class="header --small">
+                        @lang('project.my-projects')
+                    </header>
                 </li>
                 <li>
-                    <a href="#">@lang('project.failed')</a>
-                </li>
-                <li>
-                    <a class="button --primary --medium" href="{{ route('user.project.create') }}">
-                        @lang('forms.create-project')
-                    </a>
+                    <ark-nav basic>
+                        <ark-tab content="tab-running-project" active>
+                            Running Projects ({{ $projects->count() }})
+
+                            @push('tab-item')
+                            <div id="tab-running-project" class="small-10 columns">
+                                @forelse($projects as $project)
+                                    <div class="item --hover">
+
+                                        <div class="small-1 columns item__image">
+                                            <img src="{{ asset('img/svg/person-flat.svg') }}" alt="">
+                                        </div>
+
+                                        <div class="small-3 columns">
+
+                                            <ul class="--tight">
+                                                <li>
+                                                    <h4>
+                                                        <a href="#">{{ $project->name }}</a>
+                                                    </h4>
+                                                </li>
+                                                <li class="li --sub-tittle">
+                                                    Current stage: <b>{{ $project->stage->getStageName() }}</b>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div class="columns">
+                                            <ark-statistics>
+                                                <statistic-item data="{{ $project->stage->submissions->count() }}"
+                                                                icon="star">Submissions
+                                                </statistic-item>
+                                                <statistic-item data="{{ $project->stage->comments->count() }}"
+                                                                icon="comments">Comments
+                                                </statistic-item>
+                                            </ark-statistics>
+                                        </div>
+
+                                        @if($project->stage->submission)
+                                            <div class="small-2 columns +center">
+                                                <ark-button href="{{ route('project.next.create', $project) }}"
+                                                            color="success">
+                                                    @lang('project.start-next-stage')
+                                                </ark-button>
+                                            </div>
+                                        @else
+                                            <div class="small-1 columns +center">
+                                                <ark-dropdown icon="cog" mode="icon" pop="center">
+                                                    <ark-dropdown-option href="{{ route('project.show', $project) }}"
+                                                                         icon="eye">View
+                                                    </ark-dropdown-option>
+                                                    <ark-dropdown-option icon="pencil">Edit</ark-dropdown-option>
+                                                    <ark-dropdown-option icon="wrench">Manage</ark-dropdown-option>
+                                                </ark-dropdown>
+                                            </div>
+                                        @endif
+
+                                    </div>
+                                @empty
+                                    <div class="item columns message --color-warning ">
+                                        You still don't have any running project...
+                                        <b>
+                                            <a href="{{ route('user.project.create') }}">why don't you start one?</a>
+                                        </b>
+                                    </div>
+                                @endforelse
+                            </div>
+                            @endpush
+
+                        </ark-tab>
+                        <ark-tab content="tab-failed-project">
+                            Failed Projects ({{ $failed_projects->count() }})
+                            @push('tab-item')
+                            <div id="tab-failed-project" class="small-10 columns">
+
+                                @forelse($failed_projects as $project)
+                                    <div class="item --hover">
+
+                                        <div class="small-1 columns item__image">
+                                            <img src="{{ asset('img/svg/person-flat.svg') }}" alt="">
+                                        </div>
+
+                                        <div class="small-3 columns">
+
+                                            <ul class="--tight">
+                                                <li>
+                                                    <h4>
+                                                        <a href="#">{{ $project->name }}</a>
+                                                    </h4>
+                                                </li>
+                                                <li class="li --sub-tittle">
+                                                    Current stage: <b>{{ $project->stage->getStageName() }}</b>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div class="columns">
+                                            <ark-statistics>
+                                                {{--<statistic-item data="{{ $project->stage->submissions->count() }}"--}}
+                                                {{--icon="star">Submissions--}}
+                                                {{--</statistic-item>--}}
+                                                {{--<statistic-item data="{{ $project->stage->comments->count() }}"--}}
+                                                {{--icon="comments">Comments--}}
+                                                {{--</statistic-item>--}}
+                                            </ark-statistics>
+                                        </div>
+
+                                        @if($project->stage->submission)
+                                            <div class="small-2 columns +center">
+                                                <ark-button href="{{ route('project.next.create', $project) }}"
+                                                            color="success">
+                                                    @lang('project.start-next-stage')
+                                                </ark-button>
+                                            </div>
+                                        @else
+                                            <div class="small-1 columns +center">
+                                                <ark-dropdown icon="cog" mode="icon" pop="center">
+                                                    <ark-dropdown-option icon="eye">Review</ark-dropdown-option>
+                                                    <ark-dropdown-option icon="paper-plane">Publish
+                                                    </ark-dropdown-option>
+                                                </ark-dropdown>
+                                            </div>
+                                        @endif
+
+                                    </div>
+                                @empty
+                                    <div class="item columns message --color-success">
+                                        You don't have any failed project :)
+                                    </div>
+                                @endforelse
+                            </div>
+                            @endpush
+                        </ark-tab>
+                    </ark-nav>
                 </li>
             </ul>
-
         </div>
 
-        <div class="small-12 columns">
+        @stack('tab-item')
 
-            <table class="table --stack">
-                <thead>
-                <tr>
-                    <th>@lang('forms.stage')</th>
-                    <th>@lang('forms.name')</th>
-                    <th>@lang('forms.reward')</th>
-                    <th class="--compact +center">@lang('forms.action')</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($projects as $project)
-                    <tr>
-                        <td>{{ $project->type }}</td>
-                        <td>{{ $project->name }}</td>
-                        <td>{{ $project->reward }}</td>
-                        <td class="table__action">
-                            @if($project->stage->submission)
-                                <a href="{{ route('project.next.create', $project) }}" class="ui olive button">
-                                    @lang('project.start-next-stage')
-                                </a>
-                            @endif
-                            <a href="{{ route('project.show', $project) }}"
-                               class="button --small --primary">@lang('forms.view')</a>
-                            <button class="button --small --primary">@lang('forms.edit')</button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+
     </div>
+
+    {{--<div class="row">--}}
+
+    {{--<div class="small-12 columns">--}}
+    {{--<header class="header --centered">--}}
+    {{--@lang('project.project-title')--}}
+    {{--<p>@lang('project.project-description')</p>--}}
+    {{--</header>--}}
+    {{--</div>--}}
+
+    {{--<div class="small-12 columns">--}}
+
+    {{--<ul class="ul --inline --bold --right">--}}
+    {{--<li class="li --active">--}}
+    {{--<a href="#">@lang('project.published')</a>--}}
+    {{--</li>--}}
+    {{--<li>--}}
+    {{--<a href="#">@lang('project.failed')</a>--}}
+    {{--</li>--}}
+    {{--<li>--}}
+    {{--<a class="button --primary --medium" href="{{ route('user.project.create') }}">--}}
+    {{--@lang('forms.create-project')--}}
+    {{--</a>--}}
+    {{--</li>--}}
+    {{--</ul>--}}
+
+    {{--</div>--}}
+
+    {{--<div class="small-12 columns">--}}
+
+    {{--<table class="table --stack">--}}
+    {{--<thead>--}}
+    {{--<tr>--}}
+    {{--<th>@lang('forms.stage')</th>--}}
+    {{--<th>@lang('forms.name')</th>--}}
+    {{--<th>@lang('forms.reward')</th>--}}
+    {{--<th class="--compact +center">@lang('forms.action')</th>--}}
+    {{--</tr>--}}
+    {{--</thead>--}}
+    {{--<tbody>--}}
+    {{--@foreach($projects as $project)--}}
+    {{--<tr>--}}
+    {{--<td>{{ $project->type }}</td>--}}
+    {{--<td>{{ $project->name }}</td>--}}
+    {{--<td>{{ $project->reward }}</td>--}}
+    {{--<td class="table__action">--}}
+    {{--@if($project->stage->submission)--}}
+    {{--<a href="{{ route('project.next.create', $project) }}" class="ui olive button">--}}
+    {{--@lang('project.start-next-stage')--}}
+    {{--</a>--}}
+    {{--@endif--}}
+    {{--<a href="{{ route('project.show', $project) }}"--}}
+    {{--class="button --small --primary">@lang('forms.view')</a>--}}
+    {{--<button class="button --small --primary">@lang('forms.edit')</button>--}}
+    {{--</td>--}}
+    {{--</tr>--}}
+    {{--@endforeach--}}
+    {{--</tbody>--}}
+    {{--</table>--}}
+    {{--</div>--}}
+    {{--</div>--}}
 
 @endsection
 

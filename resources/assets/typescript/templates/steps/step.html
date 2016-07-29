@@ -1,8 +1,8 @@
 <div class="steps__step" :class="{ '--active' : active }">
 
     <div class="steps__step__container">
-        {{ step }}
         <i v-if="done" class="fa fa-check" aria-hidden="true"></i>
+        <span v-else>{{ step }}</span>
     </div>
 
     <div class="steps__step__description">{{ description }}</div>

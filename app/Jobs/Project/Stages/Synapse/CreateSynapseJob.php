@@ -6,8 +6,8 @@ use DreamsArk\Events\Project\Synapse\SynapseWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\Stages\Traits\UpdateProjectStageReward;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Reward;
 use DreamsArk\Models\Project\Stages\Synapse;
-use DreamsArk\Repositories\Project\Synapse\SynapseRepositoryInterface;
 
 /**
  * Class CreateSynapseJob
@@ -16,65 +16,75 @@ use DreamsArk\Repositories\Project\Synapse\SynapseRepositoryInterface;
  */
 class CreateSynapseJob extends Job
 {
+
     use UpdateProjectStageReward;
 
     /**
-     * @var int
+     * @var \DreamsArk\Models\Project\Project
      */
-    private $project_id;
+    private $project;
 
     /**
      * @var array
      */
     private $fields;
-    /**
-     * @var
-     */
-    private $currentReward;
-    /**
-     * @var
-     */
-    private $newReward;
-    /**
-     * @var
-     */
-    private $chargeUserAmount;
 
     /**
      * Create a new command instance.
      *
-     * @param int $project_id
+     * @param \DreamsArk\Models\Project\Project $project
      * @param array $fields
      */
-    public function __construct($project_id, array $fields)
+    public function __construct(Project $project, array $fields)
     {
-        $this->project_id = $project_id;
-        $this->fields = collect($fields);
+        $this->project = $project;
+        $this->fields = $fields;
     }
 
     /**
      * Execute the command.
      *
-     * @param SynapseRepositoryInterface $repository
-     * @param Project $project
-     * @return Synapse
+     * @param \DreamsArk\Models\Project\Stages\Synapse $synapse
+     * @param \DreamsArk\Models\Project\Reward $reward
+     * @return \DreamsArk\Models\Project\Stages\Synapse
      */
-    public function handle(SynapseRepositoryInterface $repository, Project $project)
+    public function handle(Synapse $synapse, Reward $reward) : Synapse
     {
-        $this->initializeRewardValues();
         /**
          * Create Synapse
          */
-        $synapse = $repository->create($this->project_id, $this->fields->except('reward')->toArray());
+        $synapse
+            ->setAttribute('project_id', $this->project->getAttributeValue('id'))
+            ->fill(
+                array_except(
+                    $this->fields, 'reward'
+                )
+            )->save();
+
+
+        $synapse->reward()->create([
+            'amount' => array_get($this->fields, 'reward'),
+            'project_id' => $this->project->getAttribute('id')
+        ]);
+
+//        $synapse->rewards()->create(
+//            array_merge(['project_id' => $project->id, 'rewardable_type' => get_class($model)], $dataArr)
+//        );
+
         /** Do Update / Insert record in ProjectReward with Amount for Stage */
-        $this->updateReward($project, $synapse);
-        
-        $this->calculateChargeAmount();
+//        $this->updateReward($this->project, $synapse);
+
+//        $this->calculateChargeAmount();
 
         /**
          * Announce SynapseWasCreated
          */
-        event(new SynapseWasCreated($synapse, $this->fields->get('voting_date'), $this->chargeUserAmount));
+        event(new SynapseWasCreated(
+            $synapse, array_get($this->fields, 'voting_date'), array_get($this->fields, 'reward')
+        ));
+
+        return $synapse;
 
     }
+
 }

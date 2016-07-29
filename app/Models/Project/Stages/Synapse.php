@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
+use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\RewardableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class Synapse extends Model
 {
 
-    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait;
+    use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait, CommentableTrait;
 
     /**
      * Defines the minimum of submission this model
@@ -44,6 +45,13 @@ class Synapse extends Model
      * @var array
      */
     protected $fillable = ['content', 'reward'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['active' => 'boolean'];
 
     /**
      * Define Which is the next Model

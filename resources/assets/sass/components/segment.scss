@@ -59,4 +59,35 @@
 
   }
 
+  @include part(header) {
+
+    @include option(image) {
+      position: relative;
+      padding-top: 1em;
+      padding-bottom: 1em;
+
+      img {
+        position: absolute;
+        top: 0;
+        width: 100px;
+        margin-top: -100px;
+      }
+
+    }
+
+    @include option(centered) {
+
+      @extend .\+center;
+
+      img {
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+    }
+
+  }
+
 }

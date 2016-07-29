@@ -18,6 +18,7 @@
         @if $background-color == white {
           $background-color: primary !global;
         } @else {
+
           $background-color: color($background-color, dark);
         }
 

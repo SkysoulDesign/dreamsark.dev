@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Idea extends Model
 {
+
     use ProjectableTrait, VotableTrait, SubmissibleTrait, RewardableTrait, CommentableTrait;
 
     /**
@@ -47,6 +48,13 @@ class Idea extends Model
      * @var array
      */
     protected $fillable = ['content', 'reward'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['active' => 'boolean'];
 
     /**
      * Presenter for this class

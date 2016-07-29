@@ -2,6 +2,7 @@
 namespace DreamsArk\Models\Traits;
 
 use DreamsArk\Models\Project\Reward;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * Class RewardableTrait
@@ -13,7 +14,7 @@ trait RewardableTrait
     /**
      * @return mixed
      */
-    public function reward()
+    public function reward() : MorphOne
     {
         return $this->morphOne(Reward::class, 'rewardable');
     }

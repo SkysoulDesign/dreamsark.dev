@@ -33,6 +33,13 @@ class Vote extends Model
     protected $dates = ['open_date', 'close_date'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['active' => 'boolean'];
+
+    /**
      * Scope a query to only show open entries.
      *
      * @param $query

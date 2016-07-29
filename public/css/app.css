@@ -3771,7 +3771,7 @@ button {
 /**
 * Mixins
 */
-.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a, .message.\--fixed {
+.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .expand-transition, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a, .message.\--fixed {
   transition-duration: 0.25s; }
 
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .segment.\--hover, .\--hover.message, .\--hover.item {
@@ -4100,6 +4100,19 @@ button.\--color-transparent-white a:hover, .\--color-transparent-white.button a:
       color: #0083ff; }
   .nav.\--color-neutral .nav__content__item:hover, .nav.\--color-white .nav__content__item:hover, .nav.\--color-gray .nav__content__item:hover, .nav.\--color-primary .nav__content__item:hover, .nav.\--color-secondary .nav__content__item:hover, .nav.\--color-ternary .nav__content__item:hover, .nav.\--color-danger .nav__content__item:hover, .nav.\--color-success .nav__content__item:hover, .nav.\--color-warning .nav__content__item:hover, .nav.\--color-black .nav__content__item:hover, .nav.\--color-pure-black .nav__content__item:hover, .nav.\--color-red .nav__content__item:hover, .nav.\--color-yellow .nav__content__item:hover, .nav.\--color-green .nav__content__item:hover, .nav.\--color-purple .nav__content__item:hover, .nav.\--color-tomato .nav__content__item:hover, .nav.\--color-golden .nav__content__item:hover, .nav.\--color-transparent-white .nav__content__item:hover, .nav__content__item:hover, .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
     box-shadow: inset 0 -3px 0 0 #0083ff; }
+
+.expand-transition {
+  transition-property: opacity, height, margin-top;
+  will-change: opacity, height, margin-top;
+  transition-timing-function: ease;
+  height: auto;
+  margin-top: 1em;
+  overflow: hidden; }
+
+.expand-enter, .expand-leave {
+  height: 0;
+  opacity: 0;
+  margin-top: 0; }
 
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element {
   padding: .8em 1.2em;
@@ -4594,6 +4607,20 @@ button, .button {
     border-width: 1px; }
     .segment.\--hover:hover, .\--hover.message:hover, .\--hover.item:hover {
       box-shadow: 0 0 2em rgba(0, 0, 0, 0.15); }
+  .segment__header.\--image {
+    position: relative;
+    padding-top: 1em;
+    padding-bottom: 1em; }
+    .segment__header.\--image img {
+      position: absolute;
+      top: 0;
+      width: 100px;
+      margin-top: -100px; }
+  .segment__header.\--centered img {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto; }
 
 .divider {
   display: -ms-flexbox;
@@ -5274,7 +5301,7 @@ button, .button {
     #app-root .\+full-width-on-mobile {
       width: inherit; } }
 
-#app-root .\+center, #app-root .segment.\--centered, #app-root .\--centered.message, #app-root .\--centered.item {
+#app-root .\+center, #app-root .segment.\--centered, #app-root .\--centered.message, #app-root .\--centered.item, #app-root .segment__header.\--centered {
   text-align: center; }
 
 #app-root .\+justify {
@@ -5841,7 +5868,7 @@ button, .button {
       margin-left: -1em;
       margin-bottom: 1em;
       font-weight: bold; }
-    .ul li.\--sub-tittle, ul li.\--sub-tittle, .badges li.\--sub-tittle {
+    .ul li.\--subtitle, ul li.\--subtitle, .badges li.\--subtitle {
       color: #b8b8b8; }
   .ul.\--inline, ul.\--inline, .\--inline.badges, .label__wrapper__items ul, .label__wrapper__items .badges {
     -ms-flex-direction: row;
@@ -6404,6 +6431,11 @@ button, .button {
     height: auto;
     width: 100%;
     object-fit: cover; }
+
+* {
+  cursor: pointer !important; }
+  *:hover {
+    cursor: pointer !important; }
 
 /**
 * Layout

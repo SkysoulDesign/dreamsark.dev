@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Project;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Reward
@@ -35,7 +36,7 @@ class Reward extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function project()
+    public function project() : belongsTo
     {
         return $this->belongsTo(Project::class);
     }

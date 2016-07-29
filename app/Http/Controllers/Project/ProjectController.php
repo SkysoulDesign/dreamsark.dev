@@ -86,12 +86,19 @@ class ProjectController extends Controller
     public function show(Request $request, Project $project, ProjectRepositoryInterface $repository)
     {
 
+        $user = $request->user();
+
         return view('project.show')
             ->with('project', $project)
-            ->with('public_submissions',  $project->stage->submissions()->public()->get())
+            ->with('public_submissions', $project->stage->submissions()->public()->get())
+
+            /**
+             * If user is logged in then send his submission along
+             */
             ->with('submissions',
-                 $project->stage->submissions()->ownedBy($request->user())->get()
+                $user ? $project->stage->submissions()->ownedBy($user)->get() : []
             );
+
 
 //        $isIFrameCall = $this->isIFrameCall;
 

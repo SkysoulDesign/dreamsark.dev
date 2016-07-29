@@ -1,26 +1,8 @@
 @extends('layouts.master', ['class'=>'project-page'])
 
 @section('content')
-
     @include('user.partials.header', ['header' => false])
-
-    <div class="project-page__header --default --animated">
-
-        <div class="project-page__header__overlay --animated"></div>
-
-        <div class="row align-middle +full-height +center">
-
-            <div class="small-12 columns">
-                <header class="header +color-white +text-shadow">
-                    @lang('project.project')
-                    <h1 class="+uppercase">@{{ model.name || '@lang('project.creation')' }}</h1>
-                </header>
-            </div>
-
-        </div>
-
-    </div>
-
+    @include('user.project.partials.header')
     <ark-form class="align-center --overlapped" action="{{ route('user.project.store') }}">
 
         <ark-form-header>
@@ -80,7 +62,7 @@
             </ark-fields>
 
             <ark-input name="voting_date"
-                       type="date"
+                       type="datetime-local"
                        placeholder="@lang('project.name')"
                        caption="@lang('project.creation-voting-description')"
                        label="@lang('forms.due-date')">
@@ -93,14 +75,13 @@
             </ark-button>
 
             <div class="small-12 columns form__description +center-on-mobile">
-                @lang('project.creation.notes')
+                @lang('project.creation-notes')
             </div>
 
         </div>
 
     </ark-form>
-
-@endsection
+@stop
 
 @push('styles')
 <link rel="stylesheet" media="all" href="{{ asset('css/plugins/medium/medium.css') }}">

@@ -9,7 +9,7 @@
         <div class="row align-middle +full-height">
             <div class="small-12 medium-3 columns +center-on-mobile">
                 <div class="profile-page__header__avatar">
-                    <img class="+shadow" src="{{asset('img/temp/avatar-huge.png')}}" alt="">
+                    <img class="+shadow" src="{{ auth()->user()->present()->avatar }}" alt="">
                 </div>
             </div>
             <div class="small-12 medium-9 columns align-self-bottom">

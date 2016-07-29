@@ -26,15 +26,15 @@ export class Project extends AbstractPage {
     }
 
     synapse() {
-        this.initChart();
+        // this.initChart();
     }
 
     script() {
-        this.initChart();
+        // this.initChart();
     }
 
     review() {
-        this.initChart();
+        // this.initChart();
     }
 
     distribution() {
@@ -42,7 +42,7 @@ export class Project extends AbstractPage {
     }
 
     fund() {
-        this.initChart();
+        // this.initChart();
         this.app.on('nav.tab-crew.click', this.initCrew.bind(this))
     }
 

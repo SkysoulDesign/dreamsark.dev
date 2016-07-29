@@ -16,6 +16,7 @@ use DreamsArk\Repositories\Project\Script\ScriptRepositoryInterface;
 class CreateScriptJob extends Job
 {
     use UpdateProjectStageReward;
+
     /**
      * @var int
      */

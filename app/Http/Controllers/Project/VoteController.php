@@ -51,11 +51,27 @@ class VoteController extends Controller
             ->with('submissions', $submissions);
     }
 
+    /**
+     * Display Create Vote for an Project Stage
+     *
+     * @param \DreamsArk\Models\Project\Project $project
+     * @return mixed
+     */
     public function create(Project $project)
     {
+
+        /**
+         * If Voting is already close then redirect back
+         */
+        if (!$project->stage->vote->active) {
+            return redirect()->route('project.show', $project)->withErrors(
+                'Voting is close'
+            );
+        }
+
         $submissions = $project->stage->submissions->load('user', 'votes');
 
-        return view("project.{$project->stage->getStageName()}.vote.create")
+        return view("project.vote.create")
             ->with('project', $project)
             ->with('submissions', $submissions);
     }

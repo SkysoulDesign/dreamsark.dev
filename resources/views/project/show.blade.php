@@ -42,7 +42,7 @@
 
     @yield('tab-content')
 
-@endsection
+@stop
 
 @section('pos-scripts')
 
@@ -51,3 +51,11 @@
     </script>
 
 @overwrite
+
+@push('styles')
+<link rel="stylesheet" media="all" href="{{ asset('css/plugins/medium/medium.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/plugins/Medium.js') }}"></script>
+@endpush

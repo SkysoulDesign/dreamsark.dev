@@ -4,6 +4,10 @@
         @lang('navbar.account')
     </ark-dropdown-option>
 
+    <ark-dropdown-option href="{{ route('user.project.index') }}">
+        @lang('navbar.my-projects')
+    </ark-dropdown-option>
+
     @can('see-admin-section', auth()->user())
         <ark-dropdown-option href="{{ route('admin.index') }}">
             @lang('navbar.admin')

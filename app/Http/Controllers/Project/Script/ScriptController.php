@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Project\Script;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Http\Requests\Project\SynapseScriptCreation;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Models\Project\Project;
@@ -39,7 +38,11 @@ class ScriptController extends Controller
      */
     public function store(Project $project, SynapseScriptCreation $request)
     {
-        $this->dispatch(new CreateScriptJob($project->id, $request->all()));
-        return redirect()->route('projects');
+
+        $this->dispatch(
+            new CreateScriptJob($project->id, $request->all())
+        );
+
+        return redirect()->route('project.show', $project);
     }
 }

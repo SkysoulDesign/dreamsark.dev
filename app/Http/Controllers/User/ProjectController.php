@@ -35,7 +35,8 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         return view('user.project.index')
-            ->with('projects', $request->user()->projects()->actives()->get());
+            ->with('projects', $request->user()->projects()->actives()->get())
+            ->with('failed_projects', $request->user()->projects()->failed()->get());
     }
 
     /**
@@ -58,11 +59,11 @@ class ProjectController extends Controller
     public function store(ProjectCreation $request)
     {
 
-        $this->dispatch(new CreateProjectJob(
+        $project = $this->dispatch(new CreateProjectJob(
             $request->user(), $request->except('reward'), $request->get('reward')
         ));
 
-        return redirect()->route('project.index');
+        return redirect()->route('project.show', $project);
     }
 
     /**
@@ -132,7 +133,7 @@ class ProjectController extends Controller
      * Draft Update
      *
      * @param ProjectCreation $request
-     * @param Draft           $draft
+     * @param Draft $draft
      *
      * @return \Illuminate\Http\Response
      */
@@ -147,7 +148,7 @@ class ProjectController extends Controller
      * Publish Project
      *
      * @param ProjectPublication $request
-     * @param Draft              $draft
+     * @param Draft $draft
      *
      * @return \Illuminate\Http\Response
      * @internal param int $id

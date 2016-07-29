@@ -99,6 +99,15 @@ class Project extends Model
      */
     public function scopeFailed($query)
     {
+
+        $query->whereHas('synapse', function ($query) {
+            $query->select('id')->where('active', '=', false);
+        })->orWhereHas('idea', function ($query) {
+            $query->select('id')->where('active', '=', false);
+        })->orWhereHas('script', function ($query) {
+            $query->select('id')->where('active', '=', false);
+        });
+
         return $this->addOrderBy($query->where('active', false));
     }
 

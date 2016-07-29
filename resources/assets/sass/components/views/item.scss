@@ -23,3 +23,10 @@
   }
 
 }
+
+* {
+  cursor: pointer !important;
+  &:hover {
+    cursor: pointer !important;
+  }
+}

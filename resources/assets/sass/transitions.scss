@@ -1,0 +1,19 @@
+@include component(expand-transition) {
+
+  @include transition() {
+    transition-property: opacity, height, margin-top;
+    will-change: opacity, height, margin-top;
+    transition-timing-function: ease;
+  }
+
+  height: auto;
+  margin-top: 1em;
+  overflow: hidden;
+
+}
+
+@include component(expand-enter, expand-leave) {
+  height: 0;
+  opacity: 0;
+  margin-top: 0;
+}

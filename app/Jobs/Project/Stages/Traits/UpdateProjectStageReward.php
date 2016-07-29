@@ -22,8 +22,6 @@ trait UpdateProjectStageReward
      */
     protected function updateReward(Project $project, Model $model)
     {
-        /** @var Project $project */
-        $project = $project->find($this->project_id);
         $reward = $this->newReward;
         $dataArr = ['amount' => $reward, 'rewardable_id' => $model->id];
         if (isset($project->getNextStageReward[0])) {

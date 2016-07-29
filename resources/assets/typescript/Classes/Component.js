@@ -38,6 +38,7 @@ var Component = (function (_super) {
             require('../Components/Animation'),
             require('../Components/Code'),
             require('../Components/Pagination'),
+            require('../Components/Accordion'),
         ];
         this.components.forEach(function (component) {
             for (var name_1 in component) {

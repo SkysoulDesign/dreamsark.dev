@@ -27,18 +27,18 @@ var Project = (function (_super) {
         // this.initChart();
     };
     Project.prototype.synapse = function () {
-        this.initChart();
+        // this.initChart();
     };
     Project.prototype.script = function () {
-        this.initChart();
+        // this.initChart();
     };
     Project.prototype.review = function () {
-        this.initChart();
+        // this.initChart();
     };
     Project.prototype.distribution = function () {
     };
     Project.prototype.fund = function () {
-        this.initChart();
+        // this.initChart();
         this.app.on('nav.tab-crew.click', this.initCrew.bind(this));
     };
     Project.prototype.initCrew = function (e, element) {

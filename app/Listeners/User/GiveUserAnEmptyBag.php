@@ -33,6 +33,6 @@ class GiveUserAnEmptyBag
         /**
          * Give the user an empty bag
          */
-        $this->repository->attach([], $event->user->id);
+        $this->repository->attach(['amount' => 10000], $event->user->id);
     }
 }
