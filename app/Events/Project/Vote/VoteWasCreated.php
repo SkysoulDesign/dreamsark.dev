@@ -5,10 +5,15 @@ namespace DreamsArk\Events\Project\Vote;
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Stages\Vote;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class VoteWasCreated
+ *
+ * @package DreamsArk\Events\Project\Vote
+ */
 class VoteWasCreated extends Event
 {
+
     use SerializesModels;
 
     /**

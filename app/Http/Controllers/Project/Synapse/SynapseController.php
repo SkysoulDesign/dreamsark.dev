@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Project\Synapse;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Project\SynapseScriptCreation;
+use DreamsArk\Jobs\Project\Stages\CreateProjectStageJob;
 use DreamsArk\Jobs\Project\Stages\Synapse\CreateSynapseJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
@@ -21,6 +22,7 @@ class SynapseController extends Controller
      *
      * @param Project $project
      * @param ProjectRepositoryInterface $repository
+     *
      * @return \Illuminate\View\View
      */
     public function show(Project $project, ProjectRepositoryInterface $repository)
@@ -34,17 +36,15 @@ class SynapseController extends Controller
      *
      * @param Project $project
      * @param SynapseScriptCreation $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Project $project, SynapseScriptCreation $request)
     {
-
         $this->dispatch(
-            new CreateSynapseJob($project, $request->all())
+            new CreateProjectStageJob($project, 'synapse', $request->except('reward'), $request->input('reward'))
         );
 
         return redirect()->route('project.show', $project);
-
     }
-
 }

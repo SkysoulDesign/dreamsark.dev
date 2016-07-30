@@ -5,12 +5,7 @@ namespace DreamsArk\Jobs\Project;
 use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Models\Project\Stages\Idea;
-use DreamsArk\Models\Project\Stages\Script;
-use DreamsArk\Models\Project\Stages\Synapse;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-
 
 /**
  * Class CreateProjectJob
@@ -20,11 +15,6 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 class CreateProjectJob extends Job
 {
     /**
-     * @var array
-     */
-    private $fields;
-
-    /**
      * @var User
      */
     private $user;
@@ -32,66 +22,57 @@ class CreateProjectJob extends Job
     /**
      * @var array
      */
-    private $rewards;
+    private $fields;
+
+    /**
+     * @var int
+     */
+    private $reward;
+
+    /**
+     * @var string
+     */
+    private $stage;
 
     /**
      * CreateProjectJob constructor.
      *
      * @param User $user
      * @param array $fields
-     * @param array $rewards
+     * @param int $reward
+     * @param string $stage
      */
-    public function __construct(User $user, array $fields, array $rewards = [])
+    public function __construct(User $user, array $fields, int $reward, string $stage = 'idea')
     {
         $this->user = $user;
-        $this->fields = collect($fields);
-        $this->rewards = $rewards;
+        $this->fields = $fields;
+        $this->reward = $reward;
+        $this->stage = $stage;
     }
 
     /**
      * Execute the command.
      *
-     * @param ProjectRepositoryInterface $repository
-     * @return Project
+     * @param \DreamsArk\Models\Project\Project $project
+     *
+     * @return \DreamsArk\Models\Project\Project
      */
-    public function handle(ProjectRepositoryInterface $repository)
+    public function handle(Project $project)
     {
-
-        $type = 'idea';
-
         /**
          * Create Project
          */
-        $project = $repository->create($this->user->id, $type, $this->fields->all());
-        $rewardClass = '';
-        foreach ($this->rewards as $type => $reward) {
-            if ((int)$reward > 0) {
-                switch ($type) {
-                    case 'idea':
-                        $rewardClass = Idea::class;
-                        break;
-                    case 'synapse':
-                        $rewardClass = Synapse::class;
-                        break;
-                    case 'script':
-                        $rewardClass = Script::class;
-                        break;
-                }
-                $insArr = ['project_id' => $project->id, 'rewardable_type' => $rewardClass, 'amount' => (int)$reward];
-                $project->rewards()->create($insArr);
-            }
-        }
-
-        $project->fresh();
+        $project->user()->associate($this->user);
+        $project->fill($this->fields)
+            ->save();
 
         /**
          * Announce ProjectWasCreated
          */
         event(new ProjectWasCreated(
-            $this->user, $project, $this->fields, $this->rewards
+            $project, $this->user, $this->fields, $this->reward, $this->stage
         ));
 
-        return $project->fresh();
-
+        return $project;
     }
 }

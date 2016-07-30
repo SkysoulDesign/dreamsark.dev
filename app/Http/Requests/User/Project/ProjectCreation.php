@@ -30,8 +30,7 @@ class ProjectCreation extends Request
     {
         return [
             'name' => 'required',
-            'reward.*' => 'sometimes|integer|max:' . auth()->user()->bag->coins,
-            'reward.idea' => 'required',
+            'reward' => 'required|integer|max:' . auth()->user()->bag->coins,
             'content' => 'required',
             'voting_date' => 'required|date|after:today',
         ];
@@ -45,9 +44,7 @@ class ProjectCreation extends Request
     public function attributes()
     {
         return [
-            'reward.idea' => 'Reward for Idea',
-            'reward.synapse' => 'Reward for Synapse',
-            'reward.script' => 'Reward for Script',
+            'reward' => 'Reward for Idea',
         ];
     }
 }

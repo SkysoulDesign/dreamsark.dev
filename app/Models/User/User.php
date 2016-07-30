@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
 /**
@@ -89,7 +90,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Bags Relationship
      */
-    public function bag()
+    public function bag() : hasOne
     {
         return $this->hasOne(Bag::class);
     }
@@ -112,6 +113,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * @param string $name
+     *
      * @return mixed|null
      */
     public function __get($name)
@@ -137,6 +139,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * @param $roleName
+     *
      * @return bool
      */
     public function is($roleName)

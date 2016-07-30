@@ -5,7 +5,7 @@ namespace DreamsArk\Jobs\Session;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\User\Role;
-use DreamsArk\Repositories\User\UserRepositoryInterface;
+use DreamsArk\Models\User\User;
 
 /**
  * Class CreateUserJob
@@ -27,7 +27,7 @@ class CreateUserJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $fields
+     * @param array           $fields
      * @param Role|int|string $role
      */
     public function __construct(array $fields, $role = 'user')
@@ -39,16 +39,16 @@ class CreateUserJob extends Job
     /**
      * Execute the job.
      *
-     * @param UserRepositoryInterface $repository
+     * @param \DreamsArk\Models\User\User $user
+     *
      * @return \DreamsArk\Models\User\User
      */
-    public function handle(UserRepositoryInterface $repository)
+    public function handle(User $user)
     {
-
         /**
          * Create User
          */
-        $user = $repository->create($this->fields);
+        $user = $user->create($this->fields);
 
         /**
          * Announce UserWasCreated
@@ -56,7 +56,5 @@ class CreateUserJob extends Job
         event(new UserWasCreated($user, $this->role));
 
         return $user;
-
     }
-
 }

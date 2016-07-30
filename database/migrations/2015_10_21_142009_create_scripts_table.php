@@ -20,7 +20,9 @@ class CreateScriptsTable extends Migration
             $table->integer('project_id')->unsigned()->index()->unique();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->longText('content');
+
             $table->boolean('active')->default(true);
+            $table->tinyInteger('fail_reason')->nullable();
 
             $table->integer('submission_id')->unsigned()->nullable()->index();
             $table->foreign('submission_id')->references('id')->on('submissions')->onDelete('cascade');

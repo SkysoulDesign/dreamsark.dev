@@ -7,6 +7,11 @@ use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Models\Project\Stages\Script;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class AutomaticallySendReviewToCommittee
+ *
+ * @package DreamsArk\Listeners\Project\Vote
+ */
 class AutomaticallySendReviewToCommittee
 {
 
@@ -16,13 +21,18 @@ class AutomaticallySendReviewToCommittee
      * Handle the event.
      *
      * @param  VotingHasFinished $event
+     *
      * @return void
      */
     public function handle(VotingHasFinished $event)
     {
 
-        if ($event->vote->votable instanceof Script) {
-            $this->dispatch(new CreateReviewJob($event->vote->votable->project));
+        $stage = $event->vote->getAttribute('votable');
+
+        if ($stage instanceof Script) {
+            $this->dispatch(
+                new CreateReviewJob($stage->project)
+            );
         }
     }
 }

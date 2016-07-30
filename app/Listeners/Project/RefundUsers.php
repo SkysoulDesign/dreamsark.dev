@@ -2,10 +2,15 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Bag\RefundUserCommand;
+use DreamsArk\Jobs\Project\RefundUserJob;
 use DreamsArk\Events\Event;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class RefundUsers
+ *
+ * @package DreamsArk\Listeners\Project
+ */
 class RefundUsers
 {
 
@@ -15,16 +20,15 @@ class RefundUsers
      * Handle the event.
      *
      * @param  Event $event
+     *
      * @return void
      */
     public function handle(Event $event)
     {
-
-        $event->users->pluck('votes', 'id')->map(function ($item) {
-            $item->map(function ($user) {
-                $this->dispatch(new RefundUserCommand($user->pivot->amount, $user));
+        $event->submissions->pluck('votes', 'id')->map(function ($users) {
+            $users->map(function ($user) {
+                $this->dispatch(new RefundUserJob($user->pivot->amount, $user));
             });
         });
-
     }
 }

@@ -8,6 +8,11 @@ use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Queue\QueueManager;
 
+/**
+ * Class QueueOpenVotingCommand
+ *
+ * @package DreamsArk\Listeners\Project\Vote
+ */
 class QueueOpenVotingCommand
 {
 
@@ -23,6 +28,7 @@ class QueueOpenVotingCommand
 
     /**
      * QueueOpenVoteCommand constructor.
+     *
      * @param DatabaseQueue|QueueManager $queue
      * @param Carbon $carbon
      */
@@ -36,20 +42,16 @@ class QueueOpenVotingCommand
      * Handle the event.
      *
      * @param  VoteWasCreated $event
+     *
      * @return void
      */
     public function handle(VoteWasCreated $event)
     {
 
-        /**
-         * Queue OpenVoteCommand
-         */
-        $command = new OpenVotingJob($event->vote);
-
         $delay = $event->vote->open_date->timestamp - $this->carbon->now()->timestamp;
 
-        $this->queue->laterOn('voting', $delay, $command);
-
+        $this->queue->laterOn('voting', $delay,
+            new OpenVotingJob($event->vote)
+        );
     }
-
 }

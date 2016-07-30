@@ -10,9 +10,15 @@ export class Progress implements ComponentInterface {
         Vue.component('ark-progress', {
             template: require('../templates/progress.html'),
             props: {
-                data: Number,
+                data: {
+                    type: Number,
+                    default: 100
+                },
                 label: String,
                 class: String,
+                live: {
+                    type: Array,
+                },
                 size: {
                     type: String,
                     default: 'normal' //normal, medium, large
@@ -39,7 +45,32 @@ export class Progress implements ComponentInterface {
             },
             computed: {
                 percentage: function () {
-                    return Math.round((this.data / this.max) * 100);
+                    let percentage = Math.round((this.data / this.max) * 100);
+                    return percentage > 100 ? 100 : percentage;
+                }
+            },
+            ready(){
+
+                if (this.live) {
+
+                    let start = Date.parse(this.live[0]),
+                        end = Date.parse(this.live[1]),
+                        interval = setInterval(() => {
+
+                            let now = (new Date).getTime(),
+                                q = Math.abs(now - start),
+                                d = Math.abs(end - start),
+                                percentage = (q / d) * 100;
+
+                            if (percentage > 100) {
+                                this.data = 100;
+                                return clearInterval(interval)
+                            }
+
+                            this.data = Math.round(percentage);
+
+                        }, 1000);
+
                 }
             }
         });

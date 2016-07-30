@@ -4,6 +4,8 @@
   @extend .align-middle;
   @extend .segment;
 
+  cursor: pointer;
+
   @include border();
 
   display: flex;
@@ -22,11 +24,4 @@
 
   }
 
-}
-
-* {
-  cursor: pointer !important;
-  &:hover {
-    cursor: pointer !important;
-  }
 }

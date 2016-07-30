@@ -6,16 +6,16 @@ use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 
+/**
+ * Class ProjectWasCreated
+ *
+ * @package DreamsArk\Events\Project
+ */
 class ProjectWasCreated extends Event
 {
-    use SerializesModels;
 
-    /**
-     * @var User
-     */
-    public $user;
+    use SerializesModels;
 
     /**
      * @var Project
@@ -23,29 +23,41 @@ class ProjectWasCreated extends Event
     public $project;
 
     /**
+     * @var User
+     */
+    public $user;
+
+    /**
      * @var array
      */
     public $fields;
 
     /**
-     * @var array
+     * @var int
      */
-    public $rewards;
+    public $amount;
+
+    /**
+     * @var string
+     */
+    public $stage;
 
     /**
      * Create a new event instance.
      *
-     * @param User $user
      * @param Project $project
-     * @param Collection $fields
-     * @param array $rewards
+     * @param User $user
+     * @param array $fields
+     * @param int $amount
+     * @param string $stage
      */
-    public function __construct(User $user, Project $project, Collection $fields, array $rewards)
+    public function __construct(Project $project, User $user, array $fields, int $amount, string $stage)
     {
-        $this->user = $user;
         $this->project = $project;
+        $this->user = $user;
         $this->fields = $fields;
-        $this->rewards = $rewards;
+        $this->amount = $amount;
+        $this->stage = $stage;
     }
 
     /**

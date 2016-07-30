@@ -11,6 +11,7 @@ use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
+use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,6 @@ use Illuminate\Http\Request;
  */
 class ProjectController extends Controller
 {
-    private $isIFrameCall = false;
 
     /**
      * ProjectController constructor.
@@ -35,6 +35,7 @@ class ProjectController extends Controller
      * Show Projects Page
      *
      * @param ProjectRepositoryInterface $repository
+     *
      * @return \Illuminate\View\View
      */
     public function index(ProjectRepositoryInterface $repository)
@@ -57,6 +58,7 @@ class ProjectController extends Controller
      *
      * @param Project $project
      * @param ProjectCreation|Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function projectStore(Project $project, Request $request)
@@ -78,26 +80,31 @@ class ProjectController extends Controller
     /**
      * Show a specific project.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Project $project
-     * @param ProjectRepositoryInterface $repository
+     *
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, Project $project, ProjectRepositoryInterface $repository)
+    public function show(Request $request, Project $project)
     {
 
+
         $user = $request->user();
+        $stage = $project->getAttribute('stage');
+
+        if ($stage instanceof Review) {
+            return view('project.show')->with('project', $project);
+        }
 
         return view('project.show')
             ->with('project', $project)
-            ->with('public_submissions', $project->stage->submissions()->public()->get())
-
+            ->with('public_submissions', $stage->submissions()->public()->get())
             /**
              * If user is logged in then send his submission along
              */
             ->with('submissions',
-                $user ? $project->stage->submissions()->ownedBy($user)->get() : []
-            );
+                $user ? $stage->submissions()->ownedBy($user)->get() : []
+            );;
 
 
 //        $isIFrameCall = $this->isIFrameCall;
@@ -121,6 +128,7 @@ class ProjectController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Project $project
+     *
      * @return \Illuminate\Http\Response
      */
     public function next(Project $project)
@@ -132,6 +140,7 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Draft $draft
+     *
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
@@ -145,6 +154,7 @@ class ProjectController extends Controller
      *
      * @param ProjectCreation $request
      * @param Draft $draft
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(ProjectCreation $request, Draft $draft)
@@ -159,6 +169,7 @@ class ProjectController extends Controller
      *
      * @param ProjectPublication $request
      * @param Draft $draft
+     *
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
@@ -173,6 +184,7 @@ class ProjectController extends Controller
 
     /**
      * @param Project $project
+     *
      * @return mixed
      */
     public function updateProjectAndComplete(Project $project)

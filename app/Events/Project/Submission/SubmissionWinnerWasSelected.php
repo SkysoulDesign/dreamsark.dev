@@ -4,10 +4,15 @@ namespace DreamsArk\Events\Project\Submission;
 
 use DreamsArk\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class SubmissionWinnerWasSelected
+ *
+ * @package DreamsArk\Events\Project\Submission
+ */
 class SubmissionWinnerWasSelected extends Event
 {
+
     use SerializesModels;
 
     /**

@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class IdeaWasCreated extends Event
 {
+
     use SerializesModels;
 
     /**
@@ -24,23 +25,24 @@ class IdeaWasCreated extends Event
      * @var string
      */
     public $voting_date;
+
     /**
-     * @var
+     * @var int
      */
-    public $chargeAmount;
+    public $amount;
 
     /**
      * Create a new event instance.
      *
      * @param Idea $idea
      * @param string $voting_date
-     * @param $chargeAmount
+     * @param $amount
      */
-    public function __construct(Idea $idea, $voting_date, $chargeAmount)
+    public function __construct(Idea $idea, string $voting_date, int $amount)
     {
         $this->model = $idea;
         $this->voting_date = $voting_date;
-        $this->chargeAmount = $chargeAmount;
+        $this->amount = $amount;
     }
 
     /**

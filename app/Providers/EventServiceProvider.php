@@ -15,10 +15,12 @@ use DreamsArk\Events\Project\CastWasAdded;
 use DreamsArk\Events\Project\CrewWasAdded;
 use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Events\Project\IdeaWasCreated;
+use DreamsArk\Events\Project\ProjectStageWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCompleted;
 use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
+use DreamsArk\Events\Project\RewardWasCreated;
 use DreamsArk\Events\Project\Script\ScriptWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Events\Project\Stages\DistributionWasCreated;
@@ -40,6 +42,7 @@ use DreamsArk\Listeners\Admin\Question\SyncOptions;
 use DreamsArk\Listeners\Project\ChargeRewardFromUser;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
+use DreamsArk\Listeners\Project\CreateReward;
 use DreamsArk\Listeners\Project\CreateVote;
 use DreamsArk\Listeners\Project\DeductUserCoins;
 use DreamsArk\Listeners\Project\RefundCreator;
@@ -61,7 +64,7 @@ use DreamsArk\Listeners\User\Payment\DeductCoinsFromUser;
 use DreamsArk\Listeners\User\Payment\UpdateOrCreateTransactionMessage;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use SkysoulDesign\I18n\Events\TranslationsWasCreated;
+use SkysoulDesign\Translation\Events\TranslationsWasCreated;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
 /**
@@ -82,30 +85,24 @@ class EventServiceProvider extends ServiceProvider
          * Project
          */
         ProjectWasCreated::class => [
-            ChargeRewardFromUser::class,
             CreateProjectStage::class
+        ],
+
+        ProjectStageWasCreated::class => [
+            CreateReward::class,
+            CreateVote::class,
+        ],
+
+        ReviewWasCreated::class => [
+            UpdateProjectStage::class
         ],
 
         StageHasFailed::class => [
             RefundCreator::class
         ],
 
-        IdeaWasCreated::class => [
-            UpdateRewardForStage::class,
-            CreateVote::class,
-            UpdateProjectStage::class
-        ],
-
-        SynapseWasCreated::class => [
-            UpdateRewardForStage::class,
-            CreateVote::class,
-            UpdateProjectStage::class
-        ],
-
-        ScriptWasCreated::class => [
-            UpdateRewardForStage::class,
-            CreateVote::class,
-            UpdateProjectStage::class
+        RewardWasCreated::class => [
+            ChargeUser::class,
         ],
 
         RewardStageWasUpdated::class => [
@@ -155,9 +152,7 @@ class EventServiceProvider extends ServiceProvider
             UpdateProjectStage::class,
         ],
 
-        ReviewWasCreated::class => [
-            UpdateProjectStage::class
-        ],
+
 
         SubmissionReceivedAVote::class => [
             DeductUserCoins::class
@@ -234,6 +229,7 @@ class EventServiceProvider extends ServiceProvider
      * Register any other events for your application.
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher $events
+     *
      * @return void
      */
     public function boot(DispatcherContract $events)

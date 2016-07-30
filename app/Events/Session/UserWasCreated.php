@@ -14,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class UserWasCreated extends Event
 {
+
     use SerializesModels;
 
     /**

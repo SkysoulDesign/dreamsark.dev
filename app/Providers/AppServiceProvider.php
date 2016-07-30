@@ -7,11 +7,11 @@ use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Expenditures\Expense;
 use DreamsArk\Models\Project\Reward;
 use DreamsArk\Models\Project\Stages\Idea;
+use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Script;
 use DreamsArk\Models\Project\Stages\Synapse;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Project\Submission;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -39,17 +39,18 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Morph Class Map
          */
-//        Relation::morphMap([
-//            'ideas' => Idea::class,
-//            'synapses' => Synapse::class,
-//            'scripts' => Script::class,
-//            'rewards' => Reward::class,
-//            'expenditures' => Expenditure::class,
-//            'crews' => Crew::class,
-//            'expenses' => Expense::class,
-//            'submissions' => Submission::class,
-//            'votes' => Vote::class,
-//        ]);
+        Relation::morphMap([
+            'ideas' => Idea::class,
+            'synapses' => Synapse::class,
+            'scripts' => Script::class,
+            'rewards' => Reward::class,
+            'reviews' => Review::class,
+            'expenditures' => Expenditure::class,
+            'crews' => Crew::class,
+            'expenses' => Expense::class,
+            'submissions' => Submission::class,
+            'votes' => Vote::class,
+        ]);
 
     }
 

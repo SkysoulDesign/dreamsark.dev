@@ -3777,6 +3777,9 @@ button {
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .segment.\--hover, .\--hover.message, .\--hover.item {
   transition-duration: 0.15s; }
 
+.progress__bar__completion {
+  transition-duration: 1s; }
+
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .segment, .message, .item, .pagination__item {
   border-radius: 0.2em; }
 
@@ -5224,7 +5227,8 @@ button, .button {
       height: 1.2em;
       width: 100%;
       max-width: 100%;
-      background: #0bbc62; }
+      background: #0bbc62;
+      transition-property: width; }
       .progress__bar__completion.\--size-large {
         height: 4em; }
     .progress__bar.\--flat {
@@ -6422,6 +6426,7 @@ button, .button {
       opacity: 0; }
 
 .item {
+  cursor: pointer;
   display: -ms-flexbox;
   display: flex;
   box-shadow: none;
@@ -6431,11 +6436,6 @@ button, .button {
     height: auto;
     width: 100%;
     object-fit: cover; }
-
-* {
-  cursor: pointer !important; }
-  *:hover {
-    cursor: pointer !important; }
 
 /**
 * Layout

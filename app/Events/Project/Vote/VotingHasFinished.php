@@ -6,22 +6,27 @@ use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Submission;
 use DreamsArk\Models\Project\Stages\Vote;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Support\Collection;
 
+/**
+ * Class VotingHasFinished
+ *
+ * @package DreamsArk\Events\Project\Vote
+ */
 class VotingHasFinished extends Event
 {
+
     use SerializesModels;
 
     /**
-     * @var \DreamsArk\Models\Project\Stages\Vote
+     * @var Vote
      */
     public $vote;
 
     /**
      * @var Collection
      */
-    public $users;
+    public $submissions;
 
     /**
      * @var Submission
@@ -38,7 +43,7 @@ class VotingHasFinished extends Event
     public function __construct(Vote $vote, Submission $submission, Collection $losers)
     {
         $this->vote = $vote;
-        $this->users = $losers;
+        $this->submissions = $losers;
         $this->submission = $submission;
     }
 

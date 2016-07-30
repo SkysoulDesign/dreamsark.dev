@@ -8,9 +8,13 @@ use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Queue\QueueManager;
 
+/**
+ * Class QueueCloseVotingCommand
+ *
+ * @package DreamsArk\Listeners\Project\Vote
+ */
 class QueueCloseVotingCommand
 {
-
     /**
      * @var QueueManager
      */
@@ -23,6 +27,7 @@ class QueueCloseVotingCommand
 
     /**
      * QueueOpenVoteCommand constructor.
+     *
      * @param DatabaseQueue|QueueManager $queue
      * @param Carbon $carbon
      */
@@ -36,19 +41,19 @@ class QueueCloseVotingCommand
      * Handle the event.
      *
      * @param  VoteWasOpened $event
+     *
      * @return void
      */
     public function handle(VoteWasOpened $event)
     {
-
         /**
          * Queue OpenVoteCommand
          */
-        $command = new CloseVotingJob($event->vote->id);
-
         $delay = $event->vote->close_date->timestamp - $this->carbon->now()->timestamp;
 
-        $this->queue->laterOn('voting', $delay, $command);
+        $this->queue->laterOn('voting', $delay,
+            new CloseVotingJob($event->vote)
+        );
 
     }
 

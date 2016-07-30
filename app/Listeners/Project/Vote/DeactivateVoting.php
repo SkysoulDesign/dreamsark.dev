@@ -3,24 +3,14 @@
 namespace DreamsArk\Listeners\Project\Vote;
 
 use DreamsArk\Events\Event;
-use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
 
+/**
+ * Class DeactivateVoting
+ *
+ * @package DreamsArk\Listeners\Project\Vote
+ */
 class DeactivateVoting
 {
-    /**
-     * @var VoteRepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * Create the event listener.
-     * @param VoteRepositoryInterface $repository
-     */
-    public function __construct(VoteRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Handle the event.
      *
@@ -28,6 +18,6 @@ class DeactivateVoting
      */
     public function handle(Event $event)
     {
-        $this->repository->deactivate($event->vote->id);
+        $event->vote->setAttribute('active', false)->save();
     }
 }

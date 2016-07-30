@@ -3,11 +3,15 @@
 namespace DreamsArk\Http\Controllers\Project\Idea;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
 use DreamsArk\Repositories\Project\Submission\SubmissionRepositoryInterface;
 
+/**
+ * Class IdeaController
+ *
+ * @package DreamsArk\Http\Controllers\Project\Idea
+ */
 class IdeaController extends Controller
 {
     /**

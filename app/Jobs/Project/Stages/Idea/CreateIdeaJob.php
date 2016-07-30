@@ -5,7 +5,7 @@ namespace DreamsArk\Jobs\Project\Stages\Idea;
 use DreamsArk\Events\Project\IdeaWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
+use DreamsArk\Models\Project\Stages\Idea;
 
 /**
  * Class CreateIdeaJob
@@ -15,66 +15,53 @@ use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
 class CreateIdeaJob extends Job
 {
     /**
-     * @var int
+     * @var \DreamsArk\Models\Project\Project
      */
-    private $project_id;
+    private $project;
 
     /**
      * @var array
      */
     private $fields;
+
     /**
-     * @var
+     * @var int
      */
-    private $ideaReward;
-    private $chargeUserAmount;
-    private $currentReward;
+    private $reward;
 
     /**
      * Create a new command instance.
      *
-     * @param int $project_id
+     * @param \DreamsArk\Models\Project\Project $project
      * @param array $fields
-     * @param $ideaReward
+     * @param int $reward
      */
-    public function __construct($project_id, array $fields, $ideaReward)
+    public function __construct(Project $project, array $fields, int $reward)
     {
-        $this->project_id = $project_id;
-        $this->fields = collect($fields);
-        $this->ideaReward = $ideaReward;
+        $this->project = $project;
+        $this->fields = $fields;
+        $this->reward = $reward;
     }
 
     /**
      * Execute the command.
      *
-     * @param IdeaRepositoryInterface $repository
-     * @param Project $project
+     * @param \DreamsArk\Models\Project\Stages\Idea $idea
+     *
      * @return \DreamsArk\Models\Project\Stages\Idea
      */
-    public function handle(IdeaRepositoryInterface $repository, Project $project)
+    public function handle(Idea $idea)
     {
-        $this->chargeUserAmount = $this->currentReward = 0;
-        /**
-         * Create Idea
-         */
-        $idea = $repository->create($this->project_id, $this->fields->all());
 
-        $project = $project->find($this->project_id);
-        $dataArr = ['amount' => $this->ideaReward, 'rewardable_id' => $idea->id];
-        $class = get_class($idea);
-        $rewardData = $project->getNextStageReward($class)->get();
-        if (isset($rewardData[0])) {
-            $this->currentReward = $rewardData[0]->amount;
-            $project->stage->reward()->update($dataArr);
-        } else {
-            $project->rewards()->create(array_merge(['project_id' => $project->id, 'rewardable_type' => $class], $dataArr));
-        }
-        $this->chargeUserAmount = $this->ideaReward - $this->currentReward;
+        $idea->project()->associate($this->project);
+        $idea->fill($this->fields);
+        $idea->save();
 
         /**
          * Announce IdeaWasCreated
          */
-        event(new IdeaWasCreated($idea, $this->fields->get('voting_date'), $this->chargeUserAmount));
-
+        event(new IdeaWasCreated(
+            $idea, array_get($this->fields, 'voting_date'), $this->reward
+        ));
     }
 }

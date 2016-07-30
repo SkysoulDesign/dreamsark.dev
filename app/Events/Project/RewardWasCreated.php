@@ -3,29 +3,24 @@
 namespace DreamsArk\Events\Project;
 
 use DreamsArk\Events\Event;
+use DreamsArk\Models\Project\Reward;
 use DreamsArk\Models\User\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class StageHasFailed
+ * Class RewardWasCreated
  *
  * @package DreamsArk\Events\Project
  */
-class StageHasFailed extends Event
+class RewardWasCreated extends Event
 {
 
     use SerializesModels;
 
     /**
-     * @var Model
+     * @var Reward
      */
-    public $model;
-
-    /**
-     * @var
-     */
-    public $amount;
+    public $reward;
 
     /**
      * @var User
@@ -33,17 +28,21 @@ class StageHasFailed extends Event
     public $user;
 
     /**
+     * @var int
+     */
+    public $amount;
+
+    /**
      * Create a new event instance.
      *
-     * @param Model $model
-     * @param User $user
-     * @param int $amount
+     * @param \DreamsArk\Models\Project\Reward $reward
+     * @param \DreamsArk\Models\User\User $user
      */
-    public function __construct(Model $model, User $user, int $amount)
+    public function __construct(Reward $reward, User $user)
     {
-        $this->model = $model;
+        $this->reward = $reward;
+        $this->amount = $reward->getAttribute('amount');
         $this->user = $user;
-        $this->amount = $amount;
     }
 
     /**

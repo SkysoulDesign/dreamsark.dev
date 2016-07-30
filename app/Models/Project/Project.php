@@ -17,6 +17,7 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -26,7 +27,7 @@ use Illuminate\Database\Query\Builder;
  */
 class Project extends Model
 {
-    
+
     use PresentableTrait;
 
     /**
@@ -211,12 +212,10 @@ class Project extends Model
 
     /**
      * Returns the right Relationship for the current project stage
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function stage() : hasOne
+    public function stage() : MorphTo
     {
-        return $this->{$this->type}();
+        return $this->morphTo('stageable');
     }
 
     /**

@@ -6,12 +6,18 @@ use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Stages\Vote;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class VoteWasOpened
+ *
+ * @package DreamsArk\Events\Project\Vote
+ */
 class VoteWasOpened extends Event
 {
+
     use SerializesModels;
 
     /**
-     * @var \DreamsArk\Models\Project\Stages\Vote
+     * @var Vote
      */
     public $vote;
 

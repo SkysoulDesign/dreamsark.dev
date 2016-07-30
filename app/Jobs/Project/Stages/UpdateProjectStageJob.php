@@ -1,16 +1,18 @@
 <?php
 
-namespace DreamsArk\Commands\Project;
+namespace DreamsArk\Jobs\Project\Stages;
 
-use DreamsArk\Commands\Command;
 use DreamsArk\Events\Project\ProjectStageWasUpdated;
+use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 
-class UpdateProjectStageCommand extends Command implements SelfHandling
+/**
+ * Class UpdateProjectStageJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages
+ */
+class UpdateProjectStageJob extends Job
 {
     /**
      * @var Project
@@ -18,7 +20,7 @@ class UpdateProjectStageCommand extends Command implements SelfHandling
     private $project;
 
     /**
-     * @var
+     * @var Model
      */
     private $stage;
 
@@ -36,20 +38,19 @@ class UpdateProjectStageCommand extends Command implements SelfHandling
 
     /**
      * Execute the command.
-     *
-     * @param ProjectRepositoryInterface $repository
-     * @param Dispatcher $event
      */
-    public function handle(ProjectRepositoryInterface $repository, Dispatcher $event)
+    public function handle()
     {
         /**
          * Update Project Stage
          */
-        $repository->nextStage($this->project->id, strtolower(class_basename($this->stage)));
+        $this->project->stage()->associate($this->stage)->save();
 
         /**
          * Announce ProjectStageWasUpdated
          */
-        $event->fire(new ProjectStageWasUpdated($this->project));
+        event(new ProjectStageWasUpdated(
+            $this->project
+        ));
     }
 }

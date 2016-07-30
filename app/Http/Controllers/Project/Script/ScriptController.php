@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Project\Script;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Http\Requests\Project\SynapseScriptCreation;
+use DreamsArk\Jobs\Project\Stages\CreateProjectStageJob;
 use DreamsArk\Jobs\Project\Stages\Script\CreateScriptJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
@@ -21,6 +22,7 @@ class ScriptController extends Controller
      *
      * @param Project $project
      * @param ProjectRepositoryInterface $repository
+     *
      * @return \Illuminate\View\View
      */
     public function show(Project $project, ProjectRepositoryInterface $repository)
@@ -34,13 +36,14 @@ class ScriptController extends Controller
      *
      * @param Project $project
      * @param SynapseScriptCreation|Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Project $project, SynapseScriptCreation $request)
     {
 
         $this->dispatch(
-            new CreateScriptJob($project->id, $request->all())
+            new CreateProjectStageJob($project, 'script', $request->except('reward'), $request->input('reward'))
         );
 
         return redirect()->route('project.show', $project);

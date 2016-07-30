@@ -72,6 +72,10 @@
       max-width: 100%;
       background: color(success);
 
+      @include transition(super-slow) {
+        transition-property: width;
+      }
+
       @include option(size-large) {
         height: 4em;
       }

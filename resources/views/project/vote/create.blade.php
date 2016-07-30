@@ -34,7 +34,7 @@
 
             <div class="row align-center">
                 <ark-progress class="small-10 columns"
-                              :data="10" color="warning"
+                              :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']" color="warning"
                               size="large" label="@lang('project.time')" flat></ark-progress>
             </div>
         </div>

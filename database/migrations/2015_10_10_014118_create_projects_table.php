@@ -3,6 +3,9 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Class CreateProjectsTable
+ */
 class CreateProjectsTable extends Migration
 {
     /**
@@ -16,7 +19,10 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('type');
+
+            $table->integer('stageable_id')->unsigned()->index()->nullable();
+            $table->string('stageable_type')->nullable();
+
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->timestamps();

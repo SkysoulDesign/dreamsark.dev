@@ -3,29 +3,35 @@
 namespace DreamsArk\Listeners\User;
 
 use DreamsArk\Events\Session\UserWasCreated;
-use DreamsArk\Repositories\Bag\BagRepositoryInterface;
+use DreamsArk\Models\User\Bag;
 
+/**
+ * Class GiveUserAnEmptyBag
+ *
+ * @package DreamsArk\Listeners\User
+ */
 class GiveUserAnEmptyBag
 {
     /**
-     * @var BagRepositoryInterface
+     * @var \DreamsArk\Models\User\Bag
      */
-    private $repository;
+    private $bag;
 
     /**
      * Create the event listener.
      *
-     * @param BagRepositoryInterface $repository
+     * @param \DreamsArk\Models\User\Bag $bag
      */
-    public function __construct(BagRepositoryInterface $repository)
+    public function __construct(Bag $bag)
     {
-        $this->repository = $repository;
+        $this->bag = $bag;
     }
 
     /**
      * Handle the event.
      *
      * @param  UserWasCreated $event
+     *
      * @return void
      */
     public function handle(UserWasCreated $event)
@@ -33,6 +39,8 @@ class GiveUserAnEmptyBag
         /**
          * Give the user an empty bag
          */
-        $this->repository->attach(['amount' => 10000], $event->user->id);
+        $this->bag->user()->associate($event->user);
+        $this->bag->fill(['coins' => config('defaults.coins')]);
+        $this->bag->save();
     }
 }

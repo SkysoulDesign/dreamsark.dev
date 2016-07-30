@@ -5,12 +5,15 @@ namespace DreamsArk\Jobs\Project\Stages\Voting;
 use DreamsArk\Events\Project\Vote\VoteWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class CreateVotingJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages\Voting
+ */
 class CreateVotingJob extends Job
 {
-
 
     /**
      * @var Project
@@ -18,22 +21,23 @@ class CreateVotingJob extends Job
     private $model;
 
     /**
-     * @var
+     * @var string
      */
     private $vote_open_date;
 
     /**
-     * @var
+     * @var string
      */
     private $vote_close_date;
 
     /**
      * Create a new command instance.
+     *
      * @param Model $model
-     * @param $vote_open_date
-     * @param $vote_close_date
+     * @param string $vote_open_date
+     * @param string $vote_close_date
      */
-    public function __construct(Model $model, $vote_open_date, $vote_close_date)
+    public function __construct(Model $model, string $vote_open_date, string $vote_close_date)
     {
         $this->model = $model;
         $this->vote_open_date = $vote_open_date;
@@ -42,21 +46,18 @@ class CreateVotingJob extends Job
 
     /**
      * Execute the command.
-     *
-     * @param VoteRepositoryInterface $repository
      */
-    public function handle(VoteRepositoryInterface $repository)
+    public function handle()
     {
 
-        /**
-         * Create Vote
-         */
-        $vote = $repository->create($this->model, $this->vote_open_date, $this->vote_close_date);
+        $vote = $this->model->vote()->create([
+            'open_date' => $this->vote_open_date,
+            'close_date' => $this->vote_close_date
+        ]);
 
         /**
          * Announce VoteWasCreated
          */
         event(new VoteWasCreated($vote));
-
     }
 }

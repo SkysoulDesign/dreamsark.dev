@@ -45,6 +45,16 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
+use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
+use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
+use DreamsArk\Models\Project\Stages\Vote;
+
+$app->get('test', function () {
+
+    $vote = Vote::find(3);
+    dd(dispatch(new CloseVotingJob($vote)));
+
+});
 
 $app->get('info', function () {
     phpinfo();

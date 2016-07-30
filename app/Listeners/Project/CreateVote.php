@@ -8,6 +8,11 @@ use DreamsArk\Events\Event;
 use DreamsArk\Jobs\Project\Stages\Voting\CreateVotingJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class CreateVote
+ *
+ * @package DreamsArk\Listeners\Project
+ */
 class CreateVote
 {
 
@@ -32,7 +37,6 @@ class CreateVote
      * Handle the event.
      *
      * @param  Event $event
-     * @return void
      */
     public function handle(Event $event)
     {
@@ -43,7 +47,8 @@ class CreateVote
         $vote_open_date = $this->carbon->parse($event->voting_date);
         $vote_close_date = $vote_open_date->copy()->addMinutes(config('defaults.project.voting_span_time'));
 
-        $this->dispatch(new CreateVotingJob($event->model, $vote_open_date, $vote_close_date));
-
+        $this->dispatch(new CreateVotingJob(
+            $event->model, $vote_open_date, $vote_close_date
+        ));
     }
 }

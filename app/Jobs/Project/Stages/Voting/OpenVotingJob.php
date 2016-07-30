@@ -5,13 +5,17 @@ namespace DreamsArk\Jobs\Project\Stages\Voting;
 use DreamsArk\Commands\Project\FailFundingStageCommand;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Jobs\Project\FailIdeaSynapseScriptStageJob;
+use DreamsArk\Jobs\Project\FailProjectStageJob;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
-use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
 use Illuminate\Support\Collection;
 
+/**
+ * Class OpenVotingJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages\Voting
+ */
 class OpenVotingJob extends Job
 {
 
@@ -32,36 +36,38 @@ class OpenVotingJob extends Job
 
     /**
      * Execute the command.
-     *
-     * @param VoteRepositoryInterface $repository
-     * @return array|null
      */
-    public function handle(VoteRepositoryInterface $repository)
+    public function handle()
     {
+
+        $votable = $this->vote->getAttribute('votable');
 
         /**
          * Check if Class uses SubmissibleTrait
          */
-        $isSubmissible = array_has(class_uses($this->vote->votable), SubmissibleTrait::class);
+        $isSubmissible = array_has(class_uses($votable), SubmissibleTrait::class);
 
         /**
          * If there are no submission then project failed, or less than the minimum submissions
          */
-        $class = snake_case(class_basename($this->vote->votable));
-        if ($isSubmissible && $this->vote->votable->submissions->count() < config('defaults.project.' . $class . '.minimum_of_submissions')) {
+        $stage = $votable->getStageName();
+        $config = config("defaults.project.$stage.minimum_of_submissions");
+
+        if ($isSubmissible && $votable->submissions->count() < $config) {
 
             /**
              * Fail this project
              */
-            dispatch(new FailIdeaSynapseScriptStageJob($this->vote->votable));
+            return dispatch(new FailProjectStageJob(
+                $votable, FAIL_REASON_NO_ENOUGH_SUBMISSIONS
+            ));
 
-            return;
         }
 
         /**
          * Check if Class uses EnrollableTrait
          */
-        $isEnrollable = array_has(class_uses($this->vote->votable), EnrollableTrait::class);
+        $isEnrollable = array_has(class_uses($votable), EnrollableTrait::class);
 
         if ($isEnrollable) {
 
@@ -69,7 +75,7 @@ class OpenVotingJob extends Job
              * If there are no users applied to any available
              * Expenditure/Position then the project has Failed
              */
-            $this->vote->votable->enrollable->load('enrollers')->pluck('enrollers')->each(function ($item) {
+            $votable->enrollable->load('enrollers')->pluck('enrollers')->each(function ($item) use ($votable) {
 
                 /**
                  * Check if there is no enrollers to this position
@@ -82,7 +88,7 @@ class OpenVotingJob extends Job
                     /**
                      * Fail this project
                      */
-                    dispatch(new FailFundingStageCommand($this->vote->votable));
+                    dispatch(new FailFundingStageCommand($votable));
 
                     return;
                 }
@@ -94,13 +100,13 @@ class OpenVotingJob extends Job
         /**
          * Open Vote by setting Status to true
          */
-        $repository->open($this->vote->id);
+        $this->vote
+            ->setAttribute('active', true)
+            ->save();
 
         /**
          * Announce VoteWasOpened
          */
         event(new VoteWasOpened($this->vote));
-
     }
-
 }

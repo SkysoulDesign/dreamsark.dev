@@ -1,6 +1,14 @@
 <?php
 
+const FAIL_REASON_NO_ENOUGH_SUBMISSIONS = 0;
+const FAIL_REASON_NO_VOTES = 1;
+
 return [
+
+    /**
+     * Default Amount of coins given to an user after registration
+     */
+    'coins' => 1000,
 
     /**
      * Defaults for Settings

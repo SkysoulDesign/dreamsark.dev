@@ -2,12 +2,18 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Project\Submission\CreateSubmissionWinnerCommand;
+use DreamsArk\Jobs\Project\Submission\CreateSubmissionWinnerJob;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class RegisterVotingWinner
+ *
+ * @package DreamsArk\Listeners\Project
+ */
 class RegisterVotingWinner
 {
+
     use DispatchesJobs;
 
     /**
@@ -20,6 +26,8 @@ class RegisterVotingWinner
         /**
          * Register Winner
          */
-        $this->dispatch(new CreateSubmissionWinnerCommand($event->submission));
+        $this->dispatch(new CreateSubmissionWinnerJob(
+            $event->submission
+        ));
     }
 }

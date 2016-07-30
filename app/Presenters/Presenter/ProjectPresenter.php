@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Presenters\Presenter;
 
+use Carbon\Carbon;
 use DreamsArk\Presenters\Presenter;
 
 /**
@@ -71,8 +72,26 @@ class ProjectPresenter extends Presenter
         return round(($pledged * 100) / $cost);
     }
 
-    public function timeProgress(){
-        //to do
+    /**
+     * Get the time completion of an project stage
+     *
+     * @return int
+     */
+    public function timeProgress() : int
+    {
+
+
+        $begin = $this->stage->vote->created_at;
+        $now = Carbon::now();
+        $end = $this->stage->vote->open_date;
+
+//        dd($begin, $now, $end);
+
+        $percent = ($now->diffInSeconds($begin)) / ($end->diffInSeconds($begin)) * 100;
+
+        return $percent > 100 ? 100 : round($percent);
+
+
     }
 
 }

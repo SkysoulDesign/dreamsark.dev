@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class SynapseWasCreated extends Event
 {
+
     use SerializesModels;
 
     /**
@@ -28,20 +29,20 @@ class SynapseWasCreated extends Event
     /**
      * @var
      */
-    public $chargeAmount;
+    public $amount;
 
     /**
      * Create a new event instance.
      *
      * @param Synapse $synapse
      * @param $voting_date
-     * @param $chargeAmount
+     * @param $amount
      */
-    public function __construct(Synapse $synapse, $voting_date, $chargeAmount)
+    public function __construct(Synapse $synapse, string $voting_date, int $amount)
     {
         $this->model = $synapse;
         $this->voting_date = $voting_date;
-        $this->chargeAmount = $chargeAmount;
+        $this->amount = $amount;
     }
 
     /**

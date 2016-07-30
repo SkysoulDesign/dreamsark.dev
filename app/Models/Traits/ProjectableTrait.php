@@ -3,6 +3,7 @@
 namespace DreamsArk\Models\Traits;
 
 use DreamsArk\Models\Project\Project;
+use Illuminate\Database\Eloquent\Relations\belongsTo;
 
 /**
  * Class ProjectableTrait
@@ -11,12 +12,13 @@ use DreamsArk\Models\Project\Project;
  */
 trait ProjectableTrait
 {
+
     /**
      * Project Relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return belongsTo
      */
-    public function project()
+    public function project() : belongsTo
     {
         return $this->belongsTo(Project::class);
     }

@@ -33,7 +33,8 @@
             </ark-form-step>
 
             <ark-fields>
-                <ark-input name="reward[idea]"
+
+                <ark-input name="reward"
                            required
                            type="number"
                            :min="0"
@@ -42,31 +43,15 @@
                            label="@lang('forms.idea-stage')">
                 </ark-input>
 
-                <ark-input name="reward[synapse]"
-                           optional
-                           type="number"
-                           :min="0"
-                           :max="{{ auth()->user()->bag->coins }}"
-                           placeholder="@lang('project.amount')"
-                           label="@lang('forms.synapse-stage')">
+
+                <ark-input name="voting_date"
+                           type="datetime-local"
+                           placeholder="@lang('project.name')"
+                           caption="@lang('project.creation-voting-description')"
+                           label="@lang('forms.due-date')">
                 </ark-input>
 
-                <ark-input name="reward[script]"
-                           optional
-                           type="number"
-                           :min="0"
-                           :max="{{ auth()->user()->bag->coins }}"
-                           placeholder="@lang('project.amount')"
-                           label="@lang('forms.script-stage')">
-                </ark-input>
             </ark-fields>
-
-            <ark-input name="voting_date"
-                       type="datetime-local"
-                       placeholder="@lang('project.name')"
-                       caption="@lang('project.creation-voting-description')"
-                       label="@lang('forms.due-date')">
-            </ark-input>
 
             <div class="small-12 columns divider --simple"></div>
 

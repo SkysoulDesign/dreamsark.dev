@@ -2,10 +2,15 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Commands\Bag\RefundUserCommand;
+use DreamsArk\Jobs\Project\RefundUserJob;
 use DreamsArk\Events\Event;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class RefundCreator
+ *
+ * @package DreamsArk\Listeners\Project
+ */
 class RefundCreator
 {
 
@@ -22,6 +27,6 @@ class RefundCreator
         /**
          * Refund Project Owner
          */
-        $this->dispatch(new RefundUserCommand($event->amount, $event->user));
+        $this->dispatch(new RefundUserJob($event->amount, $event->user));
     }
 }

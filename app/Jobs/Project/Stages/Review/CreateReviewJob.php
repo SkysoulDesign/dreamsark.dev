@@ -5,8 +5,13 @@ namespace DreamsArk\Jobs\Project\Stages\Review;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\Review\ReviewRepositoryInterface;
+use DreamsArk\Models\Project\Stages\Review;
 
+/**
+ * Class CreateReviewJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages\Review
+ */
 class CreateReviewJob extends Job
 {
     /**
@@ -27,15 +32,20 @@ class CreateReviewJob extends Job
     /**
      * Execute the command.
      *
-     * @param ReviewRepositoryInterface $repository
+     * @param \DreamsArk\Models\Project\Stages\Review $review
+     *
      * @return \DreamsArk\Models\Project\Stages\Review
      */
-    public function handle(ReviewRepositoryInterface $repository)
+    public function handle(Review $review) : Review
     {
         /**
          * Create Review
          */
-        $review = $repository->create($this->project->id);
+        $review->project()->associate($this->project);
+        $review->save();
+
+        $this->project->stage()->associate($review);
+        $this->project->save();
 
         /**
          * Announce ReviewWasCreated
@@ -43,6 +53,5 @@ class CreateReviewJob extends Job
         event(new ReviewWasCreated($review));
 
         return $review;
-
     }
 }

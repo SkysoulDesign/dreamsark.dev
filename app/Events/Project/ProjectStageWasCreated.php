@@ -1,46 +1,46 @@
 <?php
 
-namespace DreamsArk\Events\Project\Script;
+namespace DreamsArk\Events\Project;
 
 use DreamsArk\Events\Event;
-use DreamsArk\Models\Project\Stages\Script;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class ScriptWasCreated
+ * Class ProjectStageWasCreated
  *
- * @package DreamsArk\Events\Project\Script
+ * @package DreamsArk\Events\Project
  */
-class ScriptWasCreated extends Event
+class ProjectStageWasCreated extends Event
 {
 
     use SerializesModels;
 
     /**
-     * @var Script
+     * @var Model
      */
     public $model;
 
     /**
-     * @var
+     * @var string
      */
     public $voting_date;
 
     /**
-     * @var
+     * @var int
      */
     public $amount;
 
     /**
      * Create a new event instance.
      *
-     * @param Script $script
-     * @param $voting_date
+     * @param Model $model
+     * @param string $voting_date
      * @param $amount
      */
-    public function __construct(Script $script, string $voting_date, int $amount)
+    public function __construct(Model $model, string $voting_date, int $amount)
     {
-        $this->model = $script;
+        $this->model = $model;
         $this->voting_date = $voting_date;
         $this->amount = $amount;
     }

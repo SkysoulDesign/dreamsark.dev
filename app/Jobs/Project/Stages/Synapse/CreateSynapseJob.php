@@ -4,7 +4,6 @@ namespace DreamsArk\Jobs\Project\Stages\Synapse;
 
 use DreamsArk\Events\Project\Synapse\SynapseWasCreated;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Jobs\Project\Stages\Traits\UpdateProjectStageReward;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Reward;
 use DreamsArk\Models\Project\Stages\Synapse;
@@ -16,11 +15,8 @@ use DreamsArk\Models\Project\Stages\Synapse;
  */
 class CreateSynapseJob extends Job
 {
-
-    use UpdateProjectStageReward;
-
     /**
-     * @var \DreamsArk\Models\Project\Project
+     * @var Project
      */
     private $project;
 
@@ -30,25 +26,32 @@ class CreateSynapseJob extends Job
     private $fields;
 
     /**
+     * @var int
+     */
+    private $reward;
+
+    /**
      * Create a new command instance.
      *
-     * @param \DreamsArk\Models\Project\Project $project
+     * @param Project $project
      * @param array $fields
+     * @param int $reward
      */
-    public function __construct(Project $project, array $fields)
+    public function __construct(Project $project, array $fields, int $reward)
     {
         $this->project = $project;
         $this->fields = $fields;
+        $this->reward = $reward;
     }
 
     /**
      * Execute the command.
      *
      * @param \DreamsArk\Models\Project\Stages\Synapse $synapse
-     * @param \DreamsArk\Models\Project\Reward $reward
+     *
      * @return \DreamsArk\Models\Project\Stages\Synapse
      */
-    public function handle(Synapse $synapse, Reward $reward) : Synapse
+    public function handle(Synapse $synapse) : Synapse
     {
         /**
          * Create Synapse
@@ -60,21 +63,6 @@ class CreateSynapseJob extends Job
                     $this->fields, 'reward'
                 )
             )->save();
-
-
-        $synapse->reward()->create([
-            'amount' => array_get($this->fields, 'reward'),
-            'project_id' => $this->project->getAttribute('id')
-        ]);
-
-//        $synapse->rewards()->create(
-//            array_merge(['project_id' => $project->id, 'rewardable_type' => get_class($model)], $dataArr)
-//        );
-
-        /** Do Update / Insert record in ProjectReward with Amount for Stage */
-//        $this->updateReward($this->project, $synapse);
-
-//        $this->calculateChargeAmount();
 
         /**
          * Announce SynapseWasCreated

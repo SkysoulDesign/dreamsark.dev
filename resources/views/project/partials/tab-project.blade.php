@@ -83,7 +83,9 @@
             </div>
         </div>
 
-        <ark-progress class="small-10 columns" :data="{{ $project->present()->getRemainingDays() }}" color="primary"
+        <ark-progress class="small-10 columns"
+                      color="primary"
+                      :live="['{{ $project->stage->vote->created_at }}', '{{ $project->stage->vote->open_date }}']"
                       size="large" label="@lang('project.time')" flat></ark-progress>
 
         @if($project->stage->submission)

@@ -3,15 +3,15 @@
 namespace DreamsArk\Listeners\Project;
 
 use DreamsArk\Events\Event;
-use DreamsArk\Jobs\User\Coins\ChargeUserJob;
+use DreamsArk\Jobs\Project\Stages\CreateRewardJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
- * Class ChargeUser
+ * Class CreateReward
  *
  * @package DreamsArk\Listeners\Project
  */
-class ChargeUser
+class CreateReward
 {
 
     use DispatchesJobs;
@@ -19,17 +19,14 @@ class ChargeUser
     /**
      * Handle the event.
      *
-     * @param  $event
+     * @param  Event $event
      *
      * @return void
      */
     public function handle(Event $event)
     {
-        /**
-         * Deduct Coins from the user
-         */
-        $this->dispatch(
-            new ChargeUserJob($event->user, $event->amount)
-        );
+        $this->dispatch(new CreateRewardJob(
+            $event->model, $event->amount
+        ));
     }
 }
