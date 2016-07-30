@@ -88,7 +88,6 @@ class ProjectController extends Controller
     public function show(Request $request, Project $project)
     {
 
-
         $user = $request->user();
         $stage = $project->getAttribute('stage');
 

@@ -97,6 +97,15 @@ class EventServiceProvider extends ServiceProvider
             UpdateProjectStage::class
         ],
 
+        FundWasCreated::class => [
+            UpdateProjectStage::class,
+            CreateVote::class,
+        ],
+
+        DistributionWasCreated::class => [
+            UpdateProjectStage::class,
+        ],
+
         StageHasFailed::class => [
             RefundCreator::class
         ],
@@ -109,10 +118,6 @@ class EventServiceProvider extends ServiceProvider
             ChargeUser::class,
         ],
 
-        FundWasCreated::class => [
-            UpdateProjectStage::class,
-            CreateVote::class,
-        ],
 
         ProjectWasBacked::class => [
             DeductUserCoins::class
@@ -147,11 +152,6 @@ class EventServiceProvider extends ServiceProvider
 
         WinnerHasAssignedToCrew::class => [
         ],
-
-        DistributionWasCreated::class => [
-            UpdateProjectStage::class,
-        ],
-
 
 
         SubmissionReceivedAVote::class => [

@@ -12,6 +12,7 @@
         <div class="item">
             <form method="post" action="{{ route('committee.project.publish', $review->id) }}" class="ui form">
                 {{ csrf_field() }}
+                <ark-input type="datetime-local" name="voting_date" label="open voting date"></ark-input>
                 <button class="ui publish-review olive button">@lang('project.publish')</button>
             </form>
         </div>

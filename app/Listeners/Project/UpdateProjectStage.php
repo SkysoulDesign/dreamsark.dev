@@ -24,7 +24,7 @@ class UpdateProjectStage
     public function handle(Event $event)
     {
         $this->dispatch(
-            new UpdateProjectStageJob($event->model->project, $event->model)
+            new UpdateProjectStageJob($event->project, $event->stage)
         );
     }
 }

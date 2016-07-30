@@ -44,13 +44,10 @@ class CreateReviewJob extends Job
         $review->project()->associate($this->project);
         $review->save();
 
-        $this->project->stage()->associate($review);
-        $this->project->save();
-
         /**
          * Announce ReviewWasCreated
          */
-        event(new ReviewWasCreated($review));
+        event(new ReviewWasCreated($review, $this->project));
 
         return $review;
     }

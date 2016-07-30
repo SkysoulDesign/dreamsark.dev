@@ -29,7 +29,7 @@ class QuestionTableSeeder extends Seeder
 
         foreach ($questions as $question) {
             $type = Type::whereNotIn('name', ['checkbox', 'select', 'radio', 'file', 'video', 'image', 'color'])->orderBy(DB::raw('RAND()'))->limit(1)->get();
-            $question = dispatch(new CreateQuestionJob($question, $type[0]));
+            dispatch(new CreateQuestionJob($question, $type[0]));
         }
 
     }

@@ -26,7 +26,7 @@ class CreateReward
     public function handle(Event $event)
     {
         $this->dispatch(new CreateRewardJob(
-            $event->model, $event->amount
+            $event->stage, $event->amount
         ));
     }
 }

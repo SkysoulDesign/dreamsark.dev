@@ -4,8 +4,8 @@ namespace DreamsArk\Jobs\Project\Committee\Review;
 
 use DreamsArk\Events\Committee\Project\FundWasCreated;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
-use DreamsArk\Repositories\Project\Fund\FundRepositoryInterface;
 
 /**
  * Class PublishProjectReviewJob
@@ -20,32 +20,48 @@ class PublishProjectReviewJob extends Job
     private $review;
 
     /**
+     * @var string
+     */
+    private $voting_date;
+
+    /**
      * Create a new command instance.
      *
      * @param Review $review
+     * @param string $voting_date
      */
-    public function __construct(Review $review)
+    public function __construct(Review $review, string $voting_date)
     {
         $this->review = $review;
+        $this->voting_date = $voting_date;
     }
 
     /**
      * Execute the command.
      *
-     * @param FundRepositoryInterface $repository
+     * @param \DreamsArk\Models\Project\Stages\Fund $fund
      */
-    public function handle(FundRepositoryInterface $repository)
+    public function handle(Fund $fund)
     {
-        $this->review->setAttribute('active', 1)->save();
-        $this->review->fresh();
+
+        $project = $this->review->getAttribute('project');
+
+        /**
+         * Confirm Reviewed stage
+         * Active true means it has been reviewed
+         */
+        $this->review->setAttribute('active', true)->save();
+
         /**
          * Create Fund
          */
-        $fund = $repository->create($this->review->project->id);
+        $fund->project()->associate($project)->save();
 
         /**
          * Announce FundWasCreated
          */
-        event(new FundWasCreated($fund));
+        event(new FundWasCreated(
+            $fund, $project, $this->voting_date
+        ));
     }
 }

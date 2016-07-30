@@ -14,6 +14,7 @@ class ProjectController extends Controller
 {
     /**
      * @param ProjectRepositoryInterface $repository
+     *
      * @return mixed
      */
     public function index(ProjectRepositoryInterface $repository)

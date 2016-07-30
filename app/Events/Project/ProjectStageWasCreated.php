@@ -19,7 +19,7 @@ class ProjectStageWasCreated extends Event
     /**
      * @var Model
      */
-    public $model;
+    public $stage;
 
     /**
      * @var string
@@ -34,13 +34,13 @@ class ProjectStageWasCreated extends Event
     /**
      * Create a new event instance.
      *
-     * @param Model $model
+     * @param Model $stage
      * @param string $voting_date
      * @param $amount
      */
-    public function __construct(Model $model, string $voting_date, int $amount)
+    public function __construct(Model $stage, string $voting_date, int $amount)
     {
-        $this->model = $model;
+        $this->stage = $stage;
         $this->voting_date = $voting_date;
         $this->amount = $amount;
     }

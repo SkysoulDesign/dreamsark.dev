@@ -2,23 +2,34 @@
 
 namespace DreamsArk\Events\Committee\Project;
 
-use Carbon\Carbon;
 use DreamsArk\Events\Event;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class FundWasCreated
+ *
+ * @package DreamsArk\Events\Committee\Project
+ */
 class FundWasCreated extends Event
 {
+
     use SerializesModels;
 
     /**
      * @var Review
      */
-    public $model;
+    public $stage;
 
     /**
-     * @var Carbon|string
+     * @var Project
+     */
+    public $project;
+
+    /**
+     * @var string
      */
     public $voting_date;
 
@@ -26,12 +37,14 @@ class FundWasCreated extends Event
      * Create a new event instance.
      *
      * @param Fund $fund
-     * @param null $voting_date
+     * @param Project $project
+     * @param string $voting_date
      */
-    public function __construct(Fund $fund, $voting_date = null)
+    public function __construct(Fund $fund, Project $project, string $voting_date)
     {
-        $this->model = $fund;
-        $this->voting_date = $voting_date ?: $fund->created_at->addMinutes(500);
+        $this->stage = $fund;
+        $this->project = $project;
+        $this->voting_date = $voting_date;
     }
 
     /**

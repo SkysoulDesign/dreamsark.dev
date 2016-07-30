@@ -48,7 +48,7 @@ class CreateVote
         $vote_close_date = $vote_open_date->copy()->addMinutes(config('defaults.project.voting_span_time'));
 
         $this->dispatch(new CreateVotingJob(
-            $event->model, $vote_open_date, $vote_close_date
+            $event->stage, $vote_open_date, $vote_close_date
         ));
     }
 }

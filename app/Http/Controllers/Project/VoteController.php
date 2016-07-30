@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Repositories\Project\Vote\VoteRepositoryInterface;
@@ -19,6 +20,7 @@ class VoteController extends Controller
      * Display a listing of the resource.
      *
      * @param VoteRepositoryInterface $repository
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(VoteRepositoryInterface $repository)
@@ -30,6 +32,7 @@ class VoteController extends Controller
      * Display the specified resource.
      *
      * @param Vote $vote
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Vote $vote)
@@ -55,21 +58,30 @@ class VoteController extends Controller
      * Display Create Vote for an Project Stage
      *
      * @param \DreamsArk\Models\Project\Project $project
+     *
      * @return mixed
      */
     public function create(Project $project)
     {
 
-        /**
-         * If Voting is already close then redirect back
-         */
-        if (!$project->stage->vote->active) {
+        $stage = $project->getAttribute('stage');
+
+        if ($stage instanceof Review) {
             return redirect()->route('project.show', $project)->withErrors(
-                'Voting is close'
+                'There is no open voting for this project yet'
             );
         }
 
-        $submissions = $project->stage->submissions->load('user', 'votes');
+        /**
+         * If Voting is already close then redirect back
+         */
+        if (!$stage->vote->active) {
+            return redirect()->route('project.show', $project)->withErrors(
+                'Voting is close for this project'
+            );
+        }
+
+        $submissions = $stage->submissions->load('user', 'votes');
 
         return view("project.vote.create")
             ->with('project', $project)

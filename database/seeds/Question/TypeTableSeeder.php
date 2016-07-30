@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 /**
  * Class QuestionTypeTableSeeder
  */
-class QuestionTypeTableSeeder extends Seeder
+class TypeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

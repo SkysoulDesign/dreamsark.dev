@@ -78,15 +78,11 @@ class CreateProfileJob extends Job
 
         /**
          * Create Profile
-         *
-         * @todo Implement Repositories
          */
         $profile = $profile->create($this->fields);
 
         /**
          * Sync Questions
-         *
-         * @todo Implement Repositories
          */
         $profile->questions()->sync($questions);
 
