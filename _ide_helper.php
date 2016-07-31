@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.41 on 2016-07-26.
+ * Generated for Laravel 5.2.41 on 2016-07-31.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -13559,69 +13559,162 @@ namespace {
     class Form extends \SkysoulDesign\Form\Facade{
         
         /**
-         * Make Form Tag
+         * Error Class
+         * <div class=".
+         * 
+         * .."> ... </div>
          *
-         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeForm($tag){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($tag);
+        public static function getErrorMessageClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getErrorMessageClass();
         }
         
         /**
-         * Make Form Tag
+         * Error Class
+         * <div class=".
+         * 
+         * .."> ... </div>
          *
-         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeInput($tag){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($tag);
+        public static function getErrorClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getErrorClass();
         }
         
         /**
-         * Make Form Tag
+         * Wrapper Class
+         * <div class=".
+         * 
+         * .."> ... </div>
          *
-         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeCheckbox($tag){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeCheckbox($tag);
+        public static function getWrapperClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getWrapperClass();
+        }
+        
+        /**
+         * Form Class
+         * <div class=".
+         * 
+         * .."> ... </div>
+         *
+         * @return string 
+         * @static 
+         */
+        public static function getFormClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getFormClass();
+        }
+        
+        /**
+         * Button Class
+         * <button class=".
+         * 
+         * .."> ... </button>
+         *
+         * @return string 
+         * @static 
+         */
+        public static function getButtonClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getButtonClass();
+        }
+        
+        /**
+         * Select Class
+         * <select class=".
+         * 
+         * .."> ... </select>
+         *
+         * @return string 
+         * @static 
+         */
+        public static function getSelectClass(){
+            return \SkysoulDesign\Form\Implementations\Semantic::getSelectClass();
         }
         
         /**
          * Create Label
          *
-         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @param string $name
          * @return $this 
          * @static 
          */
-        public static function makeLabel($tag){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($tag);
+        public static function makeLabel($name){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($name);
         }
         
         /**
-         * Make Wrapper Class
+         * 
          *
-         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @static 
+         */
+        public static function makeErrorMessage($attributes = null, $errors = null, $title = null){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeErrorMessage($attributes, $errors, $title);
+        }
+        
+        /**
+         * Create Label
+         *
+         * @param $attributes
+         * @param $collection
+         * @param $placeholder
+         * @param $label
+         * @return $this 
+         * @static 
+         */
+        public static function makeSelect($attributes, $collection, $placeholder, $label){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeSelect($attributes, $collection, $placeholder, $label);
+        }
+        
+        /**
+         * Make Form Tag
+         *
+         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
+         * @param string $label
          * @return string 
          * @static 
          */
-        public static function makeDiv($tag){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeDiv($tag);
+        public static function makeForm($attributes, $label){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($attributes, $label);
+        }
+        
+        /**
+         * Make Input
+         *
+         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
+         * @param string $label
+         * @return string 
+         * @static 
+         */
+        public static function makeInput($attributes, $label){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($attributes, $label);
+        }
+        
+        /**
+         * Make Input
+         *
+         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
+         * @return string 
+         * @static 
+         */
+        public static function makeButton($attributes, $text){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeButton($attributes, $text);
         }
         
         /**
          * Make Wrapper Class
          *
+         * @param $class
          * @param $content
          * @return string 
          * @static 
          */
-        public static function makeWrapper($tag, $content){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($tag, $content);
+        public static function makeWrapper($class, $content){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($class, $content);
         }
         
         /**

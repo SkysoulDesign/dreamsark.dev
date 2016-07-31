@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Aplication_1 = require("../Abstract/Aplication");
+var Helpers_1 = require("../Helpers");
 /**
  * Components
  */
@@ -20,26 +21,7 @@ var Component = (function (_super) {
          * @type {{}}
          */
         this.initialized = {};
-        /**
-         * Components list
-         * @type ComponentInterface[]
-         */
-        this.components = [
-            require('../Components/Nav'),
-            require('../Components/Form'),
-            require('../Components/Ripple'),
-            require('../Components/Statistics'),
-            require('../Components/Progress'),
-            require('../Components/Modal'),
-            require('../Components/Social'),
-            require('../Components/Flipper'),
-            require('../Components/Steps'),
-            require('../Components/Quote'),
-            require('../Components/Animation'),
-            require('../Components/Code'),
-            require('../Components/Pagination'),
-            require('../Components/Accordion'),
-        ];
+        this.components = Helpers_1.requireAll(require.context("../Components", false, /\.js$/));
         this.components.forEach(function (component) {
             for (var name_1 in component) {
                 if (component.hasOwnProperty(name_1)) {
@@ -50,6 +32,15 @@ var Component = (function (_super) {
             }
         });
     }
+    /**
+     * Components list
+     * @type ComponentInterface[]
+     */
+    Component.prototype.requireAll = function (requireContext) {
+        return requireContext.keys().map(function (item) {
+            return 'hora';
+        });
+    };
     return Component;
 }(Aplication_1.Application));
 exports.Component = Component;

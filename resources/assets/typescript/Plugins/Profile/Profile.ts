@@ -1,5 +1,5 @@
 import {Plugins} from "../Plugins";
-import {Characters} from "./Classes/Characters";
+import {Objects} from "./Classes/Objects";
 import {Camera} from "./Classes/Camera";
 import {Browser} from "./Classes/Browser";
 import {Controls} from "./Classes/Controls";
@@ -11,9 +11,11 @@ import {EffectComposer} from "./Classes/EffectComposer";
 import {Compositions} from "./Classes/Compositions";
 import {Loader} from "./Classes/Loader";
 
-window['dreamsark'].exposes({
-    THREE: require('three')
-});
+require("expose?THREE!three");
+
+// window['dreamsark'].exposes({
+//     THREE: require('three')
+// });
 
 /**
  * Profile Class
@@ -24,7 +26,7 @@ export class Profile extends Plugins {
     private compositions:Compositions;
     private renderer:Renderer;
     private controls:Controls;
-    private characters:Characters;
+    private objects:Objects;
     private animator:Animator;
     private light:Light;
     private loader:Loader;
@@ -44,7 +46,7 @@ export class Profile extends Plugins {
         manager: require('./Classes/Manager'),
         loader: require('./Classes/Loader'),
         animator: require('./Classes/animator'),
-        characters: require('./Classes/Characters'),
+        objects: require('./Classes/Objects'),
         material: require('./Classes/Material'),
         animation: require('./Classes/Animation'),
         effectComposer: require('./Classes/EffectComposer')

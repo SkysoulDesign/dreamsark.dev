@@ -7,7 +7,7 @@ var Ripple = (function () {
     }
     Ripple.prototype.register = function (Vue) {
         Vue.component('ripple-button', {
-            template: require('../templates/ripple-button.html'),
+            template: require('html!../templates/ripple-button.html'),
             props: ['type'],
             methods: {
                 submit: function (e) {

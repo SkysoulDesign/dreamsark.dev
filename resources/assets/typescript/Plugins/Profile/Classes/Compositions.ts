@@ -1,14 +1,19 @@
 import {Components} from "../Abstract/Components";
+import {requireAll} from "../../../Helpers";
 
 /**
  * Compositions Class
  */
 export class Compositions extends Components {
 
-    private compositions = {
-        main: require('../Compositions/Main'),
-        project: require('../Compositions/Project')
-    };
+    private compositions = requireAll(
+        require.context("../Compositions", true, /\.js$/)
+    );
+
+    // private compositions = {
+    //     main: require('../Compositions/Main'),
+    //     project: require('../Compositions/Project')
+    // };
 
     private initialized = {};
     private active = null;
@@ -28,8 +33,11 @@ export class Compositions extends Components {
      */
     get(name) {
 
-        if (this.initialized.hasOwnProperty(name))
-            return this.initialized[name];
+        for (let index in this.initialized) {
+            if (this.initialized[index].constructor.name.toLowerCase() === name) {
+                return this.initialized[index];
+            }
+        }
 
         console.log(`There is no composition called: ${name}`);
 
@@ -52,38 +60,38 @@ export class Compositions extends Components {
          */
         composition.setup(this.app, ...payload);
 
-        let characters = {},
-            characterList = composition.characters(),
+        let objects = {},
+            objectList = composition.objects(),
             callback = () => {
 
                 composition.stage(
-                    this.app.scene, this.app.camera, characters
+                    this.app.scene, this.app.camera, objects
                 );
 
                 /**
-                 * Set Active Composition after Loading every character
+                 * Set Active Composition after Loading every object
                  * @type {any}
                  */
                 this.active = {
-                    characters: characters,
+                    objects: objects,
                     composition: composition
                 };
 
             };
 
-        if (!characterList)
+        if (!objectList)
             return callback()
 
         let counter = 0;
 
-        characterList.forEach(name => {
+        objectList.forEach(name => {
 
-            this.app.characters.get(name).then(character => {
+            this.app.objects.get(name).then(object => {
 
-                characters[name] = character;
+                objects[name] = object;
                 counter++;
 
-                if (characterList.length === counter) {
+                if (objectList.length === counter) {
                     callback()
                 }
 
@@ -99,7 +107,7 @@ export class Compositions extends Components {
             return;
 
         this.active.composition.update(
-            this.app.scene, this.app.camera, this.active.characters, time, delta
+            this.app.scene, this.app.camera, this.active.objects, time, delta
         );
 
     }

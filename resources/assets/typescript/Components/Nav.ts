@@ -10,7 +10,7 @@ export class Nav implements ComponentInterface {
     register(vue, app) {
 
         var item = vue.extend({
-            template: require('../templates/nav/item.html'),
+            template: require('html!../templates/nav/item.html'),
             props: {
                 url: {
                     type: String,
@@ -29,7 +29,7 @@ export class Nav implements ComponentInterface {
         });
 
         let tab = vue.extend({
-            template: require('../templates/nav/tab.html'),
+            template: require('html!../templates/nav/tab.html'),
             data: function () {
                 return {
                     element: null
@@ -70,7 +70,7 @@ export class Nav implements ComponentInterface {
         });
 
         vue.component('ark-nav', {
-            template: require('../templates/nav/nav.html'),
+            template: require('html!../templates/nav/nav.html'),
             props: {
                 class: String,
                 basic: Boolean,

@@ -11,7 +11,7 @@ export class Statistics implements ComponentInterface {
          * Statistics
          */
         var item = Vue.component('statistic-item', {
-            template: require('../templates/statistics/item.html'),
+            template: require('html!../templates/statistics/item.html'),
             props: {
                 icon: String,
                 data: {
@@ -22,7 +22,7 @@ export class Statistics implements ComponentInterface {
         });
 
         Vue.component('ark-statistics', {
-            template: require('../templates/statistics/statistics.html')
+            template: require('html!../templates/statistics/statistics.html')
         });
 
     }

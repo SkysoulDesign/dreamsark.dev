@@ -8,7 +8,7 @@ export class Accordion implements ComponentInterface {
     register(vue, app) {
 
         vue.component('ark-accordion-item', {
-            template: require('../templates/accordion/accordion-item.html'),
+            template: require('html!../templates/accordion/accordion-item.html'),
             props: {
                 show: Boolean
             },
@@ -21,7 +21,7 @@ export class Accordion implements ComponentInterface {
         });
 
         vue.component('ark-accordion', {
-            template: require('../templates/accordion/accordion.html'),
+            template: require('html!../templates/accordion/accordion.html'),
             data: function () {
                 return {
                     active: null

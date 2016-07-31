@@ -7,7 +7,7 @@ var Progress = (function () {
     }
     Progress.prototype.register = function (Vue) {
         Vue.component('ark-progress', {
-            template: require('../templates/progress.html'),
+            template: require('html!../templates/progress.html'),
             props: {
                 data: {
                     type: Number,

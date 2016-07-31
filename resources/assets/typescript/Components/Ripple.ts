@@ -8,7 +8,7 @@ export class Ripple implements ComponentInterface {
     register(Vue) {
 
         Vue.component('ripple-button', {
-            template: require('../templates/ripple-button.html'),
+            template: require('html!../templates/ripple-button.html'),
             props: ['type'],
             methods: {
                 submit(e:MouseEvent) {

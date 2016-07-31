@@ -8,7 +8,7 @@ export class Code implements ComponentInterface {
     register(vue, app) {
 
         vue.component('ark-code', {
-            template: require('../templates/code/code.html'),
+            template: require('html!../templates/code/code.html'),
             ready(){
 
                 let content = this.$el.children.item(0);

@@ -7,7 +7,7 @@ var Modal = (function () {
     }
     Modal.prototype.register = function (vue, app) {
         vue.component('ark-modal', {
-            template: require('../templates/modal/modal.html'),
+            template: require('html!../templates/modal/modal.html'),
             props: {
                 trigger: {
                     type: String,

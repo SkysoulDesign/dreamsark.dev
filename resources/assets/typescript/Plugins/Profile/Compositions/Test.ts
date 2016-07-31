@@ -3,7 +3,7 @@ import {AbstractComposition} from "../Abstract/AbstractComposition";
 /**
  * Main Composition
  */
-export class Main extends AbstractComposition {
+export class Test extends AbstractComposition {
 
     stage(scene, camera, characters) {
 

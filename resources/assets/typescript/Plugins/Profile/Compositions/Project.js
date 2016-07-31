@@ -24,7 +24,7 @@ var Project = (function (_super) {
         app.controls.enableZoom = true;
         app.controls.enablePan = true;
     };
-    Project.prototype.characters = function () {
+    Project.prototype.objects = function () {
         return [
             // '*',
             'artist3D',
@@ -58,15 +58,15 @@ var Project = (function (_super) {
             'voice-artist',
         ];
     };
-    Project.prototype.stage = function (scene, camera, characters) {
+    Project.prototype.stage = function (scene, camera, objects) {
         var position = 0;
-        for (var i in characters) {
-            characters[i].position.setX(position);
+        for (var i in objects) {
+            objects[i].position.setX(position);
             position += 50;
-            scene.add(characters[i]);
+            scene.add(objects[i]);
         }
     };
-    Project.prototype.update = function (scene, camera, characters, time, delta) {
+    Project.prototype.update = function (scene, camera, objects, time, delta) {
     };
     return Project;
 }(AbstractComposition_1.AbstractComposition));

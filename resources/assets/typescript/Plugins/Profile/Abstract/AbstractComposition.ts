@@ -6,7 +6,7 @@ export abstract class AbstractComposition implements ComposableInterface {
     boot(app) {
     }
 
-    characters() {
+    objects() {
         return false;
     }
 

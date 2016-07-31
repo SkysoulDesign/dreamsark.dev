@@ -11,7 +11,7 @@ export class Quote implements ComponentInterface {
          * @todo bug. when tab is not active, the quote will be display none then when try to get offsetHeight will return 0
          */
         vue.component('ark-quote', {
-                template: require('../templates/quote/quote.html'),
+                template: require('html!../templates/quote/quote.html'),
                 props: {
                     expandable: {
                         type: Boolean,

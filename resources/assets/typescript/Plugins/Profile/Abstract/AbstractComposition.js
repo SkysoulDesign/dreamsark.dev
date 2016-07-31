@@ -4,7 +4,7 @@ var AbstractComposition = (function () {
     }
     AbstractComposition.prototype.boot = function (app) {
     };
-    AbstractComposition.prototype.characters = function () {
+    AbstractComposition.prototype.objects = function () {
         return false;
     };
     AbstractComposition.prototype.setup = function (app) {

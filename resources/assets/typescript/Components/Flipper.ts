@@ -12,7 +12,7 @@ export class Flipper implements ComponentInterface {
         }
 
         vue.component('ark-flipper', {
-            template: require('../templates/flipper/flipper.html'),
+            template: require('html!../templates/flipper/flipper.html'),
             props: {
                 class: String,
             },
@@ -29,7 +29,7 @@ export class Flipper implements ComponentInterface {
 
         vue.component('ark-flipper-content', {
 
-            template: require('../templates/flipper/side.html'),
+            template: require('html!../templates/flipper/side.html'),
             props: {
                 class: String,
                 side: {

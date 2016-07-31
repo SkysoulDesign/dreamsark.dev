@@ -8,17 +8,17 @@ var AbstractComposition_1 = require("../Abstract/AbstractComposition");
 /**
  * Main Composition
  */
-var Main = (function (_super) {
-    __extends(Main, _super);
-    function Main() {
+var Test = (function (_super) {
+    __extends(Test, _super);
+    function Test() {
         _super.apply(this, arguments);
     }
-    Main.prototype.stage = function (scene, camera, characters) {
+    Test.prototype.stage = function (scene, camera, characters) {
         scene;
         camera;
         characters;
     };
-    return Main;
+    return Test;
 }(AbstractComposition_1.AbstractComposition));
-exports.Main = Main;
+exports.Test = Test;
 //# sourceMappingURL=Test.js.map

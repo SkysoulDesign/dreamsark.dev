@@ -10,7 +10,7 @@ export class Main extends AbstractComposition {
     private scene;
     private activeProfile;
 
-    characters() {
+    objects() {
         return [
             'base',
             this.activeProfile
@@ -34,26 +34,26 @@ export class Main extends AbstractComposition {
 
     }
 
-    stage(scene, camera, characters) {
+    stage(scene, camera, objects) {
 
         this.scene = scene;
 
-        characters.base.position.set(0, -25, 2);
-        characters.base.rotation.y = Math.PI;
+        objects.base.position.set(0, -25, 2);
+        objects.base.rotation.y = Math.PI;
 
         scene.add(
-            characters[this.activeProfile], characters.base
+            objects[this.activeProfile], objects.base
         );
 
     }
 
-    update(scene, camera, characters, time, delta) {}
+    update(scene, camera, objects, time, delta) {}
 
     private switch(name, localized) {
 
         window['dreamsark'].vueInstance.$set('position', name);
 
-        this.app.characters.get(name).then(profile => {
+        this.app.objects.get(name).then(profile => {
 
             if (this.activeProfile == profile.name)
                 return console.log('already active');

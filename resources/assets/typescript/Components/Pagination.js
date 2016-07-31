@@ -10,7 +10,7 @@ var Pagination = (function () {
          * Pagination
          */
         Vue.component('ark-pagination', {
-            template: require('../templates/pagination/pagination.html'),
+            template: require('html!../templates/pagination/pagination.html'),
             props: {
                 data: Object
             },
@@ -21,7 +21,7 @@ var Pagination = (function () {
             }
         });
         Vue.component('ark-pagination-step', {
-            template: require('../templates/pagination/step.html')
+            template: require('html!../templates/pagination/step.html')
         });
     };
     return Pagination;

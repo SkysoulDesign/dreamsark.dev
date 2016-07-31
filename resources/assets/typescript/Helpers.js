@@ -59,4 +59,7 @@ exports.submitForm = function (form) {
     document.body.appendChild(form);
     form.submit();
 };
+exports.requireAll = function (requireContext) {
+    return requireContext.keys().map(requireContext);
+};
 //# sourceMappingURL=Helpers.js.map

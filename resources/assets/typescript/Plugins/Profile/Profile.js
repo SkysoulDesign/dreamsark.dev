@@ -5,9 +5,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Plugins_1 = require("../Plugins");
-window['dreamsark'].exposes({
-    THREE: require('three')
-});
+require("expose?THREE!three");
+// window['dreamsark'].exposes({
+//     THREE: require('three')
+// });
 /**
  * Profile Class
  */
@@ -26,7 +27,7 @@ var Profile = (function (_super) {
             manager: require('./Classes/Manager'),
             loader: require('./Classes/Loader'),
             animator: require('./Classes/animator'),
-            characters: require('./Classes/Characters'),
+            objects: require('./Classes/Objects'),
             material: require('./Classes/Material'),
             animation: require('./Classes/Animation'),
             effectComposer: require('./Classes/EffectComposer')

@@ -14,7 +14,7 @@ export class Project extends AbstractComposition {
         app.controls.enablePan = true
     }
 
-    characters() {
+    objects() {
         return [
             // '*',
             'artist3D',
@@ -49,25 +49,25 @@ export class Project extends AbstractComposition {
         ];
     }
 
-    stage(scene, camera, characters) {
+    stage(scene, camera, objects) {
 
         let position = 0;
 
-        for (let i in characters) {
+        for (let i in objects) {
 
-            characters[i].position.setX(
+            objects[i].position.setX(
                 position
             )
 
             position += 50
 
-            scene.add(characters[i])
+            scene.add(objects[i])
 
         }
 
     }
 
-    update(scene, camera, characters, time, delta) {
+    update(scene, camera, objects, time, delta) {
 
     }
 

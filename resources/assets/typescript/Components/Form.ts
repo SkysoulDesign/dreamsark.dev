@@ -62,7 +62,7 @@ export class Form implements ComponentInterface {
         })
 
         vue.component('ark-fields', {
-                template: require('../templates/form/fields.html'),
+                template: require('html!../templates/form/fields.html'),
                 props: {
                     gap: {
                         type: String,
@@ -73,7 +73,7 @@ export class Form implements ComponentInterface {
         );
 
         vue.component('ark-button', {
-                template: require('../templates/form/button.html'),
+                template: require('html!../templates/form/button.html'),
                 props: {
                     type: {
                         type: String,
@@ -101,7 +101,7 @@ export class Form implements ComponentInterface {
         );
 
         vue.component('ark-ajax-button', {
-                template: require('../templates/form/ajax-button.html'),
+                template: require('html!../templates/form/ajax-button.html'),
                 data: function () {
                     return {
                         disabled: false,
@@ -181,7 +181,7 @@ export class Form implements ComponentInterface {
         );
 
         vue.component('ark-input', {
-            template: require('../templates/form/input.html'),
+            template: require('html!../templates/form/input.html'),
             props: {
                 name: String,
                 required: Boolean,
@@ -239,7 +239,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-dropdown-option', {
-            template: require('../templates/form/dropdown-option.html'),
+            template: require('html!../templates/form/dropdown-option.html'),
             props: {
                 icon: String,
                 href: String,
@@ -273,7 +273,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-dropdown', {
-                template: require('../templates/form/dropdown.html'),
+                template: require('html!../templates/form/dropdown.html'),
                 data: function () {
                     return {
                         active: false
@@ -311,7 +311,7 @@ export class Form implements ComponentInterface {
         );
 
         vue.component('ark-form-header', {
-            template: require('../templates/form/modal-form/form-header.html'),
+            template: require('html!../templates/form/modal-form/form-header.html'),
             props: {
                 class: String,
                 color: {
@@ -322,7 +322,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-switcher', {
-            template: require('../templates/form/switcher.html'),
+            template: require('html!../templates/form/switcher.html'),
             data: function () {
                 return {
                     classes: ['--a', '--b'],
@@ -346,7 +346,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-switcher-option', {
-            template: require('../templates/form/switcher-option.html'),
+            template: require('html!../templates/form/switcher-option.html'),
             props: {
                 value: String,
                 checked: Boolean,
@@ -364,7 +364,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-form-step', {
-            template: require('../templates/form/modal-form/form-step.html'),
+            template: require('html!../templates/form/modal-form/form-step.html'),
             data: function () {
                 return {
                     step: getParentForm(this).steps++
@@ -380,7 +380,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-textarea', {
-            template: require('../templates/form/textarea.html'),
+            template: require('html!../templates/form/textarea.html'),
             props: {
                 name: String,
                 rows: {
@@ -445,7 +445,7 @@ export class Form implements ComponentInterface {
         });
 
         vue.component('ark-form', {
-            template: require('../templates/form/form.html'),
+            template: require('html!../templates/form/form.html'),
             data: function () {
                 return {
                     steps: 1,

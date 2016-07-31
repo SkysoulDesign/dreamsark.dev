@@ -8,7 +8,7 @@ export class Steps implements ComponentInterface {
     register(vue, app) {
 
         vue.component('ark-steps', {
-                template: require('../templates/steps/steps.html'),
+                template: require('html!../templates/steps/steps.html'),
                 data: function () {
                     return {
                         steps: 1
@@ -29,7 +29,7 @@ export class Steps implements ComponentInterface {
         );
 
         vue.component('ark-step', {
-                template: require('../templates/steps/step.html'),
+                template: require('html!../templates/steps/step.html'),
                 data: function () {
                     return {
                         step: this.$parent.steps++,

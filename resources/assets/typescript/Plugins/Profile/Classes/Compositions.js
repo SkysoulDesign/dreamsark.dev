@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Components_1 = require("../Abstract/Components");
+var Helpers_1 = require("../../../Helpers");
 /**
  * Compositions Class
  */
@@ -12,10 +13,11 @@ var Compositions = (function (_super) {
     __extends(Compositions, _super);
     function Compositions() {
         _super.apply(this, arguments);
-        this.compositions = {
-            main: require('../Compositions/Main'),
-            project: require('../Compositions/Project')
-        };
+        this.compositions = Helpers_1.requireAll(require.context("../Compositions", true, /\.js$/));
+        // private compositions = {
+        //     main: require('../Compositions/Main'),
+        //     project: require('../Compositions/Project')
+        // };
         this.initialized = {};
         this.active = null;
     }
@@ -28,8 +30,11 @@ var Compositions = (function (_super) {
      * @returns {any}
      */
     Compositions.prototype.get = function (name) {
-        if (this.initialized.hasOwnProperty(name))
-            return this.initialized[name];
+        for (var index in this.initialized) {
+            if (this.initialized[index].constructor.name.toLowerCase() === name) {
+                return this.initialized[index];
+            }
+        }
         console.log("There is no composition called: " + name);
     };
     Compositions.prototype.start = function (compositionName, payload) {
@@ -44,25 +49,25 @@ var Compositions = (function (_super) {
          * Setup The scene
          */
         composition.setup.apply(composition, [this.app].concat(payload));
-        var characters = {}, characterList = composition.characters(), callback = function () {
-            composition.stage(_this.app.scene, _this.app.camera, characters);
+        var objects = {}, objectList = composition.objects(), callback = function () {
+            composition.stage(_this.app.scene, _this.app.camera, objects);
             /**
-             * Set Active Composition after Loading every character
+             * Set Active Composition after Loading every object
              * @type {any}
              */
             _this.active = {
-                characters: characters,
+                objects: objects,
                 composition: composition
             };
         };
-        if (!characterList)
+        if (!objectList)
             return callback();
         var counter = 0;
-        characterList.forEach(function (name) {
-            _this.app.characters.get(name).then(function (character) {
-                characters[name] = character;
+        objectList.forEach(function (name) {
+            _this.app.objects.get(name).then(function (object) {
+                objects[name] = object;
                 counter++;
-                if (characterList.length === counter) {
+                if (objectList.length === counter) {
                     callback();
                 }
             });
@@ -71,7 +76,7 @@ var Compositions = (function (_super) {
     Compositions.prototype.update = function (time, delta) {
         if (!this.active)
             return;
-        this.active.composition.update(this.app.scene, this.app.camera, this.active.characters, time, delta);
+        this.active.composition.update(this.app.scene, this.app.camera, this.active.objects, time, delta);
     };
     return Compositions;
 }(Components_1.Components));

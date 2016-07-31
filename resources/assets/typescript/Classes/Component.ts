@@ -1,4 +1,5 @@
 import {Application} from "../Abstract/Aplication";
+import {requireAll} from "../Helpers";
 
 /**
  * Components
@@ -14,22 +15,15 @@ export class Component extends Application {
      * Components list
      * @type ComponentInterface[]
      */
-    private components = [
-        require('../Components/Nav'),
-        require('../Components/Form'),
-        require('../Components/Ripple'),
-        require('../Components/Statistics'),
-        require('../Components/Progress'),
-        require('../Components/Modal'),
-        require('../Components/Social'),
-        require('../Components/Flipper'),
-        require('../Components/Steps'),
-        require('../Components/Quote'),
-        require('../Components/Animation'),
-        require('../Components/Code'),
-        require('../Components/Pagination'),
-        require('../Components/Accordion'),
-    ];
+    requireAll(requireContext) {
+        return requireContext.keys().map(function (item) {
+            return 'hora'
+        });
+    }
+
+    private components = requireAll(
+        require.context("../Components", false, /\.js$/)
+    );
 
     /**
      * Register Components
@@ -39,7 +33,9 @@ export class Component extends Application {
         super(app);
 
         this.components.forEach(component => {
+
             for (let name in component) {
+
                 if (component.hasOwnProperty(name)) {
                     let instance = new component[name];
                     instance.register(

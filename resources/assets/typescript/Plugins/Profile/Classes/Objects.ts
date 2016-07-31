@@ -1,53 +1,20 @@
 import {Character} from "../Abstract/Character";
 import {Components} from "../Abstract/Components";
 import {countKeys} from "../../Helpers";
-import {toCamelCase, extend} from "../../../Helpers";
+import {toCamelCase, extend, requireAll} from "../../../Helpers";
 
 /**
- * Characters Class
+ * Objects Class
  */
-export class Characters extends Components {
+export class Objects extends Components {
 
     /**
-     * Characters Collection
+     * Objects Collection
      * @type {Character[]}
      */
-    private collection = [
-        require('../Characters/Actor'),
-        require('../Characters/Actress'),
-        require('../Characters/Artist3D'),
-        require('../Characters/Animation'),
-        require('../Characters/ArtDirector'),
-        require('../Characters/ScreenWriter'),
-        require('../Characters/Director'),
-        require('../Characters/Editor'),
-        require('../Characters/CameraDirector'),
-        require('../Characters/ConceptArtist'),
-        require('../Characters/CostumeDesigner'),
-        require('../Characters/Effects'),
-        require('../Characters/ExecutiveProducer'),
-        require('../Characters/LightingArtist'),
-        require('../Characters/PackagingDesigner'),
-        require('../Characters/PreStageProjectCoordinator'),
-        require('../Characters/ProjectCoordinator'),
-        require('../Characters/Prop'),
-        require('../Characters/RecordingArtist'),
-        require('../Characters/RenderAndComposite'),
-        require('../Characters/RiggingArtist'),
-        require('../Characters/ScriptSupervisor'),
-        require('../Characters/SetDesigner'),
-        require('../Characters/SoundEffect'),
-        require('../Characters/StageManager'),
-        require('../Characters/StoryboardArtist'),
-        require('../Characters/SwingGang'),
-        require('../Characters/VoiceArtist'),
-        require('../Characters/MakeUpArtist'),
-
-        /**
-         * Object
-         */
-        require('../Characters/Base'),
-    ]
+    private collection = requireAll(
+        require.context("../Objects", false, /\.js$/)
+    );
 
     /**
      * List of Initialized Object
@@ -59,13 +26,13 @@ export class Characters extends Components {
     boot(app) {
 
         this.loader = app.loader;
-        this.collection.forEach(character => {
+        this.collection.forEach(object => {
 
-            for (let name in character) {
-                if (character.hasOwnProperty(name)) {
+            for (let name in object) {
+                if (object.hasOwnProperty(name)) {
                     this.init(name, {
                         loaded: false,
-                        object: character[name]
+                        object: object[name]
                     })
                 }
             }

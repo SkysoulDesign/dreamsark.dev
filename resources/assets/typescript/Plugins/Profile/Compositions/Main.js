@@ -14,7 +14,7 @@ var Main = (function (_super) {
     function Main() {
         _super.apply(this, arguments);
     }
-    Main.prototype.characters = function () {
+    Main.prototype.objects = function () {
         return [
             'base',
             this.activeProfile
@@ -31,17 +31,17 @@ var Main = (function (_super) {
             }
         });
     };
-    Main.prototype.stage = function (scene, camera, characters) {
+    Main.prototype.stage = function (scene, camera, objects) {
         this.scene = scene;
-        characters.base.position.set(0, -25, 2);
-        characters.base.rotation.y = Math.PI;
-        scene.add(characters[this.activeProfile], characters.base);
+        objects.base.position.set(0, -25, 2);
+        objects.base.rotation.y = Math.PI;
+        scene.add(objects[this.activeProfile], objects.base);
     };
-    Main.prototype.update = function (scene, camera, characters, time, delta) { };
+    Main.prototype.update = function (scene, camera, objects, time, delta) { };
     Main.prototype.switch = function (name, localized) {
         var _this = this;
         window['dreamsark'].vueInstance.$set('position', name);
-        this.app.characters.get(name).then(function (profile) {
+        this.app.objects.get(name).then(function (profile) {
             if (_this.activeProfile == profile.name)
                 return console.log('already active');
             var current = _this.scene.getObjectByName(_this.activeProfile);

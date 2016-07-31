@@ -12,7 +12,7 @@ var Social = (function () {
             ]
         });
         vue.component('ark-social', {
-            template: require('../templates/social-login/social-login.html'),
+            template: require('html!../templates/social-login/social-login.html'),
             props: {
                 url: {
                     type: String,
@@ -31,7 +31,7 @@ var Social = (function () {
             }
         });
         vue.component('ark-wechat', {
-            template: require('../templates/social-login/wechat.html'),
+            template: require('html!../templates/social-login/wechat.html'),
             methods: {
                 login: function () {
                     this.$parent.redirect('weixin');
@@ -39,7 +39,7 @@ var Social = (function () {
             }
         });
         vue.component('ark-qq', {
-            template: require('../templates/social-login/qq.html'),
+            template: require('html!../templates/social-login/qq.html'),
             methods: {
                 login: function () {
                     this.$parent.redirect('qq');
@@ -47,7 +47,7 @@ var Social = (function () {
             }
         });
         vue.component('ark-weibo', {
-            template: require('../templates/social-login/weibo.html'),
+            template: require('html!../templates/social-login/weibo.html'),
             methods: {
                 login: function () {
                     this.$parent.redirect('weibo');

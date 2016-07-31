@@ -11,6 +11,7 @@ use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
@@ -91,7 +92,9 @@ class ProjectController extends Controller
         $user = $request->user();
         $stage = $project->getAttribute('stage');
 
-        if ($stage instanceof Review) {
+        if ($stage instanceof Review or
+            $stage instanceof Fund
+        ) {
             return view('project.show')->with('project', $project);
         }
 

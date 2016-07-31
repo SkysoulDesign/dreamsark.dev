@@ -70,3 +70,7 @@ export var submitForm = (form:HTMLFormElement) => {
     form.submit();
 
 }
+
+export var requireAll = (requireContext) => {
+    return requireContext.keys().map(requireContext);
+}

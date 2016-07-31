@@ -15,7 +15,7 @@ export class Social implements ComponentInterface {
 
         vue.component('ark-social', {
 
-            template: require('../templates/social-login/social-login.html'),
+            template: require('html!../templates/social-login/social-login.html'),
 
             props: {
                 url: {
@@ -41,7 +41,7 @@ export class Social implements ComponentInterface {
         });
 
         vue.component('ark-wechat', {
-            template: require('../templates/social-login/wechat.html'),
+            template: require('html!../templates/social-login/wechat.html'),
             methods: {
                 login(){
                     this.$parent.redirect('weixin');
@@ -50,7 +50,7 @@ export class Social implements ComponentInterface {
         });
 
         vue.component('ark-qq', {
-            template: require('../templates/social-login/qq.html'),
+            template: require('html!../templates/social-login/qq.html'),
             methods: {
                 login(){
                     this.$parent.redirect('qq');
@@ -59,7 +59,7 @@ export class Social implements ComponentInterface {
         });
 
         vue.component('ark-weibo', {
-            template: require('../templates/social-login/weibo.html'),
+            template: require('html!../templates/social-login/weibo.html'),
             methods: {
                 login(){
                     this.$parent.redirect('weibo');

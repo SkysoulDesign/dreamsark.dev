@@ -8,7 +8,7 @@ export class Progress implements ComponentInterface {
     register(Vue) {
 
         Vue.component('ark-progress', {
-            template: require('../templates/progress.html'),
+            template: require('html!../templates/progress.html'),
             props: {
                 data: {
                     type: Number,

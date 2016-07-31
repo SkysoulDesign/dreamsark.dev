@@ -8,72 +8,38 @@ var Components_1 = require("../Abstract/Components");
 var Helpers_1 = require("../../Helpers");
 var Helpers_2 = require("../../../Helpers");
 /**
- * Characters Class
+ * Objects Class
  */
-var Characters = (function (_super) {
-    __extends(Characters, _super);
-    function Characters() {
+var Objects = (function (_super) {
+    __extends(Objects, _super);
+    function Objects() {
         _super.apply(this, arguments);
         /**
-         * Characters Collection
+         * Objects Collection
          * @type {Character[]}
          */
-        this.collection = [
-            require('../Characters/Actor'),
-            require('../Characters/Actress'),
-            require('../Characters/Artist3D'),
-            require('../Characters/Animation'),
-            require('../Characters/ArtDirector'),
-            require('../Characters/ScreenWriter'),
-            require('../Characters/Director'),
-            require('../Characters/Editor'),
-            require('../Characters/CameraDirector'),
-            require('../Characters/ConceptArtist'),
-            require('../Characters/CostumeDesigner'),
-            require('../Characters/Effects'),
-            require('../Characters/ExecutiveProducer'),
-            require('../Characters/LightingArtist'),
-            require('../Characters/PackagingDesigner'),
-            require('../Characters/PreStageProjectCoordinator'),
-            require('../Characters/ProjectCoordinator'),
-            require('../Characters/Prop'),
-            require('../Characters/RecordingArtist'),
-            require('../Characters/RenderAndComposite'),
-            require('../Characters/RiggingArtist'),
-            require('../Characters/ScriptSupervisor'),
-            require('../Characters/SetDesigner'),
-            require('../Characters/SoundEffect'),
-            require('../Characters/StageManager'),
-            require('../Characters/StoryboardArtist'),
-            require('../Characters/SwingGang'),
-            require('../Characters/VoiceArtist'),
-            require('../Characters/MakeUpArtist'),
-            /**
-             * Object
-             */
-            require('../Characters/Base'),
-        ];
+        this.collection = Helpers_2.requireAll(require.context("../Objects", false, /\.js$/));
         /**
          * List of Initialized Object
          * @type {THREE.Object3D[]}
          */
         this.initialized = {};
     }
-    Characters.prototype.boot = function (app) {
+    Objects.prototype.boot = function (app) {
         var _this = this;
         this.loader = app.loader;
-        this.collection.forEach(function (character) {
-            for (var name_1 in character) {
-                if (character.hasOwnProperty(name_1)) {
+        this.collection.forEach(function (object) {
+            for (var name_1 in object) {
+                if (object.hasOwnProperty(name_1)) {
                     _this.init(name_1, {
                         loaded: false,
-                        object: character[name_1]
+                        object: object[name_1]
                     });
                 }
             }
         });
     };
-    Characters.prototype.init = function (name, character) {
+    Objects.prototype.init = function (name, character) {
         var _this = this;
         name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
@@ -115,7 +81,7 @@ var Characters = (function (_super) {
      * @param name
      * @returns {Promise<T>|Promise}
      */
-    Characters.prototype.get = function (name) {
+    Objects.prototype.get = function (name) {
         var _this = this;
         name = Helpers_2.toCamelCase(name);
         return new Promise(function (accept, reject) {
@@ -141,7 +107,7 @@ var Characters = (function (_super) {
      * @param models
      * @param callback
      */
-    Characters.prototype.load = function (models, callback) {
+    Objects.prototype.load = function (models, callback) {
         var counter = 1;
         var max = Helpers_1.countKeys(models);
         var _loop_1 = function(name_2) {
@@ -158,7 +124,7 @@ var Characters = (function (_super) {
             _loop_1(name_2);
         }
     };
-    return Characters;
+    return Objects;
 }(Components_1.Components));
-exports.Characters = Characters;
-//# sourceMappingURL=Characters.js.map
+exports.Objects = Objects;
+//# sourceMappingURL=Objects.js.map

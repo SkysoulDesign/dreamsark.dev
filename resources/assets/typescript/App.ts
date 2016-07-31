@@ -43,6 +43,7 @@ class App {
             for (let component in components) {
 
                 for (let name in components[component]) {
+
                     logger.group(name, () => {
                         container[component] = new components[component][name](container);
                     })
@@ -50,8 +51,9 @@ class App {
 
             }
 
-            for (let component in components)
+            for (let component in components){
                 container[component].boot(container);
+            }
 
         })
 
@@ -94,9 +96,10 @@ class App {
 
         if (this.plugins.hasOwnProperty(name)) {
 
-            if(this.plugins[name] instanceof Function){
+            if (this.plugins[name] instanceof Function) {
                 return new this.plugins[name](this, ...args)
-            };
+            }
+            ;
 
             return this.plugins[name];
 

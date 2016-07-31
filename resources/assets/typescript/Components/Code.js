@@ -7,7 +7,7 @@ var Code = (function () {
     }
     Code.prototype.register = function (vue, app) {
         vue.component('ark-code', {
-            template: require('../templates/code/code.html'),
+            template: require('html!../templates/code/code.html'),
             ready: function () {
                 var content = this.$el.children.item(0);
                 content.style.display = 'none';

@@ -43,8 +43,9 @@ var App = (function () {
             for (var component in components) {
                 _loop_1(component);
             }
-            for (var component in components)
+            for (var component in components) {
                 container[component].boot(container);
+            }
         });
     };
     /**
