@@ -38,7 +38,6 @@
         </div>
 
         <div class="small-10 columns">
-
             @foreach($projects as $project)
                 <div class="item --hover">
 
