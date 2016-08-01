@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
-use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\RewardableTrait;
@@ -12,7 +11,6 @@ use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\IdeaPresenter;
 use DreamsArk\Repositories\Project\Idea\IdeaRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * Class Idea
@@ -49,7 +47,7 @@ class Idea extends Model
      *
      * @var array
      */
-    protected $fillable = ['content', 'reward'];
+    protected $fillable = ['content'];
 
     /**
      * The attributes that should be cast to native types.

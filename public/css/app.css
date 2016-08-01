@@ -4510,6 +4510,9 @@ button, .button {
   padding-left: 0;
   color: #b8b8b8; }
 
+[v-cloak] {
+  display: none; }
+
 .header h1, header h1, .header h2, header h2, .header h3, header h3, .header h4, header h4, .header h5, header h5, .header h6, header h6 {
   margin: 0; }
 

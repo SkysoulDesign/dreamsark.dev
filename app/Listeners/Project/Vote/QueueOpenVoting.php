@@ -3,7 +3,7 @@
 namespace DreamsArk\Listeners\Project\Vote;
 
 use Carbon\Carbon;
-use DreamsArk\Events\Project\Vote\VoteWasCreated;
+use DreamsArk\Events\Event;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Queue\QueueManager;
@@ -13,7 +13,7 @@ use Illuminate\Queue\QueueManager;
  *
  * @package DreamsArk\Listeners\Project\Vote
  */
-class QueueOpenVotingCommand
+class QueueOpenVoting
 {
 
     /**
@@ -41,11 +41,9 @@ class QueueOpenVotingCommand
     /**
      * Handle the event.
      *
-     * @param  VoteWasCreated $event
-     *
-     * @return void
+     * @param Event $event
      */
-    public function handle(VoteWasCreated $event)
+    public function handle(Event $event)
     {
 
         $delay = $event->vote->open_date->timestamp - $this->carbon->now()->timestamp;

@@ -8,7 +8,6 @@ use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailProjectStageJob;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
-use Illuminate\Support\Collection;
 
 /**
  * Class CloseVotingJob
@@ -47,7 +46,6 @@ class CloseVotingJob extends Job
         /**
          * Get which Submission had more Votes
          */
-        /** @var Collection $submissions */
         $submissions = $this->vote
             ->getAttribute('votable')
             ->submissions->load('votes')

@@ -44,7 +44,7 @@ class Synapse extends Model
      *
      * @var array
      */
-    protected $fillable = ['content', 'reward'];
+    protected $fillable = ['content'];
 
     /**
      * The attributes that should be cast to native types.

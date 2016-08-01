@@ -2,7 +2,7 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Events\User\Project\ProjectWasCreated;
 use DreamsArk\Jobs\User\Coins\ChargeUserJob;
 
 /**

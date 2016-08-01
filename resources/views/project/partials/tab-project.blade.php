@@ -48,6 +48,15 @@
             </div>
         @endif
 
+        @if(!$project->stage->active)
+            <div class="small-10 columns message --color-danger +center">
+                <h1>Project has failed</h1>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, aperiam consequatur consequuntur
+                corporis dignissimos distinctio, doloribus, dolorum ducimus maxime minus modi neque nisi quo rem
+                temporibus ullam vel. Delectus, iure.
+            </div>
+        @endif
+
         <div class="small-10 columns segment --color-primary">
             <div class="row align-center align-middle --large-padding">
                 <div class="small-4 columns project-page__right-divider">
@@ -104,7 +113,7 @@
                 {!! $project->stage->submission->content !!}
             </div>
 
-        @else
+        @elseif($project->stage->active)
 
             @forelse($submissions as $submission)
 

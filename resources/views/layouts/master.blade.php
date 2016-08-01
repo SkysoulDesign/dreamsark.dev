@@ -8,7 +8,7 @@
     <meta name="form-data" content="{{ json_encode(array_except(old(), ['password', '_token'])) }}">
     <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=no">
 
-    <title>@lang('general.dreamsark')</title>
+    <title>@lang('general.dreamsark') - {{ request()->route()->getName() }}</title>
 
 @yield('meta-tags')
 

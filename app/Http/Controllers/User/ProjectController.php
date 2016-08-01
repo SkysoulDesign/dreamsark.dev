@@ -3,11 +3,13 @@
 namespace DreamsArk\Http\Controllers\User;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Http\Requests\Project\ProjectEdition;
 use DreamsArk\Http\Requests\User\Project\ProjectCreation;
 use DreamsArk\Http\Requests\User\Project\ProjectPublication;
 use DreamsArk\Jobs\Project\CreateProjectJob;
 use DreamsArk\Jobs\Project\PublishProjectJob;
-use DreamsArk\Jobs\User\Project\UpdateDraftJob;
+use DreamsArk\Jobs\User\Project\UpdateProjectJob;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,7 +37,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         return view('user.project.index')
-            ->with('projects', $request->user()->projects()->actives()->get())
+            ->with('projects', $request->user()->projects()->active()->get())
             ->with('failed_projects', $request->user()->projects()->failed()->get());
     }
 
@@ -62,6 +64,34 @@ class ProjectController extends Controller
         $project = $this->dispatch(new CreateProjectJob(
             $request->user(), $request->except('reward'), $request->get('reward')
         ));
+
+        return redirect()->route('project.show', $project);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param \DreamsArk\Models\Project\Project $project
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function edit(Project $project)
+    {
+        return view('user.project.edit')->with('project', $project);
+    }
+
+    /**
+     * Project Update
+     *
+     * @param ProjectEdition $request
+     * @param \DreamsArk\Models\Project\Project $project
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ProjectEdition $request, Project $project)
+    {
+
+        $this->dispatch(
+            new UpdateProjectJob($project, $request->all())
+        );
 
         return redirect()->route('project.show', $project);
     }
@@ -114,34 +144,6 @@ class ProjectController extends Controller
 
         return view('user.activity.enroll-list', compact('enrollers'))
             ->with('pagination', $this->pagination);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Draft $draft
-     *
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
-     */
-    public function edit(Draft $draft)
-    {
-        return view('user.project.edit')->with('project', $draft);
-    }
-
-    /**
-     * Draft Update
-     *
-     * @param ProjectCreation $request
-     * @param Draft $draft
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ProjectCreation $request, Draft $draft)
-    {
-        dispatch(new UpdateDraftJob($draft, $request->user(), $request->all()));
-
-        return redirect()->back()->withSuccess(trans('project.updated'));
     }
 
     /**

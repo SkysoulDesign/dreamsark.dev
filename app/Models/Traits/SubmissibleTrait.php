@@ -25,7 +25,7 @@ trait SubmissibleTrait
     /**
      * Submission Relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function submissions()
     {

@@ -14,11 +14,11 @@ use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ProjectPresenter;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Query\Builder;
 
 /**
  * Class Project
@@ -75,41 +75,52 @@ class Project extends Model
      * Scope a query to only show active entries.
      *
      * @param $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query)
     {
-        $query->whereHas('synapse', function ($query) {
-            $query->select('id')->where('active', '=', true);
-        })->orWhereHas('idea', function ($query) {
-            $query->select('id')->where('active', '=', true);
-        })->orWhereHas('script', function ($query) {
-            $query->select('id')->where('active', '=', true);
+        $query->whereHas('stage', function (Builder $query) {
+            foreach (['idea', 'synapse', 'script'] as $stage) {
+                $query->orWhereHas($stage, function (Builder $query) {
+                    $query->where('active', false)->has('submission')->select('id');
+                });
+            }
         });
+    }
 
-        return $this->addOrderBy($query->where('active', true));
+    /**
+     * @param Builder $query
+     */
+    public function scopeActives($query)
+    {
+//        $query->whereHas('synapse', function ($query) {
+//            $query->where('active', '=', true);
+//        })->orWhereHas('idea', function ($query) {
+//            $query->where('active', '=', true);
+//        })->orWhereHas('script', function ($query) {
+//            $query->where('active', '=', true);
+//        });
     }
 
     /**
      * Scope a query to only show failed entries.
      *
      * @param $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeFailed($query)
+    public function scopeFailed(Builder $query)
     {
+        $query->whereHas('stage', function (Builder $query) {
 
-        $query->whereHas('synapse', function ($query) {
-            $query->select('id')->where('active', '=', false);
-        })->orWhereHas('idea', function ($query) {
-            $query->select('id')->where('active', '=', false);
-        })->orWhereHas('script', function ($query) {
-            $query->select('id')->where('active', '=', false);
+            foreach (['idea', 'synapse', 'script'] as $stage) {
+
+                $query->orWhereHas($stage, function ($query) {
+                    $query->where('active', false)->whereDoesntHave('submission')->select('id');
+                });
+
+            }
+
         });
-
-        return $this->addOrderBy($query->where('active', false));
     }
 
     /**
@@ -218,6 +229,11 @@ class Project extends Model
         return $this->morphTo('stageable');
     }
 
+    public function stageable() : MorphTo
+    {
+        return $this->morphTo();
+    }
+
     /**
      * Get what is the next stage of this project
      *
@@ -239,6 +255,14 @@ class Project extends Model
     }
 
     /**
+     * Expenditure Relationship
+     */
+    public function expenditures()
+    {
+        return $this->hasMany(Expenditure::class);
+    }
+
+    /**
      * Alias - Returns all Expensable Expenditures
      *
      * @return mixed
@@ -246,14 +270,6 @@ class Project extends Model
     public function expensable()
     {
         return $this->expenditures()->expensable();
-    }
-
-    /**
-     * Expenditure Relationship
-     */
-    public function expenditures()
-    {
-        return $this->hasMany(Expenditure::class);
     }
 
     /**
@@ -268,6 +284,14 @@ class Project extends Model
             ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
     }
 
+    /**
+     * sum of amount received from "Project Backers" & "voters to enrollers"
+     */
+    public function totalCollected()
+    {
+        return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
+    }
+
     public function enrollVoteTotal()
     {
         /** @var Collection $voteSum */
@@ -278,29 +302,5 @@ class Project extends Model
 
         return $voteSum->sum('amount');
     }
-
-    /**
-     * sum of amount received from "Project Backers" & "voters to enrollers"
-     */
-    public function totalCollected()
-    {
-        return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
-    }
-
-    /**
-     * @param Builder $query
-     */
-    public function scopeActives($query)
-    {
-        $query->whereHas('synapse', function ($query) {
-            $query->where('active', '=', true);
-        })->orWhereHas('idea', function ($query) {
-            $query->where('active', '=', true);
-        })->orWhereHas('script', function ($query) {
-            $query->where('active', '=', true);
-        });
-
-    }
-
 
 }

@@ -1,13 +1,17 @@
-@extends('layouts.master-user')
+@extends('layouts.master', ['class'=>'project-page'])
 
 @section('content')
 
-    <div class="column">
+    @include('user.partials.header', ['header' => false])
+    @include('user.project.partials.header')
 
-        <div class="ui segment">
-            @include('forms.project-edition', $project)
-        </div>
+    @include('user.project.partials.project-create-edit-form', [
+        'method' => 'patch',
+        'action' => route('user.project.update', $project),
+        'submitText' => trans('forms.update'),
+        'bind' =>  collect([ 'name'=> $project->name, 'content'=> $project->stage->content ]),
+        'headerText' => trans('project.review-project'),
+        'nameInput' => ($project->stage instanceof \DreamsArk\Models\Project\Stages\Idea)
+    ])
 
-    </div>
-
-@endsection
+@stop

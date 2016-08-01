@@ -2,7 +2,7 @@
 
 namespace DreamsArk\Jobs\Project;
 
-use DreamsArk\Events\Project\ProjectWasCreated;
+use DreamsArk\Events\User\Project\ProjectWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
@@ -54,7 +54,6 @@ class CreateProjectJob extends Job
      * Execute the command.
      *
      * @param \DreamsArk\Models\Project\Project $project
-     *
      * @return \DreamsArk\Models\Project\Project
      */
     public function handle(Project $project)

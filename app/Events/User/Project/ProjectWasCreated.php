@@ -1,6 +1,6 @@
 <?php
 
-namespace DreamsArk\Events\Project;
+namespace DreamsArk\Events\User\Project;
 
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Project;
@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Class ProjectWasCreated
  *
- * @package DreamsArk\Events\Project
+ * @package DreamsArk\Events\User\Project
  */
 class ProjectWasCreated extends Event
 {
