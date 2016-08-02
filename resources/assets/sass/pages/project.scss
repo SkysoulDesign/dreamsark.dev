@@ -312,4 +312,16 @@
     padding: 5em 3em 3em;
   }
 
+  /**
+  * Review
+  */
+  @include part(review) {
+
+    @include part(steps) {
+      position: absolute;
+      bottom: -20%;
+    }
+
+  }
+
 }
