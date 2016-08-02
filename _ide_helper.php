@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.41 on 2016-07-31.
+ * Generated for Laravel 5.2.41 on 2016-08-01.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -5585,6 +5585,19 @@ namespace {
          */
         public static function makeDirectory($path, $mode = 493, $recursive = false, $force = false){
             return \Illuminate\Filesystem\Filesystem::makeDirectory($path, $mode, $recursive, $force);
+        }
+        
+        /**
+         * Move a directory.
+         *
+         * @param string $from
+         * @param string $to
+         * @param bool $overwrite
+         * @return bool 
+         * @static 
+         */
+        public static function moveDirectory($from, $to, $overwrite = false){
+            return \Illuminate\Filesystem\Filesystem::moveDirectory($from, $to, $overwrite);
         }
         
         /**
@@ -11623,6 +11636,30 @@ namespace {
         }
         
         /**
+         * Increment the value of an item in the session.
+         *
+         * @param string $key
+         * @param int $amount
+         * @return mixed 
+         * @static 
+         */
+        public static function increment($key, $amount = 1){
+            return \Illuminate\Session\Store::increment($key, $amount);
+        }
+        
+        /**
+         * Decrement the value of an item in the session.
+         *
+         * @param string $key
+         * @param int $amount
+         * @return int 
+         * @static 
+         */
+        public static function decrement($key, $amount = 1){
+            return \Illuminate\Session\Store::decrement($key, $amount);
+        }
+        
+        /**
          * Flash a key / value pair to the session.
          *
          * @param string $key
@@ -13559,162 +13596,69 @@ namespace {
     class Form extends \SkysoulDesign\Form\Facade{
         
         /**
-         * Error Class
-         * <div class=".
-         * 
-         * .."> ... </div>
+         * Make Form Tag
          *
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function getErrorMessageClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getErrorMessageClass();
-        }
-        
-        /**
-         * Error Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getErrorClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getErrorClass();
-        }
-        
-        /**
-         * Wrapper Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getWrapperClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getWrapperClass();
-        }
-        
-        /**
-         * Form Class
-         * <div class=".
-         * 
-         * .."> ... </div>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getFormClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getFormClass();
-        }
-        
-        /**
-         * Button Class
-         * <button class=".
-         * 
-         * .."> ... </button>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getButtonClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getButtonClass();
-        }
-        
-        /**
-         * Select Class
-         * <select class=".
-         * 
-         * .."> ... </select>
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getSelectClass(){
-            return \SkysoulDesign\Form\Implementations\Semantic::getSelectClass();
-        }
-        
-        /**
-         * Create Label
-         *
-         * @param string $name
-         * @return $this 
-         * @static 
-         */
-        public static function makeLabel($name){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($name);
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */
-        public static function makeErrorMessage($attributes = null, $errors = null, $title = null){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeErrorMessage($attributes, $errors, $title);
-        }
-        
-        /**
-         * Create Label
-         *
-         * @param $attributes
-         * @param $collection
-         * @param $placeholder
-         * @param $label
-         * @return $this 
-         * @static 
-         */
-        public static function makeSelect($attributes, $collection, $placeholder, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeSelect($attributes, $collection, $placeholder, $label);
+        public static function makeForm($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($tag);
         }
         
         /**
          * Make Form Tag
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @param string $label
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeForm($attributes, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeForm($attributes, $label);
+        public static function makeInput($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($tag);
         }
         
         /**
-         * Make Input
+         * Make Form Tag
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @param string $label
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
          * @return string 
          * @static 
          */
-        public static function makeInput($attributes, $label){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeInput($attributes, $label);
+        public static function makeCheckbox($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeCheckbox($tag);
         }
         
         /**
-         * Make Input
+         * Create Label
          *
-         * @param \SkysoulDesign\Form\Implementations\Collection $attributes
-         * @return string 
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @return $this 
          * @static 
          */
-        public static function makeButton($attributes, $text){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeButton($attributes, $text);
+        public static function makeLabel($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeLabel($tag);
         }
         
         /**
          * Make Wrapper Class
          *
-         * @param $class
+         * @param \SkysoulDesign\Form\Implementations\Tag $tag
+         * @return string 
+         * @static 
+         */
+        public static function makeDiv($tag){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeDiv($tag);
+        }
+        
+        /**
+         * Make Wrapper Class
+         *
          * @param $content
          * @return string 
          * @static 
          */
-        public static function makeWrapper($class, $content){
-            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($class, $content);
+        public static function makeWrapper($tag, $content){
+            return \SkysoulDesign\Form\Implementations\Semantic::makeWrapper($tag, $content);
         }
         
         /**

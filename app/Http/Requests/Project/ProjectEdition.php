@@ -5,11 +5,11 @@ namespace DreamsArk\Http\Requests\Project;
 use DreamsArk\Http\Requests\Request;
 
 /**
- * Class ProjectCreation
+ * Class ProjectEdition
  *
  * @package DreamsArk\Http\Requests\Project
  */
-class ProjectCreation extends Request
+class ProjectEdition extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +29,7 @@ class ProjectCreation extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'reward' => 'required|sometimes|integer|min:1',
+            'reward' => 'integer|min:1|required',
             'content' => 'required',
             'voting_date' => 'required|date|after:today',
         ];

@@ -46,7 +46,6 @@ use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
-use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Models\Project\Stages\Vote;
 
 $app->get('test', function () {
@@ -199,13 +198,14 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('/', UserProjectController::class . '@index')->name('index');
             $app->get('create', UserProjectController::class . '@create')->name('create');
             $app->post('store', UserProjectController::class . '@store')->name('store');
+            $app->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
+            $app->patch('update/{project}', UserProjectController::class . '@update')->name('update');
 
             $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
             $app->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');
             $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
-            $app->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
-            $app->post('update/{draft}', ProjectController::class . '@update')->name('update');
-            $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+
+//            $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
             /**
              * Project Synapse Controller
              */

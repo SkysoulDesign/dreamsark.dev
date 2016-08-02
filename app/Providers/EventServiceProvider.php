@@ -14,19 +14,15 @@ use DreamsArk\Events\Position\ExpenditurePositionWasCreated;
 use DreamsArk\Events\Project\CastWasAdded;
 use DreamsArk\Events\Project\CrewWasAdded;
 use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
-use DreamsArk\Events\Project\IdeaWasCreated;
 use DreamsArk\Events\Project\ProjectStageWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCompleted;
-use DreamsArk\Events\Project\ProjectWasCreated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
 use DreamsArk\Events\Project\RewardWasCreated;
-use DreamsArk\Events\Project\Script\ScriptWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Events\Project\Stages\DistributionWasCreated;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
 use DreamsArk\Events\Project\Submission\SubmissionReceivedAVote;
-use DreamsArk\Events\Project\Synapse\SynapseWasCreated;
 use DreamsArk\Events\Project\UserHasEnrolledToCast;
 use DreamsArk\Events\Project\Vote\Enroll\WinnerHasAssignedToCrew;
 use DreamsArk\Events\Project\Vote\EnrollVotingHasFinished;
@@ -38,8 +34,9 @@ use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Events\Session\UserWasUpdated;
 use DreamsArk\Events\User\Profile\UserProfileWasCreated;
 use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
+use DreamsArk\Events\User\Project\ProjectWasCreated;
+use DreamsArk\Events\User\Project\ProjectWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
-use DreamsArk\Listeners\Project\ChargeRewardFromUser;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateReward;
@@ -49,11 +46,10 @@ use DreamsArk\Listeners\Project\RefundCreator;
 use DreamsArk\Listeners\Project\RefundUsers;
 use DreamsArk\Listeners\Project\RegisterVotingWinner;
 use DreamsArk\Listeners\Project\UpdateProjectStage;
-use DreamsArk\Listeners\Project\UpdateRewardForStage;
 use DreamsArk\Listeners\Project\Vote\AutomaticallySendReviewToCommittee;
 use DreamsArk\Listeners\Project\Vote\DeactivateVoting;
 use DreamsArk\Listeners\Project\Vote\QueueCloseVotingCommand;
-use DreamsArk\Listeners\Project\Vote\QueueOpenVotingCommand;
+use DreamsArk\Listeners\Project\Vote\QueueOpenVoting;
 use DreamsArk\Listeners\Project\Vote\SendProjectToDistributionReview;
 use DreamsArk\Listeners\User\AppendDefaultSettings;
 use DreamsArk\Listeners\User\AttachUserRole;
@@ -86,6 +82,10 @@ class EventServiceProvider extends ServiceProvider
          */
         ProjectWasCreated::class => [
             CreateProjectStage::class
+        ],
+
+        ProjectWasUpdated::class => [
+            QueueOpenVoting::class
         ],
 
         ProjectStageWasCreated::class => [
@@ -127,7 +127,7 @@ class EventServiceProvider extends ServiceProvider
          * Vote
          */
         VoteWasCreated::class => [
-            QueueOpenVotingCommand::class
+            QueueOpenVoting::class
         ],
 
         VoteWasOpened::class => [
