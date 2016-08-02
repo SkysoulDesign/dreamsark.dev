@@ -4,13 +4,38 @@
   line-height: normal;
 
   @include part(item) {
-
-    font-size: $h2;
-
     span {
-      font-size: x-small;
       display: block;
       text-transform: uppercase;
+    }
+  }
+
+  @include option(small) {
+
+    @include font-size(h2);
+
+    @include part(item) {
+
+      @include font-size(large);
+
+      span {
+        font-size: x-small;
+      }
+
+    }
+
+  }
+
+  @include option(large) {
+
+    @include part(item) {
+
+      @include font-size(large);
+
+      span {
+        font-size: small;
+      }
+
     }
 
   }

@@ -22,7 +22,13 @@ export class Statistics implements ComponentInterface {
         });
 
         Vue.component('ark-statistics', {
-            template: require('html!../templates/statistics/statistics.html')
+            template: require('html!../templates/statistics/statistics.html'),
+            props: {
+                size: {
+                    type: String,
+                    default: 'small'
+                }
+            }
         });
 
     }

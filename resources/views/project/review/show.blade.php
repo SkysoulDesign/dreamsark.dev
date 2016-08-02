@@ -14,36 +14,33 @@
 
         <div class="row align-center project-page__review__steps">
             <ark-steps>
-                <ark-step {{ active($stage, 'idea') }} ></ark-step>
-                <ark-step {{ active($stage, 'synapse') }} ></ark-step>
-                <ark-step {{ active($stage, 'script') }} ></ark-step>
-                <ark-step {{ active($stage, 'review') }} ></ark-step>
-                <ark-step {{ active($stage, 'fund') }} ></ark-step>
-                <ark-step {{ active($stage, 'distribution') }} ></ark-step>
+                <ark-step {{ active($stage, 'idea') }}></ark-step>
+                <ark-step {{ active($stage, 'synapse') }}></ark-step>
+                <ark-step {{ active($stage, 'script') }}></ark-step>
+                <ark-step {{ active($stage, 'review') }}></ark-step>
+                <ark-step {{ active($stage, 'fund') }}></ark-step>
+                <ark-step {{ active($stage, 'distribution') }}></ark-step>
             </ark-steps>
         </div>
-    </div>
-
-    <div class="small-10 columns segment --color-primary --centered --large-padding">
-
-        <ul class="ul --inline --evenly +center +padding-top-small">
-
-            @foreach(
-             ['milky-way.svg', 'planet-earth.svg', 'moon.svg', 'mercury.svg', 'galaxy.svg',
-              'stars.svg', 'venus.svg'] as $svg)
-                <li>
-                    <img class="project-page__achievements"
-                         src="{{ asset("img/svg/$svg") }}">
-                    <div class="+uppercase +bold">{{ explode('.', $svg)[0] }}</div>
-                </li>
-            @endforeach
-        </ul>
 
     </div>
 
-    <div class="small-10 columns segment --centered --large-padding">
-        <h1>Original Request</h1>
-        asdasdasd
+    <div class="small-10 columns segment --color-primary --centered --large-padding +no-round-bottom">
+
+        <ark-statistics class="align-center" size="large">
+            <statistic-item data="50">Investors</statistic-item>
+            <statistic-item data="1200">Collected</statistic-item>
+        </ark-statistics>
+
+    </div>
+
+    <div class="small-10 columns">
+        <ark-nav>
+            <ark-item url="{{ route('user.profile.index') }}">@lang('project.idea')</ark-item>
+            <ark-item url="{{ route('user.project.index') }}">@lang('project.synapse')</ark-item>
+            <ark-item url="{{ route('user.activity.earning') }}">@lang('project.script')</ark-item>
+            <ark-item url="{{ route('user.activity.earning') }}" icon="comments">@lang('forms.comments')</ark-item>
+        </ark-nav>
     </div>
 
     <div class="small-12 columns +margin-top-small">
@@ -53,84 +50,3 @@
     </div>
 
 </div>
-
-<div class="column">
-
-    <div class="ui two column">
-
-        <div class="ui horizontal segments">
-            <div class="ui segment">
-                <div class="ui embed" data-source="youtube" data-id="HcgJRQWxKnw" style="width: 2500px"></div>
-            </div>
-            <div class="ui segment" style="width: 1500px">
-
-                <h1 class="ui header">{{ $project->name }}</h1>
-
-                <p class="ui sub header ">
-
-                <p>@if($project->script) {{ substr($project->script->submission->content, 0, 100).'...' }} @endif</p>
-
-                <div class="ui segments">
-                    <div class="ui segment">
-                        <div class="ui horizontal list">
-                            <div class="item">
-                                <img class="ui mini circular image" src="{{ $project->creator->present()->avatar }}">
-
-                                <div class="content">
-                                    <h4 class="ui  header"><b>{{ $project->creator->present()->name }}</b></h4>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ui segment">
-                        <div class="ui three item menu">
-                            <a id="project-idea-show" class="item @if(!$project->idea) disabled @endif">
-                                <i class="icon mail"></i> @lang('project.idea')
-                            </a>
-                            <a id="project-synapse-show" class="item @if(!$project->synapse) disabled @endif">
-                                <i class="icon users"></i> @lang('project.synapse')
-                            </a>
-                            <a id="project-script-show" class="item @if(!$project->script) disabled @endif">
-                                <i class="icon users"></i> @lang('project.script')
-                            </a>
-                        </div>
-                        @if($project->idea) @include('modals.project-idea-show-modal') @endif
-                        @if($project->synapse) @include('modals.project-synapse-show-modal') @endif
-                        @if($project->script) @include('modals.project-script-show-modal') @endif
-
-                    </div>
-                </div>
-                <div class="ui two inverted green item menu">
-                    <a href="javascript:;" class="item disabled">@lang('project.back-this-project')</a>
-                    <a href="javascript:;" class="item disabled">@lang('project.enroll')</a>
-                </div>
-                <div class="ui one column statistics">
-                    <div class="statistic">
-                        <div class="value" style="font-size: 2rem;">
-                            @lang('project.under-review')
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="ui stacked segments">
-            <div class="ui segment">
-                <div class="ui indicating progress active olive statistic" data-percent="0">
-                    <div class="bar"></div>
-                    <div class="label">@lang('project.processing')</div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-<style>
-    .segment div.menu, .attached div.menu {
-        position: static;
-    }
-</style>

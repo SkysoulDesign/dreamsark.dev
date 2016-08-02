@@ -13,6 +13,7 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
+use DreamsArk\Models\Project\Submission;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -86,8 +87,11 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, Project $project)
+    public function show(Request $request, Project $project, Submission $submission)
     {
+
+        $submission = $submission->find();
+        dd($project->investors);
 
         $user = $request->user();
         $stage = $project->getAttribute('stage');

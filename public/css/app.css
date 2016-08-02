@@ -3791,7 +3791,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
   font-weight: 600; }
 
-.form__header, .header.\--small, header.\--small {
+.form__header, .header.\--small, header.\--small, .statistic.\--small {
   font-size: 1.4em; }
 
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
@@ -3806,7 +3806,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .header p, header p {
   font-size: 0.5em; }
 
-.header.\--large, header.\--large {
+.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item {
   font-size: 3em; }
 
 .header, header {
@@ -5298,6 +5298,10 @@ button, .button {
 #app-root .\+align-right {
   text-align: right; }
 
+#app-root .\+no-round-bottom {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
 #app-root .\+overlapped, #app-root .form.\--overlapped, #app-root form.\--overlapped, #app-root .segment.\--overlapped, #app-root .\--overlapped.message, #app-root .\--overlapped.item {
   position: relative;
   margin-top: -3em;
@@ -5751,12 +5755,13 @@ button, .button {
 .statistic {
   font-weight: bold;
   line-height: normal; }
-  .statistic__item {
-    font-size: 1.4em; }
-    .statistic__item span {
-      font-size: x-small;
-      display: block;
-      text-transform: uppercase; }
+  .statistic__item span {
+    display: block;
+    text-transform: uppercase; }
+  .statistic.\--small .statistic__item span {
+    font-size: x-small; }
+  .statistic.\--large .statistic__item span {
+    font-size: small; }
 
 .hex-icon {
   position: relative; }
@@ -7124,7 +7129,7 @@ button, .button {
   .project-page__review__illustration {
     position: absolute;
     right: 0;
-    top: -45%;
+    top: -46%;
     z-index: -1; }
 
 .admin-page__header {

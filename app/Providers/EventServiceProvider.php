@@ -37,6 +37,7 @@ use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Events\User\Project\ProjectWasCreated;
 use DreamsArk\Events\User\Project\ProjectWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
+use DreamsArk\Listeners\Project\AddWinnerToProjectInvestorList;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateReward;
@@ -141,6 +142,7 @@ class EventServiceProvider extends ServiceProvider
             DeactivateVoting::class,
             RefundUsers::class,
             RegisterVotingWinner::class,
+            AddWinnerToProjectInvestorList::class,
             AutomaticallySendReviewToCommittee::class,
         ],
 
@@ -151,7 +153,6 @@ class EventServiceProvider extends ServiceProvider
 
         WinnerHasAssignedToCrew::class => [
         ],
-
 
         SubmissionReceivedAVote::class => [
             DeductUserCoins::class

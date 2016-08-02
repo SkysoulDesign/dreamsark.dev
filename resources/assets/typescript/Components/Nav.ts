@@ -19,7 +19,8 @@ export class Nav implements ComponentInterface {
                 active: {
                     type: Boolean,
                     default: false
-                }
+                },
+                icon: String
             },
             computed: {
                 style: function () {
@@ -44,9 +45,7 @@ export class Nav implements ComponentInterface {
                     type: Boolean,
                     default: false
                 },
-                icon: {
-                    type: String
-                },
+                icon: String,
             },
             methods: {
                 selectTab(e:MouseEvent){

@@ -66,10 +66,10 @@ class Project extends Model
      *
      * @return mixed
      */
-    public function addOrderBy($query, $orderBy = '')
-    {
-        return $query->orderBy('updated_at', ($orderBy ?: 'desc'));
-    }
+//    public function addOrderBy($query, $orderBy = '')
+//    {
+//        return $query->orderBy('updated_at', ($orderBy ?: 'desc'));
+//    }
 
     /**
      * Scope a query to only show active entries.
@@ -86,20 +86,6 @@ class Project extends Model
                 });
             }
         });
-    }
-
-    /**
-     * @param Builder $query
-     */
-    public function scopeActives($query)
-    {
-//        $query->whereHas('synapse', function ($query) {
-//            $query->where('active', '=', true);
-//        })->orWhereHas('idea', function ($query) {
-//            $query->where('active', '=', true);
-//        })->orWhereHas('script', function ($query) {
-//            $query->where('active', '=', true);
-//        });
     }
 
     /**
@@ -140,12 +126,13 @@ class Project extends Model
     /**
      * Get Reward Relation of Next Stage
      *
+     * @param string $type
      * @return mixed
      */
-    public function getNextStageReward($type = '')
-    {
-        return $this->rewards()->where('rewardable_type', ($type ?: get_class($this->stage->next())));
-    }
+//    public function getNextStageReward($type = '')
+//    {
+//        return $this->rewards()->where('rewardable_type', ($type ?: get_class($this->stage->next())));
+//    }
 
     /**
      * Relation to ProjectReward Table
@@ -225,10 +212,10 @@ class Project extends Model
         return $this->morphTo('stageable');
     }
 
-    public function stageable() : MorphTo
-    {
-        return $this->morphTo();
-    }
+//    public function stageable() : MorphTo
+//    {
+//        return $this->morphTo();
+//    }
 
     /**
      * Get what is the next stage of this project
@@ -266,6 +253,16 @@ class Project extends Model
     public function expensable()
     {
         return $this->expenditures()->expensable();
+    }
+
+    /**
+     * Alias for backers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function investors()
+    {
+        return $this->backers();
     }
 
     /**
