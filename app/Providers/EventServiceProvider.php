@@ -17,8 +17,8 @@ use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Events\Project\ProjectStageWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCompleted;
+use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
-use DreamsArk\Events\Project\RewardWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Events\Project\Stages\DistributionWasCreated;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
@@ -110,14 +110,13 @@ class EventServiceProvider extends ServiceProvider
             RefundCreator::class
         ],
 
-        RewardWasCreated::class => [
+        RewardWasCreatedOrUpdated::class => [
             ChargeUser::class,
         ],
 
         RewardStageWasUpdated::class => [
             ChargeUser::class,
         ],
-
 
         ProjectWasBacked::class => [
             DeductUserCoins::class

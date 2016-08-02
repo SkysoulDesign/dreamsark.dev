@@ -319,7 +319,17 @@
 
     @include part(steps) {
       position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
       bottom: -20%;
+    }
+
+    @include part(illustration) {
+      position: absolute;
+      right: 0;
+      top: -45%;
+      z-index: -1;
     }
 
   }

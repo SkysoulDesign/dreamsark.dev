@@ -480,7 +480,7 @@ eval("module.exports = \"<div class=\\\"steps__step\\\" :class=\\\"{ '--active' 
 /* 64 */
 /***/ function(module, exports) {
 
-eval("module.exports = \"<div class=\\\"steps\\\">\\n    <slot></slot>\\n</div>\\n\";//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNjQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvdGVtcGxhdGVzL3N0ZXBzL3N0ZXBzLmh0bWw/OTgyOCJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IFwiPGRpdiBjbGFzcz1cXFwic3RlcHNcXFwiPlxcbiAgICA8c2xvdD48L3Nsb3Q+XFxuPC9kaXY+XFxuXCI7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gLi9+L2h0bWwtbG9hZGVyIS4vcmVzb3VyY2VzL2Fzc2V0cy90eXBlc2NyaXB0L3RlbXBsYXRlcy9zdGVwcy9zdGVwcy5odG1sXG4vLyBtb2R1bGUgaWQgPSA2NFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+eval("module.exports = \"<div class=\\\"steps\\\" :class=\\\"class\\\">\\n    <slot></slot>\\n</div>\\n\";//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNjQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvdGVtcGxhdGVzL3N0ZXBzL3N0ZXBzLmh0bWw/OTgyOCJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IFwiPGRpdiBjbGFzcz1cXFwic3RlcHNcXFwiIDpjbGFzcz1cXFwiY2xhc3NcXFwiPlxcbiAgICA8c2xvdD48L3Nsb3Q+XFxuPC9kaXY+XFxuXCI7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gLi9+L2h0bWwtbG9hZGVyIS4vcmVzb3VyY2VzL2Fzc2V0cy90eXBlc2NyaXB0L3RlbXBsYXRlcy9zdGVwcy9zdGVwcy5odG1sXG4vLyBtb2R1bGUgaWQgPSA2NFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ },
 /* 65 */

@@ -111,15 +111,11 @@ class Project extends Model
     public function scopeFailed(Builder $query)
     {
         $query->whereHas('stage', function (Builder $query) {
-
             foreach (['idea', 'synapse', 'script'] as $stage) {
-
                 $query->orWhereHas($stage, function ($query) {
                     $query->where('active', false)->whereDoesntHave('submission')->select('id');
                 });
-
             }
-
         });
     }
 

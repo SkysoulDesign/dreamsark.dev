@@ -1,6 +1,6 @@
 <?php
 
-namespace DreamsArk\Events\Project;
+namespace DreamsArk\Events\Project\Reward;
 
 use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Reward;
@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package DreamsArk\Events\Project
  */
-class RewardWasCreated extends Event
+class RewardWasCreatedOrUpdated extends Event
 {
 
     use SerializesModels;

@@ -2,23 +2,7 @@
 
 @section('content')
 
-    <div class="project-page__background">
-
-        <div class="project-page__background__overlay"></div>
-
-        @include('partials.navigation.menu', ['translucent' => true])
-
-        <div class="row project-page__header">
-            <div class="small-12 columns align-middle">
-                <header class="header --color-white --centered --large">
-                    Voting Stage
-                </header>
-            </div>
-        </div>
-
-        @stack('tabs')
-
-    </div>
+    @include('project.partials.header', ['title' => 'Voting Stage'])
 
     <div class="row align-center">
 
@@ -34,7 +18,8 @@
 
             <div class="row align-center">
                 <ark-progress class="small-10 columns"
-                              :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']" color="warning"
+                              :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']"
+                              color="warning"
                               size="large" label="@lang('project.time')" flat></ark-progress>
             </div>
         </div>
@@ -69,47 +54,7 @@
 
         <div class="small-10">
             <ark-accordion>
-                @foreach($project->stage->submissions as $submission)
-                    <ark-accordion-item>
-                        <div slot="header" class="item --attached --hover">
-
-                            <div class="small-1 columns item__image">
-                                <img src="{{ $submission->user->present()->avatar }}" alt="">
-                            </div>
-
-                            <div class="small-1 columns">
-                                <a href="#hello">{{ $submission->user->present()->name }}</a>
-                            </div>
-
-                            <div class="columns">
-                                {!!  mb_strimwidth(strip_tags($submission->content), 0, 70, "...")   !!}
-                            </div>
-
-                            <div class="small-3 columns">
-                                <ark-statistics class="align-center">
-                                    <statistic-item data="40" icon="eye">Number of Views</statistic-item>
-                                    <statistic-item data="{{ $submission->votes->sum('pivot.amount') }}"
-                                                    icon="heart">Number of Votes
-                                    </statistic-item>
-                                </ark-statistics>
-                            </div>
-
-                        </div>
-
-                        <div class="small-12 columns segment --attached --large-padding">
-                            {!! $submission->content !!}
-                        </div>
-                        <div class="small-12 columns segment --centered --large-padding">
-                            <ark-form
-                                    action="{{ route('project.idea.submission.vote.store', [$project, $submission]) }}">
-                                {{ csrf_field() }}
-                                <ark-input type="number" name="amount"
-                                           placeholder="@lang('forms.amount')"></ark-input>
-                                <ark-button color="primary">Vote on this idea</ark-button>
-                            </ark-form>
-                        </div>
-                    </ark-accordion-item>
-                @endforeach
+                @include('project.partials.fragments.vote-submission', $project->stage->submissions, 'submission')
             </ark-accordion>
         </div>
 
