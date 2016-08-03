@@ -13,7 +13,7 @@ use Illuminate\Queue\QueueManager;
  *
  * @package DreamsArk\Listeners\Project\Vote
  */
-class QueueCloseVotingCommand
+class QueueCloseVoting
 {
     /**
      * @var QueueManager

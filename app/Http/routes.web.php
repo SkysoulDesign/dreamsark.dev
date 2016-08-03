@@ -45,14 +45,6 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
-use DreamsArk\Models\User\User;
-
-$app->get('test', function () {
-
-    $user = User::find(1);
-    dd($user->items);
-
-});
 
 $app->get('info', function () {
     phpinfo();

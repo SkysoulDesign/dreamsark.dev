@@ -17,6 +17,7 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -75,6 +76,7 @@ class Project extends Model
      * Scope a query to only show active entries.
      *
      * @param $query
+     *
      * @return Builder
      */
     public function scopeActive(Builder $query)
@@ -92,6 +94,7 @@ class Project extends Model
      * Scope a query to only show failed entries.
      *
      * @param $query
+     *
      * @return Builder
      */
     public function scopeFailed(Builder $query)
@@ -127,6 +130,7 @@ class Project extends Model
      * Get Reward Relation of Next Stage
      *
      * @param string $type
+     *
      * @return mixed
      */
 //    public function getNextStageReward($type = '')
@@ -258,11 +262,11 @@ class Project extends Model
     /**
      * Alias for backers
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return belongsToMany
      */
-    public function investors()
+    public function investors() : belongsToMany
     {
-        return $this->backers();
+        return $this->belongsToMany(User::class, 'project_investors')->withPivot('amount');
     }
 
     /**

@@ -40,7 +40,7 @@ class CreateSubmissionWinnerJob extends Job
             ->getAttribute('submissible')
             ->submission()
             ->associate($this->submission)
-            ->setAttribute('active', false) //Deactivate The Stage
+            ->setAttribute('active', false)
             ->save();
 
         /**
