@@ -3791,7 +3791,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
   font-weight: 600; }
 
-.form__header, .header.\--small, header.\--small {
+.form__header, .header.\--small, header.\--small, .statistic.\--small {
   font-size: 1.4em; }
 
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
@@ -3806,7 +3806,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .header p, header p {
   font-size: 0.5em; }
 
-.header.\--large, header.\--large {
+.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item {
   font-size: 3em; }
 
 .header, header {
@@ -5298,6 +5298,10 @@ button, .button {
 #app-root .\+align-right {
   text-align: right; }
 
+#app-root .\+no-round-bottom {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
 #app-root .\+overlapped, #app-root .form.\--overlapped, #app-root form.\--overlapped, #app-root .segment.\--overlapped, #app-root .\--overlapped.message, #app-root .\--overlapped.item {
   position: relative;
   margin-top: -3em;
@@ -5751,12 +5755,13 @@ button, .button {
 .statistic {
   font-weight: bold;
   line-height: normal; }
-  .statistic__item {
-    font-size: 1.4em; }
-    .statistic__item span {
-      font-size: x-small;
-      display: block;
-      text-transform: uppercase; }
+  .statistic__item span {
+    display: block;
+    text-transform: uppercase; }
+  .statistic.\--small .statistic__item span {
+    font-size: x-small; }
+  .statistic.\--large .statistic__item span {
+    font-size: small; }
 
 .hex-icon {
   position: relative; }
@@ -6090,9 +6095,9 @@ button, .button {
       height: 50px;
       margin: .8em 2em;
       background-color: white;
-      border: 1px dashed #dedede;
+      border: 1px dashed #b8b8b8;
       border-radius: 50%;
-      color: #dedede;
+      color: #b8b8b8;
       font-weight: 600;
       text-align: center; }
       .steps__step__container:before, .steps__step__container:after {
@@ -6114,11 +6119,11 @@ button, .button {
         right: 0;
         z-index: -1; }
       .steps__step__container:before {
-        left: -140%;
-        background: #f8f8f8; }
+        right: 126%;
+        background: #b8b8b8; }
       .steps__step__container:after {
-        left: 70%;
-        background: #f8f8f8; }
+        left: 126%;
+        background: #b8b8b8; }
     .steps__step__description {
       position: absolute;
       left: 0;
@@ -6945,6 +6950,9 @@ button, .button {
   z-index: 2;
   /**
   * Idea Partial
+  */
+  /**
+  * Review
   */ }
   .project-page__header {
     height: 15em; }
@@ -7112,6 +7120,17 @@ button, .button {
   .project-page__requirement-content {
     margin-top: 1em;
     padding: 5em 3em 3em; }
+  .project-page__review__steps {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: -20%; }
+  .project-page__review__illustration {
+    position: absolute;
+    right: 0;
+    top: -46%;
+    z-index: -1; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }
@@ -7181,8 +7200,5 @@ a, .menu a {
     color: white; }
     a.\--inverted:hover, .menu.\--translucent a:hover, .menu .project-page__info__overlay > div span a:hover, .card__caption.\--white a:hover, .section__nav__item.\--as-button a:hover, .footer__links ul a:hover, .footer__links .badges a:hover, .project-page__info__overlay > div span a:hover {
       color: rgba(0, 0, 0, 0.88); }
-
-p {
-  color: #484c5f; }
 
 /*# sourceMappingURL=app.css.map */

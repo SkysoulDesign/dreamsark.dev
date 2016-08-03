@@ -3,6 +3,7 @@
 namespace DreamsArk\Jobs\User\Project;
 
 use Carbon\Carbon;
+use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
 use DreamsArk\Events\User\Project\ProjectWasUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
@@ -53,12 +54,10 @@ class UpdateProjectJob extends Job
             ->fill($this->fields)
             ->save();
 
-        $this->project
-            ->getAttribute('stageable')
-            ->getAttribute('reward')
-            ->update([
-                'amount' => array_get($this->fields, 'reward')
-            ]);
+        $reward = $this->project->getAttribute('stageable')->getAttribute('reward');
+        $reward->update([
+            'amount' => array_get($this->fields, 'reward')
+        ]);
 
         /**
          * Create Voting
@@ -75,9 +74,15 @@ class UpdateProjectJob extends Job
         /**
          * Announce ProjectWasCreated
          */
-        event(new ProjectWasUpdated(
-            $this->project, $vote
+        event(new ProjectWasUpdated($this->project, $vote));
+
+        /**
+         * Announce RewardWasCreatedOrUpdated
+         */
+        event(new RewardWasCreatedOrUpdated(
+            $reward, $this->project->getAttribute('user')
         ));
+//        event(new VoteWasUpdated($this->project, $vote));
 
     }
 }

@@ -19,10 +19,10 @@
       margin: .8em 2em;
 
       background-color: color(white);
-      border: 1px dashed color(gray);
+      border: 1px dashed color(gray, dark);
       border-radius: 50%;
 
-      color: color(gray);
+      color: color(gray, dark);
       font-weight: 600;
       text-align: center;
 
@@ -43,13 +43,13 @@
       }
 
       &:before {
-        left: -140%;
-        background: color(gray, light);
+        right: 126%;
+        background: color(gray, dark);
       }
 
       &:after {
-        left: 70%;
-        background: color(gray, light);
+        left: 126%;
+        background: color(gray, dark);
       }
 
     }

@@ -17,8 +17,8 @@ use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Events\Project\ProjectStageWasCreated;
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Events\Project\ProjectWasCompleted;
+use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
 use DreamsArk\Events\Project\RewardStageWasUpdated;
-use DreamsArk\Events\Project\RewardWasCreated;
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Events\Project\Stages\DistributionWasCreated;
 use DreamsArk\Events\Project\Stages\ReviewWasCreated;
@@ -37,6 +37,7 @@ use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Events\User\Project\ProjectWasCreated;
 use DreamsArk\Events\User\Project\ProjectWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
+use DreamsArk\Listeners\Project\AddWinnerToProjectInvestorList;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateReward;
@@ -110,14 +111,13 @@ class EventServiceProvider extends ServiceProvider
             RefundCreator::class
         ],
 
-        RewardWasCreated::class => [
+        RewardWasCreatedOrUpdated::class => [
             ChargeUser::class,
         ],
 
         RewardStageWasUpdated::class => [
             ChargeUser::class,
         ],
-
 
         ProjectWasBacked::class => [
             DeductUserCoins::class
@@ -142,6 +142,7 @@ class EventServiceProvider extends ServiceProvider
             DeactivateVoting::class,
             RefundUsers::class,
             RegisterVotingWinner::class,
+            AddWinnerToProjectInvestorList::class,
             AutomaticallySendReviewToCommittee::class,
         ],
 
@@ -152,7 +153,6 @@ class EventServiceProvider extends ServiceProvider
 
         WinnerHasAssignedToCrew::class => [
         ],
-
 
         SubmissionReceivedAVote::class => [
             DeductUserCoins::class

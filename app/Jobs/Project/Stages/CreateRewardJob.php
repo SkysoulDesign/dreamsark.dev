@@ -2,7 +2,7 @@
 
 namespace DreamsArk\Jobs\Project\Stages;
 
-use DreamsArk\Events\Project\RewardWasCreated;
+use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Reward;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +52,7 @@ class CreateRewardJob extends Job
         /**
          * Announce RewardWasCreated
          */
-        event(new RewardWasCreated(
+        event(new RewardWasCreatedOrUpdated(
             $reward, $this->model->getRelation('project')->user
         ));
 

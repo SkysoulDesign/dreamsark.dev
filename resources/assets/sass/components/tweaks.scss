@@ -6,6 +6,11 @@
   text-align: right;
 }
 
+@include tweak(no-round-bottom) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 @include tweak(overlapped) {
   position: relative;
   margin-top: -3em;

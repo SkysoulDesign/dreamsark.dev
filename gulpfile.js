@@ -14,20 +14,22 @@ var elixir = require('laravel-elixir');
 
 // elixir.ready(function () {
 //     elixir.config.js.webpack = {
-//         loaders: [
-//             {
-//                 test: /\.html$/, loader: 'raw',
-//             },
-//             {
-//                 test: /\.ttf$/,
-//                 loader: 'url'
-//             },
-//             {
-//                 test: /\.ttf$/,
-//                 loader: 'font-subset',
-//                 query: {glyphs: 'abc!'}
-//             }
-//         ],
+//
+//
+//         // loaders: [
+//         //     {
+//         //         test: /\.html$/, loader: 'raw',
+//         //     },
+//         //     {
+//         //         test: /\.ttf$/,
+//         //         loader: 'url'
+//         //     },
+//         //     {
+//         //         test: /\.ttf$/,
+//         //         loader: 'font-subset',
+//         //         query: {glyphs: 'abc!'}
+//         //     }
+//         // ],
 //     }
 // })
 
@@ -55,6 +57,7 @@ elixir(function (mix) {
     mix.webpack("./resources/assets/typescript/Plugins/Profile/Profile.js", pluginsPath)
         .webpack("./resources/assets/typescript/Plugins/Chart.js", pluginsPath)
         .webpack("./resources/assets/typescript/Plugins/ProgressBar.js", pluginsPath)
+        .webpack("./resources/assets/typescript/Plugins/Items/Item.js", pluginsPath)
 
         .webpack("./resources/assets/typescript/Plugins/Medium.js", pluginsPath)
         .styles([
