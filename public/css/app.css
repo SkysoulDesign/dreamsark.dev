@@ -3791,7 +3791,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
   font-weight: 600; }
 
-.form__header, .header.\--small, header.\--small, .statistic.\--small {
+.form__header, .header.\--small, header.\--small {
   font-size: 1.4em; }
 
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
@@ -5758,8 +5758,10 @@ button, .button {
   .statistic__item span {
     display: block;
     text-transform: uppercase; }
-  .statistic.\--small .statistic__item span {
+  .statistic.\--small {
     font-size: x-small; }
+    .statistic.\--small .statistic__item span {
+      font-size: x-small; }
   .statistic.\--large .statistic__item span {
     font-size: small; }
 

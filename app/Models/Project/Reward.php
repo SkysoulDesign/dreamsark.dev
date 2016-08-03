@@ -2,8 +2,10 @@
 
 namespace DreamsArk\Models\Project;
 
+use DreamsArk\Models\Game\Item;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Reward
@@ -32,13 +34,6 @@ class Reward extends Model
     public $timestamps = false;
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = ['items' => 'json'];
-
-    /**
      * Relation to Project Table
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -46,6 +41,16 @@ class Reward extends Model
     public function project() : belongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Items Relationship
+     *
+     * @return BelongsToMany
+     */
+    public function items() : BelongsToMany
+    {
+        return $this->belongsToMany(Item::class, 'project_reward_item');
     }
 
 }

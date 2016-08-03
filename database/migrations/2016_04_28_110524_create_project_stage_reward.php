@@ -19,12 +19,12 @@ class CreateProjectStageReward extends Migration
     {
         $this->schema->create('project_reward', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('project_id')->unsigned()->index();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->integer('rewardable_id')->nullable()->unsigned();
             $table->string('rewardable_type');
 
-            $table->json('items');
             $table->integer('points');
 
             $table->integer('amount');
