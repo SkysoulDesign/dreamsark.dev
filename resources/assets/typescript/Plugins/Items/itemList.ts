@@ -1,11 +1,11 @@
 export var g_ItemData = {
     "GroupAndItem": [
         {"groupID": "A","ItemData": [
-            {"groupID": "A","id": "A01","imageUrl": "Test.png","probabilityToShow": 5,"cost": "15"},
-            {"groupID": "A","id": "A02","imageUrl": "Test.png","probabilityToShow": 10,"cost": "10"},
-            {"groupID": "A","id": "A03","imageUrl": "Test.png","probabilityToShow": 10,"cost": "10"},
-            {"groupID": "A","id": "A04","imageUrl": "Test.png","probabilityToShow": 10,"cost": "10"},
-            {"groupID": "A","id": "A05","imageUrl": "Test.png","probabilityToShow": 10,"cost": "10"}
+            {"groupID": "A","id": "A01","imageUrl": "Test.png","probabilityToShow": 5,"cost": 15},
+            {"groupID": "A","id": "A02","imageUrl": "Test.png","probabilityToShow": 10,"cost": 10},
+            {"groupID": "A","id": "A03","imageUrl": "Test.png","probabilityToShow": 10,"cost": 10},
+            {"groupID": "A","id": "A04","imageUrl": "Test.png","probabilityToShow": 10,"cost": 10},
+            {"groupID": "A","id": "A05","imageUrl": "Test.png","probabilityToShow": 10,"cost": 10}
         ]},
         {"groupID": "B","ItemData": [
             {"groupID": "B","id": "B01","imageUrl": "Test.png","probabilityToShow": 5, "cost": 25},
