@@ -20,7 +20,7 @@ class MyLogFunction{
                 console.group(this.m_DebugShowTag);
             console.log(e_Arguments);
             if(this.m_DebugShowTag)
-                console.groupEnd(this.m_DebugShowTag)
+                console.groupEnd()
         }
     }
 }
