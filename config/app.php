@@ -160,6 +160,7 @@ return [
         SkysoulDesign\Payment\PaymentServiceProvider::class,
         SkysoulDesign\Translation\TranslationServiceProvider::class,
         SkysoulDesign\SMS\SMSServiceProvider::class,
+        SkysoulDesign\Game\GameServiceProvider::class,
 
         /**
          * Application Service Providers...

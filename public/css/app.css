@@ -6119,11 +6119,11 @@ button, .button {
         right: 0;
         z-index: -1; }
       .steps__step__container:before {
-        right: 126%;
-        background: #b8b8b8; }
+        left: -140%;
+        background: #f8f8f8; }
       .steps__step__container:after {
-        left: 126%;
-        background: #b8b8b8; }
+        left: 70%;
+        background: #f8f8f8; }
     .steps__step__description {
       position: absolute;
       left: 0;

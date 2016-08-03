@@ -91,7 +91,7 @@ class EventServiceProvider extends ServiceProvider
 
         ProjectStageWasCreated::class => [
             CreateReward::class,
-            CreateVote::class,
+            CreateVote::class
         ],
 
         ReviewWasCreated::class => [

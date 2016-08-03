@@ -22,7 +22,7 @@ class Reward extends Model
     /**
      * @var array
      */
-    protected $fillable = ['project_id', 'rewardable_id', 'rewardable_type', 'amount'];
+    protected $fillable = ['project_id', 'rewardable_id', 'rewardable_type', 'amount', 'items'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -30,6 +30,13 @@ class Reward extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['items' => 'json'];
 
     /**
      * Relation to Project Table

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,6 +29,9 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSectionTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
+
+        $this->call(GameGroupTableSeeder::class);
+        $this->call(ItemTableSeeder::class);
 //        $this->call(CreateDummyProject::class);
     }
 }

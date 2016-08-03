@@ -23,6 +23,10 @@ class CreateProjectStageReward extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->integer('rewardable_id')->nullable()->unsigned();
             $table->string('rewardable_type');
+
+            $table->json('items');
+            $table->integer('points');
+
             $table->integer('amount');
         });
     }

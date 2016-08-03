@@ -45,13 +45,12 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
-use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
-use DreamsArk\Models\Project\Stages\Vote;
+use DreamsArk\Models\User\User;
 
 $app->get('test', function () {
 
-    $vote = Vote::find(3);
-    dd(dispatch(new CloseVotingJob($vote)));
+    $user = User::find(1);
+    dd($user->items);
 
 });
 
@@ -129,10 +128,11 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($app) {
                 $app->post('store', SubmissionController::class . '@store')->name('store');
                 $app->patch('{submission}/update', SubmissionController::class . '@update')->name('update');
-                $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('vote.store');
             });
 
         });
+
+        $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('idea.submission.vote.store');
 
         /**
          * Temporarily

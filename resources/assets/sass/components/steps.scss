@@ -43,13 +43,13 @@
       }
 
       &:before {
-        right: 126%;
-        background: color(gray, dark);
+        left: -140%;
+        background: color(gray, light);
       }
 
       &:after {
-        left: 126%;
-        background: color(gray, dark);
+        left: 70%;
+        background: color(gray, light);
       }
 
     }

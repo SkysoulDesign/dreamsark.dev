@@ -90,8 +90,8 @@ class ProjectController extends Controller
     public function show(Request $request, Project $project, Submission $submission)
     {
 
-        $submission = $submission->find();
-        dd($project->investors);
+//        $submission = $submission->find();
+//        dd($project->investors);
 
         $user = $request->user();
         $stage = $project->getAttribute('stage');

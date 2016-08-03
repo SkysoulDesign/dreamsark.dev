@@ -43,7 +43,8 @@
       "SkysoulDesign\\Payment\\": "packages/SkysoulPayment/Payment/src",
       "SkysoulDesign\\SMS\\": "packages/SkysoulSMS/SMS/src",
       "SkysoulDesign\\Translation\\": "packages/SkysoulTranslation/Translation/src",
-      "SkysoulDesign\\Socialite\\": "packages/SkysoulSocialite/Socialite/src"
+      "SkysoulDesign\\Socialite\\": "packages/SkysoulSocialite/Socialite/src",
+      "SkysoulDesign\\Game\\": "packages/SkysoulGameSystem/Game/src"
     },
     "files": [
       "app/Helpers/functions.php"

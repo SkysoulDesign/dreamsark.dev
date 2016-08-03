@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\User;
 
+use DreamsArk\Models\Game\Item;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Models\Project\Comment;
@@ -19,6 +20,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -219,4 +221,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Comments Relationship
+     *
+     * @return belongsToMany
+     */
+    public function items() : belongsToMany
+    {
+        return $this->belongsToMany(Item::class, 'game_item_user');
+    }
 }

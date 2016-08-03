@@ -51,18 +51,14 @@ class RouteServiceProvider extends ServiceProvider
         /**
          * Generates Api or Web Routes
          */
-        $route = $request->wantsJson() ? 'web' : 'web';
+        $route = $request->wantsJson() ? 'api' : 'web';
 
         /**
          * Web Router
          */
         $router->group([], function ($app) use ($route) {
-
             require app_path("Http/routes.$route.php");
-
-            if ($route == 'web')
-                require app_path("Http/routes.ajax.php");
-
         });
+
     }
 }

@@ -1,0 +1,42 @@
+"use strict";
+exports.g_ItemData = {
+    "GroupAndItem": [
+        {
+            "groupID": "A",
+            "ItemData": [
+                { "groupID": "A", "id": "A01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 15 },
+                { "groupID": "A", "id": "A02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 },
+                { "groupID": "A", "id": "A03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 },
+                { "groupID": "A", "id": "A04", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 },
+                { "groupID": "A", "id": "A05", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 }
+            ]
+        },
+        {
+            "groupID": "B", "ItemData": [
+                { "groupID": "B", "id": "B01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 25 },
+                { "groupID": "B", "id": "B02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 },
+                { "groupID": "B", "id": "B03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 },
+                { "groupID": "B", "id": "B04", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 }
+            ]
+        },
+        {
+            "groupID": "C", "ItemData": [
+                { "groupID": "C", "id": "C01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 35 },
+                { "groupID": "C", "id": "C02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 30 },
+                { "groupID": "C", "id": "C03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 30 }
+            ]
+        },
+        {
+            "groupID": "D", "ItemData": [
+                { "groupID": "D", "id": "D01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 45 },
+                { "groupID": "D", "id": "D02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 40 }
+            ]
+        },
+        {
+            "groupID": "E", "ItemData": [
+                { "groupID": "E", "id": "E01", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 50 }
+            ]
+        }
+    ]
+};
+//# sourceMappingURL=itemList.js.map

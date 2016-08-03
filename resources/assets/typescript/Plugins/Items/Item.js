@@ -2,21 +2,123 @@
 //date 1/Aug/2016
 //import {ItemInterface} from "./ItemInterface";
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var Helpers_1 = require("../Helpers");
+var Plugins_1 = require("../Plugins");
+var itemList_1 = require("./itemList");
+var MyLogFunction = (function () {
+    function MyLogFunction(e_bShowLog, e_Name) {
+        this.m_ShowLog = true;
+        this.m_DebugShowTag = null;
+        this.m_ShowLog = e_bShowLog;
+        this.m_DebugShowTag = e_Name;
+    }
+    MyLogFunction.prototype.log = function (e_Arguments) {
+        if (this.m_ShowLog) {
+            if (this.m_DebugShowTag)
+                console.group(this.m_DebugShowTag);
+            console.log(e_Arguments);
+            if (this.m_DebugShowTag)
+                console.groupEnd();
+        }
+    };
+    return MyLogFunction;
+}());
+// idea stage got voting count is reached 100          1
+// idea stage got voting count is reached 1000         1.1
+// idea stage got voting count is reached 5000         1.3
+// idea stage got voting count is reached 10000        1.5
+// idea stage got voting count is reached 50000        1.7
+// idea stage got voting count is reached 100000       2
 var g_StageJsonTest = {
     "ProjectName": "Test",
     "Creator": "Me",
     "StageName": "Idea",
-    "GiveRewardMax": "3",
-    "GiveRewardMin": "1",
+    "RewardPointsMax": 100,
+    "RewardPointsMin": 10,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
     "GroupAndProbability": [
-        { GroupID: "A", Probability: "70" },
-        { GroupID: "B", Probability: "35" },
-        { GroupID: "C", Probability: "17" },
+        { "GroupID": "A", "Probability": 70 },
+        { "GroupID": "B", "Probability": 35 },
+        { "GroupID": "C", "Probability": 17 },
+    ]
+};
+var g_FirstStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 100,
+    "RewardPointsMin": 10,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [
+        { "GroupID": "A", "Probability": 70 },
+        { "GroupID": "B", "Probability": 35 },
+        { "GroupID": "C", "Probability": 17 },
+    ]
+};
+var g_SecondStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 200,
+    "RewardPointsMin": 50,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [
+        { "GroupID": "A", "Probability": 50 },
+        { "GroupID": "B", "Probability": 50 },
+        { "GroupID": "C", "Probability": 25 },
+    ]
+};
+var g_ThirdStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 500,
+    "RewardPointsMin": 100,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [
+        { "GroupID": "B", "Probability": 100 },
+        { "GroupID": "C", "Probability": 50 },
+        { "GroupID": "D", "Probability": 25 },
+    ]
+};
+var g_FourthStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 1000,
+    "RewardPointsMin": 300,
+    "GiveRewardMax": 2,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [
+        { "GroupID": "B", "Probability": 50 },
+        { "GroupID": "C", "Probability": 50 },
+        { "GroupID": "D", "Probability": 25 },
+    ]
+};
+var g_FifthStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 3000,
+    "RewardPointsMin": 800,
+    "GiveRewardMax": 2,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [
+        { "GroupID": "C", "Probability": 50 },
+        { "GroupID": "D", "Probability": 50 },
+        { "GroupID": "E", "Probability": 25 },
     ]
 };
 var ItemData = (function () {
-    //constructor({e_Json}){
     function ItemData(e_Json) {
         this.groupID = "0";
         this.name = "unknow";
@@ -25,15 +127,16 @@ var ItemData = (function () {
         this.probabilityToShow = 0.1;
         //if items combined result is failed,return virtual coins.
         this.cost = 10;
-        var l_TargetElement = e_Json["ItemData"];
-        if (l_TargetElement) {
+        //constructor({e_Json}){
+        this.MyLog = new MyLogFunction(false, "ItemData");
+        this.MyLog.log("start ItemData");
+        if (e_Json) {
             for (var l_Element in e_Json) {
                 this[l_Element] = e_Json[l_Element];
             }
         }
-        else {
-            console.log("item data json forma is wrong!");
-        }
+        this.MyLog.log("ItemData: " + this);
+        this.MyLog.log("end ItemData");
     }
     return ItemData;
 }());
@@ -45,26 +148,29 @@ var GroupAndItem = (function () {
         //public points;
         this.groupID = "0";
         this.itemArray = [];
+        this.MyLog = new MyLogFunction(false, "GroupAndItem");
+        this.MyLog.log("start GroupAndItem");
         this.groupID = e_Json.groupID;
         this.m_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();
-        var l_Element = e_Json["GroupAndItem"];
-        if (l_Element) {
-            for (var l_ItemElement in l_Element) {
-                var l_TargetElement = l_Element[l_ItemElement];
-                if ("ItemData" == l_TargetElement) {
-                    var l_ItemData = new ItemData(l_TargetElement);
-                    this.addItem(l_ItemData);
-                    this.m_findSuitObjectByProbability.addProbability(l_ItemData.probabilityToShow);
-                }
+        var l_ItemDataElement = e_Json["ItemData"];
+        if (l_ItemDataElement) {
+            for (var l_ItemElement in l_ItemDataElement) {
+                var l_TargetElement = l_ItemDataElement[l_ItemElement];
+                var l_ItemData = new ItemData(l_TargetElement);
+                this.addItem(l_ItemData);
+                this.m_findSuitObjectByProbability.addProbability(l_ItemData.probabilityToShow);
             }
         }
+        this.MyLog.log("end GroupAndItem");
     }
     GroupAndItem.prototype.getRandomItemID = function () {
         var l_Index = this.m_findSuitObjectByProbability.getIndex();
         if (this.itemArray.length > l_Index) {
             var l_Item = this.itemArray[l_Index];
+            this.MyLog.log("Item id is:" + l_Item.id);
             return l_Item.id;
         }
+        this.MyLog.log("failed to get Item id!");
         return null;
     };
     GroupAndItem.prototype.addItem = function (e_ItemData) {
@@ -72,6 +178,7 @@ var GroupAndItem = (function () {
         for (var i = 0; i < this.itemArray.length; ++i) {
             var l_ItemData = this.itemArray[i];
             if (l_ItemData.id == e_ItemData.id) {
+                this.MyLog.log("same item id has been added! " + e_ItemData.id);
                 return false;
             }
         }
@@ -82,40 +189,28 @@ var GroupAndItem = (function () {
 }());
 exports.GroupAndItem = GroupAndItem;
 ;
-var ItemManager = (function () {
+var ItemManager = (function (_super) {
+    __extends(ItemManager, _super);
     function ItemManager(e_Json) {
+        _super.call(this);
         this.groupAndItemArray = null;
+        this.MyLog = new MyLogFunction(false, "ItemManager");
+        this.MyLog.log("start ItemManager");
         this.assignItemsData(e_Json);
+        this.MyLog.log("end ItemManager");
         //do something
     }
     ItemManager.prototype.assignItemsData = function (e_Json) {
         this.groupAndItemArray = [];
-        if (e_Json) {
-            for (var l_Json in e_Json) {
-                var l_groupID = l_Json["groupID"];
-                if (l_groupID) {
-                    var l_GroupAndItem = new GroupAndItem(e_Json[l_Json]);
-                    l_GroupAndItem.groupID = l_groupID;
-                    this.groupAndItemArray.push(l_GroupAndItem);
-                }
-            }
+        var l_Root = e_Json;
+        for (var l_Json in l_Root) {
+            var l_CurrentGroup = l_Root[l_Json];
+            var l_GroupAndItem = new GroupAndItem(l_CurrentGroup);
+            this.groupAndItemArray.push(l_GroupAndItem);
         }
     };
-    //     var g_StageJsonTest = {
-    //     "ProjectName":"Test",
-    //     "Creator":"Me",//to link db
-    //     "StageName":"Idea",
-    //     "GiveRewardMax":"3",
-    //     "GiveRewardMin":"1",
-    //     "GeoupAndProbability":[
-    //         {GroupID:"A",Probability:"70"},
-    //         {GroupID:"B",Probability:"35"},
-    //         {GroupID:"C",Probability:"17"},
-    //     ]
-    // }
-    //return array
-    //[groupID,itemID],[7groupID,itemID]....
     ItemManager.prototype.getItemsFromStageData = function (e_StageDataJson) {
+        console.log(e_StageDataJson);
         var l_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();
         var l_ProjectNAme = e_StageDataJson.ProjectName;
         var l_Creator = e_StageDataJson.Creator;
@@ -123,14 +218,15 @@ var ItemManager = (function () {
         var l_GiveRewardMax = e_StageDataJson.GiveRewardMax;
         var l_GiveRewardMin = e_StageDataJson.GiveRewardMin;
         var l_GivRewardCount = Helpers_1.random(l_GiveRewardMin, l_GiveRewardMax);
+        console.log(l_GiveRewardMin + ":" + l_GiveRewardMax);
+        console.log("give reward count is :" + l_GivRewardCount);
         var l_GroupAndProbability = e_StageDataJson.GroupAndProbability;
         if (l_GroupAndProbability) {
             for (var i in l_GroupAndProbability) {
                 var l_Object = l_GroupAndProbability[i];
                 if (l_Object) {
-                    l_Object.GroupID;
-                    l_Object.Probability;
                     l_findSuitObjectByProbability.addProbability(l_Object.Probability);
+                    console.log("probability " + l_Object.Probability);
                 }
             }
             var l_TargetGroup = [];
@@ -140,20 +236,25 @@ var ItemManager = (function () {
             }
             var l_ReturnJsonResult = [];
             for (var i = 0; i < l_TargetGroup.length; ++i) {
-                var l_GroupID = l_TargetGroup[i];
+                var l_CurrentGroupID = l_TargetGroup[i];
                 //avoid some stupid things wrong
-                if (this.groupAndItemArray.length > l_GroupID) {
-                    var l_GroupAndItem = this.groupAndItemArray[l_GroupID_1];
-                    var l_GroupID_1 = l_GroupAndItem.groupID;
+                if (this.groupAndItemArray.length > l_CurrentGroupID) {
+                    var l_GroupAndItem = this.groupAndItemArray[l_CurrentGroupID];
+                    var l_GroupID = l_GroupAndItem.groupID;
                     var l_ItemID = l_GroupAndItem.getRandomItemID();
-                    var l_GroupIDAndItemID = [l_GroupID_1, l_ItemID];
+                    var l_GroupIDAndItemID = [l_GroupID, l_ItemID];
                     l_ReturnJsonResult.push(l_GroupIDAndItemID);
                 }
             }
-            return l_ReturnJsonResult;
+            console.log(l_ReturnJsonResult);
+            var l_RewardPoints = Helpers_1.random(e_StageDataJson.RewardPointsMin, e_StageDataJson.RewardPointsMax);
+            l_RewardPoints = Math.round(l_RewardPoints / 5) * 5;
+            var l_Result = JSON.stringify({ RewardItem: l_ReturnJsonResult, RewardPoints: l_RewardPoints });
+            return l_Result;
         }
         //groupAndItemArray
         //return reward;
+        console.log("getItemsFromStageData is failed!");
         return null;
     };
     ItemManager.prototype.getItemByGroupIdAndItemID = function (e_GroupID, e_ItemID) {
@@ -171,7 +272,7 @@ var ItemManager = (function () {
         return null;
     };
     ItemManager.prototype.getItemByID = function (e_ItemID) {
-        for (var i = 0; i < this.groupAndItemArray; ++i) {
+        for (var i = 0; i < this.groupAndItemArray.length; ++i) {
             var l_Group = this.groupAndItemArray[i];
             for (var j = 0; j < l_Group.itemArray.length; ++j) {
                 var l_Item = l_Group.itemArray[j];
@@ -183,6 +284,17 @@ var ItemManager = (function () {
         return null;
     };
     return ItemManager;
-}());
+}(Plugins_1.Plugins));
 exports.ItemManager = ItemManager;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSXRlbS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIkl0ZW0udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FBYztBQUNkLGlCQUFpQjtBQUNqQixnREFBZ0Q7O0FBRWhELHdCQUFrRCxZQUFZLENBQUMsQ0FBQTtBQUUvRCxJQUFJLGVBQWUsR0FBRztJQUNsQixhQUFhLEVBQUMsTUFBTTtJQUNwQixTQUFTLEVBQUMsSUFBSTtJQUNkLFdBQVcsRUFBQyxNQUFNO0lBQ2xCLGVBQWUsRUFBQyxHQUFHO0lBQ25CLGVBQWUsRUFBQyxHQUFHO0lBQ25CLHFCQUFxQixFQUFDO1FBQ2xCLEVBQUMsT0FBTyxFQUFDLEdBQUcsRUFBQyxXQUFXLEVBQUMsSUFBSSxFQUFDO1FBQzlCLEVBQUMsT0FBTyxFQUFDLEdBQUcsRUFBQyxXQUFXLEVBQUMsSUFBSSxFQUFDO1FBQzlCLEVBQUMsT0FBTyxFQUFDLEdBQUcsRUFBQyxXQUFXLEVBQUMsSUFBSSxFQUFDO0tBQ2pDO0NBQ0osQ0FBQTtBQUVEO0lBUUksd0JBQXdCO0lBQ3hCLGtCQUFZLE1BQU07UUFSWCxZQUFPLEdBQVUsR0FBRyxDQUFDO1FBQ3JCLFNBQUksR0FBVSxRQUFRLENBQUM7UUFDdkIsT0FBRSxHQUFVLEdBQUcsQ0FBQztRQUNoQixhQUFRLEdBQVUsRUFBRSxDQUFDO1FBQ3JCLHNCQUFpQixHQUFVLEdBQUcsQ0FBQztRQUN0QywwREFBMEQ7UUFDbkQsU0FBSSxHQUFHLEVBQUUsQ0FBQztRQUdiLElBQUksZUFBZSxHQUFHLE1BQU0sQ0FBQyxVQUFVLENBQUMsQ0FBQztRQUN6QyxFQUFFLENBQUEsQ0FBQyxlQUFlLENBQUMsQ0FBQyxDQUFDO1lBQ2pCLEdBQUcsQ0FBQyxDQUFDLElBQUksU0FBUyxJQUFJLE1BQU0sQ0FBQyxDQUFDLENBQUM7Z0JBQzNCLElBQUksQ0FBQyxTQUFTLENBQUMsR0FBRyxNQUFNLENBQUMsU0FBUyxDQUFDLENBQUM7WUFDeEMsQ0FBQztRQUNMLENBQUM7UUFBQSxJQUFJ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
+window['dreamsark'].exposes({
+    ItemManager: ItemManager,
+    g_ItemData: itemList_1.g_ItemData,
+    g_StageJsonTest: g_StageJsonTest
+});
+// /**
+//  * Auto install itself
+//  */
+window['dreamsark'].install({
+    ItemManager: ItemManager
+});
+//# sourceMappingURL=Item.js.map

@@ -28,8 +28,7 @@
         {!! $submission->content !!}
     </div>
     <div class="small-12 columns segment --centered --large-padding">
-        <ark-form
-                action="{{ route('project.idea.submission.vote.store', [$project, $submission]) }}">
+        <ark-form action="{{ route('project.idea.submission.vote.store', $submission) }}">
             {{ csrf_field() }}
             <ark-input type="number" name="amount"
                        placeholder="@lang('forms.amount')"></ark-input>

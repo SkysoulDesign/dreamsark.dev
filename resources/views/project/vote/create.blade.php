@@ -54,7 +54,7 @@
 
         <div class="small-10">
             <ark-accordion>
-                @include('project.partials.fragments.vote-submission', $project->stage->submissions, 'submission')
+                @each('project.partials.fragments.vote-submission', $project->stage->submissions, 'submission')
             </ark-accordion>
         </div>
 

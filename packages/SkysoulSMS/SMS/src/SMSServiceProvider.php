@@ -14,7 +14,6 @@ use SkysoulDesign\SMS\Interfaces\SMSInterface;
  */
 class SMSServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
