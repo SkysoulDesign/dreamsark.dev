@@ -42,13 +42,14 @@
         @endif
 
         @if($project->stage->submission)
+
             <div class="small-10 columns message --color-success +center">
                 Task has finished, and a winner has been chosen, congratulation
                 <b><a href="#">{{ $project->stage->submission->user->present()->name }}</a></b> !!!
             </div>
-        @endif
 
-        @if(!$project->stage->active)
+        @elseif(!$project->stage->active)
+
             <div class="small-10 columns message --color-danger +center">
                 <h1>Project has failed</h1>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, aperiam consequatur consequuntur
@@ -64,8 +65,9 @@
                         <li class="li --title">@lang('project.achievements')</li>
                         <li>2500 points</li>
                         <li>5 experience</li>
-                        <li>medails: finder of the year</li>
-                        <li>badge: good thier</li>
+                        @foreach($project->stage->reward->items as $item)
+                            <li><a href="#">{{ $item->id }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="small-8 columns">

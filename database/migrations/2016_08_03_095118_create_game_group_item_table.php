@@ -24,6 +24,7 @@ class CreateGameGroupItemTable extends Migration
             $table->integer('group_id')->unsigned()->index();
             $table->foreign('group_id')->references('id')->on('game_groups')->onDelete('cascade');
 
+            $table->string('name')->unique();
             $table->string('image');
             $table->integer('cost');
             $table->tinyInteger('probability');

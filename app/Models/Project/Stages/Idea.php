@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\RewardableTrait;
@@ -67,5 +68,15 @@ class Idea extends Model
      * Define Which is the next Model
      */
     protected $next = Synapse::class;
+
+    public function stageable()
+    {
+        return $this->morphOne(Project::class, 'stageable');
+    }
+
+    public function stage()
+    {
+        return $this->morphOne(Project::class, 'stageable');
+    }
 
 }
