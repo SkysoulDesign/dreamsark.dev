@@ -36,9 +36,6 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-
-        dd($request->user()->projects()->active()->get());
-
         return view('user.project.index')
             ->with('projects', $request->user()->projects()->active()->get())
             ->with('failed_projects', $request->user()->projects()->failed()->get());

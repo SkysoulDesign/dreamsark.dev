@@ -30,7 +30,7 @@
                 @foreach($project->stage->reward->items as $item)
                     <li>
                         <img class="project-page__achievements" src="{{ asset($item->image) }}">
-                        <div class="+uppercase +bold">{{ $item->id }}</div>
+                        <div class="+uppercase +bold">{{ $item->name }}</div>
                     </li>
                 @endforeach
             </ul>

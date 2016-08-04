@@ -19,6 +19,13 @@ class Item extends Model
      */
     protected $table = 'game_group_item';
 
+    /**
+     * @param $name
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = str_slug($name);
+    }
 
     /**
      * Scope Query by groups
