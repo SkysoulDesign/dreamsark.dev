@@ -49,7 +49,7 @@ use DreamsArk\Listeners\Project\RegisterVotingWinner;
 use DreamsArk\Listeners\Project\UpdateProjectStage;
 use DreamsArk\Listeners\Project\Vote\AutomaticallySendReviewToCommittee;
 use DreamsArk\Listeners\Project\Vote\DeactivateVoting;
-use DreamsArk\Listeners\Project\Vote\QueueCloseVotingCommand;
+use DreamsArk\Listeners\Project\Vote\QueueCloseVoting;
 use DreamsArk\Listeners\Project\Vote\QueueOpenVoting;
 use DreamsArk\Listeners\Project\Vote\SendProjectToDistributionReview;
 use DreamsArk\Listeners\User\AppendDefaultSettings;
@@ -131,7 +131,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         VoteWasOpened::class => [
-            QueueCloseVotingCommand::class
+            QueueCloseVoting::class
         ],
 
         VotingHasFailed::class => [

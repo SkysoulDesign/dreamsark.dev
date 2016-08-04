@@ -31,6 +31,7 @@ class Submission extends Model
      * Scope a query to only show visible entries.
      *
      * @param $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePublic($query)
@@ -42,6 +43,7 @@ class Submission extends Model
      * Scope a query to only show private entries.
      *
      * @param $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePrivate($query)
@@ -54,6 +56,7 @@ class Submission extends Model
      *
      * @param $query
      * @param \DreamsArk\Models\User\User $user
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOwnedBy($query, User $user)

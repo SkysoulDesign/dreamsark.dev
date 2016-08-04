@@ -41,18 +41,11 @@ use DreamsArk\Http\Controllers\Report\ReportController;
 use DreamsArk\Http\Controllers\Session\SessionController;
 use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\Bag\CoinController;
+use DreamsArk\Http\Controllers\User\InventoryController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
-use DreamsArk\Models\User\User;
-
-$app->get('test', function () {
-
-    $user = User::find(1);
-    dd($user->items);
-
-});
 
 $app->get('info', function () {
     phpinfo();
@@ -165,6 +158,11 @@ $app->group(['middleware' => 'web'], function () use ($app) {
          */
         $app->get('account', SessionController::class . '@index')->name('account');
         $app->patch('account/update', SessionController::class . '@update')->name('account.update');
+
+        /**
+         * Inventory Controller
+         */
+        $app->get('inventory', InventoryController::class . '@index')->name('inventory');
 
         /**
          * Purchases

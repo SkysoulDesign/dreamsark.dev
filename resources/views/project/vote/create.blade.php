@@ -27,22 +27,18 @@
         <div class="small-10 columns segment --color-primary --centered --large-padding">
             <div class="header --with-divider">Rewards</div>
             <ul class="ul --inline --evenly +center">
-
-                @foreach(
-                 ['milky-way.svg', 'planet-earth.svg', 'moon.svg', 'mercury.svg', 'galaxy.svg',
-                  'stars.svg', 'venus.svg'] as $svg)
+                @foreach($project->stage->reward->items as $item)
                     <li>
-                        <img class="project-page__achievements"
-                             src="{{ asset("img/svg/$svg") }}">
-                        <div class="+uppercase +bold">{{ explode('.', $svg)[0] }}</div>
+                        <img class="project-page__achievements" src="{{ asset($item->image) }}">
+                        <div class="+uppercase +bold">{{ $item->id }}</div>
                     </li>
                 @endforeach
             </ul>
 
         </div>
 
-        <div class="small-10 columns segment --centered --large-padding">
-            <h1>Original Request</h1>
+        <div class="small-10 columns segment --large-padding">
+            <h1 class="+center">Original Request</h1>
             {!! $project->stage->content !!}
         </div>
 

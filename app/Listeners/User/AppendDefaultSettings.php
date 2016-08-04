@@ -5,6 +5,11 @@ namespace DreamsArk\Listeners\User;
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Repositories\Setting\SettingRepositoryInterface;
 
+/**
+ * Class AppendDefaultSettings
+ *
+ * @package DreamsArk\Listeners\User
+ */
 class AppendDefaultSettings
 {
     /**

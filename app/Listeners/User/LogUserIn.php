@@ -5,6 +5,11 @@ namespace DreamsArk\Listeners\User;
 use DreamsArk\Events\Session\UserWasCreated;
 use Illuminate\Auth\AuthManager;
 
+/**
+ * Class LogUserIn
+ *
+ * @package DreamsArk\Listeners\User
+ */
 class LogUserIn
 {
     /**

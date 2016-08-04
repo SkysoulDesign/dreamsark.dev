@@ -17,13 +17,20 @@ class ItemTableSeeder extends Seeder
     public function run()
     {
 
-        Group::all()->each(function ($group) {
+        $images = ['milky-way.svg', 'planet-earth.svg', 'moon.svg', 'mercury.svg', 'galaxy.svg', 'stars.svg', 'venus.svg'];
+
+        Group::all()->each(function ($group) use ($images) {
+
 
             foreach (range(10, rand(10, 50)) as $index) {
+
+                $image = array_rand($images, 1);
+
                 $item = new Item();
                 $item->group()->associate($group);
                 $item->setAttribute('cost', rand(100, 1000));
                 $item->setAttribute('probability', 1);
+                $item->setAttribute('image', "img/svg/{$images[$image]}");
                 $item->save();
             }
 

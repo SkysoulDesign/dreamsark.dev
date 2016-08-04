@@ -46,14 +46,15 @@ class CreateRewardJob extends Job
     public function handle(Item $item) : Reward
     {
 
-        $items = $item->groups(['a', 'b', 'c'])->weighted()->limit(5)->get(['id'])->toArray();
-
         $reward = $this->model->reward()->create([
             'amount' => $this->amount,
             'project_id' => $this->model->getAttribute('project')->id,
-            'items' => array_flatten($items),
             'points' => null
         ]);
+
+        $reward->items()->saveMany(
+            $item->groups(['a', 'b', 'c'])->weighted()->limit(5)->get(['id'])
+        );
 
         /**
          * Announce RewardWasCreated

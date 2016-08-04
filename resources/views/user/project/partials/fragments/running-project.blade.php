@@ -10,7 +10,7 @@
             <ul class="--tight">
                 <li>
                     <h4>
-                        <a href="#">{{ $project->name }}</a>
+                        <a href="{{ route('project.show', $project) }}">{{ $project->name }}</a>
                     </h4>
                 </li>
                 <li class="li --sub-tittle">

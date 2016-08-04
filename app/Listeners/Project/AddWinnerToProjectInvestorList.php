@@ -3,7 +3,7 @@
 namespace DreamsArk\Listeners\Project;
 
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
-use DreamsArk\Jobs\Project\Submission\CreateSubmissionWinnerJob;
+use DreamsArk\Jobs\Project\CreateInvestorsJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -26,7 +26,7 @@ class AddWinnerToProjectInvestorList
         /**
          * Register Winner
          */
-        $this->dispatch(new CreateSubmissionWinnerJob(
+        $this->dispatch(new CreateInvestorsJob(
             $event->submission
         ));
     }

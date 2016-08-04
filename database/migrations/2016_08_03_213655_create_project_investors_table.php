@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateProjectStageReward
+ * Class CreateProjectInvestorsTable
  */
-class CreateProjectStageReward extends Migration
+class CreateProjectInvestorsTable extends Migration
 {
+
     use SchemaTrait;
 
     /**
@@ -17,17 +18,20 @@ class CreateProjectStageReward extends Migration
      */
     public function up()
     {
-        $this->schema->create('project_reward', function (Blueprint $table) {
+        $this->schema->create('project_investors', function (Blueprint $table) {
+
             $table->increments('id');
 
             $table->integer('project_id')->unsigned()->index();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->integer('rewardable_id')->nullable()->unsigned();
-            $table->string('rewardable_type');
 
-            $table->integer('points');
+            $table->integer('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('amount');
+
+            $table->timestamps();
+
         });
     }
 
@@ -38,6 +42,6 @@ class CreateProjectStageReward extends Migration
      */
     public function down()
     {
-        $this->schema->drop('project_reward');
+        $this->schema->drop('project_investors');
     }
 }
