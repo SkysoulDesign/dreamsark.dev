@@ -28,8 +28,8 @@
     <div class="small-10 columns segment --color-primary --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
-            <statistic-item data="50">Investors</statistic-item>
-            <statistic-item data="1200">Collected</statistic-item>
+            <statistic-item data="{{ $project->investors->unique()->count() }}">Investors</statistic-item>
+            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">Collected</statistic-item>
         </ark-statistics>
 
     </div>

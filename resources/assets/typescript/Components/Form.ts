@@ -84,6 +84,7 @@ export class Form implements ComponentInterface {
                         default: 'gray'
                     },
                     icon: String,
+                    id: String,
                     class: String,
                     href: String,
                 },
