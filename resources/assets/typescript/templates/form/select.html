@@ -1,0 +1,6 @@
+<div class="form__field">
+    <label v-if="label" :for="name">{{ label }}</label>
+    <select :name="name">
+        <slot></slot>
+    </select>
+</div>

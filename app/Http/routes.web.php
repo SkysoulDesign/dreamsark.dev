@@ -341,7 +341,7 @@ $app->group(['middleware' => 'web'], function () use ($app) {
 
         $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
         $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
-        $app->post('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
+        $app->delete('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
         $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
         /**
          * Project Cast Controller

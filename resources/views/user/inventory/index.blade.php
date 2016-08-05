@@ -27,7 +27,7 @@
 
         @foreach($items as $item)
             <div class="small-1 columns">
-                <img src="{{ asset($item->image) }}" draggable="true" data-id="{{ $item->id }}" data-zone="w">
+                <img src="{{ asset($item->image) }}" draggable="true" data-id="{{ $item->id }}">
             </div>
         @endforeach
 

@@ -139,6 +139,10 @@
   text-transform: uppercase;
 }
 
+@include tweak(circle) {
+  border-radius: 100% !important;
+}
+
 @each $color in $colors {
 
   @include tweak(color-#{nth($color, 1)}) {

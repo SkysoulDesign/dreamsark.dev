@@ -1,7 +1,7 @@
-<ark-tab content="tab-idea" icon="lightbulb-o">
-    @lang('project.idea')
+<ark-tab content="tab-fund" icon="video-camera" {{ (isset($active) && $active) ? 'active' : '' }}>
+    @lang('project.fund')
     @push('tab-item')
-    <div id="tab-idea" class="row align-center +margin-top">
+    <div id="tab-fund" class="row align-center +margin-top">
 
         <div class="small-12 columns">
             <header class="header --with-divider +uppercase --centered">
@@ -11,15 +11,14 @@
 
         <div class="small-10 columns segment --large-padding">
             <h2>Description</h2>
-            {!! $project->idea->content !!}
+            asdasdasdasdasd
         </div>
 
         <div class="small-10 columns segment --large-padding +margin-top">
             <div class="segment__header --image --centered">
-                <img src="{{ $project->idea->submission->user->present()->avatar }}" alt="">
-                <a href="#">{{ $project->idea->submission->user->present()->name }}</a>
+              asd
             </div>
-            {!! $project->idea->submission->content !!}
+            asdasdasd
         </div>
 
     </div>

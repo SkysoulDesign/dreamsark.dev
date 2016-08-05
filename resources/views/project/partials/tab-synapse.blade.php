@@ -1,4 +1,4 @@
-<ark-tab content="tab-synapse" icon="paper-plane">
+<ark-tab content="tab-synapse" icon="file-text-o">
     @lang('project.synapse')
     @push('tab-item')
     <div id="tab-synapse" class="row align-center +margin-top">
@@ -11,7 +11,7 @@
 
         <div class="small-10 columns segment --large-padding">
             <h2>Description</h2>
-            {!! $project->stage->content !!}
+            {!! $project->synapse->content !!}
         </div>
 
         <div class="small-10 columns segment --large-padding +margin-top">

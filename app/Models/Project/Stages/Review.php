@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
+use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\ScopeAbleTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
 
-    use ProjectableTrait, ScopeAbleTrait;
+    use ProjectableTrait, ScopeAbleTrait, CommentableTrait;
 
     /**
      * The database table used by the model.

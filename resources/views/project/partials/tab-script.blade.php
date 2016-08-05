@@ -1,25 +1,25 @@
-<ark-tab content="tab-idea" icon="lightbulb-o">
-    @lang('project.idea')
+<ark-tab content="tab-script" icon="film">
+    @lang('project.script')
     @push('tab-item')
-    <div id="tab-idea" class="row align-center +margin-top">
+    <div id="tab-script" class="row align-center +margin-top">
 
         <div class="small-12 columns">
             <header class="header --with-divider +uppercase --centered">
-                Idea Stage
+                Script Stage
             </header>
         </div>
 
         <div class="small-10 columns segment --large-padding">
             <h2>Description</h2>
-            {!! $project->idea->content !!}
+            {!! $project->script->content !!}
         </div>
 
         <div class="small-10 columns segment --large-padding +margin-top">
             <div class="segment__header --image --centered">
-                <img src="{{ $project->idea->submission->user->present()->avatar }}" alt="">
-                <a href="#">{{ $project->idea->submission->user->present()->name }}</a>
+                <img src="{{ $project->script->submission->user->present()->avatar }}" alt="">
+                <a href="#">{{ $project->script->submission->user->present()->name }}</a>
             </div>
-            {!! $project->idea->submission->content !!}
+            {!! $project->script->submission->content !!}
         </div>
 
     </div>
