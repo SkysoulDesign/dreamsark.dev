@@ -2,6 +2,7 @@
 
 namespace DreamsArk\Models\Project\Stages;
 
+use DreamsArk\Models\Traits\CommentableTrait;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\ScopeAbleTrait;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class Fund extends Model
 {
 
-    use ProjectableTrait, VotableTrait, EnrollableTrait, ScopeAbleTrait;
+    use ProjectableTrait, VotableTrait, EnrollableTrait, ScopeAbleTrait, CommentableTrait;
 
     /**
      * The database table used by the model.

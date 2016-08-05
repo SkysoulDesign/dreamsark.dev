@@ -6,7 +6,7 @@
 }
 
 //Usage: tiny, small, medium, circle..
-@mixin border-radius($size: normal) {
+@mixin border-radius($size: small) {
 
   @if (type-of($size) == number) {
     border-radius: $size;

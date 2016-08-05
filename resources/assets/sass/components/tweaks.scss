@@ -51,6 +51,10 @@
   text-align: center;
 }
 
+@include tweak(left) {
+  text-align: left;
+}
+
 @include tweak(justify) {
   text-align: justify;
 }

@@ -1,7 +1,13 @@
-<ark-tab content="tab-fund" icon="video-camera" {{ (isset($active) && $active) ? 'active' : '' }}>
-    @lang('project.fund')
+<ark-tab content="tab-investors" icon="user" {{ (isset($active) && $active) ? 'active' : '' }}>
+    @lang('project.investors')
     @push('tab-item')
-    <div id="tab-fund" class="row align-center +margin-top">
+    <div id="tab-investors" class="row align-center +margin-top">
+
+        <div class="small-12 columns">
+            <header class="header --with-divider +uppercase --centered">
+                Investors
+            </header>
+        </div>
 
         <div class="small-10 columns segment --large-padding">
             <h2>Description</h2>

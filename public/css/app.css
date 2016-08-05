@@ -3773,6 +3773,9 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .segment, .message, .item, .pagination__item {
   border-radius: 0.2em; }
 
+.project-page__fund img {
+  border-radius: 0.4em; }
+
 .switcher, .switcher__toggle {
   border-radius: 50em; }
 
@@ -5608,6 +5611,9 @@ button, .button {
 #app-root .\+center, #app-root .segment.\--centered, #app-root .\--centered.message, #app-root .\--centered.item, #app-root .segment__header.\--centered {
   text-align: center; }
 
+#app-root .\+left {
+  text-align: left; }
+
 #app-root .\+justify {
   text-align: justify; }
 
@@ -6246,13 +6252,18 @@ button, .button {
         color: white; }
     .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
       box-shadow: inset 0 -3px 0 0 white; }
+  .ul.\--fluid, ul.\--fluid, .\--fluid.badges {
+    width: 100%; }
+    .ul.\--fluid li, ul.\--fluid li, .\--fluid.badges li {
+      width: 100%; }
 
 .comment {
   margin-bottom: 2em; }
   .comment__avatar {
     margin-top: 1em; }
   .comment__content {
-    position: relative; }
+    position: relative;
+    padding: 2em; }
     .comment__content__author {
       text-transform: uppercase;
       margin-bottom: .7em; }
@@ -7234,6 +7245,9 @@ button, .button {
   */
   /**
   * Review
+  */
+  /**
+  * Fund
   */ }
   .project-page__header {
     height: 15em; }
@@ -7412,6 +7426,22 @@ button, .button {
     right: 0;
     top: -46%;
     z-index: -1; }
+  .project-page__fund img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -webkit-transition: -webkit-transform 0.25s;
+    transition: -webkit-transform 0.25s;
+    transition: transform 0.25s;
+    transition: transform 0.25s, -webkit-transform 0.25s;
+    margin-bottom: 1em; }
+    .project-page__fund img:hover {
+      -webkit-transform: scale(1);
+      transform: scale(1); }
+    .project-page__fund img:active {
+      -webkit-transform: scale(0.8333333333);
+      transform: scale(0.8333333333); }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }

@@ -16,9 +16,7 @@ export class Progress implements ComponentInterface {
                 },
                 label: String,
                 class: String,
-                live: {
-                    type: Array,
-                },
+                live: Array,
                 size: {
                     type: String,
                     default: 'normal' //normal, medium, large

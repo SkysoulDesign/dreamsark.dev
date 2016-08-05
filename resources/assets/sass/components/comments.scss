@@ -8,6 +8,7 @@
 
   @include part(content) {
     position: relative;
+    padding: 2em;
 
     @include part(author) {
 
