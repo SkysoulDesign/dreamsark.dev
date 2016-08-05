@@ -43,6 +43,7 @@ use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateReward;
 use DreamsArk\Listeners\Project\CreateVote;
 use DreamsArk\Listeners\Project\DeductUserCoins;
+use DreamsArk\Listeners\Project\Game\GiveItemsToWinner;
 use DreamsArk\Listeners\Project\RefundCreator;
 use DreamsArk\Listeners\Project\RefundUsers;
 use DreamsArk\Listeners\Project\RegisterVotingWinner;
@@ -143,6 +144,7 @@ class EventServiceProvider extends ServiceProvider
             RefundUsers::class,
             RegisterVotingWinner::class,
             AddWinnerToProjectInvestorList::class,
+            GiveItemsToWinner::class,
             AutomaticallySendReviewToCommittee::class,
         ],
 

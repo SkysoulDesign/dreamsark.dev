@@ -3758,7 +3758,7 @@ button {
 /**
 * Mixins
 */
-.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .expand-transition, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a, .message.\--fixed {
+.nav.\--color-neutral .nav__content__item, .nav.\--color-white .nav__content__item, .nav.\--color-gray .nav__content__item, .nav.\--color-primary .nav__content__item, .nav.\--color-secondary .nav__content__item, .nav.\--color-ternary .nav__content__item, .nav.\--color-danger .nav__content__item, .nav.\--color-success .nav__content__item, .nav.\--color-warning .nav__content__item, .nav.\--color-black .nav__content__item, .nav.\--color-pure-black .nav__content__item, .nav.\--color-red .nav__content__item, .nav.\--color-yellow .nav__content__item, .nav.\--color-green .nav__content__item, .nav.\--color-purple .nav__content__item, .nav.\--color-tomato .nav__content__item, .nav.\--color-golden .nav__content__item, .nav.\--color-transparent-white .nav__content__item, .nav__content__item, .ul.\--tab li, ul.\--tab li, .\--tab.badges li, .expand-transition, .dropdown__options li, .form__field.\--optional, .\--optional.form__fields, .\--optional.form__description, .form__field span.\--optional, .pagination__item a, .message.\--fixed, .inventory-page__drop-zone {
   -webkit-transition-duration: 0.25s;
   transition-duration: 0.25s; }
 
@@ -3776,7 +3776,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .switcher, .switcher__toggle {
   border-radius: 50em; }
 
-.form__step span, .item__image img {
+.form__step span, .item__image img, .inventory-page__drop-zone {
   border-radius: 100%; }
 
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .switcher, .pagination__item, .item {
@@ -7165,6 +7165,45 @@ button, .button {
   right: -10%;
   top: -20%;
   z-index: 10; }
+
+.inventory-page__drop-zone {
+  height: 200px;
+  width: 200px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  background: #99cdff;
+  border: 0.2em dashed #005cb3;
+  text-align: center;
+  align-content: center;
+  margin: 0 auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition-property: background-color, border-color;
+  transition-property: background-color, border-color; }
+  .inventory-page__drop-zone span {
+    text-transform: uppercase;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size: 6em;
+    top: -1%;
+    color: rgba(51, 156, 255, 0.1);
+    pointer-events: none; }
+  .inventory-page__drop-zone:hover {
+    background: white;
+    border-color: #004280; }
+  .inventory-page__drop-zone__item img {
+    display: -webkit-box;
+    display: flex;
+    margin: 0 auto;
+    height: 200px;
+    width: 200px; }
 
 /**
 * Plugins

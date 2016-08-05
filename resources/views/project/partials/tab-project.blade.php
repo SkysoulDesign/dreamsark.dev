@@ -66,7 +66,7 @@
                         <li>2500 points</li>
                         <li>5 experience</li>
                         @foreach($project->stage->reward->items as $item)
-                            <li><a href="#">{{ $item->id }}</a></li>
+                            <li>{{ $item->name }}</li>
                         @endforeach
                     </ul>
                 </div>

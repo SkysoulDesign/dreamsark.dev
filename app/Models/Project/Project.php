@@ -82,7 +82,6 @@ class Project extends Model
      */
     public function scopeActive(Builder $query)
     {
-
         foreach ($stages = ['idea', 'synapse', 'script'] as $stage) {
 
             $query->orWhereHas(array_shift($stages), function (Builder $query) {
@@ -96,7 +95,6 @@ class Project extends Model
         }
 
         $query->where('active', true);
-
     }
 
     /**
@@ -106,16 +104,21 @@ class Project extends Model
      *
      * @return Builder
      */
-    public
-    function scopeFailed(Builder $query)
+    public function scopeFailed(Builder $query)
     {
-        $query->whereHas('stage', function (Builder $query) {
-            foreach (['idea', 'synapse', 'script'] as $stage) {
-                $query->orWhereHas($stage, function ($query) {
-                    $query->where('active', false)->whereDoesntHave('submission')->select('id');
-                });
+        foreach ($stages = ['idea', 'synapse', 'script'] as $stage) {
+
+            $query->orWhereHas(array_shift($stages), function (Builder $query) {
+                $query->where('active', false)->doesntHave('submission');
+            });
+
+            foreach ($stages as $model) {
+                $query->whereDoesntHave($model);
             }
-        });
+
+        }
+
+        $query->orWhere('active', false);
     }
 
     /**

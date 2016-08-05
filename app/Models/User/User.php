@@ -228,6 +228,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function items() : belongsToMany
     {
-        return $this->belongsToMany(Item::class, 'game_item_user');
+        return $this->belongsToMany(Item::class, 'game_item_user')->withPivot('quantity');
     }
 }

@@ -1,0 +1,50 @@
+@include page(inventory) {
+
+  @include part(drop-zone) {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color(primary, x-light);
+    border: .2em dashed color(primary, dark);
+    @include border-radius(circle);
+    text-align: center;
+    align-content: center;
+    margin: 0 auto;
+    user-select: none;
+
+    span {
+      text-transform: uppercase;
+      left: 0;
+      right: 0;
+      margin: auto;
+      //position: absolute;
+      font-size: 6em;
+      top: -1%;
+      color: color(primary, light, 10);
+      pointer-events: none;
+    }
+
+    @include transition() {
+      transition-property: background-color, border-color;
+    }
+
+    &:hover {
+      background: color(primary, xx-light);
+      border-color: color(primary, x-dark);
+    }
+
+    @include part(item) {
+      img {
+        display: flex;
+        margin: 0 auto;
+        height: 200px;
+        width: 200px;
+      }
+
+    }
+
+  }
+
+}

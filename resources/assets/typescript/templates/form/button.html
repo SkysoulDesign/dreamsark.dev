@@ -1,5 +1,5 @@
 <div class="form__field">
-    <button @click="click" :type="type" class="button" :class="[class, '--color-' + color]">
+    <button :id="id" @click="click" :type="type" class="button" :class="[class, '--color-' + color]">
         <i v-if="icon" class="fa fa-{{ icon }} fa-fw" aria-hidden="true"></i>
         <slot></slot>
     </button>
