@@ -53,7 +53,7 @@
 
             <div class="row box">
 
-                <img id="miniature" src="{{ asset('lib/point-1.png') }}" alt="">
+                <img id="miniature" src="{{ asset('intro/point-1.png') }}" alt="">
 
                 <div class="medium-6 column info">
 
@@ -85,7 +85,7 @@
                 <div class="medium-6 column">
 
                     <section class="video-player">
-                        <img id="cover" src="{{ asset('lib/cover.jpg') }}" alt="">
+                        <img id="cover" src="{{ asset('intro/cover.jpg') }}" alt="">
                     </section>
 
                 </div>
