@@ -6,6 +6,11 @@ use DreamsArk\Events\Event;
 use DreamsArk\Jobs\User\Coins\ChargeUserJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class DeductUserCoins
+ *
+ * @package DreamsArk\Listeners\Project
+ */
 class DeductUserCoins
 {
 
@@ -21,6 +26,8 @@ class DeductUserCoins
         /**
          * Deduct Coins from the user
          */
-        $this->dispatch(new ChargeUserJob($event->user, $event->amount));
+        $this->dispatch(new ChargeUserJob(
+            $event->user, $event->amount
+        ));
     }
 }

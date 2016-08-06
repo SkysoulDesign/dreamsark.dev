@@ -351,6 +351,39 @@
 
     }
 
+    @include part(steps) {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: -3.8em;
+    }
+
+    @include part(investor-list) {
+
+      text-align: center;
+      margin-top: 4em;
+      @include base-scalable(1.1);
+      user-select: none;
+
+      img {
+        display: block;
+        //position: absolute;
+        width: 50%;
+        margin: -4em auto 0 auto;
+      }
+
+      a {
+        @include font-weight(bold);
+      }
+
+      p {
+        @include font-size(large);
+        @include font-weight(bold);
+      }
+
+    }
+
   }
 
 }

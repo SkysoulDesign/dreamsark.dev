@@ -9,47 +9,18 @@
             </header>
         </div>
 
-        <div class="small-10 columns segment --large-padding">
-            <h2>Description</h2>
-            <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                labore et
-                dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-                Stet
-                clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-                amet,
-                consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-                erat,
-                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-                no
-                sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-                elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-                voluptua. At
-                vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus
-                est
-                Lorem ipsum dolor sit amet.</p>
-
-
-            <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-                erat,
-                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-                no
-                sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-                elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-                voluptua. At
-                vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus
-                est
-                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-                eirmod
-                tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-                justo
-                duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.</p>
-
-            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat
-                facer
-                possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-                exerci
-                tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+        <div class="small-10 --large-padding">
+            <div class="row align-center">
+                @foreach($project->investors->groupBy('user') as $investor)
+                    <div class="small-3 columns">
+                        <div class="segment project-page__fund__investor-list">
+                            <img src="{{ asset($investor->first()->present()->avatar) }}" alt="">
+                            <a href="#">{{ $investor->first()->username }}</a>
+                            <p class="+color-primary">{{ $investor->sum('pivot.amount') }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
 
     </div>

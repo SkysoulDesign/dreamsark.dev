@@ -126,8 +126,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public
-    function creator()
+    public function creator()
     {
         return $this->user();
     }
@@ -135,8 +134,7 @@ class Project extends Model
     /**
      * User Relationship
      */
-    public
-    function user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -158,8 +156,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public
-    function rewards()
+    public function rewards()
     {
         return $this->hasMany(Reward::class);
     }
@@ -169,8 +166,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function idea() : hasOne
+    public function idea() : hasOne
     {
         return $this->hasOne(Idea::class);
     }
@@ -180,8 +176,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function synapse() : hasOne
+    public function synapse() : hasOne
     {
         return $this->hasOne(Synapse::class);
     }
@@ -191,8 +186,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function script() : hasOne
+    public function script() : hasOne
     {
         return $this->hasOne(Script::class);
     }
@@ -202,8 +196,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function review() : hasOne
+    public function review() : hasOne
     {
         return $this->hasOne(Review::class);
     }
@@ -213,8 +206,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function fund() : hasOne
+    public function fund() : hasOne
     {
         return $this->hasOne(Fund::class);
     }
@@ -224,8 +216,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public
-    function distribution() : hasOne
+    public function distribution() : hasOne
     {
         return $this->hasOne(Distribution::class);
     }
@@ -233,14 +224,12 @@ class Project extends Model
     /**
      * Returns the right Relationship for the current project stage
      */
-    public
-    function stage() : MorphTo
+    public function stage() : MorphTo
     {
         return $this->morphTo('stageable');
     }
 
-    public
-    function stageable() : MorphTo
+    public function stageable() : MorphTo
     {
         return $this->morphTo();
     }
@@ -250,8 +239,7 @@ class Project extends Model
      *
      * @return string
      */
-    public
-    function nextStageName() : string
+    public function nextStageName() : string
     {
         return strtolower(class_basename($this->stage->next()));
     }
@@ -261,8 +249,7 @@ class Project extends Model
      *
      * @return mixed
      */
-    public
-    function enrollable()
+    public function enrollable()
     {
         return $this->expenditures()->enrollable();
     }
@@ -270,8 +257,7 @@ class Project extends Model
     /**
      * Expenditure Relationship
      */
-    public
-    function expenditures()
+    public function expenditures()
     {
         return $this->hasMany(Expenditure::class);
     }
@@ -281,8 +267,7 @@ class Project extends Model
      *
      * @return mixed
      */
-    public
-    function expensable()
+    public function expensable()
     {
         return $this->expenditures()->expensable();
     }
@@ -292,8 +277,7 @@ class Project extends Model
      *
      * @return belongsToMany
      */
-    public
-    function investors() : belongsToMany
+    public function investors() : belongsToMany
     {
         return $this->belongsToMany(User::class, 'project_investors')->withPivot('amount');
     }
@@ -303,8 +287,7 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public
-    function backers()
+    public function backers()
     {
         return $this->belongsToMany(User::class, 'project_backer')
             ->withPivot('amount')->withTimestamps()
@@ -314,14 +297,12 @@ class Project extends Model
     /**
      * sum of amount received from "Project Backers" & "voters to enrollers"
      */
-    public
-    function totalCollected()
+    public function totalCollected()
     {
         return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
     }
 
-    public
-    function enrollVoteTotal()
+    public function enrollVoteTotal()
     {
         /** @var Collection $voteSum */
         $voteSum = $this->enrollable->pluck('enrollers')->map(function ($item) {

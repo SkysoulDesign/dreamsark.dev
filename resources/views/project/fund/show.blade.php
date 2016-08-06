@@ -14,20 +14,13 @@
             <div class="small-5">
                 <ark-fields>
                     <ark-button class="--fluid" color="success">Enrol to this project</ark-button>
-                    <ark-button class="--fluid" color="primary">Invest on this Project</ark-button>
+                    <ark-button data-modal-trigger="invent-project"
+                                class="--fluid" color="primary">
+                        Invest on this Project
+                    </ark-button>
                 </ark-fields>
             </div>
         </div>
-        {{--<div class="row align-center project-page__review__steps">--}}
-        {{--<ark-steps>--}}
-        {{--<ark-step {{ active($stage, 'idea') }}></ark-step>--}}
-        {{--<ark-step {{ active($stage, 'synapse') }}></ark-step>--}}
-        {{--<ark-step {{ active($stage, 'script') }}></ark-step>--}}
-        {{--<ark-step {{ active($stage, 'review') }}></ark-step>--}}
-        {{--<ark-step {{ active($stage, 'fund') }}></ark-step>--}}
-        {{--<ark-step {{ active($stage, 'distribution') }}></ark-step>--}}
-        {{--</ark-steps>--}}
-        {{--</div>--}}
 
     </div>
 
@@ -44,7 +37,9 @@
             <div class="small-5 columns">
                 <ul class="ul --fluid --tight">
                     <li>
-                        <ark-progress :data="20" :max="100" label="Goal Competition" mini></ark-progress>
+                        <ark-progress :data="{{ $project->investors->sum('pivot.amount') }}"
+                                      :max="{{ $project->expenditures->sum('expenditurable.cost') }}"
+                                      label="Goal Competition" mini mode="percentage"></ark-progress>
                     </li>
                     <li>
                         <ark-progress :data="20" :max="100" label="Time Competition" color="red" mini></ark-progress>
@@ -71,3 +66,31 @@
     </div>
 
 </div>
+
+<ark-modal v-cloak trigger="invent-project" header="Become an Investor">
+
+    <ark-form class="align-center +margin-top-small"
+              action="{{ route('project.fund.store', $project) }}">
+
+        <ark-form-step>
+            @lang('forms.investment')
+        </ark-form-step>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat harum id iste minus odio quasi ratione
+            repellendus! Ab deserunt itaque minus, natus nobis nulla unde. Blanditiis impedit labore rerum veniam!</p>
+
+
+        <ark-input name="amount"
+                   required
+                   type="number"
+                   :min="1"
+                   placeholder="@lang('forms.amount')">
+        </ark-input>
+
+        <ark-button color="success" class="--fluid --medium" class="+center-on-mobile">
+            @lang('forms.invest')
+        </ark-button>
+
+    </ark-form>
+
+</ark-modal>

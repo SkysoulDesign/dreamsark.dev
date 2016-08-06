@@ -20,7 +20,18 @@
 
         </div>
 
-        @if(!$project->stage instanceof \DreamsArk\Models\Project\Stages\Review)
+        @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Fund)
+            <div class="columns +align-right">
+                <ark-button href="{{ route('project.show', $project) }}"
+                            color="success">
+                    View Project
+                </ark-button>
+            </div>
+        @endif
+
+        @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Idea or
+            $project->stage instanceof \DreamsArk\Models\Project\Stages\Synapse or
+            $project->stage instanceof \DreamsArk\Models\Project\Stages\Script)
 
             <div class="columns">
 
@@ -55,6 +66,8 @@
             @endif
 
         @endif
+
     </div>
     @include("user.project.partials.{$project->stage->getStageName()}-details")
+
 </ark-accordion-item>

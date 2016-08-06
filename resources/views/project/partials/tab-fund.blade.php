@@ -4,6 +4,7 @@
     <div id="tab-fund" class="row align-center +margin-top">
 
         <div class="small-10 columns segment --large-padding">
+
             <h2>Description</h2>
             <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
                 labore et

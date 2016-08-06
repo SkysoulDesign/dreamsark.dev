@@ -37,11 +37,11 @@
     tr {
 
       &:hover {
-        background-color: lighten($color, 45);
+        background-color: lighten($color, 40);
       }
 
       &:nth-of-type(even) {
-        background-color: lighten($color, 40);
+        background-color: lighten($color, 47);
         &:hover {
           background-color: lighten($color, 35);
         }

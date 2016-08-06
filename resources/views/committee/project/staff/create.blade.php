@@ -101,6 +101,7 @@
         </ark-form>
 
     </ark-modal>
+
     <ark-modal v-cloak trigger="add-expense" header="Add Project Expenses">
 
         <ark-form class="align-center +margin-top-small"

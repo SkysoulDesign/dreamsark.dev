@@ -3791,7 +3791,7 @@ input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light, .header.\--light-weight, header.\--light-weight, .header.\--light-weight p, header.\--light-weight p, .header.\--light-weight span, header.\--light-weight span, .header.\--light-weight h1, header.\--light-weight h1, .header.\--light-weight h2, header.\--light-weight h2, .header.\--light-weight h3, header.\--light-weight h3, .header.\--light-weight h4, header.\--light-weight h4, .header.\--light-weight h5, header.\--light-weight h5, .header.\--light-weight h6, header.\--light-weight h6 {
   font-weight: 400; }
 
-.form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
+.form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author, .project-page__fund__investor-list a, .project-page__fund__investor-list p {
   font-weight: 600; }
 
 .form__header {
@@ -3806,7 +3806,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__field__error ul li, .form__field__error .badges li, .form__message__items {
   font-size: 0.8em; }
 
-.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item {
+.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item, .project-page__fund__investor-list p {
   font-size: 3em; }
 
 .header, header {
@@ -5134,9 +5134,9 @@ button, .button {
       .table.\--color-primary thead tr:hover, table.\--color-primary thead tr:hover {
         background-color: #0083ff; }
     .table.\--color-primary tr:hover, table.\--color-primary tr:hover {
-      background-color: #e6f3ff; }
-    .table.\--color-primary tr:nth-of-type(even), table.\--color-primary tr:nth-of-type(even) {
       background-color: #cce6ff; }
+    .table.\--color-primary tr:nth-of-type(even), table.\--color-primary tr:nth-of-type(even) {
+      background-color: aliceblue; }
       .table.\--color-primary tr:nth-of-type(even):hover, table.\--color-primary tr:nth-of-type(even):hover {
         background-color: #b3daff; }
   .table.\--color-secondary, table.\--color-secondary {
@@ -5149,9 +5149,9 @@ button, .button {
       .table.\--color-secondary thead tr:hover, table.\--color-secondary thead tr:hover {
         background-color: #af0101; }
     .table.\--color-secondary tr:hover, table.\--color-secondary tr:hover {
-      background-color: #fe9797; }
-    .table.\--color-secondary tr:nth-of-type(even), table.\--color-secondary tr:nth-of-type(even) {
       background-color: #fe7e7e; }
+    .table.\--color-secondary tr:nth-of-type(even), table.\--color-secondary tr:nth-of-type(even) {
+      background-color: #fea1a1; }
       .table.\--color-secondary tr:nth-of-type(even):hover, table.\--color-secondary tr:nth-of-type(even):hover {
         background-color: #fe6464; }
   .table.\--color-ternary, table.\--color-ternary {
@@ -5164,9 +5164,9 @@ button, .button {
       .table.\--color-ternary thead tr:hover, table.\--color-ternary thead tr:hover {
         background-color: #9eaf15; }
     .table.\--color-ternary tr:hover, table.\--color-ternary tr:hover {
-      background-color: #eff6b4; }
-    .table.\--color-ternary tr:nth-of-type(even), table.\--color-ternary tr:nth-of-type(even) {
       background-color: #eaf39d; }
+    .table.\--color-ternary tr:nth-of-type(even), table.\--color-ternary tr:nth-of-type(even) {
+      background-color: #f1f7bd; }
       .table.\--color-ternary tr:nth-of-type(even):hover, table.\--color-ternary tr:nth-of-type(even):hover {
         background-color: #e5f086; }
   .table.\--color-danger, table.\--color-danger {
@@ -5179,9 +5179,9 @@ button, .button {
       .table.\--color-danger thead tr:hover, table.\--color-danger thead tr:hover {
         background-color: #d90d12; }
     .table.\--color-danger tr:hover, table.\--color-danger tr:hover {
-      background-color: #fccfd0; }
-    .table.\--color-danger tr:nth-of-type(even), table.\--color-danger tr:nth-of-type(even) {
       background-color: #fbb7b9; }
+    .table.\--color-danger tr:nth-of-type(even), table.\--color-danger tr:nth-of-type(even) {
+      background-color: #fdd9da; }
       .table.\--color-danger tr:nth-of-type(even):hover, table.\--color-danger tr:nth-of-type(even):hover {
         background-color: #f99fa1; }
   .table.\--color-success, table.\--color-success {
@@ -5194,9 +5194,9 @@ button, .button {
       .table.\--color-success thead tr:hover, table.\--color-success thead tr:hover {
         background-color: #0bbc62; }
     .table.\--color-success tr:hover, table.\--color-success tr:hover {
-      background-color: #b2fad6; }
-    .table.\--color-success tr:nth-of-type(even), table.\--color-success tr:nth-of-type(even) {
       background-color: #9af9c9; }
+    .table.\--color-success tr:nth-of-type(even), table.\--color-success tr:nth-of-type(even) {
+      background-color: #bcfbdb; }
       .table.\--color-success tr:nth-of-type(even):hover, table.\--color-success tr:nth-of-type(even):hover {
         background-color: #82f8bc; }
   .table.\--color-warning, table.\--color-warning {
@@ -5209,9 +5209,9 @@ button, .button {
       .table.\--color-warning thead tr:hover, table.\--color-warning thead tr:hover {
         background-color: #FFC107; }
     .table.\--color-warning tr:hover, table.\--color-warning tr:hover {
-      background-color: #fffaed; }
-    .table.\--color-warning tr:nth-of-type(even), table.\--color-warning tr:nth-of-type(even) {
       background-color: #fff4d3; }
+    .table.\--color-warning tr:nth-of-type(even), table.\--color-warning tr:nth-of-type(even) {
+      background-color: #fffdf7; }
       .table.\--color-warning tr:nth-of-type(even):hover, table.\--color-warning tr:nth-of-type(even):hover {
         background-color: #ffeeba; }
   .table.\--color-black, table.\--color-black {
@@ -5224,9 +5224,9 @@ button, .button {
       .table.\--color-black thead tr:hover, table.\--color-black thead tr:hover {
         background-color: #323542; }
     .table.\--color-black tr:hover, table.\--color-black tr:hover {
-      background-color: #a1a6b8; }
-    .table.\--color-black tr:nth-of-type(even), table.\--color-black tr:nth-of-type(even) {
       background-color: #9398ad; }
+    .table.\--color-black tr:nth-of-type(even), table.\--color-black tr:nth-of-type(even) {
+      background-color: #a7abbc; }
       .table.\--color-black tr:nth-of-type(even):hover, table.\--color-black tr:nth-of-type(even):hover {
         background-color: #848aa2; }
   .table.\--color-pure-black, table.\--color-pure-black {
@@ -5239,9 +5239,9 @@ button, .button {
       .table.\--color-pure-black thead tr:hover, table.\--color-pure-black thead tr:hover {
         background-color: #000000; }
     .table.\--color-pure-black tr:hover, table.\--color-pure-black tr:hover {
-      background-color: #737373; }
-    .table.\--color-pure-black tr:nth-of-type(even), table.\--color-pure-black tr:nth-of-type(even) {
       background-color: #666666; }
+    .table.\--color-pure-black tr:nth-of-type(even), table.\--color-pure-black tr:nth-of-type(even) {
+      background-color: #787878; }
       .table.\--color-pure-black tr:nth-of-type(even):hover, table.\--color-pure-black tr:nth-of-type(even):hover {
         background-color: #595959; }
   .table.\--color-red, table.\--color-red {
@@ -5254,9 +5254,9 @@ button, .button {
       .table.\--color-red thead tr:hover, table.\--color-red thead tr:hover {
         background-color: #d90d12; }
     .table.\--color-red tr:hover, table.\--color-red tr:hover {
-      background-color: #fccfd0; }
-    .table.\--color-red tr:nth-of-type(even), table.\--color-red tr:nth-of-type(even) {
       background-color: #fbb7b9; }
+    .table.\--color-red tr:nth-of-type(even), table.\--color-red tr:nth-of-type(even) {
+      background-color: #fdd9da; }
       .table.\--color-red tr:nth-of-type(even):hover, table.\--color-red tr:nth-of-type(even):hover {
         background-color: #f99fa1; }
   .table.\--color-yellow, table.\--color-yellow {
@@ -5269,9 +5269,9 @@ button, .button {
       .table.\--color-yellow thead tr:hover, table.\--color-yellow thead tr:hover {
         background-color: #eacc00; }
     .table.\--color-yellow tr:hover, table.\--color-yellow tr:hover {
-      background-color: #fff9d1; }
-    .table.\--color-yellow tr:nth-of-type(even), table.\--color-yellow tr:nth-of-type(even) {
       background-color: #fff6b7; }
+    .table.\--color-yellow tr:nth-of-type(even), table.\--color-yellow tr:nth-of-type(even) {
+      background-color: #fffadb; }
       .table.\--color-yellow tr:nth-of-type(even):hover, table.\--color-yellow tr:nth-of-type(even):hover {
         background-color: #fff39e; }
   .table.\--color-green, table.\--color-green {
@@ -5284,9 +5284,9 @@ button, .button {
       .table.\--color-green thead tr:hover, table.\--color-green thead tr:hover {
         background-color: #32ea00; }
     .table.\--color-green tr:hover, table.\--color-green tr:hover {
-      background-color: #daffd1; }
-    .table.\--color-green tr:nth-of-type(even), table.\--color-green tr:nth-of-type(even) {
       background-color: #c6ffb7; }
+    .table.\--color-green tr:nth-of-type(even), table.\--color-green tr:nth-of-type(even) {
+      background-color: #e2ffdb; }
       .table.\--color-green tr:nth-of-type(even):hover, table.\--color-green tr:nth-of-type(even):hover {
         background-color: #b2ff9e; }
   .table.\--color-purple, table.\--color-purple {
@@ -5299,9 +5299,9 @@ button, .button {
       .table.\--color-purple thead tr:hover, table.\--color-purple thead tr:hover {
         background-color: #6900a5; }
     .table.\--color-purple tr:hover, table.\--color-purple tr:hover {
-      background-color: #d58cff; }
-    .table.\--color-purple tr:nth-of-type(even), table.\--color-purple tr:nth-of-type(even) {
       background-color: #cc72ff; }
+    .table.\--color-purple tr:nth-of-type(even), table.\--color-purple tr:nth-of-type(even) {
+      background-color: #d996ff; }
       .table.\--color-purple tr:nth-of-type(even):hover, table.\--color-purple tr:nth-of-type(even):hover {
         background-color: #c259ff; }
   .table.\--color-tomato, table.\--color-tomato {
@@ -5314,9 +5314,9 @@ button, .button {
       .table.\--color-tomato thead tr:hover, table.\--color-tomato thead tr:hover {
         background-color: #af0101; }
     .table.\--color-tomato tr:hover, table.\--color-tomato tr:hover {
-      background-color: #fe9797; }
-    .table.\--color-tomato tr:nth-of-type(even), table.\--color-tomato tr:nth-of-type(even) {
       background-color: #fe7e7e; }
+    .table.\--color-tomato tr:nth-of-type(even), table.\--color-tomato tr:nth-of-type(even) {
+      background-color: #fea1a1; }
       .table.\--color-tomato tr:nth-of-type(even):hover, table.\--color-tomato tr:nth-of-type(even):hover {
         background-color: #fe6464; }
   .table.\--color-golden, table.\--color-golden {
@@ -5329,9 +5329,9 @@ button, .button {
       .table.\--color-golden thead tr:hover, table.\--color-golden thead tr:hover {
         background-color: #ffc326; }
     .table.\--color-golden tr:hover, table.\--color-golden tr:hover {
-      background-color: white; }
-    .table.\--color-golden tr:nth-of-type(even), table.\--color-golden tr:nth-of-type(even) {
       background-color: #fffbf2; }
+    .table.\--color-golden tr:nth-of-type(even), table.\--color-golden tr:nth-of-type(even) {
+      background-color: white; }
       .table.\--color-golden tr:nth-of-type(even):hover, table.\--color-golden tr:nth-of-type(even):hover {
         background-color: #fff4d9; }
   .table.\--color-transparent-white, table.\--color-transparent-white {
@@ -7442,6 +7442,33 @@ button, .button {
     .project-page__fund img:active {
       -webkit-transform: scale(0.8333333333);
       transform: scale(0.8333333333); }
+  .project-page__fund__steps {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: -3.8em; }
+  .project-page__fund__investor-list {
+    text-align: center;
+    margin-top: 4em;
+    -webkit-transition: -webkit-transform 0.25s;
+    transition: -webkit-transform 0.25s;
+    transition: transform 0.25s;
+    transition: transform 0.25s, -webkit-transform 0.25s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+    .project-page__fund__investor-list:hover {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1); }
+    .project-page__fund__investor-list:active {
+      -webkit-transform: scale(0.9166666667);
+      transform: scale(0.9166666667); }
+    .project-page__fund__investor-list img {
+      display: block;
+      width: 50%;
+      margin: -4em auto 0 auto; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }
