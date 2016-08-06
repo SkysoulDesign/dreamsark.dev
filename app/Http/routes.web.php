@@ -86,6 +86,10 @@ $app->get('info', function () {
     phpinfo();
 });
 
+$app->get('in', function () {
+    return view('in');
+});
+
 $app->get('kitchen-sink/{section?}', function ($section) {
     return view('kitchen-sink.index', compact('section'));
 })->name('kitchen-sink')->middleware('web');

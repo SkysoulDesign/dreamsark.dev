@@ -115,11 +115,11 @@
 @section('scripts')
 
     {{--<script type="text/javascript" src="{{ asset('js/intro.js') }}"></script>--}}
-    <script type="text/javascript" src="{{ asset('js/parallax.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/three.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/shaderfrog-runtime.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/EffectComposer.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/Detector.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/parallax.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/three.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/shaderfrog-runtime.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/EffectComposer.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/Detector.js') }}"></script>
 
     <script>
         if (!Detector.webgl) {
@@ -128,10 +128,10 @@
         }
     </script>
 
-    <script type="text/javascript" src="{{ asset('js/RenderPass.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/BokehPass.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/TrackballControls.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/OBJLoader.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/RenderPass.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/BokehPass.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/TrackballControls.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intro/js/OBJLoader.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/tsc.js') }}"></script>
 
     {{--<script type="text/javascript" src="{{ asset('js/tsc.js') }}"></script>--}}
