@@ -121,7 +121,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         ProjectWasBacked::class => [
-            DeductUserCoins::class
+            ChargeUser::class
         ],
 
         /**

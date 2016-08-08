@@ -1,4 +1,4 @@
-<ark-tab content="tab-idea" icon="paper-plane">
+<ark-tab content="tab-idea" icon="lightbulb-o">
     @lang('project.idea')
     @push('tab-item')
     <div id="tab-idea" class="row align-center +margin-top">
@@ -11,7 +11,7 @@
 
         <div class="small-10 columns segment --large-padding">
             <h2>Description</h2>
-            {!! $project->stage->content !!}
+            {!! $project->idea->content !!}
         </div>
 
         <div class="small-10 columns segment --large-padding +margin-top">

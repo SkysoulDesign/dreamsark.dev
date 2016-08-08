@@ -409,14 +409,14 @@ var DreamsArk;
             }
             EnterPage.prototype.maps = function () {
                 return {
-                    background: 'final/enter-page-assets/background.png',
-                    transition: 'final/enter-page-assets/transition.png',
-                    galaxy: 'final/enter-page-assets/galaxy.png',
-                    tunnelBG: 'final/enter-page-assets/tunnelBG.png',
-                    platform: 'final/enter-page-assets/platform.png',
-                    start: 'final/enter-page-assets/start.png',
-                    skip: 'final/enter-page-assets/skip.png',
-                    planet: 'final/enter-page-assets/planet.png',
+                    background: 'intro/enter-page-assets/background.png',
+                    transition: 'intro/enter-page-assets/transition.png',
+                    galaxy: 'intro/enter-page-assets/galaxy.png',
+                    tunnelBG: 'intro/enter-page-assets/tunnelBG.png',
+                    platform: 'intro/enter-page-assets/platform.png',
+                    start: 'intro/enter-page-assets/start.png',
+                    skip: 'intro/enter-page-assets/skip.png',
+                    planet: 'intro/enter-page-assets/planet.png',
                 };
             };
             EnterPage.prototype.data = function () {
@@ -521,7 +521,7 @@ var DreamsArk;
             };
             ChaosParticles.prototype.maps = function () {
                 return {
-                    particle: 'lib/hex.png',
+                    particle: 'intro/hex.png',
                 };
             };
             ChaosParticles.prototype.create = function (maps, objs, data) {
@@ -633,7 +633,7 @@ var DreamsArk;
             }
             Ripple.prototype.maps = function () {
                 return {
-                    beam: 'final/fxs/ripple.png'
+                    beam: 'intro/fxs/ripple.png'
                 };
             };
             Ripple.prototype.data = function () {
@@ -705,10 +705,10 @@ var DreamsArk;
             }
             Tunnel.prototype.maps = function () {
                 return {
-                    wave: 'assets/001_electric.jpg',
-                    portal: 'assets/portal-assets/portal.png',
-                    beam_1: 'assets/portal-assets/beam_1.png',
-                    been_2: 'assets/portal-assets/beam_2.png',
+                    wave: 'intro/001_electric.jpg',
+                    portal: 'intro/portal-assets/portal.png',
+                    beam_1: 'intro/portal-assets/beam_1.png',
+                    been_2: 'intro/portal-assets/beam_2.png',
                 };
             };
             Tunnel.prototype.create = function (maps, objs, data) {
@@ -772,7 +772,7 @@ var DreamsArk;
             }
             Skybox.prototype.maps = function () {
                 return {
-                    skybox: 'final/universe-assets/background-sphere.jpg'
+                    skybox: 'intro/universe-assets/background-sphere.jpg'
                 };
             };
             Skybox.prototype.create = function (maps, objs, data) {
@@ -819,19 +819,19 @@ var DreamsArk;
             };
             Plexus.prototype.maps = function () {
                 return {
-                    core: 'assets/hex-assets/hex.png',
-                    point_squad: 'lib/point-squad.png',
-                    hexicle: 'assets/hex-assets/hexicle.png',
-                    point_1_1: 'assets/hex-assets/point-1.png',
-                    point_1_2: 'assets/hex-assets/point-2.png',
-                    point_1_3: 'assets/hex-assets/point-3.png',
-                    point_1_4: 'assets/hex-assets/point-4.png',
-                    point_1_5: 'assets/hex-assets/point-5.png',
-                    point_2_1: 'assets/hex-assets/point-4.png',
-                    point_2_2: 'assets/hex-assets/point-3.png',
-                    point_2_3: 'assets/hex-assets/point-2.png',
-                    point_2_4: 'assets/hex-assets/point-1.png',
-                    point_2_5: 'assets/hex-assets/point-5.png',
+                    core: 'intro/hex-assets/hex.png',
+                    point_squad: 'intro/point-squad.png',
+                    hexicle: 'intro/hex-assets/hexicle.png',
+                    point_1_1: 'intro/hex-assets/point-1.png',
+                    point_1_2: 'intro/hex-assets/point-2.png',
+                    point_1_3: 'intro/hex-assets/point-3.png',
+                    point_1_4: 'intro/hex-assets/point-4.png',
+                    point_1_5: 'intro/hex-assets/point-5.png',
+                    point_2_1: 'intro/hex-assets/point-4.png',
+                    point_2_2: 'intro/hex-assets/point-3.png',
+                    point_2_3: 'intro/hex-assets/point-2.png',
+                    point_2_4: 'intro/hex-assets/point-1.png',
+                    point_2_5: 'intro/hex-assets/point-5.png',
                 };
             };
             Plexus.prototype.create = function (maps, objs, data) {
@@ -997,7 +997,7 @@ var DreamsArk;
             function Particles() {
             }
             Particles.prototype.maps = function () {
-                return { particle: 'lib/spark.png', particleFront: 'lib/particle-front.png' };
+                return { particle: 'intro/spark.png', particleFront: 'intro/particle-front.png' };
             };
             Particles.prototype.data = function () {
                 return {
@@ -1069,14 +1069,14 @@ var DreamsArk;
             };
             HexParticles.prototype.maps = function () {
                 return {
-                    particle: 'lib/hex.png',
-                    particleBlur: 'lib/hex-blur.png',
-                    particleXBlur: 'lib/hex-x-blur.png'
+                    particle: 'intro/hex.png',
+                    particleBlur: 'intro/hex-blur.png',
+                    particleXBlur: 'intro/hex-x-blur.png'
                 };
             };
             HexParticles.prototype.objs = function () {
                 return {
-                    hex: 'models/hex.obj',
+                    hex: 'intro/models/hex.obj',
                 };
             };
             HexParticles.prototype.create = function (maps, objs, data) {
@@ -1176,7 +1176,7 @@ var DreamsArk;
             }
             Background.prototype.maps = function () {
                 return {
-                    overlay: 'assets/planet-assets/bg.jpg',
+                    overlay: 'intro/planet-assets/bg.jpg',
                 };
             };
             Background.prototype.create = function (maps, objs) {
@@ -1203,12 +1203,12 @@ var DreamsArk;
             }
             Logo.prototype.maps = function () {
                 return {
-                    logo: 'final/enter-page-assets/logo-tex.png',
+                    logo: 'intro/enter-page-assets/logo-tex.png',
                 };
             };
             Logo.prototype.objs = function () {
                 return {
-                    logo: 'models/logo.obj',
+                    logo: 'intro/models/logo.obj',
                 };
             };
             Logo.prototype.data = function () {
@@ -1241,7 +1241,7 @@ var DreamsArk;
                     video.play();
                 }
                 ;
-                video.src = "assets/elements/EtherealAura.webmhd.webm";
+                video.src = "intro/elements/EtherealAura.webmhd.webm";
                 video.load(); // must call after setting/changing source
                 video.play();
                 var videoImage = document.createElement('canvas');
@@ -1286,7 +1286,7 @@ var DreamsArk;
             }
             LogoFX.prototype.maps = function () {
                 return {
-                    fx: 'assets/elements/LogoFX.png'
+                    fx: 'intro/elements/LogoFX.png'
                 };
             };
             LogoFX.prototype.create = function (maps, objs, data) {
@@ -1345,12 +1345,12 @@ var DreamsArk;
             }
             Ren.prototype.maps = function () {
                 return {
-                    logo: 'assets/new-assets/ren-tex.jpg'
+                    logo: 'intro/new-assets/ren-tex.jpg'
                 };
             };
             Ren.prototype.objs = function () {
                 return {
-                    logo: 'models/ren.obj',
+                    logo: 'intro/models/ren.obj',
                 };
             };
             Ren.prototype.create = function (maps, objs, data) {
@@ -1373,7 +1373,7 @@ var DreamsArk;
             }
             Asteroid.prototype.maps = function () {
                 return {
-                    rocks: 'final/enter-page-assets/asteroid.png'
+                    rocks: 'intro/enter-page-assets/asteroid.png'
                 };
             };
             Asteroid.prototype.create = function (maps, objs, data) {
@@ -1400,7 +1400,7 @@ var DreamsArk;
             }
             Galaxy.prototype.maps = function () {
                 return {
-                    galaxy: 'lib/galaxy.png',
+                    galaxy: 'intro/galaxy.png',
                 };
             };
             Galaxy.prototype.create = function (maps, objs) {
@@ -1426,7 +1426,7 @@ var DreamsArk;
             }
             Overlay1.prototype.maps = function () {
                 return {
-                    galaxy: 'assets/universe-assets/overlay-1.png',
+                    galaxy: 'intro/universe-assets/overlay-1.png',
                 };
             };
             Overlay1.prototype.create = function (maps, objs) {
@@ -1451,7 +1451,7 @@ var DreamsArk;
             }
             Overlay2.prototype.maps = function () {
                 return {
-                    overlay: 'assets/universe-assets/overlay-2.png',
+                    overlay: 'intro/universe-assets/overlay-2.png',
                 };
             };
             Overlay2.prototype.create = function (maps, objs) {
@@ -1506,7 +1506,7 @@ var DreamsArk;
             }
             SecondaryLogo.prototype.maps = function () {
                 return {
-                    beam: 'final/fxs/up-beam.png'
+                    beam: 'intro/fxs/up-beam.png'
                 };
             };
             SecondaryLogo.prototype.data = function () {
@@ -2819,7 +2819,9 @@ var DreamsArk;
                 /**
                  * Frog
                  */
-                 secondaryLogo.userData.animation.update(elapsed);
+                // if (enterPage.userData.layers.tunnelBG.userData.shader)
+                //     enterPage.userData.layers.tunnelBG.userData.shader.runtime.updateShaders(enterPage.userData.layers.tunnelBG.userData.shader.clock.getElapsedTime());
+                secondaryLogo.userData.animation.update(elapsed);
                 ripple.userData.animation.update(elapsed);
                 hexParticles.userData.update();
                 /**
@@ -3187,7 +3189,7 @@ var DreamsArk;
  * Start App
  */
 new DreamsArk.App();
-//document.querySelector('body').style.backgroundColor: #000; 
+//document.querySelector('body').style.backgroundColor: #000;
 var DreamsArk;
 (function (DreamsArk) {
     var Compositions;
@@ -3632,7 +3634,7 @@ var DreamsArk;
             }
             Planet.prototype.maps = function () {
                 return {
-                    planet: 'assets/transition-assets/planet.png'
+                    planet: 'intro/transition-assets/planet.png'
                 };
             };
             Planet.prototype.create = function (maps, objs, data) {
@@ -3691,19 +3693,19 @@ var DreamsArk;
             };
             Plexus2.prototype.maps = function () {
                 return {
-                    core: 'assets/hex-assets/hexicle.png',
-                    point_squad: 'lib/point-squad.png',
-                    hexicle: 'assets/hex-assets/hexicle.png',
-                    point_1_1: 'assets/hex-assets/point-1.png',
-                    point_1_2: 'assets/hex-assets/point-2.png',
-                    point_1_3: 'assets/hex-assets/point-3.png',
-                    point_1_4: 'assets/hex-assets/point-4.png',
-                    point_1_5: 'assets/hex-assets/point-5.png',
-                    point_2_1: 'assets/hex-assets/point-4.png',
-                    point_2_2: 'assets/hex-assets/point-3.png',
-                    point_2_3: 'assets/hex-assets/point-2.png',
-                    point_2_4: 'assets/hex-assets/point-1.png',
-                    point_2_5: 'assets/hex-assets/point-5.png',
+                    core: 'intro/hex-assets/hexicle.png',
+                    point_squad: 'intro/point-squad.png',
+                    hexicle: 'intro/hex-assets/hexicle.png',
+                    point_1_1: 'intro/hex-assets/point-1.png',
+                    point_1_2: 'intro/hex-assets/point-2.png',
+                    point_1_3: 'intro/hex-assets/point-3.png',
+                    point_1_4: 'intro/hex-assets/point-4.png',
+                    point_1_5: 'intro/hex-assets/point-5.png',
+                    point_2_1: 'intro/hex-assets/point-4.png',
+                    point_2_2: 'intro/hex-assets/point-3.png',
+                    point_2_3: 'intro/hex-assets/point-2.png',
+                    point_2_4: 'intro/hex-assets/point-1.png',
+                    point_2_5: 'intro/hex-assets/point-5.png',
                 };
             };
             Plexus2.prototype.create = function (maps, objs, data) {

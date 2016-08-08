@@ -23,6 +23,7 @@ class FundController extends Controller
      * Display the specified resource.
      *
      * @param Project $project
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Project $project)
@@ -33,15 +34,19 @@ class FundController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Project $project
      * @param  \Illuminate\Http\Request $request
+     * @param Project $project
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Project $project, Request $request)
+    public function store(Request $request, Project $project)
     {
-        $this->dispatch(new BackProjectJob($project, $request->user(), $request->get('amount')));
 
-        return redirect()->route('project.show', $project->id);
+        $this->dispatch(new BackProjectJob(
+            $project, $request->user(), $request->input('amount')
+        ));
+
+        return redirect()->route('project.show', $project);
     }
 
     /**
@@ -49,6 +54,7 @@ class FundController extends Controller
      *
      * @param Enroller $enroller
      * @param  VotingOnUserEnrollment $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function vote(Enroller $enroller, VotingOnUserEnrollment $request)

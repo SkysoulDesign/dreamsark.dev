@@ -7,8 +7,14 @@ use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class ProjectWasBacked
+ *
+ * @package DreamsArk\Events\Project
+ */
 class ProjectWasBacked extends Event
 {
+
     use SerializesModels;
 
     /**
@@ -22,7 +28,7 @@ class ProjectWasBacked extends Event
     public $user;
 
     /**
-     * @var
+     * @var int
      */
     public $amount;
 
@@ -33,7 +39,7 @@ class ProjectWasBacked extends Event
      * @param User $user
      * @param $amount
      */
-    public function __construct(Project $project, User $user, $amount)
+    public function __construct(Project $project, User $user, int $amount)
     {
         $this->project = $project;
         $this->user = $user;

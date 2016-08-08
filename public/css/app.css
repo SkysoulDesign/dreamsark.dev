@@ -3773,6 +3773,9 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .segment, .message, .item, .pagination__item {
   border-radius: 0.2em; }
 
+.project-page__fund img {
+  border-radius: 0.4em; }
+
 .switcher, .switcher__toggle {
   border-radius: 50em; }
 
@@ -3788,10 +3791,10 @@ input.\--error, .\--error.text-area, textarea.\--error, .\--error.select, select
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options li, .form__message__items, .header span, header span, .header.\--light, header.\--light, .header.\--light-weight, header.\--light-weight, .header.\--light-weight p, header.\--light-weight p, .header.\--light-weight span, header.\--light-weight span, .header.\--light-weight h1, header.\--light-weight h1, .header.\--light-weight h2, header.\--light-weight h2, .header.\--light-weight h3, header.\--light-weight h3, .header.\--light-weight h4, header.\--light-weight h4, .header.\--light-weight h5, header.\--light-weight h5, .header.\--light-weight h6, header.\--light-weight h6 {
   font-weight: 400; }
 
-.form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author {
+.form__header, .form__field label, .form__fields label, .form__description label, .header, header, .comment__content__author, .project-page__fund__investor-list a, .project-page__fund__investor-list p {
   font-weight: 600; }
 
-.form__header, .header.\--small, header.\--small {
+.form__header {
   font-size: 1.4em; }
 
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
@@ -3803,10 +3806,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__field__error ul li, .form__field__error .badges li, .form__message__items {
   font-size: 0.8em; }
 
-.header p, header p {
-  font-size: 0.5em; }
-
-.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item {
+.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item, .project-page__fund__investor-list p {
   font-size: 3em; }
 
 .header, header {
@@ -3815,11 +3815,8 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
 
-.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .divider.\--mini, .pagination__item a {
+.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .header p, header p, .divider.\--mini, .pagination__item a {
   font-size: 0.9em; }
-
-.header p, header p {
-  font-size: 0.5em; }
 
 .admin-page__top a {
   color: white; }
@@ -4523,6 +4520,12 @@ button, .button {
 .header.\--light, header.\--light {
   color: #b8b8b8; }
 
+.header.\--small, header.\--small {
+  font-size: small; }
+
+.header.\--medium, header.\--medium {
+  font-size: medium; }
+
 .header.\--centered, header.\--centered {
   text-align: center; }
 
@@ -5033,8 +5036,7 @@ button, .button {
   border: 1px solid #dedede;
   border-spacing: 0;
   border-collapse: separate;
-  border-radius: 0.3em;
-  box-shadow: 0 8px 16px 0 rgba(50, 53, 66, 0.2); }
+  border-radius: 0.3em; }
   .table thead, table thead,
   .table tbody, table tbody,
   .table tfoot, table tfoot {
@@ -5077,6 +5079,276 @@ button, .button {
       display: block; }
     .table.\--stack td, table.\--stack td {
       border-top: 0; } }
+  .table.\--color-neutral, table.\--color-neutral {
+    border: 1px solid #f1f1f1; }
+    .table.\--color-neutral.\--attached-top, table.\--color-neutral.\--attached-top {
+      border-top: 1px solid white; }
+    .table.\--color-neutral thead, table.\--color-neutral thead {
+      color: white;
+      background-color: #f1f1f1; }
+      .table.\--color-neutral thead tr:hover, table.\--color-neutral thead tr:hover {
+        background-color: #f1f1f1; }
+    .table.\--color-neutral tr:hover, table.\--color-neutral tr:hover {
+      background-color: white; }
+    .table.\--color-neutral tr:nth-of-type(even), table.\--color-neutral tr:nth-of-type(even) {
+      background-color: white; }
+      .table.\--color-neutral tr:nth-of-type(even):hover, table.\--color-neutral tr:nth-of-type(even):hover {
+        background-color: white; }
+  .table.\--color-white, table.\--color-white {
+    border: 1px solid #ffffff; }
+    .table.\--color-white.\--attached-top, table.\--color-white.\--attached-top {
+      border-top: 1px solid white; }
+    .table.\--color-white thead, table.\--color-white thead {
+      color: white;
+      background-color: #ffffff; }
+      .table.\--color-white thead tr:hover, table.\--color-white thead tr:hover {
+        background-color: #ffffff; }
+    .table.\--color-white tr:hover, table.\--color-white tr:hover {
+      background-color: white; }
+    .table.\--color-white tr:nth-of-type(even), table.\--color-white tr:nth-of-type(even) {
+      background-color: white; }
+      .table.\--color-white tr:nth-of-type(even):hover, table.\--color-white tr:nth-of-type(even):hover {
+        background-color: white; }
+  .table.\--color-gray, table.\--color-gray {
+    border: 1px solid #DEDEDE; }
+    .table.\--color-gray.\--attached-top, table.\--color-gray.\--attached-top {
+      border-top: 1px solid #f8f8f8; }
+    .table.\--color-gray thead, table.\--color-gray thead {
+      color: white;
+      background-color: #DEDEDE; }
+      .table.\--color-gray thead tr:hover, table.\--color-gray thead tr:hover {
+        background-color: #DEDEDE; }
+    .table.\--color-gray tr:hover, table.\--color-gray tr:hover {
+      background-color: white; }
+    .table.\--color-gray tr:nth-of-type(even), table.\--color-gray tr:nth-of-type(even) {
+      background-color: white; }
+      .table.\--color-gray tr:nth-of-type(even):hover, table.\--color-gray tr:nth-of-type(even):hover {
+        background-color: white; }
+  .table.\--color-primary, table.\--color-primary {
+    border: 1px solid #0083ff; }
+    .table.\--color-primary.\--attached-top, table.\--color-primary.\--attached-top {
+      border-top: 1px solid #339cff; }
+    .table.\--color-primary thead, table.\--color-primary thead {
+      color: white;
+      background-color: #0083ff; }
+      .table.\--color-primary thead tr:hover, table.\--color-primary thead tr:hover {
+        background-color: #0083ff; }
+    .table.\--color-primary tr:hover, table.\--color-primary tr:hover {
+      background-color: #cce6ff; }
+    .table.\--color-primary tr:nth-of-type(even), table.\--color-primary tr:nth-of-type(even) {
+      background-color: aliceblue; }
+      .table.\--color-primary tr:nth-of-type(even):hover, table.\--color-primary tr:nth-of-type(even):hover {
+        background-color: #b3daff; }
+  .table.\--color-secondary, table.\--color-secondary {
+    border: 1px solid #af0101; }
+    .table.\--color-secondary.\--attached-top, table.\--color-secondary.\--attached-top {
+      border-top: 1px solid #e20101; }
+    .table.\--color-secondary thead, table.\--color-secondary thead {
+      color: white;
+      background-color: #af0101; }
+      .table.\--color-secondary thead tr:hover, table.\--color-secondary thead tr:hover {
+        background-color: #af0101; }
+    .table.\--color-secondary tr:hover, table.\--color-secondary tr:hover {
+      background-color: #fe7e7e; }
+    .table.\--color-secondary tr:nth-of-type(even), table.\--color-secondary tr:nth-of-type(even) {
+      background-color: #fea1a1; }
+      .table.\--color-secondary tr:nth-of-type(even):hover, table.\--color-secondary tr:nth-of-type(even):hover {
+        background-color: #fe6464; }
+  .table.\--color-ternary, table.\--color-ternary {
+    border: 1px solid #9eaf15; }
+    .table.\--color-ternary.\--attached-top, table.\--color-ternary.\--attached-top {
+      border-top: 1px solid #c7dd1a; }
+    .table.\--color-ternary thead, table.\--color-ternary thead {
+      color: white;
+      background-color: #9eaf15; }
+      .table.\--color-ternary thead tr:hover, table.\--color-ternary thead tr:hover {
+        background-color: #9eaf15; }
+    .table.\--color-ternary tr:hover, table.\--color-ternary tr:hover {
+      background-color: #eaf39d; }
+    .table.\--color-ternary tr:nth-of-type(even), table.\--color-ternary tr:nth-of-type(even) {
+      background-color: #f1f7bd; }
+      .table.\--color-ternary tr:nth-of-type(even):hover, table.\--color-ternary tr:nth-of-type(even):hover {
+        background-color: #e5f086; }
+  .table.\--color-danger, table.\--color-danger {
+    border: 1px solid #d90d12; }
+    .table.\--color-danger.\--attached-top, table.\--color-danger.\--attached-top {
+      border-top: 1px solid #f2272c; }
+    .table.\--color-danger thead, table.\--color-danger thead {
+      color: white;
+      background-color: #d90d12; }
+      .table.\--color-danger thead tr:hover, table.\--color-danger thead tr:hover {
+        background-color: #d90d12; }
+    .table.\--color-danger tr:hover, table.\--color-danger tr:hover {
+      background-color: #fbb7b9; }
+    .table.\--color-danger tr:nth-of-type(even), table.\--color-danger tr:nth-of-type(even) {
+      background-color: #fdd9da; }
+      .table.\--color-danger tr:nth-of-type(even):hover, table.\--color-danger tr:nth-of-type(even):hover {
+        background-color: #f99fa1; }
+  .table.\--color-success, table.\--color-success {
+    border: 1px solid #0bbc62; }
+    .table.\--color-success.\--attached-top, table.\--color-success.\--attached-top {
+      border-top: 1px solid #0eec7b; }
+    .table.\--color-success thead, table.\--color-success thead {
+      color: white;
+      background-color: #0bbc62; }
+      .table.\--color-success thead tr:hover, table.\--color-success thead tr:hover {
+        background-color: #0bbc62; }
+    .table.\--color-success tr:hover, table.\--color-success tr:hover {
+      background-color: #9af9c9; }
+    .table.\--color-success tr:nth-of-type(even), table.\--color-success tr:nth-of-type(even) {
+      background-color: #bcfbdb; }
+      .table.\--color-success tr:nth-of-type(even):hover, table.\--color-success tr:nth-of-type(even):hover {
+        background-color: #82f8bc; }
+  .table.\--color-warning, table.\--color-warning {
+    border: 1px solid #FFC107; }
+    .table.\--color-warning.\--attached-top, table.\--color-warning.\--attached-top {
+      border-top: 1px solid #ffce3a; }
+    .table.\--color-warning thead, table.\--color-warning thead {
+      color: white;
+      background-color: #FFC107; }
+      .table.\--color-warning thead tr:hover, table.\--color-warning thead tr:hover {
+        background-color: #FFC107; }
+    .table.\--color-warning tr:hover, table.\--color-warning tr:hover {
+      background-color: #fff4d3; }
+    .table.\--color-warning tr:nth-of-type(even), table.\--color-warning tr:nth-of-type(even) {
+      background-color: #fffdf7; }
+      .table.\--color-warning tr:nth-of-type(even):hover, table.\--color-warning tr:nth-of-type(even):hover {
+        background-color: #ffeeba; }
+  .table.\--color-black, table.\--color-black {
+    border: 1px solid #323542; }
+    .table.\--color-black.\--attached-top, table.\--color-black.\--attached-top {
+      border-top: 1px solid #484c5f; }
+    .table.\--color-black thead, table.\--color-black thead {
+      color: white;
+      background-color: #323542; }
+      .table.\--color-black thead tr:hover, table.\--color-black thead tr:hover {
+        background-color: #323542; }
+    .table.\--color-black tr:hover, table.\--color-black tr:hover {
+      background-color: #9398ad; }
+    .table.\--color-black tr:nth-of-type(even), table.\--color-black tr:nth-of-type(even) {
+      background-color: #a7abbc; }
+      .table.\--color-black tr:nth-of-type(even):hover, table.\--color-black tr:nth-of-type(even):hover {
+        background-color: #848aa2; }
+  .table.\--color-pure-black, table.\--color-pure-black {
+    border: 1px solid #000000; }
+    .table.\--color-pure-black.\--attached-top, table.\--color-pure-black.\--attached-top {
+      border-top: 1px solid #1a1a1a; }
+    .table.\--color-pure-black thead, table.\--color-pure-black thead {
+      color: white;
+      background-color: #000000; }
+      .table.\--color-pure-black thead tr:hover, table.\--color-pure-black thead tr:hover {
+        background-color: #000000; }
+    .table.\--color-pure-black tr:hover, table.\--color-pure-black tr:hover {
+      background-color: #666666; }
+    .table.\--color-pure-black tr:nth-of-type(even), table.\--color-pure-black tr:nth-of-type(even) {
+      background-color: #787878; }
+      .table.\--color-pure-black tr:nth-of-type(even):hover, table.\--color-pure-black tr:nth-of-type(even):hover {
+        background-color: #595959; }
+  .table.\--color-red, table.\--color-red {
+    border: 1px solid #d90d12; }
+    .table.\--color-red.\--attached-top, table.\--color-red.\--attached-top {
+      border-top: 1px solid #f2272c; }
+    .table.\--color-red thead, table.\--color-red thead {
+      color: white;
+      background-color: #d90d12; }
+      .table.\--color-red thead tr:hover, table.\--color-red thead tr:hover {
+        background-color: #d90d12; }
+    .table.\--color-red tr:hover, table.\--color-red tr:hover {
+      background-color: #fbb7b9; }
+    .table.\--color-red tr:nth-of-type(even), table.\--color-red tr:nth-of-type(even) {
+      background-color: #fdd9da; }
+      .table.\--color-red tr:nth-of-type(even):hover, table.\--color-red tr:nth-of-type(even):hover {
+        background-color: #f99fa1; }
+  .table.\--color-yellow, table.\--color-yellow {
+    border: 1px solid #eacc00; }
+    .table.\--color-yellow.\--attached-top, table.\--color-yellow.\--attached-top {
+      border-top: 1px solid #ffe21e; }
+    .table.\--color-yellow thead, table.\--color-yellow thead {
+      color: white;
+      background-color: #eacc00; }
+      .table.\--color-yellow thead tr:hover, table.\--color-yellow thead tr:hover {
+        background-color: #eacc00; }
+    .table.\--color-yellow tr:hover, table.\--color-yellow tr:hover {
+      background-color: #fff6b7; }
+    .table.\--color-yellow tr:nth-of-type(even), table.\--color-yellow tr:nth-of-type(even) {
+      background-color: #fffadb; }
+      .table.\--color-yellow tr:nth-of-type(even):hover, table.\--color-yellow tr:nth-of-type(even):hover {
+        background-color: #fff39e; }
+  .table.\--color-green, table.\--color-green {
+    border: 1px solid #32ea00; }
+    .table.\--color-green.\--attached-top, table.\--color-green.\--attached-top {
+      border-top: 1px solid #4eff1e; }
+    .table.\--color-green thead, table.\--color-green thead {
+      color: white;
+      background-color: #32ea00; }
+      .table.\--color-green thead tr:hover, table.\--color-green thead tr:hover {
+        background-color: #32ea00; }
+    .table.\--color-green tr:hover, table.\--color-green tr:hover {
+      background-color: #c6ffb7; }
+    .table.\--color-green tr:nth-of-type(even), table.\--color-green tr:nth-of-type(even) {
+      background-color: #e2ffdb; }
+      .table.\--color-green tr:nth-of-type(even):hover, table.\--color-green tr:nth-of-type(even):hover {
+        background-color: #b2ff9e; }
+  .table.\--color-purple, table.\--color-purple {
+    border: 1px solid #6900a5; }
+    .table.\--color-purple.\--attached-top, table.\--color-purple.\--attached-top {
+      border-top: 1px solid #8900d8; }
+    .table.\--color-purple thead, table.\--color-purple thead {
+      color: white;
+      background-color: #6900a5; }
+      .table.\--color-purple thead tr:hover, table.\--color-purple thead tr:hover {
+        background-color: #6900a5; }
+    .table.\--color-purple tr:hover, table.\--color-purple tr:hover {
+      background-color: #cc72ff; }
+    .table.\--color-purple tr:nth-of-type(even), table.\--color-purple tr:nth-of-type(even) {
+      background-color: #d996ff; }
+      .table.\--color-purple tr:nth-of-type(even):hover, table.\--color-purple tr:nth-of-type(even):hover {
+        background-color: #c259ff; }
+  .table.\--color-tomato, table.\--color-tomato {
+    border: 1px solid #af0101; }
+    .table.\--color-tomato.\--attached-top, table.\--color-tomato.\--attached-top {
+      border-top: 1px solid #e20101; }
+    .table.\--color-tomato thead, table.\--color-tomato thead {
+      color: white;
+      background-color: #af0101; }
+      .table.\--color-tomato thead tr:hover, table.\--color-tomato thead tr:hover {
+        background-color: #af0101; }
+    .table.\--color-tomato tr:hover, table.\--color-tomato tr:hover {
+      background-color: #fe7e7e; }
+    .table.\--color-tomato tr:nth-of-type(even), table.\--color-tomato tr:nth-of-type(even) {
+      background-color: #fea1a1; }
+      .table.\--color-tomato tr:nth-of-type(even):hover, table.\--color-tomato tr:nth-of-type(even):hover {
+        background-color: #fe6464; }
+  .table.\--color-golden, table.\--color-golden {
+    border: 1px solid #ffc326; }
+    .table.\--color-golden.\--attached-top, table.\--color-golden.\--attached-top {
+      border-top: 1px solid #ffd159; }
+    .table.\--color-golden thead, table.\--color-golden thead {
+      color: white;
+      background-color: #ffc326; }
+      .table.\--color-golden thead tr:hover, table.\--color-golden thead tr:hover {
+        background-color: #ffc326; }
+    .table.\--color-golden tr:hover, table.\--color-golden tr:hover {
+      background-color: #fffbf2; }
+    .table.\--color-golden tr:nth-of-type(even), table.\--color-golden tr:nth-of-type(even) {
+      background-color: white; }
+      .table.\--color-golden tr:nth-of-type(even):hover, table.\--color-golden tr:nth-of-type(even):hover {
+        background-color: #fff4d9; }
+  .table.\--color-transparent-white, table.\--color-transparent-white {
+    border: 1px solid #ffffff; }
+    .table.\--color-transparent-white.\--attached-top, table.\--color-transparent-white.\--attached-top {
+      border-top: 1px solid white; }
+    .table.\--color-transparent-white thead, table.\--color-transparent-white thead {
+      color: white;
+      background-color: #ffffff; }
+      .table.\--color-transparent-white thead tr:hover, table.\--color-transparent-white thead tr:hover {
+        background-color: #ffffff; }
+    .table.\--color-transparent-white tr:hover, table.\--color-transparent-white tr:hover {
+      background-color: white; }
+    .table.\--color-transparent-white tr:nth-of-type(even), table.\--color-transparent-white tr:nth-of-type(even) {
+      background-color: white; }
+      .table.\--color-transparent-white tr:nth-of-type(even):hover, table.\--color-transparent-white tr:nth-of-type(even):hover {
+        background-color: white; }
   .table thead tr th, table thead tr th, .table tbody tr td, table tbody tr td {
     padding: 1em; }
     .table thead tr th.\--compact, table thead tr th.\--compact, .table tbody tr td.\--compact, table tbody tr td.\--compact {
@@ -5094,6 +5366,13 @@ button, .button {
     display: flex; }
     .table__action button {
       margin: 0 .5em !important; }
+  .table.\--attached-top, table.\--attached-top {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+    .table.\--attached-top thead tr th:first-child, table.\--attached-top thead tr th:first-child {
+      border-top-left-radius: 0; }
+    .table.\--attached-top thead tr th:last-child, table.\--attached-top thead tr th:last-child {
+      border-top-right-radius: 0; }
 
 .card {
   padding: 1em;
@@ -5332,6 +5611,9 @@ button, .button {
 #app-root .\+center, #app-root .segment.\--centered, #app-root .\--centered.message, #app-root .\--centered.item, #app-root .segment__header.\--centered {
   text-align: center; }
 
+#app-root .\+left {
+  text-align: left; }
+
 #app-root .\+justify {
   text-align: justify; }
 
@@ -5395,6 +5677,9 @@ button, .button {
 
 #app-root .\+uppercase, #app-root .header.\--uppercase, #app-root header.\--uppercase {
   text-transform: uppercase; }
+
+#app-root .\+circle {
+  border-radius: 100% !important; }
 
 /**
 * profile-color-actor...
@@ -5967,13 +6252,18 @@ button, .button {
         color: white; }
     .ul.\--tab li:hover, ul.\--tab li:hover, .\--tab.badges li:hover {
       box-shadow: inset 0 -3px 0 0 white; }
+  .ul.\--fluid, ul.\--fluid, .\--fluid.badges {
+    width: 100%; }
+    .ul.\--fluid li, ul.\--fluid li, .\--fluid.badges li {
+      width: 100%; }
 
 .comment {
   margin-bottom: 2em; }
   .comment__avatar {
     margin-top: 1em; }
   .comment__content {
-    position: relative; }
+    position: relative;
+    padding: 2em; }
     .comment__content__author {
       text-transform: uppercase;
       margin-bottom: .7em; }
@@ -6955,6 +7245,9 @@ button, .button {
   */
   /**
   * Review
+  */
+  /**
+  * Fund
   */ }
   .project-page__header {
     height: 15em; }
@@ -7133,6 +7426,49 @@ button, .button {
     right: 0;
     top: -46%;
     z-index: -1; }
+  .project-page__fund img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -webkit-transition: -webkit-transform 0.25s;
+    transition: -webkit-transform 0.25s;
+    transition: transform 0.25s;
+    transition: transform 0.25s, -webkit-transform 0.25s;
+    margin-bottom: 1em; }
+    .project-page__fund img:hover {
+      -webkit-transform: scale(1);
+      transform: scale(1); }
+    .project-page__fund img:active {
+      -webkit-transform: scale(0.8333333333);
+      transform: scale(0.8333333333); }
+  .project-page__fund__steps {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: -3.8em; }
+  .project-page__fund__investor-list {
+    text-align: center;
+    margin-top: 4em;
+    -webkit-transition: -webkit-transform 0.25s;
+    transition: -webkit-transform 0.25s;
+    transition: transform 0.25s;
+    transition: transform 0.25s, -webkit-transform 0.25s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+    .project-page__fund__investor-list:hover {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1); }
+    .project-page__fund__investor-list:active {
+      -webkit-transform: scale(0.9166666667);
+      transform: scale(0.9166666667); }
+    .project-page__fund__investor-list img {
+      display: block;
+      width: 50%;
+      margin: -4em auto 0 auto; }
 
 .admin-page__header {
   background: url("/img/login/dreamsArkRef43.jpg") center center; }

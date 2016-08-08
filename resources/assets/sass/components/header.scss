@@ -16,7 +16,7 @@
   }
 
   p {
-    @include font-size(smaller);
+    @include font-size(small);
     line-height: normal;
     font-weight: normal;
   }
@@ -37,7 +37,11 @@
   }
 
   @include option(small) {
-    @include font-size(h2);
+    font-size: small;
+  }
+
+  @include option(medium) {
+    font-size: medium;
   }
 
   @include option(large) {

@@ -1,227 +1,96 @@
-module.exports = (function (e) {
-
-    /**
-     * Append Camera to Engine
-     */
-    return e.mouse = {
-
-        mouse: null,
-        x: null, y: null,
-        ratio: null,
-        normalized: null,
-        collection: [],
-        enabled: false,
-
-        init: function () {
-
-            this.mouse = this;
-            this.x     = 0;
-            this.y     = 0;
-            this.ratio = new THREE.Vector2(0, 0);
-
-            this.normalized = new THREE.Vector2(0, 0);
-
-            this.enabled = true;
-
-            var events = e.module('events');
-
-            /**
-             * Attach the core event for mouse to work
-             */
-            events.add(window, 'mousemove', this.core, this);
-
-        },
-
-        set: function (x, y) {
-            this.x = x;
-            this.y = y;
-        },
-
-        core: function (event) {
-
-            /**
-             * if not enabled then destroy it
-             */
-            if (!this.enabled)
+var DreamsArk;
+(function (DreamsArk) {
+    var Modules;
+    (function (Modules) {
+        var Mouse = (function () {
+            function Mouse() {
+                this.x = 0;
+                this.y = 0;
+                this.ratio = new THREE.Vector2(0, 0);
+                this.normalized = new THREE.Vector2(0, 0);
+                this.enabled = true;
+            }
+            Mouse.prototype.configure = function () {
+                var callback = ;
+                any: void {
+                    /**
+                     * if not enabled then destroy it
+                     */
+                    if: function () { } };
+                !this.enabled;
                 return this.destroy();
-
-            var browser = e.module('browser');
-
-            this.mouse.set(event.clientX, event.clientY);
-
-            /**
-             * Normalized
-             * @type {number}
-             */
-            var x = ( event.clientX / browser.innerWidth ) * 2 - 1,
-                y = -( event.clientY / browser.innerHeight ) * 2 + 1;
-
-            this.normalized.set(x, y);
-
-            if (e.helpers.isNull(browser.width) && e.helpers.isNull(browser.height)) {
+                var browser = module('Browser');
+                this.x = event.clientX;
+                this.y = event.clientY;
+                /**
+                 * Normalized
+                 * @type {number}
+                 */
+                var x = (event.clientX / browser.innerWidth) * 2 - 1, y = -(event.clientY / browser.innerHeight) * 2 + 1;
+                this.normalized.set(x, y);
                 this.ratio.x = event.clientX / browser.innerWidth;
                 this.ratio.y = event.clientY / browser.innerHeight;
-            }
-
-        },
-
-        destroy: function () {
-            this.mouse = null
-            return true;
-        },
-
-        click: function (element, callback, context, userCapture, group) {
-
-            /**
-             * if it's an THREE object then dispatches it to raycaster
-             */
-            if (element instanceof THREE.Mesh || element instanceof THREE.Object3D) {
-
-                var raycaster = e.module('raycaster').class;
-                raycaster.click(element, group, callback, context);
-
-                return;
-
-                //this.collection.push({
-                //    element: element,
-                //    group: group,
-                //    type: 'click',
-                //    raycaster: true
-                //});
-                //
-                ///**
-                // * return the index of the last element
-                // */
-                //return e.helpers.length(this.collection) - 1;
-
-            }
-
-            var events = e.module('events');
-            events.add(element, 'click', callback, context || this, userCapture);
-
-            this.collection.push({
-                element: element,
-                type: 'click'
-            });
-
-            /**
-             * return the index of the last element
-             */
-            return e.helpers.length(this.collection) - 1;
-
-        },
-
-        move: function (element, callback, context, userCapture) {
-
-            /**
-             * if it's an THREE object then dispatches it to raycaster
-             */
-            if (element instanceof THREE.Mesh || element instanceof THREE.Object3D) {
-
-                var raycaster = e.module('raycaster').class;
-                raycaster.move(element, callback, context);
-
-                return;
-
-                ///**
-                // * return the index of the last element
-                // */
-                //return e.helpers.length(this.collection) - 1;
-
-            }
-
-            var events = e.module('events');
-            events.add(element, 'mousemove', callback, context || this, userCapture);
-
-            this.collection.push({
-                element: element,
-                type: 'mousemove'
-            });
-
-            /**
-             * return the index of the last element
-             */
-            return e.helpers.length(this.collection) - 1;
-
-        },
-
-        hover: function (element, callbackIn, callbackOut, context, userCapture, group) {
-
-            /**
-             * if it's an THREE object then dispatches it to raycaster
-             */
-            if (element instanceof THREE.Mesh || element instanceof THREE.Object3D) {
-
-                var raycaster = e.module('raycaster').class;
-                raycaster.hover(element, group, callbackIn, callbackOut, context);
-
-                return;
-
-                //this.collection.push({
-                //    element: element,
-                //    group: group,
-                //    type: 'hover',
-                //    raycaster: true
-                //});
-                //
-                ///**
-                // * return the index of the last element
-                // */
-                //return e.helpers.length(this.collection) - 1;
-
-            }
-
-            console.log('still to implement the hover method')
-
-        },
-
-        hoverClick: function (element, callbackIn, callbackOut, callbackClick, context, userCapture, group) {
-
-            /**
-             * if it's an THREE object then dispatches it to raycaster
-             */
-            if (element instanceof THREE.Mesh || element instanceof THREE.Object3D) {
-
-                var raycaster = e.module('raycaster').class;
-                raycaster.hoverClick(element, group, callbackIn, callbackOut, callbackClick, context);
-
-                return;
-
-                //this.collection.push({
-                //    element: element,
-                //    group: group,
-                //    type: 'hoverClick',
-                //    raycaster: true
-                //});
-                //
-                ///**
-                // * return the index of the last element
-                // */
-                //return e.helpers.length(this.collection) - 1;
-
-            }
-
-            console.log('still to implement the hoverClick method')
-
-        },
-
-        delete: function (index) {
-
-            var collection = this.collection;
-
-            /**
-             * if it`s an raycaster object so remove it
-             */
-            if (!e.helpers.isNull(collection[index].raycaster)) {
-
-                var raycaster = e.module('raycaster').class
-                raycaster.delete(collection[index]);
-
-            }
-
-            this.collection.splice(index, 1);
-        }
-
+            };
+            ;
+            Mouse.prototype.add = ;
+            return Mouse;
+        })();
+        Modules.Mouse = Mouse;
+        null, false;
+        ;
+    })(Modules = DreamsArk.Modules || (DreamsArk.Modules = {}));
+})(DreamsArk || (DreamsArk = {}));
+click(element, string, callback, context, any = this, useCapture, boolean = false);
+void {
+    Events: .add(element, 'click', callback, context, useCapture)
+};
+movePorra(element, string, callback, context, any = this, useCapture, boolean = false);
+void {
+    Events: .add(element, 'move', callback, context, useCapture)
+};
+var Event = (function () {
+    function Event(id, event, domElement, callback, useCapture) {
+        this.id = id;
+        this.event = event;
+        this.domElement = domElement;
+        this.callback = callback;
+        this.useCapture = useCapture;
+    }
+    return Event;
+})();
+var Events = (function () {
+    function Events() {
+        this.instance = this;
+    }
+    Events.add = function (element, event, callback, context, useCapture) {
+        if (useCapture === void 0) { useCapture = false; }
+        if (Helpers.is.Function(this[event]))
+            this[event](element, callback, context, useCapture);
     };
-
-})(Engine);
+    Events.click = function (element, callback, context, useCapture) {
+        if (useCapture === void 0) { useCapture = false; }
+        var domElement = Helpers.query(element), event = 'click', id = Helpers.random.id();
+        //callback.bind(context);
+        var caller = function (e) {
+            if (callback())
+                Events.remove(id);
+        };
+        domElement.addEventListener(event, caller, useCapture);
+        /**
+         * Store on collection for removal later
+         */
+        this.collection.push(new Event(id, event, domElement, caller, useCapture));
+    };
+    Events.remove = function (id) {
+        var element = Helpers.where.id(this.collection, id);
+        element.domElement.removeEventListener(element.event, element.callback, element.useCapture);
+        /**
+         * Remove From Collection
+         */
+        Helpers.removeById(this.collection, id);
+    };
+    Events.collection = [];
+    return Events;
+})();
+exports.Events = Events;
+//# sourceMappingURL=Mouse.js.map

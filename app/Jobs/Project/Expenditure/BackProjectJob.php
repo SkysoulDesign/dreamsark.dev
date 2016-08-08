@@ -4,15 +4,18 @@ namespace DreamsArk\Jobs\Project\Expenditure;
 
 use DreamsArk\Events\Project\ProjectWasBacked;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 
+/**
+ * Class BackProjectJob
+ *
+ * @package DreamsArk\Jobs\Project\Expenditure
+ */
 class BackProjectJob extends Job
 {
     /**
-     * @var Expenditure
+     * @var Project
      */
     private $project;
 
@@ -22,7 +25,7 @@ class BackProjectJob extends Job
     private $user;
 
     /**
-     * @var
+     * @var int
      */
     private $amount;
 
@@ -33,7 +36,7 @@ class BackProjectJob extends Job
      * @param User $user
      * @param $amount
      */
-    public function __construct(Project $project, User $user, $amount)
+    public function __construct(Project $project, User $user, int $amount)
     {
         $this->project = $project;
         $this->user = $user;
@@ -42,19 +45,19 @@ class BackProjectJob extends Job
 
     /**
      * Execute the command.
-     *
-     * @param ProjectRepositoryInterface $repository
      */
-    public function handle(ProjectRepositoryInterface $repository)
+    public function handle()
     {
-        /**
-         * Back Expenditure
-         */
-        $repository->back($this->project->id, $this->user->id, $this->amount);
+
+        $this->project->investors()->attach(
+            $this->user, ['amount' => $this->amount]
+        );
 
         /**
          * Announce ProjectWasBacked
          */
-        event(new ProjectWasBacked($this->project, $this->user, $this->amount));
+        event(new ProjectWasBacked(
+            $this->project, $this->user, $this->amount
+        ));
     }
 }

@@ -72,6 +72,25 @@ export class Form implements ComponentInterface {
             }
         );
 
+        vue.component('ark-select', {
+                template: require('html!../templates/form/select.html'),
+                props: {
+                    name: String,
+                    label: String
+                }
+            }
+        );
+
+        vue.component('ark-select-option', {
+                template: require('html!../templates/form/select-option.html'),
+                props: {
+                    value: String,
+                    selected: Boolean
+                }
+            }
+        );
+
+
         vue.component('ark-button', {
                 template: require('html!../templates/form/button.html'),
                 props: {

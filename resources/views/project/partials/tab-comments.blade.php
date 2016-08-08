@@ -1,4 +1,4 @@
-<ark-tab content="tab-comments" icon="comments">
+<ark-tab content="tab-comments" icon="comments-o" {{ (isset($active) && $active) ? 'active' : '' }}>
     @lang('forms.comments')
     @push('tab-item')
     <div id="tab-comments" class="row +margin-top align-center">
@@ -15,7 +15,8 @@
 
             <div class="small-12 divider --spaced --simple"></div>
 
-            <ark-form class="align-center segment" action="{{ route('project.comment.store', [$project, $project->stage->getStageName()]) }}">
+            <ark-form class="align-center segment"
+                      action="{{ route('project.comment.store', [$project, $project->stage->getStageName()]) }}">
 
                 <div slot="body">
 

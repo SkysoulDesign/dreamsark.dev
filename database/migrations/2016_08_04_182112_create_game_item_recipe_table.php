@@ -38,6 +38,6 @@ class CreateGameItemRecipeTable extends Migration
      */
     public function down()
     {
-        $this->schema->create('game_item_recipe');
+        $this->schema->drop('game_item_recipe');
     }
 }

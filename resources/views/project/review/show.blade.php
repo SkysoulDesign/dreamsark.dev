@@ -36,17 +36,15 @@
 
     <div class="small-10 columns">
         <ark-nav>
-            <ark-item url="{{ route('user.profile.index') }}">@lang('project.idea')</ark-item>
-            <ark-item url="{{ route('user.project.index') }}">@lang('project.synapse')</ark-item>
-            <ark-item url="{{ route('user.activity.earning') }}">@lang('project.script')</ark-item>
-            <ark-item url="{{ route('user.activity.earning') }}" icon="comments">@lang('forms.comments')</ark-item>
+            @include('project.partials.tab-idea')
+            @include('project.partials.tab-synapse')
+            @include('project.partials.tab-script')
+            @include('project.partials.tab-comments', ['active' => true])
         </ark-nav>
     </div>
 
-    <div class="small-12 columns +margin-top-small">
-        <header class="header --with-divider +uppercase --centered">
-            Submissions
-        </header>
+    <div class="small-12 columns">
+        @stack('tab-item')
     </div>
 
 </div>

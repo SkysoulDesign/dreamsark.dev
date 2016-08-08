@@ -51,6 +51,10 @@
   text-align: center;
 }
 
+@include tweak(left) {
+  text-align: left;
+}
+
 @include tweak(justify) {
   text-align: justify;
 }
@@ -137,6 +141,10 @@
 
 @include tweak(uppercase) {
   text-transform: uppercase;
+}
+
+@include tweak(circle) {
+  border-radius: 100% !important;
 }
 
 @each $color in $colors {
