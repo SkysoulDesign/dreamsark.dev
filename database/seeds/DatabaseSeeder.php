@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSectionTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
-
+//
         $this->call(GameGroupTableSeeder::class);
         $this->call(ItemTableSeeder::class);
 //        $this->call(CreateDummyProject::class);

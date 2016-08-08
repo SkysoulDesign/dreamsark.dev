@@ -1,4 +1,4 @@
-import {toCamelCase, extend, popByKey} from "../Helpers";
+import {toCamelCase, extend, popByKey, requireAll} from "../Helpers";
 import {Application} from "../Abstract/Aplication";
 import Vue = require('vue');
 import VueResource = require('vue-resource');
@@ -11,13 +11,17 @@ export class Pages extends Application {
     /**
      * List of Loaded Classes
      */
-    public collection = [
-        require('../Pages/Common'),
-        require('../Pages/Test'),
-        require('../Pages/Purchase'),
-        require('../Pages/User/Profile'),
-        require('../Pages/Project'),
-    ]
+    // public collection = [
+    //     require('../Pages/Common'),
+    //     require('../Pages/Test'),
+    //     require('../Pages/Purchase'),
+    //     require('../Pages/User/Profile'),
+    //     require('../Pages/Project'),
+    // ]
+
+    public collection = requireAll(
+        require.context("../Pages", true, /\.js$/)
+    );
 
     /**
      * Initialized Objects

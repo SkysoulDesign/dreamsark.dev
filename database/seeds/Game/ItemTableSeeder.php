@@ -30,6 +30,7 @@ class ItemTableSeeder extends Seeder
                 $item->group()->associate($group);
                 $item->setAttribute('name', Faker\Factory::create()->name);
                 $item->setAttribute('cost', rand(100, 1000));
+                $item->setAttribute('name', Faker\Factory::create()->name);
                 $item->setAttribute('probability', 1);
                 $item->setAttribute('image', "img/svg/{$images[$image]}");
                 $item->save();

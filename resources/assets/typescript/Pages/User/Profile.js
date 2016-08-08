@@ -16,9 +16,16 @@ var Profile = (function (_super) {
             'user.profile.create'
         ];
     }
-    Profile.prototype.boot = function (profileRoute) {
+    Profile.prototype.boot = function (profileRoute, container) {
+        var _this = this;
         this.initProfileSelection(profileRoute);
         this.initThreeJs();
+        document.querySelector(container).addEventListener('click', function (e) {
+            var target = e.target;
+            if (target.dataset.hasOwnProperty('profileName')) {
+                _this.app.plugin('item').switch(target.dataset['profileName'], target.dataset['localizedName']);
+            }
+        });
         /**
          * initialize the position with the first element
          */

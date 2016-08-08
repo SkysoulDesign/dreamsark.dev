@@ -43,6 +43,8 @@ var Test = (function (_super) {
             [].forEach.call(dropZones, function (dropZone) {
                 items.push(dropZone.children.item(1).dataset.id);
             });
+            var renderer = document.querySelector("#ABC");
+            renderer.style.zIndex = 10;
             alert("Merging items: " + items[0] + " and " + items[1]);
         });
     };

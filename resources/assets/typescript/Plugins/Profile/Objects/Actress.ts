@@ -11,4 +11,6 @@ export class Actress extends BaseCharacter {
         }
     }
 
+
+
 }

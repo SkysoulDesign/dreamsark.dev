@@ -148,4 +148,5 @@ return array (
   'achievements' => '成就',
   'user-comments' => '用户 <span> 评论 </span>',
   'waiting' => '等待',
+  'user-public-submissions' => 'public <span> submissions (:count)</span>',
 );

@@ -8,7 +8,9 @@ export class Test extends AbstractPage {
     public routes = [
         'user.inventory',
     ]
-
+    animation
+    setItems
+    setMergedResult
     boot() {
 
         let dropZones = document.querySelectorAll("[dropable=true]"),
@@ -51,6 +53,10 @@ export class Test extends AbstractPage {
                 )
 
             });
+
+            let renderer = <HTMLElement>document.querySelector("#ABC");
+
+            renderer.style.zIndex = 10;
 
             alert(`Merging items: ${items[0]} and ${items[1]}`)
 

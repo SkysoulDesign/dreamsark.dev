@@ -201,16 +201,24 @@ var ItemManager = (function (_super) {
         //do something
     }
     ItemManager.prototype.assignItemsData = function (e_Json) {
+        this.MyLog.log("start function ItemManager.assignItemsData ");
         this.groupAndItemArray = [];
-        var l_Root = e_Json;
-        for (var l_Json in l_Root) {
-            var l_CurrentGroup = l_Root[l_Json];
-            var l_GroupAndItem = new GroupAndItem(l_CurrentGroup);
-            this.groupAndItemArray.push(l_GroupAndItem);
+        if (e_Json && e_Json.GroupAndItem) {
+            var l_Root = e_Json.GroupAndItem;
+            for (var l_Json in l_Root) {
+                var l_CurrentGroup = l_Root[l_Json];
+                var l_groupID = l_CurrentGroup["groupID"];
+                if (l_groupID) {
+                    var l_GroupAndItem = new GroupAndItem(l_CurrentGroup);
+                    this.groupAndItemArray.push(l_GroupAndItem);
+                }
+            }
         }
+        this.MyLog.log("finish function ItemManager.assignItemsData ");
+        this.getItemsFromStageData(g_StageJsonTest);
     };
     ItemManager.prototype.getItemsFromStageData = function (e_StageDataJson) {
-        console.log(e_StageDataJson);
+        this.MyLog.log(e_StageDataJson);
         var l_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();
         var l_ProjectNAme = e_StageDataJson.ProjectName;
         var l_Creator = e_StageDataJson.Creator;
@@ -218,15 +226,15 @@ var ItemManager = (function (_super) {
         var l_GiveRewardMax = e_StageDataJson.GiveRewardMax;
         var l_GiveRewardMin = e_StageDataJson.GiveRewardMin;
         var l_GivRewardCount = Helpers_1.random(l_GiveRewardMin, l_GiveRewardMax);
-        console.log(l_GiveRewardMin + ":" + l_GiveRewardMax);
-        console.log("give reward count is :" + l_GivRewardCount);
+        this.MyLog.log(l_GiveRewardMin + ":" + l_GiveRewardMax);
+        this.MyLog.log("give reward count is :" + l_GivRewardCount);
         var l_GroupAndProbability = e_StageDataJson.GroupAndProbability;
         if (l_GroupAndProbability) {
             for (var i in l_GroupAndProbability) {
                 var l_Object = l_GroupAndProbability[i];
                 if (l_Object) {
                     l_findSuitObjectByProbability.addProbability(l_Object.Probability);
-                    console.log("probability " + l_Object.Probability);
+                    this.MyLog.log("probability " + l_Object.Probability);
                 }
             }
             var l_TargetGroup = [];
@@ -242,19 +250,20 @@ var ItemManager = (function (_super) {
                     var l_GroupAndItem = this.groupAndItemArray[l_CurrentGroupID];
                     var l_GroupID = l_GroupAndItem.groupID;
                     var l_ItemID = l_GroupAndItem.getRandomItemID();
-                    var l_GroupIDAndItemID = [l_GroupID, l_ItemID];
-                    l_ReturnJsonResult.push(l_GroupIDAndItemID);
+                    //var l_GroupIDAndItemID = [l_GroupID,l_ItemID];
+                    l_ReturnJsonResult.push(l_ItemID);
                 }
             }
-            console.log(l_ReturnJsonResult);
+            this.MyLog.log(l_ReturnJsonResult);
             var l_RewardPoints = Helpers_1.random(e_StageDataJson.RewardPointsMin, e_StageDataJson.RewardPointsMax);
             l_RewardPoints = Math.round(l_RewardPoints / 5) * 5;
             var l_Result = JSON.stringify({ RewardItem: l_ReturnJsonResult, RewardPoints: l_RewardPoints });
+            this.MyLog.log(l_Result);
             return l_Result;
         }
         //groupAndItemArray
         //return reward;
-        console.log("getItemsFromStageData is failed!");
+        this.MyLog.log("getItemsFromStageData is failed!");
         return null;
     };
     ItemManager.prototype.getItemByGroupIdAndItemID = function (e_GroupID, e_ItemID) {

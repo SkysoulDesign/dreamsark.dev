@@ -19,7 +19,7 @@ class Bag extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['coins'];
 
     /**
      * User Relationship

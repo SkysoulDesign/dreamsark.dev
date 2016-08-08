@@ -80,7 +80,7 @@
 @section('pos-scripts')
 
     <script>
-        dreamsark.page("{{ request()->route()->getName() }}", "{{ route('user.profile.fields') }}");
+        dreamsark.page("{{ request()->route()->getName() }}", "{{ route('user.profile.fields') }}, '#characters'");
     </script>
 
 @overwrite

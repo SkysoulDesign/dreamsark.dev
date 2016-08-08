@@ -39,4 +39,22 @@ exports.g_ItemData = {
         }
     ]
 };
+exports.g_ItemNameCN = {
+    "1": "道具１",
+    "2": "道具2",
+    "3": "道具3",
+    "4": "道具4",
+    "5": "道具5",
+    "6": "道具6",
+    "7": "道具7"
+};
+exports.g_ItemNameEN = {
+    "1": "Item１",
+    "2": "Item2",
+    "3": "Item3",
+    "4": "Item4",
+    "5": "Item5",
+    "6": "Item6",
+    "7": "Item7"
+};
 //# sourceMappingURL=itemList.js.map

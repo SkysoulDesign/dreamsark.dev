@@ -18,13 +18,14 @@ var Pages = (function (_super) {
         /**
          * List of Loaded Classes
          */
-        this.collection = [
-            require('../Pages/Common'),
-            require('../Pages/Test'),
-            require('../Pages/Purchase'),
-            require('../Pages/User/Profile'),
-            require('../Pages/Project'),
-        ];
+        // public collection = [
+        //     require('../Pages/Common'),
+        //     require('../Pages/Test'),
+        //     require('../Pages/Purchase'),
+        //     require('../Pages/User/Profile'),
+        //     require('../Pages/Project'),
+        // ]
+        this.collection = Helpers_1.requireAll(require.context("../Pages", true, /\.js$/));
         /**
          * Initialized Objects
          */

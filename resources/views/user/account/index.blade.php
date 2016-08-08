@@ -20,16 +20,20 @@
                     </header>
 
                     <ark-fields gap="large">
-                        <ark-input name="name" label="Name"></ark-input>
-                        <ark-input name="password" label="Password"></ark-input>
+                        <ark-input name="name" label="@lang('forms.name')" placeholder="@lang('forms.name')">
+                           {{--@todo lang--}}
+                        </ark-input>
+                        <ark-input name="password" label="@lang('forms.password')" placeholder="@lang('forms.password')"></ark-input>
                     </ark-fields>
 
                     <ark-fields gap="large">
-                        <ark-input label="Username" read-only>test</ark-input>
-                        <ark-input name="confirm_password" label="Password Confirmation"></ark-input>
+                        <ark-input label="@lang('forms.username')"></ark-input>
+                        <ark-input name="confirm_password" label="@lang('forms.password-confirmation')" placeholder="@lang('forms.password-confirmation')"></ark-input>
                     </ark-fields>
-
+                    {{--todo 2 password? --}}
                     <ark-input name="name" label="Password"></ark-input>
+                    {{--<ark-input name="Password" placeholder="@lang('forms.password')"--}}
+                    {{--label="@lang('forms.password')"></ark-input>--}}
 
                 </ark-form>
             </section>

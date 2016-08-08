@@ -12,7 +12,7 @@ var Renderer = (function (_super) {
     function Renderer(app) {
         _super.call(this, {
             antialias: true,
-            alpha: true
+            alpha: false,
         });
         app.canvas.appendChild(this.domElement);
     }

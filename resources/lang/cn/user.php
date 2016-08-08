@@ -33,5 +33,5 @@ return array (
   'my-backed-list-description' => NULL,
   'my-earning-list-description' => NULL,
   'purchases-description' => ' ',
-  'personal' => NULL,
+  'personal' => '個人',
 );

@@ -1,3 +1,4 @@
+//author cloud
 import {AbstractComposition} from "../Abstract/AbstractComposition";
 
 /**
