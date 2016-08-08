@@ -87,7 +87,6 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat harum id iste minus odio quasi ratione
             repellendus! Ab deserunt itaque minus, natus nobis nulla unde. Blanditiis impedit labore rerum veniam!</p>
 
-
         <ark-input name="amount"
                    required
                    type="number"

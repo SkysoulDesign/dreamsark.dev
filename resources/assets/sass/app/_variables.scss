@@ -6,11 +6,14 @@ $font-sizes: (
         h5: .8em,
         h6: .5em,
         h7: .4em,
-        large: 3em,
-        medium: 2em,
+        xx-larger: xx-large,
+        x-larger: x-large,
+        larger: larger,
+        large: large,
+        medium: medium,
         normal: 1em,
-        small: .9em,
-        smaller: .5em,
+        small: small,
+        smaller: smaller,
 ) !default;
 
 $font-weights: (

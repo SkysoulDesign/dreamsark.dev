@@ -12,7 +12,7 @@
             Deserunt, natus, repudiandae.
         </div>
 
-        <div class="small-10 columns segment --color-purple --centered --large-padding +no-round-bottom">
+        <div class="small-10 columns segment --color-purple --centered --attached --large-padding +no-round-bottom">
 
             <div class="row align-center">
                 <div class="small-12 columns +margin-bottom">

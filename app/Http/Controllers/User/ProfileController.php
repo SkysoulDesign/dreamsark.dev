@@ -151,22 +151,20 @@ class ProfileController extends Controller
             ->with('sections', $profile->questions->pluck('pivot.section')->unique());
     }
 
-    public function userEarningHistory(UserRepositoryInterface $userRepository, Request $request)
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @todo properly calculate the earning based on the what the user earned not on all his submissions currently implementation is wrong
+     */
+    public function userEarningHistory(Request $request)
     {
-        $currentPage = $request->get('page', 1);
-        /** @var Collection $projectEarnings */
-        $projectEarnings = $userRepository->projectEarnings($request->user()->id);
-        $this->earningTotal = 0;
-        $projectEarnings->pluck('votes')->each(function ($item) {
-            $this->earningTotal += $item->pluck('pivot')->sum('amount');
-        });
-        $currentResultSet = $projectEarnings->forPage($currentPage, config('defaults.general.pagination.per_page'));
-//        dd($currentResultSet);
-        $pagination = ['current' => $currentPage];
 
-        return view('user.activity.earning-list', compact('pagination'))
-            ->with('projectEarnings', $currentResultSet)
-            ->with('earningTotal', $this->earningTotal);
+        $user = $request->user()->load('investments', 'enrollers', 'submissions', 'submissions.votes');
+
+        return view('user.activity.index')
+            ->with('earnings', $user->submissions)
+            ->with('investments', $user->investments)
+            ->with('enrollers', $user->enrollers);
     }
 
     /**

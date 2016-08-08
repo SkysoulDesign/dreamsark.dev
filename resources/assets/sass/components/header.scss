@@ -1,6 +1,6 @@
 @include component(header) {
 
-  @include font-size(medium);
+  @include font-size(xx-larger);
   @include font-weight(bold);
 
   @include option(uppercase) {
@@ -16,7 +16,7 @@
   }
 
   p {
-    @include font-size(small);
+    @include font-size(medium);
     line-height: normal;
     font-weight: normal;
   }
@@ -37,11 +37,11 @@
   }
 
   @include option(small) {
-    font-size: small;
+    @include font-size(small);
   }
 
   @include option(medium) {
-    font-size: medium;
+    @include font-size(medium);
   }
 
   @include option(large) {
