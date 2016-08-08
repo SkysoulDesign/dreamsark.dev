@@ -26,7 +26,7 @@
 
         <div class="row align-center +margin-top">
             <div class="small-2 columns">
-                <button id="merger-button" class="--button --fluid --color-primary">Merge</button>
+                <button id="merger-button" class="--button --fluid --color-primary">@lang('inventory.merge')</button>
             </div>
         </div>
 

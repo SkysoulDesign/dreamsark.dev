@@ -34,4 +34,6 @@ return array (
   'my-earning-list-description' => NULL,
   'purchases-description' => NULL,
   'personal' => 'Personal',
+  'inventory' => NULL,
+  'account-description' => 'user setting',
 );

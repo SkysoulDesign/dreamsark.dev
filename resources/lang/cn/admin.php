@@ -9,4 +9,5 @@ return array (
   'profile' => '岗位',
   'question' => '问题',
   'project-list' => '项目清单',
+  'profiles' => NULL,
 );

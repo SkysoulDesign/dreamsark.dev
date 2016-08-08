@@ -26,16 +26,16 @@
         </div>
 
         <div class="small-10 columns segment project-page__requirement-content --large-padding">
-            <h2>Description</h2>
+            <h2>@lang('project.mission-description')</h2>
             {!! $project->stage->content !!}
         </div>
 
         @if($project->stage->vote->active)
 
             <div class="small-10 columns message --color-primary +center">
-                The Project has reach the voting stage
+                @lang('project.reachVotingStage')
                 <h2>
-                    <a href="{{ route('project.vote.create', $project) }}">Click here to participate</a>
+                    <a href="{{ route('project.vote.create', $project) }}">@lang('project.participate')</a>
                 </h2>
             </div>
 
@@ -44,7 +44,7 @@
         @if($project->stage->submission)
 
             <div class="small-10 columns message --color-success +center">
-                Task has finished, and a winner has been chosen, congratulation
+                @lang('project.getWinnerToNextStage')
                 <b><a href="#">{{ $project->stage->submission->user->present()->name }}</a></b> !!!
             </div>
 
@@ -121,7 +121,7 @@
 
                 <div class="small-12 columns">
                     <header class="header --with-divider +uppercase --centered">
-                        My Submission
+                        @lang('project.MySubmission')
                     </header>
                 </div>
 

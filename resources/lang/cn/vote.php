@@ -12,4 +12,6 @@ return array (
   'candidate' => '候选人',
   'expect-cost' => '预期的费用',
   'is-not-open' => '这项目投票选项还未开放',
+  'viewCount' => '看過數',
+  'voteCount' => '投票數',
 );

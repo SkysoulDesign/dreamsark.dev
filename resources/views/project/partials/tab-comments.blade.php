@@ -20,7 +20,7 @@
 
                 <div slot="body">
 
-                    <ark-textarea name="content" :rows="5" label="@lang('forms.comments')"></ark-textarea>
+                    <ark-textarea name="content" :rows="5" label="@lang('forms.comments')" placeholder="@lang('forms.comments')"></ark-textarea>
 
                     <div class="small-12 divider --simple"></div>
 

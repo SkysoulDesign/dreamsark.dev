@@ -54,7 +54,7 @@
                                 </h4>
                             </li>
                             <li class="li --sub-tittle">
-                                Current stage: <b>{{ $project->stage->getStageName() }}</b>
+                                @lang('project.current-stage'): <b>{{ $project->stage->getStageName() }}</b>
                             </li>
                         </ul>
 

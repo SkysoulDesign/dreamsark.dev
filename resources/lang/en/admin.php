@@ -9,4 +9,5 @@ return array (
   'profile' => 'Profile',
   'question' => 'Question',
   'project-list' => 'Project List',
+  'profiles' => NULL,
 );

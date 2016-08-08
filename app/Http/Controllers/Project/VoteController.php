@@ -77,7 +77,8 @@ class VoteController extends Controller
          */
         if (!$stage->vote->active) {
             return redirect()->route('project.show', $project)->withErrors(
-                'Voting is close for this project'
+                trans('project.date-expired')
+                //'Voting is close for this project'
             );
         }
 

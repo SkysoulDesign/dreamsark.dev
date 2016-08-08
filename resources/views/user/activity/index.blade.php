@@ -16,9 +16,9 @@
         <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom +margin-top-small">
 
             <ark-statistics class="align-center" size="large">
-                <statistic-item data="0">Total Earned</statistic-item>
-                <statistic-item data="0">Something Else</statistic-item>
-                <statistic-item data="0">I dont know</statistic-item>
+                <statistic-item data="0">Total Earned/總贏得數量</statistic-item>
+                <statistic-item data="0">Something Else/榮耀項目</statistic-item>
+                <statistic-item data="0">I dont know/排行榜</statistic-item>
             </ark-statistics>
 
         </div>

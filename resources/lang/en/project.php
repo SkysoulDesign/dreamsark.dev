@@ -149,4 +149,12 @@ return array (
   'user-comments' => 'user <span> comments </span>',
   'user-public-submissions' => 'public <span> submissions (:count)</span>',
   'waiting' => 'Waiting...',
+  'profile-list' => NULL,
+  'project-list' => NULL,
+  'view-project' => NULL,
+  'time' => NULL,
+  'creation-notes' => NULL,
+  'review-project' => NULL,
+  'my-projects' => NULL,
+  'date-expired' => 'Voting is close for this project',
 );

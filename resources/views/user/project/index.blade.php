@@ -16,10 +16,10 @@
                 <li>
                     <ark-nav basic>
                         <ark-tab content="tab-running-project" active>
-                            Running Projects ({{ $projects->count() }})
+                            @lang('user.running-projects') ({{ $projects->count() }})
                         </ark-tab>
                         <ark-tab content="tab-failed-project">
-                            Failed Projects ({{ $failed_projects->count() }})
+                            @lang('user.failed-projects') ({{ $failed_projects->count() }})
                         </ark-tab>
                     </ark-nav>
                 </li>
@@ -30,7 +30,7 @@
 
             @if($projects->isEmpty())
                 <div class="item columns message --color-warning ">
-                    You still don't have any running project...
+                    @lang('user.no-projects')
                     <b>
                         <a href="{{ route('user.project.create') }}">why don't you start one?</a>
                     </b>
@@ -47,7 +47,7 @@
 
             @if($failed_projects->isEmpty())
                 <div class="item columns message --color-success">
-                    You don't have any failed project :)
+                    @lang('user.no-projects')
                 </div>
             @else
                 <ark-accordion>

@@ -13,7 +13,7 @@
                 </h4>
             </li>
             <li class="li --sub-tittle">
-                Current stage:
+                @lang('project.current-stage')
             </li>
         </ul>
 

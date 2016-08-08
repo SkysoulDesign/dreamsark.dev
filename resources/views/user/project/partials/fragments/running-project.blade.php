@@ -14,7 +14,7 @@
                     </h4>
                 </li>
                 <li class="li --sub-tittle">
-                    Current stage: <b>{{ $project->stage->getStageName() }}</b>
+                    @lang('project.current-stage'): <b>{{ $project->stage->getStageName() }}</b>
                 </li>
             </ul>
 
@@ -37,10 +37,10 @@
 
                 <ark-statistics>
                     <statistic-item data="{{ $project->stage->submissions->count() }}"
-                                    icon="star">Submissions
+                                    icon="star">@lang('user.submission')
                     </statistic-item>
                     <statistic-item data="{{ $project->stage->comments->count() }}"
-                                    icon="comments">Comments
+                                    icon="comments">@lang('user.comment')
                     </statistic-item>
                 </ark-statistics>
 
@@ -57,10 +57,10 @@
                 <div class="small-1 columns +center">
                     <ark-dropdown icon="cog" mode="icon" pop="center">
                         <ark-dropdown-option href="{{ route('project.show', $project) }}"
-                                             icon="eye">View
+                                             icon="eye">@lang('user.view')
                         </ark-dropdown-option>
-                        <ark-dropdown-option icon="pencil">Edit</ark-dropdown-option>
-                        <ark-dropdown-option icon="wrench">Manage</ark-dropdown-option>
+                        <ark-dropdown-option icon="pencil">@lang('user.edit')</ark-dropdown-option>
+                        <ark-dropdown-option icon="wrench">@lang('user.manage')</ark-dropdown-option>
                     </ark-dropdown>
                 </div>
             @endif
