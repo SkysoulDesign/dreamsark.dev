@@ -28,7 +28,7 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show']]);
+        $this->middleware('auth', ['except' => ['show', 'questions']]);
     }
 
     /**
@@ -176,9 +176,9 @@ class ProfileController extends Controller
      * @param \DreamsArk\Models\Master\Profile $profile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function fields(Request $request, Profile $profile)
+    public function questions(Request $request, Profile $profile)
     {
-        
+
         $profile = $profile->whereName($request->input('profile'))->firstOrFail();
 
         return response()->json(

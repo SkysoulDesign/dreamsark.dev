@@ -115,7 +115,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * @param string $name
-     *
      * @return mixed|null
      */
     public function __get($name)
@@ -141,7 +140,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * @param $roleName
-     *
      * @return bool
      */
     public function is($roleName)
@@ -160,19 +158,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function backers()
-    {
-        return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
-    }
+//    public function backers()
+//    {
+//        return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
+//    }
 
     /**
      * User to Enroller relation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function enrollers()
+    public function enrollers() : belongsToMany
     {
-        return $this->belongsToMany(Expenditure::class, 'expenditure_enrollers')->withTimestamps();
+        return $this
+            ->belongsToMany(Expenditure::class, 'expenditure_enrollers')
+            ->withTimestamps();
     }
 
     /**

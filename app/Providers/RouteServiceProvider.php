@@ -58,6 +58,13 @@ class RouteServiceProvider extends ServiceProvider
          */
         $router->group([], function ($app) use ($route) {
             require app_path("Http/routes.$route.php");
+
+            /*
+             * Wait until laravel 5.3 to handle this messy part so for now if web also include api so
+             * one can reference one another
+             */
+            if ($route === 'web')
+                require app_path("Http/routes.api.php");
         });
 
     }

@@ -13,24 +13,32 @@
         <div class="row align-center +margin-top-small">
             <div class="small-5">
                 <ark-fields>
-                    <ark-button class="--fluid" color="success">Enrol to this project</ark-button>
+                    <ark-button href="{{ route('project.enroll.create', $project) }}" class="--fluid" color="success">
+                        Enrol to this project
+                    </ark-button>
                     <ark-button data-modal-trigger="invent-project"
                                 class="--fluid" color="primary">
                         Invest on this Project
                     </ark-button>
                 </ark-fields>
             </div>
+
         </div>
 
+        <ark-progress class="small-12 columns"
+                      :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']"
+                      color="warning"
+                      size="large" label="@lang('project.time')" flat></ark-progress>
+
     </div>
+
 
     <div class="small-10 columns segment --color-primary --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
             <statistic-item data="{{ $project->investors->unique()->count() }}">Investors</statistic-item>
             <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">Collected</statistic-item>
-            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">$ Goal
-            </statistic-item>
+            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">$ Goal</statistic-item>
         </ark-statistics>
 
         <div class="row align-center +left +margin-top-small">

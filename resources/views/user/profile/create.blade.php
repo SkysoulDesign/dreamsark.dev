@@ -11,14 +11,14 @@
         <div id="wrapper" class="row align-middle +full-height +center">
 
             <div class="small-12 align-middle columns">
-                <header class="header --color-white +text-shadow">
+                <header class="header --color-white +text-shadow" v-cloak>
                     @lang('profile.pick-position')
                     <h1 class="+uppercase">@{{ position }}</h1>
                 </header>
             </div>
 
             <ark-animation composition="main"
-                           :payload="['#characters', '{{ $profiles->random()->name }}']"
+                           :payload="['#characters', '{{ request()->input('profile', $profiles->random()->name) }}']"
                            class="small-12 columns align-middle profile-page__canvas"></ark-animation>
 
             <div class="small-12 align-bottom columns +z-1">
@@ -80,7 +80,7 @@
 @section('pos-scripts')
 
     <script>
-        dreamsark.page("{{ request()->route()->getName() }}", "{{ route('user.profile.fields') }}");
+        dreamsark.page("{{ request()->route()->getName() }}", "{{ route('user.profile.questions') }}");
     </script>
 
 @overwrite

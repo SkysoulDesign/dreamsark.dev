@@ -3,6 +3,7 @@
 /**
  * Api V1 Routes
  */
+use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Models\Game\Item;
 use DreamsArk\Models\User\User;
 
@@ -26,6 +27,11 @@ $app->group(['prefix' => 'api/v1'], function () use ($app) {
             'items' => $user->items,
         ];
     });
+
+    /**
+     * Profile
+     */
+    $app->get('questions', ProfileController::class . '@questions')->name('user.profile.questions');
 
 });
 
