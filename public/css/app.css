@@ -3806,17 +3806,20 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .form__field__error ul li, .form__field__error .badges li, .form__message__items {
   font-size: 0.8em; }
 
-.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item, .project-page__fund__investor-list p {
-  font-size: 3em; }
-
 .header, header {
-  font-size: 2em; }
+  font-size: xx-large; }
+
+.header.\--large, header.\--large, .statistic.\--small .statistic__item, .statistic.\--large .statistic__item, .project-page__fund__investor-list p {
+  font-size: large; }
+
+.header p, header p, .header.\--medium, header.\--medium {
+  font-size: medium; }
 
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
 
-.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .header p, header p, .divider.\--mini, .pagination__item a {
-  font-size: 0.9em; }
+.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .header.\--small, header.\--small, .divider.\--mini, .pagination__item a {
+  font-size: small; }
 
 .admin-page__top a {
   color: white; }
@@ -4520,12 +4523,6 @@ button, .button {
 .header.\--light, header.\--light {
   color: #b8b8b8; }
 
-.header.\--small, header.\--small {
-  font-size: small; }
-
-.header.\--medium, header.\--medium {
-  font-size: medium; }
-
 .header.\--centered, header.\--centered {
   text-align: center; }
 
@@ -4606,7 +4603,8 @@ button, .button {
       border-top-left-radius: 0;
       border-top-right-radius: 0; }
   .segment.\--centered, .\--centered.message, .\--centered.item {
-    margin: auto; }
+    margin-left: auto;
+    margin-right: auto; }
   .segment.\--large-padding, .\--large-padding.message, .\--large-padding.item {
     padding: 3em; }
   .segment.\--hover, .\--hover.message, .\--hover.item {

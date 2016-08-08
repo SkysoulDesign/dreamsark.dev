@@ -4,42 +4,69 @@
 
     @include('user.partials.header')
 
-    <div class="row">
+    <div class="row align-center +margin-top">
 
         <div class="small-12 columns">
-
-            <header class="header --light --with-divider --full">
+            <header class="header --centered">
                 @lang('user.account')
+                <p>@lang('user.account-description')</p>
             </header>
+        </div>
 
-            <section>
-                <ark-form action="#" errors="{{ json_encode($errors) }}">
+        <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom +margin-top-small">
 
-                    <header class="header --light --full --mini +no-margin-top">
-                        @lang('user.personal')
-                    </header>
+            <ark-statistics class="align-center" size="large">
+                <statistic-item data="0">Something</statistic-item>
+                <statistic-item data="0">Something Else</statistic-item>
+                <statistic-item data="0">Another thing</statistic-item>
+            </ark-statistics>
 
-                    <ark-fields gap="large">
-                        <ark-input name="name" label="@lang('forms.name')" placeholder="@lang('forms.name')">
-                           {{--@todo lang--}}
-                        </ark-input>
-                        <ark-input name="password" label="@lang('forms.password')" placeholder="@lang('forms.password')"></ark-input>
-                    </ark-fields>
+        </div>
 
-                    <ark-fields gap="large">
-                        <ark-input label="@lang('forms.username')"></ark-input>
-                        <ark-input name="confirm_password" label="@lang('forms.password-confirmation')" placeholder="@lang('forms.password-confirmation')"></ark-input>
-                    </ark-fields>
-                    {{--todo 2 password? --}}
-                    <ark-input name="name" label="Password"></ark-input>
-                    {{--<ark-input name="Password" placeholder="@lang('forms.password')"--}}
-                    {{--label="@lang('forms.password')"></ark-input>--}}
+        <div class="small-10 columns">
+            <ark-nav>
+                @include('user.account.partials.tab-personal', ['active' =>true])
+            </ark-nav>
+        </div>
 
-                </ark-form>
-            </section>
+        <div class="small-12 columns">
+            @stack('tab-item')
         </div>
 
     </div>
+
+    {{--<div class="row">--}}
+
+    {{--<div class="small-12 columns">--}}
+
+    {{--<header class="header --light --with-divider --full">--}}
+    {{--@lang('user.account')--}}
+    {{--</header>--}}
+
+    {{--<section>--}}
+    {{--<ark-form action="#" errors="{{ json_encode($errors) }}">--}}
+
+    {{--<header class="header --light --full --mini +no-margin-top">--}}
+    {{--@lang('user.personal')--}}
+    {{--</header>--}}
+
+    {{--<ark-fields gap="large">--}}
+    {{--<ark-input name="name" label="Name"></ark-input>--}}
+    {{--<ark-input name="password" label="Password"></ark-input>--}}
+    {{--</ark-fields>--}}
+
+    {{--<ark-fields gap="large">--}}
+    {{--<ark-input label="Username" read-only>test</ark-input>--}}
+    {{--<ark-input name="confirm_password" label="Password Confirmation"></ark-input>--}}
+    {{--</ark-fields>--}}
+
+    {{--<ark-input name="name" label="Password"></ark-input>--}}
+
+    {{--</ark-form>--}}
+    {{--</section>--}}
+    {{--</div>--}}
+
+    {{--</div>--}}
 
 @endsection
 

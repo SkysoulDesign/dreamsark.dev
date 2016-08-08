@@ -236,7 +236,14 @@ export class Form implements ComponentInterface {
             },
             computed: {
                 value: function () {
-                    return getParentForm(this).old(this.name);
+
+                    let old = getParentForm(this).old(this.name);
+
+                    if (!old && this._slotContents.default) {
+                        return this._slotContents.default.textContent
+                    }
+
+                    return old;
                 },
                 errors: function () {
 
@@ -497,6 +504,10 @@ export class Form implements ComponentInterface {
                 old(name, defaults = null){
 
                     var result;
+
+                    if (!name) {
+                        return false
+                    }
 
                     name.match(/([\w\s]+)/g).forEach((name) => {
 

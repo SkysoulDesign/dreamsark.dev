@@ -4,12 +4,12 @@
 
     @include('user.partials.header')
 
-    <div class="row">
+    <div class="row align-center +margin-top">
+
         <div class="small-12 columns">
-            <header class="header --full">
+            <header class="header --centered">
                 @lang('user.purchases')
                 <p>@lang('user.purchases-description')</p>
-                <div class="divider --straight"></div>
             </header>
         </div>
 
@@ -71,7 +71,7 @@
 
     </div>
 
-    <ark-modal trigger="add-coin" header="@lang('Add Coin Form')">
+    <ark-modal v-cloak trigger="add-coin" header="@lang('Add Coin Form')">
 
         <form id="purchase-coin" class="row align-center" method="post"
               action="{{ route('user.purchase.coin.store') }}">
@@ -111,7 +111,7 @@
                     </div>
 
                     <div class="small-12 columns form__description +center-on-mobile">
-                       @lang('payment.add-coin-modal-footer')
+                        @lang('payment.add-coin-modal-footer')
                     </div>
 
                 </div>

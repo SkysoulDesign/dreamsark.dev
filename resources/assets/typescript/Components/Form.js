@@ -198,7 +198,11 @@ var Form = (function () {
             },
             computed: {
                 value: function () {
-                    return getParentForm(this).old(this.name);
+                    var old = getParentForm(this).old(this.name);
+                    if (!old && this._slotContents.default) {
+                        return this._slotContents.default.textContent;
+                    }
+                    return old;
                 },
                 errors: function () {
                     var form = getParentForm(this);
@@ -427,6 +431,9 @@ var Form = (function () {
                     var _this = this;
                     if (defaults === void 0) { defaults = null; }
                     var result;
+                    if (!name) {
+                        return false;
+                    }
                     name.match(/([\w\s]+)/g).forEach(function (name) {
                         if (result instanceof Object) {
                             return result = result[name];

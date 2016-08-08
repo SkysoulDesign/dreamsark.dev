@@ -38,7 +38,8 @@
 
   @include option(centered) {
     @extend .\+center;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   @include option(large-padding) {

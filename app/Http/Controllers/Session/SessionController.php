@@ -36,7 +36,7 @@ class SessionController extends Controller
     public function index(Request $request)
     {
         return view('user.account.index')->with('user',
-            $request->user()->load('backers')
+            $request->user()
         );
     }
 

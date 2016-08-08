@@ -154,14 +154,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Backers Relationship
+     * Investors Relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-//    public function backers()
-//    {
-//        return $this->belongsToMany(Project::class, 'project_backer')->withPivot('amount')->withTimestamps();
-//    }
+    public function investments() : belongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_investors')->withPivot('amount')->withTimestamps();
+    }
 
     /**
      * User to Enroller relation
