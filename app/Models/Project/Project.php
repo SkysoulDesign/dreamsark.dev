@@ -65,7 +65,6 @@ class Project extends Model
      *
      * @param        $query
      * @param string $orderBy
-     *
      * @return mixed
      */
 //    public function addOrderBy($query, $orderBy = '')
@@ -77,7 +76,6 @@ class Project extends Model
      * Scope a query to only show active entries.
      *
      * @param $query
-     *
      * @return Builder
      */
     public function scopeActive(Builder $query)
@@ -101,7 +99,6 @@ class Project extends Model
      * Scope a query to only show failed entries.
      *
      * @param $query
-     *
      * @return Builder
      */
     public function scopeFailed(Builder $query)
@@ -120,6 +117,16 @@ class Project extends Model
 
         $query->orWhere('active', false);
     }
+
+//    /**
+//     * Filter Down only expenses that can be enroll
+//     *
+//     * @param \Illuminate\Database\Eloquent\Builder $query
+//     */
+//    public function scopeEnrollable(Builder $query)
+//    {
+//        $query->has('expenditure');
+//    }
 
     /**
      * Alias to User Relationship
@@ -143,7 +150,6 @@ class Project extends Model
      * Get Reward Relation of Next Stage
      *
      * @param string $type
-     *
      * @return mixed
      */
 //    public function getNextStageReward($type = '')
@@ -249,10 +255,10 @@ class Project extends Model
      *
      * @return mixed
      */
-    public function enrollable()
-    {
-        return $this->expenditures()->enrollable();
-    }
+//    public function enrollable()
+//    {
+//        return $this->expenditures()->enrollable();
+//    }
 
     /**
      * Expenditure Relationship
@@ -287,12 +293,12 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function backers()
-    {
-        return $this->belongsToMany(User::class, 'project_backer')
-            ->withPivot('amount')->withTimestamps()
-            ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
-    }
+//    public function backers()
+//    {
+//        return $this->belongsToMany(User::class, 'project_backer')
+//            ->withPivot('amount')->withTimestamps()
+//            ->orderBy('project_backer.amount', 'desc')->orderBy('project_backer.user_id');
+//    }
 
     /**
      * sum of amount received from "Project Backers" & "voters to enrollers"

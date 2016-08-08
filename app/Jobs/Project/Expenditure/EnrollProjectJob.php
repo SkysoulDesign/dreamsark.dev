@@ -5,8 +5,12 @@ namespace DreamsArk\Jobs\Project\Expenditure;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
 
+/**
+ * Class EnrollProjectJob
+ *
+ * @package DreamsArk\Jobs\Project\Expenditure
+ */
 class EnrollProjectJob extends Job
 {
     /**
@@ -33,14 +37,12 @@ class EnrollProjectJob extends Job
 
     /**
      * Execute the command.
-     *
-     * @param ExpenditureRepositoryInterface $repository
      */
-    public function handle(ExpenditureRepositoryInterface $repository)
+    public function handle()
     {
         /**
          * Enroll into a Expenditure
          */
-        $repository->enroll($this->expenditure->id, $this->user->id);
+        $this->expenditure->enrollers()->attach($this->user);
     }
 }

@@ -4,7 +4,13 @@ namespace DreamsArk\Models\Project\Expenditures;
 
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * Class Expenditure
@@ -28,28 +34,31 @@ class Expenditure extends Model
     protected $guarded = [];
 
     /**
-     * Scope a query to only show active entries.
+     * Filter Down only expenses that can be enroll
      *
-     * @param $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeEnrollable($query)
+    public function scopeEnrollable(Builder $query)
     {
-        return $query->whereIn('expenditurable_type', array(Crew::class));// Cast::class, 
+        $query->where('expenditurable_type', 'crews');
     }
 
     /**
-     * @param $query
-     * @return mixed
+     * Filter Down only expenses
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeExpensable($query){
-        return $query->whereIn('expenditurable_type', array(Expense::class));
+    public function scopeExpensable(Builder $query)
+    {
+        $query->where('expenditurable_type', 'expenses');
     }
 
     /**
      * Project Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function project()
+    public function project() : belongsTo
     {
         return $this->belongsTo(Project::class);
     }
@@ -59,29 +68,29 @@ class Expenditure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function expenditurable()
+    public function expenditurable() : morphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Enrollers Relationship
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function enrollers()
-    {
-        return $this->hasMany(Enroller::class);
-    }
+//    /**
+//     * Enrollers Relationship
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function enrollers() : hasMany
+//    {
+//        return $this->hasMany(User::class);
+//    }
 
     /**
      * Alias to Enrollers inverted
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function enrollers() : belongsToMany
     {
-        return $this->belongsToMany(User::class, 'expenditure_enrollers')->withTimestamps();
+        return $this->belongsToMany(User::class, 'expenditure_enrollers');
     }
 
     /**
@@ -89,7 +98,7 @@ class Expenditure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function votes()
+    public function votes() : hasManyThrough
     {
         return $this->hasManyThrough(Vote::class, Enroller::class);
     }

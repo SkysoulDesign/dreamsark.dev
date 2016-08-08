@@ -54,7 +54,7 @@ trait ModelDetentionTrait
          */
         if ($name instanceof Model xor is_array($name)) {
             $identifier = 'name';
-            
+
         } else {
             $identifier = (int)$name ? "id" : "name";
         }
@@ -140,7 +140,7 @@ trait ModelDetentionTrait
          */
         foreach ($this->{strtolower($model)} as $entity)
             if ($entity->{$identifier} == strtolower($name)) return true;
-        
+
         /**
          * if nothing could be found then return false
          */

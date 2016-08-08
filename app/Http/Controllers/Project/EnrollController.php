@@ -21,19 +21,18 @@ class EnrollController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display the specified resource.
      *
      * @param Project $project
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Project $project, Request $request)
+    public function create(Project $project)
     {
-        if ($request->user()->profiles->isEmpty())
-            return redirect()->back()->withErrors(trans('project.need-profile-to-enroll'));
-
-        return view('project.enroll.create')->with('expenditures', $project->enrollable);
+        return view('project.enroll.create')
+            ->with('project', $project)
+            ->with('expenditures', $project->expenditures()->enrollable()->get());
     }
 
     /**
@@ -43,15 +42,19 @@ class EnrollController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Expenditure $expenditure, Request $request)
+    public function store(Request $request, Expenditure $expenditure)
     {
-        if ($request->user()->profiles->isEmpty())
-            return redirect()->back()->withErrors(trans('project.need-profile-to-enroll'));
-        $targetProfile = $expenditure->expenditurable->profile;
-        if (!$request->user()->hasProfile($targetProfile->name))
-            return redirect()->back()->withErrors(trans('project.need-target-profile-to-enroll', ['target_profile' => $targetProfile->display_name]));
 
-        $this->dispatch(new EnrollProjectJob($expenditure, $request->user()));
+        $targetProfile = $expenditure->expenditurable->profile;
+
+        if (!$request->user()->hasProfile($targetProfile->name))
+            return redirect()->back()->withErrors(trans('project.need-target-profile-to-enroll',
+                ['target_profile' => $targetProfile->name]
+            ));
+
+        $this->dispatch(
+            new EnrollProjectJob($expenditure, $request->user())
+        );
 
         return redirect()->back();
     }

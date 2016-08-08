@@ -294,7 +294,6 @@ $app->group(['middleware' => 'web'], function () use ($app) {
             $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
             $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
             $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
-            $app->get('getFields', ProfileController::class . '@fields')->name('fields');
 
             /**
              * Test.. what is this?
