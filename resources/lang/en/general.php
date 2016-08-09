@@ -16,7 +16,7 @@ return array (
   'dreamsark-copyright' => 'Copyright 2011-2016 Dreamsark All rights reserved. ',
   'comments' => 'Comments',
   'dreamsark' => 'Dreamsark',
-  'about-dreamsark-description' => '',
+  'about-dreamsark-description' => 'dadada this is awesome dreams ark',
   'technical-support-description' => NULL,
     'investor'=>'investors',
     'collect'=>'collected'
