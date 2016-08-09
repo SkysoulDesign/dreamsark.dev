@@ -8,10 +8,10 @@
         <div class="small-12 segment --transparent">
             <ul class="ul --inline">
                 <li>
-                    <ark-button color="primary" data-modal-trigger="add-crew">Add Crew</ark-button>
+                    <ark-button color="primary" data-modal-trigger="add-crew">@lang('committee.add-crew')</ark-button>
                 </li>
                 <li>
-                    <ark-button color="primary" data-modal-trigger="add-expense">Add Expense</ark-button>
+                    <ark-button color="primary" data-modal-trigger="add-expense">@lang('committee.add-expense')</ark-button>
                 </li>
                 <li class="li --end">
                     <ark-form action="{{ route('committee.project.publish', $review->id) }}">
@@ -31,13 +31,13 @@
                 @set($groups, $review->project->expenditures->groupBy('expenditurable_type'))
 
                 <statistic-item data="{{ $groups->get('crews', collect())->count() }}">
-                    Members
+                    @lang('committee.member')
                 </statistic-item>
                 <statistic-item data="{{ $groups->get('expenses', collect())->count() }}">
-                    Expanses
+                    @lang('committee.expense')
                 </statistic-item>
                 <statistic-item data="{{ $review->project->expenditures->sum('expenditurable.cost') }}">
-                    Total Budget
+                    @lang('committee.budget')
                 </statistic-item>
 
             </ark-statistics>
@@ -45,9 +45,9 @@
 
         @if($review->project->expenditures->isEmpty())
             <div class="small-12 columns message --color-primary +center">
-                There are no item to display yet.
+                @lang('committee.no-item')
                 <h2>
-                    Click here to start planing
+                    @lang('committee.click-to-plan')
                 </h2>
             </div>
         @else
@@ -55,19 +55,19 @@
         @endif
     </div>
 
-    <ark-modal v-cloak trigger="add-crew" header="Add Project Crew Members">
+    <ark-modal v-cloak trigger="add-crew" header="@lang('committee.add-crew')">
 
         <ark-form class="align-center +margin-top-small"
                   action="{{ route('committee.project.crew.store', $review->project) }}">
 
             <ark-form-step>
-                Character Name
+                @lang('committee.member-name')
             </ark-form-step>
 
-            <ark-input name="name" placeholder="@lang('project.name')"></ark-input>
+            <ark-input name="name" placeholder="@lang('committee.member-name')"></ark-input>
 
             <ark-form-step>
-                Required Profile
+                @lang('committee.require-profile')
             </ark-form-step>
 
             <select name="profile_id">
@@ -102,20 +102,20 @@
 
     </ark-modal>
 
-    <ark-modal v-cloak trigger="add-expense" header="Add Project Expenses">
+    <ark-modal v-cloak trigger="add-expense" header="@lang('committee.add-expense')">
 
         <ark-form class="align-center +margin-top-small"
                   action="{{ route('committee.project.expense.store', $review->project) }}">
 
             <ark-form-step>
-                Basic Information
+                @lang('committee.expense-information')
             </ark-form-step>
 
             <ark-fields>
                 <ark-input name="name"
                            required
-                           placeholder="@lang('project.name')"
-                           label="@lang('forms.name')">
+                           placeholder="@lang('committee.expense-item-name')"
+                           label="@lang('committee.expense-item-name')">
                 </ark-input>
                 <ark-input name="cost"
                            required
@@ -127,7 +127,7 @@
             </ark-fields>
 
             <ark-form-step>
-                Detailed Description
+                @lang('committee.expense-information')
             </ark-form-step>
 
             <ark-textarea name="description" :rows="5" placeholder="@lang('forms.description')"></ark-textarea>

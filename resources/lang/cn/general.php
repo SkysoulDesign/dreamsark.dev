@@ -20,5 +20,7 @@ return array (
   'technical-support-description' => '如遇到技术问题请打技术服务热线，会有专业人员为您解决问题。',
   'coins' => '影币',
     'investor'=>'立项人',
-    'collect'=>'募资'
+    'collect'=>'募资',
+    'creation-date'=>'立项日期',
+    'project-creator'=>'立项人'
 );

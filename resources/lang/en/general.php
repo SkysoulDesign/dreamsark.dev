@@ -19,5 +19,7 @@ return array (
   'about-dreamsark-description' => 'dadada this is awesome dreams ark',
   'technical-support-description' => NULL,
     'investor'=>'investors',
-    'collect'=>'collected'
+    'collect'=>'collected',
+    'creation-date'=>'Creation Date',
+    'project-creator'=>'Project Creator'
 );

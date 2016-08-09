@@ -28,7 +28,7 @@
                 </h4>
             </li>
             <li class="li --sub-tittle">
-                Project Creator
+                @lang('general.project-creator')
             </li>
         </ul>
     </div>
@@ -42,7 +42,7 @@
                 </h4>
             </li>
             <li class="li --sub-tittle">
-                Creation Date
+                @lang('general.creation-date')
             </li>
         </ul>
     </div>
