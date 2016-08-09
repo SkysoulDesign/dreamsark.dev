@@ -46,38 +46,16 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
+use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Models\Game\Recipe;
+use DreamsArk\Models\Project\Stages\Vote;
 
 
 $app->get('test', function () {
 
-    $fromTheClient = [1, 2];
+    $vote = Vote::find(17);
 
-    $result = !array_diff(
-        $fromTheClient, array_pluck(Recipe::first()->items->toArray(), 'id')
-    );
-
-    $Coefficient = [
-        'a' => 0.5,
-        'b' => 0.6,
-        'c' => 0.7,
-        'd' => 0.8,
-        'e' => 1,
-    ];
-
-    $items = Recipe::first()->items->map(function ($item) use ($Coefficient) {
-
-        $Coefficient[$item->group->name];
-
-    });
-
-    dd($items->sum('cost') / 3);
-
-    if ($result) {
-        return Recipe::first()->item;
-    } else {
-        Recipe::first()->coins;
-    }
+   dispatch(new OpenVotingJob($vote));
 //    dd(Recipe::first()->items);
 
 });

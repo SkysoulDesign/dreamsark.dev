@@ -17,7 +17,6 @@ use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 class PublishProjectJob extends Job
 {
 
-
     /**
      * @var Draft
      */

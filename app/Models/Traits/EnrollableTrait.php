@@ -16,7 +16,7 @@ trait EnrollableTrait
      */
     public function enrollable()
     {
-        return $this->project->enrollable();
+        return $this->project->expenditures()->enrollable();
     }
 
 }

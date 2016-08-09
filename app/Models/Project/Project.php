@@ -9,7 +9,6 @@ use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Script;
 use DreamsArk\Models\Project\Stages\Synapse;
-use DreamsArk\Models\Test\CustomModel;
 use DreamsArk\Models\User\User;
 use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;

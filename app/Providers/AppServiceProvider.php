@@ -6,6 +6,7 @@ use DreamsArk\Models\Project\Expenditures\Crew;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Models\Project\Expenditures\Expense;
 use DreamsArk\Models\Project\Reward;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Idea;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Script;
@@ -43,8 +44,9 @@ class AppServiceProvider extends ServiceProvider
             'ideas' => Idea::class,
             'synapses' => Synapse::class,
             'scripts' => Script::class,
-            'rewards' => Reward::class,
             'reviews' => Review::class,
+            'funds' => Fund::class,
+            'rewards' => Reward::class,
             'expenditures' => Expenditure::class,
             'crews' => Crew::class,
             'expenses' => Expense::class,
