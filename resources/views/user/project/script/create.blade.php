@@ -8,7 +8,7 @@
     @include('user.project.partials.project-create-edit-form', [
         'action' => route('project.script.store', $project),
         'submitText' => 'Start Script Stage',
-        'headerText' => 'Create Script Request',
+        'headerText' => trans('project.script-create'),
         'nameInput' => false
     ])
 

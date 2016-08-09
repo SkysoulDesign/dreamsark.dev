@@ -1,4 +1,4 @@
-@include('project.partials.header', ['title' => 'Review Stage'])
+@include('project.partials.header', ['title' => trans('project.review-stage')])
 
 <div class="row align-center">
 
@@ -9,7 +9,7 @@
 
         <div class="header --light-weight">
             <b class="+color-success">{{ $project->name }}</b>
-            <h2>Project Currently Under Review</h2>
+            <h2>@lang('project.review-is-going')</h2>
         </div>
 
         <div class="row align-center project-page__review__steps">
@@ -28,8 +28,8 @@
     <div class="small-10 columns segment --color-primary --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
-            <statistic-item data="{{ $project->investors->unique()->count() }}">Investors</statistic-item>
-            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">Collected</statistic-item>
+            <statistic-item data="{{ $project->investors->unique()->count() }}">@lang('general.investor')</statistic-item>
+            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">@lang('general.collect')</statistic-item>
         </ark-statistics>
 
     </div>

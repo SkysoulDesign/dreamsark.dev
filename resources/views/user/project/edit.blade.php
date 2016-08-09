@@ -10,7 +10,7 @@
         'action' => route('user.project.update', $project),
         'submitText' => trans('forms.update'),
         'bind' =>  collect([ 'name'=> $project->name, 'content'=> $project->stage->content ]),
-        'headerText' => trans('project.review-project'),
+        'headerText' => trans('project.reactive'),
         'nameInput' => ($project->stage instanceof \DreamsArk\Models\Project\Stages\Idea)
     ])
 

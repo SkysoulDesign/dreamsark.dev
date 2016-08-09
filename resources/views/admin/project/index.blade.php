@@ -54,7 +54,8 @@
                                 </h4>
                             </li>
                             <li class="li --sub-tittle">
-                                @lang('project.current-stage'): <b>{{ $project->stage->getStageName() }}</b>
+                                @set($trans, trans("project.{$project->stage->getStageName()}"))
+                                @lang('project.current-stage', ['stage' => "<b>$trans</b>"])
                             </li>
                         </ul>
 

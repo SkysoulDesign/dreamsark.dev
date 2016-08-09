@@ -18,4 +18,6 @@ return array (
   'dreamsark' => 'Dreamsark',
   'about-dreamsark-description' => '',
   'technical-support-description' => NULL,
+    'investor'=>'investors',
+    'collect'=>'collected'
 );

@@ -15,8 +15,11 @@
                         </h4>
                     </li>
                     <li class="li --sub-tittle">
-                        @lang('project.current-stage')
-                        <b>{{ $project->stage->getStageName() }}</b>
+                        {{--@lang('project.current-stage')--}}
+                        {{--<b>{{ $project->stage->getStageName() }}</b>--}}
+
+                        @set($trans, trans("project.{$project->stage->getStageName()}"))
+                        @lang('project.current-stage', ['stage' => "<b>$trans</b>"])
                     </li>
                 </ul>
 
@@ -42,15 +45,8 @@
                     </ark-button>
                 </div>
             @else
-                <div class="small-1 columns +center">
-                    <ark-dropdown icon="cog" mode="icon" pop="center">
-                        <ark-dropdown-option href="{{ route('user.project.edit', $project) }}" icon="eye">
-                            Review
-                        </ark-dropdown-option>
-                        <ark-dropdown-option icon="paper-plane">
-                            Publish
-                        </ark-dropdown-option>
-                    </ark-dropdown>
+                <div class="small-2 align-center columns +center">
+                    <ark-button color="primary" href="{{ route('user.project.edit', $project) }}" >@lang('project.reactive') </ark-button>
                 </div>
             @endif
 

@@ -32,7 +32,7 @@
                 <div class="item columns message --color-warning ">
                     @lang('user.no-projects')
                     <b>
-                        <a href="{{ route('user.project.create') }}">why don't you start one?</a>
+                        <a href="{{ route('user.project.create') }}">@lang('project.try-new-one')</a>
                     </b>
                 </div>
             @else

@@ -5,12 +5,12 @@
 
         <div class="small-12 columns">
             <header class="header --with-divider +uppercase --centered">
-                Synapse Stage
+                @lang('project.synapse-stage')
             </header>
         </div>
 
         <div class="small-10 columns segment --large-padding">
-            <h2>Description</h2>
+            <h2>@lang('project.synapse-requirement')</h2>
             {!! $project->synapse->content !!}
         </div>
 

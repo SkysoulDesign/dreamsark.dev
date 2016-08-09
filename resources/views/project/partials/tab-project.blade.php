@@ -51,18 +51,19 @@
         @elseif(!$project->stage->active)
 
             <div class="small-10 columns message --color-danger +center">
-                <h1>Project has failed</h1>
+                <h1>@lang('project.failed')</h1>
+                overdue/過時
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, aperiam consequatur consequuntur
                 corporis dignissimos distinctio, doloribus, dolorum ducimus maxime minus modi neque nisi quo rem
                 temporibus ullam vel. Delectus, iure.
             </div>
         @endif
-
         <div class="small-10 columns segment --color-primary">
             <div class="row align-center align-middle --large-padding">
                 <div class="small-4 columns project-page__right-divider">
                     <ul class="ul --with-bullets --tight +uppercase">
                         <li class="li --title">@lang('project.achievements')</li>
+                        <li>依据开立项目金额乱数给予奖励,奖励可以用来购买商城道具或是提升使用者等级来增加参与感/explain how rewards working</li>
                         <li>2500 points</li>
                         <li>5 experience</li>
                         @foreach($project->stage->reward->items as $item)
@@ -100,10 +101,9 @@
                       size="large" label="@lang('project.time')" flat></ark-progress>
 
         @if($project->stage->submission)
-
             <div class="small-12 columns +margin-top-small">
                 <header class="header --with-divider +uppercase --centered">
-                    Winner Submission
+                    @lang('project.winner-submission')
                 </header>
             </div>
 

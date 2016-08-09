@@ -1,6 +1,6 @@
 <div class="small-12 columns segment --large-padding">
 
-    <h1>Fail Reason</h1>
+    <h1>@lang('project.failed-reason')</h1>
 
     Project Failed because...there were no enough votes
     <br>
