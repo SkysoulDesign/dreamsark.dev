@@ -10,7 +10,6 @@ use DreamsArk\Jobs\User\Profile\UpdateProfileJob;
 use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Master\Question\Option;
 use DreamsArk\Repositories\User\UserProfileRepositoryInterface;
-use DreamsArk\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -177,7 +176,7 @@ class ProfileController extends Controller
     public function questions(Request $request, Profile $profile)
     {
 
-        $profile = $profile->whereName($request->input('profile'))->firstOrFail();
+        $profile = $profile->whereName(str_slug($request->input('profile')))->firstOrFail();
 
         return response()->json(
             $profile->questions->load('type')

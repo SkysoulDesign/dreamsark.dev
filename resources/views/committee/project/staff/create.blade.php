@@ -11,7 +11,8 @@
                     <ark-button color="primary" data-modal-trigger="add-crew">@lang('committee.add-crew')</ark-button>
                 </li>
                 <li>
-                    <ark-button color="primary" data-modal-trigger="add-expense">@lang('committee.add-expense')</ark-button>
+                    <ark-button color="primary"
+                                data-modal-trigger="add-expense">@lang('committee.add-expense')</ark-button>
                 </li>
                 <li class="li --end">
                     <ark-form action="{{ route('committee.project.publish', $review->id) }}">
@@ -20,7 +21,6 @@
                             <ark-button color="success">@lang('project.publish')</ark-button>
                         </ark-fields>
                     </ark-form>
-
                 </li>
             </ul>
         </div>
@@ -47,7 +47,9 @@
             <div class="small-12 columns message --color-primary +center">
                 @lang('committee.no-item')
                 <h2>
-                    @lang('committee.click-to-plan')
+                    <a href="#" data-modal-trigger="add-crew">
+                        @lang('committee.click-to-plan')
+                    </a>
                 </h2>
             </div>
         @else

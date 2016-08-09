@@ -7,8 +7,8 @@
 
     @include('user.project.partials.project-create-edit-form', [
         'action' => route('project.synapse.store', $project),
-        'submitText' => @lang('project.synapse-start'),
-        'headerText' => @lang('project.synapse-create'),
+        'submitText' => trans('project.synapse-start'),
+        'headerText' => trans('project.synapse-create'),
         'nameInput' => false
     ])
 

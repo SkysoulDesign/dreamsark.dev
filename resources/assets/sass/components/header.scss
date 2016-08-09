@@ -37,7 +37,7 @@
   }
 
   @include option(small) {
-    @include font-size(small);
+    @include font-size(h2);
   }
 
   @include option(medium) {

@@ -100,14 +100,11 @@ var App = (function () {
      * @param payload
      */
     App.prototype.page = function (routeName) {
-        var _this = this;
         var payload = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             payload[_i - 1] = arguments[_i];
         }
-        this.logger.group("Page", function (logger) {
-            _this.pages.init(routeName, payload);
-        }, false);
+        this.pages.init(routeName, payload);
     };
     /**
      * Extend and get the vue Object

@@ -28,8 +28,10 @@ var Modal = (function () {
             },
             ready: function () {
                 var _this = this;
-                var trigger = document.querySelector("[data-modal-trigger=\"" + this.trigger + "\"]");
-                trigger.addEventListener('click', function (event) { return _this.show(); });
+                var triggers = document.querySelectorAll("[data-modal-trigger=\"" + this.trigger + "\"]");
+                [].forEach.call(triggers, function (trigger) {
+                    trigger.addEventListener('click', function (event) { return _this.show(); });
+                });
             }
         });
     };

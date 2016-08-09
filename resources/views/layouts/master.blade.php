@@ -40,7 +40,7 @@
 <!-- Temporarily -->
 <script src="{{ asset('translation-assets/jquery.min.js') }}"></script>
 <script src="{{ asset('translation-assets/semantic.min.js') }}"></script>
-<script src="{{ asset('js/common-functions.js') }}"></script>
+{{--<script src="{{ asset('js/common-functions.js') }}"></script>--}}
 {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.0/turbolinks.min.js"></script>--}}
 
 <script src="{{ asset('js/App.js') }}"></script>

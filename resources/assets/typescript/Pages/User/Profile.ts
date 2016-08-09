@@ -10,23 +10,10 @@ export class Profile extends AbstractPage {
         'user.profile.create'
     ]
 
-    boot(profileRoute, container) {
+    boot(profileRoute) {
 
         this.initProfileSelection(profileRoute);
         this.initThreeJs();
-
-        document.querySelector(container).addEventListener('click', e => {
-
-            let target = <HTMLElement>e.target;
-
-            if (target.dataset.hasOwnProperty('profileName')) {
-
-                this.app.plugin('item').switch(
-                    target.dataset['profileName'], target.dataset['localizedName']
-                )
-            }
-
-        })
 
         /**
          * initialize the position with the first element

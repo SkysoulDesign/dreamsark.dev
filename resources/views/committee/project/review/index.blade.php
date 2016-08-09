@@ -10,9 +10,9 @@
         <div class="small-10 columns segment --transparent">
             <ul class="ul --inline --right">
                 <li class="li --start">
-                    <header class="header --small">
+                    <div class="header --small">
                         @lang('project.review-list')
-                    </header>
+                    </div>
                 </li>
                 <li>
                     <ark-dropdown title="Sort by" icon="sort-amount-desc">

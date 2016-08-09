@@ -36,7 +36,7 @@ class App {
     /**
      * Bootstrap all classes
      */
-    private bootstrap(container:Object = this, components:{}) {
+    private bootstrap(container: Object = this, components: {}) {
 
         this.logger.group('Core', logger => {
 
@@ -51,7 +51,7 @@ class App {
 
             }
 
-            for (let component in components){
+            for (let component in components) {
                 container[component].boot(container);
             }
 
@@ -90,7 +90,7 @@ class App {
      * @param name
      * @returns {any}
      */
-    public plugin(name:string, ...args) {
+    public plugin(name: string, ...args) {
 
         name = name.toLowerCase();
 
@@ -115,10 +115,8 @@ class App {
      * @param name
      * @param payload
      */
-    public page(routeName:string, ...payload:any[]):void {
-        this.logger.group(`Page`, logger => {
-            this.pages.init(routeName, payload);
-        }, false)
+    public page(routeName: string, ...payload: any[]): void {
+        this.pages.init(routeName, payload);
     }
 
     /**
@@ -126,7 +124,7 @@ class App {
      *
      * @param obj
      */
-    public vue(obj:any = {}) {
+    public vue(obj: any = {}) {
 
         /**
          * if Plugins is set Append it to root plugin property
@@ -148,7 +146,7 @@ class App {
      * @param name
      * @param callback
      */
-    public on(name:string, callback:Function) {
+    public on(name: string, callback: Function) {
 
         this.vueObject.events = extend(this.vueObject.events, {
             [name]: callback
@@ -173,7 +171,7 @@ class App {
      * Exposes Plugin globally
      * @param instance
      */
-    exposes(instance:any) {
+    exposes(instance: any) {
 
         /**
          * Register Globally Globaly

@@ -3797,11 +3797,11 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .statistic.\--large .statistic__item {
   font-size: 2em; }
 
-.form__header {
+.form__header, .header.\--small, header.\--small {
   font-size: 1.5em; }
 
 .form__field.\--required label:after, .\--required.form__fields label:after, .\--required.form__description label:after, .form__field span.\--required label:after {
-  font-size: 1.4em; }
+  font-size: 1.2em; }
 
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
@@ -3821,7 +3821,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 input, .text-area, textarea, .select, select, .input, button, .button, .dropdown__trigger.\--mode-button, .medium-editor-element, .dropdown__options, .divider {
   font-size: 1em; }
 
-.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .header.\--small, header.\--small, .divider.\--mini, .card__badges ul li, .card__badges .badges li, .pagination__item a {
+.dropdown__options li, .dropdown__options li i, .form__field label, .form__fields label, .form__description label, .form__description, .form__field span, .form__fields span, .form__description span, .divider.\--mini, .card__badges ul li, .card__badges .badges li, .pagination__item a {
   font-size: small; }
 
 .admin-page__top a {

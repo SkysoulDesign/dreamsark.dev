@@ -24,8 +24,6 @@
                 <p>@lang('profile.profile-description')</p>
             </div>
 
-            <ark-animation comp="project"></ark-animation>
-
             <ul class="row profile-page__profiles">
 
                 <li class="small-12 medium-4 columns li --active">

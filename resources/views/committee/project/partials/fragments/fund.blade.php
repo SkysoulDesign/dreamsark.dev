@@ -9,11 +9,11 @@
         <ul class="--tight">
             <li>
                 <h4>
-                    <a href="#">{{ $review->project->name }}</a>
+                    <a href="#">{{ $fund->project->name }}</a>
                 </h4>
             </li>
             <li class="li --sub-tittle">
-                @lang('project.current-stage', ['stage' => trans("project.{$review->project->stage->getStageName()}")])
+                @lang('project.current-stage', ['stage' => trans("project.{$fund->project->stage->getStageName()}")])
             </li>
         </ul>
 
@@ -23,7 +23,7 @@
             <li>
                 <h4>
                     <a href="#">
-                        {{ $review->project->user->present()->name }}
+                        {{ $fund->project->user->present()->name }}
                     </a>
                 </h4>
             </li>
@@ -37,7 +37,7 @@
             <li>
                 <h4>
                     <a href="#">
-                        {{ $review->created_at->format('m/d/Y H:i A') }}
+                        {{ $fund->created_at->format('m/d/Y H:i A') }}
                     </a>
                 </h4>
             </li>
@@ -50,15 +50,9 @@
     <div class="columns +center">
         <ul class="ul --inline --right">
             <li>
-                <ark-button href="{{ route('project.show', $review->project) }}"
+                <ark-button href="{{ route('project.show', $fund->project) }}"
                             color="primary">
                     @lang('project.view-project')
-                </ark-button>
-            </li>
-            <li>
-                <ark-button href="{{ route('committee.project.planning.manage', $review) }}"
-                            color="success">
-                    @lang('project.review-and-plan')
                 </ark-button>
             </li>
         </ul>

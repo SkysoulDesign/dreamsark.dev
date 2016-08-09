@@ -11,13 +11,13 @@ export class Pages extends Application {
     /**
      * List of Loaded Classes
      */
-    // public collection = [
-    //     require('../Pages/Common'),
-    //     require('../Pages/Test'),
-    //     require('../Pages/Purchase'),
-    //     require('../Pages/User/Profile'),
-    //     require('../Pages/Project'),
-    // ]
+        // public collection = [
+        //     require('../Pages/Common'),
+        //     require('../Pages/Test'),
+        //     require('../Pages/Purchase'),
+        //     require('../Pages/User/Profile'),
+        //     require('../Pages/Project'),
+        // ]
 
     public collection = requireAll(
         require.context("../Pages", true, /\.js$/)
@@ -146,7 +146,7 @@ export class Pages extends Application {
      * Init Plugins
      * @param plugins
      */
-    private initPlugins(obj):{} {
+    private initPlugins(obj): {} {
 
         if (obj.hasOwnProperty('plugins'))
             popByKey(obj, 'plugins', []).forEach(Plugin => {
@@ -166,11 +166,11 @@ export class Pages extends Application {
      *
      * @param routes
      */
-    private create(routes:string[], payload):void {
+    private create(routes: string[], payload): void {
 
         if (routes instanceof Array)
             return routes.forEach(name => {
-                
+
                 let currentRoute = this.currentRoute;
 
                 /**
@@ -183,7 +183,7 @@ export class Pages extends Application {
 
                 this.initialized[name].route = currentRoute;
                 this.initialized[name].boot(...payload);
-                
+
             });
 
         this.app.logger.error(
@@ -198,7 +198,7 @@ export class Pages extends Application {
      * @param routes
      * @returns string[]
      */
-    private mergeRoutes(routes:{}, route:string, value:string):string[] {
+    private mergeRoutes(routes: {}, route: string, value: string): string[] {
 
         if (routes.hasOwnProperty(route)) {
             return routes[route].concat(value);
@@ -213,7 +213,7 @@ export class Pages extends Application {
      * @param string route
      * @param string element
      */
-    private setRoute(route:string, element:string):void {
+    private setRoute(route: string, element: string): void {
 
         route = route === '*' ? 'all' : route;
 
@@ -230,7 +230,7 @@ export class Pages extends Application {
      * @param string route
      * @param string element
      */
-    private setException(route:string, element:string):void {
+    private setException(route: string, element: string): void {
 
         let key = toCamelCase(route);
 

@@ -1,4 +1,3 @@
-
 /// <reference path="interfaces/Initializable.ts" />
 /// <reference path="interfaces/Tweenable.ts" />
 /// <reference path="interfaces/Loadable.ts" />
@@ -58,17 +57,17 @@ module DreamsArk {
     /**
      * Debug Mode
      */
-    export var debug:boolean = false;
+    export var debug: boolean = false;
 
     /**
      * Stores all elements that has been loaded on the application
      */
-    export var elementsBag:any = {};
+    export var elementsBag: any = {};
 
     /**
      * Stores some trivial variables to be checked on render loop
      */
-    export var core:any = {
+    export var core: any = {
 
         /**
          * List of active objects
@@ -144,8 +143,8 @@ module DreamsArk {
         /**
          * Remove logo
          */
-        //query('.container-fluid').classList.add('--fade-to-black');
-        //query('.enter-page').classList.add('--exit');
+            //query('.container-fluid').classList.add('--fade-to-black');
+            //query('.enter-page').classList.add('--exit');
 
         var composition = new Composition('Loading');
 
@@ -176,7 +175,7 @@ module DreamsArk {
      * Render Loop Logic
      * @param elapsedTime Time elapsed since the last call
      */
-    export var render = function (elapsedTime?:number) {
+    export var render = function (elapsedTime?: number) {
 
         requestAnimationFrame(render);
 
@@ -245,7 +244,7 @@ module DreamsArk {
          * Initiate the process of starting a new composition
          * @param name - Composition name to be started
          */
-        constructor(public name:string) {
+        constructor(public name: string) {
 
             if (is.Null(Compositions[name])) {
                 console.log('Composition: ' + name + ' not found.');

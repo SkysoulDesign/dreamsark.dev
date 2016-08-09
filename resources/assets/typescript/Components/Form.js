@@ -199,7 +199,7 @@ var Form = (function () {
             computed: {
                 value: function () {
                     var old = getParentForm(this).old(this.name);
-                    if (!old && this._slotContents.default) {
+                    if (!old && this._slotContents && this._slotContents.default) {
                         return this._slotContents.default.textContent;
                     }
                     return old;

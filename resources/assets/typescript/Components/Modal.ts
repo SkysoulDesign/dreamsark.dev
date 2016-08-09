@@ -29,8 +29,11 @@ export class Modal implements ComponentInterface {
             },
 
             ready(){
-                var trigger = document.querySelector(`[data-modal-trigger="${this.trigger}"]`);
+                var triggers = document.querySelectorAll(`[data-modal-trigger="${this.trigger}"]`);
+                [].forEach.call(triggers, trigger => {
                     trigger.addEventListener('click', event => this.show());
+                });
+
             }
         });
 

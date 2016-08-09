@@ -29,7 +29,7 @@ export class Renderer extends THREE.WebGLRenderer implements BootableInterface {
 
         super({
             antialias: true,
-            alpha: false,
+            alpha: true,
         })
 
         app.canvas.appendChild(

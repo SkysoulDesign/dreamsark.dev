@@ -1,96 +1,405 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// identity function for calling harmory imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-
-/******/ 	// define getter function for harmory exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		Object.defineProperty(exports, name, {
-/******/ 			configurable: false,
-/******/ 			enumerable: true,
-/******/ 			get: getter
-/******/ 		});
-/******/ 	};
-
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ function(module, exports) {
-
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-eval("\"use strict\";\n/**\n * Get Extension of file thought the path\n * @param path\n * @returns {any}\n */\nexports.extension = function (path) {\n    return path.slice((path.lastIndexOf(\".\") - 1 >>> 0) + 2);\n};\nexports.countKeys = function (object) {\n    var count = 0;\n    for (var k in object)\n        if (object.hasOwnProperty(k))\n            ++count;\n    return count;\n};\nexports.random = function (min, max) {\n    var l_ValueMin = min;\n    var l_ValueMax = max;\n    if (typeof (min) == \"string\")\n        l_ValueMin = parseInt(min);\n    if (typeof (max) == \"string\")\n        l_ValueMax = parseInt(max);\n    return Math.floor(Math.random() * (l_ValueMax - l_ValueMin + 1)) + l_ValueMin;\n};\n//cloud\n//let l_Var = new findSuitObjectByProbability(0,totalValue);\n//push as many as you want\n//l_Var.addProbability()....\n//l_Var.getIndex();\nvar findSuitObjectByProbability = (function () {\n    function findSuitObjectByProbability() {\n        this.m_ProbabilityWeightArray = [];\n        this.m_MaxValue = 0;\n    }\n    findSuitObjectByProbability.prototype.addProbability = function (e_Weight) {\n        var l_Weight = e_Weight;\n        if (typeof (e_Weight) == \"string\")\n            l_Weight = parseInt(e_Weight);\n        this.m_ProbabilityWeightArray.push(l_Weight);\n        this.m_MaxValue += l_Weight;\n    };\n    findSuitObjectByProbability.prototype.getIndex = function () {\n        var this$1 = this;\n\n        console.log(\"max value \" + this.m_MaxValue);\n        var l_TargetValue = exports.random(0, this.m_MaxValue);\n        console.log(\"target value \" + l_TargetValue);\n        var l_Length = this.m_ProbabilityWeightArray.length;\n        var l_CurrentValue = 0;\n        for (var i = 0; i < l_Length; ++i) {\n            var l_CurrentWeight = this$1.m_ProbabilityWeightArray[i];\n            l_CurrentValue += l_CurrentWeight;\n            console.log(\"current value \" + l_CurrentValue);\n            if (l_CurrentValue >= l_TargetValue) {\n                console.log(\"target index is \" + i);\n                return i;\n            }\n        }\n        //it should't happen\n        return -1;\n    };\n    return findSuitObjectByProbability;\n}());\nexports.findSuitObjectByProbability = findSuitObjectByProbability;\n//# sourceMappingURL=Helpers.js.map//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvUGx1Z2lucy9IZWxwZXJzLmpzPzRiYTIiXSwic291cmNlc0NvbnRlbnQiOlsiXCJ1c2Ugc3RyaWN0XCI7XG4vKipcbiAqIEdldCBFeHRlbnNpb24gb2YgZmlsZSB0aG91Z2h0IHRoZSBwYXRoXG4gKiBAcGFyYW0gcGF0aFxuICogQHJldHVybnMge2FueX1cbiAqL1xuZXhwb3J0cy5leHRlbnNpb24gPSBmdW5jdGlvbiAocGF0aCkge1xuICAgIHJldHVybiBwYXRoLnNsaWNlKChwYXRoLmxhc3RJbmRleE9mKFwiLlwiKSAtIDEgPj4+IDApICsgMik7XG59O1xuZXhwb3J0cy5jb3VudEtleXMgPSBmdW5jdGlvbiAob2JqZWN0KSB7XG4gICAgdmFyIGNvdW50ID0gMDtcbiAgICBmb3IgKHZhciBrIGluIG9iamVjdClcbiAgICAgICAgaWYgKG9iamVjdC5oYXNPd25Qcm9wZXJ0eShrKSlcbiAgICAgICAgICAgICsrY291bnQ7XG4gICAgcmV0dXJuIGNvdW50O1xufTtcbmV4cG9ydHMucmFuZG9tID0gZnVuY3Rpb24gKG1pbiwgbWF4KSB7XG4gICAgdmFyIGxfVmFsdWVNaW4gPSBtaW47XG4gICAgdmFyIGxfVmFsdWVNYXggPSBtYXg7XG4gICAgaWYgKHR5cGVvZiAobWluKSA9PSBcInN0cmluZ1wiKVxuICAgICAgICBsX1ZhbHVlTWluID0gcGFyc2VJbnQobWluKTtcbiAgICBpZiAodHlwZW9mIChtYXgpID09IFwic3RyaW5nXCIpXG4gICAgICAgIGxfVmFsdWVNYXggPSBwYXJzZUludChtYXgpO1xuICAgIHJldHVybiBNYXRoLmZsb29yKE1hdGgucmFuZG9tKCkgKiAobF9WYWx1ZU1heCAtIGxfVmFsdWVNaW4gKyAxKSkgKyBsX1ZhbHVlTWluO1xufTtcbi8vY2xvdWRcbi8vbGV0IGxfVmFyID0gbmV3IGZpbmRTdWl0T2JqZWN0QnlQcm9iYWJpbGl0eSgwLHRvdGFsVmFsdWUpO1xuLy9wdXNoIGFzIG1hbnkgYXMgeW91IHdhbnRcbi8vbF9WYXIuYWRkUHJvYmFiaWxpdHkoKS4uLi5cbi8vbF9WYXIuZ2V0SW5kZXgoKTtcbnZhciBmaW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHkgPSAoZnVuY3Rpb24gKCkge1xuICAgIGZ1bmN0aW9uIGZpbmRTdWl0T2JqZWN0QnlQcm9iYWJpbGl0eSgpIHtcbiAgICAgICAgdGhpcy5tX1Byb2JhYmlsaXR5V2VpZ2h0QXJyYXkgPSBbXTtcbiAgICAgICAgdGhpcy5tX01heFZhbHVlID0gMDtcbiAgICB9XG4gICAgZmluZFN1aXRPYmplY3RCeVByb2JhYmlsaXR5LnByb3RvdHlwZS5hZGRQcm9iYWJpbGl0eSA9IGZ1bmN0aW9uIChlX1dlaWdodCkge1xuICAgICAgICB2YXIgbF9XZWlnaHQgPSBlX1dlaWdodDtcbiAgICAgICAgaWYgKHR5cGVvZiAoZV9XZWlnaHQpID09IFwic3RyaW5nXCIpXG4gICAgICAgICAgICBsX1dlaWdodCA9IHBhcnNlSW50KGVfV2VpZ2h0KTtcbiAgICAgICAgdGhpcy5tX1Byb2JhYmlsaXR5V2VpZ2h0QXJyYXkucHVzaChsX1dlaWdodCk7XG4gICAgICAgIHRoaXMubV9NYXhWYWx1ZSArPSBsX1dlaWdodDtcbiAgICB9O1xuICAgIGZpbmRTdWl0T2JqZWN0QnlQcm9iYWJpbGl0eS5wcm90b3R5cGUuZ2V0SW5kZXggPSBmdW5jdGlvbiAoKSB7XG4gICAgICAgIGNvbnNvbGUubG9nKFwibWF4IHZhbHVlIFwiICsgdGhpcy5tX01heFZhbHVlKTtcbiAgICAgICAgdmFyIGxfVGFyZ2V0VmFsdWUgPSBleHBvcnRzLnJhbmRvbSgwLCB0aGlzLm1fTWF4VmFsdWUpO1xuICAgICAgICBjb25zb2xlLmxvZyhcInRhcmdldCB2YWx1ZSBcIiArIGxfVGFyZ2V0VmFsdWUpO1xuICAgICAgICB2YXIgbF9MZW5ndGggPSB0aGlzLm1fUHJvYmFiaWxpdHlXZWlnaHRBcnJheS5sZW5ndGg7XG4gICAgICAgIHZhciBsX0N1cnJlbnRWYWx1ZSA9IDA7XG4gICAgICAgIGZvciAodmFyIGkgPSAwOyBpIDwgbF9MZW5ndGg7ICsraSkge1xuICAgICAgICAgICAgdmFyIGxfQ3VycmVudFdlaWdodCA9IHRoaXMubV9Qcm9iYWJpbGl0eVdlaWdodEFycmF5W2ldO1xuICAgICAgICAgICAgbF9DdXJyZW50VmFsdWUgKz0gbF9DdXJyZW50V2VpZ2h0O1xuICAgICAgICAgICAgY29uc29sZS5sb2coXCJjdXJyZW50IHZhbHVlIFwiICsgbF9DdXJyZW50VmFsdWUpO1xuICAgICAgICAgICAgaWYgKGxfQ3VycmVudFZhbHVlID49IGxfVGFyZ2V0VmFsdWUpIHtcbiAgICAgICAgICAgICAgICBjb25zb2xlLmxvZyhcInRhcmdldCBpbmRleCBpcyBcIiArIGkpO1xuICAgICAgICAgICAgICAgIHJldHVybiBpO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICAgIC8vaXQgc2hvdWxkJ3QgaGFwcGVuXG4gICAgICAgIHJldHVybiAtMTtcbiAgICB9O1xuICAgIHJldHVybiBmaW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHk7XG59KCkpO1xuZXhwb3J0cy5maW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHkgPSBmaW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHk7XG4vLyMgc291cmNlTWFwcGluZ1VSTD1IZWxwZXJzLmpzLm1hcFxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyByZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvUGx1Z2lucy9IZWxwZXJzLmpzIl0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7O0FBTUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Ozs7OztBQU1BO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOyIsInNvdXJjZVJvb3QiOiIifQ==");
+/**
+ * Get Extension of file thought the path
+ * @param path
+ * @returns {any}
+ */
 
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
+exports.extension = function (path) {
+    return path.slice((path.lastIndexOf(".") - 1 >>> 0) + 2);
+};
+exports.countKeys = function (object) {
+    var count = 0;
+    for (var k in object) {
+        if (object.hasOwnProperty(k)) ++count;
+    }return count;
+};
+exports.random = function (min, max) {
+    var l_ValueMin = min;
+    var l_ValueMax = max;
+    if (typeof min == "string") l_ValueMin = parseInt(min);
+    if (typeof max == "string") l_ValueMax = parseInt(max);
+    return Math.floor(Math.random() * (l_ValueMax - l_ValueMin + 1)) + l_ValueMin;
+};
+//cloud
+//let l_Var = new findSuitObjectByProbability(0,totalValue);
+//push as many as you want
+//l_Var.addProbability()....
+//l_Var.getIndex();
+var findSuitObjectByProbability = function () {
+    function findSuitObjectByProbability() {
+        this.m_ProbabilityWeightArray = [];
+        this.m_MaxValue = 0;
+    }
+    findSuitObjectByProbability.prototype.addProbability = function (e_Weight) {
+        var l_Weight = e_Weight;
+        if (typeof e_Weight == "string") l_Weight = parseInt(e_Weight);
+        this.m_ProbabilityWeightArray.push(l_Weight);
+        this.m_MaxValue += l_Weight;
+    };
+    findSuitObjectByProbability.prototype.getIndex = function () {
+        console.log("max value " + this.m_MaxValue);
+        var l_TargetValue = exports.random(0, this.m_MaxValue);
+        console.log("target value " + l_TargetValue);
+        var l_Length = this.m_ProbabilityWeightArray.length;
+        var l_CurrentValue = 0;
+        for (var i = 0; i < l_Length; ++i) {
+            var l_CurrentWeight = this.m_ProbabilityWeightArray[i];
+            l_CurrentValue += l_CurrentWeight;
+            console.log("current value " + l_CurrentValue);
+            if (l_CurrentValue >= l_TargetValue) {
+                console.log("target index is " + i);
+                return i;
+            }
+        }
+        //it should't happen
+        return -1;
+    };
+    return findSuitObjectByProbability;
+}();
+exports.findSuitObjectByProbability = findSuitObjectByProbability;
 
+
+},{}],2:[function(require,module,exports){
+//author cloud
+//date 1/Aug/2016
+//import {ItemInterface} from "./ItemInterface";
 "use strict";
-eval("\"use strict\";\nexports.g_ItemData = {\n    \"GroupAndItem\": [\n        {\n            \"groupID\": \"A\",\n            \"ItemData\": [\n                { \"groupID\": \"A\", \"id\": \"A01\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 5, \"cost\": 15 },\n                { \"groupID\": \"A\", \"id\": \"A02\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 10 },\n                { \"groupID\": \"A\", \"id\": \"A03\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 10 },\n                { \"groupID\": \"A\", \"id\": \"A04\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 10 },\n                { \"groupID\": \"A\", \"id\": \"A05\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 10 }\n            ]\n        },\n        {\n            \"groupID\": \"B\", \"ItemData\": [\n                { \"groupID\": \"B\", \"id\": \"B01\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 5, \"cost\": 25 },\n                { \"groupID\": \"B\", \"id\": \"B02\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 20 },\n                { \"groupID\": \"B\", \"id\": \"B03\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 20 },\n                { \"groupID\": \"B\", \"id\": \"B04\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 20 }\n            ]\n        },\n        {\n            \"groupID\": \"C\", \"ItemData\": [\n                { \"groupID\": \"C\", \"id\": \"C01\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 5, \"cost\": 35 },\n                { \"groupID\": \"C\", \"id\": \"C02\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 30 },\n                { \"groupID\": \"C\", \"id\": \"C03\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 30 }\n            ]\n        },\n        {\n            \"groupID\": \"D\", \"ItemData\": [\n                { \"groupID\": \"D\", \"id\": \"D01\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 5, \"cost\": 45 },\n                { \"groupID\": \"D\", \"id\": \"D02\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 40 }\n            ]\n        },\n        {\n            \"groupID\": \"E\", \"ItemData\": [\n                { \"groupID\": \"E\", \"id\": \"E01\", \"imageUrl\": \"Test.png\", \"probabilityToShow\": 10, \"cost\": 50 }\n            ]\n        }\n    ]\n};\nexports.g_ItemNameCN = {\n    \"1\": \"道具１\",\n    \"2\": \"道具2\",\n    \"3\": \"道具3\",\n    \"4\": \"道具4\",\n    \"5\": \"道具5\",\n    \"6\": \"道具6\",\n    \"7\": \"道具7\"\n};\nexports.g_ItemNameEN = {\n    \"1\": \"Item１\",\n    \"2\": \"Item2\",\n    \"3\": \"Item3\",\n    \"4\": \"Item4\",\n    \"5\": \"Item5\",\n    \"6\": \"Item6\",\n    \"7\": \"Item7\"\n};\n//# sourceMappingURL=itemList.js.map//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMS5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvUGx1Z2lucy9JdGVtcy9pdGVtTGlzdC5qcz84NTkxIl0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIHN0cmljdFwiO1xuZXhwb3J0cy5nX0l0ZW1EYXRhID0ge1xuICAgIFwiR3JvdXBBbmRJdGVtXCI6IFtcbiAgICAgICAge1xuICAgICAgICAgICAgXCJncm91cElEXCI6IFwiQVwiLFxuICAgICAgICAgICAgXCJJdGVtRGF0YVwiOiBbXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJBXCIsIFwiaWRcIjogXCJBMDFcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogNSwgXCJjb3N0XCI6IDE1IH0sXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJBXCIsIFwiaWRcIjogXCJBMDJcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiAxMCB9LFxuICAgICAgICAgICAgICAgIHsgXCJncm91cElEXCI6IFwiQVwiLCBcImlkXCI6IFwiQTAzXCIsIFwiaW1hZ2VVcmxcIjogXCJUZXN0LnBuZ1wiLCBcInByb2JhYmlsaXR5VG9TaG93XCI6IDEwLCBcImNvc3RcIjogMTAgfSxcbiAgICAgICAgICAgICAgICB7IFwiZ3JvdXBJRFwiOiBcIkFcIiwgXCJpZFwiOiBcIkEwNFwiLCBcImltYWdlVXJsXCI6IFwiVGVzdC5wbmdcIiwgXCJwcm9iYWJpbGl0eVRvU2hvd1wiOiAxMCwgXCJjb3N0XCI6IDEwIH0sXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJBXCIsIFwiaWRcIjogXCJBMDVcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiAxMCB9XG4gICAgICAgICAgICBdXG4gICAgICAgIH0sXG4gICAgICAgIHtcbiAgICAgICAgICAgIFwiZ3JvdXBJRFwiOiBcIkJcIiwgXCJJdGVtRGF0YVwiOiBbXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJCXCIsIFwiaWRcIjogXCJCMDFcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogNSwgXCJjb3N0XCI6IDI1IH0sXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJCXCIsIFwiaWRcIjogXCJCMDJcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiAyMCB9LFxuICAgICAgICAgICAgICAgIHsgXCJncm91cElEXCI6IFwiQlwiLCBcImlkXCI6IFwiQjAzXCIsIFwiaW1hZ2VVcmxcIjogXCJUZXN0LnBuZ1wiLCBcInByb2JhYmlsaXR5VG9TaG93XCI6IDEwLCBcImNvc3RcIjogMjAgfSxcbiAgICAgICAgICAgICAgICB7IFwiZ3JvdXBJRFwiOiBcIkJcIiwgXCJpZFwiOiBcIkIwNFwiLCBcImltYWdlVXJsXCI6IFwiVGVzdC5wbmdcIiwgXCJwcm9iYWJpbGl0eVRvU2hvd1wiOiAxMCwgXCJjb3N0XCI6IDIwIH1cbiAgICAgICAgICAgIF1cbiAgICAgICAgfSxcbiAgICAgICAge1xuICAgICAgICAgICAgXCJncm91cElEXCI6IFwiQ1wiLCBcIkl0ZW1EYXRhXCI6IFtcbiAgICAgICAgICAgICAgICB7IFwiZ3JvdXBJRFwiOiBcIkNcIiwgXCJpZFwiOiBcIkMwMVwiLCBcImltYWdlVXJsXCI6IFwiVGVzdC5wbmdcIiwgXCJwcm9iYWJpbGl0eVRvU2hvd1wiOiA1LCBcImNvc3RcIjogMzUgfSxcbiAgICAgICAgICAgICAgICB7IFwiZ3JvdXBJRFwiOiBcIkNcIiwgXCJpZFwiOiBcIkMwMlwiLCBcImltYWdlVXJsXCI6IFwiVGVzdC5wbmdcIiwgXCJwcm9iYWJpbGl0eVRvU2hvd1wiOiAxMCwgXCJjb3N0XCI6IDMwIH0sXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJDXCIsIFwiaWRcIjogXCJDMDNcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiAzMCB9XG4gICAgICAgICAgICBdXG4gICAgICAgIH0sXG4gICAgICAgIHtcbiAgICAgICAgICAgIFwiZ3JvdXBJRFwiOiBcIkRcIiwgXCJJdGVtRGF0YVwiOiBbXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJEXCIsIFwiaWRcIjogXCJEMDFcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogNSwgXCJjb3N0XCI6IDQ1IH0sXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJEXCIsIFwiaWRcIjogXCJEMDJcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiA0MCB9XG4gICAgICAgICAgICBdXG4gICAgICAgIH0sXG4gICAgICAgIHtcbiAgICAgICAgICAgIFwiZ3JvdXBJRFwiOiBcIkVcIiwgXCJJdGVtRGF0YVwiOiBbXG4gICAgICAgICAgICAgICAgeyBcImdyb3VwSURcIjogXCJFXCIsIFwiaWRcIjogXCJFMDFcIiwgXCJpbWFnZVVybFwiOiBcIlRlc3QucG5nXCIsIFwicHJvYmFiaWxpdHlUb1Nob3dcIjogMTAsIFwiY29zdFwiOiA1MCB9XG4gICAgICAgICAgICBdXG4gICAgICAgIH1cbiAgICBdXG59O1xuZXhwb3J0cy5nX0l0ZW1OYW1lQ04gPSB7XG4gICAgXCIxXCI6IFwi6YGT5YW377yRXCIsXG4gICAgXCIyXCI6IFwi6YGT5YW3MlwiLFxuICAgIFwiM1wiOiBcIumBk+WFtzNcIixcbiAgICBcIjRcIjogXCLpgZPlhbc0XCIsXG4gICAgXCI1XCI6IFwi6YGT5YW3NVwiLFxuICAgIFwiNlwiOiBcIumBk+WFtzZcIixcbiAgICBcIjdcIjogXCLpgZPlhbc3XCJcbn07XG5leHBvcnRzLmdfSXRlbU5hbWVFTiA9IHtcbiAgICBcIjFcIjogXCJJdGVt77yRXCIsXG4gICAgXCIyXCI6IFwiSXRlbTJcIixcbiAgICBcIjNcIjogXCJJdGVtM1wiLFxuICAgIFwiNFwiOiBcIkl0ZW00XCIsXG4gICAgXCI1XCI6IFwiSXRlbTVcIixcbiAgICBcIjZcIjogXCJJdGVtNlwiLFxuICAgIFwiN1wiOiBcIkl0ZW03XCJcbn07XG4vLyMgc291cmNlTWFwcGluZ1VSTD1pdGVtTGlzdC5qcy5tYXBcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gcmVzb3VyY2VzL2Fzc2V0cy90eXBlc2NyaXB0L1BsdWdpbnMvSXRlbXMvaXRlbUxpc3QuanMiXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Iiwic291cmNlUm9vdCI6IiJ9");
 
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
+var __extends = undefined && undefined.__extends || function (d, b) {
+    for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+    }function __() {
+        this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Helpers_1 = require("../Helpers");
+var Plugins_1 = require("../Plugins");
+var itemList_1 = require("./itemList");
+var MyLogFunction = function () {
+    function MyLogFunction(e_bShowLog, e_Name) {
+        this.m_ShowLog = true;
+        this.m_DebugShowTag = null;
+        this.m_ShowLog = e_bShowLog;
+        this.m_DebugShowTag = e_Name;
+    }
+    MyLogFunction.prototype.log = function (e_Arguments) {
+        if (this.m_ShowLog) {
+            if (this.m_DebugShowTag) console.group(this.m_DebugShowTag);
+            console.log(e_Arguments);
+            if (this.m_DebugShowTag) console.groupEnd();
+        }
+    };
+    return MyLogFunction;
+}();
+// idea stage got voting count is reached 100          1
+// idea stage got voting count is reached 1000         1.1
+// idea stage got voting count is reached 5000         1.3
+// idea stage got voting count is reached 10000        1.5
+// idea stage got voting count is reached 50000        1.7
+// idea stage got voting count is reached 100000       2
+var g_StageJsonTest = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 100,
+    "RewardPointsMin": 10,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "A", "Probability": 70 }, { "GroupID": "B", "Probability": 35 }, { "GroupID": "C", "Probability": 17 }]
+};
+var g_FirstStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 100,
+    "RewardPointsMin": 10,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "A", "Probability": 70 }, { "GroupID": "B", "Probability": 35 }, { "GroupID": "C", "Probability": 17 }]
+};
+var g_SecondStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 200,
+    "RewardPointsMin": 50,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "A", "Probability": 50 }, { "GroupID": "B", "Probability": 50 }, { "GroupID": "C", "Probability": 25 }]
+};
+var g_ThirdStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 500,
+    "RewardPointsMin": 100,
+    "GiveRewardMax": 3,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "B", "Probability": 100 }, { "GroupID": "C", "Probability": 50 }, { "GroupID": "D", "Probability": 25 }]
+};
+var g_FourthStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 1000,
+    "RewardPointsMin": 300,
+    "GiveRewardMax": 2,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "B", "Probability": 50 }, { "GroupID": "C", "Probability": 50 }, { "GroupID": "D", "Probability": 25 }]
+};
+var g_FifthStageJson = {
+    "ProjectName": "Test",
+    "Creator": "Me",
+    "StageName": "Idea",
+    "RewardPointsMax": 3000,
+    "RewardPointsMin": 800,
+    "GiveRewardMax": 2,
+    "GiveRewardMin": 1,
+    "GroupAndProbability": [{ "GroupID": "C", "Probability": 50 }, { "GroupID": "D", "Probability": 50 }, { "GroupID": "E", "Probability": 25 }]
+};
+var ItemData = function () {
+    function ItemData(e_Json) {
+        this.groupID = "0";
+        this.name = "unknow";
+        this.id = "0";
+        this.imageUrl = "";
+        this.probabilityToShow = 0.1;
+        //if items combined result is failed,return virtual coins.
+        this.cost = 10;
+        //constructor({e_Json}){
+        this.MyLog = new MyLogFunction(false, "ItemData");
+        this.MyLog.log("start ItemData");
+        if (e_Json) {
+            for (var l_Element in e_Json) {
+                this[l_Element] = e_Json[l_Element];
+            }
+        }
+        this.MyLog.log("ItemData: " + this);
+        this.MyLog.log("end ItemData");
+    }
+    return ItemData;
+}();
+exports.ItemData = ItemData;
+;
+var GroupAndItem = function () {
+    function GroupAndItem(e_Json) {
+        this.m_findSuitObjectByProbability = null;
+        //public points;
+        this.groupID = "0";
+        this.itemArray = [];
+        this.MyLog = new MyLogFunction(false, "GroupAndItem");
+        this.MyLog.log("start GroupAndItem");
+        this.groupID = e_Json.groupID;
+        this.m_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();
+        var l_ItemDataElement = e_Json["ItemData"];
+        if (l_ItemDataElement) {
+            for (var l_ItemElement in l_ItemDataElement) {
+                var l_TargetElement = l_ItemDataElement[l_ItemElement];
+                var l_ItemData = new ItemData(l_TargetElement);
+                this.addItem(l_ItemData);
+                this.m_findSuitObjectByProbability.addProbability(l_ItemData.probabilityToShow);
+            }
+        }
+        this.MyLog.log("end GroupAndItem");
+    }
+    GroupAndItem.prototype.getRandomItemID = function () {
+        var l_Index = this.m_findSuitObjectByProbability.getIndex();
+        if (this.itemArray.length > l_Index) {
+            var l_Item = this.itemArray[l_Index];
+            this.MyLog.log("Item id is:" + l_Item.id);
+            return l_Item.id;
+        }
+        this.MyLog.log("failed to get Item id!");
+        return null;
+    };
+    GroupAndItem.prototype.addItem = function (e_ItemData) {
+        //avoid add same id again
+        for (var i = 0; i < this.itemArray.length; ++i) {
+            var l_ItemData = this.itemArray[i];
+            if (l_ItemData.id == e_ItemData.id) {
+                this.MyLog.log("same item id has been added! " + e_ItemData.id);
+                return false;
+            }
+        }
+        this.itemArray.push(e_ItemData);
+        return true;
+    };
+    return GroupAndItem;
+}();
+exports.GroupAndItem = GroupAndItem;
+;
+var ItemManager = function (_super) {
+    __extends(ItemManager, _super);
+    function ItemManager(e_Json) {
+        _super.call(this);
+        this.groupAndItemArray = null;
+        this.MyLog = new MyLogFunction(false, "ItemManager");
+        this.MyLog.log("start ItemManager");
+        this.assignItemsData(e_Json);
+        this.MyLog.log("end ItemManager");
+        //do something
+    }
+    ItemManager.prototype.assignItemsData = function (e_Json) {
+        this.MyLog.log("start function ItemManager.assignItemsData ");
+        this.groupAndItemArray = [];
+        if (e_Json && e_Json.GroupAndItem) {
+            var l_Root = e_Json.GroupAndItem;
+            for (var l_Json in l_Root) {
+                var l_CurrentGroup = l_Root[l_Json];
+                var l_groupID = l_CurrentGroup["groupID"];
+                if (l_groupID) {
+                    var l_GroupAndItem = new GroupAndItem(l_CurrentGroup);
+                    this.groupAndItemArray.push(l_GroupAndItem);
+                }
+            }
+        }
+        this.MyLog.log("finish function ItemManager.assignItemsData ");
+        this.getItemsFromStageData(g_StageJsonTest);
+    };
+    ItemManager.prototype.getItemsFromStageData = function (e_StageDataJson) {
+        this.MyLog.log(e_StageDataJson);
+        var l_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();
+        var l_ProjectNAme = e_StageDataJson.ProjectName;
+        var l_Creator = e_StageDataJson.Creator;
+        var l_StageName = e_StageDataJson.StageName;
+        var l_GiveRewardMax = e_StageDataJson.GiveRewardMax;
+        var l_GiveRewardMin = e_StageDataJson.GiveRewardMin;
+        var l_GivRewardCount = Helpers_1.random(l_GiveRewardMin, l_GiveRewardMax);
+        this.MyLog.log(l_GiveRewardMin + ":" + l_GiveRewardMax);
+        this.MyLog.log("give reward count is :" + l_GivRewardCount);
+        var l_GroupAndProbability = e_StageDataJson.GroupAndProbability;
+        if (l_GroupAndProbability) {
+            for (var i in l_GroupAndProbability) {
+                var l_Object = l_GroupAndProbability[i];
+                if (l_Object) {
+                    l_findSuitObjectByProbability.addProbability(l_Object.Probability);
+                    this.MyLog.log("probability " + l_Object.Probability);
+                }
+            }
+            var l_TargetGroup = [];
+            for (var i = 0; i < l_GivRewardCount; ++i) {
+                var l_TargetGroupID = l_findSuitObjectByProbability.getIndex();
+                l_TargetGroup.push(l_TargetGroupID);
+            }
+            var l_ReturnJsonResult = [];
+            for (var i = 0; i < l_TargetGroup.length; ++i) {
+                var l_CurrentGroupID = l_TargetGroup[i];
+                //avoid some stupid things wrong
+                if (this.groupAndItemArray.length > l_CurrentGroupID) {
+                    var l_GroupAndItem = this.groupAndItemArray[l_CurrentGroupID];
+                    var l_GroupID = l_GroupAndItem.groupID;
+                    var l_ItemID = l_GroupAndItem.getRandomItemID();
+                    //var l_GroupIDAndItemID = [l_GroupID,l_ItemID];
+                    l_ReturnJsonResult.push(l_ItemID);
+                }
+            }
+            this.MyLog.log(l_ReturnJsonResult);
+            var l_RewardPoints = Helpers_1.random(e_StageDataJson.RewardPointsMin, e_StageDataJson.RewardPointsMax);
+            l_RewardPoints = Math.round(l_RewardPoints / 5) * 5;
+            var l_Result = JSON.stringify({ RewardItem: l_ReturnJsonResult, RewardPoints: l_RewardPoints });
+            this.MyLog.log(l_Result);
+            return l_Result;
+        }
+        //groupAndItemArray
+        //return reward;
+        this.MyLog.log("getItemsFromStageData is failed!");
+        return null;
+    };
+    ItemManager.prototype.getItemByGroupIdAndItemID = function (e_GroupID, e_ItemID) {
+        for (var i = 0; i < this.groupAndItemArray.length; ++i) {
+            var l_Group = this.groupAndItemArray[i];
+            if (l_Group.groupID == e_GroupID) {
+                for (var j = 0; j < l_Group.itemArray.length; ++j) {
+                    var l_Item = l_Group.itemArray[j];
+                    if (l_Item.imageUrl == e_ItemID) {
+                        return l_Item;
+                    }
+                }
+            }
+        }
+        return null;
+    };
+    ItemManager.prototype.getItemByID = function (e_ItemID) {
+        for (var i = 0; i < this.groupAndItemArray.length; ++i) {
+            var l_Group = this.groupAndItemArray[i];
+            for (var j = 0; j < l_Group.itemArray.length; ++j) {
+                var l_Item = l_Group.itemArray[j];
+                if (l_Item.imageUrl == e_ItemID) {
+                    return l_Item;
+                }
+            }
+        }
+        return null;
+    };
+    return ItemManager;
+}(Plugins_1.Plugins);
+exports.ItemManager = ItemManager;
+window['dreamsark'].exposes({
+    ItemManager: ItemManager,
+    g_ItemData: itemList_1.g_ItemData,
+    g_StageJsonTest: g_StageJsonTest
+});
+// /**
+//  * Auto install itself
+//  */
+window['dreamsark'].install({
+    ItemManager: ItemManager
+});
 
+
+},{"../Helpers":1,"../Plugins":4,"./itemList":3}],3:[function(require,module,exports){
 "use strict";
-eval("\"use strict\";\nvar Plugins = (function () {\n    function Plugins() {\n        this.exposes = {};\n    }\n    Plugins.prototype.install = function () {\n    };\n    return Plugins;\n}());\nexports.Plugins = Plugins;\n//# sourceMappingURL=Plugins.js.map//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMi5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvUGx1Z2lucy9QbHVnaW5zLmpzPzNiMjUiXSwic291cmNlc0NvbnRlbnQiOlsiXCJ1c2Ugc3RyaWN0XCI7XG52YXIgUGx1Z2lucyA9IChmdW5jdGlvbiAoKSB7XG4gICAgZnVuY3Rpb24gUGx1Z2lucygpIHtcbiAgICAgICAgdGhpcy5leHBvc2VzID0ge307XG4gICAgfVxuICAgIFBsdWdpbnMucHJvdG90eXBlLmluc3RhbGwgPSBmdW5jdGlvbiAoKSB7XG4gICAgfTtcbiAgICByZXR1cm4gUGx1Z2lucztcbn0oKSk7XG5leHBvcnRzLlBsdWdpbnMgPSBQbHVnaW5zO1xuLy8jIHNvdXJjZU1hcHBpbmdVUkw9UGx1Z2lucy5qcy5tYXBcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gcmVzb3VyY2VzL2Fzc2V0cy90eXBlc2NyaXB0L1BsdWdpbnMvUGx1Z2lucy5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Iiwic291cmNlUm9vdCI6IiJ9");
 
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+exports.g_ItemData = {
+    "GroupAndItem": [{
+        "groupID": "A",
+        "ItemData": [{ "groupID": "A", "id": "A01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 15 }, { "groupID": "A", "id": "A02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 }, { "groupID": "A", "id": "A03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 }, { "groupID": "A", "id": "A04", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 }, { "groupID": "A", "id": "A05", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 10 }]
+    }, {
+        "groupID": "B", "ItemData": [{ "groupID": "B", "id": "B01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 25 }, { "groupID": "B", "id": "B02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 }, { "groupID": "B", "id": "B03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 }, { "groupID": "B", "id": "B04", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 20 }]
+    }, {
+        "groupID": "C", "ItemData": [{ "groupID": "C", "id": "C01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 35 }, { "groupID": "C", "id": "C02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 30 }, { "groupID": "C", "id": "C03", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 30 }]
+    }, {
+        "groupID": "D", "ItemData": [{ "groupID": "D", "id": "D01", "imageUrl": "Test.png", "probabilityToShow": 5, "cost": 45 }, { "groupID": "D", "id": "D02", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 40 }]
+    }, {
+        "groupID": "E", "ItemData": [{ "groupID": "E", "id": "E01", "imageUrl": "Test.png", "probabilityToShow": 10, "cost": 50 }]
+    }]
+};
+exports.g_ItemNameCN = {
+    "1": "道具１",
+    "2": "道具2",
+    "3": "道具3",
+    "4": "道具4",
+    "5": "道具5",
+    "6": "道具6",
+    "7": "道具7"
+};
+exports.g_ItemNameEN = {
+    "1": "Item１",
+    "2": "Item2",
+    "3": "Item3",
+    "4": "Item4",
+    "5": "Item5",
+    "6": "Item6",
+    "7": "Item7"
+};
 
+
+},{}],4:[function(require,module,exports){
 "use strict";
-eval("//author cloud\n//date 1/Aug/2016\n//import {ItemInterface} from \"./ItemInterface\";\n\"use strict\";\nvar __extends = (this && this.__extends) || function (d, b) {\n    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];\n    function __() { this.constructor = d; }\n    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n};\nvar Helpers_1 = __webpack_require__(0);\nvar Plugins_1 = __webpack_require__(2);\nvar itemList_1 = __webpack_require__(1);\nvar MyLogFunction = (function () {\n    function MyLogFunction(e_bShowLog, e_Name) {\n        this.m_ShowLog = true;\n        this.m_DebugShowTag = null;\n        this.m_ShowLog = e_bShowLog;\n        this.m_DebugShowTag = e_Name;\n    }\n    MyLogFunction.prototype.log = function (e_Arguments) {\n        if (this.m_ShowLog) {\n            if (this.m_DebugShowTag)\n                console.group(this.m_DebugShowTag);\n            console.log(e_Arguments);\n            if (this.m_DebugShowTag)\n                console.groupEnd();\n        }\n    };\n    return MyLogFunction;\n}());\n// idea stage got voting count is reached 100          1\n// idea stage got voting count is reached 1000         1.1\n// idea stage got voting count is reached 5000         1.3\n// idea stage got voting count is reached 10000        1.5\n// idea stage got voting count is reached 50000        1.7\n// idea stage got voting count is reached 100000       2\nvar g_StageJsonTest = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 100,\n    \"RewardPointsMin\": 10,\n    \"GiveRewardMax\": 3,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"A\", \"Probability\": 70 },\n        { \"GroupID\": \"B\", \"Probability\": 35 },\n        { \"GroupID\": \"C\", \"Probability\": 17 },\n    ]\n};\nvar g_FirstStageJson = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 100,\n    \"RewardPointsMin\": 10,\n    \"GiveRewardMax\": 3,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"A\", \"Probability\": 70 },\n        { \"GroupID\": \"B\", \"Probability\": 35 },\n        { \"GroupID\": \"C\", \"Probability\": 17 },\n    ]\n};\nvar g_SecondStageJson = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 200,\n    \"RewardPointsMin\": 50,\n    \"GiveRewardMax\": 3,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"A\", \"Probability\": 50 },\n        { \"GroupID\": \"B\", \"Probability\": 50 },\n        { \"GroupID\": \"C\", \"Probability\": 25 },\n    ]\n};\nvar g_ThirdStageJson = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 500,\n    \"RewardPointsMin\": 100,\n    \"GiveRewardMax\": 3,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"B\", \"Probability\": 100 },\n        { \"GroupID\": \"C\", \"Probability\": 50 },\n        { \"GroupID\": \"D\", \"Probability\": 25 },\n    ]\n};\nvar g_FourthStageJson = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 1000,\n    \"RewardPointsMin\": 300,\n    \"GiveRewardMax\": 2,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"B\", \"Probability\": 50 },\n        { \"GroupID\": \"C\", \"Probability\": 50 },\n        { \"GroupID\": \"D\", \"Probability\": 25 },\n    ]\n};\nvar g_FifthStageJson = {\n    \"ProjectName\": \"Test\",\n    \"Creator\": \"Me\",\n    \"StageName\": \"Idea\",\n    \"RewardPointsMax\": 3000,\n    \"RewardPointsMin\": 800,\n    \"GiveRewardMax\": 2,\n    \"GiveRewardMin\": 1,\n    \"GroupAndProbability\": [\n        { \"GroupID\": \"C\", \"Probability\": 50 },\n        { \"GroupID\": \"D\", \"Probability\": 50 },\n        { \"GroupID\": \"E\", \"Probability\": 25 },\n    ]\n};\nvar ItemData = (function () {\n    function ItemData(e_Json) {\n        var this$1 = this;\n\n        this.groupID = \"0\";\n        this.name = \"unknow\";\n        this.id = \"0\";\n        this.imageUrl = \"\";\n        this.probabilityToShow = 0.1;\n        //if items combined result is failed,return virtual coins.\n        this.cost = 10;\n        //constructor({e_Json}){\n        this.MyLog = new MyLogFunction(false, \"ItemData\");\n        this.MyLog.log(\"start ItemData\");\n        if (e_Json) {\n            for (var l_Element in e_Json) {\n                this$1[l_Element] = e_Json[l_Element];\n            }\n        }\n        this.MyLog.log(\"ItemData: \" + this);\n        this.MyLog.log(\"end ItemData\");\n    }\n    return ItemData;\n}());\nexports.ItemData = ItemData;\n;\nvar GroupAndItem = (function () {\n    function GroupAndItem(e_Json) {\n        var this$1 = this;\n\n        this.m_findSuitObjectByProbability = null;\n        //public points;\n        this.groupID = \"0\";\n        this.itemArray = [];\n        this.MyLog = new MyLogFunction(false, \"GroupAndItem\");\n        this.MyLog.log(\"start GroupAndItem\");\n        this.groupID = e_Json.groupID;\n        this.m_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();\n        var l_ItemDataElement = e_Json[\"ItemData\"];\n        if (l_ItemDataElement) {\n            for (var l_ItemElement in l_ItemDataElement) {\n                var l_TargetElement = l_ItemDataElement[l_ItemElement];\n                var l_ItemData = new ItemData(l_TargetElement);\n                this$1.addItem(l_ItemData);\n                this$1.m_findSuitObjectByProbability.addProbability(l_ItemData.probabilityToShow);\n            }\n        }\n        this.MyLog.log(\"end GroupAndItem\");\n    }\n    GroupAndItem.prototype.getRandomItemID = function () {\n        var l_Index = this.m_findSuitObjectByProbability.getIndex();\n        if (this.itemArray.length > l_Index) {\n            var l_Item = this.itemArray[l_Index];\n            this.MyLog.log(\"Item id is:\" + l_Item.id);\n            return l_Item.id;\n        }\n        this.MyLog.log(\"failed to get Item id!\");\n        return null;\n    };\n    GroupAndItem.prototype.addItem = function (e_ItemData) {\n        var this$1 = this;\n\n        //avoid add same id again\n        for (var i = 0; i < this.itemArray.length; ++i) {\n            var l_ItemData = this$1.itemArray[i];\n            if (l_ItemData.id == e_ItemData.id) {\n                this$1.MyLog.log(\"same item id has been added! \" + e_ItemData.id);\n                return false;\n            }\n        }\n        this.itemArray.push(e_ItemData);\n        return true;\n    };\n    return GroupAndItem;\n}());\nexports.GroupAndItem = GroupAndItem;\n;\nvar ItemManager = (function (_super) {\n    __extends(ItemManager, _super);\n    function ItemManager(e_Json) {\n        _super.call(this);\n        this.groupAndItemArray = null;\n        this.MyLog = new MyLogFunction(false, \"ItemManager\");\n        this.MyLog.log(\"start ItemManager\");\n        this.assignItemsData(e_Json);\n        this.MyLog.log(\"end ItemManager\");\n        //do something\n    }\n    ItemManager.prototype.assignItemsData = function (e_Json) {\n        var this$1 = this;\n\n        this.MyLog.log(\"start function ItemManager.assignItemsData \");\n        this.groupAndItemArray = [];\n        if (e_Json && e_Json.GroupAndItem) {\n            var l_Root = e_Json.GroupAndItem;\n            for (var l_Json in l_Root) {\n                var l_CurrentGroup = l_Root[l_Json];\n                var l_groupID = l_CurrentGroup[\"groupID\"];\n                if (l_groupID) {\n                    var l_GroupAndItem = new GroupAndItem(l_CurrentGroup);\n                    this$1.groupAndItemArray.push(l_GroupAndItem);\n                }\n            }\n        }\n        this.MyLog.log(\"finish function ItemManager.assignItemsData \");\n        this.getItemsFromStageData(g_StageJsonTest);\n    };\n    ItemManager.prototype.getItemsFromStageData = function (e_StageDataJson) {\n        var this$1 = this;\n\n        this.MyLog.log(e_StageDataJson);\n        var l_findSuitObjectByProbability = new Helpers_1.findSuitObjectByProbability();\n        var l_ProjectNAme = e_StageDataJson.ProjectName;\n        var l_Creator = e_StageDataJson.Creator;\n        var l_StageName = e_StageDataJson.StageName;\n        var l_GiveRewardMax = e_StageDataJson.GiveRewardMax;\n        var l_GiveRewardMin = e_StageDataJson.GiveRewardMin;\n        var l_GivRewardCount = Helpers_1.random(l_GiveRewardMin, l_GiveRewardMax);\n        this.MyLog.log(l_GiveRewardMin + \":\" + l_GiveRewardMax);\n        this.MyLog.log(\"give reward count is :\" + l_GivRewardCount);\n        var l_GroupAndProbability = e_StageDataJson.GroupAndProbability;\n        if (l_GroupAndProbability) {\n            for (var i in l_GroupAndProbability) {\n                var l_Object = l_GroupAndProbability[i];\n                if (l_Object) {\n                    l_findSuitObjectByProbability.addProbability(l_Object.Probability);\n                    this$1.MyLog.log(\"probability \" + l_Object.Probability);\n                }\n            }\n            var l_TargetGroup = [];\n            for (var i = 0; i < l_GivRewardCount; ++i) {\n                var l_TargetGroupID = l_findSuitObjectByProbability.getIndex();\n                l_TargetGroup.push(l_TargetGroupID);\n            }\n            var l_ReturnJsonResult = [];\n            for (var i = 0; i < l_TargetGroup.length; ++i) {\n                var l_CurrentGroupID = l_TargetGroup[i];\n                //avoid some stupid things wrong\n                if (this$1.groupAndItemArray.length > l_CurrentGroupID) {\n                    var l_GroupAndItem = this$1.groupAndItemArray[l_CurrentGroupID];\n                    var l_GroupID = l_GroupAndItem.groupID;\n                    var l_ItemID = l_GroupAndItem.getRandomItemID();\n                    //var l_GroupIDAndItemID = [l_GroupID,l_ItemID];\n                    l_ReturnJsonResult.push(l_ItemID);\n                }\n            }\n            this.MyLog.log(l_ReturnJsonResult);\n            var l_RewardPoints = Helpers_1.random(e_StageDataJson.RewardPointsMin, e_StageDataJson.RewardPointsMax);\n            l_RewardPoints = Math.round(l_RewardPoints / 5) * 5;\n            var l_Result = JSON.stringify({ RewardItem: l_ReturnJsonResult, RewardPoints: l_RewardPoints });\n            this.MyLog.log(l_Result);\n            return l_Result;\n        }\n        //groupAndItemArray\n        //return reward;\n        this.MyLog.log(\"getItemsFromStageData is failed!\");\n        return null;\n    };\n    ItemManager.prototype.getItemByGroupIdAndItemID = function (e_GroupID, e_ItemID) {\n        var this$1 = this;\n\n        for (var i = 0; i < this.groupAndItemArray.length; ++i) {\n            var l_Group = this$1.groupAndItemArray[i];\n            if (l_Group.groupID == e_GroupID) {\n                for (var j = 0; j < l_Group.itemArray.length; ++j) {\n                    var l_Item = l_Group.itemArray[j];\n                    if (l_Item.imageUrl == e_ItemID) {\n                        return l_Item;\n                    }\n                }\n            }\n        }\n        return null;\n    };\n    ItemManager.prototype.getItemByID = function (e_ItemID) {\n        var this$1 = this;\n\n        for (var i = 0; i < this.groupAndItemArray.length; ++i) {\n            var l_Group = this$1.groupAndItemArray[i];\n            for (var j = 0; j < l_Group.itemArray.length; ++j) {\n                var l_Item = l_Group.itemArray[j];\n                if (l_Item.imageUrl == e_ItemID) {\n                    return l_Item;\n                }\n            }\n        }\n        return null;\n    };\n    return ItemManager;\n}(Plugins_1.Plugins));\nexports.ItemManager = ItemManager;\nwindow['dreamsark'].exposes({\n    ItemManager: ItemManager,\n    g_ItemData: itemList_1.g_ItemData,\n    g_StageJsonTest: g_StageJsonTest\n});\n// /**\n//  * Auto install itself\n//  */\nwindow['dreamsark'].install({\n    ItemManager: ItemManager\n});\n//# sourceMappingURL=Item.js.map//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMy5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9yZXNvdXJjZXMvYXNzZXRzL3R5cGVzY3JpcHQvUGx1Z2lucy9JdGVtcy9JdGVtLmpzP2Y1ZDkiXSwic291cmNlc0NvbnRlbnQiOlsiLy9hdXRob3IgY2xvdWRcbi8vZGF0ZSAxL0F1Zy8yMDE2XG4vL2ltcG9ydCB7SXRlbUludGVyZmFjZX0gZnJvbSBcIi4vSXRlbUludGVyZmFjZVwiO1xuXCJ1c2Ugc3RyaWN0XCI7XG52YXIgX19leHRlbmRzID0gKHRoaXMgJiYgdGhpcy5fX2V4dGVuZHMpIHx8IGZ1bmN0aW9uIChkLCBiKSB7XG4gICAgZm9yICh2YXIgcCBpbiBiKSBpZiAoYi5oYXNPd25Qcm9wZXJ0eShwKSkgZFtwXSA9IGJbcF07XG4gICAgZnVuY3Rpb24gX18oKSB7IHRoaXMuY29uc3RydWN0b3IgPSBkOyB9XG4gICAgZC5wcm90b3R5cGUgPSBiID09PSBudWxsID8gT2JqZWN0LmNyZWF0ZShiKSA6IChfXy5wcm90b3R5cGUgPSBiLnByb3RvdHlwZSwgbmV3IF9fKCkpO1xufTtcbnZhciBIZWxwZXJzXzEgPSByZXF1aXJlKFwiLi4vSGVscGVyc1wiKTtcbnZhciBQbHVnaW5zXzEgPSByZXF1aXJlKFwiLi4vUGx1Z2luc1wiKTtcbnZhciBpdGVtTGlzdF8xID0gcmVxdWlyZShcIi4vaXRlbUxpc3RcIik7XG52YXIgTXlMb2dGdW5jdGlvbiA9IChmdW5jdGlvbiAoKSB7XG4gICAgZnVuY3Rpb24gTXlMb2dGdW5jdGlvbihlX2JTaG93TG9nLCBlX05hbWUpIHtcbiAgICAgICAgdGhpcy5tX1Nob3dMb2cgPSB0cnVlO1xuICAgICAgICB0aGlzLm1fRGVidWdTaG93VGFnID0gbnVsbDtcbiAgICAgICAgdGhpcy5tX1Nob3dMb2cgPSBlX2JTaG93TG9nO1xuICAgICAgICB0aGlzLm1fRGVidWdTaG93VGFnID0gZV9OYW1lO1xuICAgIH1cbiAgICBNeUxvZ0Z1bmN0aW9uLnByb3RvdHlwZS5sb2cgPSBmdW5jdGlvbiAoZV9Bcmd1bWVudHMpIHtcbiAgICAgICAgaWYgKHRoaXMubV9TaG93TG9nKSB7XG4gICAgICAgICAgICBpZiAodGhpcy5tX0RlYnVnU2hvd1RhZylcbiAgICAgICAgICAgICAgICBjb25zb2xlLmdyb3VwKHRoaXMubV9EZWJ1Z1Nob3dUYWcpO1xuICAgICAgICAgICAgY29uc29sZS5sb2coZV9Bcmd1bWVudHMpO1xuICAgICAgICAgICAgaWYgKHRoaXMubV9EZWJ1Z1Nob3dUYWcpXG4gICAgICAgICAgICAgICAgY29uc29sZS5ncm91cEVuZCgpO1xuICAgICAgICB9XG4gICAgfTtcbiAgICByZXR1cm4gTXlMb2dGdW5jdGlvbjtcbn0oKSk7XG4vLyBpZGVhIHN0YWdlIGdvdCB2b3RpbmcgY291bnQgaXMgcmVhY2hlZCAxMDAgICAgICAgICAgMVxuLy8gaWRlYSBzdGFnZSBnb3Qgdm90aW5nIGNvdW50IGlzIHJlYWNoZWQgMTAwMCAgICAgICAgIDEuMVxuLy8gaWRlYSBzdGFnZSBnb3Qgdm90aW5nIGNvdW50IGlzIHJlYWNoZWQgNTAwMCAgICAgICAgIDEuM1xuLy8gaWRlYSBzdGFnZSBnb3Qgdm90aW5nIGNvdW50IGlzIHJlYWNoZWQgMTAwMDAgICAgICAgIDEuNVxuLy8gaWRlYSBzdGFnZSBnb3Qgdm90aW5nIGNvdW50IGlzIHJlYWNoZWQgNTAwMDAgICAgICAgIDEuN1xuLy8gaWRlYSBzdGFnZSBnb3Qgdm90aW5nIGNvdW50IGlzIHJlYWNoZWQgMTAwMDAwICAgICAgIDJcbnZhciBnX1N0YWdlSnNvblRlc3QgPSB7XG4gICAgXCJQcm9qZWN0TmFtZVwiOiBcIlRlc3RcIixcbiAgICBcIkNyZWF0b3JcIjogXCJNZVwiLFxuICAgIFwiU3RhZ2VOYW1lXCI6IFwiSWRlYVwiLFxuICAgIFwiUmV3YXJkUG9pbnRzTWF4XCI6IDEwMCxcbiAgICBcIlJld2FyZFBvaW50c01pblwiOiAxMCxcbiAgICBcIkdpdmVSZXdhcmRNYXhcIjogMyxcbiAgICBcIkdpdmVSZXdhcmRNaW5cIjogMSxcbiAgICBcIkdyb3VwQW5kUHJvYmFiaWxpdHlcIjogW1xuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkFcIiwgXCJQcm9iYWJpbGl0eVwiOiA3MCB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkJcIiwgXCJQcm9iYWJpbGl0eVwiOiAzNSB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkNcIiwgXCJQcm9iYWJpbGl0eVwiOiAxNyB9LFxuICAgIF1cbn07XG52YXIgZ19GaXJzdFN0YWdlSnNvbiA9IHtcbiAgICBcIlByb2plY3ROYW1lXCI6IFwiVGVzdFwiLFxuICAgIFwiQ3JlYXRvclwiOiBcIk1lXCIsXG4gICAgXCJTdGFnZU5hbWVcIjogXCJJZGVhXCIsXG4gICAgXCJSZXdhcmRQb2ludHNNYXhcIjogMTAwLFxuICAgIFwiUmV3YXJkUG9pbnRzTWluXCI6IDEwLFxuICAgIFwiR2l2ZVJld2FyZE1heFwiOiAzLFxuICAgIFwiR2l2ZVJld2FyZE1pblwiOiAxLFxuICAgIFwiR3JvdXBBbmRQcm9iYWJpbGl0eVwiOiBbXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQVwiLCBcIlByb2JhYmlsaXR5XCI6IDcwIH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQlwiLCBcIlByb2JhYmlsaXR5XCI6IDM1IH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQ1wiLCBcIlByb2JhYmlsaXR5XCI6IDE3IH0sXG4gICAgXVxufTtcbnZhciBnX1NlY29uZFN0YWdlSnNvbiA9IHtcbiAgICBcIlByb2plY3ROYW1lXCI6IFwiVGVzdFwiLFxuICAgIFwiQ3JlYXRvclwiOiBcIk1lXCIsXG4gICAgXCJTdGFnZU5hbWVcIjogXCJJZGVhXCIsXG4gICAgXCJSZXdhcmRQb2ludHNNYXhcIjogMjAwLFxuICAgIFwiUmV3YXJkUG9pbnRzTWluXCI6IDUwLFxuICAgIFwiR2l2ZVJld2FyZE1heFwiOiAzLFxuICAgIFwiR2l2ZVJld2FyZE1pblwiOiAxLFxuICAgIFwiR3JvdXBBbmRQcm9iYWJpbGl0eVwiOiBbXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQVwiLCBcIlByb2JhYmlsaXR5XCI6IDUwIH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQlwiLCBcIlByb2JhYmlsaXR5XCI6IDUwIH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQ1wiLCBcIlByb2JhYmlsaXR5XCI6IDI1IH0sXG4gICAgXVxufTtcbnZhciBnX1RoaXJkU3RhZ2VKc29uID0ge1xuICAgIFwiUHJvamVjdE5hbWVcIjogXCJUZXN0XCIsXG4gICAgXCJDcmVhdG9yXCI6IFwiTWVcIixcbiAgICBcIlN0YWdlTmFtZVwiOiBcIklkZWFcIixcbiAgICBcIlJld2FyZFBvaW50c01heFwiOiA1MDAsXG4gICAgXCJSZXdhcmRQb2ludHNNaW5cIjogMTAwLFxuICAgIFwiR2l2ZVJld2FyZE1heFwiOiAzLFxuICAgIFwiR2l2ZVJld2FyZE1pblwiOiAxLFxuICAgIFwiR3JvdXBBbmRQcm9iYWJpbGl0eVwiOiBbXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQlwiLCBcIlByb2JhYmlsaXR5XCI6IDEwMCB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkNcIiwgXCJQcm9iYWJpbGl0eVwiOiA1MCB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkRcIiwgXCJQcm9iYWJpbGl0eVwiOiAyNSB9LFxuICAgIF1cbn07XG52YXIgZ19Gb3VydGhTdGFnZUpzb24gPSB7XG4gICAgXCJQcm9qZWN0TmFtZVwiOiBcIlRlc3RcIixcbiAgICBcIkNyZWF0b3JcIjogXCJNZVwiLFxuICAgIFwiU3RhZ2VOYW1lXCI6IFwiSWRlYVwiLFxuICAgIFwiUmV3YXJkUG9pbnRzTWF4XCI6IDEwMDAsXG4gICAgXCJSZXdhcmRQb2ludHNNaW5cIjogMzAwLFxuICAgIFwiR2l2ZVJld2FyZE1heFwiOiAyLFxuICAgIFwiR2l2ZVJld2FyZE1pblwiOiAxLFxuICAgIFwiR3JvdXBBbmRQcm9iYWJpbGl0eVwiOiBbXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQlwiLCBcIlByb2JhYmlsaXR5XCI6IDUwIH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiQ1wiLCBcIlByb2JhYmlsaXR5XCI6IDUwIH0sXG4gICAgICAgIHsgXCJHcm91cElEXCI6IFwiRFwiLCBcIlByb2JhYmlsaXR5XCI6IDI1IH0sXG4gICAgXVxufTtcbnZhciBnX0ZpZnRoU3RhZ2VKc29uID0ge1xuICAgIFwiUHJvamVjdE5hbWVcIjogXCJUZXN0XCIsXG4gICAgXCJDcmVhdG9yXCI6IFwiTWVcIixcbiAgICBcIlN0YWdlTmFtZVwiOiBcIklkZWFcIixcbiAgICBcIlJld2FyZFBvaW50c01heFwiOiAzMDAwLFxuICAgIFwiUmV3YXJkUG9pbnRzTWluXCI6IDgwMCxcbiAgICBcIkdpdmVSZXdhcmRNYXhcIjogMixcbiAgICBcIkdpdmVSZXdhcmRNaW5cIjogMSxcbiAgICBcIkdyb3VwQW5kUHJvYmFiaWxpdHlcIjogW1xuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkNcIiwgXCJQcm9iYWJpbGl0eVwiOiA1MCB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkRcIiwgXCJQcm9iYWJpbGl0eVwiOiA1MCB9LFxuICAgICAgICB7IFwiR3JvdXBJRFwiOiBcIkVcIiwgXCJQcm9iYWJpbGl0eVwiOiAyNSB9LFxuICAgIF1cbn07XG52YXIgSXRlbURhdGEgPSAoZnVuY3Rpb24gKCkge1xuICAgIGZ1bmN0aW9uIEl0ZW1EYXRhKGVfSnNvbikge1xuICAgICAgICB0aGlzLmdyb3VwSUQgPSBcIjBcIjtcbiAgICAgICAgdGhpcy5uYW1lID0gXCJ1bmtub3dcIjtcbiAgICAgICAgdGhpcy5pZCA9IFwiMFwiO1xuICAgICAgICB0aGlzLmltYWdlVXJsID0gXCJcIjtcbiAgICAgICAgdGhpcy5wcm9iYWJpbGl0eVRvU2hvdyA9IDAuMTtcbiAgICAgICAgLy9pZiBpdGVtcyBjb21iaW5lZCByZXN1bHQgaXMgZmFpbGVkLHJldHVybiB2aXJ0dWFsIGNvaW5zLlxuICAgICAgICB0aGlzLmNvc3QgPSAxMDtcbiAgICAgICAgLy9jb25zdHJ1Y3Rvcih7ZV9Kc29ufSl7XG4gICAgICAgIHRoaXMuTXlMb2cgPSBuZXcgTXlMb2dGdW5jdGlvbihmYWxzZSwgXCJJdGVtRGF0YVwiKTtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJzdGFydCBJdGVtRGF0YVwiKTtcbiAgICAgICAgaWYgKGVfSnNvbikge1xuICAgICAgICAgICAgZm9yICh2YXIgbF9FbGVtZW50IGluIGVfSnNvbikge1xuICAgICAgICAgICAgICAgIHRoaXNbbF9FbGVtZW50XSA9IGVfSnNvbltsX0VsZW1lbnRdO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICAgIHRoaXMuTXlMb2cubG9nKFwiSXRlbURhdGE6IFwiICsgdGhpcyk7XG4gICAgICAgIHRoaXMuTXlMb2cubG9nKFwiZW5kIEl0ZW1EYXRhXCIpO1xuICAgIH1cbiAgICByZXR1cm4gSXRlbURhdGE7XG59KCkpO1xuZXhwb3J0cy5JdGVtRGF0YSA9IEl0ZW1EYXRhO1xuO1xudmFyIEdyb3VwQW5kSXRlbSA9IChmdW5jdGlvbiAoKSB7XG4gICAgZnVuY3Rpb24gR3JvdXBBbmRJdGVtKGVfSnNvbikge1xuICAgICAgICB0aGlzLm1fZmluZFN1aXRPYmplY3RCeVByb2JhYmlsaXR5ID0gbnVsbDtcbiAgICAgICAgLy9wdWJsaWMgcG9pbnRzO1xuICAgICAgICB0aGlzLmdyb3VwSUQgPSBcIjBcIjtcbiAgICAgICAgdGhpcy5pdGVtQXJyYXkgPSBbXTtcbiAgICAgICAgdGhpcy5NeUxvZyA9IG5ldyBNeUxvZ0Z1bmN0aW9uKGZhbHNlLCBcIkdyb3VwQW5kSXRlbVwiKTtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJzdGFydCBHcm91cEFuZEl0ZW1cIik7XG4gICAgICAgIHRoaXMuZ3JvdXBJRCA9IGVfSnNvbi5ncm91cElEO1xuICAgICAgICB0aGlzLm1fZmluZFN1aXRPYmplY3RCeVByb2JhYmlsaXR5ID0gbmV3IEhlbHBlcnNfMS5maW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHkoKTtcbiAgICAgICAgdmFyIGxfSXRlbURhdGFFbGVtZW50ID0gZV9Kc29uW1wiSXRlbURhdGFcIl07XG4gICAgICAgIGlmIChsX0l0ZW1EYXRhRWxlbWVudCkge1xuICAgICAgICAgICAgZm9yICh2YXIgbF9JdGVtRWxlbWVudCBpbiBsX0l0ZW1EYXRhRWxlbWVudCkge1xuICAgICAgICAgICAgICAgIHZhciBsX1RhcmdldEVsZW1lbnQgPSBsX0l0ZW1EYXRhRWxlbWVudFtsX0l0ZW1FbGVtZW50XTtcbiAgICAgICAgICAgICAgICB2YXIgbF9JdGVtRGF0YSA9IG5ldyBJdGVtRGF0YShsX1RhcmdldEVsZW1lbnQpO1xuICAgICAgICAgICAgICAgIHRoaXMuYWRkSXRlbShsX0l0ZW1EYXRhKTtcbiAgICAgICAgICAgICAgICB0aGlzLm1fZmluZFN1aXRPYmplY3RCeVByb2JhYmlsaXR5LmFkZFByb2JhYmlsaXR5KGxfSXRlbURhdGEucHJvYmFiaWxpdHlUb1Nob3cpO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICAgIHRoaXMuTXlMb2cubG9nKFwiZW5kIEdyb3VwQW5kSXRlbVwiKTtcbiAgICB9XG4gICAgR3JvdXBBbmRJdGVtLnByb3RvdHlwZS5nZXRSYW5kb21JdGVtSUQgPSBmdW5jdGlvbiAoKSB7XG4gICAgICAgIHZhciBsX0luZGV4ID0gdGhpcy5tX2ZpbmRTdWl0T2JqZWN0QnlQcm9iYWJpbGl0eS5nZXRJbmRleCgpO1xuICAgICAgICBpZiAodGhpcy5pdGVtQXJyYXkubGVuZ3RoID4gbF9JbmRleCkge1xuICAgICAgICAgICAgdmFyIGxfSXRlbSA9IHRoaXMuaXRlbUFycmF5W2xfSW5kZXhdO1xuICAgICAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJJdGVtIGlkIGlzOlwiICsgbF9JdGVtLmlkKTtcbiAgICAgICAgICAgIHJldHVybiBsX0l0ZW0uaWQ7XG4gICAgICAgIH1cbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJmYWlsZWQgdG8gZ2V0IEl0ZW0gaWQhXCIpO1xuICAgICAgICByZXR1cm4gbnVsbDtcbiAgICB9O1xuICAgIEdyb3VwQW5kSXRlbS5wcm90b3R5cGUuYWRkSXRlbSA9IGZ1bmN0aW9uIChlX0l0ZW1EYXRhKSB7XG4gICAgICAgIC8vYXZvaWQgYWRkIHNhbWUgaWQgYWdhaW5cbiAgICAgICAgZm9yICh2YXIgaSA9IDA7IGkgPCB0aGlzLml0ZW1BcnJheS5sZW5ndGg7ICsraSkge1xuICAgICAgICAgICAgdmFyIGxfSXRlbURhdGEgPSB0aGlzLml0ZW1BcnJheVtpXTtcbiAgICAgICAgICAgIGlmIChsX0l0ZW1EYXRhLmlkID09IGVfSXRlbURhdGEuaWQpIHtcbiAgICAgICAgICAgICAgICB0aGlzLk15TG9nLmxvZyhcInNhbWUgaXRlbSBpZCBoYXMgYmVlbiBhZGRlZCEgXCIgKyBlX0l0ZW1EYXRhLmlkKTtcbiAgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgICAgdGhpcy5pdGVtQXJyYXkucHVzaChlX0l0ZW1EYXRhKTtcbiAgICAgICAgcmV0dXJuIHRydWU7XG4gICAgfTtcbiAgICByZXR1cm4gR3JvdXBBbmRJdGVtO1xufSgpKTtcbmV4cG9ydHMuR3JvdXBBbmRJdGVtID0gR3JvdXBBbmRJdGVtO1xuO1xudmFyIEl0ZW1NYW5hZ2VyID0gKGZ1bmN0aW9uIChfc3VwZXIpIHtcbiAgICBfX2V4dGVuZHMoSXRlbU1hbmFnZXIsIF9zdXBlcik7XG4gICAgZnVuY3Rpb24gSXRlbU1hbmFnZXIoZV9Kc29uKSB7XG4gICAgICAgIF9zdXBlci5jYWxsKHRoaXMpO1xuICAgICAgICB0aGlzLmdyb3VwQW5kSXRlbUFycmF5ID0gbnVsbDtcbiAgICAgICAgdGhpcy5NeUxvZyA9IG5ldyBNeUxvZ0Z1bmN0aW9uKGZhbHNlLCBcIkl0ZW1NYW5hZ2VyXCIpO1xuICAgICAgICB0aGlzLk15TG9nLmxvZyhcInN0YXJ0IEl0ZW1NYW5hZ2VyXCIpO1xuICAgICAgICB0aGlzLmFzc2lnbkl0ZW1zRGF0YShlX0pzb24pO1xuICAgICAgICB0aGlzLk15TG9nLmxvZyhcImVuZCBJdGVtTWFuYWdlclwiKTtcbiAgICAgICAgLy9kbyBzb21ldGhpbmdcbiAgICB9XG4gICAgSXRlbU1hbmFnZXIucHJvdG90eXBlLmFzc2lnbkl0ZW1zRGF0YSA9IGZ1bmN0aW9uIChlX0pzb24pIHtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJzdGFydCBmdW5jdGlvbiBJdGVtTWFuYWdlci5hc3NpZ25JdGVtc0RhdGEgXCIpO1xuICAgICAgICB0aGlzLmdyb3VwQW5kSXRlbUFycmF5ID0gW107XG4gICAgICAgIGlmIChlX0pzb24gJiYgZV9Kc29uLkdyb3VwQW5kSXRlbSkge1xuICAgICAgICAgICAgdmFyIGxfUm9vdCA9IGVfSnNvbi5Hcm91cEFuZEl0ZW07XG4gICAgICAgICAgICBmb3IgKHZhciBsX0pzb24gaW4gbF9Sb290KSB7XG4gICAgICAgICAgICAgICAgdmFyIGxfQ3VycmVudEdyb3VwID0gbF9Sb290W2xfSnNvbl07XG4gICAgICAgICAgICAgICAgdmFyIGxfZ3JvdXBJRCA9IGxfQ3VycmVudEdyb3VwW1wiZ3JvdXBJRFwiXTtcbiAgICAgICAgICAgICAgICBpZiAobF9ncm91cElEKSB7XG4gICAgICAgICAgICAgICAgICAgIHZhciBsX0dyb3VwQW5kSXRlbSA9IG5ldyBHcm91cEFuZEl0ZW0obF9DdXJyZW50R3JvdXApO1xuICAgICAgICAgICAgICAgICAgICB0aGlzLmdyb3VwQW5kSXRlbUFycmF5LnB1c2gobF9Hcm91cEFuZEl0ZW0pO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgICB0aGlzLk15TG9nLmxvZyhcImZpbmlzaCBmdW5jdGlvbiBJdGVtTWFuYWdlci5hc3NpZ25JdGVtc0RhdGEgXCIpO1xuICAgICAgICB0aGlzLmdldEl0ZW1zRnJvbVN0YWdlRGF0YShnX1N0YWdlSnNvblRlc3QpO1xuICAgIH07XG4gICAgSXRlbU1hbmFnZXIucHJvdG90eXBlLmdldEl0ZW1zRnJvbVN0YWdlRGF0YSA9IGZ1bmN0aW9uIChlX1N0YWdlRGF0YUpzb24pIHtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coZV9TdGFnZURhdGFKc29uKTtcbiAgICAgICAgdmFyIGxfZmluZFN1aXRPYmplY3RCeVByb2JhYmlsaXR5ID0gbmV3IEhlbHBlcnNfMS5maW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHkoKTtcbiAgICAgICAgdmFyIGxfUHJvamVjdE5BbWUgPSBlX1N0YWdlRGF0YUpzb24uUHJvamVjdE5hbWU7XG4gICAgICAgIHZhciBsX0NyZWF0b3IgPSBlX1N0YWdlRGF0YUpzb24uQ3JlYXRvcjtcbiAgICAgICAgdmFyIGxfU3RhZ2VOYW1lID0gZV9TdGFnZURhdGFKc29uLlN0YWdlTmFtZTtcbiAgICAgICAgdmFyIGxfR2l2ZVJld2FyZE1heCA9IGVfU3RhZ2VEYXRhSnNvbi5HaXZlUmV3YXJkTWF4O1xuICAgICAgICB2YXIgbF9HaXZlUmV3YXJkTWluID0gZV9TdGFnZURhdGFKc29uLkdpdmVSZXdhcmRNaW47XG4gICAgICAgIHZhciBsX0dpdlJld2FyZENvdW50ID0gSGVscGVyc18xLnJhbmRvbShsX0dpdmVSZXdhcmRNaW4sIGxfR2l2ZVJld2FyZE1heCk7XG4gICAgICAgIHRoaXMuTXlMb2cubG9nKGxfR2l2ZVJld2FyZE1pbiArIFwiOlwiICsgbF9HaXZlUmV3YXJkTWF4KTtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJnaXZlIHJld2FyZCBjb3VudCBpcyA6XCIgKyBsX0dpdlJld2FyZENvdW50KTtcbiAgICAgICAgdmFyIGxfR3JvdXBBbmRQcm9iYWJpbGl0eSA9IGVfU3RhZ2VEYXRhSnNvbi5Hcm91cEFuZFByb2JhYmlsaXR5O1xuICAgICAgICBpZiAobF9Hcm91cEFuZFByb2JhYmlsaXR5KSB7XG4gICAgICAgICAgICBmb3IgKHZhciBpIGluIGxfR3JvdXBBbmRQcm9iYWJpbGl0eSkge1xuICAgICAgICAgICAgICAgIHZhciBsX09iamVjdCA9IGxfR3JvdXBBbmRQcm9iYWJpbGl0eVtpXTtcbiAgICAgICAgICAgICAgICBpZiAobF9PYmplY3QpIHtcbiAgICAgICAgICAgICAgICAgICAgbF9maW5kU3VpdE9iamVjdEJ5UHJvYmFiaWxpdHkuYWRkUHJvYmFiaWxpdHkobF9PYmplY3QuUHJvYmFiaWxpdHkpO1xuICAgICAgICAgICAgICAgICAgICB0aGlzLk15TG9nLmxvZyhcInByb2JhYmlsaXR5IFwiICsgbF9PYmplY3QuUHJvYmFiaWxpdHkpO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgICAgIHZhciBsX1RhcmdldEdyb3VwID0gW107XG4gICAgICAgICAgICBmb3IgKHZhciBpID0gMDsgaSA8IGxfR2l2UmV3YXJkQ291bnQ7ICsraSkge1xuICAgICAgICAgICAgICAgIHZhciBsX1RhcmdldEdyb3VwSUQgPSBsX2ZpbmRTdWl0T2JqZWN0QnlQcm9iYWJpbGl0eS5nZXRJbmRleCgpO1xuICAgICAgICAgICAgICAgIGxfVGFyZ2V0R3JvdXAucHVzaChsX1RhcmdldEdyb3VwSUQpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgdmFyIGxfUmV0dXJuSnNvblJlc3VsdCA9IFtdO1xuICAgICAgICAgICAgZm9yICh2YXIgaSA9IDA7IGkgPCBsX1RhcmdldEdyb3VwLmxlbmd0aDsgKytpKSB7XG4gICAgICAgICAgICAgICAgdmFyIGxfQ3VycmVudEdyb3VwSUQgPSBsX1RhcmdldEdyb3VwW2ldO1xuICAgICAgICAgICAgICAgIC8vYXZvaWQgc29tZSBzdHVwaWQgdGhpbmdzIHdyb25nXG4gICAgICAgICAgICAgICAgaWYgKHRoaXMuZ3JvdXBBbmRJdGVtQXJyYXkubGVuZ3RoID4gbF9DdXJyZW50R3JvdXBJRCkge1xuICAgICAgICAgICAgICAgICAgICB2YXIgbF9Hcm91cEFuZEl0ZW0gPSB0aGlzLmdyb3VwQW5kSXRlbUFycmF5W2xfQ3VycmVudEdyb3VwSURdO1xuICAgICAgICAgICAgICAgICAgICB2YXIgbF9Hcm91cElEID0gbF9Hcm91cEFuZEl0ZW0uZ3JvdXBJRDtcbiAgICAgICAgICAgICAgICAgICAgdmFyIGxfSXRlbUlEID0gbF9Hcm91cEFuZEl0ZW0uZ2V0UmFuZG9tSXRlbUlEKCk7XG4gICAgICAgICAgICAgICAgICAgIC8vdmFyIGxfR3JvdXBJREFuZEl0ZW1JRCA9IFtsX0dyb3VwSUQsbF9JdGVtSURdO1xuICAgICAgICAgICAgICAgICAgICBsX1JldHVybkpzb25SZXN1bHQucHVzaChsX0l0ZW1JRCk7XG4gICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgfVxuICAgICAgICAgICAgdGhpcy5NeUxvZy5sb2cobF9SZXR1cm5Kc29uUmVzdWx0KTtcbiAgICAgICAgICAgIHZhciBsX1Jld2FyZFBvaW50cyA9IEhlbHBlcnNfMS5yYW5kb20oZV9TdGFnZURhdGFKc29uLlJld2FyZFBvaW50c01pbiwgZV9TdGFnZURhdGFKc29uLlJld2FyZFBvaW50c01heCk7XG4gICAgICAgICAgICBsX1Jld2FyZFBvaW50cyA9IE1hdGgucm91bmQobF9SZXdhcmRQb2ludHMgLyA1KSAqIDU7XG4gICAgICAgICAgICB2YXIgbF9SZXN1bHQgPSBKU09OLnN0cmluZ2lmeSh7IFJld2FyZEl0ZW06IGxfUmV0dXJuSnNvblJlc3VsdCwgUmV3YXJkUG9pbnRzOiBsX1Jld2FyZFBvaW50cyB9KTtcbiAgICAgICAgICAgIHRoaXMuTXlMb2cubG9nKGxfUmVzdWx0KTtcbiAgICAgICAgICAgIHJldHVybiBsX1Jlc3VsdDtcbiAgICAgICAgfVxuICAgICAgICAvL2dyb3VwQW5kSXRlbUFycmF5XG4gICAgICAgIC8vcmV0dXJuIHJld2FyZDtcbiAgICAgICAgdGhpcy5NeUxvZy5sb2coXCJnZXRJdGVtc0Zyb21TdGFnZURhdGEgaXMgZmFpbGVkIVwiKTtcbiAgICAgICAgcmV0dXJuIG51bGw7XG4gICAgfTtcbiAgICBJdGVtTWFuYWdlci5wcm90b3R5cGUuZ2V0SXRlbUJ5R3JvdXBJZEFuZEl0ZW1JRCA9IGZ1bmN0aW9uIChlX0dyb3VwSUQsIGVfSXRlbUlEKSB7XG4gICAgICAgIGZvciAodmFyIGkgPSAwOyBpIDwgdGhpcy5ncm91cEFuZEl0ZW1BcnJheS5sZW5ndGg7ICsraSkge1xuICAgICAgICAgICAgdmFyIGxfR3JvdXAgPSB0aGlzLmdyb3VwQW5kSXRlbUFycmF5W2ldO1xuICAgICAgICAgICAgaWYgKGxfR3JvdXAuZ3JvdXBJRCA9PSBlX0dyb3VwSUQpIHtcbiAgICAgICAgICAgICAgICBmb3IgKHZhciBqID0gMDsgaiA8IGxfR3JvdXAuaXRlbUFycmF5Lmxlbmd0aDsgKytqKSB7XG4gICAgICAgICAgICAgICAgICAgIHZhciBsX0l0ZW0gPSBsX0dyb3VwLml0ZW1BcnJheVtqXTtcbiAgICAgICAgICAgICAgICAgICAgaWYgKGxfSXRlbS5pbWFnZVVybCA9PSBlX0l0ZW1JRCkge1xuICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIGxfSXRlbTtcbiAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgICByZXR1cm4gbnVsbDtcbiAgICB9O1xuICAgIEl0ZW1NYW5hZ2VyLnByb3RvdHlwZS5nZXRJdGVtQnlJRCA9IGZ1bmN0aW9uIChlX0l0ZW1JRCkge1xuICAgICAgICBmb3IgKHZhciBpID0gMDsgaSA8IHRoaXMuZ3JvdXBBbmRJdGVtQXJyYXkubGVuZ3RoOyArK2kpIHtcbiAgICAgICAgICAgIHZhciBsX0dyb3VwID0gdGhpcy5ncm91cEFuZEl0ZW1BcnJheVtpXTtcbiAgICAgICAgICAgIGZvciAodmFyIGogPSAwOyBqIDwgbF9Hcm91cC5pdGVtQXJyYXkubGVuZ3RoOyArK2opIHtcbiAgICAgICAgICAgICAgICB2YXIgbF9JdGVtID0gbF9Hcm91cC5pdGVtQXJyYXlbal07XG4gICAgICAgICAgICAgICAgaWYgKGxfSXRlbS5pbWFnZVVybCA9PSBlX0l0ZW1JRCkge1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gbF9JdGVtO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgICByZXR1cm4gbnVsbDtcbiAgICB9O1xuICAgIHJldHVybiBJdGVtTWFuYWdlcjtcbn0oUGx1Z2luc18xLlBsdWdpbnMpKTtcbmV4cG9ydHMuSXRlbU1hbmFnZXIgPSBJdGVtTWFuYWdlcjtcbndpbmRvd1snZHJlYW1zYXJrJ10uZXhwb3Nlcyh7XG4gICAgSXRlbU1hbmFnZXI6IEl0ZW1NYW5hZ2VyLFxuICAgIGdfSXRlbURhdGE6IGl0ZW1MaXN0XzEuZ19JdGVtRGF0YSxcbiAgICBnX1N0YWdlSnNvblRlc3Q6IGdfU3RhZ2VKc29uVGVzdFxufSk7XG4vLyAvKipcbi8vICAqIEF1dG8gaW5zdGFsbCBpdHNlbGZcbi8vICAqL1xud2luZG93WydkcmVhbXNhcmsnXS5pbnN0YWxsKHtcbiAgICBJdGVtTWFuYWdlcjogSXRlbU1hbmFnZXJcbn0pO1xuLy8jIHNvdXJjZU1hcHBpbmdVUkw9SXRlbS5qcy5tYXBcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gcmVzb3VyY2VzL2Fzc2V0cy90eXBlc2NyaXB0L1BsdWdpbnMvSXRlbXMvSXRlbS5qcyJdLCJtYXBwaW5ncyI6IkFBQUE7OztBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7Ozs7OztBQU9BO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUFBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBQUE7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBOztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7O0FBR0E7QUFDQTtBQUNBO0FBQ0E7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Ozs7QUFJQTtBQUNBO0FBQ0E7Iiwic291cmNlUm9vdCI6IiJ9");
 
-/***/ }
-/******/ ]);
+var Plugins = function () {
+    function Plugins() {
+        this.exposes = {};
+    }
+    Plugins.prototype.install = function () {};
+    return Plugins;
+}();
+exports.Plugins = Plugins;
+
+
+},{}]},{},[2]);
+
+//# sourceMappingURL=Item.js.map

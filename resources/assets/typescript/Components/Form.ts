@@ -239,7 +239,7 @@ export class Form implements ComponentInterface {
 
                     let old = getParentForm(this).old(this.name);
 
-                    if (!old && this._slotContents.default) {
+                    if (!old && this._slotContents && this._slotContents.default) {
                         return this._slotContents.default.textContent
                     }
 
