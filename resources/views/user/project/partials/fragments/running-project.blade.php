@@ -25,7 +25,7 @@
             <div class="columns +align-right">
                 <ark-button href="{{ route('project.show', $project) }}"
                             color="success">
-                    View Project
+                    @lang('admin.view-project')
                 </ark-button>
             </div>
         @endif

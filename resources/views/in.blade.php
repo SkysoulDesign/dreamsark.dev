@@ -66,7 +66,7 @@
                     <div class="row controls">
 
                         <div class="medium-6 column">
-                            <button id="view-project" class="outlined colors dark primary">view project</button>
+                            <button id="view-project" class="outlined colors dark primary">@lang('admin.view-project')</button>
                         </div>
 
                         <div class="medium-6 column">

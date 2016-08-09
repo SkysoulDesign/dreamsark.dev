@@ -21,5 +21,5 @@ return array (
     'investor'=>'investors',
     'collect'=>'collected',
     'creation-date'=>'Creation Date',
-    'project-creator'=>'Project Creator'
+    'project-creator'=>'Project Creator',
 );

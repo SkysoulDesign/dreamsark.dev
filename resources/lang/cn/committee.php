@@ -5,6 +5,7 @@ return array (
   'project-review' => '项目审核',
   'project-fund' => '项目资助',
   'project-distribution' => '项目发布',
+    'crew'=>'夥伴',
     'add-crew'=>'增加夥伴',
     'add-expense'=>'增加花销品项',
     'expense-item-name'=>'花銷名稱',

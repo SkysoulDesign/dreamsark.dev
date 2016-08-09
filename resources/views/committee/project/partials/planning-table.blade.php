@@ -26,7 +26,7 @@
                         <div class="header --medium">
                             {{ $expenditure->expenditurable->name }}
                             @if($expenditure->expenditurable->profile)
-                                <p>{{  $expenditure->expenditurable->profile->name }}</p>
+                                <p>@lang("positions.{$expenditure->expenditurable->profile->name}")</p>
                             @endif
                         </div>
                     </div>
@@ -34,7 +34,8 @@
             </td>
 
             <td>
-                {{ class_basename($expenditure->expenditurable) }}
+                @set($myVari,strtolower(class_basename($expenditure->expenditurable)))
+                @lang("committee.$myVari")
             </td>
 
             <td>

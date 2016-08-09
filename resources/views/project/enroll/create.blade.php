@@ -16,8 +16,8 @@
 
             <div class="row align-center">
                 <div class="small-12 columns +margin-bottom">
-                    <div class="header">Select Your Player</div>
-                    <p>Profiles Available</p>
+                    <div class="header">@lang('project.invest-select-profile')</div>
+                    <p>@lang('project.invest-profile-available')</p>
                 </div>
                 @foreach($expenditures as $expenditure)
                     <div class="small-2 columns">
@@ -41,9 +41,9 @@
                 <thead>
                 <tr>
                     <th>@lang('forms.name')</th>
-                    <th>Expected Salary</th>
-                    <th>N. of Candidates</th>
-                    <th>Description</th>
+                    <th>@lang('project.invest-expect-salary')</th>
+                    <th>@lang('project.invest-enrolled-candidator-count')</th>
+                    <th>@lang('project.invest-enrolled-description')</th>
                     <th>@lang('forms.action')</th>
                 </tr>
                 </thead>
@@ -64,7 +64,7 @@
                                 <div class="columns">
                                     <div class="header --medium">
                                         {{ $expenditure->expenditurable->name }}
-                                        <p>{{ $expenditure->expenditurable->profile->name }}</p>
+                                        <p>@lang("positions.{$expenditure->expenditurable->profile->name}")</p>
                                     </div>
                                 </div>
                             </div>

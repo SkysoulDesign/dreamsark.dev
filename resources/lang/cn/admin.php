@@ -9,5 +9,6 @@ return array (
   'profile' => '岗位',
   'question' => '问题',
   'project-list' => '项目清单',
+    'view-project'=>'检视专案',
   'profiles' => NULL,
 );

@@ -39,4 +39,11 @@ return array (
   'non-foreseeable-fee' => '不可遇见费',
   'pre-stage-project-coordinator' => '前期统筹',
   'miscellaneous' => '杂项',
+    'ask-nickname'=>'你的暱稱是?',
+    'ask-age'=>'你的年紀是?',
+    'ask-nationality'=>'你的國籍是?',
+    'ask-occupation'=>'你的職業是?',
+    'ask-Gender'=>'你的性別是?',
+    'ask-contact'=>'你的聯繫方式?',
+
 );

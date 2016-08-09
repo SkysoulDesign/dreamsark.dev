@@ -6,6 +6,7 @@ return array (
   'project-fund' => 'Project Fund',
   'project-distribution' => 'Project Distribution',
     'add-crew'=>'Add Crew',
+    'crew'=>'Crew',
     'add-expense'=>'Add Expense',
     'expense-information'=>'Basic Information',
     'member'=>'Members',

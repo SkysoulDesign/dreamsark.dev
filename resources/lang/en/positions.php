@@ -39,4 +39,10 @@ return array (
   'non-foreseeable-fee' => 'Non Foreseeable fee',
   'pre-stage-project-coordinator' => 'Pre Stage Project Coordinator',
   'miscellaneous' => 'Miscellaneous',
+    'ask-nickname'=>'whats your nickname?',
+    'ask-age'=>'How old are you?',
+    'ask-nationality'=>'What is your nationality?',
+    'ask-occupation'=>'What is your occupation?',
+    'ask-Gender'=>'What is your Gender?',
+    'ask-contact'=>'How Could i call you?',
 );

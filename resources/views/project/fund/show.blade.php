@@ -14,11 +14,11 @@
             <div class="small-5">
                 <ark-fields>
                     <ark-button href="{{ route('project.enroll.create', $project) }}" class="--fluid" color="success">
-                        Enrol to this project
+                        @lang('project.invest-enroll-to-project')
                     </ark-button>
                     <ark-button data-modal-trigger="invent-project"
                                 class="--fluid" color="primary">
-                        Invest on this Project
+                        @lang('project.invest-to-project')
                     </ark-button>
                 </ark-fields>
             </div>
@@ -36,9 +36,9 @@
     <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
-            <statistic-item data="{{ $project->investors->unique()->count() }}">Investors</statistic-item>
-            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">Collected</statistic-item>
-            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">$ Goal</statistic-item>
+            <statistic-item data="{{ $project->investors->unique()->count() }}">@lang('general.investor')</statistic-item>
+            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">@lang('general.collect')</statistic-item>
+            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">@lang('project.invest-goalMoney')</statistic-item>
         </ark-statistics>
 
         <div class="row align-center +left +margin-top-small">
@@ -47,10 +47,10 @@
                     <li>
                         <ark-progress :data="{{ $project->investors->sum('pivot.amount') }}"
                                       :max="{{ $project->expenditures->sum('expenditurable.cost') }}"
-                                      label="Goal Competition" mini mode="percentage"></ark-progress>
+                                      label="@lang('project.invest-goalMoney-progress')" mini mode="percentage"></ark-progress>
                     </li>
                     <li>
-                        <ark-progress :data="20" :max="100" label="Time Competition" color="red" mini></ark-progress>
+                        <ark-progress :data="20" :max="100" label="@lang('project.invest-time-progress')" color="red" mini></ark-progress>
                     </li>
                 </ul>
             </div>
@@ -75,13 +75,13 @@
 
 </div>
 
-<ark-modal v-cloak trigger="invent-project" header="Become an Investor">
+<ark-modal v-cloak trigger="invent-project" header="@lang('project.invest-invest')">
 
     <ark-form class="align-center +margin-top-small"
               action="{{ route('project.fund.store', $project) }}">
 
         <ark-form-step>
-            @lang('forms.investment')
+            @lang('project.invest-invest-description')
         </ark-form-step>
 
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat harum id iste minus odio quasi ratione
@@ -95,7 +95,7 @@
         </ark-input>
 
         <ark-button color="success" class="--fluid --medium" class="+center-on-mobile">
-            @lang('forms.invest')
+            @lang('project.invest-do-invest')
         </ark-button>
 
     </ark-form>
