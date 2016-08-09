@@ -88,6 +88,8 @@
 
   @include part(trigger) {
 
+    display: block;
+
     @include option(mode-button) {
       @extend %input-base;
     }

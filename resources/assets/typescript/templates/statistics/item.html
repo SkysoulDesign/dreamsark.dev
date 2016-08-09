@@ -1,5 +1,5 @@
 <div class="shrink columns statistic" :class="'--' + $parent.size">
-    <div class="statistic__item">
+    <div class="statistic__item" :class="{ '--spherical' : round }">
         <i v-if="icon" class="fa fa-{{ icon }}"></i>
         {{ data }}
         <span>

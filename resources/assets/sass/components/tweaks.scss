@@ -79,6 +79,11 @@
   padding-top: 4em;
 }
 
+@include tweak(padding-up-down) {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 @include tweak(padding-top-small) {
   padding-top: 2em;
 }

@@ -8,6 +8,26 @@
       display: block;
       text-transform: uppercase;
     }
+
+    @include option(spherical) {
+      @include border-radius(circle);
+      display: flex;
+      align-items: center;
+      align-content: flex-end;
+      align-self: center;
+      flex-direction: column;
+
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      background: color(red);
+
+    }
+
+  }
+
+  @include option(sphere) {
+
   }
 
   @include option(small) {
@@ -30,7 +50,7 @@
 
     @include part(item) {
 
-      @include font-size(large);
+      @include font-size(h1);
 
       span {
         font-size: small;

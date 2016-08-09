@@ -13,6 +13,7 @@ var Statistics = (function () {
             template: require('html!../templates/statistics/item.html'),
             props: {
                 icon: String,
+                round: Boolean,
                 data: {
                     type: String,
                     required: true

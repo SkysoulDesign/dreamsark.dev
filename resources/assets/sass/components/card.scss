@@ -1,161 +1,234 @@
+//@include component(card) {
+//
+//  $border: 5px;
+//
+//  padding: 1em;
+//  position: relative;
+//
+//  @include part(image) {
+//
+//    img {
+//      width: 100%;
+//      height: 200px;
+//      object-fit: cover;
+//      border-radius: $border $border 0 0;
+//    }
+//
+//    @include option(flat) {
+//      & > img {
+//        border-radius: 0 !important;
+//      }
+//    }
+//
+//    @include part(avatar) {
+//
+//      position: absolute;
+//      right: 0;
+//      margin: -3em 2em;
+//      transition: .25s;
+//
+//      @include respond-to(desktop) {
+//        margin: -2em 2em;
+//      }
+//
+//      &:hover {
+//        transform: scale(1.5, 1.5);
+//      }
+//
+//      img {
+//        border-radius: 100%;
+//        width: 6em;
+//        height: 6em;
+//
+//        @include respond-to(desktop) {
+//          width: 4em;
+//          height: 4em;
+//        }
+//
+//      }
+//    }
+//
+//    @include part(stage) {
+//      font-size: $h5;
+//      font-weight: bold;
+//      color: color(white);
+//      background: color(primary);
+//      width: auto;
+//      position: absolute;
+//      margin: -.8em 1.4em;
+//      border-radius: 3px;
+//      padding: 0 .5em;
+//      text-transform: uppercase;
+//    }
+//
+//  }
+//
+//  @include part(footer) {
+//
+//    background: color(gray, light);
+//    border-radius: 0 0 $border $border;
+//    padding: 1em;
+//
+//    font-size: small;
+//    font-weight: normal;
+//
+//    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
+//
+//  }
+//
+//  @include part(caption) {
+//
+//    text-align: center;
+//    padding: 1em;
+//
+//    @include option(white) {
+//      @extend .\+white;
+//      a {
+//        @extend a.\--inverted;
+//      }
+//    }
+//
+//  }
+//
+//  @include part(content) {
+//
+//    padding: 1em;
+//    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
+//    border-radius: $border;
+//    border: 1px solid transparent;
+//    background: color(white);
+//
+//    @include part(title) {
+//
+//      padding: 1em 0 .8em 0;
+//      line-height: 1.8em;
+//
+//      h1, h3 {
+//        margin: 0;
+//      }
+//
+//      h1 {
+//        @include font-style($style: title, $color: black);
+//      }
+//
+//      h3 {
+//        @include font-style($style: sub-title, $color: black)
+//      }
+//
+//    }
+//
+//    @include part(header) {
+//
+//      padding: .5em 0;
+//      color: color(gray);
+//      font-size: 2em;
+//      line-height: normal;
+//
+//      p {
+//        font-size: .5em;
+//      }
+//
+//    }
+//
+//    @include part(image) {
+//
+//      @include option(avatar-like) {
+//        left: 0;
+//        right: 0;
+//        position: relative;
+//        width: 10em;
+//        margin: 0 auto -7em auto;
+//        top: -7em;
+//
+//        img {
+//          border-radius: 100em;
+//        }
+//
+//      }
+//
+//    }
+//
+//    @include option(has-image) {
+//      border-radius: 0 0 $border $border;
+//    }
+//
+//    @include option(has-footer) {
+//      border-radius: 0;
+//    }
+//
+//  }
+//
+//}
+
 @include component(card) {
 
-  $border: 5px;
-
-  padding: 1em;
+  @extend .segment;
+  padding: 0;
+  display: block;
   position: relative;
+  border: 2px solid color(white);
 
-  @include part(image) {
-
-    img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: $border $border 0 0;
-    }
-
-    @include option(flat) {
-      & > img {
-        border-radius: 0 !important;
-      }
-    }
-
-    @include part(avatar) {
-
-      position: absolute;
-      right: 0;
-      margin: -3em 2em;
-      transition: .25s;
-
-      @include respond-to(desktop) {
-        margin: -2em 2em;
-      }
-
-      &:hover {
-        transform: scale(1.5, 1.5);
-      }
-
-      img {
-        border-radius: 100%;
-        width: 6em;
-        height: 6em;
-
-        @include respond-to(desktop) {
-          width: 4em;
-          height: 4em;
-        }
-
-      }
-    }
-
-    @include part(stage) {
-      font-size: $h5;
-      font-weight: bold;
-      color: color(white);
-      background: color(primary);
-      width: auto;
-      position: absolute;
-      margin: -.8em 1.4em;
-      border-radius: 3px;
-      padding: 0 .5em;
-      text-transform: uppercase;
-    }
-
+  &:hover {
+    border-color: transparent;
   }
 
-  @include part(footer) {
+  @include base-scalable(1.03, .10);
 
-    background: color(gray, light);
-    border-radius: 0 0 $border $border;
-    padding: 1em;
-
-    font-size: small;
-    font-weight: normal;
-
-    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
-
-  }
-
-  @include part(caption) {
-
-    text-align: center;
-    padding: 1em;
-
-    @include option(white) {
-      @extend .\+white;
-      a {
-        @extend a.\--inverted;
-      }
-    }
-
+  img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
   }
 
   @include part(content) {
-
     padding: 1em;
-    box-shadow: 0 5px 5px 0 color(black, x-dark, 10);
-    border-radius: $border;
-    border: 1px solid transparent;
+  }
+
+  @include part(extra) {
     background: color(white);
+    padding: 1em;
+    color: black;
+  }
 
-    @include part(title) {
+  @include part(badges) {
 
-      padding: 1em 0 .8em 0;
-      line-height: 1.8em;
+    position: absolute;
+    z-index: 5;
+    padding: 1em;
+    user-select: none;
+    width: 100%;
+    height: 70%;
 
-      h1, h3 {
-        margin: 0;
+    @include colors($text-color: false) {
+      ul li {
+        background-color: $color;
       }
-
-      h1 {
-        @include font-style($style: title, $color: black);
-      }
-
-      h3 {
-        @include font-style($style: sub-title, $color: black)
-      }
-
     }
 
-    @include part(header) {
+    ul {
+      position: absolute;
+      display: inline-block;
+      bottom: 1em;
 
-      padding: .5em 0;
-      color: color(gray);
-      font-size: 2em;
-      line-height: normal;
-
-      p {
-        font-size: .5em;
-      }
-
-    }
-
-    @include part(image) {
-
-      @include option(avatar-like) {
-        left: 0;
-        right: 0;
-        position: relative;
-        width: 10em;
-        margin: 0 auto -7em auto;
-        top: -7em;
-
-        img {
-          border-radius: 100em;
-        }
-
+      li {
+        float: left;
+        bottom: 1em;
+        @include font-size(small);
+        @include font-weight(bold);
+        @include border-radius();
+        margin-right: .2em;
+        padding: .3em .5em;
+        text-transform: uppercase;
       }
 
     }
 
-    @include option(has-image) {
-      border-radius: 0 0 $border $border;
-    }
+  }
 
-    @include option(has-footer) {
-      border-radius: 0;
-    }
-
+  .progress {
+    padding: 0;
+    border-radius: 0;
+    margin: 0 0 -1px;
   }
 
 }
