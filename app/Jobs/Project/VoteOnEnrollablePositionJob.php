@@ -5,13 +5,18 @@ namespace DreamsArk\Jobs\Project;
 use DreamsArk\Events\Project\Fund\EnrollerReceivedVote;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Enroller;
+use DreamsArk\Models\Project\Expenditures\Vote;
 use DreamsArk\Models\User\User;
-use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
 
+/**
+ * Class VoteOnEnrollablePositionJob
+ *
+ * @package DreamsArk\Jobs\Project
+ */
 class VoteOnEnrollablePositionJob extends Job
 {
     /**
-     * @var User
+     * @var Enroller
      */
     private $enroller;
 
@@ -19,8 +24,9 @@ class VoteOnEnrollablePositionJob extends Job
      * @var User
      */
     private $user;
+
     /**
-     * @var
+     * @var int
      */
     private $amount;
 
@@ -29,9 +35,9 @@ class VoteOnEnrollablePositionJob extends Job
      *
      * @param Enroller $enroller
      * @param User $user
-     * @param $amount
+     * @param int $amount
      */
-    public function __construct(Enroller $enroller, User $user, $amount)
+    public function __construct(Enroller $enroller, User $user, int $amount)
     {
         $this->enroller = $enroller;
         $this->user = $user;
@@ -41,16 +47,21 @@ class VoteOnEnrollablePositionJob extends Job
     /**
      * Execute the command.
      *
-     * @param ExpenditureRepositoryInterface $repository
+     * @param \DreamsArk\Models\Project\Expenditures\Vote $vote
      */
-    public function handle(ExpenditureRepositoryInterface $repository)
+    public function handle(Vote $vote)
     {
+
+        $vote->enroller()->associate($this->enroller);
+        $vote->user()->associate($this->user);
+        $vote->setAttribute('amount', $this->amount);
+        $vote->save();
+
         /**
-         *
+         * Announce EnrollerReceivedVote
          */
-        $repository->vote($this->enroller->id, $this->user->id, $this->amount);
-
-        event(new EnrollerReceivedVote($this->enroller, $this->user, $this->amount));
-
+        event(new EnrollerReceivedVote(
+            $this->enroller, $this->user, $this->amount
+        ));
     }
 }

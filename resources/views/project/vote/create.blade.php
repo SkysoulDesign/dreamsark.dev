@@ -12,7 +12,7 @@
             <img class="project-page__achievements" src="{{ asset('img/svg/badge-simple-flat.svg') }}">
 
             <div class="header --light-weight">
-                @lang('project.winnerGet') <span class="+color-success">{{ $project->stage->reward->amount }} @lang('general.coins')</span>
+                @lang('project.winnerGet', ['amount' => "<span class='+color-success'>{$project->stage->reward->amount}</span>"])
                 <h2>@lang('project.votingEndTime') {{ $project->stage->vote->close_date }}</h2>
             </div>
 

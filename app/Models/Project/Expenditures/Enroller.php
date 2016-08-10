@@ -4,6 +4,8 @@ namespace DreamsArk\Models\Project\Expenditures;
 
 use DreamsArk\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Enroller
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Enroller extends Model
 {
+
     /**
      * The database table used by the model.
      *
@@ -20,44 +23,31 @@ class Enroller extends Model
     protected $table = 'expenditure_enrollers';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
      * User Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user() : belongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Expenditure Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function expenditure()
+    public function expenditure() : belongsTo
     {
         return $this->belongsTo(Expenditure::class);
     }
 
     /**
-     * Voting Relationship
-     * A User Belongs to a Enrollable Table
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function votes()
-    {
-        return $this->belongsToMany(User::class, 'expenditure_enroller_vote')->withPivot('amount')->withTimestamps();
-    }
-
-    /**
      * To get Votes w.r.t an Enroller Id
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function enrollvotes()
+    public function votes() : hasMany
     {
         return $this->hasMany(Vote::class);
     }

@@ -10,35 +10,53 @@
             tempore voluptatum. Inventore minus natus porro provident quae! Ducimus explicabo ipsum nam sequi tempora
             voluptates.</p>
 
-        <div class="row align-center +margin-top-small">
-            <div class="small-5">
-                <ark-fields>
-                    <ark-button href="{{ route('project.enroll.create', $project) }}" class="--fluid" color="success">
-                        @lang('project.invest-enroll-to-project')
-                    </ark-button>
-                    <ark-button data-modal-trigger="invent-project"
-                                class="--fluid" color="primary">
-                        @lang('project.invest-to-project')
-                    </ark-button>
-                </ark-fields>
+        @if($project->stage->vote->active)
+
+            <div class="row +margin-top-small">
+                <div class="columns message --color-primary +center">
+                    @lang('project.reachVotingStage')
+                    <h2>
+                        <a href="{{ route('project.vote.create', $project) }}">@lang('project.participate')</a>
+                    </h2>
+                </div>
+            </div>
+        @else
+
+            <div class="row align-center +margin-top-small">
+                <div class="small-5">
+                    <ark-fields>
+                        <ark-button href="{{ route('project.enroll.create', $project) }}" class="--fluid"
+                                    color="success">
+                            @lang('project.invest-enroll-to-project')
+                        </ark-button>
+                        <ark-button data-modal-trigger="invent-project"
+                                    class="--fluid" color="primary">
+                            @lang('project.invest-to-project')
+                        </ark-button>
+                    </ark-fields>
+                </div>
+
             </div>
 
-        </div>
-
-        <ark-progress class="small-12 columns"
-                      :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']"
-                      color="warning"
-                      size="large" label="@lang('project.time')" flat></ark-progress>
-
+            <ark-progress class="small-12 columns"
+                          :live="['{{ $project->stage->vote->open_date }}', '{{ $project->stage->vote->close_date }}']"
+                          color="warning"
+                          size="large" label="@lang('project.time')" flat></ark-progress>
+        @endif
     </div>
-
 
     <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
-            <statistic-item data="{{ $project->investors->unique()->count() }}">@lang('general.investor')</statistic-item>
-            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">@lang('general.collect')</statistic-item>
-            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">@lang('project.invest-goalMoney')</statistic-item>
+            <statistic-item data="{{ $project->investors->unique()->count() }}">
+                @lang('general.investor')
+            </statistic-item>
+            <statistic-item data="{{ $project->investors->sum('pivot.amount') }}">
+                @lang('general.collect')
+            </statistic-item>
+            <statistic-item data="{{ $project->expenditures->sum('expenditurable.cost') }}">
+                @lang('project.invest-goalMoney')
+            </statistic-item>
         </ark-statistics>
 
         <div class="row align-center +left +margin-top-small">
@@ -47,10 +65,12 @@
                     <li>
                         <ark-progress :data="{{ $project->investors->sum('pivot.amount') }}"
                                       :max="{{ $project->expenditures->sum('expenditurable.cost') }}"
-                                      label="@lang('project.invest-goalMoney-progress')" mini mode="percentage"></ark-progress>
+                                      label="@lang('project.invest-goalMoney-progress')" mini
+                                      mode="percentage"></ark-progress>
                     </li>
                     <li>
-                        <ark-progress :data="20" :max="100" label="@lang('project.invest-time-progress')" color="red" mini></ark-progress>
+                        <ark-progress :data="20" :max="100" label="@lang('project.invest-time-progress')" color="red"
+                                      mini></ark-progress>
                     </li>
                 </ul>
             </div>
@@ -69,7 +89,7 @@
         </ark-nav>
     </div>
 
-    <div class="small-12 columns">
+    <div class="small-10 columns">
         @stack('tab-item')
     </div>
 

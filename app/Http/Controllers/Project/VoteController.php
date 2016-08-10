@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
@@ -78,8 +79,19 @@ class VoteController extends Controller
         if (!$stage->vote->active) {
             return redirect()->route('project.show', $project)->withErrors(
                 trans('project.date-expired')
-                //'Voting is close for this project'
             );
+        }
+
+        /**
+         * If instance of fund.. treat it accordingly
+         */
+        if ($stage instanceof Fund) {
+
+            $profiles = $stage->enrollable->load('expenditurable.profile')->pluck('expenditurable.profile');
+
+            return view("project.vote.fund.create")
+                ->with('project', $project)
+                ->with('profiles', $profiles);
         }
 
         $submissions = $stage->submissions->load('user', 'votes');

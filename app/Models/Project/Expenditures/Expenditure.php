@@ -73,25 +73,25 @@ class Expenditure extends Model
         return $this->morphTo();
     }
 
-//    /**
-//     * Enrollers Relationship
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function enrollers() : hasMany
-//    {
-//        return $this->hasMany(User::class);
-//    }
+    /**
+     * Enrollers Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function enrollers() : hasMany
+    {
+        return $this->hasMany(Enroller::class);
+    }
 
     /**
      * Alias to Enrollers inverted
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function enrollers() : belongsToMany
-    {
-        return $this->belongsToMany(User::class, 'expenditure_enrollers');
-    }
+//    public function users() : belongsToMany
+//    {
+//        return $this->belongsToMany(User::class, 'expenditure_enrollers');
+//    }
 
     /**
      * Vote Relationship

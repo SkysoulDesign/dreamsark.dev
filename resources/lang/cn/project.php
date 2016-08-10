@@ -188,7 +188,7 @@ return array (
   'getWinnerToNextStage' => '任务结束恭喜胜出者',
   'MySubmission' => '我的提案',
   'submissionsList' => '提交列表',
-  'winnerGet' => '最多票者將獲得',
+  'winnerGet' => '最多票者將獲得:amount',
   'votingEndTime' => '投票結束時間',
   'current-stage' => '執行階段: :stage',
   'date-expired' => '過期',

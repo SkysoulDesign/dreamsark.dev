@@ -20,13 +20,6 @@ class Vote extends Model
     protected $table = 'expenditure_enroller_vote';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array

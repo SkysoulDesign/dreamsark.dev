@@ -17,6 +17,10 @@
     justify-content: space-around;
   }
 
+  @include option(centered) {
+    justify-content: center;
+  }
+
   @include option(tight) {
     li {
       padding: 0;

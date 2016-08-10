@@ -6202,6 +6202,9 @@ button, .button {
     line-height: normal; }
   .ul.\--evenly, ul.\--evenly, .\--evenly.badges {
     justify-content: space-around; }
+  .ul.\--centered, ul.\--centered, .\--centered.badges {
+    -webkit-box-pack: center;
+    justify-content: center; }
   .ul.\--tight li, ul.\--tight li, .\--tight.badges li {
     padding: 0; }
   .ul li, ul li, .badges li {

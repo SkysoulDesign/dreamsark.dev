@@ -7,6 +7,7 @@ use DreamsArk\Models\Master\Profile;
 use DreamsArk\Models\Payment\Transaction;
 use DreamsArk\Models\Project\Comment;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
+use DreamsArk\Models\Project\Expenditures\Vote;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Project\Submission;
@@ -111,6 +112,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    /**
+     * To get Votes w.r.t an Enroller Id
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
     }
 
     /**

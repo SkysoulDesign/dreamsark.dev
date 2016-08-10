@@ -7,19 +7,28 @@ use DreamsArk\Models\Project\Expenditures\Enroller;
 use DreamsArk\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class EnrollerReceivedVote
+ *
+ * @package DreamsArk\Events\Project\Fund
+ */
 class EnrollerReceivedVote extends Event
 {
+
     use SerializesModels;
+
     /**
      * @var Enroller
      */
     public $enroller;
+
     /**
      * @var User
      */
     public $user;
+
     /**
-     * @var
+     * @var int
      */
     public $amount;
 
@@ -28,9 +37,9 @@ class EnrollerReceivedVote extends Event
      *
      * @param Enroller $enroller
      * @param User $user
-     * @param $amount
+     * @param int $amount
      */
-    public function __construct(Enroller $enroller, User $user, $amount)
+    public function __construct(Enroller $enroller, User $user, int $amount)
     {
         $this->enroller = $enroller;
         $this->user = $user;
