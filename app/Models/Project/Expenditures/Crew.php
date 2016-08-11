@@ -7,7 +7,14 @@ use DreamsArk\Presenters\PresentableTrait;
 use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ExpenditurePresenter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * Class Crew
+ *
+ * @package DreamsArk\Models\Project\Expenditures
+ */
 class Crew extends Model
 {
 
@@ -36,27 +43,31 @@ class Crew extends Model
 
     /**
      * Expenditure Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function expenditure()
+    public function expenditure() : morphMany
     {
         return $this->morphMany(Expenditure::class, 'expenditurable');
     }
 
     /**
      * Cast Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profile()
+    public function profile() : belongsTo
     {
         return $this->belongsTo(Profile::class, 'expenditure_profile_id');
     }
 
     /**
      * Enroller Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function enroller()
+    public function enroller() : belongsTo
     {
         return $this->belongsTo(Enroller::class, 'enroller_id');
     }
-
-
 }

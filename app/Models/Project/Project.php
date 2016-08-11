@@ -272,10 +272,10 @@ class Project extends Model
      *
      * @return mixed
      */
-    public function expensable()
-    {
-        return $this->expenditures()->expensable();
-    }
+//    public function expensable()
+//    {
+//        return $this->expenditures()->expensable();
+//    }
 
     /**
      * Alias for backers
@@ -284,7 +284,10 @@ class Project extends Model
      */
     public function investors() : belongsToMany
     {
-        return $this->belongsToMany(User::class, 'project_investors')->withPivot('amount');
+        return $this
+            ->belongsToMany(User::class, 'project_investors')
+            ->withPivot('amount')
+            ->withTimestamps();
     }
 
     /**
@@ -302,20 +305,20 @@ class Project extends Model
     /**
      * sum of amount received from "Project Backers" & "voters to enrollers"
      */
-    public function totalCollected()
-    {
-        return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
-    }
+//    public function totalCollected()
+//    {
+//        return $this->backers->sum('pivot.amount') + $this->enrollVoteTotal();
+//    }
 
-    public function enrollVoteTotal()
-    {
-        /** @var Collection $voteSum */
-        $voteSum = $this->enrollable->pluck('enrollers')->map(function ($item) {
-            if ($item)
-                return $item->pluck('enrollvotes');
-        })->flatten();
-
-        return $voteSum->sum('amount');
-    }
+//    public function enrollVoteTotal()
+//    {
+//        /** @var Collection $voteSum */
+//        $voteSum = $this->enrollable->pluck('enrollers')->map(function ($item) {
+//            if ($item)
+//                return $item->pluck('enrollvotes');
+//        })->flatten();
+//
+//        return $voteSum->sum('amount');
+//    }
 
 }

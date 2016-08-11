@@ -148,7 +148,7 @@ return array (
   'unable-publish-no-cast-crew-data' => '项目 ":project_name" 没有任何支出/成员 无法执行',
   'already-published' => '项目 ":project_name" 已经被审视并且发行',
   'need-profile-to-enroll' => '您需要创建角色职业才能参与项目',
-  'need-target-profile-to-enroll' => '你必须在项目中雇用 :target_profile Profile',
+  'need-target-profile-to-enroll' => '你必须在项目中雇用 :profile Profile',
   'updated' => '已成功更新',
   'detail' => '详情',
   'private' => '私密',

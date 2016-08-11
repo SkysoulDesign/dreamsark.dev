@@ -4,11 +4,15 @@ namespace DreamsArk\Jobs\Project\Stages\Voting;
 
 use DreamsArk\Events\Project\Vote\EnrollVotingHasFinished;
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Class CloseEnrollVotingJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages\Voting
+ */
 class CloseEnrollVotingJob extends Job
 {
     /**
@@ -33,30 +37,48 @@ class CloseEnrollVotingJob extends Job
      */
     public function handle()
     {
-        /** @var Fund $fund */
-        $fund = $this->vote->votable;
-        /** @var Project $project */
-        $project = $fund->project;
-        $project = $project->load('enrollable.enrollers.enrollvotes');
+        /**
+         * Load Relationships
+         *
+         * @var Fund $fund
+         */
+        $fund = $this->vote->getAttribute('votable')->load('enrollable.enrollers.votes');
 
-        if ($project->enrollVoteTotal() > 0) {
-            foreach ($project->enrollable as $expenditureCrew) {
-                /** to get enrollers' votes */
-                /** @var Collection $enrollerList */
-                $enrollerList = $expenditureCrew->enrollers->pluck('enrollvotes')->filter(function ($item) {
-                    return !$item->isEmpty();
-                })->flatten();
-                /** to get enrollers' votes total */
-                /** @var Collection $enrollerVoteList */
-                $enrollerVoteList = $enrollerList->groupBy('enroller_id')->map(function ($item) {
-                    return $item->sum('amount');
-                });
-                $winnerId = $enrollerVoteList->sort()->keys()->pop();
-                dispatch(new AssignVotingWinnerToCrewJob($expenditureCrew->expenditurable_id, $winnerId));
+        foreach ($fund->getAttribute('enrollable') as $expenditure) {
 
-            }
+            /**
+             * Get Voters
+             *
+             * @var Collection $enrollerList
+             */
+            $enrollerList = $expenditure->enrollers->pluck('votes')->filter(function ($item) {
+                return !$item->isEmpty();
+            })->flatten();
 
-            event(new EnrollVotingHasFinished($project->id, $fund->id, $this->vote));
+            /**
+             * to get enrollers' votes total
+             *
+             * @var Collection $enrollerVoteList
+             */
+            $enrollerVoteList = $enrollerList->groupBy('enroller_id')->map(function ($item) {
+                return $item->sum('amount');
+            });
+
+            $winnerId = $enrollerVoteList->sort()->keys()->pop();
+
+            /**
+             * Assign Winner
+             */
+            dispatch(new AssignVotingWinnerToCrewJob(
+                $expenditure->expenditurable, $winnerId
+            ));
         }
+
+        /**
+         * Announce EnrollVotingHasFinished
+         */
+        event(new EnrollVotingHasFinished(
+            $fund->getAttribute('project'), $fund, $this->vote
+        ));
     }
 }

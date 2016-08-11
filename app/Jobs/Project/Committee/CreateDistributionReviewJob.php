@@ -6,12 +6,14 @@ use DreamsArk\Events\Project\Stages\DistributionWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Distribution;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class CreateDistributionReviewJob
+ *
+ * @package DreamsArk\Jobs\Project\Committee
+ */
 class CreateDistributionReviewJob extends Job
 {
-    use InteractsWithQueue, SerializesModels;
     /**
      * @var Project
      */
@@ -30,14 +32,19 @@ class CreateDistributionReviewJob extends Job
     /**
      * Execute the job.
      *
+     * @param Distribution $distribution
      */
-    public function handle()
+    public function handle(Distribution $distribution)
     {
         /**
          * Create Distribution Review for Project
          */
-        $distribution = Distribution::create(['project_id' => $this->project->id]);
+        $distribution->project()->associate($this->project);
+        $distribution->save();
 
+        /**
+         * Announce DistributionWasCreated
+         */
         event(new DistributionWasCreated($distribution));
     }
 }

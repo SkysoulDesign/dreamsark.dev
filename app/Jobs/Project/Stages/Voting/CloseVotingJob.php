@@ -37,7 +37,7 @@ class CloseVotingJob extends Job
     public function handle()
     {
 
-        if ($this->vote->votable instanceof Fund) {
+        if ($this->vote->getAttribute('votable') instanceof Fund) {
             return dispatch(
                 new CloseEnrollVotingJob($this->vote)
             );

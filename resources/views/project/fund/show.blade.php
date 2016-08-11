@@ -89,7 +89,7 @@
         </ark-nav>
     </div>
 
-    <div class="small-10 columns">
+    <div class="small-12 columns">
         @stack('tab-item')
     </div>
 

@@ -3,29 +3,38 @@
 namespace DreamsArk\Events\Project\Vote\Enroll;
 
 use DreamsArk\Events\Event;
+use DreamsArk\Models\Project\Expenditures\Crew;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class WinnerHasAssignedToCrew
+ *
+ * @package DreamsArk\Events\Project\Vote\Enroll
+ */
 class WinnerHasAssignedToCrew extends Event
 {
+    
     use SerializesModels;
+
     /**
-     * @var
+     * @var \DreamsArk\Models\Project\Expenditures\Crew
      */
-    public $expenditureId;
+    private $crew;
+    
     /**
-     * @var
+     * @var int
      */
     public $winnerEnrollId;
 
     /**
      * Create a new event instance.
      *
-     * @param $expenditureId
+     * @param \DreamsArk\Models\Project\Expenditures\Crew $crew
      * @param $winnerEnrollId
      */
-    public function __construct($expenditureId, $winnerEnrollId)
+    public function __construct(Crew $crew, $winnerEnrollId)
     {
-        $this->expenditureId = $expenditureId;
+        $this->crew = $crew;
         $this->winnerEnrollId = $winnerEnrollId;
     }
 

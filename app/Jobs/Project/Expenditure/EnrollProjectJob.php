@@ -43,6 +43,6 @@ class EnrollProjectJob extends Job
         /**
          * Enroll into a Expenditure
          */
-        $this->expenditure->enrollers()->attach($this->user);
+        $this->expenditure->enroller()->attach($this->user);
     }
 }

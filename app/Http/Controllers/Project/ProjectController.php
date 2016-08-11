@@ -10,6 +10,7 @@ use DreamsArk\Jobs\Project\PublishProjectJob;
 use DreamsArk\Jobs\Project\Stages\Review\CreateReviewJob;
 use DreamsArk\Jobs\User\Project\UpdateDraftJob;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
@@ -84,14 +85,10 @@ class ProjectController extends Controller
      *
      * @param Request $request
      * @param Project $project
-     *
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, Project $project, Submission $submission)
+    public function show(Request $request, Project $project)
     {
-
-//        $submission = $submission->find();
-//        dd($project->investors);
 
         $user = $request->user();
         $stage = $project->getAttribute('stage');
@@ -102,6 +99,12 @@ class ProjectController extends Controller
             return view('project.show')->with('project', $project);
         }
 
+        if ($stage instanceof Distribution) {
+            return view('project.show')
+                ->with('project', $project)
+                ->with('expenditures', $project->getAttribute('expenditures'));
+        }
+
         return view('project.show')
             ->with('project', $project)
             ->with('public_submissions', $stage->submissions()->public()->get())
@@ -110,7 +113,7 @@ class ProjectController extends Controller
              */
             ->with('submissions',
                 $user ? $stage->submissions()->ownedBy($user)->get() : []
-            );;
+            );
 
 
 //        $isIFrameCall = $this->isIFrameCall;

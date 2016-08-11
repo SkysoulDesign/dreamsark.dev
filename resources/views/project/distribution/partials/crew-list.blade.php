@@ -20,6 +20,7 @@
                 <h4 class="ui image header">
                     <div class="content">
                         {{ $expenditure->expenditurable->name }}
+
                         <div class="sub header">
                             {{ (is_object($expenditure->expenditurable->profile) ? $expenditure->expenditurable->profile->display_name : '') }}
                         </div>
@@ -31,12 +32,16 @@
             </td>
             <td>
                 @php
-                    $salary = $expenditure->expenditurable->cost;
-                    $enroller = $expenditure->expenditurable->enroller;
-                    $votes = $enroller->votes->pluck('pivot')->sum('amount');
-                    $voteTotal += $votes;
-                    $crewFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW'], [$salary, $votes, config('payment.salary.commission.crew')], config('payment.salary.formula.crew'));
-                    $crewAssesFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW_ASSES'], [$salary, $votes, config('payment.salary.commission.crew_asses')], config('payment.salary.formula.crew_asses'));
+
+                       $salary = $expenditure->expenditurable->cost;
+
+                       $enroller = $expenditure->expenditurable->enroller;
+
+                       $votes = $enroller->votes->pluck('pivot')->sum('amount');
+
+                       $voteTotal += $votes;
+                       $crewFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW'], [$salary, $votes, config('payment.salary.commission.crew')], config('payment.salary.formula.crew'));
+                       $crewAssesFormula = str_replace(['SALARY', 'VOTES', 'COMMISSION_CREW_ASSES'], [$salary, $votes, config('payment.salary.commission.crew_asses')], config('payment.salary.formula.crew_asses'));
                 @endphp
                 {{ $salary }}
             </td>

@@ -84,6 +84,16 @@ class Expenditure extends Model
     }
 
     /**
+     * Inverse of the relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function enroller() : belongsToMany
+    {
+        return $this->belongsToMany(User::class, 'expenditure_enrollers');
+    }
+
+    /**
      * Alias to Enrollers inverted
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

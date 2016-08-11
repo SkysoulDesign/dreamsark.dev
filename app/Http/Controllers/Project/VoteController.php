@@ -4,6 +4,7 @@ namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
 use DreamsArk\Models\Project\Project;
+use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
 use DreamsArk\Models\Project\Stages\Vote;
@@ -66,6 +67,12 @@ class VoteController extends Controller
     {
 
         $stage = $project->getAttribute('stage');
+
+        if ($stage instanceof Distribution) {
+            return redirect()->route('project.show', $project)->withErrors(
+                'The voting for this project has been gone.'
+            );
+        }
 
         if ($stage instanceof Review) {
             return redirect()->route('project.show', $project)->withErrors(

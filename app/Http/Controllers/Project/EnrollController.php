@@ -45,12 +45,14 @@ class EnrollController extends Controller
     public function store(Request $request, Expenditure $expenditure)
     {
 
-        $targetProfile = $expenditure->expenditurable->profile;
+        $targetProfile = $expenditure->getAttribute('expenditurable')->profile;
 
         if (!$request->user()->hasProfile($targetProfile->name))
-            return redirect()->back()->withErrors(trans('project.need-target-profile-to-enroll',
-                ['target_profile' => $targetProfile->name]
-            ));
+            return redirect()->back()->withErrors(
+                trans('project.need-target-profile-to-enroll',
+                    ['profile' => $targetProfile->name]
+                )
+            );
 
         $this->dispatch(
             new EnrollProjectJob($expenditure, $request->user())

@@ -84,10 +84,9 @@
 
                         <td class="+align-right">
 
-
                             @if(auth()->user()->hasProfile($expenditure->expenditurable->profile))
 
-                                @if(!$expenditure->enrollers->contains('id', auth()->user()->id))
+                                @if(!$expenditure->enrollers->contains('user_id', auth()->user()->id))
                                     <ark-form action="{{ route('project.enroll.store', $expenditure) }}">
                                         <ark-button color="success" icon="plus">@lang('project.enroll')</ark-button>
                                     </ark-form>

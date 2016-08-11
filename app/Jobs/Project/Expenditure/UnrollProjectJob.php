@@ -43,6 +43,6 @@ class UnrollProjectJob extends Job
         /**
          * Enroll into a Expenditure
          */
-        $this->expenditure->enrollers()->detach($this->user);
+        $this->expenditure->enroller()->detach($this->user);
     }
 }

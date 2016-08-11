@@ -36,13 +36,12 @@ class DistributionWasCreated extends Event
      * Create a new event instance.
      *
      * @param Distribution $distribution
-     * @param Project $project
      */
-    public function __construct(Distribution $distribution, Project $project)
+    public function __construct(Distribution $distribution)
     {
         $this->distribution = $distribution;
         $this->stage = $distribution;
-        $this->project = $project;
+        $this->project = $distribution->getRelation('project');
     }
 
     /**

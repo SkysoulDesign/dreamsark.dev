@@ -6,12 +6,18 @@ use DreamsArk\Events\Project\Vote\Enroll\WinnerHasAssignedToCrew;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Expenditures\Crew;
 
+/**
+ * Class AssignVotingWinnerToCrewJob
+ *
+ * @package DreamsArk\Jobs\Project\Stages\Voting
+ */
 class AssignVotingWinnerToCrewJob extends Job
 {
     /**
-     * @var
+     * @var Crew
      */
-    private $expenditureId;
+    private $crew;
+
     /**
      * @var
      */
@@ -20,26 +26,30 @@ class AssignVotingWinnerToCrewJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param $expenditureId
+     * @param Crew $crew
      * @param $winnerEnrollId
      */
-    public function __construct($expenditureId, $winnerEnrollId)
+    public function __construct(Crew $crew, $winnerEnrollId)
     {
-        $this->expenditureId = $expenditureId;
+        $this->crew = $crew;
         $this->winnerEnrollId = $winnerEnrollId;
     }
 
     /**
      * Execute the job.
-     *
      */
     public function handle()
     {
-        /** @var Crew $expenditure */
-        $expenditure = Crew::find($this->expenditureId);
-        $expenditure->setAttribute('enroller_id', $this->winnerEnrollId)->save();
-        $expenditure->fresh();
 
-        event(new WinnerHasAssignedToCrew($this->expenditureId, $this->winnerEnrollId));
+        /** @var Crew $expenditure */
+        $this->crew->enroller()->associate($this->winnerEnrollId);
+        $this->crew->save();
+
+        /**
+         * Announce WinnerHasAssignedToCrew
+         */
+        event(new WinnerHasAssignedToCrew(
+            $this->crew, $this->winnerEnrollId
+        ));
     }
 }
