@@ -2,7 +2,7 @@
 
     {{--Logged-out--}}
 
-    <div class="row align-middle --fluid menu  --inverted">
+    <div class="row align-middle --fluid menu --inverted">
 
         <div class="small-6 columns menu__brand">
             <a href="{{ route('home') }}">

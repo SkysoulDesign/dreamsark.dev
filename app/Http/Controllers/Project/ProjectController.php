@@ -14,7 +14,6 @@ use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Draft;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Review;
-use DreamsArk\Models\Project\Submission;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -37,13 +36,15 @@ class ProjectController extends Controller
     /**
      * Show Projects Page
      *
-     * @param ProjectRepositoryInterface $repository
-     *
+     * @param \DreamsArk\Models\Project\Project $project
      * @return \Illuminate\View\View
+     * @internal param \DreamsArk\Repositories\Project\ProjectRepositoryInterface $repository
+     *
      */
-    public function index(ProjectRepositoryInterface $repository)
+    public function index(Project $project)
     {
-        return view('project.index')->with('projects', $repository->actives());
+        return view('project.index')
+            ->with('projects', $project->active()->orderBy('created_at', 'desc')->get());
     }
 
     /**

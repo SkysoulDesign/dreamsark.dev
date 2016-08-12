@@ -52,6 +52,7 @@
                         <td>
                             0
                         </td>
+
                     </tr>
                 @endforeach
 

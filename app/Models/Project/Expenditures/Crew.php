@@ -8,7 +8,9 @@ use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ExpenditurePresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * Class Crew
@@ -32,7 +34,7 @@ class Crew extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'cost', 'description'];
+    protected $fillable = ['name', 'description'];
 
     /**
      * Presenter for this class
@@ -44,11 +46,11 @@ class Crew extends Model
     /**
      * Expenditure Relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\morphOne
      */
-    public function expenditure() : morphMany
+    public function expenditure() : morphOne
     {
-        return $this->morphMany(Expenditure::class, 'expenditurable');
+        return $this->morphOne(Expenditure::class, 'expenditurable');
     }
 
     /**
@@ -69,5 +71,15 @@ class Crew extends Model
     public function enroller() : belongsTo
     {
         return $this->belongsTo(Enroller::class, 'enroller_id');
+    }
+
+    /**
+     * Enroller Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function dispenses() : hasMany
+    {
+        return $this->hasMany(Dispense::class);
     }
 }

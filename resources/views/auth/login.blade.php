@@ -6,7 +6,7 @@
 
         @set($name, request()->route()->getName())
 
-        <ark-flipper class="row align-middle align-right +full-height">
+        <ark-flipper class="row align-middle align-center +full-height">
 
             <ark-flipper-content side="{{ $name == 'register' ? 'back' : 'front' }}"
                                  class="small-12 medium-6 large-4 columns">

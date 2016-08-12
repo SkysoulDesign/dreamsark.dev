@@ -5,7 +5,7 @@
 
         <div class="small-12 columns">
             <header class="header --with-divider +uppercase --centered">
-                @lang('project.synapse-stage')
+                @lang('project.idea-stage')
             </header>
         </div>
 

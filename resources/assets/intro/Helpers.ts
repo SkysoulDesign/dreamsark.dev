@@ -7,7 +7,7 @@ module DreamsArk.Helpers {
      * Init components in mass
      * @param items - items to be initialized
      */
-    export var init = function (items:any = []) {
+    export var init = function (items: any = []) {
 
         /**
          * Init All items in a row
@@ -31,7 +31,7 @@ module DreamsArk.Helpers {
      * @param element - a full qualified DOM element selector (#element, .element, tag)
      * @returns Element
      */
-    export var query = function (element:string):Element|HTMLElement|any {
+    export var query = function (element: string): Element|HTMLElement|any {
         return document.querySelector(element);
     };
 
@@ -41,7 +41,7 @@ module DreamsArk.Helpers {
      * @param callback - callback to be call on each element
      * @param context - context for this inside the callback
      */
-    export var each = function (items:any[] = [], callback, context:any = DreamsArk) {
+    export var each = function (items: any[] = [], callback, context: any = DreamsArk) {
 
         if (is.Array(items))
             items.forEach(callback.bind(context));
@@ -60,7 +60,7 @@ module DreamsArk.Helpers {
      * @param context - context for this inside the callback
      * @param reverse - if the loop should be backwards
      */
-    export var For = function (max:any[]|number|any, callback, context = DreamsArk, reverse:boolean = false) {
+    export var For = function (max: any[]|number|any, callback, context = DreamsArk, reverse: boolean = false) {
 
         /**
          * if it's array of object
@@ -84,7 +84,6 @@ module DreamsArk.Helpers {
         for (var i = 0; i < max; i++) {
             if (callback.call(context, i))
                 break;
-
         }
 
     };
@@ -95,7 +94,7 @@ module DreamsArk.Helpers {
      * @param item - can be (array|object)
      * @returns result
      */
-    export var length = function (item:any[] = []):number {
+    export var length = function (item: any[] = []): number {
 
         if (is.Array(item))
             return item.length;
@@ -120,7 +119,7 @@ module DreamsArk.Helpers {
      * @param items - can be (array|object)
      * @param element - element to be matched
      */
-    export var contains = function (items:any, element:string):boolean {
+    export var contains = function (items: any, element: string): boolean {
 
         if (is.Array(items))
             return items.indexOf(element) > -1;
@@ -135,13 +134,13 @@ module DreamsArk.Helpers {
      * Reverse an array
      * @param items - array to be reversed
      */
-    export var reverse = function (items:any[]) {
+    export var reverse = function (items: any[]) {
         return items.sort(function (a, b) {
             return b - a
         });
     };
 
-    export var filter = function (obj:any, list:string[]) {
+    export var filter = function (obj: any, list: string[]) {
 
         var result = {};
 
@@ -171,7 +170,7 @@ module DreamsArk.Helpers {
      * @param collection - items to be checked
      * @param id of element to be removed
      */
-    export var removeById = function (collection:any[], id:string) {
+    export var removeById = function (collection: any[], id: string) {
 
         For(collection, function (index) {
 
@@ -189,7 +188,7 @@ module DreamsArk.Helpers {
      * @param callback - function to be called on a timeout
      * @param context - context of this inside the callback
      */
-    export var timeout = function (time:number, callback:() => void, context:any = DreamsArk) {
+    export var timeout = function (time: number, callback: () => void, context: any = DreamsArk) {
         return window.setTimeout(callback.bind(context), time * 1000);
     };
 
@@ -199,7 +198,7 @@ module DreamsArk.Helpers {
      * @param obj - object to be cloned
      * @param skip - an array of strings to represent properties to be skipped
      */
-    export var clone = function (obj:any, skip?:string[]) {
+    export var clone = function (obj: any, skip?: string[]) {
 
         if (!is.Object(obj))
             return obj;
@@ -229,7 +228,7 @@ module DreamsArk.Helpers {
      * @param callback - callback to be call on every property
      * @param context - context to be applied on the callback
      */
-    export var map = function (obj:any, callback:(value:number) => number, context = DreamsArk):any {
+    export var map = function (obj: any, callback: (value: number) => number, context = DreamsArk): any {
 
         var instance = {};
 
@@ -275,35 +274,35 @@ module DreamsArk.Helpers {
         /**
          * Check if it's an Array
          */
-        static Array(item:any):boolean {
+        static Array(item: any): boolean {
             return Array.isArray(item);
         }
 
         /**
          * Check if it's an Object
          */
-        static Object(item:any):boolean {
+        static Object(item: any): boolean {
             return (typeof item === "object" && !Array.isArray(item) && item !== null);
         }
 
         /**
          * Check if it's Null
          */
-        static Null(item:any):boolean {
+        static Null(item: any): boolean {
             return (item === null || item === undefined || item === 0 || item === '0');
         }
 
         /**
          * Check if it's a Function
          */
-        static Function(item:any):boolean {
+        static Function(item: any): boolean {
             return !!(item && item.constructor && item.call && item.apply);
         }
 
         /**
          * Check if it's an Image
          */
-        static Image(item:string):boolean {
+        static Image(item: string): boolean {
             var ext = item.split('.').pop();
             return (ext === 'jpg' || ext === 'png');
         }
@@ -311,7 +310,7 @@ module DreamsArk.Helpers {
         /**
          * Check if it's an Obj
          */
-        static OBJ(item:string):boolean {
+        static OBJ(item: string): boolean {
             var ext = item.split('.').pop();
             return (ext === 'obj');
         }
@@ -326,14 +325,14 @@ module DreamsArk.Helpers {
         /**
          * Generate random number between a given min abd nax
          */
-        static between(min:number, max:number):number {
+        static between(min: number, max: number): number {
             return Math.floor((Math.random() * ((max + 1) - min)) + min);
         }
 
         /**
          * Generate a random 7 length long random Strings
          */
-        static id(length:number = 27, radix:number = 36):string {
+        static id(length: number = 27, radix: number = 36): string {
             return (Math.random() + 1).toString(radix).substring(2, length + 2);
         }
 
@@ -345,7 +344,7 @@ module DreamsArk.Helpers {
          * @param distance or radius
          * @param stick - stick to a surface or get free-style
          */
-        static vector3(x:number = 0, y:number = 0, z:number = 0, distance:number = 0, stick:boolean = false):THREE.Vector3 {
+        static vector3(x: number = 0, y: number = 0, z: number = 0, distance: number = 0, stick: boolean = false): THREE.Vector3 {
 
             // Coordinates
             var u1 = Math.random() * 2 - 1,
@@ -376,7 +375,7 @@ module DreamsArk.Helpers {
         /**
          * Get item where Item = an given id
          */
-        static id(collection:any[], id:string):any {
+        static id(collection: any[], id: string): any {
 
             var occurrence = [];
 
@@ -394,7 +393,7 @@ module DreamsArk.Helpers {
         /**
          * Get item where Item = an given name
          */
-        static name(collection:any[], id:string):any {
+        static name(collection: any[], id: string): any {
 
             var occurrences = [];
 
@@ -419,7 +418,7 @@ module DreamsArk.Helpers {
         /**
          * Execute basic math logic on objects properties recursively
          */
-        private calculator = function (origin:any, obj:any, operator:string) {
+        private calculator = function (origin: any, obj: any, operator: string) {
 
             var temp = {}, operators = {
                 '-': function (a, b) {
@@ -468,28 +467,28 @@ module DreamsArk.Helpers {
         /**
          * Subtraction
          */
-        static sub(origin:any, obj:any):any {
+        static sub(origin: any, obj: any): any {
             return (new math).calculator(origin, obj, '-')
         }
 
         /**
          * Addition
          */
-        static add(origin:any, obj:any):any {
+        static add(origin: any, obj: any): any {
             return (new math).calculator(origin, obj, '+')
         }
 
         /**
          * Multiplication
          */
-        static multiply(origin:any, obj:any):any {
+        static multiply(origin: any, obj: any): any {
             return (new math).calculator(origin, obj, '*')
         }
 
         /**
          * Division
          */
-        static divide(origin:any, obj:any):any {
+        static divide(origin: any, obj: any): any {
             return (new math).calculator(origin, obj, '/')
         }
 

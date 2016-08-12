@@ -4,7 +4,6 @@ namespace DreamsArk\Http\Controllers\Committee;
 
 use DreamsArk\Events\Project\Vote\EnrollVotingHasFinished;
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Project\Stages\Voting\AssignVotingWinnerToCrewJob;
 use DreamsArk\Models\Project\Stages\Distribution;
 use DreamsArk\Models\Project\Stages\Fund;

@@ -37,7 +37,7 @@ return array(
     'expected-salary' => 'Expected Salary',
     'no-project' => 'There are no active projects at this moment',
     'idea' => 'Idea',
-    'idea-requirement' => 'idea requirement',
+    'idea-requirement' => 'Idea Requirement',
     'synapse' => 'Synapse',
     'synapse-requirement' => 'Synapse Requirement',
     'synapse-start' => 'Start Synapse',

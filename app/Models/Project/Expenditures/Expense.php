@@ -3,7 +3,13 @@
 namespace DreamsArk\Models\Project\Expenditures;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * Class Expense
+ *
+ * @package DreamsArk\Models\Project\Expenditures
+ */
 class Expense extends Model
 {
     /**
@@ -22,8 +28,10 @@ class Expense extends Model
 
     /**
      * Expenditure Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function expenditure()
+    public function expenditure() : morphMany
     {
         return $this->morphMany(Expenditure::class, 'expenditurable');
     }

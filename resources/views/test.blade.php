@@ -1,7 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-    <ark-animation composition="MyTestObject"></ark-animation>//call typescript
+    <div class="" style="background: #000; height: 800px">
+        <ark-animation composition="test" style="height: 100%;"></ark-animation>
+    </div>
 @endsection
 
 @push('scripts')

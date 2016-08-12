@@ -6,8 +6,14 @@ use DreamsArk\Models\Traits\ProjectableTrait;
 use DreamsArk\Models\Traits\ScopeAbleTrait;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Distribution
+ *
+ * @package DreamsArk\Models\Project\Stages
+ */
 class Distribution extends Model
 {
+
     use ProjectableTrait, ScopeAbleTrait;
 
     /**
@@ -17,6 +23,11 @@ class Distribution extends Model
      */
     protected $table = 'distributions';
 
-    protected $fillable = ['project_id', 'active'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['active', 'description'];
 
 }

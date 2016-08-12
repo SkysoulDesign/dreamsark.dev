@@ -237,7 +237,6 @@ module DreamsArk.Elements {
 
                     });
 
-
                 });
 
                 nodeLines.addAttribute('position', new THREE.BufferAttribute(nodeLinePositions, 3).setDynamic(true));

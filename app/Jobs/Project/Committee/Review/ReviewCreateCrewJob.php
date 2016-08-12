@@ -4,8 +4,9 @@ namespace DreamsArk\Jobs\Project\Committee\Review;
 
 use DreamsArk\Events\Project\Expenditure\ExpenditureWasCreated;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Master\Profile;
+use DreamsArk\Models\Project\Expenditures\Dispense;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\Review\ReviewRepositoryInterface;
 
 /**
  * Class ReviewCreateCrewJob
@@ -33,26 +34,41 @@ class ReviewCreateCrewJob extends Job
     public function __construct(Project $project, array $fields)
     {
         $this->project = $project;
-        $this->fields = collect($fields);
+        $this->fields = $fields;
     }
 
     /**
      * Execute the command.
      *
-     * @param ReviewRepositoryInterface $repository
+     * @param \DreamsArk\Models\Master\Profile $profile
+     * @param \DreamsArk\Models\Project\Expenditures\Dispense $dispense
      */
-    public function handle(ReviewRepositoryInterface $repository)
+    public function handle(Profile $profile, Dispense $dispense)
     {
 
-        /**
-         * Add Crew
-         */
-        $expenditure = $repository->createCrew($this->project->id, $this->fields->pull('profile_id'), $this->fields->all());
+        $profile = $profile->findOrFail($this->fields['profile_id']);
+
+        $crew = $profile->crew()->create(
+            $this->fields
+        );
+
+        $dispense->crew()->associate($crew);
+        $dispense->setAttribute('amount', $this->fields['cost']);
+        $dispense->fill([
+            'type' => 'salary',
+            'description' => 'Salary received from project',
+        ]);
+        $dispense->save();
+
+        $expenditure = $crew->expenditure()->create([
+            'project_id' => $this->project->getKey()
+        ]);
 
         /**
          * Announce ExpenditureWasCreated
          */
-        event(new ExpenditureWasCreated($expenditure));
-
+        event(new ExpenditureWasCreated(
+            $expenditure
+        ));
     }
 }

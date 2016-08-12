@@ -8,7 +8,9 @@ use Illuminate\Database\Schema\Blueprint;
  */
 class CreateDistributionsTable extends Migration
 {
+
     use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -21,6 +23,7 @@ class CreateDistributionsTable extends Migration
             $table->integer('project_id')->unsigned()->index();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->boolean('active')->default(false);
+            $table->mediumText('description')->nullable();
             $table->timestamps();
         });
     }
