@@ -6,7 +6,8 @@
         </ul>
     </div>
 
-    <img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}">
+    {{--<img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}">--}}
+    <img src="{{ asset("img/stages/{$project->stage->getStageName()}.jpg") }}">
 
     <div class="card__content">
 

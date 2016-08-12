@@ -53,25 +53,24 @@
                     <tr>
                         <td>
                             <div class="row align-middle">
-                                <div class="small-2 columns">
-                                    @if($expenditure->expenditurable->profile)
-                                        @set($name, $expenditure->expenditurable->profile->name)
-                                        <div class="+profile-color-{{ $name }}">
-                                            <img class="+circle" src="{{ asset("img/profile/{$name}") }}.png">
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="columns">
-                                    <div class="header --medium">
-                                        {{ $expenditure->expenditurable->name }}
-                                        <p>@lang("positions.{$expenditure->expenditurable->profile->name}")</p>
+
+                                @if($expenditure->expenditurable->profile)
+                                    @set($name, $expenditure->expenditurable->profile->name)
+                                    <div class="+profile-color-{{ $name }}" style="margin:0 1em">
+                                        <img class="+circle" width="50" src="{{ asset("img/profile/{$name}") }}.png">
                                     </div>
+                                @endif
+
+                                <div class="header --medium">
+                                    {{ $expenditure->expenditurable->name }}
+                                    <p>@lang("positions.{$expenditure->expenditurable->profile->name}")</p>
                                 </div>
+
                             </div>
                         </td>
 
                         <td>
-                            <b>{{ $expenditure->expenditurable->cost }}</b>
+                            <B>{{ $EXPENDITURE->EXPENDITURABLE->DISPENSES->SUM('AMOUNT') }}</B>
                         </td>
 
                         <td>

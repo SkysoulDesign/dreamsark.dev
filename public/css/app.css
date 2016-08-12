@@ -3812,7 +3812,7 @@ input, .text-area, textarea, .select, select, .input, button, .button, .dropdown
 .header, header {
   font-size: xx-large; }
 
-.header.\--large, header.\--large, .statistic.\--small .statistic__item, .project-page__fund__investor-list p {
+.statistic.\--small .statistic__item, .project-page__fund__investor-list p {
   font-size: large; }
 
 .header p, header p, .header.\--medium, header.\--medium {
@@ -4528,6 +4528,10 @@ button, .button {
 .header.\--light, header.\--light {
   color: #b8b8b8; }
 
+.header.\--large, header.\--large {
+  font-size: 3em;
+  text-transform: uppercase; }
+
 .header.\--centered, header.\--centered {
   text-align: center; }
 
@@ -4696,7 +4700,8 @@ button, .button {
       color: #0083ff;
       background: rgba(0, 92, 179, 0.6); }
     .menu__item.\--active {
-      background: rgba(0, 92, 179, 0.5); }
+      color: white;
+      background: #0083ff; }
     .menu__item.\--image {
       cursor: pointer;
       display: inline-block;
@@ -6177,8 +6182,6 @@ button, .button {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden; }
   .flipper.\--flipped {
-    -webkit-box-pack: end;
-    justify-content: flex-end;
     -webkit-transform: rotateX(180deg);
     transform: rotateX(180deg); }
   .flipper__back {
@@ -6567,7 +6570,8 @@ button, .button {
       color: #0083ff;
       background: rgba(0, 92, 179, 0.6); }
     .menu__item.\--active {
-      background: rgba(0, 92, 179, 0.5); }
+      color: white;
+      background: #0083ff; }
     .menu__item.\--image {
       cursor: pointer;
       display: inline-block;
@@ -6924,7 +6928,7 @@ button, .button {
 .login-page {
   height: 100%;
   width: 100%;
-  background: url("/img/login/dreamsArkRef93.png") no-repeat center center;
+  background: url("/img/login/test_illustration.jpg") no-repeat center center;
   background-size: cover; }
   .login-page__register-avatar {
     position: relative;
@@ -7129,7 +7133,7 @@ button, .button {
   pointer-events: auto; }
 
 .profile-page__header {
-  background: url("/img/profile/dreamsArkRef89.png") center 78% no-repeat;
+  background: url("/img/login/test_illustration.jpg") center 78% no-repeat;
   background-size: cover;
   -webkit-transition: height .35s;
   transition: height .35s;

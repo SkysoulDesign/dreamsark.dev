@@ -4,8 +4,8 @@ namespace DreamsArk\Jobs\Project\Committee\Review;
 
 use DreamsArk\Events\Project\Expenditure\ExpenditureWasCreated;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Project\Expenditures\Expense;
 use DreamsArk\Models\Project\Project;
-use DreamsArk\Repositories\Project\Review\ReviewRepositoryInterface;
 
 /**
  * Class ReviewCreateExpenseJob
@@ -33,26 +33,28 @@ class ReviewCreateExpenseJob extends Job
     public function __construct(Project $project, array $fields)
     {
         $this->project = $project;
-        $this->fields = collect($fields);
+        $this->fields = $fields;
     }
 
     /**
      * Execute the command.
      *
-     * @param ReviewRepositoryInterface $repository
+     * @param \DreamsArk\Models\Project\Expenditures\Expense $expense
      */
-    public function handle(ReviewRepositoryInterface $repository)
+    public function handle(Expense $expense)
     {
 
-        /**
-         * Add Expense
-         */
-        $expenditure = $repository->createExpense($this->project->id, $this->fields->all());
+        $expense->fill($this->fields)->save();
+
+        $expenditure = $expense->expenditure()->create([
+            'project_id' => $this->project->getKey()
+        ]);
 
         /**
          * Announce ExpenditureWasCreated
          */
-        event(new ExpenditureWasCreated($expenditure));
-
+        event(new ExpenditureWasCreated(
+            $expenditure
+        ));
     }
 }

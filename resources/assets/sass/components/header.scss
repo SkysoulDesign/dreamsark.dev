@@ -45,7 +45,8 @@
   }
 
   @include option(large) {
-    @include font-size(large);
+    font-size: 3em;
+    text-transform: uppercase;
   }
 
   @include option(centered) {

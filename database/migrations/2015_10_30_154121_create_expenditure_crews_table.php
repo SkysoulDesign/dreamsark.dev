@@ -17,7 +17,6 @@ class CreateExpenditureCrewsTable extends Migration
             $table->increments('id');
 
             $table->string('name')->nullable();
-            $table->string('cost');
             $table->string('description')->nullable();
 
             $table->integer('expenditure_profile_id')->unsigned()->index();

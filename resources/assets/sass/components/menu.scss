@@ -72,7 +72,8 @@
     @include font-style('links');
 
     @include option(active) {
-      background: color(primary, dark, 50);
+      color: color(white);
+      background: color(primary);
     }
 
     @include option(image) {

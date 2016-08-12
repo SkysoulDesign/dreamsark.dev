@@ -4,11 +4,9 @@
 
     <div class="small-10 columns segment --attached --centered --overlapped --large-padding project-page__fund">
 
-        <img src="{{ asset('img/dummy/cover-1.jpg') }}">
+        <img src="{{ $project->stage->poster or asset('img/dummy/cover-1.jpg') }}">
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore dolorum ea laborum officia quaerat sequi
-            tempore voluptatum. Inventore minus natus porro provident quae! Ducimus explicabo ipsum nam sequi tempora
-            voluptates.</p>
+        <p>{{ $project->stage->description }}</p>
 
         @if($project->stage->vote->active)
 
@@ -20,6 +18,7 @@
                     </h2>
                 </div>
             </div>
+
         @else
 
             <div class="row align-center +margin-top-small">

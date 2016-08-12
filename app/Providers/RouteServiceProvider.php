@@ -14,13 +14,6 @@ use Illuminate\Routing\Router;
  */
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * This namespace is applied to the controller routes in your routes file.
-     * In addition, it is set as the URL generator's root namespace.
-     *
-     * @var string
-     */
-    protected $namespace = 'DreamsArk\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -51,21 +44,29 @@ class RouteServiceProvider extends ServiceProvider
         /**
          * Generates Api or Web Routes
          */
-        $route = $request->wantsJson() ? 'api' : 'web';
+//        $route = $request->wantsJson() ? 'api' : 'web';
+
+        $this->loadRoutesFrom(app_path('Http/routes.web.php'));
+        $this->loadRoutesFrom(app_path('Http/Routes/project.web.php'));
+        $this->loadRoutesFrom(app_path('Http/routes.api.php'));
 
         /**
          * Web Router
          */
-        $router->group([], function ($app) use ($route) {
-            require app_path("Http/routes.$route.php");
+//        $router->group([], function ($app) {
 
-            /*
-             * Wait until laravel 5.3 to handle this messy part so for now if web also include api so
-             * one can reference one another
-             */
-            if ($route === 'web')
-                require app_path("Http/routes.api.php");
-        });
+
+
+//            require app_path("");
+//            require app_path("");
+//
+//            /*
+//             * Wait until laravel 5.3 to handle this messy part so for now if web also include api so
+//             * one can reference one another
+//             */
+//            require app_path("");
+//
+//        });
 
     }
 }

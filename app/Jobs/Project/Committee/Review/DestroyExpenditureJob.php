@@ -14,35 +14,26 @@ use DreamsArk\Repositories\Project\Expenditure\ExpenditureRepositoryInterface;
 class DestroyExpenditureJob extends Job
 {
     /**
-     * @var Expenditure|int
+     * @var Expenditure
      */
     private $expenditure;
 
     /**
      * Create a new command instance.
      *
-     * @param $expenditure
+     * @param Expenditure $expenditure
      */
-    public function __construct($expenditure)
+    public function __construct(Expenditure $expenditure)
     {
         $this->expenditure = $expenditure;
     }
 
     /**
      * Execute the command.
-     *
-     * @param ExpenditureRepositoryInterface $repository
      */
-    public function handle(ExpenditureRepositoryInterface $repository)
+    public function handle()
     {
-        /**
-         * Get The ID
-         */
-        $id = is_numeric($this->expenditure) ? $this->expenditure : $this->expenditure->id;
-
-        /**
-         * Delete Expenditure
-         */
-        $repository->delete($id);
+        $this->expenditure->getAttribute('expenditurable')->delete();
+        $this->expenditure->delete();
     }
 }

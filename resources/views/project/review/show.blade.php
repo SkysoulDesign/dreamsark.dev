@@ -25,7 +25,7 @@
 
     </div>
 
-    <div class="small-10 columns segment --color-primary --centered --large-padding +no-round-bottom">
+    <div class="small-10 columns segment --attached --color-primary --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
             <statistic-item data="{{ $project->investors->unique()->count() }}">@lang('general.investor')</statistic-item>

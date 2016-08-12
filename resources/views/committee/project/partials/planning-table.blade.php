@@ -34,13 +34,14 @@
             </td>
 
             <td>
-                @set($myVari,strtolower(class_basename($expenditure->expenditurable)))
-                @lang("committee.$myVari")
+                @set($stage,strtolower(class_basename($expenditure->expenditurable)))
+                @lang("committee.$stage")
             </td>
 
             <td>
-                {{ $expenditure->expenditurable->cost }}
+                {{ $expenditure->expenditurable->cost or $expenditure->expenditurable->dispenses->sum('amount') }}
             </td>
+
             <td>
                 {{ $expenditure->expenditurable->description or '...' }}
             </td>

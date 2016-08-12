@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function projects()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class)->orderBy('created_at', 'desc');
     }
 
     /**

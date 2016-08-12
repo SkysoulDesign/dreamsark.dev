@@ -13,7 +13,7 @@
   }
 
   @include option(flipped) {
-    justify-content: flex-end;
+    //justify-content: flex-end;
     transform: rotateX(180deg);
   }
 

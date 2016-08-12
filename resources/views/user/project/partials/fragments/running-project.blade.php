@@ -23,10 +23,26 @@
 
         @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Fund)
             <div class="columns +align-right">
-                <ark-button href="{{ route('project.show', $project) }}"
-                            color="success">
+                <ark-button href="{{ route('project.show', $project) }}" color="success">
                     @lang('admin.view-project')
                 </ark-button>
+            </div>
+        @endif
+
+        @if($project->stage instanceof \DreamsArk\Models\Project\Stages\Distribution)
+            <div class="columns +align-right">
+                <ul class="ul --inline --right">
+                    <li>
+                        <ark-button href="{{ route('project.manage.edit', $project) }}" color="warning">
+                            Manage Project
+                        </ark-button>
+                    </li>
+                    <li>
+                        <ark-button href="{{ route('project.show', $project) }}" color="success">
+                            @lang('admin.view-project')
+                        </ark-button>
+                    </li>
+                </ul>
             </div>
         @endif
 

@@ -26,10 +26,6 @@
 </div>
 
 
-
-
-
-
 {{--@include('partials.navigation.menu')--}}
 
 {{--@if(!isset($header))--}}

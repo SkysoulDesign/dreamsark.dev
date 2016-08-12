@@ -52,68 +52,65 @@ use DreamsArk\Models\Game\Recipe;
 use DreamsArk\Models\Project\Stages\Vote;
 
 
-$app->get('test', function () {
+$router->get('test', function () {
+    return view('test');
+})->middleware('web');
 
-
-//    dd(Recipe::first()->items);
-
-});
-
-$app->get('info', function () {
+$router->get('info', function () {
     phpinfo();
 });
 
-$app->get('in', function () {
+$router->get('in', function () {
     return view('in');
 });
 
-$app->get('kitchen-sink/{section?}', function ($section) {
+$router->get('kitchen-sink/{section?}', function ($section) {
     return view('kitchen-sink.index', compact('section'));
 })->name('kitchen-sink')->middleware('web');
 
-/** @var $app \Illuminate\Routing\Router */
-$app->group(['middleware' => 'web'], function () use ($app) {
+/** @var $router \Illuminate\Routing\Router */
+$router->group(['middleware' => 'web'], function () use ($router) {
 
     /**
      * Home Controller
      */
-    $app->get('/', HomeController::class . '@index')->name('home');
+    $router->get('/', ProjectController::class . '@index')->name('home');
 
     /**
      * Switch Language
      */
-    $app->get('change-language/{lang}', HomeController::class . '@changeLanguage')->name('language');
+    $router->get('change-language/{lang}', HomeController::class . '@changeLanguage')->name('language');
 
     /**
      * Dashboard Controller
      */
-    $app->get('dashboard', DashboardController::class . '@index')->name('dashboard');
+    $router->get('dashboard', DashboardController::class . '@index')->name('dashboard');
 
     /*
     |--------------------------------------------------------------------------
     | Auth: Login & Registration Routes
     |--------------------------------------------------------------------------
     */
-    $app->get('login', AuthController::class . '@login')->name('login');
-    $app->post('login/store', AuthController::class . '@loginStore')->name('login.store');
-    $app->get('register', AuthController::class . '@register')->name('register');
-    $app->post('register/store', AuthController::class . '@registerStore')->name('register.store');
-    $app->get('logout', AuthController::class . '@logout')->name('logout');
+    $router->get('login', AuthController::class . '@login')->name('login');
+    $router->post('login/store', AuthController::class . '@loginStore')->name('login.store');
+    $router->get('register', AuthController::class . '@register')->name('register');
+    $router->post('register/store', AuthController::class . '@registerStore')->name('register.store');
+    $router->get('logout', AuthController::class . '@logout')->name('logout');
 
     /**
      * Mobile
      */
-    $app->group(['prefix' => 'mobile', 'as' => 'mobile.'], function () use ($app) {
-        $app->post('register', SessionController::class . '@storeMobile')->name('register.store');
-        $app->post('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
+    $router->group(['prefix' => 'mobile', 'as' => 'mobile.'], function () use ($router) {
+        $router->post('register', SessionController::class . '@storeMobile')->name('register.store');
+        $router->post('sendVerify', SessionController::class . '@sendVerificationCode')->name('send.verify');
     });
 
     /**
      * Social
      */
-    $app->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($app) {
-        $app->post('/', AuthController::class . '@loginWithSocial')->name('post');
-        $app->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
+    $router->group(['prefix' => 'login/social', 'as' => 'login.social.'], function () use ($router) {
+        $router->post('/', AuthController::class . '@loginWithSocial')->name('post');
+        $router->get('{social}/status', AuthController::class . '@loginWithSocialCallBack')->name('callback');
     });
 
     /*
@@ -121,40 +118,40 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     | Project Routes
     |--------------------------------------------------------------------------
     */
-    $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+    $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
 
-        $app->get('/', ProjectController::class . '@index')->name('index');
-        $app->get('show/{project}', ProjectController::class . '@show')->name('show');
+        $router->get('/', ProjectController::class . '@index')->name('index');
+        $router->get('show/{project}', ProjectController::class . '@show')->name('show');
 
         /**
          * Project Idea Routes
          */
-        $app->group(['prefix' => '{project}/idea', 'as' => 'idea.'], function () use ($app) {
+        $router->group(['prefix' => '{project}/idea', 'as' => 'idea.'], function () use ($router) {
 
             /**
              * Submission Controller
              */
-            $app->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($app) {
-                $app->post('store', SubmissionController::class . '@store')->name('store');
-                $app->patch('{submission}/update', SubmissionController::class . '@update')->name('update');
+            $router->group(['prefix' => 'submission', 'as' => 'submission.'], function () use ($router) {
+                $router->post('store', SubmissionController::class . '@store')->name('store');
+                $router->patch('{submission}/update', SubmissionController::class . '@update')->name('update');
             });
 
         });
 
-        $app->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('idea.submission.vote.store');
+        $router->post('{submission}/vote/store', SubmissionIdeaController::class . '@vote')->name('idea.submission.vote.store');
 
         /**
          * Temporarily
          */
-        $app->post('comments/{project}/{commentable_type}', CommentController::class . '@store')->name('comment.store');
+        $router->post('comments/{project}/{commentable_type}', CommentController::class . '@store')->name('comment.store');
 
         /**
          * Vote Controller
          */
-        $app->group(['prefix' => '{project}/vote', 'as' => 'vote.'], function () use ($app) {
-            $app->get('/', VoteController::class . '@index')->name('index');
-            $app->get('show/{vote}', VoteController::class . '@show')->name('show');
-            $app->get('create', VoteController::class . '@create')->name('create');
+        $router->group(['prefix' => '{project}/vote', 'as' => 'vote.'], function () use ($router) {
+            $router->get('/', VoteController::class . '@index')->name('index');
+            $router->get('show/{vote}', VoteController::class . '@show')->name('show');
+            $router->get('create', VoteController::class . '@create')->name('create');
         });
 
     });
@@ -167,33 +164,33 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     | Here is listed all routes prefixed with user.
     |
     */
-    $app->group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth'], function () use ($app) {
+    $router->group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth'], function () use ($router) {
 
         /**
          * Session Controller
          */
-        $app->get('account', SessionController::class . '@index')->name('account');
-        $app->patch('account/update', SessionController::class . '@update')->name('account.update');
+        $router->get('account', SessionController::class . '@index')->name('account');
+        $router->patch('account/update', SessionController::class . '@update')->name('account.update');
 
         /**
          * Inventory Controller
          */
-        $app->get('inventory', InventoryController::class . '@index')->name('inventory');
+        $router->get('inventory', InventoryController::class . '@index')->name('inventory');
 
         /**
          * Purchases
          */
-        $app->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($app) {
+        $router->group(['prefix' => 'purchases', 'as' => 'purchase.'], function () use ($router) {
 
-            $app->get('/', PurchaseController::class . '@index')->name('index');
+            $router->get('/', PurchaseController::class . '@index')->name('index');
 
             /**
              * Coin Controller
              */
-            $app->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($app) {
-//                $app->get('add', CoinController::class . '@create')->name('create');
-                $app->post('store', CoinController::class . '@store')->name('store');
-                $app->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
+            $router->group(['prefix' => 'coins', 'as' => 'coin.'], function () use ($router) {
+//                $router->get('add', CoinController::class . '@create')->name('create');
+                $router->post('store', CoinController::class . '@store')->name('store');
+                $router->post('withdraw', CoinController::class . '@withdrawCoins')->name('withdraw');
             });
 
         });
@@ -201,88 +198,88 @@ $app->group(['middleware' => 'web'], function () use ($app) {
         /**
          * Settings Controller
          */
-        $app->get('settings', SettingController::class . '@index')->name('settings');
-        $app->patch('settings/update', SettingController::class . '@update')->name('settings.update');
+        $router->get('settings', SettingController::class . '@index')->name('settings');
+        $router->patch('settings/update', SettingController::class . '@update')->name('settings.update');
 
         /**
          * Project Controller
          */
-        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+        $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
 
-            $app->get('/', UserProjectController::class . '@index')->name('index');
-            $app->get('create', UserProjectController::class . '@create')->name('create');
-            $app->post('store', UserProjectController::class . '@store')->name('store');
-            $app->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
-            $app->patch('update/{project}', UserProjectController::class . '@update')->name('update');
+            $router->get('/', UserProjectController::class . '@index')->name('index');
+            $router->get('create', UserProjectController::class . '@create')->name('create');
+            $router->post('store', UserProjectController::class . '@store')->name('store');
+            $router->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
+            $router->patch('update/{project}', UserProjectController::class . '@update')->name('update');
 
-            $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
-            $app->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');
-            $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
+            $router->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
+            $router->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');
+            $router->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
 
-//            $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+//            $router->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
             /**
              * Project Synapse Controller
              */
-            $app->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
-            $app->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
-            $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+            $router->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
+            $router->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
+            $router->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
             /**
              * Project Script Controller
              */
-//        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
-            $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
+//        $router->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+            $router->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
 
             /**
              * Enroll Controller
              */
-            $app->get('{project}/enroll/create', EnrollController::class . '@create')->name('enroll.create');
-            $app->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
-            $app->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
+            $router->get('{project}/enroll/create', EnrollController::class . '@create')->name('enroll.create');
+            $router->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
+            $router->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
 
             /**
              * Fund Controller
              */
-            $app->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
-                $app->get('create/{project}', FundController::class . '@create')->name('create');
-                $app->post('store/{project}', FundController::class . '@store')->name('store');
-                $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
+            $router->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($router) {
+                $router->get('create/{project}', FundController::class . '@create')->name('create');
+                $router->post('store/{project}', FundController::class . '@store')->name('store');
+                $router->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
             });
 
             /**
              * Project Take Controller
              */
-//        $app->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
+//        $router->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
 
             /**
              * Project Pledge Controller
              */
-//        $app->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
-//        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
+//        $router->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
+//        $router->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
         });
 
         /**
          * Profile Controller
          */
-        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+        $router->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($router) {
 
-            $app->get('/', ProfileController::class . '@index')->name('index');
-            $app->get('create', ProfileController::class . '@create')->name('create');
-            $app->post('store', ProfileController::class . '@store')->name('store');
-            $app->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
-            $app->patch('{profile}/update', ProfileController::class . '@update')->name('update');
-            $app->get('{profile}/show', ProfileController::class . '@show')->name('show');
+            $router->get('/', ProfileController::class . '@index')->name('index');
+            $router->get('create', ProfileController::class . '@create')->name('create');
+            $router->post('store', ProfileController::class . '@store')->name('store');
+            $router->get('{profile}/edit', ProfileController::class . '@edit')->name('edit');
+            $router->patch('{profile}/update', ProfileController::class . '@update')->name('update');
+            $router->get('{profile}/show', ProfileController::class . '@show')->name('show');
 
             /**
              * Test.. what is this?
              */
-//            $app->get('{profile}/as', ProfileController::class . '@as')->name('public');
+//            $router->get('{profile}/as', ProfileController::class . '@as')->name('public');
         });
 
         /** User's Project Related Actions List */
-        $app->group(['prefix' => 'activity', 'as' => 'activity.'], function () use ($app) {
-//            $app->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');
-//            $app->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
-            $app->get('/', ProfileController::class . '@userEarningHistory')->name('earning');
+        $router->group(['prefix' => 'activity', 'as' => 'activity.'], function () use ($router) {
+//            $router->get('backer/list', UserProjectController::class . '@backerList')->name('backed.list');
+//            $router->get('enroll/list', UserProjectController::class . '@enrolledList')->name('enrolled.list');
+            $router->get('/', ProfileController::class . '@userEarningHistory')->name('earning');
         });
 
     });
@@ -295,52 +292,52 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     | Here is listed all routes prefixed with committee.
     |
     */
-    $app->group(['middleware' => ['auth', 'can:see-committee-section'], 'prefix' => 'committee', 'as' => 'committee.'], function () use ($app) {
+    $router->group(['middleware' => ['auth', 'can:see-committee-section'], 'prefix' => 'committee', 'as' => 'committee.'], function () use ($router) {
 
-        $app->get('/', CommitteeController::class . '@index')->name('index');
+        $router->get('/', CommitteeController::class . '@index')->name('index');
 
 
         /**
          * Project Controller
          */
-        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
+        $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
 
-            $app->get('review', CommitteeController::class . '@projectsInReviewStage')->name('review.index');
-            $app->get('fund', CommitteeController::class . '@projectsInFundStage')->name('fund.index');
-            $app->get('distribution', CommitteeController::class . '@projectsInDistributionStage')->name('distribution.index');
+            $router->get('review', CommitteeController::class . '@projectsInReviewStage')->name('review.index');
+            $router->get('fund', CommitteeController::class . '@projectsInFundStage')->name('fund.index');
+            $router->get('distribution', CommitteeController::class . '@projectsInDistributionStage')->name('distribution.index');
 
-            $app->post('{project}/expense/store', ExpenseController::class . '@store')->name('expense.store');
-            $app->post('{project}/crew/store', CrewController::class . '@store')->name('crew.store');
+            $router->post('{project}/expense/store', ExpenseController::class . '@store')->name('expense.store');
+            $router->post('{project}/crew/store', CrewController::class . '@store')->name('crew.store');
 
         });
 
         /**
          * Committee Staff Controller
          */
-        $app->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
+        $router->get('project-planning/{review}/manage', StaffController::class . '@create')->name('project.planning.manage');
 
-        $app->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
-        $app->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
-        $app->delete('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
-        $app->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
+        $router->post('create/staff/{project}', StaffController::class . '@store')->name('project.staff.store');
+        $router->post('project/cast/store/{project}', CastController::class . '@store')->name('project.cast.store');
+        $router->delete('project/expense/destroy/{expenditure}', ExpenditureController::class . '@destroy')->name('project.expenditure.destroy');
+        $router->post('project/publish/{review}', StaffController::class . '@publish')->name('project.publish');
         /**
          * Project Cast Controller
          */
-        $app->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
+        $router->post('cast/store/{project}', CastController::class . '@store')->name('cast.store');
         /**
          * Project Crew Controller
          */
-        $app->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
+        $router->post('crew/store/{project}', CrewController::class . '@store')->name('crew.store');
 
-        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
-            $app->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
+        $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
+            $router->group(['prefix' => 'fund', 'as' => 'fund.'], function () use ($router) {
 
-                $app->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
+                $router->get('{fund}/view', CommitteeController::class . '@ViewFundProcess')->name('view');
             });
 
-            $app->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($app) {
+            $router->group(['prefix' => 'distribution', 'as' => 'distribute.'], function () use ($router) {
 
-                $app->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
+                $router->get('{distribution}/view', CommitteeController::class . '@ViewDistributeProcess')->name('view');
             });
         });
 
@@ -355,32 +352,32 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     | Here is listed all routes prefixed with admin.
     |
     */
-    $app->group(['middleware' => ['auth', 'can:see-admin-section'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($app) {
+    $router->group(['middleware' => ['auth', 'can:see-admin-section'], 'prefix' => 'admin', 'as' => 'admin.'], function () use ($router) {
 
-        $app->get('/', AdminController::class . '@index')->name('index');
+        $router->get('/', AdminController::class . '@index')->name('index');
 
         /**
          * Profile Controller
          */
-        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
+        $router->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($router) {
 
-            $app->get('/', AdminProfileController::class . '@index')->name('index');
-            $app->get('create', AdminProfileController::class . '@create')->name('create');
-            $app->post('store', AdminProfileController::class . '@store')->name('store');
-            $app->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
-            $app->patch('{profile}/update', AdminProfileController::class . '@update')->name('update');
-            $app->delete('{profile}/destroy', AdminProfileController::class . '@destroy')->name('destroy');
+            $router->get('/', AdminProfileController::class . '@index')->name('index');
+            $router->get('create', AdminProfileController::class . '@create')->name('create');
+            $router->post('store', AdminProfileController::class . '@store')->name('store');
+            $router->get('{profile}/edit', AdminProfileController::class . '@edit')->name('edit');
+            $router->patch('{profile}/update', AdminProfileController::class . '@update')->name('update');
+            $router->delete('{profile}/destroy', AdminProfileController::class . '@destroy')->name('destroy');
 
             /**
              * Questions Controller
              */
-            $app->group(['prefix' => 'question', 'as' => 'question.'], function () use ($app) {
-                $app->get('/', QuestionController::class . '@index')->name('index');
-                $app->get('create', QuestionController::class . '@create')->name('create');
-                $app->post('store', QuestionController::class . '@store')->name('store');
-                $app->get('{question}/edit', QuestionController::class . '@edit')->name('edit');
-                $app->patch('{question}/update', QuestionController::class . '@update')->name('update');
-                $app->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
+            $router->group(['prefix' => 'question', 'as' => 'question.'], function () use ($router) {
+                $router->get('/', QuestionController::class . '@index')->name('index');
+                $router->get('create', QuestionController::class . '@create')->name('create');
+                $router->post('store', QuestionController::class . '@store')->name('store');
+                $router->get('{question}/edit', QuestionController::class . '@edit')->name('edit');
+                $router->patch('{question}/update', QuestionController::class . '@update')->name('update');
+                $router->delete('{question}/destroy', QuestionController::class . '@destroy')->name('destroy');
             });
 
         });
@@ -388,32 +385,32 @@ $app->group(['middleware' => 'web'], function () use ($app) {
         /**
          * Projects Controller
          */
-        $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
-            $app->get('/', AdminProjectController::class . '@index')->name('index');
+        $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
+            $router->get('/', AdminProjectController::class . '@index')->name('index');
         });
 
 
         /**
          * Users Controller
          */
-        $app->group(['prefix' => 'user', 'as' => 'user.'], function () use ($app) {
-            $app->get('/', UserController::class . '@index')->name('index');
-            $app->get('create', UserController::class . '@create')->name('create');
-            $app->post('store', UserController::class . '@store')->name('store');
-            $app->get('{user}/edit', UserController::class . '@edit')->name('edit');
-            $app->patch('{user}/update', UserController::class . '@update')->name('update');
-            $app->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
+        $router->group(['prefix' => 'user', 'as' => 'user.'], function () use ($router) {
+            $router->get('/', UserController::class . '@index')->name('index');
+            $router->get('create', UserController::class . '@create')->name('create');
+            $router->post('store', UserController::class . '@store')->name('store');
+            $router->get('{user}/edit', UserController::class . '@edit')->name('edit');
+            $router->patch('{user}/update', UserController::class . '@update')->name('update');
+            $router->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
         });
 
 
         /**
          * Transaction Controller
          */
-        $app->group(['prefix' => 'transaction', 'as' => 'transaction.'], function () use ($app) {
-            $app->get('/', TransactionController::class . '@index')->name('index');
-            $app->get('purchases/{trans_status}', TransactionController::class . '@getPurchaseList')->name('purchase');
-            $app->get('withdrawals/{trans_status}', TransactionController::class . '@getWithdrawList')->name('withdraw');
-            $app->get('update/{new_status}', TransactionController::class . '@updateAndProcess')->name('update');
+        $router->group(['prefix' => 'transaction', 'as' => 'transaction.'], function () use ($router) {
+            $router->get('/', TransactionController::class . '@index')->name('index');
+            $router->get('purchases/{trans_status}', TransactionController::class . '@getPurchaseList')->name('purchase');
+            $router->get('withdrawals/{trans_status}', TransactionController::class . '@getWithdrawList')->name('withdraw');
+            $router->get('update/{new_status}', TransactionController::class . '@updateAndProcess')->name('update');
         });
 
     });
@@ -422,22 +419,22 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     /**
      * Payment Related Routes
      */
-    $app->get('payment/status/{result}', PaymentController::class . '@paymentStatus')->name('payment.status');
-    $app->group(['prefix' => 'payment', 'as' => 'payment.', 'middleware' => 'transaction'], function () use ($app) {
+    $router->get('payment/status/{result}', PaymentController::class . '@paymentStatus')->name('payment.status');
+    $router->group(['prefix' => 'payment', 'as' => 'payment.', 'middleware' => 'transaction'], function () use ($router) {
 
-        $app->get('/', PaymentController::class . '@index')->name('index');
+        $router->get('/', PaymentController::class . '@index')->name('index');
 
-        $app->any('{driver}/callback', PaymentController::class . '@callback')->name('callback');
-        $app->any('{driver}/notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
+        $router->any('{driver}/callback', PaymentController::class . '@callback')->name('callback');
+        $router->any('{driver}/notify_callback', PaymentController::class . '@notify_callback')->name('notify_callback');
 
-        $app->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
-        /* $app->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($app) {
-             $app->get('status', PaymentController::class . '@alipayStatus')->name('status');
-             $app->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
+        $router->get('enquiry/event', PaymentController::class . '@transactionEnquiryEvent')->name('enquiry_event');
+        /* $router->group(['prefix' => 'alipay', 'as' => 'alipay.'], function () use ($router) {
+             $router->get('status', PaymentController::class . '@alipayStatus')->name('status');
+             $router->any('notify', PaymentController::class . '@alipayNotifications')->name('notify');
          });
-         $app->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($app) {
-             $app->post('status', PaymentController::class . '@uPStatus')->name('status');
-             $app->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
+         $router->group(['prefix' => 'unionpay', 'as' => 'unionpay.'], function () use ($router) {
+             $router->post('status', PaymentController::class . '@uPStatus')->name('status');
+             $router->any('notify', PaymentController::class . '@uPNotifications')->name('notify');
          });*/
 
     });
@@ -446,107 +443,108 @@ $app->group(['middleware' => 'web'], function () use ($app) {
     /**
      * Profile Controller
      */
-//    $app->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
-//    $app->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
-    $app->group(['prefix' => 'public', 'as' => 'public.'], function () use ($app) {
-        $app->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($app) {
-            $app->get('index', PublicProfileController::class . '@index')->name('index');
-            $app->get('{profile}/list', PublicProfileController::class . '@usersByProfile')->name('list');
-            $app->get('{profile}/{username}', PublicProfileController::class . '@showPublicProfile')->name('show');
-            $app->get('iframe/{profile}/{username}', PublicProfileController::class . '@showPublicProfileIframe')->name('show.iframe');
+//    $router->resource('user/profile', ProfileController::class, ['except' => ['destroy', 'create']]);
+//    $router->get('user/profile/{profile}/create', ProfileController::class . '@create')->name('user.profile.create');
+    $router->group(['prefix' => 'public', 'as' => 'public.'], function () use ($router) {
+        $router->group(['prefix' => 'profile', 'as' => 'profile.'], function () use ($router) {
+            $router->get('index', PublicProfileController::class . '@index')->name('index');
+            $router->get('{profile}/list', PublicProfileController::class . '@usersByProfile')->name('list');
+            $router->get('{profile}/{username}', PublicProfileController::class . '@showPublicProfile')->name('show');
+//            $router->get('iframe/{profile}/{username}', PublicProfileController::class . '@showPublicProfileIframe')->name('show.iframe');
         });
     });
 
     /**
      * Vote Controller
      */
-    $app->get('votes', VoteController::class . '@index')->name('votes');
-    $app->get('vote/show/{vote}', VoteController::class . '@show')->name('vote.show');
+    $router->get('votes', VoteController::class . '@index')->name('votes');
+    $router->get('vote/show/{vote}', VoteController::class . '@show')->name('vote.show');
 
     /**
      * Project Controller
      */
-    $app->get('projects', ProjectController::class . '@index')->name('projects');
+    $router->get('projects', ProjectController::class . '@index')->name('projects');
 
+    $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
 
-    $app->group(['prefix' => 'project', 'as' => 'project.'], function () use ($app) {
-        $app->get('create', ProjectController::class . '@create')->name('create');
-        $app->get('show/{project}', ProjectController::class . '@show')->name('show');
-        $app->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
-        $app->post('store', ProjectController::class . '@store')->name('store');
-        $app->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
-        $app->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
-        $app->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
-        $app->post('update/{draft}', ProjectController::class . '@update')->name('update');
-        $app->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+        $router->get('create', ProjectController::class . '@create')->name('create');
+        $router->get('show/{project}', ProjectController::class . '@show')->name('show');
+//        $router->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
+        $router->post('store', ProjectController::class . '@store')->name('store');
+        $router->get('next/create/{project}', ProjectController::class . '@next')->name('next.create');
+        $router->post('{project}/store', ProjectController::class . '@projectStore')->name('project.store');
+//        $router->get('edit/{draft}', ProjectController::class . '@edit')->name('edit');
+//        $router->post('update/{draft}', ProjectController::class . '@update')->name('update');
+//        $router->get('publish/{draft}', ProjectController::class . '@publish')->name('publish');
+
         /**
          * Project Synapse Controller
          */
-        $app->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
-        $app->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
-        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+        $router->get('synapse/show/{project}', SynapseController::class . '@show')->name('synapse.show');
+        $router->post('synapse/store/{project}', SynapseController::class . '@store')->name('synapse.store');
+        $router->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
         /**
          * Project Script Controller
          */
-//        $app->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
-        $app->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
+//        $router->post('script/store/{project}', ScriptController::class . '@store')->name('script.store');
+        $router->get('script/show/{project}', ScriptController::class . '@show')->name('script.show');
 
         /**
          * Enroll Controller
          */
-        $app->get('enroll/create/{project}', EnrollController::class . '@create')->name('enroll.create');
-        $app->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
-        $app->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
+        $router->get('enroll/create/{project}', EnrollController::class . '@create')->name('enroll.create');
+        $router->post('enroll/store/{expenditure}', EnrollController::class . '@store')->name('enroll.store');
+        $router->post('unroll/store/{expenditure}', EnrollController::class . '@unroll')->name('unroll.store');
 
         /**
          * Fund Controller
          */
-        $app->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($app) {
-            $app->get('create/{project}', FundController::class . '@create')->name('create');
-            $app->post('store/{project}', FundController::class . '@store')->name('store');
-            $app->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
+        $router->group(['middleware' => ['auth',], 'prefix' => 'fund', 'as' => 'fund.'], function () use ($router) {
+            $router->get('create/{project}', FundController::class . '@create')->name('create');
+            $router->post('store/{project}', FundController::class . '@store')->name('store');
+            $router->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
         });
 
-        $app->get('{project}/setComplete', ProjectController::class . '@updateProjectAndComplete')->name('set.complete');
+        $router->get('{project}/setComplete', ProjectController::class . '@updateProjectAndComplete')->name('set.complete');
 
         /**
          * Project Take Controller
          */
-//        $app->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
+//        $router->post('take/store/{script}', TakeController::class . '@store')->name('take.store');
 
         /**
          * Project Pledge Controller
          */
-//        $app->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
-//        $app->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
+//        $router->get('pledge/create/{project}', ProjectPledgeController::class . '@create')->name('pledge.create');
+//        $router->post('pledge/store/{project}', ProjectPledgeController::class . '@store')->name('pledge.store');
     });
 
     /**
      * User Applications
      */
-    $app->get('user/application', ActorController::class . '@create')->name('user.application.actor');
+    $router->get('user/application', ActorController::class . '@create')->name('user.application.actor');
 
     /**
      * Report Controller
      */
-    $app->get('reports', ReportController::class . '@index')->name('reports');
-    $app->post('report/store', ReportController::class . '@store')->name('report.store');
+    $router->get('reports', ReportController::class . '@index')->name('reports');
+    $router->post('report/store', ReportController::class . '@store')->name('report.store');
 
-    $app->post('homepage', HomeController::class . '@skip')->name('intro.skip');
+    $router->post('homepage', HomeController::class . '@skip')->name('intro.skip');
 
-    $app->get('in', function () {
+    $router->get('in', function () {
         return view('in');
     })->name('in');
 
-    $app->get('temp', function () {
+    $router->get('temp', function () {
         return view('testing');
     })->name('temp');
 
-    $app->get('old', function () {
+    $router->get('old', function () {
         return view('old');
     })->name('old');
 
-    $app->get('docs', function () {
+    $router->get('docs', function () {
         return View::make('docs.api.v1.index');
     });
 

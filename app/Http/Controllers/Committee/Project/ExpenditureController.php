@@ -3,7 +3,6 @@
 namespace DreamsArk\Http\Controllers\Committee\Project;
 
 use DreamsArk\Http\Controllers\Controller;
-use DreamsArk\Http\Requests;
 use DreamsArk\Jobs\Project\Committee\Review\DestroyExpenditureJob;
 use DreamsArk\Models\Project\Expenditures\Expenditure;
 
@@ -20,11 +19,14 @@ class ExpenditureController extends Controller
      *
      * @param Expenditure $expenditure
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
     public function destroy(Expenditure $expenditure)
     {
-        $this->dispatch(new DestroyExpenditureJob($expenditure));
+
+        $this->dispatch(
+            new DestroyExpenditureJob($expenditure)
+        );
+
         return redirect()->back();
     }
 }
