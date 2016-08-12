@@ -16,11 +16,10 @@
                     <h1 class="+uppercase">@{{ position }}</h1>
                 </header>
             </div>
-
+            {{--@lang("positions.{position}")--}}
             <ark-animation composition="main"
                            :payload="['#characters', '{{ request()->input('profile', $profiles->random()->name) }}']"
                            class="small-12 columns align-middle profile-page__canvas"></ark-animation>
-
             <div class="small-12 align-bottom columns +z-1">
                 <div id="characters" class="row">
                     @foreach($profiles as $profile)

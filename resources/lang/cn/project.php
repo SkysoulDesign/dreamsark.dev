@@ -181,7 +181,7 @@ return array (
   'time' => "时间",
   'creation-notes' => NULL,
   'review-project' => NULL,
-  'my-projects' => NULL,
+  'my-projects' => '我的项目',
   'mission-description' => '专案内容',
   'participate' => '点击参与投票',
   'reachVotingStage' => '已开始投票阶段',

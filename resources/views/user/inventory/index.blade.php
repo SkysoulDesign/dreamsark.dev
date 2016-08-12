@@ -3,11 +3,11 @@
 @section('content')
 
     @include('user.partials.header')
-    <div id="ABC" style="position: absolute; z-index: -1">
-    </div>
+    {{--<div id="ABC" style="position: absolute; z-index: -1">--}}
+    {{--</div>--}}
 
 
-    <ark-animation composition="item">
+    <ark-animation composition="item" >
     </ark-animation>
 
     <div>
