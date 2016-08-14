@@ -13,14 +13,8 @@
     <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
-            <statistic-item data="12">
-                @lang('general.investor')
-            </statistic-item>
-            <statistic-item data="123123">
-                @lang('general.collect')
-            </statistic-item>
-            <statistic-item data="42">
-                @lang('project.invest-goalMoney')
+            <statistic-item data="{{ $project->present()->spentBudget() }} / {{ $project->present()->goal() }}">
+                Spent / Budget
             </statistic-item>
         </ark-statistics>
 
@@ -35,7 +29,7 @@
             @include('project.distribution.partials.tab-expenses', [
                 'expenditures' => $expenditures->where('expenditurable_type', 'expenses')
             ])
-            {{--@include('project.partials.tab-fund')--}}
+            {{--            @include('project.partials.tab-fund')--}}
             @include('project.partials.tab-idea')
             @include('project.partials.tab-synapse')
             @include('project.partials.tab-script')

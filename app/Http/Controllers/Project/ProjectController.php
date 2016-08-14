@@ -192,19 +192,4 @@ class ProjectController extends Controller
         return redirect()->back()->with('message', trans('response.project-was-published'));
     }
 
-    /**
-     * @param Project $project
-     *
-     * @return mixed
-     */
-    public function updateProjectAndComplete(Project $project)
-    {
-        /**
-         * @todo: need to create logic to distribute coins to crew, investors
-         */
-        dispatch(new CompleteProjectJob($project));
-
-        return redirect()->back()->withSuccess(trans('project.status-updated-success') . '; ' . trans('project.coins-will-be-settled-soon'));
-    }
-
 }

@@ -3,6 +3,8 @@
 namespace DreamsArk\Presenters\Presenter;
 
 use Carbon\Carbon;
+use DreamsArk\Models\Project\Expenditures\Crew;
+use DreamsArk\Models\Project\Expenditures\Expenditure;
 use DreamsArk\Presenters\Presenter;
 
 /**
@@ -12,6 +14,50 @@ use DreamsArk\Presenters\Presenter;
  */
 class ProjectPresenter extends Presenter
 {
+
+    /**
+     * Calculate the total cost of the entire project based on the expenditures it has
+     *
+     * @return int
+     */
+    public function expendituresCost() : int
+    {
+        return $this->model->getAttribute('expenditures')->sum(function (Expenditure $expenditure) {
+
+            if (($type = $expenditure->getAttribute('expenditurable')) instanceof Crew) {
+                return $type->dispenses->sum('amount');
+            }
+
+            return $type->cost;
+
+        });
+    }
+
+    /**
+     * Shows the project current finantial goal
+     *
+     * @return int
+     */
+    public function goal(): int
+    {
+        return $this->expendituresCost();
+    }
+
+    /**
+     * Displays spent budget
+     *
+     * @return int
+     */
+    public function spentBudget() :int
+    {
+        return $this->model->getAttribute('expenditures')->sum(function (Expenditure $expenditure) {
+
+            if (($type = $expenditure->getAttribute('expenditurable')) instanceof Crew) {
+                return $type->dispenses->sum('amount');
+            }
+
+        });
+    }
 
     /**
      * Get Voting date

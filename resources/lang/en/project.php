@@ -186,5 +186,6 @@ return array(
     'winner-submission' => 'winner submission',
     'try-new-one' => 'why don\'t you start one?',
     'failed-reason' => 'Failed reason',
-    'expenses' => 'Expenses'
+    'expenses' => 'Expenses',
+    'investors' => 'Investors'
 );

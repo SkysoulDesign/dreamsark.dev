@@ -4,6 +4,11 @@ namespace DreamsArk\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Presenter
+ *
+ * @package DreamsArk\Presenters
+ */
 abstract class Presenter
 {
 
@@ -14,6 +19,7 @@ abstract class Presenter
 
     /**
      * Presenter constructor.
+     *
      * @param Model $model
      */
     public function __construct(Model $model)

@@ -32,6 +32,9 @@
                 </statistic-item>
             </ark-statistics>
 
+            <ark-form class="+margin-top-small" action="{{  route('project.manage.complete', $project) }}">
+                <ark-button color="success">@lang('project.set-complete')</ark-button>
+            </ark-form>
         </div>
 
         <div class="small-10 columns">

@@ -6,9 +6,13 @@ use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class ProjectWasCompleted
+ *
+ * @package DreamsArk\Events\Project
+ */
 class ProjectWasCompleted extends Event
 {
-    use SerializesModels;
     /**
      * @var Project
      */

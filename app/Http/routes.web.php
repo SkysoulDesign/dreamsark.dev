@@ -402,7 +402,6 @@ $router->group(['middleware' => 'web'], function () use ($router) {
             $router->delete('{user}/destroy', UserController::class . '@destroy')->name('destroy');
         });
 
-
         /**
          * Transaction Controller
          */
@@ -504,8 +503,6 @@ $router->group(['middleware' => 'web'], function () use ($router) {
             $router->post('store/{project}', FundController::class . '@store')->name('store');
             $router->post('vote/store/{enroller}', FundController::class . '@vote')->name('vote.store');
         });
-
-        $router->get('{project}/setComplete', ProjectController::class . '@updateProjectAndComplete')->name('set.complete');
 
         /**
          * Project Take Controller

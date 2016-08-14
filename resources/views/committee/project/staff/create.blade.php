@@ -36,7 +36,7 @@
                 <statistic-item data="{{ $groups->get('expenses', collect())->count() }}">
                     @lang('committee.expense')
                 </statistic-item>
-                <statistic-item data="{{ $review->project->expenditures->sum('expenditurable.cost') }}">
+                <statistic-item data="{{ $review->project->present()->expendituresCost }}">
                     @lang('committee.budget')
                 </statistic-item>
 

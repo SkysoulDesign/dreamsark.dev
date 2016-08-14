@@ -38,7 +38,7 @@
                         </td>
 
                         <td>
-                            {{ $crew->cost }}
+                            {{ $crew->dispenses->sum('amount') }}
                         </td>
 
                         <td>
@@ -50,7 +50,7 @@
                             {{  $crew->enroller->votes->sum('amount') }}
                         </td>
                         <td>
-                            0
+                            {{ $crew->dispenses->sum('amount') }}
                         </td>
 
                     </tr>

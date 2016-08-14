@@ -3,6 +3,7 @@
 namespace DreamsArk\Http\Controllers\Project;
 
 use DreamsArk\Http\Controllers\Controller;
+use DreamsArk\Jobs\Project\CompleteProjectJob;
 use DreamsArk\Jobs\Project\Dispense\PayDispenseJob;
 use DreamsArk\Jobs\Project\Stages\Distribution\UpdateDistributionDetailsJob;
 use DreamsArk\Models\Project\Expenditures\Dispense;
@@ -60,6 +61,21 @@ class ManageController extends Controller
         ));
 
         return redirect()->back();
+    }
+
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function complete(Project $project)
+    {
+
+        $this->dispatch(new CompleteProjectJob($project));
+
+        return redirect()->back()->withSuccess([
+            trans('project.status-updated-success'),
+            trans('project.coins-will-be-settled-soon')
+        ]);
     }
 
 }

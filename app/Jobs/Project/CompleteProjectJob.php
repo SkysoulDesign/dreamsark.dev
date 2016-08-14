@@ -6,6 +6,11 @@ use DreamsArk\Events\Project\ProjectWasCompleted;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 
+/**
+ * Class CompleteProjectJob
+ *
+ * @package DreamsArk\Jobs\Project
+ */
 class CompleteProjectJob extends Job
 {
     /**
@@ -30,13 +35,16 @@ class CompleteProjectJob extends Job
      */
     public function handle()
     {
-        $this->project->stage->setAttribute('active', true);
-        $this->project->stage->save();
+
+        $stage = $this->project->getAttribute('distribution');
+        $stage->setAttribute('active', true);
+        $stage->save();
 
         /**
-         * @todo: need to create logic to distribute coins to crew, investors
+         * Project Was Complete
          */
-
-        event(new ProjectWasCompleted($this->project->fresh()));
+        event(new ProjectWasCompleted(
+            $this->project
+        ));
     }
 }
