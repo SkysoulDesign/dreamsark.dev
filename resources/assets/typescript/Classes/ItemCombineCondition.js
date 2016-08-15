@@ -121,6 +121,9 @@ var ConsitionManager = (function () {
         this.m_Scene = e_Scene;
         if (this.m_ConditionArray.length > 0) {
             this.m_CurrentWorkindex = 0;
+            for (var l_CurrentCondition in this.m_ConditionArray) {
+                this.m_Scene.remove(l_CurrentCondition);
+            }
             var l_Object = this.m_ConditionArray[this.m_CurrentWorkindex];
             this.m_Scene.add(l_Object);
             l_Object.Init();

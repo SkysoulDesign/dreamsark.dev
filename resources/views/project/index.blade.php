@@ -5,7 +5,7 @@
     @include('partials.navigation.menu')
 
     <div class="row align-center segment --fluid --color-primary --large-padding">
-        <div class="small-8 columns">
+        <div class="small-8 columns +center">
             <ark-form action="#">
                 <div class="header --centered">
                     <b class="+color-green +bold">178,225</b> projects grouped
@@ -16,6 +16,15 @@
                 </div>
                 <ark-input placeholder="Write something and press enter"></ark-input>
             </ark-form>
+
+            <ark-button color="warning" data-modal-trigger="tutorial">How does it works</ark-button>
+
+            <ark-modal v-cloak header="How Does it Works" trigger="tutorial">
+                <a href="{{ asset('img/tutorial.png') }}" target="_blank">
+                    <img height="100%" src="{{ asset('img/tutorial.png') }}" alt="">
+                </a>
+            </ark-modal>
+            
         </div>
     </div>
 
