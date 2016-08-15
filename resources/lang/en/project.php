@@ -207,5 +207,7 @@ return array(
     'expenses' => 'Expenses',
     'investors' => 'Investors',
     'position-selection'=>'osition Selection',
-    'voting-stage'=>'Voting Stage'
+    'voting-stage'=>'Voting Stage',
+    'earnings'=>'project earnings',
+    'enrolled'=>'project enrolled',
 );

@@ -70,4 +70,5 @@ return array (
   'no-purchase' => '目前无任何购买，需先执行购买才能查看纪录',
   'add-coin-modal-footer' => '注意！您将被导向第三方支付系统， 支付成功后会自动返回此ye m',
   'yuan-currency-symbol' => '¥',
+    'account-data'=>'帐户资料'
 );
