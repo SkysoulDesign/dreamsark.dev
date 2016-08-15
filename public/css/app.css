@@ -6105,6 +6105,20 @@ button, .button {
   z-index: 10; }
   .modal.\--open {
     display: block; }
+  .modal__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    font-size: .5em;
+    line-height: 2.2em;
+    border-bottom-left-radius: .5em;
+    border-top-right-radius: .5em;
+    background: #088c49;
+    cursor: pointer; }
+    .modal__close:hover {
+      background: #055c30; }
   .modal__window {
     position: fixed;
     top: 0;
