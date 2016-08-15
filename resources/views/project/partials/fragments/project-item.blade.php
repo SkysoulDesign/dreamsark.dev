@@ -2,7 +2,7 @@
 
     <div class="card__badges --color-{{ $color }}">
         <ul>
-            <li>@lang("project.{{ $project->stage->getStageName() }}")</li>
+            <li>@lang("project.{$project->stage->getStageName()}")</li>
         </ul>
     </div>
 
