@@ -51,7 +51,7 @@ export class Profile extends AbstractPage {
 
         button.addEventListener('click', e => {
 
-            let request = this.app.vueInstance.$http.get('http:' + profileRoute, {
+            let request = this.app.vueInstance.$http.get('http://' + profileRoute, {
                 params: {
                     profile: this.app.vueInstance.position.name
                 }

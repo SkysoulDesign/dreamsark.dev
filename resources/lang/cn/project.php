@@ -213,5 +213,6 @@ return array (
     'winner-submission'=>'獲勝者',
     'try-new-one'=>'创个新项目吧',
     'failed-reason'=>'失败原因',
-    'position-selection'=>'选角'
+    'position-selection'=>'选角',
+    'stats' => ':project 项目 :groups 类别'
 );
