@@ -8,8 +8,10 @@
         <div class="small-8 columns +center">
             <ark-form action="#">
                 <div class="header --centered">
-                    <b class="+color-green +bold">178,225</b> projects grouped
-                    in <span class="+color-green +bold">2,839</span> categories
+                    @lang('project.stats', [
+                        'project' => '<b class="+color-green +bold">178,225</b>',
+                        'groups' => '<span class="+color-green +bold">2,839</span>'
+                    ])
                     <p class="+margin-top-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam
                         animi, error ex hic quisquam
                         recusandae tempora?</p>

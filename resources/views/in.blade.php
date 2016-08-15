@@ -7,14 +7,14 @@
 @section('content')
     <div id="container"></div>
 
-    <div id="transistor" class="enter-page__transition --animate"></div>
+    {{--<div id="transistor" class="enter-page__transition --animate"></div>--}}
 
-    <div id="reset-controls" class="enter-page__reset-controls">
-        <ul>
-            <li class="skipper">skip</li>
-            <li class="reseter">reset</li>
-        </ul>
-    </div>
+    {{--<div id="reset-controls" class="enter-page__reset-controls">--}}
+        {{--<ul>--}}
+            {{--<li class="skipper">skip</li>--}}
+            {{--<li class="reseter">reset</li>--}}
+        {{--</ul>--}}
+    {{--</div>--}}
 
     <section class="enter-page">
 
@@ -47,68 +47,68 @@
 
     </section>
 
-    <section class="start">
+    {{--<section class="start">--}}
 
-        <div id="show-entry" class="show-entry">
+        {{--<div id="show-entry" class="show-entry">--}}
 
-            <div class="row box">
+            {{--<div class="row box">--}}
 
-                <img id="miniature" src="{{ asset('intro/point-1.png') }}" alt="">
+                {{--<img id="miniature" src="{{ asset('intro/point-1.png') }}" alt="">--}}
 
-                <div class="medium-6 column info">
+                {{--<div class="medium-6 column info">--}}
 
-                    <h1 id="title">Project Title</h1>
+                    {{--<h1 id="title">Project Title</h1>--}}
 
-                    <div id="description" class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        A ab, accusantium consequuntur dicta dignissimos.
-                    </div>
+                    {{--<div id="description" class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit.--}}
+                        {{--A ab, accusantium consequuntur dicta dignissimos.--}}
+                    {{--</div>--}}
 
-                    <div class="row controls">
+                    {{--<div class="row controls">--}}
 
-                        <div class="medium-6 column">
-                            <button id="view-project" class="outlined colors dark primary">@lang('admin.view-project')</button>
-                        </div>
+                        {{--<div class="medium-6 column">--}}
+                            {{--<button id="view-project" class="outlined colors dark primary">@lang('admin.view-project')</button>--}}
+                        {{--</div>--}}
 
-                        <div class="medium-6 column">
+                        {{--<div class="medium-6 column">--}}
 
-                            <div class="statistics">
-                                30.0000
-                                <span>Budget</span>
-                            </div>
+                            {{--<div class="statistics">--}}
+                                {{--30.0000--}}
+                                {{--<span>Budget</span>--}}
+                            {{--</div>--}}
 
-                        </div>
+                        {{--</div>--}}
 
-                    </div>
+                    {{--</div>--}}
 
-                </div>
+                {{--</div>--}}
 
-                <div class="medium-6 column">
+                {{--<div class="medium-6 column">--}}
 
-                    <section class="video-player">
-                        <img id="cover" src="{{ asset('intro/cover.jpg') }}" alt="">
-                    </section>
+                    {{--<section class="video-player">--}}
+                        {{--<img id="cover" src="{{ asset('intro/cover.jpg') }}" alt="">--}}
+                    {{--</section>--}}
 
-                </div>
+                {{--</div>--}}
 
-            </div>
+            {{--</div>--}}
 
-        </div>
+        {{--</div>--}}
 
-        <div class="body" style="display:none">
-            <div class="logo">
+        {{--<div class="body" style="display:none">--}}
+            {{--<div class="logo">--}}
                 {{--<img src="{{ asset('img/start/logo.png')  }}" alt="">--}}
-            </div>
+            {{--</div>--}}
 
-            <form id='skipForm' action="{{ route('intro.skip') }}" method="post">
-                {{ csrf_field() }}
-                <input type="hidden" name="skip" value="true">
-                <a id="trigger" href="#" class="button white round medium">Start Journey</a>
-                <button type="submit" href="{{ route('home') }}" class="white round medium">Skip</button>
-            </form>
+            {{--<form id='skipForm' action="{{ route('intro.skip') }}" method="post">--}}
+                {{--{{ csrf_field() }}--}}
+                {{--<input type="hidden" name="skip" value="true">--}}
+                {{--<a id="trigger" href="#" class="button white round medium">Start Journey</a>--}}
+                {{--<button type="submit" href="{{ route('home') }}" class="white round medium">Skip</button>--}}
+            {{--</form>--}}
 
-        </div>
+        {{--</div>--}}
 
-    </section>
+    {{--</section>--}}
 
 @endsection
 

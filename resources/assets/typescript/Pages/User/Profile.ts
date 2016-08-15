@@ -49,9 +49,9 @@ export class Profile extends AbstractPage {
          */
         let button = document.querySelector('#selectProfile');
 
-        button.addEventListener('click', e => {
+        button.addEventListener('click', event => {
 
-            let request = this.app.vueInstance.$http.get('http:' + profileRoute, {
+            let request = this.app.vueInstance.$http.get(profileRoute, {
                 params: {
                     profile: this.app.vueInstance.position.name
                 }
@@ -98,7 +98,7 @@ export class Profile extends AbstractPage {
 
                 for (let i = 1; i < container.childElementCount; i++) {
                     let child = <HTMLElement>container.children.item(i);
-                        child.style.display = 'none';
+                    child.style.display = 'none';
                 }
 
             })

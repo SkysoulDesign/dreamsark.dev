@@ -21,7 +21,7 @@ var Common = (function (_super) {
         var divs = document.querySelectorAll('.under-construction');
         [].forEach.call(divs, function (div) {
             div.addEventListener('click', function () {
-                alert('this component is under construction');
+                alert('功能即将开放敬请期待');
             });
         });
     };

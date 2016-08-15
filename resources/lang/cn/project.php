@@ -214,6 +214,7 @@ return array (
     'try-new-one'=>'创个新项目吧',
     'failed-reason'=>'失败原因',
     'position-selection'=>'选角',
+    'stats' => ':project 项目 :groups 类别'
     'earnings'=>'项目奖励',
     'enrolled'=>'项目入选',
 );

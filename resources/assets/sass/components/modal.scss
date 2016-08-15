@@ -9,6 +9,25 @@
     display: block;
   }
 
+  @include part(close) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    font-size: .5em;
+    line-height: 2.2em;
+    border-bottom-left-radius: .5em;
+    border-top-right-radius: .5em;
+    background: darken(color(success), 10);
+    cursor: pointer;
+
+    &:hover {
+      background: darken(color(success), 20);
+    }
+
+  }
+
   @include part(window) {
     position: fixed;
     top: 0;
