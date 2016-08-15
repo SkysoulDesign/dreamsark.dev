@@ -51,7 +51,7 @@ export class Profile extends AbstractPage {
 
         button.addEventListener('click', e => {
 
-            let request = this.app.vueInstance.$http.get('http://' + profileRoute, {
+            let request = this.app.vueInstance.$http.get(profileRoute, {
                 params: {
                     profile: this.app.vueInstance.position.name
                 }
@@ -98,7 +98,7 @@ export class Profile extends AbstractPage {
 
                 for (let i = 1; i < container.childElementCount; i++) {
                     let child = <HTMLElement>container.children.item(i);
-                        child.style.display = 'none';
+                    child.style.display = 'none';
                 }
 
             })
