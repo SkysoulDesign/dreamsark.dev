@@ -58,8 +58,8 @@
 
         <div class="small-12 columns">
             <div class="header +margin-bottom">
-                Awesome Projects
-                <p>Some of our high class projects</p>
+                @lang('dashboard.awesome-projects')
+                <p>@lang('dashboard.some-high-class-projects')</p>
             </div>
         </div>
 
