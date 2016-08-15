@@ -70,7 +70,7 @@
                         </td>
 
                         <td>
-                            <B>{{ $EXPENDITURE->EXPENDITURABLE->DISPENSES->SUM('AMOUNT') }}</B>
+                            <B>{{ $expenditure->expenditurable->dispenses->sum('amount') }}</B>
                         </td>
 
                         <td>
