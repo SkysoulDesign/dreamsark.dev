@@ -2,7 +2,7 @@
 
 @section('statistics')
     <statistic-item icon="comments" data="{{ $project->stage->comments->count() }}">
-        fund
+        @lang('project.fund')
     </statistic-item>
 @overwrite
 
