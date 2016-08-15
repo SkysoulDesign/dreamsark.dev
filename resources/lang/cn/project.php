@@ -213,5 +213,7 @@ return array (
     'winner-submission'=>'獲勝者',
     'try-new-one'=>'创个新项目吧',
     'failed-reason'=>'失败原因',
-    'position-selection'=>'选角'
+    'position-selection'=>'选角',
+    'earnings'=>'项目奖励',
+    'enrolled'=>'项目入选',
 );
