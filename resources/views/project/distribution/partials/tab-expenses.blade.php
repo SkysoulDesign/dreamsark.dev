@@ -1,5 +1,5 @@
 <ark-tab content="tab-expenses" icon="dot-circle-o" {{ (isset($active) && $active) ? 'active' : '' }}>
-    @lang('project.expenses')
+    @lang('project.expense')
     @push('tab-item')
     <div id="tab-expenses" class="row align-center +margin-top">
 
@@ -16,7 +16,7 @@
                     <th>@lang('forms.name')</th>
                     <th>@lang('project.description')</th>
                     <th>@lang('project.cost')</th>
-                    <th>@lang('project.actual-cost')</th>
+                    <th>@lang('project.invest-actual-cost')</th>
                 </tr>
                 </thead>
                 <tbody>

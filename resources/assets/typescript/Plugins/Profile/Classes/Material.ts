@@ -13,7 +13,8 @@ export class Material extends Components {
     private loader;
 
     private materials = {
-        baseMaterial: require('../Materials/BaseMaterial')
+        baseMaterial: require('../Materials/BaseMaterial'),
+        itemMaterial: require('../Materials/ItemMaterial')
     }
 
     boot(app) {

@@ -12,8 +12,8 @@
 
             <ark-form action="{{ route('project.manage.update', $project) }}" method="patch">
                 <ark-textarea name="description"
-                              label="Short Description">{{ $project->stage->description }}</ark-textarea>
-                <ark-button color="success">Save</ark-button>
+                              label="@lang('project.funding-description')">{{ $project->stage->description }}</ark-textarea>
+                <ark-button color="success">@lang('project.funding-description-save')</ark-button>
             </ark-form>
 
         </div>

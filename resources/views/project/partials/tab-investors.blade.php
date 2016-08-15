@@ -1,11 +1,11 @@
 <ark-tab content="tab-investors" icon="user" {{ (isset($active) && $active) ? 'active' : '' }}>
-    @lang('project.investors')
+    @lang('project.invest-investor-count')
     @push('tab-item')
     <div id="tab-investors" class="row align-center +margin-top">
 
         <div class="small-12 columns">
             <header class="header --with-divider +uppercase --centered">
-                Investors
+                @lang('project.invest-investor')
             </header>
         </div>
 

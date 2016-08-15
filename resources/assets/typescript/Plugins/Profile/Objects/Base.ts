@@ -16,6 +16,8 @@ export class Base extends Character {
         let material = this.material.get('baseMaterial').clone();
         material.skinning = false;
 
+
+
         return new THREE.Mesh(
             models.base, material
         )

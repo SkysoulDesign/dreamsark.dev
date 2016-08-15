@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('project.partials.header', ['title' => 'Voting Stage'])
+    @include('project.partials.header', ['title' => trans('project.voting-stage')])
 
     <div class="row align-center">
 

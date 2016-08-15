@@ -14,7 +14,7 @@
 
         <ark-statistics class="align-center" size="large">
             <statistic-item data="{{ $project->present()->spentBudget() }} / {{ $project->present()->goal() }}">
-                Spent / Budget
+                @lang('project.invest-spent/budget')
             </statistic-item>
         </ark-statistics>
 
