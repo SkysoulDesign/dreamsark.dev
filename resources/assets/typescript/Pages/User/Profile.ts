@@ -49,7 +49,7 @@ export class Profile extends AbstractPage {
          */
         let button = document.querySelector('#selectProfile');
 
-        button.addEventListener('click', e => {
+        button.addEventListener('click', event => {
 
             let request = this.app.vueInstance.$http.get(profileRoute, {
                 params: {

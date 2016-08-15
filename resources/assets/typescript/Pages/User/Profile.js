@@ -46,7 +46,7 @@ var Profile = (function (_super) {
          * @type {Element}
          */
         var button = document.querySelector('#selectProfile');
-        button.addEventListener('click', function (e) {
+        button.addEventListener('click', function (event) {
             var request = _this.app.vueInstance.$http.get(profileRoute, {
                 params: {
                     profile: _this.app.vueInstance.position.name
