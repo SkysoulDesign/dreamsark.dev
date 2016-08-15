@@ -16,9 +16,9 @@
         <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom +margin-top-small">
 
             <ark-statistics class="align-center" size="large">
-                <statistic-item data="0">Something</statistic-item>
-                <statistic-item data="0">Something Else</statistic-item>
-                <statistic-item data="0">Another thing</statistic-item>
+                <statistic-item data="0">@lang('user.friends')</statistic-item>
+                <statistic-item data="0">@lang('user.rewards')</statistic-item>
+                <statistic-item data="0">@lang('user.ranking')</statistic-item>
             </ark-statistics>
 
         </div>
