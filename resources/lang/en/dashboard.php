@@ -15,4 +15,6 @@ return array (
   'latest-project' => 'Latest Projects',
   'site-welcome' => 'Welcome to Dreamsark,',
   'site-welcome-description' => 'The place where your dreams may come true',
+    "awesome-projects"=>"Awesome Projects",
+    "some-high-class-projects"=>"Some of our high class projects",
 );

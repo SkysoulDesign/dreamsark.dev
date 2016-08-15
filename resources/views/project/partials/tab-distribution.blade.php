@@ -5,7 +5,7 @@
 
         <div class="small-10 columns segment --large-padding">
 
-            <h2>Description</h2>
+            <h2>Description/描述</h2>
             {!! $project->stage->full_description !!}
 
         </div>
