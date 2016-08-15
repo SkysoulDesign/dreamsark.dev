@@ -20,9 +20,9 @@
         </ark-dropdown-option>
     @endcan
 
-    <ark-dropdown-option>
-        @lang('navbar.settings')
-    </ark-dropdown-option>
+    {{--<ark-dropdown-option>--}}
+        {{--@lang('navbar.settings')--}}
+    {{--</ark-dropdown-option>--}}
 
     <ark-dropdown-option href="{{ route('logout') }}">
         @lang('navbar.logout')
