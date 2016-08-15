@@ -7141,7 +7141,7 @@ button, .button {
   -webkit-transition-property: background-position-y, height;
   transition-property: background-position-y, height; }
   .profile-page__header.\--default {
-    background: url("/img/headers/page_header1.jpg") center 78% no-repeat;
+    background: url("/img/headers/page_header2.jpg") center 78% no-repeat;
     background-size: cover; }
   .profile-page__header.\--extended {
     height: 300px; }

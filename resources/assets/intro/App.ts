@@ -93,43 +93,43 @@ module DreamsArk {
         constructor() {
 
             var mouse = <Mouse>module('Mouse');
-
-            /**
-             * start Loading the basic scene
-             */
+            //
+            // /**
+            //  * start Loading the basic scene
+            //  */
             load();
-
-            mouse.click('#start', function () {
-
-                start();
-
-                return true;
-
-            });
-
-            mouse.click('.skipper', function () {
-
-                query('form').submit();
-
-                return true;
-
-            });
-
-            mouse.click('#skip', function () {
-
-                query('form').submit();
-
-                return true;
-
-            });
-
-            mouse.click('.reseter', function () {
-
-                location.reload();
-
-                return true;
-
-            });
+            //
+            // mouse.click('#start', function () {
+            //
+            //     start();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('.skipper', function () {
+            //
+            //     query('form').submit();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('#skip', function () {
+            //
+            //     query('form').submit();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('.reseter', function () {
+            //
+            //     location.reload();
+            //
+            //     return true;
+            //
+            // });
 
         }
 

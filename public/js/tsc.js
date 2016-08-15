@@ -3030,7 +3030,6 @@ var DreamsArk;
 var DreamsArk;
 (function (DreamsArk) {
     var is = DreamsArk.Helpers.is;
-    var query = DreamsArk.Helpers.query;
     var init = DreamsArk.Helpers.init;
     var Loader = DreamsArk.Modules.Loader;
     /**
@@ -3065,26 +3064,43 @@ var DreamsArk;
          */
         function App() {
             var mouse = DreamsArk.module('Mouse');
-            /**
-             * start Loading the basic scene
-             */
+            //
+            // /**
+            //  * start Loading the basic scene
+            //  */
             DreamsArk.load();
-            mouse.click('#start', function () {
-                DreamsArk.start();
-                return true;
-            });
-            mouse.click('.skipper', function () {
-                query('form').submit();
-                return true;
-            });
-            mouse.click('#skip', function () {
-                query('form').submit();
-                return true;
-            });
-            mouse.click('.reseter', function () {
-                location.reload();
-                return true;
-            });
+            //
+            // mouse.click('#start', function () {
+            //
+            //     start();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('.skipper', function () {
+            //
+            //     query('form').submit();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('#skip', function () {
+            //
+            //     query('form').submit();
+            //
+            //     return true;
+            //
+            // });
+            //
+            // mouse.click('.reseter', function () {
+            //
+            //     location.reload();
+            //
+            //     return true;
+            //
+            // });
         }
         return App;
     }());
