@@ -43,6 +43,6 @@ return array (
     'ask-age'=>'How old are you?',
     'ask-nationality'=>'What is your nationality?',
     'ask-occupation'=>'What is your occupation?',
-    'ask-Gender'=>'What is your Gender?',
+    'ask-gender'=>'What is your Gender?',
     'ask-contact'=>'How Could i call you?',
 );

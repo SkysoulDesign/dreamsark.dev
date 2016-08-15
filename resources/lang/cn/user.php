@@ -47,4 +47,5 @@ return array (
   'password' => '密码',
   'password-confirmation' => '密码确认',
   'username' => '用户名称',
+    "how-it-work"=>"說明",
 );

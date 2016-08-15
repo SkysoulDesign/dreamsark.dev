@@ -36,4 +36,5 @@ return array (
   'personal' => 'Personal',
   'inventory' => NULL,
   'account-description' => 'user setting',
+    "how-it-work"=>"how does it works",
 );

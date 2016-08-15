@@ -38,7 +38,6 @@ var Item = (function (_super) {
     __extends(Item, _super);
     function Item() {
         _super.apply(this, arguments);
-        this.startUpdate = false;
     }
     Item.prototype.objects = function () {
         return [
@@ -46,47 +45,39 @@ var Item = (function (_super) {
         ];
     };
     Item.prototype.setup = function (app) {
-        var _this = this;
         //g_TextureLoader.
         console.log("Item composition setup");
         this.m_My2DCamera = new MyThreeJS_1.My2DCamera(2560, 1600);
         this.app = app;
-        this.app.controls.enabled = false;
         this.app.renderer.setClearColor(new THREE.Color(0x888888));
         //this.app.camera = this.m_My2DCamera;
         //this.m_ConsitionManager = null;
         this.m_ConsitionManager = new ItemCombineCondition_1.ConsitionManager();
         console.log("Item composition setup finish");
-        document.querySelector('#merger-button').addEventListener('click', function () {
-            _this.startUpdate = true;
-            _this.m_ConsitionManager.Init(_this.scene);
-        });
     };
     Item.prototype.stage = function (scene, camera, objects) {
-        this.scene = scene;
         //console.log(objects)
         //scene.add(objects.itemA);
         console.log("Item composition scene79979");
         if (this.m_ConsitionManager) {
             var l_EndPoint = new THREE.Vector3(0, 0, 0);
-            var l_Item1Name = "/img/temp/itemA.png";
-            var l_Item1Name2 = "/img/temp/itemB.png";
-            var l_QuestionImage = "/img/temp/question.png";
-            var l_ResultImageFileName = "/img/temp/itemC.png";
+            var l_Item1Name = "/img/temp/avatar.png";
+            var l_Item1Name2 = "/img/temp/avatar.png";
+            var l_QuestionImage = "/img/question.png";
+            var l_ResultImageFileName = "/img/temp/avatar.png";
             var l_ObjectMovingCondition = new ItemCombineCondition_1.ObjectMovingCondition(l_Item1Name, l_Item1Name2, l_EndPoint);
             var l_RotationCondition = new ItemCombineCondition_1.RotationCondition([l_Item1Name, l_Item1Name2, l_QuestionImage]);
             var l_ShowResultCondition = new ItemCombineCondition_1.ShowResultCondition(l_ResultImageFileName);
             this.m_ConsitionManager.AddCondition(l_ObjectMovingCondition);
             this.m_ConsitionManager.AddCondition(l_RotationCondition);
             this.m_ConsitionManager.AddCondition(l_ShowResultCondition);
+            this.m_ConsitionManager.Init(scene);
             scene.add(ItemCombineCondition_1.g_MyParticle);
-            this.m_ConsitionManager.SetLoop(false);
+            this.m_ConsitionManager.SetLoop(true);
         }
         console.log("Item composition scene finish");
     };
     Item.prototype.update = function (scene, camera, objects, time, delta) {
-        if (!this.startUpdate)
-            return;
         if (this.m_ConsitionManager)
             this.m_ConsitionManager.Update(delta);
         if (ItemCombineCondition_1.g_MyParticle)

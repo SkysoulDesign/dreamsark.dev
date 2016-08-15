@@ -20,7 +20,7 @@
         <ark-form action="{{ route('project.fund.vote.store', $enroller) }}">
             <ark-input type="number" name="amount"
                        placeholder="@lang('forms.amount')"></ark-input>
-            <ark-button color="primary">Vote on this User</ark-button>
+            <ark-button color="primary">@lang('project.funding-vote')</ark-button>
         </ark-form>
     </div>
 </ark-accordion-item>

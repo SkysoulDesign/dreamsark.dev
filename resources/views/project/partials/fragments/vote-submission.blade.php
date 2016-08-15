@@ -32,7 +32,7 @@
             {{ csrf_field() }}
             <ark-input type="number" name="amount"
                        placeholder="@lang('forms.amount')"></ark-input>
-            <ark-button color="primary">Vote on this idea</ark-button>
+            <ark-button color="primary">@lang('project.idea-vote')</ark-button>
         </ark-form>
     </div>
 </ark-accordion-item>

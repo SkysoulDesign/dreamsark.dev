@@ -1,5 +1,5 @@
 <ark-tab content="tab-investments" icon="user" {{ (isset($active) && $active) ? 'active' : '' }}>
-    @lang('project.investments')
+    @lang('project.invest')
     @push('tab-item')
     <div id="tab-investments" class="row align-center">
 

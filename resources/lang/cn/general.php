@@ -23,4 +23,5 @@ return array (
     'collect'=>'募资',
     'creation-date'=>'立项日期',
     'project-creator'=>'立项人',
+    'purchase-coins'=>'购买影币',
 );

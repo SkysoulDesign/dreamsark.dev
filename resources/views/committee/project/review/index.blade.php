@@ -10,7 +10,7 @@
         @if($reviews->isEmpty())
 
             <div class="small-10 columns message --color-warning --large">
-                There is no projects waiting to be review
+                There is no projects waiting to be review/没有需要审核项目
             </div>
 
         @else

@@ -22,4 +22,5 @@ return array (
     'collect'=>'collected',
     'creation-date'=>'Creation Date',
     'project-creator'=>'Project Creator',
+    'purchase-coins'=>'Click Here to purchase some coins',
 );

@@ -43,7 +43,7 @@ return array (
     'ask-age'=>'你的年紀是?',
     'ask-nationality'=>'你的國籍是?',
     'ask-occupation'=>'你的職業是?',
-    'ask-Gender'=>'你的性別是?',
+    'ask-gender'=>'你的性別是?',
     'ask-contact'=>'你的聯繫方式?',
 
 );

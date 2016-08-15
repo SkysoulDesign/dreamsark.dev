@@ -43,7 +43,7 @@
                     @lang('payment.no-purchase')
                     <h2>
                         <a href="#" data-modal-trigger="add-coin">
-                            Click Here to purchase some coins
+                            @lang('general.purchase-coins')
                         </a>
                     </h2>
                 </div>

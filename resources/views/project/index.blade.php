@@ -17,7 +17,7 @@
                 <ark-input placeholder="Write something and press enter"></ark-input>
             </ark-form>
 
-            <ark-button color="warning" data-modal-trigger="tutorial">How does it works</ark-button>
+            <ark-button color="warning" data-modal-trigger="tutorial">@lang('user.how-it-work')</ark-button>
 
             <ark-modal v-cloak header="How Does it Works" trigger="tutorial">
                 <a href="{{ asset('img/tutorial.png') }}" target="_blank">

@@ -31,11 +31,11 @@
                             <table class="table +margin-top-small --color-primary">
                                 <thead>
                                 <tr>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Description</th>
-                                    <th>Status</th>
-                                    <th class="+align-right">Action</th>
+                                    <th>@lang('forms.type')</th>
+                                    <th>@lang('forms.amount')</th>
+                                    <th>@lang('forms.description')</th>
+                                    <th>@lang('project.status')</th>
+                                    <th class="+align-right">@lang('forms.action')</th>
                                 </tr>
                                 </thead>
                                 <tbody>

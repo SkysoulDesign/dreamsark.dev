@@ -1,5 +1,5 @@
 <ark-tab content="tab-manage" icon="rss" {{ (isset($active) && $active) ? 'active' : '' }}>
-    @lang('project.manage')
+    @lang('project.destrivution-project-manage')
     @push('tab-item')
     <div id="tab-manage" class="row align-center +margin-top">
 
@@ -10,15 +10,15 @@
                 <ark-input name="name" label="@lang('project.name')">{{ $project->name }}</ark-input>
 
                 <ark-fields>
-                    <ark-input type="file" name="poster" label="@lang('project.poster')"></ark-input>
-                    <ark-input type="file" name="trailer" label="@lang('project.trailer')"></ark-input>
+                    <ark-input type="file" name="poster" label="@lang('project.destrictuion-upload-image')"></ark-input>
+                    <ark-input type="file" name="trailer" label="@lang('project.destrictuion-upload-video')"></ark-input>
                 </ark-fields>
 
                 <ark-textarea name="description" :rows="3"
-                              label="@lang('project.short-description')">{{ $project->stage->description }}</ark-textarea>
+                              label="@lang('project.destrivution-short-description')">{{ $project->stage->description }}</ark-textarea>
 
                 <ark-textarea rich-text name="full_description"
-                              label="@lang('project.full-description')">{{ $project->stage->full_description }}</ark-textarea>
+                              label="@lang('project.destrivution-full-description')">{{ $project->stage->full_description }}</ark-textarea>
 
                 <ark-button color="success">@lang('project.funding-description-save')</ark-button>
 
