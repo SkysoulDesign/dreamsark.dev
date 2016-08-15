@@ -31,6 +31,7 @@
         <div class="small-6 columns +align-right menu +hidden-on-mobile">
 
             <a href="{{ route('project.index') }}" class="menu__item +round +transparent">@lang('nav.projects')</a>
+
             {{--<a href="{{ route('public.profile.index') }}"--}}
             {{--class="menu__item +round +transparent">@lang('nav.talents')</a>--}}
             <a href="/in" class="menu__item +round +transparent">@lang('navbar.intro')</a>
