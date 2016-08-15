@@ -18,7 +18,7 @@ class CreateFundsTable extends Migration
             $table->integer('project_id')->unsigned()->index();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->tinyInteger('fail_reason')->nullable();
 
             $table->timestamps();

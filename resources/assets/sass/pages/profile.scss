@@ -96,7 +96,7 @@
     background-size: cover;
 
     @include option(default) {
-      background: get-url('headers/page_header1.jpg') center 78% no-repeat;
+      background: get-url('headers/page_header2.jpg') center 78% no-repeat;
       background-size: cover;
     }
 
