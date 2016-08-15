@@ -28,6 +28,6 @@ class Distribution extends Model
      *
      * @var array
      */
-    protected $fillable = ['active', 'description'];
+    protected $fillable = ['active', 'description', 'poster', 'trailer'];
 
 }

@@ -15,7 +15,7 @@
             <ul class="ul --inline --right">
                 <li class="li --start">
                     <header class="header --small">
-                        @lang('project.project-list')
+                        @lang('admin.project-list')
                     </header>
                 </li>
                 <li>

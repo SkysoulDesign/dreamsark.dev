@@ -23,7 +23,10 @@ class CreateDistributionsTable extends Migration
             $table->integer('project_id')->unsigned()->index();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->boolean('active')->default(false);
+            $table->text('poster')->nullable();
+            $table->text('trailer')->nullable();
             $table->mediumText('description')->nullable();
+            $table->longText('full_description')->nullable();
             $table->timestamps();
         });
     }

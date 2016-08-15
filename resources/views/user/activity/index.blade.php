@@ -17,8 +17,8 @@
 
             <ark-statistics class="align-center" size="large">
                 <statistic-item data="0">Total Earned/總贏得數量</statistic-item>
-                <statistic-item data="0">Something Else/榮耀項目</statistic-item>
-                <statistic-item data="0">I dont know/排行榜</statistic-item>
+                <statistic-item data="0">Total Spent/榮耀項目</statistic-item>
+                <statistic-item data="0">Total Received/排行榜</statistic-item>
             </ark-statistics>
 
         </div>

@@ -46,14 +46,18 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
-use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
-use DreamsArk\Models\Game\Recipe;
 use DreamsArk\Models\Project\Stages\Vote;
 
 
 $router->get('test', function () {
-    return view('test');
+
+
+    $vote = Vote::find(4);
+    dispatch(new OpenVotingJob($vote));
+
+
+
 })->middleware('web');
 
 $router->get('info', function () {
@@ -211,6 +215,7 @@ $router->group(['middleware' => 'web'], function () use ($router) {
             $router->post('store', UserProjectController::class . '@store')->name('store');
             $router->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
             $router->patch('update/{project}', UserProjectController::class . '@update')->name('update');
+            $router->patch('fund/update/{project}', UserProjectController::class . '@fundUpdate')->name('fund.update');
 
             $router->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
             $router->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');

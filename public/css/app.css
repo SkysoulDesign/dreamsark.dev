@@ -6892,7 +6892,8 @@ button, .button {
     .base-page__header.\--animated:hover, .\--animated.profile-page__header:hover, .\--animated.project-page__header:hover, .\--animated.admin-page__header:hover {
       height: 30em; }
   .base-page__header.\--default, .\--default.profile-page__header, .\--default.project-page__header, .\--default.admin-page__header {
-    background: url("/img/headers/header-3.jpg") center center no-repeat; }
+    background: url("/img/headers/page_header1.jpg") center center no-repeat;
+    background-size: cover; }
     @media screen and (min-width: 40em) {
       .base-page__header.\--default, .\--default.profile-page__header, .\--default.project-page__header, .\--default.admin-page__header {
         height: 15em; } }
@@ -7133,14 +7134,14 @@ button, .button {
   pointer-events: auto; }
 
 .profile-page__header {
-  background: url("/img/login/test_illustration.jpg") center 78% no-repeat;
+  background: url("/img/login/chara_selection_test.jpg") center 78% no-repeat;
   background-size: cover;
   -webkit-transition: height .35s;
   transition: height .35s;
   -webkit-transition-property: background-position-y, height;
   transition-property: background-position-y, height; }
   .profile-page__header.\--default {
-    background: url("/img/headers/dreamsArkRef83.jpg") center 78% no-repeat;
+    background: url("/img/headers/page_header1.jpg") center 78% no-repeat;
     background-size: cover; }
   .profile-page__header.\--extended {
     height: 300px; }

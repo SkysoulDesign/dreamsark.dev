@@ -51,6 +51,7 @@ return array(
     'review-projects' => 'Review Projects',
     'review-stage' => 'Review Stage',
     'review-is-going' => 'Project Current Under Review',
+    'reivew-manage-project'=>'Manage Project',
     'invest' => 'invest',
     'invest-goalMoney' => '$ GOAL',
     'invest-goalMoney-progress' => 'Goal Competition',
@@ -65,6 +66,15 @@ return array(
     'invest-invest' => ' BECOME AN INVESTOR',
     'invest-invest-description' => 'Description',
     'invest-do-invest' => 'confirm invest',
+    'invest-profiles'=>'Profiles',
+    'invest-expense-list'=>'Expense List',
+    'invest-actual-cost'=>'Expense Money',
+    'invest-investor-count'=>'Investors',
+    'invest-investor'=>'Investor',
+    'invest-spent/budget'=>'Spent/Budget',
+    'voting-stage'=>'Voting Stage',
+    'funding-description'=>'Short Description',
+    'funding-description-save'=>'Save',
     'project-failed' => 'This Project Has Failed',
     'unpublished' => 'Unpublished Projects',
     'published' => 'Published Projects',
@@ -187,5 +197,7 @@ return array(
     'try-new-one' => 'why don\'t you start one?',
     'failed-reason' => 'Failed reason',
     'expenses' => 'Expenses',
-    'investors' => 'Investors'
+    'investors' => 'Investors',
+    'position-selection'=>'osition Selection',
+    'voting-stage'=>'Voting Stage'
 );

@@ -38,7 +38,8 @@
 
     @include option(default) {
 
-      background: get-url("headers/header-3.jpg") center center no-repeat;
+      background: get-url("headers/page_header1.jpg") center center no-repeat;
+      background-size: cover;
 
       @include breakpoint(medium up) {
         height: 15em;

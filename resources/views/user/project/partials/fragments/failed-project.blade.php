@@ -52,5 +52,7 @@
 
         </div>
     </div>
+
     @include("user.project.fail-messages.{$project->stage->fail_reason}")
+
 </ark-accordion-item>

@@ -19,19 +19,18 @@ class QuestionTableSeeder extends Seeder
     {
 
         $questions = [
-            'whats your nickname?',
-            'How old are you?',
-            'What is your nationality?',
-            'What is your occupation?',
-            'What is your Gender?',
-            'How Could i call you?',
+            trans('questions.nickname') => 'text',
+            trans('questions.age') => 'number',
+            trans('questions.nationality') => 'text',
+            trans('questions.occupation') => 'text',
+            trans('questions.gender') => 'text',
+            trans('questions.name') => 'text',
         ];
 
-        foreach ($questions as $question) {
-            $type = Type::whereNotIn('name', ['checkbox', 'select', 'radio', 'file', 'video', 'image', 'color'])->orderBy(DB::raw('RAND()'))->limit(1)->get();
-            dispatch(new CreateQuestionJob($question, $type[0]));
+        foreach ($questions as $question => $type) {
+            dispatch(new CreateQuestionJob(
+                $question, Type::where('name', $type)->first()
+            ));
         }
-
     }
-
 }

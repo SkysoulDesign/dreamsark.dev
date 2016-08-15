@@ -34,7 +34,7 @@
                 <ul class="ul --inline --right">
                     <li>
                         <ark-button href="{{ route('project.manage.edit', $project) }}" color="warning">
-                            Manage Project
+                            @lang('project.reivew-manage-project')
                         </ark-button>
                     </li>
                     <li>

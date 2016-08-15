@@ -15,7 +15,7 @@
 
         <div class="small-3 columns">
             <ark-statistics class="align-center">
-                <statistic-item data="40" icon="eye">@lang('vote.viewCount')</statistic-item>
+                <statistic-item data="0" icon="eye">@lang('vote.viewCount')</statistic-item>
                 <statistic-item data="{{ $submission->votes->sum('pivot.amount') }}"
                                 icon="heart">@lang('vote.voteCount')
                 </statistic-item>

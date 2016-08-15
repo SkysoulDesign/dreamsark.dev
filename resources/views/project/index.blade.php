@@ -63,28 +63,28 @@
             </div>
         </div>
 
-        <a href="#" class="small-3 columns">
+        <a href="#" class="small-3 columns under-construction">
             <img src="{{ asset('img/temp/movies/dreamsarkMref10.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a href="#" class="small-3 columns">
+        <a href="#" class="small-3 columns under-construction">
             <img src="{{ asset('img/temp/movies/dreamsarkMref04.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a href="#" class="small-3 columns">
+        <a href="#" class="small-3 columns under-construction">
             <img src="{{ asset('img/temp/movies/dreamsarkMref21.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
         </a>
-        <a href="#" class="small-3 columns">
+        <a href="#" class="small-3 columns under-construction">
             <img src="{{ asset('img/temp/movies/dreamsarkMref32.jpg') }}" alt="">
             <div>
                 <h3>The Jungle Book</h3>
@@ -97,7 +97,7 @@
         <div class="small-12 medium-10 columns">
             <ul class="ul --inline --right">
                 <li class="li --start"><h3>@lang('project.project')</h3></li>
-                <li>
+                <li class="under-construction">
                     <ark-dropdown title="Project Stage" icon="video-camera">
                         <ark-dropdown-option>@lang('project.idea')</ark-dropdown-option>
                         <ark-dropdown-option>@lang('project.synapse')</ark-dropdown-option>
@@ -105,7 +105,7 @@
                         <ark-dropdown-option>@lang('project.fund')</ark-dropdown-option>
                     </ark-dropdown>
                 </li>
-                <li>
+                <li class="under-construction">
                     <ark-dropdown title="Sort by" icon="sort-amount-desc">
                         <ark-dropdown-option>@lang('forms.date')</ark-dropdown-option>
                         <ark-dropdown-option>@lang('forms.reward')</ark-dropdown-option>
@@ -172,7 +172,7 @@
                 @endforeach
 
                 <div href="#" class="small-12 columns project-page__list__load-more +center">
-                    <button class="button --primary --rounded --medium">@lang('dashboard.load-more')</button>
+                    <button class="button --primary --rounded --medium under-construction">@lang('dashboard.load-more')</button>
                 </div>
             </div>
 

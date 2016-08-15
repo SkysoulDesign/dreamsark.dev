@@ -19,14 +19,22 @@ export class Profile extends AbstractPage {
          * initialize the position with the first element
          */
         this.app.on('animation.started', function (id, position) {
-            this.$set('position',
-                document.querySelector(`[data-profile-name="${position}"]`).dataset['localizedName']
-            )
+
+            let profile = <HTMLElement>document.querySelector(`[data-profile-name="${position}"]`);
+
+            this.$set('position', {
+                name: profile.dataset['profileName'],
+                translation: profile.dataset['translation']
+            })
+
         })
 
         this.app.vue({
             data: {
-                position: null
+                position: {
+                    name: null,
+                    translation: null
+                }
             }
         })
 
@@ -43,22 +51,22 @@ export class Profile extends AbstractPage {
 
         button.addEventListener('click', e => {
 
-            let request = this.app.vueInstance.$http.get('http:'+profileRoute, {
+            let request = this.app.vueInstance.$http.get('http:' + profileRoute, {
                 params: {
-                    profile: this.app.vueInstance.position
+                    profile: this.app.vueInstance.position.name
                 }
             })
 
             request.then(response => {
 
-
-                let form = document.querySelector('form'),
+                let form = <HTMLFormElement>document.querySelector('form'),
                     container = <HTMLElement>document.querySelector('#wrapper'),
-                    formContainer = form.querySelector('#form-container'),
-                    header = document.querySelector('.profile-page__header');
+                    formContainer = <HTMLElement>form.querySelector('#form-container'),
+                    header = <HTMLElement>document.querySelector('.profile-page__header');
 
                 header.classList.add('--extended')
                 form.classList.remove('+hidden');
+                formContainer.style.width = "100%";
 
                 let profile_input = document.createElement('input');
                 profile_input.setAttribute('name', 'profile_id');
@@ -66,13 +74,12 @@ export class Profile extends AbstractPage {
 
                 response.json().forEach(function (item, index) {
 
-
                     let h3 = document.createElement('h3');
-                    h3.classList.add('small-12', 'columns', 'form__step');
+                    h3.classList.add('small-12', 'columns', 'form__step', '--color-success');
                     h3.innerHTML = `<span>${index + 1}</span>${item.question}`;
 
                     let field = document.createElement('div');
-                    field.classList.add('small-12', 'columns', 'form__field');
+                    field.classList.add('form__field');
 
                     let input = document.createElement('input');
                     input.setAttribute('type', item.type.name)
@@ -91,7 +98,7 @@ export class Profile extends AbstractPage {
 
                 for (let i = 1; i < container.childElementCount; i++) {
                     let child = <HTMLElement>container.children.item(i);
-                    child.style.display = 'none';
+                        child.style.display = 'none';
                 }
 
             })

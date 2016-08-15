@@ -97,6 +97,23 @@ class ProjectController extends Controller
     }
 
     /**
+     * Update Project at fund Stage
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \DreamsArk\Models\Project\Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function fundUpdate(Request $request, Project $project)
+    {
+
+        $this->dispatch(
+            new UpdateProjectJob($project, $request->all())
+        );
+
+        return redirect()->route('project.show', $project);
+    }
+
+    /**
      * @param $request
      */
     protected function getPaginationArray($request)

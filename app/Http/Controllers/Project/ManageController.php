@@ -37,7 +37,7 @@ class ManageController extends Controller
     {
 
         $this->dispatch(new UpdateDistributionDetailsJob(
-            $project->getAttribute('stage'), $request->toArray()
+            $project, $request->toArray(), $request->files
         ));
 
         return redirect()->back();

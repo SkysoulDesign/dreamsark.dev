@@ -18,6 +18,12 @@ var Common = (function (_super) {
         this.app.logger.info('This class {Common} will run on every request');
         this.dropdown();
         // this.languageSwitcher();
+        var divs = document.querySelectorAll('.under-construction');
+        [].forEach.call(divs, function (div) {
+            div.addEventListener('click', function () {
+                alert('this component is under construction');
+            });
+        });
     };
     Common.prototype.languageSwitcher = function () {
         if (this.is(['login', 'register', 'admin.*', 'committee.*'])) {

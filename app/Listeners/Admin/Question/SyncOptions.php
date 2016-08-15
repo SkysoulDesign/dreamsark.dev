@@ -48,12 +48,10 @@ class SyncOptions
     public function handle(Event $event)
     {
 
-        $type = $this->getType($event);
-
         /**
          * If Type is one of those which requires Option
          */
-        if (in_array($type->getAttribute('name'), ['radio', 'checkbox', 'select'])) {
+        if (in_array($event->type->getAttribute('name'), ['radio', 'checkbox', 'select'])) {
 
             $database = $this->option->whereIn('name', $event->options)->get(['id', 'name']);
 
@@ -74,31 +72,5 @@ class SyncOptions
             $event->question->options()->sync([]);
 
         }
-
     }
-
-    /**
-     * Parse Type
-     *
-     * @param QuestionWasCreated|QuestionWasUpdated|Event $event
-     * @return Type
-     */
-    public function getType(Event $event)
-    {
-
-        /**
-         * If its an instance of Type, return it
-         */
-        if ($event->type instanceof Type)
-            return $event->type;
-
-        /**
-         * Cast field to int to get id otherwise consider as name
-         */
-        $field = ((int)$event->type ? 'id' : 'name');
-
-        return $this->type->where($field, $event->type)->firstOrFail();
-
-    }
-
 }

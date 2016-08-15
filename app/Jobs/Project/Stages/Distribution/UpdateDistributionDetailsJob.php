@@ -3,7 +3,8 @@
 namespace DreamsArk\Jobs\Project\Stages\Distribution;
 
 use DreamsArk\Jobs\Job;
-use DreamsArk\Models\Project\Stages\Distribution;
+use DreamsArk\Models\Project\Project;
+use Symfony\Component\HttpFoundation\FileBag;
 
 /**
  * Class UpdateDistributionDetailsJob
@@ -13,9 +14,9 @@ use DreamsArk\Models\Project\Stages\Distribution;
 class UpdateDistributionDetailsJob extends Job
 {
     /**
-     * @var Distribution
+     * @var Project
      */
-    private $distribution;
+    private $project;
 
     /**
      * @var array
@@ -23,15 +24,22 @@ class UpdateDistributionDetailsJob extends Job
     private $fields;
 
     /**
+     * @var FileBag
+     */
+    private $files;
+
+    /**
      * Create a new job instance.
      *
-     * @param Distribution $distribution
-     * @param [szzzzz] $fields
+     * @param Project $project
+     * @param array $fields
+     * @param FileBag $files
      */
-    public function __construct(Distribution $distribution, array $fields)
+    public function __construct(Project $project, array $fields, FileBag $files)
     {
-        $this->distribution = $distribution;
-        $this->fields = $fields;
+        $this->project = $project;
+        $this->fields = collect($fields);
+        $this->files = $files;
     }
 
     /**
@@ -41,8 +49,25 @@ class UpdateDistributionDetailsJob extends Job
      */
     public function handle()
     {
-        $this->distribution->update(
-            $this->fields
-        );
+
+        $this->project->update([
+            'name' => $this->fields->get('name')
+        ]);
+
+        $stage = $this->project->getAttribute('stageable');
+
+        /**
+         * Upload Content
+         */
+        foreach ($this->files as $name => $file) {
+            $fileName = "$name-{$this->project->getKey()}.{$file->guessExtension()}";
+            $path = "uploads";
+            $file->move($path, $fileName);
+            $stage->setAttribute($name, DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $fileName);
+        }
+
+        $stage->setAttribute('description', $this->fields->get('description'));
+        $stage->setAttribute('full_description', $this->fields->get('full_description'));
+        $stage->save();
     }
 }

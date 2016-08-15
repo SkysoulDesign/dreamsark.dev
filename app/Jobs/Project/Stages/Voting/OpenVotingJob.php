@@ -6,6 +6,7 @@ use DreamsArk\Commands\Project\FailFundingStageCommand;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailProjectStageJob;
+use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
 use DreamsArk\Models\Traits\SubmissibleTrait;
@@ -18,7 +19,6 @@ use Illuminate\Support\Collection;
  */
 class OpenVotingJob extends Job
 {
-
     /**
      * @var Vote
      */
@@ -41,6 +41,27 @@ class OpenVotingJob extends Job
     {
 
         $votable = $this->vote->getAttribute('votable');
+
+        /**
+         * If instance of fund fail it if no enough user enrolled on it
+         */
+        if ($votable instanceof Fund) {
+
+            /**
+             * Fail Project if there is no enough Enrollers
+             */
+            $enrollers = $votable->getAttribute('enrollable')->pluck('enrollers');
+
+            if ($enrollers->count() !== $enrollers->reject(function ($items) {
+                    return $items->isEmpty();
+                })->count()
+            ) {
+                return dispatch(new FailProjectStageJob(
+                    $votable, FAIL_REASON_NO_ENROLLERS
+                ));
+            }
+
+        }
 
         /**
          * Check if Class uses SubmissibleTrait

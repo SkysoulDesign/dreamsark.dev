@@ -31,7 +31,7 @@ class PaymentServiceProvider extends ServiceProvider
     private $drivers = [
         'wechat' => Wechat::class,
         'alipay' => Alipay::class,
-        'unionpay' => UnionPay::class,
+        'unionPay' => UnionPay::class,
     ];
 
     /**
@@ -41,9 +41,8 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         /**
-         * Bing Drivers
+         * Bind Drivers
          */
         $this->app->singleton('payment.drivers', function () {
             return array_map(function ($driver) {

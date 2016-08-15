@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('project.partials.header', ['title' => 'Voting Stage'])
+    @include('project.partials.header', ['title' => trans('project.voting-stage')])
 
     <div class="row align-center">
 
@@ -12,7 +12,7 @@
             <img class="project-page__achievements" src="{{ asset('img/svg/badge-simple-flat.svg') }}">
 
             <div class="header --light-weight">
-                Position Selection
+                @lang('project.position-selection')
                 <h2>@lang('project.votingEndTime') {{ $project->stage->vote->close_date }}</h2>
             </div>
 
@@ -25,7 +25,7 @@
         </div>
 
         <div class="small-10 columns segment --attached --color-primary --centered --large-padding">
-            <div class="header --with-divider">Profiles</div>
+            <div class="header --with-divider">@lang('project.invest-profiles')</div>
             <ul class="ul --inline --centered">
                 @foreach($profiles as $profile)
                     <li>

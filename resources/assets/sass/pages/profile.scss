@@ -92,11 +92,11 @@
 
   @include base-header() {
 
-    background: get-url('login/test_illustration.jpg') center 78% no-repeat;
+    background: get-url('login/chara_selection_test.jpg') center 78% no-repeat;
     background-size: cover;
 
     @include option(default) {
-      background: get-url('headers/dreamsArkRef83.jpg') center 78% no-repeat;
+      background: get-url('headers/page_header1.jpg') center 78% no-repeat;
       background-size: cover;
     }
 

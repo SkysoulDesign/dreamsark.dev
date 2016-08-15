@@ -4,6 +4,7 @@ namespace DreamsArk\Jobs\Project;
 
 use DreamsArk\Events\Project\StageHasFailed;
 use DreamsArk\Jobs\Job;
+use DreamsArk\Models\Project\Stages\Fund;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -45,6 +46,13 @@ class FailProjectStageJob extends Job
             ->setAttribute('active', false)
             ->setAttribute('fail_reason', $this->reason)
             ->save();
+
+        /**
+         * No Need to refund if instance of fund
+         */
+        if ($this->model instanceof Fund) {
+            return;
+        }
 
         /**
          * Announce StageHasFailed

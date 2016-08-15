@@ -15,7 +15,6 @@ use DreamsArk\Presenters\Presenter;
 use DreamsArk\Presenters\Presenter\ProjectPresenter;
 use DreamsArk\Repositories\Project\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -80,10 +79,15 @@ class Project extends Model
      */
     public function scopeActive(Builder $query)
     {
-        foreach ($stages = ['idea', 'synapse', 'script'] as $stage) {
+        foreach ($stages = ['idea', 'synapse', 'script', 'fund'] as $stage) {
 
-            $query->orWhereHas(array_shift($stages), function (Builder $query) {
-                $query->where('active', true)->orHas('submission');
+            $query->orWhereHas(array_shift($stages), function (Builder $query) use ($stage) {
+
+                $query->where('active', true);
+
+                if ($stage !== 'fund')
+                    $query->orHas('submission');
+
             });
 
             foreach ($stages as $model) {
@@ -103,10 +107,15 @@ class Project extends Model
      */
     public function scopeFailed(Builder $query)
     {
-        foreach ($stages = ['idea', 'synapse', 'script'] as $stage) {
+        foreach ($stages = ['idea', 'synapse', 'script', 'fund'] as $stage) {
 
-            $query->orWhereHas(array_shift($stages), function (Builder $query) {
-                $query->where('active', false)->doesntHave('submission');
+            $query->orWhereHas(array_shift($stages), function (Builder $query) use ($stage) {
+
+                $query->where('active', false);
+
+                if ($stage !== 'fund')
+                    $query->doesntHave('submission');
+
             });
 
             foreach ($stages as $model) {

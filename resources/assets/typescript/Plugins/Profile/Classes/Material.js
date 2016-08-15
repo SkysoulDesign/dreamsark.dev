@@ -18,7 +18,8 @@ var Material = (function (_super) {
          */
         this.initialized = {};
         this.materials = {
-            baseMaterial: require('../Materials/BaseMaterial')
+            baseMaterial: require('../Materials/BaseMaterial'),
+            itemMaterial: require('../Materials/ItemMaterial')
         };
     }
     Material.prototype.boot = function (app) {

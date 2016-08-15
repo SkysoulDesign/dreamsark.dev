@@ -27,7 +27,7 @@ var Main = (function (_super) {
         document.querySelector(container).addEventListener('click', function (e) {
             var target = e.target;
             if (target.dataset.hasOwnProperty('profileName')) {
-                _this.switch(target.dataset['profileName'], target.dataset['localizedName']);
+                _this.switch(target.dataset['profileName'], target.dataset['translation']);
             }
         });
     };
@@ -37,10 +37,14 @@ var Main = (function (_super) {
         objects.base.rotation.y = Math.PI;
         scene.add(objects[this.activeProfile], objects.base);
     };
-    Main.prototype.update = function (scene, camera, objects, time, delta) { };
-    Main.prototype.switch = function (name, localized) {
+    Main.prototype.update = function (scene, camera, objects, time, delta) {
+    };
+    Main.prototype.switch = function (name, translation) {
         var _this = this;
-        window['dreamsark'].vueInstance.$set('position', name);
+        window['dreamsark'].vueInstance.$set('position', {
+            name: name,
+            translation: translation
+        });
         this.app.objects.get(name).then(function (profile) {
             if (_this.activeProfile == profile.name)
                 return console.log('already active');

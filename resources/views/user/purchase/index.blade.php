@@ -13,22 +13,15 @@
             </header>
         </div>
 
-        <div class="small-12 columns">
-
-            <ul class="ul --inline --bold --right">
-                <li class="li --active">
-                    <a href="#">@lang('payment.purchase')</a>
-                </li>
+        <div class="small-10 segment --transparent +margin-top-small">
+            <ul class="ul --inline --right">
                 <li>
-                    <a href="#">@lang('payment.withdraw')</a>
-                </li>
-                <li>
-                    <a class="button --primary --medium" href="#" data-modal-trigger="add-coin">
+                    <a class="button --color-primary" href="#" data-modal-trigger="add-coin">
                         @lang('payment.add-coins')
                     </a>
                 </li>
                 <li>
-                    <a class="button --primary --medium" href="#" data-modal-trigger="withdraw-coin">
+                    <a class="button --color-primary" href="#" data-modal-trigger="withdraw-coin">
                         @lang('payment.withdraw-coins')
                     </a>
                 </li>
@@ -36,13 +29,26 @@
 
         </div>
 
-        <div class="small-12 columns">
+        <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom">
+
+            <ark-statistics class="align-center" size="large">
+                <statistic-item data="{{ $user->bag->coins }}">@lang('payment.coins')</statistic-item>
+            </ark-statistics>
+
+        </div>
+
+        <div class="small-10">
             @if($transactions->isEmpty())
-
-                <div>@lang('payment.no-purchase')</div>
-
+                <div class="message --centered --large-padding --color-primary">
+                    @lang('payment.no-purchase')
+                    <h2>
+                        <a href="#" data-modal-trigger="add-coin">
+                            Click Here to purchase some coins
+                        </a>
+                    </h2>
+                </div>
             @else
-                <table class="table --stack">
+                <table class="table --attached-top">
                     <thead>
                     <tr>
                         <th>@lang('payment.vendor')</th>
@@ -71,54 +77,40 @@
 
     </div>
 
-    <ark-modal v-cloak trigger="add-coin" header="@lang('Add Coin Form')">
+    <ark-modal v-cloak trigger="add-coin" header="@lang('payment.add-coins')">
 
-        <form id="purchase-coin" class="row align-center" method="post"
-              action="{{ route('user.purchase.coin.store') }}">
+        <ark-form id="purchase-coin" class="row align-center +padding-top-small"
+                  action="{{ route('user.purchase.coin.store') }}">
 
-            {{ csrf_field() }}
+            <ark-form-step>
+                @lang('payment.choose-method')
+            </ark-form-step>
 
-            <div class="small-12 columns form__content --rounded">
-
-                <div class="row">
-
-                    <h3 class="small-12 columns form__step">
-                        <span>1</span>
-                        @lang('payment.choose-method')
-                    </h3>
-
-                    <div class="small-12 columns form__field">
-                        <select name="payment_method">
-                            <option value="alipay">@lang('payment.alipay')</option>
-                            <option value="unionPay">@lang('payment.unionpay')</option>
-                            <option value="wechat">@lang('payment.wechat')</option>
-                        </select>
-                    </div>
-
-                    <h3 class="small-12 columns form__step">
-                        <span>2</span>
-                        @lang('payment.amount')
-                    </h3>
-
-                    <div class="small-12 columns form__field">
-                        <input type="number" name="amount" placeholder="{{ trans('payment.amount-sample') }}">
-                    </div>
-
-                    <div class="small-12 columns divider --simple"></div>
-
-                    <div class="small-12 columns form__field +align-right +center-on-mobile">
-                        <button type="submit" class="button --success --fit">@lang('payment.buy')</button>
-                    </div>
-
-                    <div class="small-12 columns form__description +center-on-mobile">
-                        @lang('payment.add-coin-modal-footer')
-                    </div>
-
-                </div>
-
+            <div class="form__field">
+                <select name="payment_method">
+                    <option value="alipay">@lang('payment.alipay')</option>
+                    <option value="unionPay">@lang('payment.unionpay')</option>
+                    <option value="wechat">@lang('payment.wechat')</option>
+                </select>
             </div>
 
-        </form>
+            <ark-form-step>
+                @lang('payment.amount')
+            </ark-form-step>
+
+            <ark-input type="number" name="amount" placeholder="{{ trans('payment.amount-sample') }}"></ark-input>
+
+            <div class="small-12 columns divider --simple"></div>
+
+            <ark-button color="success">
+                @lang('payment.buy')
+            </ark-button>
+
+            <div class="small-12 columns form__description +center-on-mobile">
+                @lang('payment.add-coin-modal-footer')
+            </div>
+
+        </ark-form>
 
     </ark-modal>
 

@@ -14,14 +14,13 @@ use DreamsArk\Models\Master\Question\Type;
  */
 class CreateQuestionJob extends Job
 {
-
     /**
      * @var string
      */
-    private $field;
+    private $question;
 
     /**
-     * @var Type|int
+     * @var Type
      */
     private $type;
 
@@ -33,13 +32,13 @@ class CreateQuestionJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param string $field
-     * @param Type|int $type
+     * @param string $question
+     * @param Type $type
      * @param array $options
      */
-    public function __construct($field, $type, $options = [])
+    public function __construct(string $question, Type $type, $options = [])
     {
-        $this->field = $field;
+        $this->question = $question;
         $this->type = $type;
         $this->options = $options;
     }
@@ -49,11 +48,9 @@ class CreateQuestionJob extends Job
      *
      * @param Question $question
      * @return Question
-     * @todo Implement Repository
      */
     public function handle(Question $question)
     {
-
         /**
          * Create Question
          *
@@ -62,7 +59,7 @@ class CreateQuestionJob extends Job
         $question = $question->type()
             ->associate($this->type)
             ->fill([
-                'question' => $this->field
+                'question' => $this->question
             ]);
 
         $question->save();
@@ -73,7 +70,5 @@ class CreateQuestionJob extends Job
         event(new QuestionWasCreated($question, $this->type, $this->options));
 
         return $question;
-
     }
-
 }

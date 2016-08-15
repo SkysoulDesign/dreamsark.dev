@@ -6,7 +6,7 @@ export abstract class AbstractComposition implements ComposableInterface {
     boot(app) {
     }
 
-    objects() {
+    objects():string[]|boolean {
         return false;
     }
 

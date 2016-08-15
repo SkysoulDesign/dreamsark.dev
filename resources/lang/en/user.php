@@ -32,7 +32,7 @@ return array (
   'password-no-change' => 'Leave blank if don\'t want to change password',
   'my-backed-list-description' => NULL,
   'my-earning-list-description' => NULL,
-  'purchases-description' => NULL,
+  'purchases-description' => 'Manage all your purchases',
   'personal' => 'Personal',
   'inventory' => NULL,
   'account-description' => 'user setting',

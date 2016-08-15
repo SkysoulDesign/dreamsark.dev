@@ -8,13 +8,26 @@
 
         <p>{{ $project->stage->description }}</p>
 
+        @if($project->stage->trailer)
+
+            <ark-button icon="film" data-modal-trigger="watch-video" color="success">Watch Trailer</ark-button>
+
+            <ark-modal header="Watch The Trailer" v-cloak trigger="watch-video">
+                <video controls style="width: 100%">
+                    <source src="{{ asset($project->stage->trailer) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </ark-modal>
+
+        @endif
+
     </div>
 
     <div class="small-10 columns segment --color-primary --attached --centered --large-padding +no-round-bottom">
 
         <ark-statistics class="align-center" size="large">
             <statistic-item data="{{ $project->present()->spentBudget() }} / {{ $project->present()->goal() }}">
-                Spent / Budget
+                @lang('project.invest-spent/budget')
             </statistic-item>
         </ark-statistics>
 

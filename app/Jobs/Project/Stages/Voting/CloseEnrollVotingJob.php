@@ -55,6 +55,7 @@ class CloseEnrollVotingJob extends Job
                 return !$item->isEmpty();
             })->flatten();
 
+
             /**
              * to get enrollers' votes total
              *

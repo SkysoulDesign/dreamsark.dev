@@ -42,7 +42,6 @@ class Question extends Model
      */
     public function newPivot(Model $parent, array $attributes, $table, $exists)
     {
-
         /**
          * Construct this Pivot with instance of ProfileQuestionPivot
          * Also Load Section along
@@ -59,7 +58,6 @@ class Question extends Model
         }
 
         return parent::newPivot($parent, $attributes, $table, $exists);
-
     }
 
     /**
@@ -89,7 +87,6 @@ class Question extends Model
      */
     public function options()
     {
-
         /**
          * Check if Pivot relationship has been started
          * otherwise it might be a directly call from the Model
@@ -110,7 +107,5 @@ class Question extends Model
         }
 
         return $this->belongsToMany(Option::class, "question_option");
-
     }
-
 }

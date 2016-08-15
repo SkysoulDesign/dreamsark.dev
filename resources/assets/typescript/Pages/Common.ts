@@ -1,5 +1,4 @@
 import {AbstractPage} from "../Abstract/AbstractPage";
-import {submitForm} from "../Helpers";
 
 /**
  * Common Page
@@ -15,6 +14,12 @@ export class Common extends AbstractPage {
         this.dropdown();
         // this.languageSwitcher();
 
+        let divs = document.querySelectorAll('.under-construction');
+            [].forEach.call(divs, function (div) {
+                div.addEventListener('click', function () {
+                    alert('this component is under construction')
+                })
+            });
     }
 
     languageSwitcher() {
@@ -35,7 +40,7 @@ export class Common extends AbstractPage {
         //
         //         submitForm(form)
 
-            // })
+        // })
 
 
     }

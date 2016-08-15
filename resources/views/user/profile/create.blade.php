@@ -13,7 +13,7 @@
             <div class="small-12 align-middle columns">
                 <header class="header --color-white +text-shadow" v-cloak>
                     @lang('profile.pick-position')
-                    <h1 class="+uppercase">@{{ position }}</h1>
+                    <h1 class="+uppercase">@{{ position.translation }}</h1>
                 </header>
             </div>
             {{--@lang("positions.{position}")--}}
@@ -24,7 +24,7 @@
                 <div id="characters" class="row">
                     @foreach($profiles as $profile)
                         <div data-profile-name="{{ $profile->name }}"
-                             data-localized-name="@lang("positions.$profile->name")"
+                             data-translation="@lang("positions.$profile->name")"
                              class="columns profile-page__palette --color-{{ rand(1,20) }}">
                             <div class="profile-page__palette__item">
                                 @php $rand = rand(1,8) @endphp
