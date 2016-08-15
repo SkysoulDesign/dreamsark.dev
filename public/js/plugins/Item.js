@@ -205,6 +205,7 @@ var GroupAndItem = function () {
         }
         this.MyLog.log("end GroupAndItem");
     }
+
     GroupAndItem.prototype.getRandomItemID = function () {
         var l_Index = this.m_findSuitObjectByProbability.getIndex();
         if (this.itemArray.length > l_Index) {
