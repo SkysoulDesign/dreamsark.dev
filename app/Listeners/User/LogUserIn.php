@@ -4,7 +4,6 @@ namespace DreamsArk\Listeners\User;
 
 use DreamsArk\Events\Session\UserWasCreated;
 use Illuminate\Auth\AuthManager;
-use PhpSpec\Exception\Exception;
 
 /**
  * Class LogUserIn
@@ -38,12 +37,7 @@ class LogUserIn
         /**
          * Skip if user is already logged in
          */
-//        try {
-//            if ($this->auth->guest()&&$event->user)
-//                auth()->login($event->user);
-//        }catch(\Exception $e){
-//            dd($e);
-//        }
+        if ($this->auth->guest() && $event->user)
+            auth()->login($event->user);
     }
-
 }

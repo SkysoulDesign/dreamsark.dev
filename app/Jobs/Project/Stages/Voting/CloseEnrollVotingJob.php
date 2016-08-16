@@ -42,7 +42,7 @@ class CloseEnrollVotingJob extends Job
          *
          * @var Fund $fund
          */
-        $fund = $this->vote->getAttribute('votable')->load('enrollable.enrollers.votes');
+        $fund = $this->vote->getAttribute('votable');//->load('enrollable.enrollers.votes');
 
         foreach ($fund->getAttribute('enrollable') as $expenditure) {
 

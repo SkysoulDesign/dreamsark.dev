@@ -45,11 +45,14 @@ class StaffController extends Controller
      *
      * @param Request $request
      * @param Review $review
-     *
      * @return \Illuminate\Http\Response
      */
     public function publish(Request $request, Review $review)
     {
+
+        $this->validate($request, [
+            'voting_date' => 'required'
+        ]);
 
         $project = $review->getAttribute('project');
 
@@ -69,7 +72,6 @@ class StaffController extends Controller
      * Redirect if a Review is already Published
      *
      * @param Review $review
-     *
      * @return $this
      */
 //    protected function redirectIfActive(Review $review)

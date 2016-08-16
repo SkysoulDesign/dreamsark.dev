@@ -8,7 +8,7 @@
         @lang('project.submissions')
     </statistic-item>
     <statistic-item icon="comments" data="{{ $project->stage->comments->count() }}">
-        comments
+        @lang('forms.comments')
     </statistic-item>
 @overwrite
 

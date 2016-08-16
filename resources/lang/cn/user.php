@@ -48,4 +48,7 @@ return array (
   'password-confirmation' => '密码确认',
   'username' => '用户名称',
     "how-it-work"=>"說明",
+    'friends' => '朋友',
+    'rewards' => '事迹',
+    'ranking' => '排行榜',
 );
