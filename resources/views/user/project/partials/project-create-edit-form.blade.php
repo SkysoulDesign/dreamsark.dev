@@ -45,6 +45,7 @@
 
             <ark-input name="voting_date"
                        type="datetime-local"
+                       placeholder="@lang('forms.due-date')"
                        caption="@lang('project.creation-voting-description')"
                        label="@lang('forms.due-date')">
             </ark-input>
