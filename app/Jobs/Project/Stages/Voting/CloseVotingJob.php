@@ -6,6 +6,7 @@ use DreamsArk\Events\Project\Vote\VotingHasFailed;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailProjectStageJob;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 
@@ -64,7 +65,7 @@ class CloseVotingJob extends Job
              * Fail The project stage
              */
             dispatch(new FailProjectStageJob(
-                $this->vote->votable, FAIL_REASON_NO_VOTES
+                $this->vote->getAttribute('votable'), Project::FAIL_REASON_NO_VOTES
             ));
 
             /**

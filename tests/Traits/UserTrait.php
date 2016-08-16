@@ -21,13 +21,11 @@ trait UserTrait
 
         $data = array_merge([
             'username' => $faker->userName,
-            'name'     => $faker->name,
-            'email'    => $faker->email,
-            'password' => $faker->password(6, 6),
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => 123456,
         ], $params);
 
         return dispatch(new CreateUserJob($data, $role));
-
     }
-
 }

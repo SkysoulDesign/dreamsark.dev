@@ -57,7 +57,6 @@ class CreateProfileJob extends Job
      */
     public function handle(Profile $profile)
     {
-
         /**
          * FLip keys and append required pivot if key is find in the required params
          * Example: [1=> [required=>true]] translates to question $id 1 is required

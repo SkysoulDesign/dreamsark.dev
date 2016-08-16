@@ -3,17 +3,14 @@
 namespace DreamsArk\Events;
 
 use DreamsArk\Models\User\Role;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Class RoleWasCreated
  *
  * @package DreamsArk\Events
  */
-class RoleWasCreated extends Event
+class RoleWasCreated
 {
-    use SerializesModels;
-
     /**
      * @var Role
      */
@@ -38,5 +35,4 @@ class RoleWasCreated extends Event
     {
         return [];
     }
-    
 }

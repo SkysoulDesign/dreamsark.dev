@@ -2,7 +2,6 @@
 
 use DreamsArk\Events\RoleWasCreated;
 use DreamsArk\Jobs\User\Role\CreateRoleJob;
-use DreamsArk\Models\User\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
@@ -18,7 +17,6 @@ class CreateRoleJobTest extends TestCase
      */
     private $data = [
         'name',
-        'display_name',
         'description'
     ];
 
@@ -30,10 +28,11 @@ class CreateRoleJobTest extends TestCase
     public function it_should_create_a_new_role_in_the_database()
     {
 
-        /** @var Role $role */
-        $role = dispatch(new CreateRoleJob(extract($this->data)));
-        $this->seeInDatabase('roles', $role->toArray());
+        $role = dispatch(new CreateRoleJob(
+            extract($this->data)
+        ));
 
+        $this->seeInDatabase('roles', $role->toArray());
     }
 
     /**
@@ -51,8 +50,11 @@ class CreateRoleJobTest extends TestCase
      */
     public function it_expects_events_to_be_triggered()
     {
-        $this->expectsEvents(RoleWasCreated::class);
-        dispatch(new CreateRoleJob(extract($this->data)));
-    }
 
+        $this->expectsEvents(RoleWasCreated::class);
+
+        dispatch(new CreateRoleJob(
+            extract($this->data)
+        ));
+    }
 }

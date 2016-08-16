@@ -262,6 +262,14 @@ export class Form implements ComponentInterface {
                     }
 
                 },
+            },
+            ready(){
+
+                if (this.type === 'datetime-local') {
+                    this.type = 'text';
+                    app.plugin('datetime', this.$els.input);
+                }
+
             }
         });
 

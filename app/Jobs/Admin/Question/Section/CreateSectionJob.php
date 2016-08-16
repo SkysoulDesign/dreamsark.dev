@@ -13,7 +13,6 @@ use DreamsArk\Models\Master\Question\Type;
  */
 class CreateSectionJob extends Job
 {
-
     /**
      * @var string
      */
@@ -24,7 +23,7 @@ class CreateSectionJob extends Job
      *
      * @param string $field
      */
-    public function __construct($field)
+    public function __construct(string $field)
     {
         $this->field = $field;
     }
@@ -34,7 +33,6 @@ class CreateSectionJob extends Job
      *
      * @param Section $section
      * @return Type
-     * @todo Implement Repository
      */
     public function handle(Section $section)
     {
@@ -42,5 +40,4 @@ class CreateSectionJob extends Job
             'name' => $this->field
         ]);
     }
-
 }

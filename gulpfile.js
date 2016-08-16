@@ -67,6 +67,11 @@ elixir(function (mix) {
             './node_modules/medium-editor-tables/dist/css/medium-editor-tables.css',
         ], 'public/css/plugins/medium/medium.css')
 
+        .webpack("./resources/assets/typescript/Plugins/DateTime.js", pluginsPath)
+        .styles([
+            './node_modules/flatpickr/dist/flatpickr.dark.min.css',
+        ], 'public/css/plugins/datetime/datetime.css')
+
     /**
      * Copy FontAwesome Font
      */

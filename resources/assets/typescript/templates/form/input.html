@@ -3,6 +3,7 @@
     <label v-if="label" :for="name">{{ label }}</label>
 
     <input v-if="model"
+           v-el:input
            v-model="$root.$data.model[name]"
            :class="{'--error': errors}"
            :type="type || 'text'"
@@ -15,6 +16,7 @@
            :readOnly="readOnly">
 
     <input v-else
+           v-el:input
            :class="{'--error': errors}"
            :type="type || 'text'"
            :name="name"

@@ -215,6 +215,12 @@ var Form = (function () {
                         return Helpers_1.popByKey(form.errors, this.name);
                     }
                 },
+            },
+            ready: function () {
+                if (this.type === 'datetime-local') {
+                    this.type = 'text';
+                    app.plugin('datetime', this.$els.input);
+                }
             }
         });
         vue.component('ark-dropdown-option', {

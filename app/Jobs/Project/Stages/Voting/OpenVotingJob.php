@@ -6,6 +6,7 @@ use DreamsArk\Commands\Project\FailFundingStageCommand;
 use DreamsArk\Events\Project\Vote\VoteWasOpened;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Jobs\Project\FailProjectStageJob;
+use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\Project\Stages\Fund;
 use DreamsArk\Models\Project\Stages\Vote;
 use DreamsArk\Models\Traits\EnrollableTrait;
@@ -57,7 +58,7 @@ class OpenVotingJob extends Job
                 })->count()
             ) {
                 return dispatch(new FailProjectStageJob(
-                    $votable, FAIL_REASON_NO_ENROLLERS
+                    $votable, Project::FAIL_REASON_NO_ENROLLERS
                 ));
             }
 
@@ -80,7 +81,7 @@ class OpenVotingJob extends Job
              * Fail this project
              */
             return dispatch(new FailProjectStageJob(
-                $votable, FAIL_REASON_NO_ENOUGH_SUBMISSIONS
+                $votable, Project::FAIL_REASON_NO_ENOUGH_SUBMISSIONS
             ));
 
         }

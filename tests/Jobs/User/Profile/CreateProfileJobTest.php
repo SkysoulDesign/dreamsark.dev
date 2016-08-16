@@ -28,11 +28,10 @@ class UserCreateProfileJobTest extends TestCase
 
         $answers = [];
 
-        foreach ($profile->questions as $question) {
+        foreach ($profile->getAttribute('questions') as $question) {
             array_set($answers, "question_$question->id", 'hi');
         }
 
-        /** @var User $user */
         $user = dispatch(new CreateProfileJob($answers, $user, $profile->fresh()));
 
         $this->assertTrue($user->hasProfile($profile));
@@ -48,14 +47,14 @@ class UserCreateProfileJobTest extends TestCase
         $profile = $this->createProfile();
         $answers = [];
 
-        foreach ($profile->questions as $question) {
+        foreach ($profile->getAttribute('questions') as $question) {
             array_set($answers, "question_$question->id", 'hello world');
         };
 
         /** @var User $user */
-        $user = dispatch(new CreateProfileJob($answers,  $this->createUser(), $profile));
+        $user = dispatch(new CreateProfileJob($answers, $this->createUser(), $profile));
 
-        $this->assertCount(5, $user->profiles->find($profile)->answers);
+        $this->assertCount(5, $user->getAttribute('profiles')->find($profile)->answers);
 
     }
 
@@ -80,8 +79,8 @@ class UserCreateProfileJobTest extends TestCase
          * Two User having the same profile, fetching answer for each profiles should be respective to user
          */
         $this->assertNotEquals(
-            $userOne->profiles->first()->answer->id,
-            $userTwo->profiles->first()->answer->id
+            $userOne->getAttribute('profiles')->first()->answer->id,
+            $userTwo->getAttribute('profiles')->first()->answer->id
         );
 
     }

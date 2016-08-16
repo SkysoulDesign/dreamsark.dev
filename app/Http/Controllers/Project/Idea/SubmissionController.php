@@ -20,7 +20,6 @@ class SubmissionController extends Controller
      * Vote on a Submission
      *
      * @param SubmissionVoting $request
-     * @param \DreamsArk\Models\Project\Project $project
      * @param Submission $submission
      * @return \Illuminate\Http\Response
      */

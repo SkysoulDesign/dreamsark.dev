@@ -25,7 +25,5 @@ trait SectionTrait
         ], $params);
 
         return dispatch(new CreateSectionJob($data['name']));
-
     }
-
 }

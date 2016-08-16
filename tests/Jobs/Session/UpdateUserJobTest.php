@@ -25,7 +25,6 @@ class UpdateUserJobTest extends TestCase
         ]));
 
         $this->assertEquals($email, $user->getAttribute('email'));
-
     }
 
     /**
@@ -38,5 +37,4 @@ class UpdateUserJobTest extends TestCase
         $this->expectsEvents(UserWasUpdated::class);
         $this->user_should_be_able_to_update_his_basic_information();
     }
-
 }

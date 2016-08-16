@@ -1,10 +1,16 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
+/**
+ * Class CreateRolesTable
+ */
 class CreateRolesTable extends Migration
 {
+
+    use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -12,10 +18,9 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        $this->schema->create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });
@@ -28,6 +33,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        $this->schema->drop('roles');
     }
 }

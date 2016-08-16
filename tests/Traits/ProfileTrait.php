@@ -14,6 +14,7 @@ trait ProfileTrait
      * Create a user
      *
      * @param array $fields
+     * @param int $numberOfQuestions
      * @return \DreamsArk\Models\Master\Profile
      */
     public function createProfile(array $fields = [], $numberOfQuestions = 5)
@@ -23,7 +24,7 @@ trait ProfileTrait
         $faker = app(Faker\Generator::class);
 
         $fields = array_merge($data = [
-            'name'         => $faker->name,
+            'name' => $faker->name,
             'display_name' => $faker->name,
         ], $fields);
 
@@ -32,7 +33,7 @@ trait ProfileTrait
          */
         $questions = [];
         foreach (range(1, $numberOfQuestions) as $index) {
-            array_push($questions, $this->createQuestion()->id);
+            array_push($questions, $this->createQuestion()->getKey());
         }
 
         /**

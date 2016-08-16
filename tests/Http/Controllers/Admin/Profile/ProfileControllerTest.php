@@ -14,24 +14,6 @@ class ProfileControllerTest extends TestCase
     use DatabaseTransactions, UserTrait, ProfileTrait;
 
     /**
-     * It Displays the Index page
-     *
-     * @test
-     */
-    public function it_displays_the_index_page()
-    {
-
-        $this->actingAs($this->createUser([], 'admin'));
-
-        $this->route('GET', 'admin.profile.index');
-
-        $this->assertResponseOk();
-        $this->assertViewHasAll([
-            'profiles' => Profile::all()
-        ]);
-    }
-
-    /**
      * Test if create Profile Page is being displayed correctly
      *
      * @test

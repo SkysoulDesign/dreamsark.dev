@@ -1,6 +1,7 @@
 <?php
 
 use DreamsArk\Jobs\Admin\Question\CreateQuestionJob;
+use DreamsArk\Models\Master\Question\Type;
 
 /**
  * Class QuestionTrait
@@ -18,6 +19,10 @@ trait QuestionTrait
      */
     public function createQuestion($params = [], $type = 1, $options = [])
     {
+
+        if (is_int($type)) {
+            $type = Type::first();
+        }
 
         $faker = app(Faker\Generator::class);
 

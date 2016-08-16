@@ -45,7 +45,6 @@
 
             <ark-input name="voting_date"
                        type="datetime-local"
-                       placeholder="@lang('project.name')"
                        caption="@lang('project.creation-voting-description')"
                        label="@lang('forms.due-date')">
             </ark-input>
@@ -68,8 +67,10 @@
 
 @push('styles')
 <link rel="stylesheet" media="all" href="{{ asset('css/plugins/medium/medium.css') }}">
+<link rel="stylesheet" media="all" href="{{ asset('css/plugins/datetime/datetime.css') }}">
 @endpush
 
 @push('scripts')
 <script src="{{ asset('js/plugins/Medium.js') }}"></script>
+<script src="{{ asset('js/plugins/DateTime.js') }}"></script>
 @endpush

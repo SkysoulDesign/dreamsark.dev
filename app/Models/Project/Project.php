@@ -29,6 +29,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Project extends Model
 {
 
+    const FAIL_REASON_NO_ENOUGH_SUBMISSIONS = 0;
+    const FAIL_REASON_NO_VOTES = 1;
+    const FAIL_REASON_NO_ENROLLERS = 2;
+
     use PresentableTrait;
 
     /**

@@ -2,6 +2,7 @@
 
 use DreamsArk\Events\Session\UserWasCreated;
 use DreamsArk\Jobs\Session\CreateUserJob;
+use DreamsArk\Models\User\Bag;
 use DreamsArk\Models\User\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -26,9 +27,8 @@ class CreateUserJobTest extends TestCase
 
         $roles->each(function ($role) {
             $user = $this->createUser([], $role);
-            $this->assertNotEmpty($user->settings);
+            $this->assertNotEmpty($user->getAttribute('settings'));
         });
-
     }
 
     /**
@@ -38,10 +38,8 @@ class CreateUserJobTest extends TestCase
      */
     public function user_should_comes_with_a_bag()
     {
-
         $user = $this->createUser();
-        $this->assertEquals(0, $user->bag->coins);
-
+        $this->assertInstanceOf(Bag::class, $user->getAttribute('bag'));
     }
 
     /**
@@ -55,7 +53,7 @@ class CreateUserJobTest extends TestCase
 
         $data = [
             'username' => $this->faker->userName,
-            'email'    => $this->faker->email,
+            'email' => $this->faker->email,
             'password' => $this->faker->password(6, 6),
         ];
 
@@ -63,7 +61,6 @@ class CreateUserJobTest extends TestCase
         dispatch(new CreateUserJob($data, 'user'));
 
         $this->seeInDatabase('users', array_except($data, 'password', 'role'));
-
     }
 
     /**
@@ -80,7 +77,6 @@ class CreateUserJobTest extends TestCase
             $user = $this->createUser([], $role);
             $this->assertTrue($user->hasRole($role->name));
         });
-
     }
 
     /**
