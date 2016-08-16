@@ -79,3 +79,11 @@
     </div>
 
 </ark-form>
+
+@push('styles')
+<link rel="stylesheet" media="all" href="{{ asset('css/plugins/datetime/datetime.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/plugins/DateTime.js') }}"></script>
+@endpush
