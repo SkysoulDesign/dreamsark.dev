@@ -2,21 +2,16 @@
 
 namespace DreamsArk\Events\User\Project;
 
-use DreamsArk\Events\Event;
 use DreamsArk\Models\Project\Project;
 use DreamsArk\Models\User\User;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Class ProjectWasCreated
  *
  * @package DreamsArk\Events\User\Project
  */
-class ProjectWasCreated extends Event
+class ProjectWasCreated
 {
-
-    use SerializesModels;
-
     /**
      * @var Project
      */

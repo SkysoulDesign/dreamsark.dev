@@ -38,13 +38,14 @@ use DreamsArk\Events\User\Profile\UserProfileWasUpdated;
 use DreamsArk\Events\User\Project\ProjectWasCreated;
 use DreamsArk\Events\User\Project\ProjectWasUpdated;
 use DreamsArk\Listeners\Admin\Question\SyncOptions;
-use DreamsArk\Listeners\Project\AddWinnerToProjectInvestorList;
+use DreamsArk\Listeners\Project\AddWhoVotedOnWinnerSubmissionToProjectInvestmentList;
 use DreamsArk\Listeners\Project\ChargeUser;
 use DreamsArk\Listeners\Project\CreateProjectStage;
 use DreamsArk\Listeners\Project\CreateReward;
 use DreamsArk\Listeners\Project\CreateVote;
 use DreamsArk\Listeners\Project\DeductUserCoins;
 use DreamsArk\Listeners\Project\Dispense\GiveCoinsToUser;
+use DreamsArk\Listeners\Project\DistributeCoins;
 use DreamsArk\Listeners\Project\Game\GiveItemsToWinner;
 use DreamsArk\Listeners\Project\RefundCreator;
 use DreamsArk\Listeners\Project\RefundUsers;
@@ -88,13 +89,17 @@ class EventServiceProvider extends ServiceProvider
             CreateProjectStage::class
         ],
 
-        ProjectWasUpdated::class => [
-            QueueOpenVoting::class
-        ],
-
         ProjectStageWasCreated::class => [
             CreateReward::class,
             CreateVote::class
+        ],
+
+        VoteWasCreated::class => [
+            QueueOpenVoting::class
+        ],
+
+        ProjectWasUpdated::class => [
+            QueueOpenVoting::class
         ],
 
         ReviewWasCreated::class => [
@@ -130,12 +135,7 @@ class EventServiceProvider extends ServiceProvider
             GiveCoinsToUser::class
         ],
 
-        /**
-         * Vote
-         */
-        VoteWasCreated::class => [
-            QueueOpenVoting::class
-        ],
+
 
         VoteWasOpened::class => [
             QueueCloseVoting::class
@@ -149,7 +149,8 @@ class EventServiceProvider extends ServiceProvider
             DeactivateVoting::class,
             RefundUsers::class,
             RegisterVotingWinner::class,
-            AddWinnerToProjectInvestorList::class,
+            AddWhoVotedOnWinnerSubmissionToProjectInvestmentList::class,
+            DistributeCoins::class,
             GiveItemsToWinner::class,
             AutomaticallySendReviewToCommittee::class,
         ],

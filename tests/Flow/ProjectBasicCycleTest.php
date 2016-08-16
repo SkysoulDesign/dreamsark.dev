@@ -2,9 +2,13 @@
 
 use DreamsArk\Commands\Project\Submission\VoteOnSubmissionCommand;
 use DreamsArk\Jobs\Project\CreateProjectJob;
+use DreamsArk\Jobs\Project\Stages\Voting\CloseVotingJob;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
 use DreamsArk\Jobs\Project\Submission\CreateSubmissionJob;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use DreamsArk\Jobs\Project\TestJob;
+use DreamsArk\Jobs\Project\TestJob2;
+use DreamsArk\Models\Project\Stages\Idea;
+use DreamsArk\Models\Project\Submission;
 
 /**
  * Class ProjectBasicCycleTest
@@ -12,7 +16,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class ProjectBasicCycleTest extends TestCase
 {
 
-    use DatabaseTransactions, FakerTrait, UserTrait;
+    use FakerTrait, UserTrait;
 
     /**
      * Create a project
@@ -36,6 +40,8 @@ class ProjectBasicCycleTest extends TestCase
         ));
 
         $this->assertTrue($project->exists);
+        $this->assertInstanceOf(Idea::class, $project->stage);
+        $this->assertTrue($project->stage->active);
 
         return $project;
     }
@@ -57,7 +63,7 @@ class ProjectBasicCycleTest extends TestCase
             dispatch(
                 new CreateSubmissionJob($project, $user, [
                     'content' => $this->faker->text,
-                    "visibility" => (boolean)rand(0, 1)
+                    "visibility" => 1
                 ])
             );
         }
@@ -69,10 +75,14 @@ class ProjectBasicCycleTest extends TestCase
 
     /**
      * @test
+     * @param $project
+     * @return mixed
      */
     public function it_open_voting_and_select_a_winner()
     {
+
         $project = $this->it_makes_submissions_to_project();
+
         $vote = $project->stage->vote;
 
         $this->assertFalse($vote->active);
@@ -83,22 +93,63 @@ class ProjectBasicCycleTest extends TestCase
 
         $this->assertTrue($vote->active);
 
+        /**
+         * Create a bunch of users
+         */
+        $users = array_map([$this, 'createUser'], array_chunk(range(1, 10), 1));
+        $winnerSubmission = $project->stage->submissions->first();
+
+        /**
+         * Vote Randomly on each submission by different users
+         */
         foreach ($project->stage->submissions as $submission) {
 
-            $users = array_map([$this, 'createUser'], array_chunk(range(1, 10), 1));
-
+            /**
+             * for each random user vote on submissions
+             */
             foreach (range(1, 20) as $index) {
 
                 $user = $users[array_rand($users)];
 
                 dispatch(new VoteOnSubmissionCommand(
-                    $user->getAttribute('bag')->coins, $submission, $user
+                    rand(1, 5), $submission, $user
                 ));
-
             }
 
-            dd($submission->votes->pluck('pivot.amount'));
-
         }
+
+        /**
+         * Win the voting
+         */
+        dispatch(new VoteOnSubmissionCommand(1000, $winnerSubmission, $this->createUser()));
+
+        /**
+         * Close Voting
+         */
+        dispatch(new CloseVotingJob($vote));
+
+        $this->assertFalse($vote->active);
+
+        $this->assertInstanceOf(Submission::class, $project->stage->fresh()->submission);
+
+        return $project;
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_moves_project_trough_all_stages()
+    {
+
+//        $project = $this->it_open_voting_and_select_a_winner();
+//
+//        foreach (['synapse', 'script'] as $stage) {
+//
+//            dispatch(new CreateProjectStageJob(
+//                $project, $stage, ['content' => 'hi', 'voting_date' => Carbon\Carbon::now()->toDateTimeString()], 100
+//            ));
+//
+//        }
     }
 }

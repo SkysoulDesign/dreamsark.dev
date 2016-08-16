@@ -43,7 +43,6 @@ use DreamsArk\Http\Controllers\User\Application\ActorController;
 use DreamsArk\Http\Controllers\User\Bag\CoinController;
 use DreamsArk\Http\Controllers\User\InventoryController;
 use DreamsArk\Http\Controllers\User\ProfileController;
-use DreamsArk\Http\Controllers\User\ProjectController as UserProjectController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
@@ -210,12 +209,12 @@ $router->group(['middleware' => 'web'], function () use ($router) {
          */
         $router->group(['prefix' => 'project', 'as' => 'project.'], function () use ($router) {
 
-            $router->get('/', UserProjectController::class . '@index')->name('index');
-            $router->get('create', UserProjectController::class . '@create')->name('create');
-            $router->post('store', UserProjectController::class . '@store')->name('store');
-            $router->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
-            $router->patch('update/{project}', UserProjectController::class . '@update')->name('update');
-            $router->patch('fund/update/{project}', UserProjectController::class . '@fundUpdate')->name('fund.update');
+//            $router->get('/', UserProjectController::class . '@index')->name('index');
+//            $router->get('create', UserProjectController::class . '@create')->name('create');
+//            $router->post('store', UserProjectController::class . '@store')->name('store');
+//            $router->get('edit/{project}', UserProjectController::class . '@edit')->name('edit');
+//            $router->patch('update/{project}', UserProjectController::class . '@update')->name('update');
+//            $router->patch('fund/update/{project}', UserProjectController::class . '@fundUpdate')->name('fund.update');
 
             $router->get('show/{project}/iframe', ProjectController::class . '@showIframe')->name('show.iframe');
             $router->get('{project}/next/create', ProjectController::class . '@next')->name('next.create');

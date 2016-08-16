@@ -2,11 +2,9 @@
 
 namespace DreamsArk\Listeners\Project;
 
-
 use Carbon\Carbon;
 use DreamsArk\Events\Event;
-use DreamsArk\Jobs\Project\Stages\Voting\CreateVotingJob;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use DreamsArk\Events\Project\Vote\VoteWasCreated;
 
 /**
  * Class CreateVote
@@ -15,9 +13,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class CreateVote
 {
-
-    use DispatchesJobs;
-
     /**
      * @var Carbon
      */
@@ -40,15 +35,22 @@ class CreateVote
      */
     public function handle(Event $event)
     {
-
         /**
          * Create Voting
          */
         $vote_open_date = $this->carbon->parse($event->voting_date);
-        $vote_close_date = $vote_open_date->copy()->addMinutes(config('defaults.project.voting_span_time'));
+        $vote_close_date = $vote_open_date->copy()->addMinutes(
+            config('defaults.project.voting_span_time')
+        );
 
-        $this->dispatch(new CreateVotingJob(
-            $event->stage, $vote_open_date, $vote_close_date
-        ));
+        $vote = $event->stage->vote()->create([
+            'open_date' => $vote_open_date,
+            'close_date' => $vote_close_date
+        ]);
+
+        /**
+         * Announce VoteWasCreated
+         */
+        event(new VoteWasCreated($vote));
     }
 }

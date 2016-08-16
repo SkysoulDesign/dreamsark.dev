@@ -2,9 +2,11 @@
 
 namespace DreamsArk\Listeners\Project;
 
+use DreamsArk\Events\Project\ProjectStageWasCreated;
 use DreamsArk\Events\User\Project\ProjectWasCreated;
-use DreamsArk\Jobs\Project\Stages\CreateProjectStageJob;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use DreamsArk\Models\Project\Stages\Idea;
+use DreamsArk\Models\Project\Stages\Script;
+use DreamsArk\Models\Project\Stages\Synapse;
 
 /**
  * Class CreateProjectStage
@@ -13,8 +15,14 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class CreateProjectStage
 {
-
-    use DispatchesJobs;
+    /**
+     * @var array
+     */
+    private $stages = [
+        'idea' => Idea::class,
+        'synapse' => Synapse::class,
+        'script' => Script::class
+    ];
 
     /**
      * Handle the event.
@@ -23,10 +31,26 @@ class CreateProjectStage
      */
     public function handle(ProjectWasCreated $event)
     {
-        $this->dispatch(
-            new CreateProjectStageJob(
-                $event->project, $event->stage, $event->fields, $event->amount
-            )
-        );
+        /**
+         * Create the project Stage
+         */
+        $stage = new $this->stages[$event->stage];
+        $stage->project()->associate($event->project);
+        $stage->fill($event->fields);
+        $stage->setAttribute('active', true);
+        $stage->save();
+
+        /**
+         * Associate Project to stage
+         */
+        $event->project->stage()->associate($stage);
+        $event->project->save();
+
+        /**
+         * Announce ProjectStageWasCreated
+         */
+        event(new ProjectStageWasCreated(
+            $stage, $event->fields['voting_date'], $event->amount
+        ));
     }
 }

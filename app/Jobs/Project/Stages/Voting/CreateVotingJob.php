@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Jobs\Project\Stages\Voting;
 
-use DreamsArk\Events\Project\Vote\VoteWasCreated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Project\Project;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CreateVotingJob extends Job
 {
-
     /**
      * @var Project
      */
@@ -50,14 +48,6 @@ class CreateVotingJob extends Job
     public function handle()
     {
 
-        $vote = $this->model->vote()->create([
-            'open_date' => $this->vote_open_date,
-            'close_date' => $this->vote_close_date
-        ]);
 
-        /**
-         * Announce VoteWasCreated
-         */
-        event(new VoteWasCreated($vote));
     }
 }

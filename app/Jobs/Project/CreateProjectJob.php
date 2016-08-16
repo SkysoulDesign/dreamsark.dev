@@ -53,8 +53,8 @@ class CreateProjectJob extends Job
     /**
      * Execute the command.
      *
-     * @param \DreamsArk\Models\Project\Project $project
-     * @return \DreamsArk\Models\Project\Project
+     * @param Project $project
+     * @return Project
      */
     public function handle(Project $project)
     {
@@ -62,7 +62,8 @@ class CreateProjectJob extends Job
          * Create Project
          */
         $project->user()->associate($this->user);
-        $project->fill($this->fields)
+        $project
+            ->fill($this->fields)
             ->save();
 
         /**

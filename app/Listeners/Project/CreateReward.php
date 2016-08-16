@@ -3,8 +3,8 @@
 namespace DreamsArk\Listeners\Project;
 
 use DreamsArk\Events\Event;
-use DreamsArk\Jobs\Project\Stages\CreateRewardJob;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
+use DreamsArk\Models\Game\Item;
 
 /**
  * Class CreateReward
@@ -13,8 +13,20 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class CreateReward
 {
+    /**
+     * @var \DreamsArk\Models\Game\Item
+     */
+    private $item;
 
-    use DispatchesJobs;
+    /**
+     * CreateReward constructor.
+     *
+     * @param \DreamsArk\Models\Game\Item $item
+     */
+    public function __construct(Item $item)
+    {
+        $this->item = $item;
+    }
 
     /**
      * Handle the event.
@@ -25,8 +37,22 @@ class CreateReward
      */
     public function handle(Event $event)
     {
-        $this->dispatch(new CreateRewardJob(
-            $event->stage, $event->amount
+
+        $reward = $event->stage->reward()->create([
+            'amount' => $event->amount,
+            'project_id' => $event->stage->getAttribute('project')->id,
+            'points' => null
+        ]);
+
+        $reward->items()->saveMany(
+            $this->item->groups(['a', 'b', 'c'])->weighted()->limit(5)->get(['id'])
+        );
+
+        /**
+         * Announce RewardWasCreated
+         */
+        event(new RewardWasCreatedOrUpdated(
+            $reward, $event->stage->getRelation('project')->user
         ));
     }
 }

@@ -8,6 +8,9 @@ use Illuminate\Database\Schema\Blueprint;
  */
 class CreateIdeasTable extends Migration
 {
+
+    use SchemaTrait;
+
     /**
      * Run the migrations.
      *
@@ -15,7 +18,7 @@ class CreateIdeasTable extends Migration
      */
     public function up()
     {
-        Schema::create('ideas', function (Blueprint $table) {
+        $this->schema->create('ideas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned()->index()->unique();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
@@ -38,6 +41,6 @@ class CreateIdeasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ideas');
+        $this->schema->drop('ideas');
     }
 }

@@ -2,9 +2,8 @@
 
 namespace DreamsArk\Listeners\Project;
 
-use DreamsArk\Jobs\Project\Submission\CreateSubmissionWinnerJob;
+use DreamsArk\Events\Project\Submission\SubmissionWinnerWasSelected;
 use DreamsArk\Events\Project\Vote\VotingHasFinished;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
  * Class RegisterVotingWinner
@@ -13,9 +12,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class RegisterVotingWinner
 {
-
-    use DispatchesJobs;
-
     /**
      * Handle the event.
      *
@@ -24,9 +20,19 @@ class RegisterVotingWinner
     public function handle(VotingHasFinished $event)
     {
         /**
-         * Register Winner
+         * Save the Winner
          */
-        $this->dispatch(new CreateSubmissionWinnerJob(
+        $event->submission
+            ->getAttribute('submissible')
+            ->submission()
+            ->associate($event->submission)
+            ->setAttribute('active', false)
+            ->save();
+
+        /**
+         * Announce SubmissionWinnerWasSelected
+         */
+        event(new SubmissionWinnerWasSelected(
             $event->submission
         ));
     }

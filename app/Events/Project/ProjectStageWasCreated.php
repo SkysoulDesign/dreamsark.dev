@@ -4,7 +4,6 @@ namespace DreamsArk\Events\Project;
 
 use DreamsArk\Events\Event;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Class ProjectStageWasCreated
@@ -13,9 +12,6 @@ use Illuminate\Queue\SerializesModels;
  */
 class ProjectStageWasCreated extends Event
 {
-
-    use SerializesModels;
-
     /**
      * @var Model
      */

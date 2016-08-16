@@ -15,7 +15,6 @@ use Illuminate\Queue\QueueManager;
  */
 class QueueOpenVoting
 {
-
     /**
      * @var QueueManager
      */

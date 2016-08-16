@@ -48,13 +48,13 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(app_path('Http/routes.web.php'));
         $this->loadRoutesFrom(app_path('Http/Routes/project.web.php'));
+        $this->loadRoutesFrom(app_path('Http/Routes/user.web.php'));
         $this->loadRoutesFrom(app_path('Http/routes.api.php'));
 
         /**
          * Web Router
          */
 //        $router->group([], function ($app) {
-
 
 
 //            require app_path("");

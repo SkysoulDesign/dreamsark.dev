@@ -2,7 +2,6 @@
 
 namespace DreamsArk\Jobs\Project\Stages;
 
-use DreamsArk\Events\Project\Reward\RewardWasCreatedOrUpdated;
 use DreamsArk\Jobs\Job;
 use DreamsArk\Models\Game\Item;
 use DreamsArk\Models\Project\Reward;
@@ -16,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class CreateRewardJob extends Job
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Model
      */
     private $model;
 
@@ -28,7 +27,7 @@ class CreateRewardJob extends Job
     /**
      * Create a new job instance.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param Model $model
      * @param int $amount
      */
     public function __construct(Model $model, int $amount)
@@ -46,23 +45,6 @@ class CreateRewardJob extends Job
     public function handle(Item $item) : Reward
     {
 
-        $reward = $this->model->reward()->create([
-            'amount' => $this->amount,
-            'project_id' => $this->model->getAttribute('project')->id,
-            'points' => null
-        ]);
 
-        $reward->items()->saveMany(
-            $item->groups(['a', 'b', 'c'])->weighted()->limit(5)->get(['id'])
-        );
-
-        /**
-         * Announce RewardWasCreated
-         */
-        event(new RewardWasCreatedOrUpdated(
-            $reward, $this->model->getRelation('project')->user
-        ));
-
-        return $reward;
     }
 }
