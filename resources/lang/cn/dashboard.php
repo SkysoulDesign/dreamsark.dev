@@ -15,6 +15,6 @@ return array (
   'latest-project' => '最新项目',
   'site-welcome' => '欢迎搭乘追梦方舟',
   'site-welcome-description' => '带您到一个梦想起飞的地方 ',
-    "awesome-projects"=>"耀眼项目",
+    "awesome-projects"=>"重点推荐",
     "some-high-class-projects"=>"推荐的高品质项目",
 );
