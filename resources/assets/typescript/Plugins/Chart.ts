@@ -1,4 +1,4 @@
-import {Plugins} from "./Plugins";
+import {Plugins} from "../Abstract/Plugins";
 
 window['dreamsark'].exposes({
     Chart: require("easy-pie-chart")

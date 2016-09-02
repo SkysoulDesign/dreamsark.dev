@@ -1,3 +1,3 @@
 export interface BootableInterface {
-    boot(app:any);
+    boot(app: any): void;
 }

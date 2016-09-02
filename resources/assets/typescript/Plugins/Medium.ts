@@ -1,4 +1,4 @@
-import {Plugins} from "./Plugins";
+import {Plugins} from "../Abstract/Plugins";
 import {extend} from "../Helpers";
 
 window['dreamsark'].exposes({

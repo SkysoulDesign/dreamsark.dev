@@ -15,7 +15,7 @@ var Common = (function (_super) {
         this.routes = ['*'];
     }
     Common.prototype.boot = function () {
-        this.app.logger.info('This class {Common} will run on every request');
+        console.log('This class {Common} will run on every request');
         this.dropdown();
         // this.languageSwitcher();
         var divs = document.querySelectorAll('.under-construction');

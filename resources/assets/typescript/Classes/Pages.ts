@@ -11,14 +11,6 @@ export class Pages extends Application {
     /**
      * List of Loaded Classes
      */
-        // public collection = [
-        //     require('../Pages/Common'),
-        //     require('../Pages/Test'),
-        //     require('../Pages/Purchase'),
-        //     require('../Pages/User/Profile'),
-        //     require('../Pages/Project'),
-        // ]
-
     public collection = requireAll(
         require.context("../Pages", true, /\.js$/)
     );
@@ -79,15 +71,13 @@ export class Pages extends Application {
      */
     public init(routeName, payload) {
 
-        this.app.logger.info(
-            `Current Route`, routeName
-        );
+        console.log(`Current Route`, routeName);
 
         let route = this.currentRoute = toCamelCase(routeName);
 
         if (!this.routes.hasOwnProperty(route)) {
 
-            this.app.logger.info('The current route has no listeners', routeName);
+            console.log('The current route has no listeners', routeName);
 
             /**
              * If there is no class listening to this request then only
@@ -114,7 +104,7 @@ export class Pages extends Application {
      */
     public start() {
 
-        this.app.logger.info('Initializing Vue.js');
+        console.log('Initializing Vue.js');
 
         /**
          * Binding Vue
@@ -154,7 +144,7 @@ export class Pages extends Application {
                 if (Plugin instanceof Function)
                     return Vue.use(Plugin);
 
-                this.app.logger.error('Invalid Plugin', Plugin)
+                console.log('Invalid Plugin', Plugin)
 
             })
 
@@ -186,7 +176,7 @@ export class Pages extends Application {
 
             });
 
-        this.app.logger.error(
+        console.log(
             'The Current route doesn\'t contain any bootable instances.'
         );
 

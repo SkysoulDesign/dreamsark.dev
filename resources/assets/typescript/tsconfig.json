@@ -2,11 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-//    "outFile": "../../../public/js/app.js",
     "sourceMap": true
-//    "rootDir": "../../../"
   },
   "compileOnSave": true,
   "exclude": [
+    "node_modules"
   ]
 }

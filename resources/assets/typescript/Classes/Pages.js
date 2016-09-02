@@ -18,13 +18,6 @@ var Pages = (function (_super) {
         /**
          * List of Loaded Classes
          */
-        // public collection = [
-        //     require('../Pages/Common'),
-        //     require('../Pages/Test'),
-        //     require('../Pages/Purchase'),
-        //     require('../Pages/User/Profile'),
-        //     require('../Pages/Project'),
-        // ]
         this.collection = Helpers_1.requireAll(require.context("../Pages", true, /\.js$/));
         /**
          * Initialized Objects
@@ -67,10 +60,10 @@ var Pages = (function (_super) {
      * @param string routeName
      */
     Pages.prototype.init = function (routeName, payload) {
-        this.app.logger.info("Current Route", routeName);
+        console.log("Current Route", routeName);
         var route = this.currentRoute = Helpers_1.toCamelCase(routeName);
         if (!this.routes.hasOwnProperty(route)) {
-            this.app.logger.info('The current route has no listeners', routeName);
+            console.log('The current route has no listeners', routeName);
             /**
              * If there is no class listening to this request then only
              * run the common classes That has been set to listen to all {*}
@@ -86,7 +79,7 @@ var Pages = (function (_super) {
      */
     Pages.prototype.start = function () {
         var _this = this;
-        this.app.logger.info('Initializing Vue.js');
+        console.log('Initializing Vue.js');
         /**
          * Binding Vue
          */
@@ -107,12 +100,11 @@ var Pages = (function (_super) {
      * @param plugins
      */
     Pages.prototype.initPlugins = function (obj) {
-        var _this = this;
         if (obj.hasOwnProperty('plugins'))
             Helpers_1.popByKey(obj, 'plugins', []).forEach(function (Plugin) {
                 if (Plugin instanceof Function)
                     return Vue.use(Plugin);
-                _this.app.logger.error('Invalid Plugin', Plugin);
+                console.log('Invalid Plugin', Plugin);
             });
         return obj;
     };
@@ -137,7 +129,7 @@ var Pages = (function (_super) {
                 (_a = _this.initialized[name]).boot.apply(_a, payload);
                 var _a;
             });
-        this.app.logger.error('The Current route doesn\'t contain any bootable instances.');
+        console.log('The Current route doesn\'t contain any bootable instances.');
     };
     /**
      * Merge Routes

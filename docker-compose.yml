@@ -1,5 +1,5 @@
 mysql:
-  image: mysql
+  image: mysql:latest
   container_name: dreamsark_database
   ports:
     - 3306:3306
@@ -8,9 +8,8 @@ mysql:
     MYSQL_ROOT_PASSWORD: 123456
 
 php:
-  image: skysoul/php:latest
-#  build: .
-#  dockerfile: ./build/docker/php/Dockerfile
+  build: .
+  dockerfile: ./build/docker/php/Dockerfile
   container_name: dreamsark_php
   volumes:
     - .:/var/www/dreamsark
@@ -21,28 +20,16 @@ regis:
   image: redis:alpine
   container_name: dreamsark_redis
 
-#  build: .
-#  dockerfile: ./build/docker/regis/Dockerfile
-
 node:
-  build: .
-  dockerfile: ./build/docker/node/Dockerfile
+  image: node:latest
   container_name: dreamsark_node
   volumes:
     - .:/src
-  entrypoint: top -b
   links:
     - regis
   ports:
     - 3333:3333
-
-#gulp:
-#  build: .
-#  dockerfile: ./build/docker/gulp/Dockerfile
-#  container_name: dreamsark_gulp
-#  volumes_from:
-#      - php
-#  entrypoint: top -b
+  entrypoint: top -b
 
 nginx:
   image: nginx:alpine

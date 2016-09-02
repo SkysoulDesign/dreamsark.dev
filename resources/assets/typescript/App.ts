@@ -1,11 +1,10 @@
-import {extend} from "./Helpers";
-import {Logger} from "./Classes/Logger";
-import {Config} from "./Classes/Config";
+import {extend, requireAll} from "./Helpers";
+import Promise = require('bluebird');
 
 /**
  * Application
  */
-class App {
+export class App {
 
     public pages;
     public vueObject = {
@@ -16,58 +15,35 @@ class App {
 
     public plugins = {};
 
-    public config = new Config();
-    public logger = new Logger(
-        this.config
-    );
-
-    /**
-     * List of Providers
-     */
-    private components = {
-        component: require('./Classes/Component'),
-        pages: require('./Classes/Pages')
-    };
-
     constructor() {
-        this.bootstrap(this, this.components);
+
+        this.bootstrap(this, requireAll(
+            require.context("./Classes", false, /\.js$/)
+        ));
+
     }
 
     /**
      * Bootstrap all classes
      */
-    private bootstrap(container: Object = this, components: {}) {
+    public bootstrap(container: Object, components: Object[], ...params: any[]): Object {
 
-        this.logger.group('Core', logger => {
+        let collection = [],
+            parameters = params.length ? params : [container];
 
-            for (let component in components) {
-
-                for (let name in components[component]) {
-
-                    logger.group(name, () => {
-                        container[component] = new components[component][name](container);
-                    })
-                }
-
+        for (let component in components) {
+            for (let name in components[component]) {
+                let instance = new components[component][name](...parameters);
+                collection.push(instance);
+                container[name.toLowerCase()] = instance;
             }
+        }
 
-            for (let component in components) {
-                container[component].boot(container);
-            }
-
+        collection.forEach(function (component) {
+            component.boot(...parameters);
         })
 
-    }
-
-    /**
-     * Destruct all classes
-     */
-    private destruct() {
-
-        for (let component in this.components)
-            this[component].destruct(this);
-
-        console.timeEnd('Application Runtime');
+        return container;
 
     }
 
@@ -78,15 +54,14 @@ class App {
     public install(plugins) {
 
         for (let name in plugins) {
-            this.logger.group(`Plugin: ${name}`, logger => {
-                this.plugins[name.toLowerCase()] = plugins[name];
-            }, false)
+            this.plugins[name.toLowerCase()] = plugins[name];
         }
 
     }
 
     /**
      * Get Plugin
+     *
      * @param name
      * @returns {any}
      */
@@ -99,13 +74,12 @@ class App {
             if (this.plugins[name] instanceof Function) {
                 return new this.plugins[name](this, ...args)
             }
-            ;
 
             return this.plugins[name];
 
         }
 
-        this.logger.error(`Plugin { ${name} } not found. did you install it already?`);
+        console.log(`Plugin { ${name} } not found. did you install it already?`);
 
     }
 
@@ -143,6 +117,7 @@ class App {
 
     /**
      * Subscribe on event listeners
+     *
      * @param name
      * @param callback
      */
@@ -157,21 +132,19 @@ class App {
     /**
      * Document Ready
      */
-    ready() {
+    public ready() {
         return new Promise(resolve => document.addEventListener(
             'DOMContentLoaded', () => {
                 resolve(this);
-                this.destruct();
             }
         ));
-
     }
 
     /**
      * Exposes Plugin globally
      * @param instance
      */
-    exposes(instance: any) {
+    public exposes(instance: any) {
 
         /**
          * Register Globally Globaly
@@ -179,7 +152,9 @@ class App {
         for (let name in instance) {
 
             if (window.hasOwnProperty(name)) {
-                this.logger.warn('You are overriding an already set object, caution it might lead to undesirable behavior', instance, name)
+                console.log(
+                    'You are overriding an already set object, caution it might lead to undesirable behavior', instance, name
+                )
             }
 
             window[name] = instance[name];
@@ -192,7 +167,6 @@ class App {
 
 /**
  * Register to the window object
- * @type {App}
  */
 window['dreamsark'] = new App();
 

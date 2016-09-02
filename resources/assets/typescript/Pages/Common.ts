@@ -9,17 +9,17 @@ export class Common extends AbstractPage {
 
     boot() {
 
-        this.app.logger.info('This class {Common} will run on every request');
+        console.log('This class {Common} will run on every request');
 
         this.dropdown();
         // this.languageSwitcher();
 
         let divs = document.querySelectorAll('.under-construction');
-            [].forEach.call(divs, function (div) {
-                div.addEventListener('click', function () {
-                    alert('功能即将开放敬请期待')
-                })
-            });
+        [].forEach.call(divs, function (div) {
+            div.addEventListener('click', function () {
+                alert('功能即将开放敬请期待')
+            })
+        });
     }
 
     languageSwitcher() {

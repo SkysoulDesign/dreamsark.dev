@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Plugins_1 = require("./Plugins");
+var Plugins_1 = require("../Abstract/Plugins");
 var Helpers_1 = require("../Helpers");
 window['dreamsark'].exposes({
     MediumEditor: require("medium-editor")

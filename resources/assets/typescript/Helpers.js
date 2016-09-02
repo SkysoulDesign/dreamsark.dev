@@ -59,6 +59,12 @@ exports.submitForm = function (form) {
     document.body.appendChild(form);
     form.submit();
 };
+/**
+ * Require a whole Folder
+ *
+ * @param requireContext
+ * @returns {U[]}
+ */
 exports.requireAll = function (requireContext) {
     return requireContext.keys().map(requireContext);
 };

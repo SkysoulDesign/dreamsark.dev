@@ -1,4 +1,4 @@
-import {Plugins} from "./Plugins";
+import {Plugins} from "../Abstract/Plugins";
 
 window['dreamsark'].exposes({
     ProgressBar: require("progressbar.js")

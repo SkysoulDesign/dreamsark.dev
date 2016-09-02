@@ -1,7 +1,7 @@
 /**
  * For Loop
  */
-export var forEach = (array:any, callback:Function, scope:any):void => {
+export var forEach = (array: any, callback: Function, scope: any): void => {
     for (var i = 0; i < array.length; i++)
         callback.call(scope, i, array[i]);
 };
@@ -13,7 +13,7 @@ export var forEach = (array:any, callback:Function, scope:any):void => {
  * @param key
  * @returns any[]
  */
-export var popByKey = (data:any[], key:string, defaults?:any):any[] => {
+export var popByKey = (data: any[], key: string, defaults?: any): any[] => {
 
     if (!data.hasOwnProperty(key))
         return defaults;
@@ -31,7 +31,7 @@ export var popByKey = (data:any[], key:string, defaults?:any):any[] => {
  * @param object
  * @returns {any}
  */
-export var extend = (defaults:any, object:any):any => {
+export var extend = (defaults: any, object: any): any => {
 
     for (let i in object) {
         if (object.hasOwnProperty(i)) {
@@ -49,14 +49,14 @@ export var extend = (defaults:any, object:any):any => {
  * @param str
  * @returns {string}
  */
-export var toCamelCase = (str:string) => {
+export var toCamelCase = (str: string) => {
     return str.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
         if (p2) return p2.toUpperCase();
         return p1.toLowerCase();
     });
 }
 
-export var captalize = (str:string) => {
+export var captalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -64,13 +64,17 @@ export var captalize = (str:string) => {
  * Firefox have an issue to submit form if its not appended to the body
  * @param form
  */
-export var submitForm = (form:HTMLFormElement) => {
-
+export var submitForm = (form: HTMLFormElement) => {
     document.body.appendChild(form);
     form.submit();
-
 }
 
+/**
+ * Require a whole Folder
+ *
+ * @param requireContext
+ * @returns {U[]}
+ */
 export var requireAll = (requireContext) => {
     return requireContext.keys().map(requireContext);
 }
