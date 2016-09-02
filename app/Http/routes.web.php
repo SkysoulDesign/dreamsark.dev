@@ -26,6 +26,7 @@ use DreamsArk\Http\Controllers\Committee\Project\ExpenseController;
 use DreamsArk\Http\Controllers\Committee\Project\StaffController;
 use DreamsArk\Http\Controllers\Dashboard\DashboardController;
 use DreamsArk\Http\Controllers\Home\HomeController;
+use DreamsArk\Http\Controllers\Log\LogController;
 use DreamsArk\Http\Controllers\Payment\PaymentController;
 use DreamsArk\Http\Controllers\Project\CommentController;
 use DreamsArk\Http\Controllers\Project\EnrollController;
@@ -45,19 +46,11 @@ use DreamsArk\Http\Controllers\User\InventoryController;
 use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
-use DreamsArk\Jobs\Project\Stages\Voting\OpenVotingJob;
-use DreamsArk\Models\Project\Stages\Vote;
 
 
 $router->get('test', function () {
-
-
-    $vote = Vote::find(4);
-    dispatch(new OpenVotingJob($vote));
-
-
-
-})->middleware('web');
+    return view('intro');
+})->middleware('web')->name('intro');
 
 $router->get('info', function () {
     phpinfo();
@@ -78,6 +71,8 @@ $router->group(['middleware' => 'web'], function () use ($router) {
      * Home Controller
      */
     $router->get('/', ProjectController::class . '@index')->name('home');
+
+    $router->get('log', LogController::class . '@index')->name('log.index');
 
     /**
      * Switch Language
