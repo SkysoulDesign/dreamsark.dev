@@ -47,8 +47,7 @@ var Browser = (function () {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.width, this.height);
     };
-    Browser.prototype.update = function (time, delta) {
-    };
+    Browser.prototype.update = function (time, delta) { };
     return Browser;
 }());
 exports.Browser = Browser;

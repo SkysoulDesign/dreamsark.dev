@@ -6,7 +6,10 @@ var Promise = require("bluebird");
  */
 var Loader = (function () {
     function Loader() {
-        this.loaded = {};
+        /**
+         * Keep Track of all promises made.. its just like a cache..
+         */
+        this.promises = {};
     }
     Loader.prototype.boot = function (_a) {
         var manager = _a.manager;
@@ -21,20 +24,18 @@ var Loader = (function () {
         var loader = Helpers_1.extension(path);
         if (!this.hasOwnProperty(loader))
             throw "Unknown loader: " + loader;
-        return new Promise(function (accept, reject) {
-            if (_this.loaded.hasOwnProperty(path)) {
-                accept(_this.loaded[path].object, _this.loaded[path].material);
-            }
+        /**
+         * If Promise has already been made... then... just give it back..
+         */
+        if (this.promises.hasOwnProperty(path))
+            return this.promises[path];
+        return this.promises[path] = new Promise(function (accept, reject) {
             _this[loader].load(path, function (object, material) {
                 /**
                  * Parse Json if loader is anim
                  */
                 if (loader === 'anim')
                     object = JSON.parse(object);
-                /**
-                 * Store an instance on memory
-                 */
-                _this.loaded[path] = { object: object, material: material };
                 accept(object, material);
             }, _this.progress, reject);
         });

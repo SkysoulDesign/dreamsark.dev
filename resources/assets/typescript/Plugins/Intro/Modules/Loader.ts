@@ -13,7 +13,10 @@ export class Loader implements BootableInterface, ModulesInterface {
     private jpg;
     private anim;
 
-    public loaded: any = {};
+    /**
+     * Keep Track of all promises made.. its just like a cache..
+     */
+    public promises: any = {};
 
     boot({manager}) {
 
@@ -34,13 +37,13 @@ export class Loader implements BootableInterface, ModulesInterface {
         if (!this.hasOwnProperty(loader))
             throw `Unknown loader: ${loader}`;
 
-        return new Promise((accept, reject) => {
+        /**
+         * If Promise has already been made... then... just give it back..
+         */
+        if (this.promises.hasOwnProperty(path))
+            return this.promises[path]
 
-            if (this.loaded.hasOwnProperty(path)) {
-                accept(
-                    this.loaded[path].object, this.loaded[path].material
-                )
-            }
+        return this.promises[path] = new Promise((accept, reject) => {
 
             this[loader].load(path, (object, material) => {
 
@@ -49,11 +52,6 @@ export class Loader implements BootableInterface, ModulesInterface {
                  */
                 if (loader === 'anim')
                     object = JSON.parse(object)
-
-                /**
-                 * Store an instance on memory
-                 */
-                this.loaded[path] = {object, material};
 
                 accept(object, material);
 

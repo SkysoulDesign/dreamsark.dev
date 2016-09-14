@@ -7,14 +7,16 @@ import {Loader} from "./Modules/Loader";
 import {Renderer} from "./Modules/Renderer";
 import {Debugger} from "./Modules/Debugger";
 import {Material} from "./Modules/Loaders/Material";
+import {Animator} from "./Modules/Animator";
+import {Animation} from "./Modules/Loaders/Animation";
 
 require("expose?THREE!three");
-
 
 export class Intro extends Plugins {
 
     public app: App;
     public canvas: HTMLCanvasElement;
+    public modules: any[];
 
     /**
      * Modules
@@ -25,6 +27,8 @@ export class Intro extends Plugins {
     public material: Material;
     public renderer: Renderer;
     public debugger: Debugger;
+    public animator: Animator;
+    public animation: Animation;
 
     /**
      * Constructor
@@ -43,9 +47,9 @@ export class Intro extends Plugins {
         this.canvas = canvas;
 
         this.app = app;
-        this.app.bootstrap(this, requireAll(
+        this.modules = this.app.bootstrap(this, requireAll(
             require.context("./Modules", true, /\.js$/)
-        ))
+        ));
 
     }
 
@@ -55,8 +59,10 @@ export class Intro extends Plugins {
      */
     start(composition: string, ...payload) {
         try {
-            this.compositions.start(composition, payload);
-            this.animate()
+            this.compositions
+                .start(composition, payload)
+                .then(() => this.animate())
+                .catch(console.log);
         } catch (error) {
             console.log(error)
         }
@@ -77,13 +83,9 @@ export class Intro extends Plugins {
                 /**
                  * Update Modules
                  */
-                this.compositions.update(time, delta);
-                this.renderer.update(time, delta);
-                this.debugger.update(time, delta);
-
-                // this.modules.forEach(
-                //     module => module.update(time, delta)
-                // )
+                this.modules.forEach(
+                    module => module.update(time, delta)
+                );
 
             }
 

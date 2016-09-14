@@ -32,8 +32,7 @@ var Light = (function () {
         right.color.setHex(0xfef1af);
         this.scene.add(ambientLight, shadowLight, left, right);
     };
-    Light.prototype.update = function (time, delta) {
-    };
+    Light.prototype.update = function (time, delta) { };
     return Light;
 }());
 exports.Light = Light;

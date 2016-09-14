@@ -64,7 +64,6 @@ export class Browser implements BootableInterface, ModulesInterface {
 
     }
 
-    update(time: number, delta: number): void {
-    }
+    public update(time: number, delta: number): void {}
 
 }

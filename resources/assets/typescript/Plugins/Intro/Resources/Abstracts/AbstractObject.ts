@@ -1,8 +1,3 @@
-import {CharacterInterface} from "../Interfaces/CharacterInterface";
-
-/**
- * Character Class
- */
-export abstract class AbstractObject implements CharacterInterface {
+export abstract class AbstractObject {
 
 }

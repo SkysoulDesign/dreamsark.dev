@@ -8,7 +8,8 @@ var BaseAnimation = (function () {
     Object.defineProperty(BaseAnimation.prototype, "animations", {
         get: function () {
             return {
-                base: '/animations/BaseAnimation.anim'
+                base: '/animations/BaseAnimation.anim',
+                base2: '/animations/BaseAnimation.anim'
             };
         },
         enumerable: true,
@@ -16,6 +17,7 @@ var BaseAnimation = (function () {
     });
     BaseAnimation.prototype.create = function (animations) {
         console.log(animations);
+        console.log('ceating animation');
         return animations;
     };
     return BaseAnimation;

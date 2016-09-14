@@ -1,9 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseCharacter_1 = require("../../Abstracts/BaseCharacter");
 /**
  * Character: Actress
  */
-var Actress = (function () {
+var Actress = (function (_super) {
+    __extends(Actress, _super);
     function Actress() {
+        _super.apply(this, arguments);
     }
     Object.defineProperty(Actress.prototype, "models", {
         get: function () {
@@ -14,52 +22,7 @@ var Actress = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Actress.prototype, "materials", {
-        get: function () {
-            return {
-                material: 'CharacterDefaultMaterial'
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Actress.prototype, "animations", {
-        get: function () {
-            return {
-                animation: 'baseAnimation'
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Actress.prototype.animate = function (_a) {
-        var animation = _a.animation;
-    };
-    Actress.prototype.create = function (_a, _b) {
-        var character = _a.character;
-        var material = _b.material;
-        return new THREE.SkinnedMesh(character, material);
-        // console.log(animation)
-        // this.animator.create(character, animation);
-        // let actions = {},
-        //     mixer = this.animator.create(mesh);
-        //
-        // this.animation.get('baseAnimation', models.character.bones, mixer).then(animations => {
-        //     animations.base.idle.play();
-        //     animations.base.lookAround.play();
-        // })
-        //
-        // /**
-        //  * Play All Animations
-        //  */
-        // if (models.character.animations)
-        //     models.character.animations.forEach(function (animation) {
-        //         actions[animation.name] = mixer.clipAction(animation);
-        //         actions[animation.name].play();
-        //     })
-        return mesh;
-    };
     return Actress;
-}());
+}(BaseCharacter_1.BaseCharacter));
 exports.Actress = Actress;
 //# sourceMappingURL=Actress.js.map

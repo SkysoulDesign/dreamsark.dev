@@ -51,8 +51,6 @@ export class Light implements BootableInterface, ModulesInterface {
 
     }
 
-    public update(time:Number, delta:number) {
-
-    }
+    update(time: number, delta: number): void {}
 
 }

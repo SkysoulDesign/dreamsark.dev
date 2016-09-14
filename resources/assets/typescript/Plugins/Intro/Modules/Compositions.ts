@@ -87,7 +87,7 @@ export class Compositions implements BootableInterface, ModulesInterface {
      * @param time
      * @param delta
      */
-    update(time, delta) {
+    update(time: number, delta: number): void {
 
         if (!this.active) return;
 

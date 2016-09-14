@@ -20,7 +20,7 @@ export class Debugger implements BootableInterface, ModulesInterface {
     boot(app) {
     }
 
-    update(time, delta) {
+    update(time: number, delta: number): void {
         this.stats.update();
     }
 

@@ -18,7 +18,6 @@ export class Camera extends THREE.PerspectiveCamera implements BootableInterface
 
     }
 
-    update(time: number, delta: number): void {
-    }
+    update(time: number, delta: number): void {}
 
 }

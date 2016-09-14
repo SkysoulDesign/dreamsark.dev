@@ -1,7 +1,4 @@
 "use strict";
-/**
- * Character Class
- */
 var AbstractObject = (function () {
     function AbstractObject() {
     }

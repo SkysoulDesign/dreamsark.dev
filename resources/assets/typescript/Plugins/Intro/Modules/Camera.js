@@ -20,8 +20,7 @@ var Camera = (function (_super) {
         this.position.z = 500;
         this.updateProjectionMatrix();
     };
-    Camera.prototype.update = function (time, delta) {
-    };
+    Camera.prototype.update = function (time, delta) { };
     return Camera;
 }(THREE.PerspectiveCamera));
 exports.Camera = Camera;

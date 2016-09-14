@@ -16,8 +16,7 @@ var Model = (function (_super) {
     }
     Object.defineProperty(Model.prototype, "collection", {
         get: function () {
-            return function () {
-            };
+            return function () { };
         },
         enumerable: true,
         configurable: true
@@ -25,8 +24,7 @@ var Model = (function (_super) {
     Model.prototype.initialize = function (path) {
         return this.app.loader.load(path);
     };
-    Model.prototype.update = function (time, delta) {
-    };
+    Model.prototype.update = function (time, delta) { };
     return Model;
 }(Initializable_1.Initializable));
 exports.Model = Model;

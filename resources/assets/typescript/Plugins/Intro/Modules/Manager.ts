@@ -27,4 +27,7 @@ export class Manager extends THREE.LoadingManager implements BootableInterface {
     public boot(app: App): void {
     }
 
+    update(time: number, delta: number): void {
+    }
+
 }

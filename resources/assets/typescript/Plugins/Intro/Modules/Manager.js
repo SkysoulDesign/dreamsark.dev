@@ -23,6 +23,8 @@ var Manager = (function (_super) {
     }
     Manager.prototype.boot = function (app) {
     };
+    Manager.prototype.update = function (time, delta) {
+    };
     return Manager;
 }(THREE.LoadingManager));
 exports.Manager = Manager;

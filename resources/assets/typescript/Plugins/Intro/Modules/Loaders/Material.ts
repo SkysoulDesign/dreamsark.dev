@@ -35,7 +35,6 @@ export class Material extends Initializable implements ModulesInterface {
             ))
     }
 
-    update(time: number, delta: number): void {
-    }
+    update(time: number, delta: number): void {}
 
 }

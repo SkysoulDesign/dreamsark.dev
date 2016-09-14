@@ -14,15 +14,13 @@ export class Model extends Initializable implements ModulesInterface {
     public instances = {};
 
     public get collection() {
-        return function () {
-        };
+        return function () {};
     }
 
     initialize(path: string) {
-        return this.app.loader.load(path)
+        return this.app.loader.load(path);
     }
 
-    update(time: number, delta: number): void {
-    }
+    update(time: number, delta: number): void {}
 
 }

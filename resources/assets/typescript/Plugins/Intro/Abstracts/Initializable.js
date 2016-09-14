@@ -7,7 +7,6 @@ var Promise = require("bluebird");
  */
 var Initializable = (function () {
     function Initializable() {
-        this.recursive = true;
         this.hasCollection = Object.keys(this.collection).length !== 0;
     }
     Object.defineProperty(Initializable.prototype, "collection", {

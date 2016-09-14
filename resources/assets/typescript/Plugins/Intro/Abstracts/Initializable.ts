@@ -18,7 +18,6 @@ export abstract class Initializable implements BootableInterface {
 
     abstract initialize(instance: any): Promise<any>;
 
-    public recursive: boolean = true;
     public app: Intro;
     protected hasCollection: boolean = Object.keys(this.collection).length !== 0;
 

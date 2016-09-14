@@ -22,20 +22,23 @@ var Intro = (function (_super) {
         }
         this.canvas = canvas;
         this.app = app;
-        this.app.bootstrap(this, Helpers_1.requireAll(require.context("./Modules", true, /\.js$/)));
+        this.modules = this.app.bootstrap(this, Helpers_1.requireAll(require.context("./Modules", true, /\.js$/)));
     }
     /**
      * Start The Interaction
      * @param item
      */
     Intro.prototype.start = function (composition) {
+        var _this = this;
         var payload = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             payload[_i - 1] = arguments[_i];
         }
         try {
-            this.compositions.start(composition, payload);
-            this.animate();
+            this.compositions
+                .start(composition, payload)
+                .then(function () { return _this.animate(); })
+                .catch(console.log);
         }
         catch (error) {
             console.log(error);
@@ -52,12 +55,7 @@ var Intro = (function (_super) {
             /**
              * Update Modules
              */
-            _this.compositions.update(time, delta);
-            _this.renderer.update(time, delta);
-            _this.debugger.update(time, delta);
-            // this.modules.forEach(
-            //     module => module.update(time, delta)
-            // )
+            _this.modules.forEach(function (module) { return module.update(time, delta); });
         };
         /**
          * Start Loop

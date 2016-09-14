@@ -11,7 +11,8 @@ export interface ObjectInterface {
     models?: {};
     materials?: {};
     animations?: {};
-    constructor(app: Intro);
+    constructor?(app: Intro): void;
     create(models, materials): Object3D;
     animate?(animations): Object3D;
+    configAnimation?(actions): void;
 }

@@ -31,8 +31,7 @@ var Material = (function (_super) {
             .all(promises)
             .then(function (resolutions) { return instance.create(Helpers_1.zip(resolutions, keys)); });
     };
-    Material.prototype.update = function (time, delta) {
-    };
+    Material.prototype.update = function (time, delta) { };
     return Material;
 }(Initializable_1.Initializable));
 exports.Material = Material;
