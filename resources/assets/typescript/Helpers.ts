@@ -31,11 +31,13 @@ export var popByKey = (data: any[], key: string, defaults?: any): any[] => {
  * @param object
  * @returns {any}
  */
-export var extend = (defaults: any, object: any): any => {
+export var extend = (defaults: any, ...object: any[]): any => {
 
-    for (let i in object) {
-        if (object.hasOwnProperty(i)) {
-            defaults[i] = object[i];
+    for (let a in object) {
+        for (let i in object[a]) {
+            if (object[a].hasOwnProperty(i)) {
+                defaults[i] = object[a][i];
+            }
         }
     }
 

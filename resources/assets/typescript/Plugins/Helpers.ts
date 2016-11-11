@@ -9,16 +9,35 @@ export var extension = function (path): string {
 
 export var countKeys = function (object) {
     var count = 0;
-    for (var k in object) if (object.hasOwnProperty(k)) ++count;
+    for (var k in object) if (object.hasOwnProperty(k))++count;
     return count;
 }
 
-export var random = (min: number, max: number)=> {
+
+// export var map = function (obj: any, callback: (value, property) => any): {} {
+
+//     var instance = {};
+
+//     for (let property in obj) {
+
+//         if (is.Object(obj[property])) {
+//             return map(obj[property], callback)
+//         } else {
+//             instance[property] = callback(obj[property], property);
+//         }
+
+//     }
+
+//     return instance;
+
+// }
+
+export var random = (min: number, max: number) => {
     var l_ValueMin = min;
     var l_ValueMax = max;
-    if (typeof(min) == "string")
+    if (typeof (min) == "string")
         l_ValueMin = parseInt(min);
-    if (typeof(max) == "string")
+    if (typeof (max) == "string")
         l_ValueMax = parseInt(max);
     return Math.floor(Math.random() * (l_ValueMax - l_ValueMin + 1)) + l_ValueMin;
 }
@@ -31,7 +50,7 @@ export var random = (min: number, max: number)=> {
  * @returns {any}
  */
 export var zip = function (values: any[], keys: any[]): {} {
-    return Object.assign({}, ...keys.map((n, index) => ({[n]: values[index]})))
+    return Object.assign({}, ...keys.map((n, index) => ({ [n]: values[index] })))
 }
 
 /**
@@ -81,7 +100,7 @@ export class findSuitObjectByProbability {
 
     addProbability(e_Weight: number) {
         var l_Weight = e_Weight;
-        if (typeof(e_Weight) == "string")
+        if (typeof (e_Weight) == "string")
             l_Weight = parseInt(e_Weight);
         this.m_ProbabilityWeightArray.push(l_Weight);
         this.m_MaxValue += l_Weight;

@@ -19,9 +19,8 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \DreamsArk\Http\Controllers\Home\Project $project
+     * @param \DreamsArk\Models\Project\Project $project
      * @return \Illuminate\Http\Response
-     * @internal param Request $request
      */
     public function index(Project $project)
     {

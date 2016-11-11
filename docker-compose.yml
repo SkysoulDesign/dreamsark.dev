@@ -21,10 +21,13 @@ regis:
   container_name: dreamsark_redis
 
 node:
-  image: node:latest
+  build: .
+  dockerfile: ./build/docker/node/Dockerfile
+#  image: node:latest
   container_name: dreamsark_node
   volumes:
     - .:/src
+  working_dir: /src
   links:
     - regis
   ports:

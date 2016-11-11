@@ -18,6 +18,24 @@ export class Camera extends THREE.PerspectiveCamera implements BootableInterface
 
     }
 
-    update(time: number, delta: number): void {}
+    update(time: number, delta: number): void {
+    }
 
+    /**
+     * Calculate view port size within a given distance
+     *
+     * @param distance
+     * @returns {width: number, height: number}
+     */
+    getViewSize(distance: number) {
+
+        let fov = this.fov * Math.PI / 180,
+            depth = -(this.far / 2 + ((-(this.position.z / 2) - this.far / 2) / 100) * distance),
+            height = 2 * Math.tan(fov / 2) * (this.position.z - depth),
+            width = height * this.aspect;
+
+        return {
+            width, height, depth
+        }
+    }
 }

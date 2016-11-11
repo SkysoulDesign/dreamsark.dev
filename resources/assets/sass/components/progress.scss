@@ -60,12 +60,12 @@
 
     font-size: smaller;
     font-weight: bold;
-    border-radius: 1em;
+    @include border-radius();
 
     background: color(white);
 
     @include part(completion) {
-      border-radius: 1em;
+      @include border-radius();
       position: relative;
       height: 1.2em;
       width: 100%;

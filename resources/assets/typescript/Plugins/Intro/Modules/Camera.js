@@ -20,7 +20,20 @@ var Camera = (function (_super) {
         this.position.z = 500;
         this.updateProjectionMatrix();
     };
-    Camera.prototype.update = function (time, delta) { };
+    Camera.prototype.update = function (time, delta) {
+    };
+    /**
+     * Calculate view port size within a given distance
+     *
+     * @param distance
+     * @returns {width: number, height: number}
+     */
+    Camera.prototype.getViewSize = function (distance) {
+        var fov = this.fov * Math.PI / 180, depth = -(this.far / 2 + ((-(this.position.z / 2) - this.far / 2) / 100) * distance), height = 2 * Math.tan(fov / 2) * (this.position.z - depth), width = height * this.aspect;
+        return {
+            width: width, height: height, depth: depth
+        };
+    };
     return Camera;
 }(THREE.PerspectiveCamera));
 exports.Camera = Camera;

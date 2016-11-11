@@ -26,7 +26,7 @@ export class App {
     /**
      * Bootstrap all classes
      */
-    public bootstrap(container: Object, components: Object[], ...params: any[]): Object {
+    public bootstrap(container: Object, components: Object[], ...params: any[]): any[] {
 
         let collection = [],
             parameters = params.length ? params : [container];
@@ -43,7 +43,7 @@ export class App {
             component.boot(...parameters);
         })
 
-        return container;
+        return collection;
 
     }
 

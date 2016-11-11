@@ -41,17 +41,24 @@ var Objects = (function (_super) {
             /**
              * Parse Animation and store it on userData.animations
              */
-            var mesh = instance.create.apply(instance, resolutions), actions = _this.app.animation.create(mesh, mesh.geometry.bones, resolutions[2]);
+            var mesh = instance.create.apply(instance, resolutions);
             /**
-             * Give a chance for the actions to be configurable
+             * If Animation is set
              */
-            if (Helpers_1.is.Function(instance.configAnimation))
-                instance.configAnimation(actions);
-            mesh.userData.animations = actions;
+            if (instance.hasOwnProperty('animations')) {
+                var actions = _this.app.animation.create(mesh, mesh.geometry.bones, resolutions[2]);
+                /**
+                 * Give a chance for the actions to be configurable
+                 */
+                if (Helpers_1.is.Function(instance.configAnimation))
+                    instance.configAnimation(actions);
+                mesh.userData.animations = actions;
+            }
             return mesh;
         });
     };
-    Objects.prototype.update = function (time, delta) { };
+    Objects.prototype.update = function (time, delta) {
+    };
     return Objects;
 }(Initializable_1.Initializable));
 exports.Objects = Objects;

@@ -14,6 +14,17 @@ exports.countKeys = function (object) {
             ++count;
     return count;
 };
+// export var map = function (obj: any, callback: (value, property) => any): {} {
+//     var instance = {};
+//     for (let property in obj) {
+//         if (is.Object(obj[property])) {
+//             return map(obj[property], callback)
+//         } else {
+//             instance[property] = callback(obj[property], property);
+//         }
+//     }
+//     return instance;
+// }
 exports.random = function (min, max) {
     var l_ValueMin = min;
     var l_ValueMax = max;

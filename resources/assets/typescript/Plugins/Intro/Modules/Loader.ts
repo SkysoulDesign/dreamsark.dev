@@ -12,6 +12,7 @@ export class Loader implements BootableInterface, ModulesInterface {
     private png;
     private jpg;
     private anim;
+    private obj;
 
     /**
      * Keep Track of all promises made.. its just like a cache..
@@ -22,6 +23,7 @@ export class Loader implements BootableInterface, ModulesInterface {
 
         this.json = new THREE.JSONLoader(manager)
         this.anim = new THREE.XHRLoader(manager)
+        this.obj = new THREE.ObjectLoader(manager)
 
         const imageLoader = new THREE.TextureLoader(manager);
 

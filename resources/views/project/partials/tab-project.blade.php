@@ -95,10 +95,27 @@
             </div>
         </div>
 
-        <ark-progress class="small-10 columns"
-                      color="primary"
-                      :live="['{{ $project->stage->vote->created_at }}', '{{ $project->stage->vote->open_date }}']"
-                      size="large" label="@lang('project.time')" flat></ark-progress>
+        <div class="small-10 columns message --color-primary">
+            <div class="row align-center">
+
+                <div class="small-12 columns +center">
+                    @lang('project.reachVotingStage')
+                    <h2>
+                        <a href="{{ route('project.vote.create', $project) }}">@lang('project.participate')</a>
+                    </h2>
+                </div>
+
+                <ark-progress class="small-11 columns"
+                              color="primary"
+                              :live="['{{ $project->stage->vote->created_at }}', '{{ $project->stage->vote->open_date }}']"
+                              size="large" label="@lang('project.time')"></ark-progress>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda consectetur consequuntur
+                    corporis, dolorem fugit harum iusto maiores molestiae nisi nostrum placeat praesentium provident qui
+                    quos, sed tempore temporibus voluptatem.</p>
+
+            </div>
+        </div>
 
         @if($project->stage->submission)
             <div class="small-12 columns +margin-top-small">

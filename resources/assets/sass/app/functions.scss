@@ -25,6 +25,10 @@
   @return url('/img/' + $url);
 }
 
+@function assets($url, $base: 'assets/') {
+  @return url('/' + $base + $url);
+}
+
 @mixin respond-to($breakpoint) {
   @if $breakpoint == "mobile" {
     @media only screen and (min-width: 900px) {

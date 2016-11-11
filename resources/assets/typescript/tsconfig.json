@@ -2,9 +2,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true
+    "sourceMap": true,
+    "watch": true  
   },
   "compileOnSave": true,
+  "filesGlob": [
+    "**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

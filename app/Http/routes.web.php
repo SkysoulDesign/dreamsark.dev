@@ -47,7 +47,6 @@ use DreamsArk\Http\Controllers\User\ProfileController;
 use DreamsArk\Http\Controllers\User\PurchaseController;
 use DreamsArk\Http\Controllers\User\Setting\SettingController;
 
-
 $router->get('test', function () {
     return view('intro');
 })->middleware('web')->name('intro');

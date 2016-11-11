@@ -3,19 +3,23 @@
     <div class="card__badges --color-{{ $color }}">
         <ul>
             <li>@lang("project.{$project->stage->getStageName()}")</li>
+            @if($project->stage->vote && $project->stage->vote->active)
+                <li class="li --voting">Voting is Open</li>
+            @endif
         </ul>
     </div>
 
-    {{--<img src="{{ asset('img/temp/'. ($index<=32 ? ('movies/dreamsarkMref'.str_pad($index, 2, '0', STR_PAD_LEFT).'.jpg') : 'cover.jpeg') ) }}">--}}
     <img src="{{ $project->stage->poster or asset("img/stages/{$project->stage->getStageName()}.jpg") }}">
 
     <div class="card__content">
 
         <ul class="ul --inline">
             <li class="--start">{{ $project->name }}</li>
-            <li>
-                <h3>{{ @$project->stage->reward->amount }}</h3>
-            </li>
+            @if($project->stage->reward)
+                <li>
+                    <h3>{{ $project->stage->reward->amount }}</h3>
+                </li>
+            @endif
         </ul>
 
     </div>

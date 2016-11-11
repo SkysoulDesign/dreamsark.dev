@@ -39,7 +39,6 @@ $csstyle-root-id: 'app-root';
 
 @import "transitions";
 
-
 @import 'components/form/forms';
 @import 'components/global';
 @import 'components/header';
@@ -95,6 +94,7 @@ $csstyle-root-id: 'app-root';
 @import 'pages/admin';
 @import 'pages/voting';
 @import 'pages/inventory';
+@import 'pages/intro';
 
 
 /**

@@ -1824,6 +1824,7 @@ var DreamsArk;
         var Tween = (function () {
             /**
              * Initialize a new instance of Tween
+             *
              * @param equation is one of animator's method
              * @param parameters is a series of configurations to be set
              * @param context context inside the (update, start, complete) callbacks

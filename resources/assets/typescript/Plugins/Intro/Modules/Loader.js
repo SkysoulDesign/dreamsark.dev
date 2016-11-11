@@ -15,6 +15,7 @@ var Loader = (function () {
         var manager = _a.manager;
         this.json = new THREE.JSONLoader(manager);
         this.anim = new THREE.XHRLoader(manager);
+        this.obj = new THREE.ObjectLoader(manager);
         var imageLoader = new THREE.TextureLoader(manager);
         this.png = imageLoader;
         this.jpg = imageLoader;

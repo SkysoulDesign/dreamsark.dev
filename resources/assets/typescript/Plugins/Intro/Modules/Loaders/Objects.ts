@@ -36,22 +36,31 @@ export class Objects extends Initializable implements BootableInterface {
                 /**
                  * Parse Animation and store it on userData.animations
                  */
-                let mesh = instance.create(...resolutions),
-                    actions = this.app.animation.create(
+                let mesh = instance.create(...resolutions);
+
+                /**
+                 * If Animation is set
+                 */
+                if (instance.hasOwnProperty('animations')) {
+
+                    let actions = this.app.animation.create(
                         mesh, mesh.geometry.bones, resolutions[2]
                     );
 
-                /**
-                 * Give a chance for the actions to be configurable
-                 */
-                if (is.Function(instance.configAnimation))
-                    instance.configAnimation(actions);
+                    /**
+                     * Give a chance for the actions to be configurable
+                     */
+                    if (is.Function(instance.configAnimation))
+                        instance.configAnimation(actions);
 
-                mesh.userData.animations = actions;
+                    mesh.userData.animations = actions;
+
+                }
 
                 return mesh;
             });
     }
 
-    update(time: number, delta: number): void {}
+    update(time: number, delta: number): void {
+    }
 }

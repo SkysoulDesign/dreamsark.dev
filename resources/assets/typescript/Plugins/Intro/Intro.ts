@@ -1,14 +1,18 @@
-import {Plugins} from "../../Abstract/Plugins";
-import {App} from "../../App";
-import {requireAll} from "../../Helpers";
-import {Compositions} from "./Modules/Compositions";
-import {Objects} from "./Modules/Loaders/Objects";
-import {Loader} from "./Modules/Loader";
-import {Renderer} from "./Modules/Renderer";
-import {Debugger} from "./Modules/Debugger";
-import {Material} from "./Modules/Loaders/Material";
-import {Animator} from "./Modules/Animator";
-import {Animation} from "./Modules/Loaders/Animation";
+import { Plugins } from "../../Abstract/Plugins";
+import { App } from "../../App";
+import { requireAll } from "../../Helpers";
+import { Compositions } from "./Modules/Compositions";
+import { Objects } from "./Modules/Loaders/Objects";
+import { Loader } from "./Modules/Loader";
+import { Renderer } from "./Modules/Renderer";
+import { Debugger } from "./Modules/Debugger";
+import { Material } from "./Modules/Loaders/Material";
+import { Animator } from "./Modules/Animator";
+import { Animation } from "./Modules/Loaders/Animation";
+import { Camera } from "./Modules/Camera";
+import { Scene } from "./Modules/Scene";
+import { Mouse } from "./Modules/Mouse";
+import { Tween } from "./Modules/Tween";
 
 require("expose?THREE!three");
 
@@ -29,6 +33,10 @@ export class Intro extends Plugins {
     public debugger: Debugger;
     public animator: Animator;
     public animation: Animation;
+    public camera: Camera;
+    public scene: Scene;
+    public mouse: Mouse;
+    public tween: Tween;
 
     /**
      * Constructor

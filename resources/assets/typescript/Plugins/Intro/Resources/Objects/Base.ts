@@ -6,7 +6,7 @@ import {Intro} from "../../Intro";
  */
 export class Base implements ObjectInterface {
 
-    constructor(app: Intro): void;
+    constructor(app: Intro){};
 
     get models() {
         return {

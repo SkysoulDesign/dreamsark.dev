@@ -75,7 +75,6 @@ class ProjectBasicCycleTest extends TestCase
 
     /**
      * @test
-     * @param $project
      * @return mixed
      */
     public function it_open_voting_and_select_a_winner()
@@ -130,7 +129,7 @@ class ProjectBasicCycleTest extends TestCase
 
         $this->assertFalse($vote->active);
 
-        $this->assertInstanceOf(Submission::class, $project->stage->fresh()->submission);
+        $this->assertInstanceOf(Submission::class, $project->stage->submission);
 
         return $project;
 

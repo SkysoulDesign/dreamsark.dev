@@ -1,6 +1,6 @@
 // process.env.DISABLE_NOTIFIER = true;
 
-// var elixir = require('laravel-elixir');
+
 // var fontmin = require('gulp-fontmin');
 // var gulp = require('gulp');
 //
@@ -90,8 +90,17 @@
 //
 // });
 
-var gulp = require('gulp');
-var webpack = require('gulp-webpack');
+var elixir = require('laravel-elixir'),
+    gulp = require('gulp'),
+    gulpif = require('gulp-if'),
+    webpack = require('webpack-stream'),
+    sprity = require('sprity'),
+    sprite = require('gulp.spritesmith'),
+    merge = require('merge-stream'),
+    imagemin = require('gulp-imagemin'),
+    buffer = require('vinyl-buffer'),
+    imageResize = require('gulp-image-resize'),
+    gm = require('gulp-gm');
 
 gulp.task('app', function () {
     return gulp.src('./resources/assets/typescript/*.js')
@@ -130,5 +139,77 @@ gulp.task('plugins', function () {
         .pipe(gulp.dest('public/js/plugins/'));
 });
 
+/**
+ * Sprites
+ */
+gulp.task('spritess', function () {
 
-gulp.task('default', ['app', 'plugins']);
+    return sprity.src({
+        src: './resources/assets/typescript/Plugins/Intro/Assets/**/*.{png,jpg}',
+        style: './sprite.scss',
+        engine: 'gm',
+        processor: 'sass',
+        margin: 0,
+        split: true,
+        prefix: 'sprite',
+        cssPath: '/assets/img/',
+        dimension: [
+            {ratio: 1, dpi: 72},
+            {ratio: 2, dpi: 192}
+        ],
+    }).pipe(
+        gulpif('*.png', gulp.dest('./public/assets/img/'), gulp.dest('./resources/assets/sass/sprites'))
+    )
+
+    // return sprity.src({
+    //     src: './resources/assets/typescript/Plugins/Intro/Assets/Intro-assets/**/*.{png,jpg}',
+    //     style: './public/sprite.css',
+    //     out: './public/assets/intro',
+    // }).pipe(gulp.dest('./dist/img/'))
+});
+
+gulp.task('sprites', function () {
+
+    var spriteData = gulp.src('./resources/assets/typescript/Plugins/Intro/Assets/**/*.{png,jpg}')
+        .pipe(sprite({
+            imgName: 'sprite.png',
+            cssName: 'sprite.json',
+            cssFormat: 'json',
+            padding: 10
+        }))
+
+    var imgStream = spriteData.img
+        .pipe(buffer())
+        .pipe(gm(function (gmfile) {
+            return gmfile
+                .extent(2048, 2048)
+                .background('none')
+                .gravity('NorthWest');
+        }))
+        .pipe(gulp.dest('./public/assets/img/'));
+
+    var cssStream = spriteData.css
+        .pipe(gulp.dest('./public/assets/img/'));
+
+    return merge(imgStream, cssStream);
+});
+
+// gulp.task('default', ['app', 'plugins']);
+
+elixir(function (mix) {
+    mix
+    // .copy('./resources/assets/typescript/Plugins/Intro/Assets/Intro-assets/*.+(png|jpg)', 'public/assets/intro/')
+        .task('plugins')
+        // .task('sprites')
+        // .sass('app.scss');
+
+    // mix.browserSync({
+    //     open: "ui",
+    //     notify: false,
+    //     proxy: {
+    //         target: "192.168.99.100:8080"
+    //     },
+    //     port: 8080
+    // });
+
+});

@@ -27,10 +27,16 @@ exports.popByKey = function (data, key, defaults) {
  * @param object
  * @returns {any}
  */
-exports.extend = function (defaults, object) {
-    for (var i in object) {
-        if (object.hasOwnProperty(i)) {
-            defaults[i] = object[i];
+exports.extend = function (defaults) {
+    var object = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        object[_i - 1] = arguments[_i];
+    }
+    for (var a in object) {
+        for (var i in object[a]) {
+            if (object[a].hasOwnProperty(i)) {
+                defaults[i] = object[a][i];
+            }
         }
     }
     return defaults;

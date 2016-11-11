@@ -1,6 +1,5 @@
 "use strict";
 var Helpers_1 = require("./Helpers");
-var Helpers_2 = require("./Helpers");
 var Promise = require('bluebird');
 /**
  * Application
@@ -13,7 +12,7 @@ var App = (function () {
             mixins: []
         };
         this.plugins = {};
-        this.bootstrap(this, Helpers_2.requireAll(require.context("./Classes", false, /\.js$/)));
+        this.bootstrap(this, Helpers_1.requireAll(require.context("./Classes", false, /\.js$/)));
     }
     /**
      * Bootstrap all classes
@@ -34,7 +33,7 @@ var App = (function () {
         collection.forEach(function (component) {
             component.boot.apply(component, parameters);
         });
-        return container;
+        return collection;
         var _a;
     };
     /**

@@ -1,5 +1,5 @@
 import Object3D = THREE.Object3D;
-import {Intro} from "../Intro";
+import { Intro } from "../Intro";
 
 export interface ObjectInstanceInterface {
     loaded: Boolean,
@@ -11,7 +11,7 @@ export interface ObjectInterface {
     models?: {};
     materials?: {};
     animations?: {};
-    constructor?(app: Intro): void;
+    // constructor?(app: Intro): void;
     create(models, materials): Object3D;
     animate?(animations): Object3D;
     configAnimation?(actions): void;

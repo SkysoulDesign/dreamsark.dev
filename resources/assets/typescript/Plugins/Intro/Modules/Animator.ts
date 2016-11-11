@@ -1,5 +1,5 @@
-import {BootableInterface} from "../../../Interfaces/BootableInterface";
-import {ModulesInterface} from "../Interfaces/ModulesInterface";
+import { BootableInterface } from "../../../Interfaces/BootableInterface";
+import { ModulesInterface } from "../Interfaces/ModulesInterface";
 import Promise = require('bluebird');
 
 /**
@@ -37,6 +37,14 @@ export class Animator implements BootableInterface, ModulesInterface {
         return this;
     }
 
+    public animate(properties: {}, target: {}) {
+
+        return new Promise(function (accept, reject) {
+            accept()
+        })
+
+    }
+
     /**
      * Get Animation
      *
@@ -68,13 +76,13 @@ export class Animator implements BootableInterface, ModulesInterface {
         return this;
     }
 
-    public boot() {}
+    public boot() { }
 
     /**
      * Update Animations
      * @param time
      * @param delta
      */
-    public update(time: number, delta: number): void {}
+    public update(time: number, delta: number): void { }
 
 }

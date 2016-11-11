@@ -1,0 +1,21 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "editor.fontFamily": "Fira Code",
+    "editor.lineHeight": 40,
+    "editor.fontSize": 19,
+    "editor.fontLigatures": true,
+    "editor.rulers": [
+        0,
+        100
+    ],
+    "files.exclude": {
+        // include the defaults from VS Code
+        "**/.git": true,
+        "**/.DS_Store": true,
+        // exclude .js and .js.map files, when in a TypeScript project
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": true
+    }
+}

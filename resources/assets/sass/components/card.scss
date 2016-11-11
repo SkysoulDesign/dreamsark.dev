@@ -219,6 +219,11 @@
         margin-right: .2em;
         padding: .3em .5em;
         text-transform: uppercase;
+
+        @include option(voting) {
+          background: color(secondary);
+        }
+
       }
 
     }

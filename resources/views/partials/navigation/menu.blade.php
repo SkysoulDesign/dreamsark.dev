@@ -10,6 +10,7 @@
         </div>
 
         <div class="small-6 columns +align-right">
+            <a href="{{ route('log.index') }}" class="menu__item +round +transparent">@lang('navbar.log')</a>
             <a href="{{ route('project.index') }}" class="menu__item +round +transparent">@lang('navbar.explorer')</a>
             <a href="{{ route('login') }}" class="menu__item --active +round">@lang('navbar.sign-in')</a>
         </div>

@@ -1,0 +1,11 @@
+{
+    "source": "./demo/**/*.{png,jpg}",
+    "output": "assets",
+    "name": "sprite",
+    "format": "png",
+    "optimize": false,
+    "auto": true,
+    "width": 2048,
+    "height": 1024,
+    "engine": "gm"
+}
