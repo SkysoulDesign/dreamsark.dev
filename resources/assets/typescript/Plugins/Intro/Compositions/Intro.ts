@@ -22,7 +22,8 @@ export class Intro extends Composition {
             'ship',
             'debris',
             'star',
-            'tunnel'
+            // 'tunnel',
+            // 'streak'
         ];
     }
 
@@ -32,7 +33,7 @@ export class Intro extends Composition {
 
     public stage(objects) {
 
-        let {ship, main, hexParticles, star, tunnel} = objects;
+        let {ship, main, hexParticles, star, tunnel, streak} = objects;
 
         // setTimeout(() => {
         //     this.app.loader.load('/models/Actor.json').then(function (a) {
@@ -56,6 +57,7 @@ export class Intro extends Composition {
 
         this.scene.add(ship);
         this.scene.add(star);
+        // this.scene.add(streak);
         // this.scene.add(tunnel);
 
         // this.camera
@@ -66,7 +68,7 @@ export class Intro extends Composition {
         this.queue['ship'] = ship;
         this.queue['hexParticles'] = hexParticles;
         this.queue['star'] = star;
-        this.queue['tunnel'] = tunnel;
+
 
         this.app.mouse.click(this.start.bind(this, objects))
 
@@ -94,7 +96,7 @@ export class Intro extends Composition {
 
     }
 
-    public start({ship, main, hexParticles, debris, star}) {
+    public start({ship, main, hexParticles, debris, star, streak}) {
 
         let original = [
             ship.position.clone(),
@@ -128,9 +130,12 @@ export class Intro extends Composition {
                 main: main.position,
                 booster: ship.userData.booster,
                 speed: star.userData.speed,
-                decay: 0
+                move: 0,
+                decay: 0,
+                taill: 0,
             },
             target: {
+                taill: 3,
                 decay: 5,
                 booster: -3,
                 speed: 2.5,
@@ -141,12 +146,18 @@ export class Intro extends Composition {
             },
             duration: 2,
             ease: Tween.EXPOIN,
-            update: ({booster, speed, decay}, completion, elapsed) => {
+            update: ({booster, speed, decay, taill}, completion, elapsed) => {
 
                 ship.userData.booster = booster.value;
                 star.userData.speed = speed.value;
                 star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
                 hexParticles.userData.decay = decay.value;
+
+                ship.userData.taill.visible = true;
+                ship.userData.taill.scale.set(taill.value, .3, 1);
+
+                if (taill.completion < 95)
+                    ship.userData.taill.position.y -= taill.value;
 
                 return !this.debrisCompleted;
 
@@ -164,20 +175,25 @@ export class Intro extends Composition {
             origin: {
                 rotation: ship.rotation,
                 position: ship.position,
+                align: 0,
                 r: star.rotation,
             },
             target: {
                 r: {
-                    x: -deg2rad(70)
+                    x: -deg2rad(90)
                 },
+                align: 100,
                 position: {
-                    z: -300
+                    z: -300,
+                    x: 0,
+                    y: 0
                 },
                 rotation: {
-                    x: -deg2rad(70)
+                    x: -deg2rad(90),
+                    y: deg2rad(360)
                 }
             },
-            ease: Tween.BACKOUT,
+            ease: Tween.QUADINOUT,
             duration: 5,
             before() {
                 star.userData.vortexEnabled = true;
@@ -185,7 +201,81 @@ export class Intro extends Composition {
             after: () => {
                 this.mouseInverse = true;
             },
+            update({align}, time, completion) {
+                star.userData.align(align)
+            }
         })
+
+        /**
+         * Momentum
+         */
+        animation.then({
+            origin: {
+                position: ship.position,
+                star: star.userData,
+            },
+            target: {
+                position: {
+                    z: 0
+                },
+                star: {
+                    speed: star.userData.speed * 30
+                },
+            },
+            ease: Tween.EXPOINOUT,
+            duration: 3
+        })
+
+        /**
+         * Super Speed
+         */
+        animation.then({
+            origin: {
+                // streak: streak.material['userData'].uniforms,
+                position: ship.position,
+                star: star.userData,
+                power: 0
+            },
+            target: {
+                // streak: {
+                //     alpha: {
+                //         value: 1
+                //     },
+                //     frequency: {
+                //         value: 3
+                //     },
+                //     waves: {
+                //         value: 8
+                //     },
+                //     warp: {
+                //         value: 8
+                //     }
+                // },
+                position: {
+                    z: 5
+                },
+                star: {
+                    speed: 25
+                },
+                power: 0.015
+            },
+            ease: Tween.EXPOIN,
+            duration: 2,
+            before: () => {
+                this.scene.add(streak)
+                this.queue['streak'] = streak;
+            },
+            update: ({power, streak}, time) => {
+                camera.rotation.z += Math.sin(time) * power.value;
+
+                // streak.material.uniforms.alpha.value = streak.value
+                // streak.material.uniforms.waves.value = streak.value * 5
+                // streak.material.uniforms.warp.value = streak.value * 5
+
+                return true;
+            }
+        })
+
 
     }
 
@@ -226,6 +316,11 @@ export class Intro extends Composition {
 
             logo.position.x = mouse.screen.x * .1;
             logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
+
+            if (this.mouseInverse) {
+                logo.rotation.x = deg2rad(mouse.screen.y * .1) / Math.PI
+                logo.rotation.y = -deg2rad(mouse.screen.x * .1) / Math.PI
+            }
 
         }
 

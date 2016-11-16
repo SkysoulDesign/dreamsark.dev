@@ -9,17 +9,79 @@
  * @param base
  * @returns {THREE.MeshBasicMaterial}
  */
-export var configureMaterial = (material: any, {x, y, width, height, sprite}, base: number = 2048) => {
+export var configureMaterial = (material: any, {x, y, width, height, sprite, uvs}, base: number = 2048) => {
 
-    let tex = material.userData ? material.userData[sprite.name] : material.map
+    let clone;
 
-    let clone = material.clone(),
-        texture = tex.clone()
+    /**
+     * Ignore if its a shader
+     */
+    if (material instanceof THREE.ShaderMaterial) {
 
+        clone = material;
+        clone['userData'].uniforms.texture.value = material['userData'].textures[sprite.name];
+
+    } else {
+
+        clone = material.clone()
+        clone.map = material.userData ? material.userData[sprite.name] : material.map;
+
+        /**
+         * Persist UserData
+         */
+        clone.userData = material['userData'] || {};
+
+    }
+
+    if (!uvs) {
+
+        let texture = clone.map.clone();
+
+        texture.name = sprite.name;
+        texture.repeat.set(width / base, height / base);
+        texture.offset.set(x / base, (base - (y + height)) / base);
+        texture.needsUpdate = true;
+
+        clone.map = texture;
+
+    } 
+
+    return clone;
+}
+
+export var configureMaterialOld = (material: any, {x, y, width, height, sprite}, base: number = 2048) => {
+
+    let tex,
+        clone;
+
+    /**
+     * Ignore if its a shader
+     */
+    if (material instanceof THREE.ShaderMaterial) {
+        clone = material;
+        tex = material['userData'].textures[sprite.name]
+    } else {
+        clone = material.clone()
+        tex = material.userData ? material.userData[sprite.name] : material.map
+    }
+
+    let texture = tex.clone();
+
+    /**
+     * Persist UserData
+     */
+    clone.userData = material['userData'] || {};
+
+    texture.name = sprite.name;
     texture.repeat.set(width / base, height / base);
     texture.offset.set(x / base, (base - (y + height)) / base);
 
-    clone.map = texture;
+    if (material instanceof THREE.ShaderMaterial) {
+        clone['userData'].uniforms.texture.value = texture;
+    } else {
+        clone.map = texture;
+    }
+
     texture.needsUpdate = true;
 
     return clone;

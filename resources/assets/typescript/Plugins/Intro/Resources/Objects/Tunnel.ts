@@ -1,8 +1,6 @@
 import { ObjectInterface } from "../../Interfaces/ObjectInterface";
 import { Forgable } from "../../Abstracts/Forgable";
 import { random } from "../../Helpers";
-import { Anim } from "../../Curves";
-
 
 var v4 = function (x, y, z, w) { return new THREE.Vector4(x, y, z, w); };
 
@@ -246,246 +244,69 @@ export class Tunnel extends Forgable implements ObjectInterface {
 
         let tunnel = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(100, 100), material
-        )
+        );
 
+        return tunnel
 
-        // let tunnel = new THREE.Mesh(
-        //     new THREE.TorusGeometry(160, 75, 2, 13), new THREE.MeshNormalMaterial({})
-        // );
-
-        // let group = new THREE.Group();
-
-        let curves = (new Anim()).curves;
-        console.log(curves);
-        tunnel.userData.update = this.update.bind(this, tunnel)
-
-        // var counter = 20;
-
-        let swirls = [];
-
-        // for (var i = 0; i < curves.numCurves; i++) {
-        //     let mat = facingMat3.clone();
-        //     if (curves[i + ""].divisions.includes("tunnel"))
-        //         mat = facingMatTunnel.clone();
-        //     if (curves[i + ""].divisions.includes("normal"))
-        //         mat = new THREE.MeshNormalMaterial();
-
-        //     var swirl = this.makeSurface({
-        //         surface: curves[counter + ""],
-        //         material: mat,
-        //         textureColor: material.userData.rgb,
-        //         textureAlpha: material.userData.alpha
-        //     })
-
-        //     // swirl.position.set( 0, 0, -5);
-        //     swirl.material.side = THREE.DoubleSide;
-        //     swirls.push(swirl);
-        // }
-
-        // tunnel.userData.swirls = swirls;
-        // tunnel.userData.curves = curves;
-        let counter = 40;
-
-        tunnel.userData.swirls = [];
-
-        tunnel.userData.next = () => {
-
-            counter += 1;
-
-            console.log('playing: ' + counter)
-
-            return this.makeSurface({
-                surface: curves[counter + ""],
-                material: material,
-                textureColor: material.userData.rgb,
-                textureAlpha: material.userData.alpha
-            })
-
-        }
-
-        setInterval(() => {
-            tunnel.userData.swirls.push(tunnel.userData.next());
-        }, 2000)
-
-        tunnel.userData.timer = new THREE.Clock();
-
-        return tunnel;
     }
 
     public update(tunnel, time) {
 
-        tunnel.userData.swirls.forEach(function (swirl) {
+        // tunnel.userData.swirls.forEach(function (swirl) {
 
-            // time = tunnel.userData.timer.getElapsedTime()
-            //     curves = tunnel.userData.curves;
+        // time = tunnel.userData.timer.getElapsedTime()
+        //     curves = tunnel.userData.curves;
 
-            // for (var i = 0; i < curves.numCurves; i++) {
-            //     // scope.swirls[i].setCam(MAEVR.camera);
-            //     swirls[i].update(1 * (time / 1000) * 30);
-            //     if (swirls[i].isInScene)
-            //         swirls[i].offset((i * .3) + 2 * .01 * time * -.02);
+        // for (var i = 0; i < curves.numCurves; i++) {
+        //     // scope.swirls[i].setCam(MAEVR.camera);
+        //     swirls[i].update(1 * (time / 1000) * 30);
+        //     if (swirls[i].isInScene)
+        //         swirls[i].offset((i * .3) + 2 * .01 * time * -.02);
 
-            // }
+        // }
 
-            // if (swirl.done) {
-            //     tunnel.userData.swirl = swirl = tunnel.userData.next();
-            //     tunnel.userData.timer = new THREE.Clock();
-            //     time = 0;
-            // }
+        // if (swirl.done) {
+        //     tunnel.userData.swirl = swirl = tunnel.userData.next();
+        //     tunnel.userData.timer = new THREE.Clock();
+        //     time = 0;
+        // }
+        let swirl = tunnel.userData.swirl;
 
-            if (swirl) {
-                swirl.update(1 * (time / 1000) * 30);
+        if (swirl) {
+            swirl.update(1 * (time / 1000) * 30);
 
-                if (swirl.isInScene)
-                    swirl.offset((1 * .3) + 1 * .2 * time * -.02);
-            }
+            if (swirl.isInScene)
+                swirl.offset((1 * .3) + 1 * .2 * time * -.02);
+        }
 
-        })
+        // })
     }
 
-    curve2() {
-        var Curve_v01 = [
-            [v4(-94.2, 115.2, -235.72, 1),
-            v4(-100.55, 107.34, -235.72, 1),
-            v4(-113.24, 91.54, -235.83, 1),
-            v4(-122.73, 61.55, -235.87, 1),
-            v4(-113, 31.66, -235.93, 1),
-            v4(-99.62, 4.94, -235.97, 1),
-            v4(-83.99, -21.31, -236.02, 1),
-            v4(-67.54, -46.64, -236.07, 1),
-            v4(-51.17, -72.21, -236.14, 1),
-            v4(-36.7, -98.86, -236.2, 1),
-            v4(-20.48, -124.44, -236.23, 1),
-            v4(-5.35, -150.78, -236.25, 1),
-            v4(11.2, -176.29, -236.27, 1),
-            v4(45.4, -184.76, -236.3, 1),
-            v4(64.71, -151.89, -236.32, 1),
-            v4(98.72, -160.56, -236.31, 1),
-            v4(106.29, -193.36, -236.31, 1),
-            v4(121.46, -218.57, -236.27, 1),
-            v4(124.26, -250.01, -236.3, 1),
-            v4(146.06, -279.2, -236.18, 1),
-            v4(146.63, -231.33, -236.08, 1),
-            v4(145.6, -209.1, -236.05, 1),
-            v4(145.67, -174.08, -236.01, 1),
-            v4(159.8, -148.4, -236.01, 1),
-            v4(192.14, -137.4, -236.04, 1),
-            v4(219.54, -138.8, -236.07, 1),
-            v4(253.93, -118.94, -236.11, 1),
-            v4(224.22, -92.94, -236.1, 1),
-            v4(197.63, -84.55, -236.09, 1),
-            v4(171.02, -68.72, -236.08, 1),
-            v4(141.48, -57.41, -236.06, 1),
-            v4(118.14, -43.86, -236.04, 1),
-            v4(82.01, -30.53, -236.02, 1),
-            v4(90.93, 1.24, -235.98, 1),
-            v4(90.49, 30.93, -235.92, 1),
-            v4(62.35, 51.31, -235.89, 1),
-            v4(39.02, 67.18, -235.86, 1),
-            v4(13.3, 84.72, -235.81, 1),
-            v4(-11.66, 102.01, -235.77, 1),
-            v4(-39.18, 113.16, -235.74, 1),
-            v4(-69.35, 124.6, -235.73, 1),
-            v4(-88.44, 117.3, -235.72, 1),
-            v4(-96.46, 110.48, -235.72, 1),
-            ], [v4(-54.22, 61.67, -218.02, 1),
-            v4(-61.31, 65.94, -218.02, 1),
-            v4(-73.79, 55.62, -218.11, 1),
-            v4(-75.75, 34.66, -218.16, 1),
-            v4(-72.56, 14.05, -218.23, 1),
-            v4(-65.2, -4.74, -218.29, 1),
-            v4(-56.24, -24.64, -218.36, 1),
-            v4(-63, -44.69, -218.42, 1),
-            v4(-68.34, -64.85, -218.47, 1),
-            v4(-60.79, -84.99, -218.5, 1),
-            v4(-53, -103.74, -218.52, 1),
-            v4(-40.45, -120.43, -218.54, 1),
-            v4(-25.16, -134.42, -218.56, 1),
-            v4(-3.84, -139.91, -218.59, 1),
-            v4(14.7, -131.15, -218.59, 1),
-            v4(30.12, -113.98, -218.6, 1),
-            v4(35.06, -97.83, -218.6, 1),
-            v4(45.92, -70.6, -218.62, 1),
-            v4(61.05, -89.12, -218.59, 1),
-            v4(60.91, -112.59, -218.6, 1),
-            v4(64.87, -127.86, -218.56, 1),
-            v4(68.85, -157.18, -218.59, 1),
-            v4(63.18, -163.52, -218.42, 1),
-            v4(56.37, -130.94, -218.4, 1),
-            v4(53.11, -117.04, -218.35, 1),
-            v4(46.63, -93.91, -218.33, 1),
-            v4(50.49, -73.86, -218.31, 1),
-            v4(60.76, -58.82, -218.31, 1),
-            v4(99.87, -61.61, -218.35, 1),
-            v4(63.81, -61.21, -218.43, 1),
-            v4(66.76, -43.74, -218.36, 1),
-            v4(94, -37.94, -218.35, 1),
-            v4(99.01, -15.15, -218.28, 1),
-            v4(84.52, 0.46, -218.25, 1),
-            v4(68.41, 13.32, -218.21, 1),
-            v4(52.33, 26.09, -218.17, 1),
-            v4(35.6, 38.35, -218.14, 1),
-            v4(19.7, 51.1, -218.11, 1),
-            v4(2.78, 63.62, -218.07, 1),
-            v4(-15.57, 71.79, -218.04, 1),
-            v4(-36.96, 76.69, -218.02, 1),
-            v4(-49.28, 69.54, -218.02, 1),
-            v4(-54.53, 65.03, -218.02, 1),
-            ], [v4(-6.59, -0.77, -227.14, 1),
-            v4(-6.63, -2.16, -227.14, 1),
-            v4(-6.87, -4.93, -227.14, 1),
-            v4(-7.32, -9.08, -227.14, 1),
-            v4(-7.46, -13.24, -227.15, 1),
-            v4(-7.29, -17.41, -227.15, 1),
-            v4(-6.82, -21.56, -227.15, 1),
-            v4(-5.96, -25.64, -227.16, 1),
-            v4(-4.63, -29.6, -227.16, 1),
-            v4(-2.92, -33.4, -227.17, 1),
-            v4(-0.91, -37.06, -227.17, 1),
-            v4(1.52, -40.46, -227.17, 1),
-            v4(4.41, -43.47, -227.17, 1),
-            v4(7.63, -46.13, -227.18, 1),
-            v4(11.07, -48.49, -227.18, 1),
-            v4(14.92, -50.19, -227.18, 1),
-            v4(18.93, -51.19, -227.18, 1),
-            v4(23.3, -50.91, -227.17, 1),
-            v4(26.35, -47.74, -227.17, 1),
-            v4(28.01, -43.95, -227.16, 1),
-            v4(29.44, -40.02, -227.16, 1),
-            v4(30.93, -36.13, -227.16, 1),
-            v4(33.14, -32.57, -227.16, 1),
-            v4(36.01, -29.5, -227.16, 1),
-            v4(39.53, -27.23, -227.16, 1),
-            v4(42.86, -24.74, -227.16, 1),
-            v4(45.25, -21.14, -227.16, 1),
-            v4(44.87, -16.66, -227.16, 1),
-            v4(41.71, -13.72, -227.16, 1),
-            v4(38.44, -11.22, -227.16, 1),
-            v4(35.39, -8.34, -227.16, 1),
-            v4(32.49, -5.36, -227.15, 1),
-            v4(29.22, -2.75, -227.15, 1),
-            v4(25.88, -0.27, -227.15, 1),
-            v4(22.54, 2.23, -227.15, 1),
-            v4(18.97, 4.41, -227.14, 1),
-            v4(15.08, 5.94, -227.14, 1),
-            v4(10.89, 6.48, -227.14, 1),
-            v4(6.78, 5.45, -227.14, 1),
-            v4(3.07, 3.56, -227.14, 1),
-            v4(-0.41, 1.25, -227.14, 1),
-            v4(-2.56, -0.52, -227.14, 1),
-            v4(-3.6, -1.44, -227.14, 1),
-            ]
-        ];
-        var degree1_v01 = 2;
-        var degree2_v01 = 42;
-        var knots1_v01 = [0, 0, 0, 1, 1, 1,];
-        var knots2_v01 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
+    curve16() {
+        var Curve_v01 = [[v4(167.76, 537.33, -987.76, 1),
+        v4(22.13, 564.59, -938.9, 1),
+        v4(-283.46, 712.76, -817.84, 1),
+        v4(-391.81, 1124.27, -503.02, 1),
+        v4(-75.92, 1268.73, -294.65, 1),
+        v4(36.8, 1313.13, -218.74, 1),
+        ], [v4(121.43, 292.86, -1283.11, 1),
+        v4(-121.66, 354.17, -1258.95, 1),
+        v4(-629.17, 632.16, -1195.93, 1),
+        v4(-861.99, 1359.72, -812.88, 1),
+        v4(-50.53, 1615.41, -409.23, 1),
+        v4(-257.37, 1695.51, -261.42, 1),
+        ]];
+
+        var degree1_v01 = 1;
+        var degree2_v01 = 5;
+        var knots1_v01 = [0, 0, 1, 1,];
+        var knots2_v01 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,];
         var nurbsSurface_v01 = new THREE.NURBSSurface(degree1_v01, degree2_v01, knots1_v01, knots2_v01, Curve_v01);
 
         return {
             func: function (u, v) { return nurbsSurface_v01.getPoint(v, u); },
-            animation: [[0, 1], [51, 0.166], [128, -0.377], [170, -1]],
-            divisions: "|MAEmodelsPrevis|powerBallWarp_20000_2_3_8_100_140_200_100_300_100_100_20|_81_9_v1";
+            animation: [[-118, -1], [54, -0.08812329549], [2965, 0.2085208828], [3193, 1]],
+            divisions: "|MAEmodelsPrevis|Gehry_15000_1_3_30_40_100_100_500_100_100_100_20|_40_2_1"
         }
 
     }
@@ -529,7 +350,7 @@ export class Tunnel extends Forgable implements ObjectInterface {
         var divisions = nameSplit[3].split("_");
         var shaderInfo = nameSplit[2].split("_");
         var divisionMultiplier = new THREE.Vector2(1, 1); // 3,2 for more detail
-        var geometry = new THREE.ParametricGeometry(params.surface(), parseInt(divisions[1]) * divisionMultiplier.x, parseInt(divisions[2]) * divisionMultiplier.y);
+        var geometry = new THREE.ParametricGeometry(params.surface.func, parseInt(divisions[1]) * divisionMultiplier.x, parseInt(divisions[2]) * divisionMultiplier.y);
         var swirl = new THREE.Mesh(geometry, params.material === undefined ? new THREE.MeshNormalMaterial() : params.material);
 
         swirl.material.depthTest = false;

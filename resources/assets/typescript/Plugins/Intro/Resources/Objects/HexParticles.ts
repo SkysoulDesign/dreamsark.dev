@@ -18,6 +18,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
 
         let group = new THREE.Group(),
             mesh = <THREE.Points>this.forge('hex', material, {
+                uvs: false,
                 position: {
                     x: 50, y: 50, z: 20
                 }

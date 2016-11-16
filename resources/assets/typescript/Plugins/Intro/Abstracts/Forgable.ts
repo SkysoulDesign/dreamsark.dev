@@ -1,5 +1,6 @@
-import { extend, requireAll } from "../../../Helpers";
-import { resize, configureMaterial } from "../Helpers";
+import { is } from "../../Helpers";
+import { extend, requireAll, } from "../../../Helpers";
+import { resize, configureMaterial, deg2rad } from "../Helpers";
 import { Intro } from "../Intro";
 
 export abstract class Forgable {
@@ -15,6 +16,10 @@ export abstract class Forgable {
             heightFactor: 1,
             mesh: THREE.Mesh,
             geometry: THREE.PlaneGeometry,
+            uvs: true,
+            rotation: {
+                x: 0, y: 0, z: 0
+            },
             position: {
                 x: 50,
                 y: 50,
@@ -134,22 +139,41 @@ export abstract class Forgable {
         let {view, size, position, defaults} = this.getDimentions(options);
 
         if (object instanceof THREE.Mesh) {
+
             object.geometry = this.computeGeometrySize(
                 object.geometry.clone(), size.width
             );
+
         }
 
         if (typeof (object) === "string") {
 
             const name = object;
 
+            let geometry;
+
+            /**
+             * if its a object it must to have a create method create
+             */
+            if (is.Object(defaults.geometry) && !(defaults.geometry instanceof THREE.Geometry)) {
+                geometry = defaults.geometry.create(size.width, size.height, view)
+            } else {
+                geometry = this.createGeometry(size.width, size.height, view, defaults.geometry);
+            }
+
             object = this.createMesh(
-                this.createGeometry(size.width, size.height, view, defaults.geometry), configureMaterial(material, defaults), defaults.mesh
+                geometry, configureMaterial(material, defaults), defaults.mesh
             );
 
             object.name = name;
 
         }
+
+        /**
+         * Only Apply if it uses uvs
+         */
+        if (defaults.uvs)
+            this.configureUVs(object['geometry'], options.uv)
 
         object.userData.meta = {
             view, size, position, defaults
@@ -159,8 +183,38 @@ export abstract class Forgable {
             position.x, position.y, position.z
         );
 
+        object.rotation.set(
+            deg2rad(defaults.rotation.x),
+            deg2rad(defaults.rotation.y),
+            deg2rad(defaults.rotation.z)
+        );
+
         return object;
 
     }
+
+    public configureUVs(geometry: THREE.Geometry, data: any) {
+
+        if (geometry instanceof THREE.Geometry) {
+
+            for (let face of geometry.faceVertexUvs[0]) {
+
+                for (let uv of face) {
+
+                    let u = (uv.x * data.uDistance) + data.u1,
+                        v = (uv.y * data.vDistance) + data.v1;
+
+                    uv.set(u, v);
+
+                }
+
+            }
+
+        }
+
+        geometry.uvsNeedUpdate = true;
+
+    }
+
 
 }

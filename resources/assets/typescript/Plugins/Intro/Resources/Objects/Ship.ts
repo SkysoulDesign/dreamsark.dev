@@ -15,16 +15,18 @@ export class Ship extends Forgable implements ObjectInterface {
 
     get materials() {
         return {
-            material: 'IntroDefaultMaterial'
+            material: 'IntroDefaultMaterial',
+            shader: 'ShaderMaterial'
         }
     }
 
-    create({geometry}, {material}) {
+    create({geometry}, {material, shader}) {
 
         let group = new THREE.Group(),
             ship = this.forge('ship', material, {
                 geometry: geometry,
                 scale: 20,
+                uvs: false,
                 position: {
                     x: 50,
                     y: 45,
@@ -32,6 +34,25 @@ export class Ship extends Forgable implements ObjectInterface {
                 }
             }),
             clones = [];
+
+        const streak = <THREE.Mesh>this.forge('streak', shader, {
+            geometry: {
+                create: function (width, height) {
+                    return new THREE.PlaneGeometry(width, height, 30, 30)
+                }
+            },
+            scale: 20,
+            rotation: {
+                x: 0, y: 0, z: 90
+            },
+            position: {
+                x: 50, y: 90, z: 80
+            }
+        });
+
+        streak.scale.set(3, .3, 1)
+
+        ship.add(streak);
 
         group.add(ship);
 
@@ -43,20 +64,37 @@ export class Ship extends Forgable implements ObjectInterface {
 
         ship.name = 'logo';
 
+        streak.visible = false;
+
+        streak.translateOnAxis(new THREE.Vector3(1.8, 0, 0), 20)
+
+        // streak.geometry.applyMatrix(new THREE.Matrix4().setPosition(new THREE.Vector3(50, 0, 0)));
+
         group.userData = {
+            taill: streak,
+            uniforms: streak.material['userData'].uniforms,
             booster: 1,
             update: this.update.bind(this, group)
         }
+
+        console.log(group['userData'].uniforms)
 
         return group
 
     }
 
-    public update(object: THREE.Object3D) {
+    public update(object: THREE.Object3D, time) {
+
+        object['userData'].uniforms.angle.value += object['userData'].uniforms.frequency.value;
+
+        // object['userData'].streak.scale.setX(Math.sin(time));
 
         object.children.forEach((child, i) => {
 
+
             if (child.name === 'logo') return;
+
+            child.children[0].scale.set(Math.abs(Math.sin(time) * .3) + 2, .3, 1)
 
             if (child.position.y > child.userData.respawnAt) {
                 this.respawn(child)
@@ -106,12 +144,13 @@ export class Ship extends Forgable implements ObjectInterface {
     private clone(object: THREE.Object3D): THREE.Object3D {
 
         const clone = this.setup(object.clone(), {
-            scale: 15,
+            scale: 8,
             widthFactor: 2,
+            uvs: false,
             position: {
                 x: random.between(0, 100),
                 y: random.between(0, 100),
-                z: random.between(10, 40),
+                z: 20,
             }
         })
 

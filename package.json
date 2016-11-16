@@ -37,6 +37,7 @@
     "webpack-typescript": "^0.5.6"
   },
   "dependencies": {
+    "@types/three": "^0.0.24",
     "bluebird": "^3.4.3",
     "broccoli-sprite": "^0.3.0",
     "dat.gui": "^0.6.1",
@@ -64,6 +65,7 @@
     "three": "^0.82.1",
     "ts-loader": "^0.8.2",
     "typescript": "^2.0.6",
+    "verb-nurbs": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^3.2.0"
   }

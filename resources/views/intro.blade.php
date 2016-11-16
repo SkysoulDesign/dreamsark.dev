@@ -7,8 +7,4 @@
 
 @push('scripts')
 <script src="{{ asset('js/plugins/intro.js') }}"></script>
-<script src="{{ asset('js/dat.gui.min.js') }}"></script>
-<script src="{{ asset('js/NURBSCurve.js') }}"></script>
-<script src="{{ asset('js/NURBSSurface.js') }}"></script>
-<script src="{{ asset('js/NURBSUtils.js') }}"></script>
 @endpush

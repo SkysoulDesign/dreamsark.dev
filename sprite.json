@@ -1,0 +1,12 @@
+{
+    "source": "./resources/assets/typescript/Plugins/Intro/Assets/sprites/**/*.{png,jpg}",
+    "output": "./public/assets/img",
+    "name": "sprite",
+    "format": "png",
+    "optimize": true,
+    "margin": 6,
+    "auto": false,
+    "width": 2048,
+    "height": 2048,
+    "engine": "gm"
+}

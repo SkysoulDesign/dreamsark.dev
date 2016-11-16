@@ -1,7 +1,6 @@
 import { ObjectInterface } from "../../Interfaces/ObjectInterface";
-import PlaneGeometry = THREE.PlaneGeometry;
 import { Forgable } from "../../Abstracts/Forgable";
-import { random } from "../../Helpers";
+import { random, deg2rad } from "../../Helpers";
 
 /**
  * Main Particles
@@ -27,6 +26,7 @@ export class Star extends Forgable implements ObjectInterface {
         point.opacity = .2
 
         let particles = <THREE.Points>this.forge('star', point, {
+            uvs: false,
             position: {
                 x: 50, y: 50, z: 5
             }
@@ -34,9 +34,9 @@ export class Star extends Forgable implements ObjectInterface {
 
         particles.userData.update = this.update.bind(this, particles);
         particles.userData.speed = 0;
-        particles.userData.vortex = this.vortex.bind(this, particles);
         particles.userData.vortexEnabled = false;
-        particles.userData.circle = new THREE.CircleGeometry(100, 30);
+        particles.userData.circle = new THREE.CircleGeometry(200, 50);
+        particles.userData.align = this.align.bind(this, particles);
 
         return particles;
 
@@ -87,18 +87,15 @@ export class Star extends Forgable implements ObjectInterface {
 
     private update(particles, time) {
 
-        if (particles.userData.vortexEnabled) {
-            return this.vortex(particles, time);
-        }
-
         /**
          * No point if speed is 0
          */
         if (particles.userData.speed <= 0) return;
 
-        let positions = particles.geometry.getAttribute('position'),
-            distanceX = particles.userData.meta.view.width / 2,
-            distanceY = particles.userData.meta.view.height / 2;
+        let tunnel = particles.userData.vortexEnabled,
+            positions = particles.geometry.getAttribute('position'),
+            distanceX = tunnel ? 1000 : particles.userData.meta.view.width / 2,
+            distanceY = tunnel ? 1500 : particles.userData.meta.view.height / 2;
 
         for (let i = 0; i < positions.count; i++) {
 
@@ -115,21 +112,23 @@ export class Star extends Forgable implements ObjectInterface {
 
     };
 
-    public vortex(particles, time: number) {
+    public align(particles, {value}) {
 
         let positions = particles.geometry.getAttribute('position'),
-            distanceX = particles.userData.meta.view.width / 2,
-            distanceY = particles.userData.meta.view.height / 2;
+            matrix = (new THREE.Matrix4()).makeRotationX(-deg2rad(90));
 
         for (let i = 0; i < positions.count; i++) {
 
-            var vector = particles.userData.circle.vertices[
-                Math.floor(random.between(1, particles.userData.circle.vertices.length - 1))
-            ];
+            let dest = particles.userData.circle.vertices[
+                (i % (particles.userData.circle.vertices.length - 1)) + 1
+            ].clone().applyMatrix4(matrix.makeRotationY(i))
 
-            positions.array[i * 3] = vector.x + Math.random() * 2;
-            positions.array[i * 3 + 1] = vector.y + Math.random() * 2;
-            positions.array[i * 3 + 2] = vector.z + Math.random() * 2;
+            let origin = new THREE.Vector3(
+                positions.array[i * 3], positions.array[i * 3 + 1], positions.array[i * 3 + 2]
+            );
+
+            positions.array[i * 3] = (origin.x + (((dest.x - origin.x) / 100) * value));
+            positions.array[i * 3 + 2] = (origin.z + (((dest.z - origin.z) / 100) * value));
 
         }
 
