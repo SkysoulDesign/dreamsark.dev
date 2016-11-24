@@ -1,6 +1,6 @@
-import {BootableInterface} from "../../../../Interfaces/BootableInterface";
-import {Initializable} from "../../Abstracts/Initializable";
-import {is} from "../../../Helpers";
+import { BootableInterface } from "../../../../Interfaces/BootableInterface";
+import { Initializable } from "../../Abstracts/Initializable";
+import { is } from "../../../Helpers";
 import Object3D = THREE.Object3D;
 import Promise = require("bluebird");
 
@@ -41,19 +41,42 @@ export class Objects extends Initializable implements BootableInterface {
                 /**
                  * If Animation is set
                  */
-                if (instance.hasOwnProperty('animations')) {
+                if (instance.animations) {
 
-                    let actions = this.app.animation.create(
-                        mesh, mesh.geometry.bones, resolutions[2]
-                    );
+                    let objects = [];
 
                     /**
-                     * Give a chance for the actions to be configurable
+                     * hacky but... if its a group.. send the bones trough the userData
                      */
-                    if (is.Function(instance.configAnimation))
-                        instance.configAnimation(actions);
+                    if (mesh instanceof THREE.Group) {
 
-                    mesh.userData.animations = actions;
+                        mesh.children.forEach(child => {
+
+                            if (child instanceof THREE.SkinnedMesh) {
+                                objects.push(child)
+                            }
+
+                        })
+
+                    } else {
+                        objects.push(mesh);
+                    }
+
+                    for (let object of objects) {
+
+                        let actions = this.app.animation.create(
+                            object, object.geometry.bones, resolutions[2]
+                        );
+
+                        /**
+                         * Give a chance for the actions to be configurable
+                         */
+                        if (is.Function(instance.configAnimation))
+                            instance.configAnimation(actions);
+
+                        object.userData.animations = actions;
+
+                    }
 
                 }
 

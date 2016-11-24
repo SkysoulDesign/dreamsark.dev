@@ -17,6 +17,8 @@ export abstract class Forgable {
             mesh: THREE.Mesh,
             geometry: THREE.PlaneGeometry,
             uvs: true,
+            uv: {},
+            isle: 1,
             rotation: {
                 x: 0, y: 0, z: 0
             },
@@ -173,7 +175,7 @@ export abstract class Forgable {
          * Only Apply if it uses uvs
          */
         if (defaults.uvs)
-            this.configureUVs(object['geometry'], options.uv)
+            this.configureUVs(object['geometry'], options.uv, defaults.isle)
 
         object.userData.meta = {
             view, size, position, defaults
@@ -193,11 +195,11 @@ export abstract class Forgable {
 
     }
 
-    public configureUVs(geometry: THREE.Geometry, data: any) {
+    public configureUVs(geometry: THREE.Geometry, data: any, isle: number) {
 
         if (geometry instanceof THREE.Geometry) {
-
-            for (let face of geometry.faceVertexUvs[0]) {
+            
+            for (let face of geometry.faceVertexUvs[isle - 1]) {
 
                 for (let uv of face) {
 

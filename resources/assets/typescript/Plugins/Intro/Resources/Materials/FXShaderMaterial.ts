@@ -1,6 +1,6 @@
 import { MaterialInterface } from "../../Interfaces/LoadersInterfaces";
 
-export class ShaderMaterial implements MaterialInterface {
+export class FXShaderMaterial implements MaterialInterface {
 
     private mGLContext;
     private mQuadVBO;
@@ -35,6 +35,7 @@ export class ShaderMaterial implements MaterialInterface {
             angle: { type: "f", value: 0.0 },
             waves: { type: "f", value: 1.0 },
             warp: { type: "f", value: 2.0 },
+            speed: { type: "f", value: 5.0 },
             frequency: { type: "f", value: .5 },
             texture: { type: "t", value: null },
         }

@@ -13,6 +13,8 @@ export class Intro extends Composition {
     mouse: boolean = false;
     mouseInverse: boolean = false;
     debrisCompleted: boolean = false;
+    tutorialDone: boolean = false;
+    open: boolean = false;
     queue = {};
 
     get objects(): string[] {
@@ -22,6 +24,10 @@ export class Intro extends Composition {
             'ship',
             'debris',
             'star',
+            'plexus',
+            'galaxy',
+            'fx',
+            'buttons'
             // 'tunnel',
             // 'streak'
         ];
@@ -33,7 +39,7 @@ export class Intro extends Composition {
 
     public stage(objects) {
 
-        let {ship, main, hexParticles, star, tunnel, streak} = objects;
+        let {ship, main, hexParticles, star, tunnel, streak, plexus, galaxy, fx, buttons} = objects;
 
         // setTimeout(() => {
         //     this.app.loader.load('/models/Actor.json').then(function (a) {
@@ -52,15 +58,29 @@ export class Intro extends Composition {
         //     }
         // })
 
+        // this.scene.add(plexus);
+        // this.scene.add(galaxy);
+
+        main.add(buttons);
+
         this.scene.add(main);
         this.scene.add(hexParticles);
-
         this.scene.add(ship);
         this.scene.add(star);
-        // this.scene.add(streak);
+
+        console.log(main.getObjectByName('smoke').userData.animations)
+
+
+        // console.log(ship.getObjectByName('logo'));
+
+        // this.scene.add(plexus);
         // this.scene.add(tunnel);
 
         // this.camera
+
+        Animator
+            .from(main.getObjectByName('smoke'))
+            .play('smoke')
 
         /**
          * Queue Update
@@ -69,34 +89,34 @@ export class Intro extends Composition {
         this.queue['hexParticles'] = hexParticles;
         this.queue['star'] = star;
 
+        this.app.mouse.ray(buttons.getObjectByName('start'), data => {
+            this.start(objects);
+        });
 
-        this.app.mouse.click(this.start.bind(this, objects))
+        this.app.mouse.ray(buttons.getObjectByName('skip'), data => {
+            alert('skip')
+        });
 
-        // let gui = new dat.GUI();
+        // console.log(plexus)
 
-        // gui.add(this.camera.position, 'x', -2000, 2000);
-        // gui.add(this.camera.position, 'y', -2000, 2000);
-        // gui.add(this.camera.position, 'z', -2000, 2000);
+        // this.app.mouse.ray(plexus, data => {
+        //     console.log('foi')
+        // });
 
-        // gui.add(this.camera.rotation, 'x', -Math.PI * 5, Math.PI * 5).step(0.1);
-        // gui.add(this.camera.rotation, 'y', -Math.PI * 5, Math.PI * 5).step(0.1);
-        // gui.add(this.camera.rotation, 'z', -Math.PI * 5, Math.PI * 5).step(0.1);
+        // console.log(this.app.raycaster)
 
-        // console.log(hexParticles)
+        // this.queue['galaxy'] = galaxy;
 
-        // Animator
-        //     .from(actor)
-        //     .play('idle')
-        //     .play('lookAround');
-        //
-        // Animator
-        //     .from(artist3d)
-        //     .play('idle')
-        //     .play('lookAround');
+        // this.camera.far = 500000;
+        // this.camera.fov = 8;
+        // this.camera.zoom = 0.1
+        // this.camera.updateProjectionMatrix();
 
     }
 
-    public start({ship, main, hexParticles, debris, star, streak}) {
+    public start(objects) {
+
+        let {ship, main, hexParticles, debris, star, streak, plexus, galaxy, fx} = objects
 
         let original = [
             ship.position.clone(),
@@ -104,7 +124,9 @@ export class Intro extends Composition {
         ]
 
         let logo = ship.getObjectByName('logo'),
-            camera = this.camera;
+            camera = this.camera,
+            controls = this.app.controls.instance,
+            endTunnel = false;
 
         /**
          * Animate Camera back to center point
@@ -135,7 +157,7 @@ export class Intro extends Composition {
                 taill: 0,
             },
             target: {
-                taill: 3,
+                taill: 2,
                 decay: 5,
                 booster: -3,
                 speed: 2.5,
@@ -146,6 +168,9 @@ export class Intro extends Composition {
             },
             duration: 2,
             ease: Tween.EXPOIN,
+            before: () => {
+
+            },
             update: ({booster, speed, decay, taill}, completion, elapsed) => {
 
                 ship.userData.booster = booster.value;
@@ -231,26 +256,35 @@ export class Intro extends Composition {
          */
         animation.then({
             origin: {
-                // streak: streak.material['userData'].uniforms,
+                taill: ship.userData.taill,
+                uniforms: ship.userData.uniforms,
                 position: ship.position,
                 star: star.userData,
-                power: 0
+                power: 0,
+                spin: 0,
             },
             target: {
-                // streak: {
-                //     alpha: {
-                //         value: 1
-                //     },
-                //     frequency: {
-                //         value: 3
-                //     },
-                //     waves: {
-                //         value: 8
-                //     },
-                //     warp: {
-                //         value: 8
-                //     }
-                // },
+                spin: 1,
+                taill: {
+                    scale: {
+                        x: 15, y: 1, z: 1
+                    },
+                    position: {
+                        y: -400
+                    }
+
+                },
+                uniforms: {
+                    frequency: {
+                        value: 10
+                    },
+                    waves: {
+                        value: 2
+                    },
+                    warp: {
+                        value: 5
+                    }
+                },
                 position: {
                     z: 5
                 },
@@ -262,20 +296,134 @@ export class Intro extends Composition {
             ease: Tween.EXPOIN,
             duration: 2,
             before: () => {
-                this.scene.add(streak)
-                this.queue['streak'] = streak;
+                // this.scene.add(streak)
+                // this.queue['streak'] = streak;
+                this.scene.add(fx);
+                this.queue['fx'] = fx;
+
+                setTimeout(() => {
+                    endTunnel = true
+                }, 10000)
+
             },
-            update: ({power, streak}, time) => {
+            update: ({power, streak, spin}, time) => {
                 camera.rotation.z += Math.sin(time) * power.value;
-
-                // streak.material.uniforms.alpha.value = streak.value
-                // streak.material.uniforms.waves.value = streak.value * 5
-                // streak.material.uniforms.warp.value = streak.value * 5
-
-                return true;
+                ship.userData.taill.rotation.y += spin.value;
+                fx.userData.uniforms.alpha.value = spin.value;
+                return !endTunnel;
             }
         })
 
+        /**
+         * Lock and warp
+         */
+        animation.then({
+            origin: {
+                logo: ship.getObjectByName('logo'),
+                camera: camera,
+                fade: 1,
+            },
+            target: {
+                camera: {
+                    far: 500000,
+                    fov: 8,
+                    zoom: 0.1
+                },
+                fade: 0,
+                logo: {
+                    position: { x: 0, y: 0, z: 0 },
+                    rotation: { x: 0, y: 0 },
+                    scale: { x: 0.001, y: 0.001, z: 0.001 },
+                }
+            },
+            duration: 5,
+            ease: Tween.CUBICIN,
+            before: () => {
+                this.mouse = false;
+            },
+            update: ({fade}) => {
+
+                main.children.forEach(child => {
+
+                    child.position.z += 5;
+
+                    /**
+                     * Instance of group, as buttons no need to have opacity lowered
+                     */
+                    if (!(child instanceof THREE.Group))
+                        child.material.opacity = fade.value
+                })
+
+                fx.userData.uniforms.alpha.value = fade.value;
+
+                camera.updateProjectionMatrix();
+
+            },
+            after: () => {
+                this.scene.remove(main)
+                this.scene.remove(fx)
+
+                delete this.queue['fx'];
+            }
+        })
+
+        // this.camera.far = 500000;
+        // this.camera.fov= 8;
+        // this.camera.zoom = 0.1
+        // this.camera.updateProjectionMatrix();
+
+        /**
+         * Enter plexus
+         */
+        animation.then({
+            origin: {
+                depth: plexus.position.z,
+                star: star.userData
+            },
+            target: {
+                star: {
+                    speed: 1
+                },
+                depth: 0
+            },
+            duration: 10,
+            ease: Tween.EXPOOUT,
+            before: () => {
+
+                setTimeout(this.initTutorial, 5000);
+
+                star.userData.completed = true;
+                this.queue['plexus'] = plexus;
+                this.scene.add(plexus);
+                this.scene.add(galaxy);
+
+            },
+            update({depth}) {
+
+                plexus.position.setZ(depth.value);
+                galaxy.position.setZ(depth.value);
+
+                return this.tutorialDone;
+
+            },
+            after: () => {
+
+                this.scene.remove(ship);
+                this.scene.remove(hexParticles);
+                this.scene.remove(star);
+                controls.enabled = true;
+
+                let action = (object, intersects) => {
+                    if (!this.open)
+                        this.showProject(object);
+                }
+
+                plexus.userData.data.nodesBag.forEach(node => {
+                    this.app.mouse.ray(node.node, action);
+                })
+
+            }
+        })
 
     }
 
@@ -284,7 +432,9 @@ export class Intro extends Composition {
         let mouse = this.app.mouse,
             camera = this.camera;
 
-        let {hexParticles, ship} = objects;
+        let {hexParticles, ship, galaxy} = objects;
+
+        // galaxy.getObjectByName('dirty').quaternion.copy(camera.quaternion);
 
         for (let property in this.queue) {
             if (this.queue[property].userData.update(time)) {
@@ -324,14 +474,13 @@ export class Intro extends Composition {
 
         }
 
-
     }
 
-    public hexParticlesDone({hexParticles}) {
+    public hexParticlesDone({ hexParticles }) {
         this.scene.remove(hexParticles);
     }
 
-    public debrisDone({debris}) {
+    public debrisDone({ debris }) {
         this.scene.remove(debris);
         this.debrisCompleted = true;
     }
@@ -339,6 +488,55 @@ export class Intro extends Composition {
     public initDebris(debris: THREE.Object3D) {
         this.scene.add(debris);
         this.queue['debris'] = debris;
+    }
+
+    public initTutorial() {
+
+        let element = document.querySelector('#tutorial');
+        element['style'].display = 'flex';
+
+        let canvas = document.querySelector('canvas');
+        canvas['style'].backgroundColor = 'black';
+
+        element.getElementsByTagName('button')[0].addEventListener('click', event => {
+
+            this.tutorialDone = true;
+            element['style'].display = 'none';
+
+        }, false)
+
+    }
+
+    public showProject(object) {
+
+        let element = document.querySelector('#overlay'),
+            controls = this.app.controls.instance;
+
+        controls.enabled = false;
+        this.open = true;
+
+        let original = this.camera.clone(),
+            target = controls.target.clone();
+
+        this.camera.moveTo(object, () => {
+
+            element['style'].display = 'flex';
+
+            element.getElementsByClassName('button')[0].addEventListener('click', event => {
+                element['style'].display = 'none';
+
+                this.camera.moveTo(original, () => {
+                    controls.target.copy(target)
+                    this.open = false;
+                    controls.enabled = true;
+                })
+
+            }, false);
+
+            // controls.target.copy(object.position)
+
+        })
+
     }
 
 }

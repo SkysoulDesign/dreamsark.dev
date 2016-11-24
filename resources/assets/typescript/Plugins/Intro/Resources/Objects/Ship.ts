@@ -22,6 +22,8 @@ export class Ship extends Forgable implements ObjectInterface {
 
     create({geometry}, {material, shader}) {
 
+        material.fog = false;
+
         let group = new THREE.Group(),
             ship = this.forge('ship', material, {
                 geometry: geometry,
@@ -50,7 +52,7 @@ export class Ship extends Forgable implements ObjectInterface {
             }
         });
 
-        streak.scale.set(3, .3, 1)
+        streak.scale.set(3, .1, 1)
 
         ship.add(streak);
 
@@ -68,16 +70,12 @@ export class Ship extends Forgable implements ObjectInterface {
 
         streak.translateOnAxis(new THREE.Vector3(1.8, 0, 0), 20)
 
-        // streak.geometry.applyMatrix(new THREE.Matrix4().setPosition(new THREE.Vector3(50, 0, 0)));
-
         group.userData = {
             taill: streak,
             uniforms: streak.material['userData'].uniforms,
             booster: 1,
-            update: this.update.bind(this, group)
+            update: this.update.bind(this, group),
         }
-
-        console.log(group['userData'].uniforms)
 
         return group
 
@@ -86,15 +84,15 @@ export class Ship extends Forgable implements ObjectInterface {
     public update(object: THREE.Object3D, time) {
 
         object['userData'].uniforms.angle.value += object['userData'].uniforms.frequency.value;
+        object['userData'].taill.rotation.y += .9;
 
         // object['userData'].streak.scale.setX(Math.sin(time));
 
         object.children.forEach((child, i) => {
 
-
             if (child.name === 'logo') return;
 
-            child.children[0].scale.set(Math.abs(Math.sin(time) * .3) + 2, .3, 1)
+            child.children[0].scale.set(Math.abs(Math.sin(time) * .2) + 2, .2, 1)
 
             if (child.position.y > child.userData.respawnAt) {
                 this.respawn(child)
@@ -150,7 +148,7 @@ export class Ship extends Forgable implements ObjectInterface {
             position: {
                 x: random.between(0, 100),
                 y: random.between(0, 100),
-                z: 20,
+                z: random.between(1, 20),
             }
         })
 

@@ -42535,19 +42535,21 @@
 		"./Animator.js": 6,
 		"./Browser.js": 10,
 		"./Camera.js": 11,
-		"./Compositions.js": 12,
-		"./Debugger.js": 20,
-		"./Light.js": 22,
-		"./Loader.js": 23,
-		"./Loaders/Animation.js": 24,
-		"./Loaders/Material.js": 26,
-		"./Loaders/Model.js": 34,
-		"./Loaders/Objects.js": 35,
-		"./Manager.js": 78,
-		"./Mouse.js": 79,
-		"./Renderer.js": 80,
-		"./Scene.js": 81,
-		"./Tween.js": 16
+		"./Compositions.js": 14,
+		"./Controls.js": 20,
+		"./Debugger.js": 22,
+		"./Light.js": 24,
+		"./Loader.js": 25,
+		"./Loaders/Animation.js": 26,
+		"./Loaders/Material.js": 28,
+		"./Loaders/Model.js": 37,
+		"./Loaders/Objects.js": 38,
+		"./Manager.js": 88,
+		"./Mouse.js": 89,
+		"./Raycaster.js": 90,
+		"./Renderer.js": 91,
+		"./Scene.js": 92,
+		"./Tween.js": 12
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -48571,7 +48573,7 @@
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -48579,6 +48581,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+	var Tween_1 = __webpack_require__(12);
 	/**
 	 * Camera Class
 	 */
@@ -48587,9 +48590,12 @@
 	    function Camera() {
 	        _super.apply(this, arguments);
 	    }
-	    Camera.prototype.boot = function (app) {
+	    Camera.prototype.boot = function (_a) {
+	        var tween = _a.tween, browser = _a.browser, controls = _a.controls;
+	        this.tween = tween;
+	        this.controls = controls;
 	        this.fov = 20;
-	        this.aspect = app.browser.aspect;
+	        this.aspect = browser.aspect;
 	        this.near = 1;
 	        this.far = 2000;
 	        this.position.z = 500;
@@ -48609,6 +48615,64 @@
 	            width: width, height: height, depth: depth
 	        };
 	    };
+	    Camera.prototype.moveTo = function (object, callback) {
+	        var distance = 200, clone = this.clone();
+	        clone.position.copy(object.position);
+	        clone.translateZ(200);
+	        // let matrix = new THREE.Matrix4();
+	        // matrix.setPosition(new THREE.Vector3(0, 10, 0))
+	        // this.position.applyMatrix4(matrix);
+	        // this.quaternion.copy(object.quaternion)
+	        // this.position.copy(object.position)
+	        // this.position.addScalar(-100)
+	        // this.lookAt(object.position)
+	        // let positions = object['geometry'].attributes.position.array;
+	        // let position = new THREE.Vector3(
+	        //     positions[0], positions[1], positions[2]
+	        // )
+	        // clone.position.set(position.x - distance, position.y - distance, position.z - distance);
+	        // this.lookAt(position);
+	        // this.position.copy(position);
+	        // this.position.z += -100
+	        var initialQuaternion = this.quaternion.clone();
+	        var endingQuaternion = object.quaternion;
+	        var targetQuaternion = new THREE.Quaternion();
+	        var animation = this.tween.animate({
+	            origin: {
+	                position: this.position
+	            },
+	            target: {
+	                position: {
+	                    x: clone.position.x,
+	                    y: clone.position.y,
+	                    z: clone.position.z,
+	                }
+	            },
+	            duration: 1,
+	            ease: Tween_1.Tween.QUADINOUT,
+	            after: callback,
+	            update: function (_a) {
+	                // this.position.x = position.x.value
+	                // this.position.y = position.y.value
+	                // this.position.z = position.z.value
+	                var position = _a.position, time = _a.time;
+	                // this.controls.instance.target.copy(
+	                //     new THREE.Vector3(
+	                //         position.x.value,
+	                //         position.y.value,
+	                //         position.z.value,
+	                //     )
+	                // )
+	                // this.position.x = position.x.value;
+	                // this.position.y = position.y.value;
+	                // this.position.z = position.z.value;
+	                // THREE.Quaternion.slerp(
+	                //     initialQuaternion, endingQuaternion, targetQuaternion, time.value
+	                // );
+	                // this.setRotationFromQuaternion(targetQuaternion);
+	            }
+	        });
+	    };
 	    return Camera;
 	}(THREE.PerspectiveCamera));
 	exports.Camera = Camera;
@@ -48619,453 +48683,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Helpers_1 = __webpack_require__(2);
-	var Promise = __webpack_require__(7);
-	/**
-	 * Compositions Class
-	 */
-	var Compositions = (function () {
-	    function Compositions() {
-	        this.instances = {};
-	        this.active = null;
-	    }
-	    Compositions.prototype.boot = function (application) {
-	        this.app = application;
-	        application.app.bootstrap(this.instances, Helpers_1.requireAll(__webpack_require__(13)), this.app);
-	    };
-	    /**
-	     * get composition
-	     *
-	     * @param name
-	     * @returns {any}
-	     */
-	    Compositions.prototype.get = function (name) {
-	        for (var index in this.instances) {
-	            if (this.instances[index].constructor.name.toLowerCase() === name) {
-	                return this.instances[index];
-	            }
-	        }
-	        throw "There is no composition called: " + name;
-	    };
-	    /**
-	     * Start Composition
-	     * @param compositionName
-	     * @param payload
-	     * @returns Promise
-	     */
-	    Compositions.prototype.start = function (compositionName, payload) {
-	        var _this = this;
-	        var composition = this.get(compositionName);
-	        /**
-	         * Setup The scene
-	         */
-	        if (typeof composition.setup === 'function') {
-	            composition.setup.apply(composition, [this.app].concat(payload));
-	        }
-	        return Promise
-	            .map(composition.objects, function (object) {
-	            return _this.app.objects.get(object);
-	        })
-	            .then(function (objects) {
-	            var objs = {};
-	            objects.forEach(function (b) {
-	                objs[b.name] = b;
-	            });
-	            composition.stage(objs);
-	            return objs;
-	        })
-	            .then(function (objects) {
-	            _this.active = { composition: composition, objects: objects };
-	        });
-	    };
-	    /**
-	     * Update Loop
-	     * @param time
-	     * @param delta
-	     */
-	    Compositions.prototype.update = function (time, delta) {
-	        if (!this.active)
-	            return;
-	        this.active.composition.update(this.active.objects, time, delta);
-	    };
-	    return Compositions;
-	}());
-	exports.Compositions = Compositions;
-	//# sourceMappingURL=Compositions.js.map
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./Intro.js": 14
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 13;
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Composition_1 = __webpack_require__(15);
-	var Tween_1 = __webpack_require__(16);
-	var Helpers_1 = __webpack_require__(17);
-	var Helpers_2 = __webpack_require__(18);
-	/**
-	 * Intro Composition
-	 */
-	var Intro = (function (_super) {
-	    __extends(Intro, _super);
-	    function Intro() {
-	        _super.apply(this, arguments);
-	        this.parallex = true;
-	        this.mouse = false;
-	        this.mouseInverse = false;
-	        this.debrisCompleted = false;
-	        this.queue = {};
-	    }
-	    Object.defineProperty(Intro.prototype, "objects", {
-	        get: function () {
-	            return [
-	                'main',
-	                'hexParticles',
-	                'ship',
-	                'debris',
-	                'star',
-	            ];
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Intro.prototype.setup = function () {
-	        // console.log('hi')
-	    };
-	    Intro.prototype.stage = function (objects) {
-	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, star = objects.star, tunnel = objects.tunnel, streak = objects.streak;
-	        // setTimeout(() => {
-	        //     this.app.loader.load('/models/Actor.json').then(function (a) {
-	        //         console.log('what next', a)
-	        //     })
-	        // }, 5000)
-	        // artist3d.position.x = 30;
-	        // this.configure(ship.getChildrenByName('background'), {
-	        //     scale: 30,
-	        //     position: {
-	        //         x: 50,
-	        //         y: 50,
-	        //         z: 30
-	        //     }
-	        // })
-	        this.scene.add(main);
-	        this.scene.add(hexParticles);
-	        this.scene.add(ship);
-	        this.scene.add(star);
-	        // this.scene.add(streak);
-	        // this.scene.add(tunnel);
-	        // this.camera
-	        /**
-	         * Queue Update
-	         */
-	        this.queue['ship'] = ship;
-	        this.queue['hexParticles'] = hexParticles;
-	        this.queue['star'] = star;
-	        this.app.mouse.click(this.start.bind(this, objects));
-	        // let gui = new dat.GUI();
-	        // gui.add(this.camera.position, 'x', -2000, 2000);
-	        // gui.add(this.camera.position, 'y', -2000, 2000);
-	        // gui.add(this.camera.position, 'z', -2000, 2000);
-	        // gui.add(this.camera.rotation, 'x', -Math.PI * 5, Math.PI * 5).step(0.1);
-	        // gui.add(this.camera.rotation, 'y', -Math.PI * 5, Math.PI * 5).step(0.1);
-	        // gui.add(this.camera.rotation, 'z', -Math.PI * 5, Math.PI * 5).step(0.1);
-	        // console.log(hexParticles)
-	        // Animator
-	        //     .from(actor)
-	        //     .play('idle')
-	        //     .play('lookAround');
-	        //
-	        // Animator
-	        //     .from(artist3d)
-	        //     .play('idle')
-	        //     .play('lookAround');
-	    };
-	    Intro.prototype.start = function (_a) {
-	        var _this = this;
-	        var ship = _a.ship, main = _a.main, hexParticles = _a.hexParticles, debris = _a.debris, star = _a.star, streak = _a.streak;
-	        var original = [
-	            ship.position.clone(),
-	            main.position.clone()
-	        ];
-	        var logo = ship.getObjectByName('logo'), camera = this.camera;
-	        /**
-	         * Animate Camera back to center point
-	         */
-	        var animation = this.app.tween.animate({
-	            origin: this.camera.position,
-	            target: {
-	                x: 0, y: 0
-	            },
-	            duration: 1,
-	            ease: Tween_1.Tween.SINEINOUT,
-	            before: function () {
-	                _this.parallex = false;
-	            }
-	        });
-	        /**
-	         * Animate spaceship up
-	         */
-	        animation.then({
-	            origin: {
-	                ship: logo.position,
-	                main: main.position,
-	                booster: ship.userData.booster,
-	                speed: star.userData.speed,
-	                move: 0,
-	                decay: 0,
-	                taill: 0,
-	            },
-	            target: {
-	                taill: 3,
-	                decay: 5,
-	                booster: -3,
-	                speed: 2.5,
-	                ship: { z: 20 },
-	                main: {
-	                    y: -main.getObjectByName('background').userData.meta.size.height
-	                }
-	            },
-	            duration: 2,
-	            ease: Tween_1.Tween.EXPOIN,
-	            update: function (_a, completion, elapsed) {
-	                var booster = _a.booster, speed = _a.speed, decay = _a.decay, taill = _a.taill;
-	                ship.userData.booster = booster.value;
-	                star.userData.speed = speed.value;
-	                star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
-	                hexParticles.userData.decay = decay.value;
-	                ship.userData.taill.visible = true;
-	                ship.userData.taill.scale.set(taill.value, .3, 1);
-	                if (taill.completion < 95)
-	                    ship.userData.taill.position.y -= taill.value;
-	                return !_this.debrisCompleted;
-	            },
-	            after: function () {
-	                _this.mouse = true;
-	                _this.initDebris(debris);
-	            }
-	        });
-	        /**
-	         * Lets go to tunnel
-	         */
-	        animation.then({
-	            origin: {
-	                rotation: ship.rotation,
-	                position: ship.position,
-	                align: 0,
-	                r: star.rotation,
-	            },
-	            target: {
-	                r: {
-	                    x: -Helpers_2.deg2rad(90)
-	                },
-	                align: 100,
-	                position: {
-	                    z: -300,
-	                    x: 0,
-	                    y: 0
-	                },
-	                rotation: {
-	                    x: -Helpers_2.deg2rad(90),
-	                    y: Helpers_2.deg2rad(360)
-	                }
-	            },
-	            ease: Tween_1.Tween.QUADINOUT,
-	            duration: 5,
-	            before: function () {
-	                star.userData.vortexEnabled = true;
-	            },
-	            after: function () {
-	                _this.mouseInverse = true;
-	            },
-	            update: function (_a, time, completion) {
-	                var align = _a.align;
-	                star.userData.align(align);
-	            }
-	        });
-	        /**
-	         * Momentum
-	         */
-	        animation.then({
-	            origin: {
-	                position: ship.position,
-	                star: star.userData,
-	            },
-	            target: {
-	                position: {
-	                    z: 0
-	                },
-	                star: {
-	                    speed: star.userData.speed * 30
-	                },
-	            },
-	            ease: Tween_1.Tween.EXPOINOUT,
-	            duration: 3
-	        });
-	        /**
-	         * Super Speed
-	         */
-	        animation.then({
-	            origin: {
-	                // streak: streak.material['userData'].uniforms,
-	                position: ship.position,
-	                star: star.userData,
-	                power: 0
-	            },
-	            target: {
-	                // streak: {
-	                //     alpha: {
-	                //         value: 1
-	                //     },
-	                //     frequency: {
-	                //         value: 3
-	                //     },
-	                //     waves: {
-	                //         value: 8
-	                //     },
-	                //     warp: {
-	                //         value: 8
-	                //     }
-	                // },
-	                position: {
-	                    z: 5
-	                },
-	                star: {
-	                    speed: 25
-	                },
-	                power: 0.015
-	            },
-	            ease: Tween_1.Tween.EXPOIN,
-	            duration: 2,
-	            before: function () {
-	                _this.scene.add(streak);
-	                _this.queue['streak'] = streak;
-	            },
-	            update: function (_a, time) {
-	                var power = _a.power, streak = _a.streak;
-	                camera.rotation.z += Math.sin(time) * power.value;
-	                // streak.material.uniforms.alpha.value = streak.value
-	                // streak.material.uniforms.waves.value = streak.value * 5
-	                // streak.material.uniforms.warp.value = streak.value * 5
-	                return true;
-	            }
-	        });
-	    };
-	    Intro.prototype.update = function (objects, time, delta) {
-	        var mouse = this.app.mouse, camera = this.camera;
-	        var hexParticles = objects.hexParticles, ship = objects.ship;
-	        for (var property in this.queue) {
-	            if (this.queue[property].userData.update(time)) {
-	                if (Helpers_1.is.Function(this[(property + "Done")])) {
-	                    this[(property + "Done")](objects);
-	                }
-	                delete this.queue[property];
-	            }
-	        }
-	        /**
-	        * Parallex
-	        */
-	        if (this.parallex) {
-	            camera.position.set(mouse.normalized.x * 20, mouse.normalized.y * 20, 500);
-	        }
-	        /**
-	        * Logo Follow Mouse
-	        */
-	        if (this.mouse) {
-	            var logo = ship.getObjectByName('logo');
-	            logo.position.x = mouse.screen.x * .1;
-	            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
-	            if (this.mouseInverse) {
-	                logo.rotation.x = Helpers_2.deg2rad(mouse.screen.y * .1) / Math.PI;
-	                logo.rotation.y = -Helpers_2.deg2rad(mouse.screen.x * .1) / Math.PI;
-	            }
-	        }
-	    };
-	    Intro.prototype.hexParticlesDone = function (_a) {
-	        var hexParticles = _a.hexParticles;
-	        this.scene.remove(hexParticles);
-	    };
-	    Intro.prototype.debrisDone = function (_a) {
-	        var debris = _a.debris;
-	        this.scene.remove(debris);
-	        this.debrisCompleted = true;
-	    };
-	    Intro.prototype.initDebris = function (debris) {
-	        this.scene.add(debris);
-	        this.queue['debris'] = debris;
-	    };
-	    return Intro;
-	}(Composition_1.Composition));
-	exports.Intro = Intro;
-	//# sourceMappingURL=Intro.js.map
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	"use strict";
-	/**
-	 * Composition
-	 */
-	var Composition = (function () {
-	    function Composition() {
-	    }
-	    /**
-	     * This Method is no need to be implemented
-	     * but it can be override if needed
-	     * @param app
-	     */
-	    Composition.prototype.boot = function (app) {
-	        this.app = app;
-	        this.scene = app.scene;
-	        this.camera = app.camera;
-	        this.renderer = app.renderer;
-	    };
-	    ;
-	    Object.defineProperty(Composition.prototype, "objects", {
-	        /**
-	         * List of objects to be loaded
-	         * @returns {Array}
-	         */
-	        get: function () { },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Composition;
-	}());
-	exports.Composition = Composition;
-	//# sourceMappingURL=Composition.js.map
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Helpers_1 = __webpack_require__(17);
+	var Helpers_1 = __webpack_require__(13);
 	var Helpers_2 = __webpack_require__(2);
 	var Promise = __webpack_require__(7);
 	/**
@@ -49488,7 +49106,7 @@
 	//# sourceMappingURL=Tween.js.map
 
 /***/ },
-/* 17 */
+/* 13 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -49611,6 +49229,604 @@
 	//# sourceMappingURL=Helpers.js.map
 
 /***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Helpers_1 = __webpack_require__(2);
+	var Promise = __webpack_require__(7);
+	/**
+	 * Compositions Class
+	 */
+	var Compositions = (function () {
+	    function Compositions() {
+	        this.instances = {};
+	        this.active = null;
+	    }
+	    Compositions.prototype.boot = function (application) {
+	        this.app = application;
+	        application.app.bootstrap(this.instances, Helpers_1.requireAll(__webpack_require__(15)), this.app);
+	    };
+	    /**
+	     * get composition
+	     *
+	     * @param name
+	     * @returns {any}
+	     */
+	    Compositions.prototype.get = function (name) {
+	        for (var index in this.instances) {
+	            if (this.instances[index].constructor.name.toLowerCase() === name) {
+	                return this.instances[index];
+	            }
+	        }
+	        throw "There is no composition called: " + name;
+	    };
+	    /**
+	     * Start Composition
+	     * @param compositionName
+	     * @param payload
+	     * @returns Promise
+	     */
+	    Compositions.prototype.start = function (compositionName, payload) {
+	        var _this = this;
+	        var composition = this.get(compositionName);
+	        /**
+	         * Setup The scene
+	         */
+	        if (typeof composition.setup === 'function') {
+	            composition.setup.apply(composition, [this.app].concat(payload));
+	        }
+	        return Promise
+	            .map(composition.objects, function (object) {
+	            return _this.app.objects.get(object);
+	        })
+	            .then(function (objects) {
+	            var objs = {};
+	            objects.forEach(function (b) {
+	                objs[b.name] = b;
+	            });
+	            composition.stage(objs);
+	            return objs;
+	        })
+	            .then(function (objects) {
+	            _this.active = { composition: composition, objects: objects };
+	        });
+	    };
+	    /**
+	     * Update Loop
+	     * @param time
+	     * @param delta
+	     */
+	    Compositions.prototype.update = function (time, delta) {
+	        if (!this.active)
+	            return;
+	        this.active.composition.update(this.active.objects, time, delta);
+	    };
+	    return Compositions;
+	}());
+	exports.Compositions = Compositions;
+	//# sourceMappingURL=Compositions.js.map
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./Intro.js": 16
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 15;
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Composition_1 = __webpack_require__(17);
+	var Animator_1 = __webpack_require__(6);
+	var Tween_1 = __webpack_require__(12);
+	var Helpers_1 = __webpack_require__(13);
+	var Helpers_2 = __webpack_require__(18);
+	/**
+	 * Intro Composition
+	 */
+	var Intro = (function (_super) {
+	    __extends(Intro, _super);
+	    function Intro() {
+	        _super.apply(this, arguments);
+	        this.parallex = true;
+	        this.mouse = false;
+	        this.mouseInverse = false;
+	        this.debrisCompleted = false;
+	        this.tutorialDone = false;
+	        this.open = false;
+	        this.queue = {};
+	    }
+	    Object.defineProperty(Intro.prototype, "objects", {
+	        get: function () {
+	            return [
+	                'main',
+	                'hexParticles',
+	                'ship',
+	                'debris',
+	                'star',
+	                'plexus',
+	                'galaxy',
+	                'fx',
+	                'buttons'
+	            ];
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Intro.prototype.setup = function () {
+	        // console.log('hi')
+	    };
+	    Intro.prototype.stage = function (objects) {
+	        var _this = this;
+	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, star = objects.star, tunnel = objects.tunnel, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, buttons = objects.buttons;
+	        // setTimeout(() => {
+	        //     this.app.loader.load('/models/Actor.json').then(function (a) {
+	        //         console.log('what next', a)
+	        //     })
+	        // }, 5000)
+	        // artist3d.position.x = 30;
+	        // this.configure(ship.getChildrenByName('background'), {
+	        //     scale: 30,
+	        //     position: {
+	        //         x: 50,
+	        //         y: 50,
+	        //         z: 30
+	        //     }
+	        // })
+	        // this.scene.add(plexus);
+	        // this.scene.add(galaxy);
+	        main.add(buttons);
+	        this.scene.add(main);
+	        this.scene.add(hexParticles);
+	        this.scene.add(ship);
+	        this.scene.add(star);
+	        console.log(main.getObjectByName('smoke').userData.animations);
+	        // console.log(ship.getObjectByName('logo'));
+	        // this.scene.add(plexus);
+	        // this.scene.add(tunnel);
+	        // this.camera
+	        Animator_1.Animator
+	            .from(main.getObjectByName('smoke'))
+	            .play('smoke');
+	        /**
+	         * Queue Update
+	         */
+	        this.queue['ship'] = ship;
+	        this.queue['hexParticles'] = hexParticles;
+	        this.queue['star'] = star;
+	        this.app.mouse.ray(buttons.getObjectByName('start'), function (data) {
+	            _this.start(objects);
+	        });
+	        this.app.mouse.ray(buttons.getObjectByName('skip'), function (data) {
+	            alert('skip');
+	        });
+	        // console.log(plexus)
+	        // this.app.mouse.ray(plexus, data => {
+	        //     console.log('foi')
+	        // });
+	        // console.log(this.app.raycaster)
+	        // this.queue['galaxy'] = galaxy;
+	        // this.camera.far = 500000;
+	        // this.camera.fov = 8;
+	        // this.camera.zoom = 0.1
+	        // this.camera.updateProjectionMatrix();
+	    };
+	    Intro.prototype.start = function (objects) {
+	        var _this = this;
+	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, debris = objects.debris, star = objects.star, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx;
+	        var original = [
+	            ship.position.clone(),
+	            main.position.clone()
+	        ];
+	        var logo = ship.getObjectByName('logo'), camera = this.camera, controls = this.app.controls.instance, endTunnel = false;
+	        /**
+	         * Animate Camera back to center point
+	         */
+	        var animation = this.app.tween.animate({
+	            origin: this.camera.position,
+	            target: {
+	                x: 0, y: 0
+	            },
+	            duration: 1,
+	            ease: Tween_1.Tween.SINEINOUT,
+	            before: function () {
+	                _this.parallex = false;
+	            }
+	        });
+	        /**
+	         * Animate spaceship up
+	         */
+	        animation.then({
+	            origin: {
+	                ship: logo.position,
+	                main: main.position,
+	                booster: ship.userData.booster,
+	                speed: star.userData.speed,
+	                move: 0,
+	                decay: 0,
+	                taill: 0,
+	            },
+	            target: {
+	                taill: 2,
+	                decay: 5,
+	                booster: -3,
+	                speed: 2.5,
+	                ship: { z: 20 },
+	                main: {
+	                    y: -main.getObjectByName('background').userData.meta.size.height
+	                }
+	            },
+	            duration: 2,
+	            ease: Tween_1.Tween.EXPOIN,
+	            before: function () {
+	            },
+	            update: function (_a, completion, elapsed) {
+	                var booster = _a.booster, speed = _a.speed, decay = _a.decay, taill = _a.taill;
+	                ship.userData.booster = booster.value;
+	                star.userData.speed = speed.value;
+	                star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
+	                hexParticles.userData.decay = decay.value;
+	                ship.userData.taill.visible = true;
+	                ship.userData.taill.scale.set(taill.value, .3, 1);
+	                if (taill.completion < 95)
+	                    ship.userData.taill.position.y -= taill.value;
+	                return !_this.debrisCompleted;
+	            },
+	            after: function () {
+	                _this.mouse = true;
+	                _this.initDebris(debris);
+	            }
+	        });
+	        /**
+	         * Lets go to tunnel
+	         */
+	        animation.then({
+	            origin: {
+	                rotation: ship.rotation,
+	                position: ship.position,
+	                align: 0,
+	                r: star.rotation,
+	            },
+	            target: {
+	                r: {
+	                    x: -Helpers_2.deg2rad(90)
+	                },
+	                align: 100,
+	                position: {
+	                    z: -300,
+	                    x: 0,
+	                    y: 0
+	                },
+	                rotation: {
+	                    x: -Helpers_2.deg2rad(90),
+	                    y: Helpers_2.deg2rad(360)
+	                }
+	            },
+	            ease: Tween_1.Tween.QUADINOUT,
+	            duration: 5,
+	            before: function () {
+	                star.userData.vortexEnabled = true;
+	            },
+	            after: function () {
+	                _this.mouseInverse = true;
+	            },
+	            update: function (_a, time, completion) {
+	                var align = _a.align;
+	                star.userData.align(align);
+	            }
+	        });
+	        /**
+	         * Momentum
+	         */
+	        animation.then({
+	            origin: {
+	                position: ship.position,
+	                star: star.userData,
+	            },
+	            target: {
+	                position: {
+	                    z: 0
+	                },
+	                star: {
+	                    speed: star.userData.speed * 30
+	                },
+	            },
+	            ease: Tween_1.Tween.EXPOINOUT,
+	            duration: 3
+	        });
+	        /**
+	         * Super Speed
+	         */
+	        animation.then({
+	            origin: {
+	                taill: ship.userData.taill,
+	                uniforms: ship.userData.uniforms,
+	                position: ship.position,
+	                star: star.userData,
+	                power: 0,
+	                spin: 0,
+	            },
+	            target: {
+	                spin: 1,
+	                taill: {
+	                    scale: {
+	                        x: 15, y: 1, z: 1
+	                    },
+	                    position: {
+	                        y: -400
+	                    }
+	                },
+	                uniforms: {
+	                    frequency: {
+	                        value: 10
+	                    },
+	                    waves: {
+	                        value: 2
+	                    },
+	                    warp: {
+	                        value: 5
+	                    }
+	                },
+	                position: {
+	                    z: 5
+	                },
+	                star: {
+	                    speed: 25
+	                },
+	                power: 0.015
+	            },
+	            ease: Tween_1.Tween.EXPOIN,
+	            duration: 2,
+	            before: function () {
+	                // this.scene.add(streak)
+	                // this.queue['streak'] = streak;
+	                _this.scene.add(fx);
+	                _this.queue['fx'] = fx;
+	                setTimeout(function () {
+	                    endTunnel = true;
+	                }, 10000);
+	            },
+	            update: function (_a, time) {
+	                var power = _a.power, streak = _a.streak, spin = _a.spin;
+	                camera.rotation.z += Math.sin(time) * power.value;
+	                ship.userData.taill.rotation.y += spin.value;
+	                fx.userData.uniforms.alpha.value = spin.value;
+	                return !endTunnel;
+	            }
+	        });
+	        /**
+	         * Lock and warp
+	         */
+	        animation.then({
+	            origin: {
+	                logo: ship.getObjectByName('logo'),
+	                camera: camera,
+	                fade: 1,
+	            },
+	            target: {
+	                camera: {
+	                    far: 500000,
+	                    fov: 8,
+	                    zoom: 0.1
+	                },
+	                fade: 0,
+	                logo: {
+	                    position: { x: 0, y: 0, z: 0 },
+	                    rotation: { x: 0, y: 0 },
+	                    scale: { x: 0.001, y: 0.001, z: 0.001 },
+	                }
+	            },
+	            duration: 5,
+	            ease: Tween_1.Tween.CUBICIN,
+	            before: function () {
+	                _this.mouse = false;
+	            },
+	            update: function (_a) {
+	                var fade = _a.fade;
+	                main.children.forEach(function (child) {
+	                    child.position.z += 5;
+	                    /**
+	                     * Instance of group, as buttons no need to have opacity lowered
+	                     */
+	                    if (!(child instanceof THREE.Group))
+	                        child.material.opacity = fade.value;
+	                });
+	                fx.userData.uniforms.alpha.value = fade.value;
+	                camera.updateProjectionMatrix();
+	            },
+	            after: function () {
+	                _this.scene.remove(main);
+	                _this.scene.remove(fx);
+	                delete _this.queue['fx'];
+	            }
+	        });
+	        // this.camera.far = 500000;
+	        // this.camera.fov= 8;
+	        // this.camera.zoom = 0.1
+	        // this.camera.updateProjectionMatrix();
+	        /**
+	         * Enter plexus
+	         */
+	        animation.then({
+	            origin: {
+	                depth: plexus.position.z,
+	                star: star.userData
+	            },
+	            target: {
+	                star: {
+	                    speed: 1
+	                },
+	                depth: 0
+	            },
+	            duration: 10,
+	            ease: Tween_1.Tween.EXPOOUT,
+	            before: function () {
+	                setTimeout(_this.initTutorial, 5000);
+	                star.userData.completed = true;
+	                _this.queue['plexus'] = plexus;
+	                _this.scene.add(plexus);
+	                _this.scene.add(galaxy);
+	            },
+	            update: function (_a) {
+	                var depth = _a.depth;
+	                plexus.position.setZ(depth.value);
+	                galaxy.position.setZ(depth.value);
+	                return this.tutorialDone;
+	            },
+	            after: function () {
+	                _this.scene.remove(ship);
+	                _this.scene.remove(hexParticles);
+	                _this.scene.remove(star);
+	                controls.enabled = true;
+	                var action = function (object, intersects) {
+	                    if (!_this.open)
+	                        _this.showProject(object);
+	                };
+	                plexus.userData.data.nodesBag.forEach(function (node) {
+	                    _this.app.mouse.ray(node.node, action);
+	                });
+	            }
+	        });
+	    };
+	    Intro.prototype.update = function (objects, time, delta) {
+	        var mouse = this.app.mouse, camera = this.camera;
+	        var hexParticles = objects.hexParticles, ship = objects.ship, galaxy = objects.galaxy;
+	        // galaxy.getObjectByName('dirty').quaternion.copy(camera.quaternion);
+	        for (var property in this.queue) {
+	            if (this.queue[property].userData.update(time)) {
+	                if (Helpers_1.is.Function(this[(property + "Done")])) {
+	                    this[(property + "Done")](objects);
+	                }
+	                delete this.queue[property];
+	            }
+	        }
+	        /**
+	        * Parallex
+	        */
+	        if (this.parallex) {
+	            camera.position.set(mouse.normalized.x * 20, mouse.normalized.y * 20, 500);
+	        }
+	        /**
+	        * Logo Follow Mouse
+	        */
+	        if (this.mouse) {
+	            var logo = ship.getObjectByName('logo');
+	            logo.position.x = mouse.screen.x * .1;
+	            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
+	            if (this.mouseInverse) {
+	                logo.rotation.x = Helpers_2.deg2rad(mouse.screen.y * .1) / Math.PI;
+	                logo.rotation.y = -Helpers_2.deg2rad(mouse.screen.x * .1) / Math.PI;
+	            }
+	        }
+	    };
+	    Intro.prototype.hexParticlesDone = function (_a) {
+	        var hexParticles = _a.hexParticles;
+	        this.scene.remove(hexParticles);
+	    };
+	    Intro.prototype.debrisDone = function (_a) {
+	        var debris = _a.debris;
+	        this.scene.remove(debris);
+	        this.debrisCompleted = true;
+	    };
+	    Intro.prototype.initDebris = function (debris) {
+	        this.scene.add(debris);
+	        this.queue['debris'] = debris;
+	    };
+	    Intro.prototype.initTutorial = function () {
+	        var _this = this;
+	        var element = document.querySelector('#tutorial');
+	        element['style'].display = 'flex';
+	        var canvas = document.querySelector('canvas');
+	        canvas['style'].backgroundColor = 'black';
+	        element.getElementsByTagName('button')[0].addEventListener('click', function (event) {
+	            _this.tutorialDone = true;
+	            element['style'].display = 'none';
+	        }, false);
+	    };
+	    Intro.prototype.showProject = function (object) {
+	        var _this = this;
+	        var element = document.querySelector('#overlay'), controls = this.app.controls.instance;
+	        controls.enabled = false;
+	        this.open = true;
+	        var original = this.camera.clone(), target = controls.target.clone();
+	        this.camera.moveTo(object, function () {
+	            element['style'].display = 'flex';
+	            element.getElementsByClassName('button')[0].addEventListener('click', function (event) {
+	                element['style'].display = 'none';
+	                _this.camera.moveTo(original, function () {
+	                    controls.target.copy(target);
+	                    _this.open = false;
+	                    controls.enabled = true;
+	                });
+	            }, false);
+	            // controls.target.copy(object.position)
+	        });
+	    };
+	    return Intro;
+	}(Composition_1.Composition));
+	exports.Intro = Intro;
+	//# sourceMappingURL=Intro.js.map
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	"use strict";
+	/**
+	 * Composition
+	 */
+	var Composition = (function () {
+	    function Composition() {
+	    }
+	    /**
+	     * This Method is no need to be implemented
+	     * but it can be override if needed
+	     * @param app
+	     */
+	    Composition.prototype.boot = function (app) {
+	        this.app = app;
+	        this.scene = app.scene;
+	        this.camera = app.camera;
+	        this.renderer = app.renderer;
+	    };
+	    ;
+	    Object.defineProperty(Composition.prototype, "objects", {
+	        /**
+	         * List of objects to be loaded
+	         * @returns {Array}
+	         */
+	        get: function () { },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Composition;
+	}());
+	exports.Composition = Composition;
+	//# sourceMappingURL=Composition.js.map
+
+/***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -49729,8 +49945,10 @@
 	    /**
 	     * Generate random number between a given min and max
 	     */
-	    random.between = function (min, max) {
-	        return (Math.random() * ((max + 1) - min)) + min;
+	    random.between = function (min, max, round) {
+	        if (round === void 0) { round = false; }
+	        var result = (Math.random() * ((max + 1) - min)) + min;
+	        return round ? Math.floor(result) : result;
 	    };
 	    /**
 	     * Generate Random Vector3 object
@@ -49844,10 +50062,10 @@
 			"x": 1426,
 			"y": 1326
 		},
-		"streak": {
-			"name": "streak",
-			"width": 267,
-			"height": 192,
+		"light-stroke": {
+			"name": "light-stroke",
+			"width": 241,
+			"height": 191,
 			"sprite": {
 				"name": "sprite-1.png",
 				"width": 2048,
@@ -49855,14 +50073,34 @@
 			},
 			"uv": {
 				"u1": 0.7978515625,
-				"v1": 0.2587890625,
-				"u2": 0.92822265625,
+				"v1": 0.25927734375,
+				"u2": 0.91552734375,
 				"v2": 0.3525390625,
-				"uDistance": 0.13037109375,
-				"vDistance": 0.09375
+				"uDistance": 0.11767578125,
+				"vDistance": 0.09326171875
 			},
 			"x": 1634,
 			"y": 1326
+		},
+		"start": {
+			"name": "start",
+			"width": 733,
+			"height": 160,
+			"sprite": {
+				"name": "sprite-1.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.00048828125,
+				"u2": 0.35791015625,
+				"v2": 0.07861328125,
+				"uDistance": 0.35791015625,
+				"vDistance": 0.078125
+			},
+			"x": 0,
+			"y": 1887
 		},
 		"fast-star": {
 			"name": "fast-star",
@@ -49884,6 +50122,46 @@
 			"x": 2012,
 			"y": 0
 		},
+		"streak": {
+			"name": "streak",
+			"width": 250,
+			"height": 115,
+			"sprite": {
+				"name": "sprite-1.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.6962890625,
+				"v1": 0.2001953125,
+				"u2": 0.818359375,
+				"v2": 0.25634765625,
+				"uDistance": 0.1220703125,
+				"vDistance": 0.05615234375
+			},
+			"x": 1426,
+			"y": 1523
+		},
+		"skip": {
+			"name": "skip",
+			"width": 266,
+			"height": 114,
+			"sprite": {
+				"name": "sprite-1.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.818359375,
+				"v1": 0.20068359375,
+				"u2": 0.9482421875,
+				"v2": 0.25634765625,
+				"uDistance": 0.1298828125,
+				"vDistance": 0.0556640625
+			},
+			"x": 1676,
+			"y": 1523
+		},
 		"hex": {
 			"name": "hex",
 			"width": 84,
@@ -49894,14 +50172,14 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.92822265625,
+				"u1": 0.91552734375,
 				"v1": 0.30810546875,
-				"u2": 0.96923828125,
+				"u2": 0.95654296875,
 				"v2": 0.3525390625,
 				"uDistance": 0.041015625,
 				"vDistance": 0.04443359375
 			},
-			"x": 1901,
+			"x": 1875,
 			"y": 1326
 		},
 		"star": {
@@ -49914,14 +50192,14 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.96923828125,
+				"u1": 0.95654296875,
 				"v1": 0.32568359375,
-				"u2": 0.99609375,
+				"u2": 0.9833984375,
 				"v2": 0.3525390625,
 				"uDistance": 0.02685546875,
 				"vDistance": 0.02685546875
 			},
-			"x": 1985,
+			"x": 1959,
 			"y": 1326
 		}
 	};
@@ -49931,7 +50209,652 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Stats = __webpack_require__(21);
+	__webpack_require__(21);
+	// require('../../../../../../node_modules/three/examples/js/controls/OrbitControls');
+	/**
+	 * Camera Class
+	 */
+	var Controls = (function () {
+	    function Controls() {
+	    }
+	    Controls.prototype.boot = function (_a) {
+	        var camera = _a.camera, renderer = _a.renderer;
+	        this.instance = new THREE.TrackballControls(camera, renderer.domElement);
+	        this.instance.zoomSpeed = .005;
+	        this.instance.noPan = true;
+	        this.instance.maxDistance = 1500;
+	        this.instance.minxDistance = 200;
+	        this.instance.dynamicDampingFactor = 0.05;
+	        this.instance.enabled = false;
+	        // this.instance.enableDamping = true;
+	    };
+	    Controls.prototype.update = function (time, delta) {
+	        if (this.instance.enabled)
+	            this.instance.update();
+	    };
+	    return Controls;
+	}());
+	exports.Controls = Controls;
+	//# sourceMappingURL=Controls.js.map
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	/**
+	 * @author Eberhard Graether / http://egraether.com/
+	 * @author Mark Lundin 	/ http://mark-lundin.com
+	 * @author Simone Manini / http://daron1337.github.io
+	 * @author Luca Antiga 	/ http://lantiga.github.io
+	 */
+
+	THREE.TrackballControls = function ( object, domElement ) {
+
+		var _this = this;
+		var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
+
+		this.object = object;
+		this.domElement = ( domElement !== undefined ) ? domElement : document;
+
+		// API
+
+		this.enabled = true;
+
+		this.screen = { left: 0, top: 0, width: 0, height: 0 };
+
+		this.rotateSpeed = 1.0;
+		this.zoomSpeed = 1.2;
+		this.panSpeed = 0.3;
+
+		this.noRotate = false;
+		this.noZoom = false;
+		this.noPan = false;
+
+		this.staticMoving = false;
+		this.dynamicDampingFactor = 0.2;
+
+		this.minDistance = 0;
+		this.maxDistance = Infinity;
+
+		this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
+
+		// internals
+
+		this.target = new THREE.Vector3();
+
+		var EPS = 0.000001;
+
+		var lastPosition = new THREE.Vector3();
+
+		var _state = STATE.NONE,
+		_prevState = STATE.NONE,
+
+		_eye = new THREE.Vector3(),
+
+		_movePrev = new THREE.Vector2(),
+		_moveCurr = new THREE.Vector2(),
+
+		_lastAxis = new THREE.Vector3(),
+		_lastAngle = 0,
+
+		_zoomStart = new THREE.Vector2(),
+		_zoomEnd = new THREE.Vector2(),
+
+		_touchZoomDistanceStart = 0,
+		_touchZoomDistanceEnd = 0,
+
+		_panStart = new THREE.Vector2(),
+		_panEnd = new THREE.Vector2();
+
+		// for reset
+
+		this.target0 = this.target.clone();
+		this.position0 = this.object.position.clone();
+		this.up0 = this.object.up.clone();
+
+		// events
+
+		var changeEvent = { type: 'change' };
+		var startEvent = { type: 'start' };
+		var endEvent = { type: 'end' };
+
+
+		// methods
+
+		this.handleResize = function () {
+
+			if ( this.domElement === document ) {
+
+				this.screen.left = 0;
+				this.screen.top = 0;
+				this.screen.width = window.innerWidth;
+				this.screen.height = window.innerHeight;
+
+			} else {
+
+				var box = this.domElement.getBoundingClientRect();
+				// adjustments come from similar code in the jquery offset() function
+				var d = this.domElement.ownerDocument.documentElement;
+				this.screen.left = box.left + window.pageXOffset - d.clientLeft;
+				this.screen.top = box.top + window.pageYOffset - d.clientTop;
+				this.screen.width = box.width;
+				this.screen.height = box.height;
+
+			}
+
+		};
+
+		this.handleEvent = function ( event ) {
+
+			if ( typeof this[ event.type ] == 'function' ) {
+
+				this[ event.type ]( event );
+
+			}
+
+		};
+
+		var getMouseOnScreen = ( function () {
+
+			var vector = new THREE.Vector2();
+
+			return function getMouseOnScreen( pageX, pageY ) {
+
+				vector.set(
+					( pageX - _this.screen.left ) / _this.screen.width,
+					( pageY - _this.screen.top ) / _this.screen.height
+				);
+
+				return vector;
+
+			};
+
+		}() );
+
+		var getMouseOnCircle = ( function () {
+
+			var vector = new THREE.Vector2();
+
+			return function getMouseOnCircle( pageX, pageY ) {
+
+				vector.set(
+					( ( pageX - _this.screen.width * 0.5 - _this.screen.left ) / ( _this.screen.width * 0.5 ) ),
+					( ( _this.screen.height + 2 * ( _this.screen.top - pageY ) ) / _this.screen.width ) // screen.width intentional
+				);
+
+				return vector;
+
+			};
+
+		}() );
+
+		this.rotateCamera = ( function() {
+
+			var axis = new THREE.Vector3(),
+				quaternion = new THREE.Quaternion(),
+				eyeDirection = new THREE.Vector3(),
+				objectUpDirection = new THREE.Vector3(),
+				objectSidewaysDirection = new THREE.Vector3(),
+				moveDirection = new THREE.Vector3(),
+				angle;
+
+			return function rotateCamera() {
+
+				moveDirection.set( _moveCurr.x - _movePrev.x, _moveCurr.y - _movePrev.y, 0 );
+				angle = moveDirection.length();
+
+				if ( angle ) {
+
+					_eye.copy( _this.object.position ).sub( _this.target );
+
+					eyeDirection.copy( _eye ).normalize();
+					objectUpDirection.copy( _this.object.up ).normalize();
+					objectSidewaysDirection.crossVectors( objectUpDirection, eyeDirection ).normalize();
+
+					objectUpDirection.setLength( _moveCurr.y - _movePrev.y );
+					objectSidewaysDirection.setLength( _moveCurr.x - _movePrev.x );
+
+					moveDirection.copy( objectUpDirection.add( objectSidewaysDirection ) );
+
+					axis.crossVectors( moveDirection, _eye ).normalize();
+
+					angle *= _this.rotateSpeed;
+					quaternion.setFromAxisAngle( axis, angle );
+
+					_eye.applyQuaternion( quaternion );
+					_this.object.up.applyQuaternion( quaternion );
+
+					_lastAxis.copy( axis );
+					_lastAngle = angle;
+
+				} else if ( ! _this.staticMoving && _lastAngle ) {
+
+					_lastAngle *= Math.sqrt( 1.0 - _this.dynamicDampingFactor );
+					_eye.copy( _this.object.position ).sub( _this.target );
+					quaternion.setFromAxisAngle( _lastAxis, _lastAngle );
+					_eye.applyQuaternion( quaternion );
+					_this.object.up.applyQuaternion( quaternion );
+
+				}
+
+				_movePrev.copy( _moveCurr );
+
+			};
+
+		}() );
+
+
+		this.zoomCamera = function () {
+
+			var factor;
+
+			if ( _state === STATE.TOUCH_ZOOM_PAN ) {
+
+				factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
+				_touchZoomDistanceStart = _touchZoomDistanceEnd;
+				_eye.multiplyScalar( factor );
+
+			} else {
+
+				factor = 1.0 + ( _zoomEnd.y - _zoomStart.y ) * _this.zoomSpeed;
+
+				if ( factor !== 1.0 && factor > 0.0 ) {
+
+					_eye.multiplyScalar( factor );
+					
+				}
+
+				if ( _this.staticMoving ) {
+
+					_zoomStart.copy( _zoomEnd );
+
+				} else {
+
+					_zoomStart.y += ( _zoomEnd.y - _zoomStart.y ) * this.dynamicDampingFactor;
+
+				}
+
+			}
+
+		};
+
+		this.panCamera = ( function() {
+
+			var mouseChange = new THREE.Vector2(),
+				objectUp = new THREE.Vector3(),
+				pan = new THREE.Vector3();
+
+			return function panCamera() {
+
+				mouseChange.copy( _panEnd ).sub( _panStart );
+
+				if ( mouseChange.lengthSq() ) {
+
+					mouseChange.multiplyScalar( _eye.length() * _this.panSpeed );
+
+					pan.copy( _eye ).cross( _this.object.up ).setLength( mouseChange.x );
+					pan.add( objectUp.copy( _this.object.up ).setLength( mouseChange.y ) );
+
+					_this.object.position.add( pan );
+					_this.target.add( pan );
+
+					if ( _this.staticMoving ) {
+
+						_panStart.copy( _panEnd );
+
+					} else {
+
+						_panStart.add( mouseChange.subVectors( _panEnd, _panStart ).multiplyScalar( _this.dynamicDampingFactor ) );
+
+					}
+
+				}
+
+			};
+
+		}() );
+
+		this.checkDistances = function () {
+
+			if ( ! _this.noZoom || ! _this.noPan ) {
+
+				if ( _eye.lengthSq() > _this.maxDistance * _this.maxDistance ) {
+
+					_this.object.position.addVectors( _this.target, _eye.setLength( _this.maxDistance ) );
+					_zoomStart.copy( _zoomEnd );
+
+				}
+
+				if ( _eye.lengthSq() < _this.minDistance * _this.minDistance ) {
+
+					_this.object.position.addVectors( _this.target, _eye.setLength( _this.minDistance ) );
+					_zoomStart.copy( _zoomEnd );
+
+				}
+
+			}
+
+		};
+
+		this.update = function () {
+
+			_eye.subVectors( _this.object.position, _this.target );
+
+			if ( ! _this.noRotate ) {
+
+				_this.rotateCamera();
+
+			}
+
+			if ( ! _this.noZoom ) {
+
+				_this.zoomCamera();
+
+			}
+
+			if ( ! _this.noPan ) {
+
+				_this.panCamera();
+
+			}
+
+			_this.object.position.addVectors( _this.target, _eye );
+
+			_this.checkDistances();
+
+			_this.object.lookAt( _this.target );
+
+			if ( lastPosition.distanceToSquared( _this.object.position ) > EPS ) {
+
+				_this.dispatchEvent( changeEvent );
+
+				lastPosition.copy( _this.object.position );
+
+			}
+
+		};
+
+		this.reset = function () {
+
+			_state = STATE.NONE;
+			_prevState = STATE.NONE;
+
+			_this.target.copy( _this.target0 );
+			_this.object.position.copy( _this.position0 );
+			_this.object.up.copy( _this.up0 );
+
+			_eye.subVectors( _this.object.position, _this.target );
+
+			_this.object.lookAt( _this.target );
+
+			_this.dispatchEvent( changeEvent );
+
+			lastPosition.copy( _this.object.position );
+
+		};
+
+		// listeners
+
+		function keydown( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			window.removeEventListener( 'keydown', keydown );
+
+			_prevState = _state;
+
+			if ( _state !== STATE.NONE ) {
+
+				return;
+
+			} else if ( event.keyCode === _this.keys[ STATE.ROTATE ] && ! _this.noRotate ) {
+
+				_state = STATE.ROTATE;
+
+			} else if ( event.keyCode === _this.keys[ STATE.ZOOM ] && ! _this.noZoom ) {
+
+				_state = STATE.ZOOM;
+
+			} else if ( event.keyCode === _this.keys[ STATE.PAN ] && ! _this.noPan ) {
+
+				_state = STATE.PAN;
+
+			}
+
+		}
+
+		function keyup( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			_state = _prevState;
+
+			window.addEventListener( 'keydown', keydown, false );
+
+		}
+
+		function mousedown( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			if ( _state === STATE.NONE ) {
+
+				_state = event.button;
+
+			}
+
+			if ( _state === STATE.ROTATE && ! _this.noRotate ) {
+
+				_moveCurr.copy( getMouseOnCircle( event.pageX, event.pageY ) );
+				_movePrev.copy( _moveCurr );
+
+			} else if ( _state === STATE.ZOOM && ! _this.noZoom ) {
+
+				_zoomStart.copy( getMouseOnScreen( event.pageX, event.pageY ) );
+				_zoomEnd.copy( _zoomStart );
+
+			} else if ( _state === STATE.PAN && ! _this.noPan ) {
+
+				_panStart.copy( getMouseOnScreen( event.pageX, event.pageY ) );
+				_panEnd.copy( _panStart );
+
+			}
+
+			document.addEventListener( 'mousemove', mousemove, false );
+			document.addEventListener( 'mouseup', mouseup, false );
+
+			_this.dispatchEvent( startEvent );
+
+		}
+
+		function mousemove( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			if ( _state === STATE.ROTATE && ! _this.noRotate ) {
+
+				_movePrev.copy( _moveCurr );
+				_moveCurr.copy( getMouseOnCircle( event.pageX, event.pageY ) );
+
+			} else if ( _state === STATE.ZOOM && ! _this.noZoom ) {
+
+				_zoomEnd.copy( getMouseOnScreen( event.pageX, event.pageY ) );
+
+			} else if ( _state === STATE.PAN && ! _this.noPan ) {
+
+				_panEnd.copy( getMouseOnScreen( event.pageX, event.pageY ) );
+
+			}
+
+		}
+
+		function mouseup( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			_state = STATE.NONE;
+
+			document.removeEventListener( 'mousemove', mousemove );
+			document.removeEventListener( 'mouseup', mouseup );
+			_this.dispatchEvent( endEvent );
+
+		}
+
+		function mousewheel( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			_zoomStart.y -= event.deltaY * 0.01;
+
+			_this.dispatchEvent( startEvent );
+			_this.dispatchEvent( endEvent );
+
+		}
+
+		function touchstart( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			switch ( event.touches.length ) {
+
+				case 1:
+					_state = STATE.TOUCH_ROTATE;
+					_moveCurr.copy( getMouseOnCircle( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY ) );
+					_movePrev.copy( _moveCurr );
+					break;
+
+				default: // 2 or more
+					_state = STATE.TOUCH_ZOOM_PAN;
+					var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
+					var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
+					_touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt( dx * dx + dy * dy );
+
+					var x = ( event.touches[ 0 ].pageX + event.touches[ 1 ].pageX ) / 2;
+					var y = ( event.touches[ 0 ].pageY + event.touches[ 1 ].pageY ) / 2;
+					_panStart.copy( getMouseOnScreen( x, y ) );
+					_panEnd.copy( _panStart );
+					break;
+
+			}
+
+			_this.dispatchEvent( startEvent );
+
+		}
+
+		function touchmove( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			switch ( event.touches.length ) {
+
+				case 1:
+					_movePrev.copy( _moveCurr );
+					_moveCurr.copy( getMouseOnCircle( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY ) );
+					break;
+
+				default: // 2 or more
+					var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
+					var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
+					_touchZoomDistanceEnd = Math.sqrt( dx * dx + dy * dy );
+
+					var x = ( event.touches[ 0 ].pageX + event.touches[ 1 ].pageX ) / 2;
+					var y = ( event.touches[ 0 ].pageY + event.touches[ 1 ].pageY ) / 2;
+					_panEnd.copy( getMouseOnScreen( x, y ) );
+					break;
+
+			}
+
+		}
+
+		function touchend( event ) {
+
+			if ( _this.enabled === false ) return;
+
+			switch ( event.touches.length ) {
+
+				case 0:
+					_state = STATE.NONE;
+					break;
+
+				case 1:
+					_state = STATE.TOUCH_ROTATE;
+					_moveCurr.copy( getMouseOnCircle( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY ) );
+					_movePrev.copy( _moveCurr );
+					break;
+
+			}
+
+			_this.dispatchEvent( endEvent );
+
+		}
+
+		function contextmenu( event ) {
+
+			event.preventDefault();
+
+		}
+
+		this.dispose = function() {
+
+			this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
+			this.domElement.removeEventListener( 'mousedown', mousedown, false );
+			this.domElement.removeEventListener( 'wheel', mousewheel, false );
+
+			this.domElement.removeEventListener( 'touchstart', touchstart, false );
+			this.domElement.removeEventListener( 'touchend', touchend, false );
+			this.domElement.removeEventListener( 'touchmove', touchmove, false );
+
+			document.removeEventListener( 'mousemove', mousemove, false );
+			document.removeEventListener( 'mouseup', mouseup, false );
+
+			window.removeEventListener( 'keydown', keydown, false );
+			window.removeEventListener( 'keyup', keyup, false );
+
+		};
+
+		this.domElement.addEventListener( 'contextmenu', contextmenu, false );
+		this.domElement.addEventListener( 'mousedown', mousedown, false );
+		this.domElement.addEventListener( 'wheel', mousewheel, false );
+
+		this.domElement.addEventListener( 'touchstart', touchstart, false );
+		this.domElement.addEventListener( 'touchend', touchend, false );
+		this.domElement.addEventListener( 'touchmove', touchmove, false );
+
+		window.addEventListener( 'keydown', keydown, false );
+		window.addEventListener( 'keyup', keyup, false );
+
+		this.handleResize();
+
+		// force an update at start
+		this.update();
+
+	};
+
+	THREE.TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+	THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Stats = __webpack_require__(23);
 	/**
 	 * Debugger Class
 	 */
@@ -49952,7 +50875,7 @@
 	//# sourceMappingURL=Debugger.js.map
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -49963,7 +50886,7 @@
 
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -50007,11 +50930,11 @@
 	//# sourceMappingURL=Light.js.map
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Helpers_1 = __webpack_require__(17);
+	var Helpers_1 = __webpack_require__(13);
 	var Promise = __webpack_require__(7);
 	/**
 	 * Loader Class
@@ -50063,7 +50986,7 @@
 	//# sourceMappingURL=Loader.js.map
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50072,7 +50995,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(25);
+	var Initializable_1 = __webpack_require__(27);
 	var Helpers_1 = __webpack_require__(2);
 	/**
 	 * Animation Class
@@ -50131,12 +51054,12 @@
 	//# sourceMappingURL=Animation.js.map
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Helpers_1 = __webpack_require__(2);
-	var Helpers_2 = __webpack_require__(17);
+	var Helpers_2 = __webpack_require__(13);
 	var Promise = __webpack_require__(7);
 	/**
 	 * Initializable Class
@@ -50232,7 +51155,7 @@
 	//# sourceMappingURL=Initializable.js.map
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50241,8 +51164,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(25);
-	var Helpers_1 = __webpack_require__(17);
+	var Initializable_1 = __webpack_require__(27);
+	var Helpers_1 = __webpack_require__(13);
 	var Promise = __webpack_require__(7);
 	/**
 	 * Material Class
@@ -50255,7 +51178,7 @@
 	    }
 	    Object.defineProperty(Material.prototype, "collection", {
 	        get: function () {
-	            return __webpack_require__(27);
+	            return __webpack_require__(29);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -50275,14 +51198,15 @@
 	//# sourceMappingURL=Material.js.map
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./CharacterDefaultMaterial.js": 28,
-		"./IntroDefaultMaterial.js": 29,
-		"./PointsMaterial.js": 30,
-		"./ShaderMaterial.js": 31
+		"./CharacterDefaultMaterial.js": 30,
+		"./FXShaderMaterial.js": 31,
+		"./IntroDefaultMaterial.js": 34,
+		"./PointsMaterial.js": 35,
+		"./ShaderMaterial.js": 36
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -50295,11 +51219,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 27;
+	webpackContext.id = 29;
 
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -50331,7 +51255,77 @@
 	//# sourceMappingURL=CharacterDefaultMaterial.js.map
 
 /***/ },
-/* 29 */
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var FXShaderMaterial = (function () {
+	    function FXShaderMaterial(app) {
+	        this.app = app;
+	    }
+	    Object.defineProperty(FXShaderMaterial.prototype, "textures", {
+	        get: function () {
+	            return {
+	                'sprite-1.png': '/assets/img/sprite-1.png',
+	                'sprite-2.png': '/assets/img/sprite-2.png',
+	                'sprite-3.png': '/assets/img/sprite-3.png',
+	                'sprite-4.png': '/assets/img/sprite-4.png',
+	                'sprite-5.png': '/assets/img/sprite-5.png',
+	                'sprite-6.png': '/assets/img/sprite-6.png',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    FXShaderMaterial.prototype.create = function (textures) {
+	        // let uniforms = {
+	        //     time: { value: 1.0 },
+	        //     resolution: { value: new THREE.Vector2() },
+	        //     texture: { value: sprite }
+	        // }
+	        // uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
+	        var uniforms = {
+	            alpha: { type: "f", value: 1.0 },
+	            angle: { type: "f", value: 0.0 },
+	            waves: { type: "f", value: 1.0 },
+	            warp: { type: "f", value: 2.0 },
+	            speed: { type: "f", value: 5.0 },
+	            frequency: { type: "f", value: .5 },
+	            texture: { type: "t", value: null },
+	        };
+	        var shader = new THREE.ShaderMaterial({
+	            uniforms: uniforms,
+	            vertexShader: __webpack_require__(32),
+	            fragmentShader: __webpack_require__(33),
+	            blending: THREE.AdditiveBlending,
+	            side: THREE.DoubleSide,
+	            transparent: true,
+	            opacity: .8
+	        });
+	        shader['userData'] = {
+	            uniforms: uniforms, textures: textures
+	        };
+	        return shader;
+	    };
+	    return FXShaderMaterial;
+	}());
+	exports.FXShaderMaterial = FXShaderMaterial;
+	//# sourceMappingURL=FXShaderMaterial.js.map
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	module.exports = "\nvarying vec2 vUv;\nuniform sampler2D texture;\nuniform float waves;\nuniform float warp;\nuniform float angle;\n\nvoid main() {\n\n    vUv = uv;\n    vec3 l_Pos = position;\n\n    l_Pos.z = sin(angle+position.x/warp)*waves;\n\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(l_Pos,1);\n}\n\n"
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	module.exports = "varying vec2 vUv;\nuniform sampler2D texture;\nuniform float alpha;\n\nvoid main(void) {\n    gl_FragColor = texture2D(texture, vUv);\n    gl_FragColor.a = alpha;\n}"
+
+/***/ },
+/* 34 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -50343,6 +51337,10 @@
 	            return {
 	                'sprite-1.png': '/assets/img/sprite-1.png',
 	                'sprite-2.png': '/assets/img/sprite-2.png',
+	                'sprite-3.png': '/assets/img/sprite-3.png',
+	                'sprite-4.png': '/assets/img/sprite-4.png',
+	                'sprite-5.png': '/assets/img/sprite-5.png',
+	                'sprite-6.png': '/assets/img/sprite-6.png',
 	            };
 	        },
 	        enumerable: true,
@@ -50362,7 +51360,7 @@
 	//# sourceMappingURL=IntroDefaultMaterial.js.map
 
 /***/ },
-/* 30 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -50374,6 +51372,23 @@
 	            return {
 	                'sprite-1.png': '/assets/img/sprite-1.png',
 	                'sprite-2.png': '/assets/img/sprite-2.png',
+	                'sprite-3.png': '/assets/img/sprite-3.png',
+	                'sprite-4.png': '/assets/img/sprite-4.png',
+	                'sprite-5.png': '/assets/img/sprite-5.png',
+	                'sprite-6.png': '/assets/img/sprite-6.png',
+	                core: '/assets/hex-assets/hex.png',
+	                // point_squad: '/assets/point-squad.png',
+	                hexicle: '/assets/hex-assets/hexicle.png',
+	                point_1_1: '/assets/hex-assets/point-1.png',
+	                point_1_2: '/assets/hex-assets/point-2.png',
+	                point_1_3: '/assets/hex-assets/point-3.png',
+	                point_1_4: '/assets/hex-assets/point-4.png',
+	                point_1_5: '/assets/hex-assets/point-5.png',
+	                point_2_1: '/assets/hex-assets/point-4.png',
+	                point_2_2: '/assets/hex-assets/point-3.png',
+	                point_2_3: '/assets/hex-assets/point-2.png',
+	                point_2_4: '/assets/hex-assets/point-1.png',
+	                point_2_5: '/assets/hex-assets/point-5.png',
 	            };
 	        },
 	        enumerable: true,
@@ -50399,7 +51414,7 @@
 	//# sourceMappingURL=PointsMaterial.js.map
 
 /***/ },
-/* 31 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50412,6 +51427,10 @@
 	            return {
 	                'sprite-1.png': '/assets/img/sprite-1.png',
 	                'sprite-2.png': '/assets/img/sprite-2.png',
+	                'sprite-3.png': '/assets/img/sprite-3.png',
+	                'sprite-4.png': '/assets/img/sprite-4.png',
+	                'sprite-5.png': '/assets/img/sprite-5.png',
+	                'sprite-6.png': '/assets/img/sprite-6.png',
 	            };
 	        },
 	        enumerable: true,
@@ -50422,7 +51441,7 @@
 	        //     time: { value: 1.0 },
 	        //     resolution: { value: new THREE.Vector2() },
 	        //     texture: { value: sprite }
-	        // };
+	        // }
 	        // uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
 	        var uniforms = {
 	            alpha: { type: "f", value: 1.0 },
@@ -50452,19 +51471,7 @@
 	//# sourceMappingURL=ShaderMaterial.js.map
 
 /***/ },
-/* 32 */
-/***/ function(module, exports) {
-
-	module.exports = "\nvarying vec2 vUv;\nuniform sampler2D texture;\nuniform float waves;\nuniform float warp;\nuniform float angle;\n\nvoid main() {\n\n    vUv = uv;\n    vec3 l_Pos = position;\n    l_Pos.z = sin(angle+position.x/warp)*waves;\n\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(l_Pos,1);\n}\n\n"
-
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	module.exports = "varying vec2 vUv;\nuniform sampler2D texture;\nuniform float alpha;\n\nvoid main(void) {\n    gl_FragColor = texture2D(texture, vUv);\n    gl_FragColor.a = alpha;\n}"
-
-/***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50473,7 +51480,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(25);
+	var Initializable_1 = __webpack_require__(27);
 	/**
 	 * Model Class
 	 */
@@ -50500,7 +51507,7 @@
 	//# sourceMappingURL=Model.js.map
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50509,8 +51516,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(25);
-	var Helpers_1 = __webpack_require__(17);
+	var Initializable_1 = __webpack_require__(27);
+	var Helpers_1 = __webpack_require__(13);
 	var Promise = __webpack_require__(7);
 	/**
 	 * Objects Class
@@ -50523,7 +51530,7 @@
 	    }
 	    Object.defineProperty(Objects.prototype, "collection", {
 	        get: function () {
-	            return __webpack_require__(36);
+	            return __webpack_require__(39);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -50550,14 +51557,31 @@
 	            /**
 	             * If Animation is set
 	             */
-	            if (instance.hasOwnProperty('animations')) {
-	                var actions = _this.app.animation.create(mesh, mesh.geometry.bones, resolutions[2]);
+	            if (instance.animations) {
+	                var objects_1 = [];
 	                /**
-	                 * Give a chance for the actions to be configurable
+	                 * hacky but... if its a group.. send the bones trough the userData
 	                 */
-	                if (Helpers_1.is.Function(instance.configAnimation))
-	                    instance.configAnimation(actions);
-	                mesh.userData.animations = actions;
+	                if (mesh instanceof THREE.Group) {
+	                    mesh.children.forEach(function (child) {
+	                        if (child instanceof THREE.SkinnedMesh) {
+	                            objects_1.push(child);
+	                        }
+	                    });
+	                }
+	                else {
+	                    objects_1.push(mesh);
+	                }
+	                for (var _i = 0, objects_2 = objects_1; _i < objects_2.length; _i++) {
+	                    var object = objects_2[_i];
+	                    var actions = _this.app.animation.create(object, object.geometry.bones, resolutions[2]);
+	                    /**
+	                     * Give a chance for the actions to be configurable
+	                     */
+	                    if (Helpers_1.is.Function(instance.configAnimation))
+	                        instance.configAnimation(actions);
+	                    object.userData.animations = actions;
+	                }
 	            }
 	            return mesh;
 	        });
@@ -50570,47 +51594,50 @@
 	//# sourceMappingURL=Objects.js.map
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Base.js": 37,
-		"./Characters/Actor.js": 38,
-		"./Characters/Actress.js": 40,
-		"./Characters/Animation.js": 41,
-		"./Characters/ArtDirector.js": 42,
-		"./Characters/Artist3D.js": 43,
-		"./Characters/CameraDirector.js": 44,
-		"./Characters/ConceptArtist.js": 45,
-		"./Characters/CostumeDesigner.js": 46,
-		"./Characters/Director.js": 47,
-		"./Characters/Editor.js": 48,
-		"./Characters/Effects.js": 49,
-		"./Characters/ExecutiveProducer.js": 50,
-		"./Characters/LightingArtist.js": 51,
-		"./Characters/MakeUpArtist.js": 52,
-		"./Characters/PackagingDesigner.js": 53,
-		"./Characters/PreStageProjectCoordinator.js": 54,
-		"./Characters/ProjectCoordinator.js": 55,
-		"./Characters/Prop.js": 56,
-		"./Characters/RecordingArtist.js": 57,
-		"./Characters/RenderAndComposite.js": 58,
-		"./Characters/RiggingArtist.js": 59,
-		"./Characters/Screenwriter.js": 60,
-		"./Characters/ScriptSupervisor.js": 61,
-		"./Characters/SetDesigner.js": 62,
-		"./Characters/SoundEffect.js": 63,
-		"./Characters/StageManager.js": 64,
-		"./Characters/StoryboardArtist.js": 65,
-		"./Characters/SwingGang.js": 66,
-		"./Characters/VoiceArtist.js": 67,
-		"./Debris.js": 68,
-		"./HexParticles.js": 72,
-		"./Main.js": 73,
-		"./Ship.js": 74,
-		"./Star.js": 75,
-		"./Streak.js": 76,
-		"./Tunnel.js": 77
+		"./Base.js": 40,
+		"./Buttons.js": 41,
+		"./Characters/Actor.js": 49,
+		"./Characters/Actress.js": 51,
+		"./Characters/Animation.js": 52,
+		"./Characters/ArtDirector.js": 53,
+		"./Characters/Artist3D.js": 54,
+		"./Characters/CameraDirector.js": 55,
+		"./Characters/ConceptArtist.js": 56,
+		"./Characters/CostumeDesigner.js": 57,
+		"./Characters/Director.js": 58,
+		"./Characters/Editor.js": 59,
+		"./Characters/Effects.js": 60,
+		"./Characters/ExecutiveProducer.js": 61,
+		"./Characters/LightingArtist.js": 62,
+		"./Characters/MakeUpArtist.js": 63,
+		"./Characters/PackagingDesigner.js": 64,
+		"./Characters/PreStageProjectCoordinator.js": 65,
+		"./Characters/ProjectCoordinator.js": 66,
+		"./Characters/Prop.js": 67,
+		"./Characters/RecordingArtist.js": 68,
+		"./Characters/RenderAndComposite.js": 69,
+		"./Characters/RiggingArtist.js": 70,
+		"./Characters/Screenwriter.js": 71,
+		"./Characters/ScriptSupervisor.js": 72,
+		"./Characters/SetDesigner.js": 73,
+		"./Characters/SoundEffect.js": 74,
+		"./Characters/StageManager.js": 75,
+		"./Characters/StoryboardArtist.js": 76,
+		"./Characters/SwingGang.js": 77,
+		"./Characters/VoiceArtist.js": 78,
+		"./Debris.js": 79,
+		"./Fx.js": 80,
+		"./Galaxy.js": 81,
+		"./HexParticles.js": 82,
+		"./Main.js": 83,
+		"./Plexus.js": 84,
+		"./Ship.js": 85,
+		"./Star.js": 86,
+		"./Streak.js": 87
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -50623,11 +51650,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 36;
+	webpackContext.id = 39;
 
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -50669,114 +51696,6 @@
 	//# sourceMappingURL=Base.js.map
 
 /***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Actor
-	 */
-	var Actor = (function (_super) {
-	    __extends(Actor, _super);
-	    function Actor() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Actor.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Actor.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Actor;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Actor = Actor;
-	//# sourceMappingURL=Actor.js.map
-
-/***/ },
-/* 39 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var BaseCharacter = (function () {
-	    function BaseCharacter(_a) {
-	        var animator = _a.animator;
-	        this.animator = animator;
-	    }
-	    ;
-	    Object.defineProperty(BaseCharacter.prototype, "materials", {
-	        get: function () {
-	            return {
-	                material: 'CharacterDefaultMaterial'
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Object.defineProperty(BaseCharacter.prototype, "animations", {
-	        get: function () {
-	            return {
-	                animation: '/animations/BaseAnimation.anim'
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    BaseCharacter.prototype.configAnimation = function () { };
-	    BaseCharacter.prototype.create = function (_a, _b, _c) {
-	        var character = _a.character;
-	        var material = _b.material;
-	        var animation = _c.animation;
-	        var mesh = new THREE.SkinnedMesh(character, material);
-	        return mesh;
-	    };
-	    return BaseCharacter;
-	}());
-	exports.BaseCharacter = BaseCharacter;
-	//# sourceMappingURL=BaseCharacter.js.map
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Actress
-	 */
-	var Actress = (function (_super) {
-	    __extends(Actress, _super);
-	    function Actress() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Actress.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Actress.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Actress;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Actress = Actress;
-	//# sourceMappingURL=Actress.js.map
-
-/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -50786,907 +51705,16 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(39);
+	var Forgable_1 = __webpack_require__(42);
 	/**
-	 * Character: Animation
+	 * Buttons
 	 */
-	var Animation = (function (_super) {
-	    __extends(Animation, _super);
-	    function Animation() {
+	var Buttons = (function (_super) {
+	    __extends(Buttons, _super);
+	    function Buttons() {
 	        _super.apply(this, arguments);
 	    }
-	    Object.defineProperty(Animation.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Animation.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Animation;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Animation = Animation;
-	//# sourceMappingURL=Animation.js.map
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: ArtDirector
-	 */
-	var ArtDirector = (function (_super) {
-	    __extends(ArtDirector, _super);
-	    function ArtDirector() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ArtDirector.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/ArtDirector.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return ArtDirector;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.ArtDirector = ArtDirector;
-	//# sourceMappingURL=ArtDirector.js.map
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Artist3d
-	 */
-	var Artist3d = (function (_super) {
-	    __extends(Artist3d, _super);
-	    function Artist3d() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Artist3d.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Artist3d.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Artist3d;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Artist3d = Artist3d;
-	//# sourceMappingURL=Artist3D.js.map
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: CameraDirector
-	 */
-	var CameraDirector = (function (_super) {
-	    __extends(CameraDirector, _super);
-	    function CameraDirector() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(CameraDirector.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/CameraDirector.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return CameraDirector;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.CameraDirector = CameraDirector;
-	//# sourceMappingURL=CameraDirector.js.map
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: ConceptArtist
-	 */
-	var ConceptArtist = (function (_super) {
-	    __extends(ConceptArtist, _super);
-	    function ConceptArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ConceptArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/ConceptArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return ConceptArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.ConceptArtist = ConceptArtist;
-	//# sourceMappingURL=ConceptArtist.js.map
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: CostumeDesigner
-	 */
-	var CostumeDesigner = (function (_super) {
-	    __extends(CostumeDesigner, _super);
-	    function CostumeDesigner() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(CostumeDesigner.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/CostumeDesigner.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return CostumeDesigner;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.CostumeDesigner = CostumeDesigner;
-	//# sourceMappingURL=CostumeDesigner.js.map
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Director
-	 */
-	var Director = (function (_super) {
-	    __extends(Director, _super);
-	    function Director() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Director.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Director.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Director;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Director = Director;
-	//# sourceMappingURL=Director.js.map
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Editor
-	 */
-	var Editor = (function (_super) {
-	    __extends(Editor, _super);
-	    function Editor() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Editor.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Editor.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Editor;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Editor = Editor;
-	//# sourceMappingURL=Editor.js.map
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Effects
-	 */
-	var Effects = (function (_super) {
-	    __extends(Effects, _super);
-	    function Effects() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Effects.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Effects.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Effects;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Effects = Effects;
-	//# sourceMappingURL=Effects.js.map
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: ExecutiveProducer
-	 */
-	var ExecutiveProducer = (function (_super) {
-	    __extends(ExecutiveProducer, _super);
-	    function ExecutiveProducer() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ExecutiveProducer.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/ExecutiveProducer.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return ExecutiveProducer;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.ExecutiveProducer = ExecutiveProducer;
-	//# sourceMappingURL=ExecutiveProducer.js.map
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: LightingArtist
-	 */
-	var LightingArtist = (function (_super) {
-	    __extends(LightingArtist, _super);
-	    function LightingArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(LightingArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/LightingArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return LightingArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.LightingArtist = LightingArtist;
-	//# sourceMappingURL=LightingArtist.js.map
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: MakeUpArtist
-	 */
-	var MakeUpArtist = (function (_super) {
-	    __extends(MakeUpArtist, _super);
-	    function MakeUpArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(MakeUpArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/MakeUpArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return MakeUpArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.MakeUpArtist = MakeUpArtist;
-	//# sourceMappingURL=MakeUpArtist.js.map
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: PackagingDesigner
-	 */
-	var PackagingDesigner = (function (_super) {
-	    __extends(PackagingDesigner, _super);
-	    function PackagingDesigner() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(PackagingDesigner.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/PackagingDesigner.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return PackagingDesigner;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.PackagingDesigner = PackagingDesigner;
-	//# sourceMappingURL=PackagingDesigner.js.map
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: PreStageProjectCoordinator
-	 */
-	var PreStageProjectCoordinator = (function (_super) {
-	    __extends(PreStageProjectCoordinator, _super);
-	    function PreStageProjectCoordinator() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(PreStageProjectCoordinator.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/PreStageProjectCoordinator.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return PreStageProjectCoordinator;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.PreStageProjectCoordinator = PreStageProjectCoordinator;
-	//# sourceMappingURL=PreStageProjectCoordinator.js.map
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: ProjectCoordinator
-	 */
-	var ProjectCoordinator = (function (_super) {
-	    __extends(ProjectCoordinator, _super);
-	    function ProjectCoordinator() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ProjectCoordinator.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/ProjectCoordinator.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return ProjectCoordinator;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.ProjectCoordinator = ProjectCoordinator;
-	//# sourceMappingURL=ProjectCoordinator.js.map
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Prop
-	 */
-	var Prop = (function (_super) {
-	    __extends(Prop, _super);
-	    function Prop() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Prop.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Prop.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Prop;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Prop = Prop;
-	//# sourceMappingURL=Prop.js.map
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: RecordingArtist
-	 */
-	var RecordingArtist = (function (_super) {
-	    __extends(RecordingArtist, _super);
-	    function RecordingArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(RecordingArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/RecordingArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return RecordingArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.RecordingArtist = RecordingArtist;
-	//# sourceMappingURL=RecordingArtist.js.map
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: RenderAndComposite
-	 */
-	var RenderAndComposite = (function (_super) {
-	    __extends(RenderAndComposite, _super);
-	    function RenderAndComposite() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(RenderAndComposite.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/RenderAndComposite.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return RenderAndComposite;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.RenderAndComposite = RenderAndComposite;
-	//# sourceMappingURL=RenderAndComposite.js.map
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: RiggingArtist
-	 */
-	var RiggingArtist = (function (_super) {
-	    __extends(RiggingArtist, _super);
-	    function RiggingArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(RiggingArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/RiggingArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return RiggingArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.RiggingArtist = RiggingArtist;
-	//# sourceMappingURL=RiggingArtist.js.map
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: Screenwriter
-	 */
-	var Screenwriter = (function (_super) {
-	    __extends(Screenwriter, _super);
-	    function Screenwriter() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Screenwriter.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/Screenwriter.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return Screenwriter;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.Screenwriter = Screenwriter;
-	//# sourceMappingURL=Screenwriter.js.map
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: ScriptSupervisor
-	 */
-	var ScriptSupervisor = (function (_super) {
-	    __extends(ScriptSupervisor, _super);
-	    function ScriptSupervisor() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ScriptSupervisor.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/ScriptSupervisor.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return ScriptSupervisor;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.ScriptSupervisor = ScriptSupervisor;
-	//# sourceMappingURL=ScriptSupervisor.js.map
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: SetDesigner
-	 */
-	var SetDesigner = (function (_super) {
-	    __extends(SetDesigner, _super);
-	    function SetDesigner() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(SetDesigner.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/SetDesigner.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return SetDesigner;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.SetDesigner = SetDesigner;
-	//# sourceMappingURL=SetDesigner.js.map
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: SoundEffect
-	 */
-	var SoundEffect = (function (_super) {
-	    __extends(SoundEffect, _super);
-	    function SoundEffect() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(SoundEffect.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/SoundEffect.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return SoundEffect;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.SoundEffect = SoundEffect;
-	//# sourceMappingURL=SoundEffect.js.map
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: StageManager
-	 */
-	var StageManager = (function (_super) {
-	    __extends(StageManager, _super);
-	    function StageManager() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(StageManager.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/StageManager.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return StageManager;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.StageManager = StageManager;
-	//# sourceMappingURL=StageManager.js.map
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: StoryboardArtist
-	 */
-	var StoryboardArtist = (function (_super) {
-	    __extends(StoryboardArtist, _super);
-	    function StoryboardArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(StoryboardArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/StoryboardArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return StoryboardArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.StoryboardArtist = StoryboardArtist;
-	//# sourceMappingURL=StoryboardArtist.js.map
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: SwingGang
-	 */
-	var SwingGang = (function (_super) {
-	    __extends(SwingGang, _super);
-	    function SwingGang() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(SwingGang.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/SwingGang.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return SwingGang;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.SwingGang = SwingGang;
-	//# sourceMappingURL=SwingGang.js.map
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var BaseCharacter_1 = __webpack_require__(39);
-	/**
-	 * Character: VoiceArtist
-	 */
-	var VoiceArtist = (function (_super) {
-	    __extends(VoiceArtist, _super);
-	    function VoiceArtist() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(VoiceArtist.prototype, "models", {
-	        get: function () {
-	            return {
-	                character: '/models/VoiceArtist.json',
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    return VoiceArtist;
-	}(BaseCharacter_1.BaseCharacter));
-	exports.VoiceArtist = VoiceArtist;
-	//# sourceMappingURL=VoiceArtist.js.map
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Forgable_1 = __webpack_require__(69);
-	/**
-	 * Character: Base
-	 */
-	var Debris = (function (_super) {
-	    __extends(Debris, _super);
-	    function Debris() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Debris.prototype, "materials", {
+	    Object.defineProperty(Buttons.prototype, "materials", {
 	        get: function () {
 	            return {
 	                material: 'IntroDefaultMaterial'
@@ -51695,44 +51723,43 @@
 	        enumerable: true,
 	        configurable: true
 	    });
-	    /**
-	     * Create Object
-	     *
-	     * @param models
-	     * @param material
-	     * @returns {THREE.Group}
-	     */
-	    Debris.prototype.create = function (models, _a) {
+	    Buttons.prototype.create = function (models, _a) {
 	        var material = _a.material;
-	        var debris = this.forge('debris', material, {
-	            scale: 70,
+	        var group = new THREE.Group();
+	        material.fog = false;
+	        var start = this.forge('start', material, {
+	            scale: 30,
 	            position: {
-	                x: -10, y: -220, z: 5
+	                x: 50, y: 75, z: 80
 	            }
 	        });
-	        debris.userData.update = this.update.bind(this, debris);
-	        return debris;
+	        var skip = this.forge('skip', material, {
+	            scale: 10,
+	            position: {
+	                x: 50, y: 83, z: 70
+	            }
+	        });
+	        group.add(start);
+	        group.add(skip);
+	        console.log(group);
+	        group.userData = {
+	            update: this.update.bind(this, group)
+	        };
+	        return group;
 	    };
-	    Debris.prototype.update = function (debris) {
-	        var height = debris.userData.meta.view.height;
-	        if (debris.position.y >= -height) {
-	            debris.position.y -= 10; //1;
-	        }
-	        else {
-	            return true;
-	        }
+	    Buttons.prototype.update = function (group, time) {
 	    };
-	    return Debris;
+	    return Buttons;
 	}(Forgable_1.Forgable));
-	exports.Debris = Debris;
-	//# sourceMappingURL=Debris.js.map
+	exports.Buttons = Buttons;
+	//# sourceMappingURL=Buttons.js.map
 
 /***/ },
-/* 69 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Helpers_1 = __webpack_require__(17);
+	var Helpers_1 = __webpack_require__(13);
 	var Helpers_2 = __webpack_require__(2);
 	var Helpers_3 = __webpack_require__(18);
 	var Forgable = (function () {
@@ -51741,7 +51768,7 @@
 	        this.sprite = {};
 	        this.app = app;
 	        this.camera = app.camera;
-	        var sprites = Helpers_2.requireAll(__webpack_require__(70));
+	        var sprites = Helpers_2.requireAll(__webpack_require__(43));
 	        var _loop_1 = function(sprite) {
 	            Object
 	                .keys(sprites[sprite])
@@ -51760,6 +51787,8 @@
 	                mesh: THREE.Mesh,
 	                geometry: THREE.PlaneGeometry,
 	                uvs: true,
+	                uv: {},
+	                isle: 1,
 	                rotation: {
 	                    x: 0, y: 0, z: 0
 	                },
@@ -51863,7 +51892,7 @@
 	         * Only Apply if it uses uvs
 	         */
 	        if (defaults.uvs)
-	            this.configureUVs(object['geometry'], options.uv);
+	            this.configureUVs(object['geometry'], options.uv, defaults.isle);
 	        object.userData.meta = {
 	            view: view, size: size, position: position, defaults: defaults
 	        };
@@ -51871,9 +51900,9 @@
 	        object.rotation.set(Helpers_3.deg2rad(defaults.rotation.x), Helpers_3.deg2rad(defaults.rotation.y), Helpers_3.deg2rad(defaults.rotation.z));
 	        return object;
 	    };
-	    Forgable.prototype.configureUVs = function (geometry, data) {
+	    Forgable.prototype.configureUVs = function (geometry, data, isle) {
 	        if (geometry instanceof THREE.Geometry) {
-	            for (var _i = 0, _a = geometry.faceVertexUvs[0]; _i < _a.length; _i++) {
+	            for (var _i = 0, _a = geometry.faceVertexUvs[isle - 1]; _i < _a.length; _i++) {
 	                var face = _a[_i];
 	                for (var _b = 0, face_1 = face; _b < face_1.length; _b++) {
 	                    var uv = face_1[_b];
@@ -51890,12 +51919,16 @@
 	//# sourceMappingURL=Forgable.js.map
 
 /***/ },
-/* 70 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
 		"./sprite-1.json": 19,
-		"./sprite-2.json": 71
+		"./sprite-2.json": 44,
+		"./sprite-3.json": 45,
+		"./sprite-4.json": 46,
+		"./sprite-5.json": 47,
+		"./sprite-6.json": 48
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -51908,18 +51941,18 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 70;
+	webpackContext.id = 43;
 
 
 /***/ },
-/* 71 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"transition": {
-			"name": "transition",
-			"width": 2012,
-			"height": 1044,
+		"stars": {
+			"name": "stars",
+			"width": 1326,
+			"height": 1326,
 			"sprite": {
 				"name": "sprite-2.png",
 				"width": 2048,
@@ -51927,11 +51960,11 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.490234375,
-				"u2": 0.982421875,
+				"v1": 0.3525390625,
+				"u2": 0.6474609375,
 				"v2": 1,
-				"uDistance": 0.982421875,
-				"vDistance": 0.509765625
+				"uDistance": 0.6474609375,
+				"vDistance": 0.6474609375
 			},
 			"x": 0,
 			"y": 0
@@ -51947,16 +51980,912 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.244140625,
+				"v1": 0.1064453125,
 				"u2": 0.421875,
-				"v2": 0.490234375,
+				"v2": 0.3525390625,
 				"uDistance": 0.421875,
 				"vDistance": 0.24609375
 			},
 			"x": 0,
-			"y": 1044
+			"y": 1326
 		}
 	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"nebula": {
+			"name": "nebula",
+			"width": 1309,
+			"height": 1309,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.36083984375,
+				"u2": 0.63916015625,
+				"v2": 1,
+				"uDistance": 0.63916015625,
+				"vDistance": 0.63916015625
+			},
+			"x": 0,
+			"y": 0
+		}
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"transition": {
+			"name": "transition",
+			"width": 2012,
+			"height": 1044,
+			"sprite": {
+				"name": "sprite-4.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.490234375,
+				"u2": 0.982421875,
+				"v2": 1,
+				"uDistance": 0.982421875,
+				"vDistance": 0.509765625
+			},
+			"x": 0,
+			"y": 0
+		}
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"dust": {
+			"name": "dust",
+			"width": 1041,
+			"height": 1041,
+			"sprite": {
+				"name": "sprite-5.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.49169921875,
+				"u2": 0.50830078125,
+				"v2": 1,
+				"uDistance": 0.50830078125,
+				"vDistance": 0.50830078125
+			},
+			"x": 0,
+			"y": 0
+		}
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"dirty": {
+			"name": "dirty",
+			"width": 1036,
+			"height": 1036,
+			"sprite": {
+				"name": "sprite-6.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.494140625,
+				"u2": 0.505859375,
+				"v2": 1,
+				"uDistance": 0.505859375,
+				"vDistance": 0.505859375
+			},
+			"x": 0,
+			"y": 0
+		},
+		"skybox": {
+			"name": "skybox",
+			"width": 2012,
+			"height": 1012,
+			"sprite": {
+				"name": "sprite-6.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0,
+				"u2": 0.982421875,
+				"v2": 0.494140625,
+				"uDistance": 0.982421875,
+				"vDistance": 0.494140625
+			},
+			"x": 0,
+			"y": 1036
+		}
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Actor
+	 */
+	var Actor = (function (_super) {
+	    __extends(Actor, _super);
+	    function Actor() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Actor.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Actor.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Actor;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Actor = Actor;
+	//# sourceMappingURL=Actor.js.map
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var BaseCharacter = (function () {
+	    function BaseCharacter(_a) {
+	        var animator = _a.animator;
+	        this.animator = animator;
+	    }
+	    ;
+	    Object.defineProperty(BaseCharacter.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'CharacterDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(BaseCharacter.prototype, "animations", {
+	        get: function () {
+	            return {
+	                animation: '/animations/BaseAnimation.anim'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    BaseCharacter.prototype.configAnimation = function () { };
+	    BaseCharacter.prototype.create = function (_a, _b, _c) {
+	        var character = _a.character;
+	        var material = _b.material;
+	        var animation = _c.animation;
+	        var mesh = new THREE.SkinnedMesh(character, material);
+	        return mesh;
+	    };
+	    return BaseCharacter;
+	}());
+	exports.BaseCharacter = BaseCharacter;
+	//# sourceMappingURL=BaseCharacter.js.map
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Actress
+	 */
+	var Actress = (function (_super) {
+	    __extends(Actress, _super);
+	    function Actress() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Actress.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Actress.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Actress;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Actress = Actress;
+	//# sourceMappingURL=Actress.js.map
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Animation
+	 */
+	var Animation = (function (_super) {
+	    __extends(Animation, _super);
+	    function Animation() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Animation.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Animation.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Animation;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Animation = Animation;
+	//# sourceMappingURL=Animation.js.map
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: ArtDirector
+	 */
+	var ArtDirector = (function (_super) {
+	    __extends(ArtDirector, _super);
+	    function ArtDirector() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ArtDirector.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/ArtDirector.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return ArtDirector;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.ArtDirector = ArtDirector;
+	//# sourceMappingURL=ArtDirector.js.map
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Artist3d
+	 */
+	var Artist3d = (function (_super) {
+	    __extends(Artist3d, _super);
+	    function Artist3d() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Artist3d.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Artist3d.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Artist3d;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Artist3d = Artist3d;
+	//# sourceMappingURL=Artist3D.js.map
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: CameraDirector
+	 */
+	var CameraDirector = (function (_super) {
+	    __extends(CameraDirector, _super);
+	    function CameraDirector() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(CameraDirector.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/CameraDirector.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return CameraDirector;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.CameraDirector = CameraDirector;
+	//# sourceMappingURL=CameraDirector.js.map
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: ConceptArtist
+	 */
+	var ConceptArtist = (function (_super) {
+	    __extends(ConceptArtist, _super);
+	    function ConceptArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ConceptArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/ConceptArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return ConceptArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.ConceptArtist = ConceptArtist;
+	//# sourceMappingURL=ConceptArtist.js.map
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: CostumeDesigner
+	 */
+	var CostumeDesigner = (function (_super) {
+	    __extends(CostumeDesigner, _super);
+	    function CostumeDesigner() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(CostumeDesigner.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/CostumeDesigner.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return CostumeDesigner;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.CostumeDesigner = CostumeDesigner;
+	//# sourceMappingURL=CostumeDesigner.js.map
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Director
+	 */
+	var Director = (function (_super) {
+	    __extends(Director, _super);
+	    function Director() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Director.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Director.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Director;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Director = Director;
+	//# sourceMappingURL=Director.js.map
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Editor
+	 */
+	var Editor = (function (_super) {
+	    __extends(Editor, _super);
+	    function Editor() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Editor.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Editor.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Editor;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Editor = Editor;
+	//# sourceMappingURL=Editor.js.map
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Effects
+	 */
+	var Effects = (function (_super) {
+	    __extends(Effects, _super);
+	    function Effects() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Effects.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Effects.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Effects;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Effects = Effects;
+	//# sourceMappingURL=Effects.js.map
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: ExecutiveProducer
+	 */
+	var ExecutiveProducer = (function (_super) {
+	    __extends(ExecutiveProducer, _super);
+	    function ExecutiveProducer() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ExecutiveProducer.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/ExecutiveProducer.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return ExecutiveProducer;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.ExecutiveProducer = ExecutiveProducer;
+	//# sourceMappingURL=ExecutiveProducer.js.map
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: LightingArtist
+	 */
+	var LightingArtist = (function (_super) {
+	    __extends(LightingArtist, _super);
+	    function LightingArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(LightingArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/LightingArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return LightingArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.LightingArtist = LightingArtist;
+	//# sourceMappingURL=LightingArtist.js.map
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: MakeUpArtist
+	 */
+	var MakeUpArtist = (function (_super) {
+	    __extends(MakeUpArtist, _super);
+	    function MakeUpArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(MakeUpArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/MakeUpArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return MakeUpArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.MakeUpArtist = MakeUpArtist;
+	//# sourceMappingURL=MakeUpArtist.js.map
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: PackagingDesigner
+	 */
+	var PackagingDesigner = (function (_super) {
+	    __extends(PackagingDesigner, _super);
+	    function PackagingDesigner() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(PackagingDesigner.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/PackagingDesigner.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return PackagingDesigner;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.PackagingDesigner = PackagingDesigner;
+	//# sourceMappingURL=PackagingDesigner.js.map
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: PreStageProjectCoordinator
+	 */
+	var PreStageProjectCoordinator = (function (_super) {
+	    __extends(PreStageProjectCoordinator, _super);
+	    function PreStageProjectCoordinator() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(PreStageProjectCoordinator.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/PreStageProjectCoordinator.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return PreStageProjectCoordinator;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.PreStageProjectCoordinator = PreStageProjectCoordinator;
+	//# sourceMappingURL=PreStageProjectCoordinator.js.map
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: ProjectCoordinator
+	 */
+	var ProjectCoordinator = (function (_super) {
+	    __extends(ProjectCoordinator, _super);
+	    function ProjectCoordinator() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ProjectCoordinator.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/ProjectCoordinator.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return ProjectCoordinator;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.ProjectCoordinator = ProjectCoordinator;
+	//# sourceMappingURL=ProjectCoordinator.js.map
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Prop
+	 */
+	var Prop = (function (_super) {
+	    __extends(Prop, _super);
+	    function Prop() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Prop.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Prop.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Prop;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Prop = Prop;
+	//# sourceMappingURL=Prop.js.map
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: RecordingArtist
+	 */
+	var RecordingArtist = (function (_super) {
+	    __extends(RecordingArtist, _super);
+	    function RecordingArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(RecordingArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/RecordingArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return RecordingArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.RecordingArtist = RecordingArtist;
+	//# sourceMappingURL=RecordingArtist.js.map
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: RenderAndComposite
+	 */
+	var RenderAndComposite = (function (_super) {
+	    __extends(RenderAndComposite, _super);
+	    function RenderAndComposite() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(RenderAndComposite.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/RenderAndComposite.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return RenderAndComposite;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.RenderAndComposite = RenderAndComposite;
+	//# sourceMappingURL=RenderAndComposite.js.map
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: RiggingArtist
+	 */
+	var RiggingArtist = (function (_super) {
+	    __extends(RiggingArtist, _super);
+	    function RiggingArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(RiggingArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/RiggingArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return RiggingArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.RiggingArtist = RiggingArtist;
+	//# sourceMappingURL=RiggingArtist.js.map
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: Screenwriter
+	 */
+	var Screenwriter = (function (_super) {
+	    __extends(Screenwriter, _super);
+	    function Screenwriter() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Screenwriter.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/Screenwriter.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return Screenwriter;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.Screenwriter = Screenwriter;
+	//# sourceMappingURL=Screenwriter.js.map
 
 /***/ },
 /* 72 */
@@ -51968,7 +52897,543 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(69);
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: ScriptSupervisor
+	 */
+	var ScriptSupervisor = (function (_super) {
+	    __extends(ScriptSupervisor, _super);
+	    function ScriptSupervisor() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ScriptSupervisor.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/ScriptSupervisor.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return ScriptSupervisor;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.ScriptSupervisor = ScriptSupervisor;
+	//# sourceMappingURL=ScriptSupervisor.js.map
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: SetDesigner
+	 */
+	var SetDesigner = (function (_super) {
+	    __extends(SetDesigner, _super);
+	    function SetDesigner() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(SetDesigner.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/SetDesigner.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return SetDesigner;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.SetDesigner = SetDesigner;
+	//# sourceMappingURL=SetDesigner.js.map
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: SoundEffect
+	 */
+	var SoundEffect = (function (_super) {
+	    __extends(SoundEffect, _super);
+	    function SoundEffect() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(SoundEffect.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/SoundEffect.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return SoundEffect;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.SoundEffect = SoundEffect;
+	//# sourceMappingURL=SoundEffect.js.map
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: StageManager
+	 */
+	var StageManager = (function (_super) {
+	    __extends(StageManager, _super);
+	    function StageManager() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(StageManager.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/StageManager.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return StageManager;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.StageManager = StageManager;
+	//# sourceMappingURL=StageManager.js.map
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: StoryboardArtist
+	 */
+	var StoryboardArtist = (function (_super) {
+	    __extends(StoryboardArtist, _super);
+	    function StoryboardArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(StoryboardArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/StoryboardArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return StoryboardArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.StoryboardArtist = StoryboardArtist;
+	//# sourceMappingURL=StoryboardArtist.js.map
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: SwingGang
+	 */
+	var SwingGang = (function (_super) {
+	    __extends(SwingGang, _super);
+	    function SwingGang() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(SwingGang.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/SwingGang.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return SwingGang;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.SwingGang = SwingGang;
+	//# sourceMappingURL=SwingGang.js.map
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var BaseCharacter_1 = __webpack_require__(50);
+	/**
+	 * Character: VoiceArtist
+	 */
+	var VoiceArtist = (function (_super) {
+	    __extends(VoiceArtist, _super);
+	    function VoiceArtist() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(VoiceArtist.prototype, "models", {
+	        get: function () {
+	            return {
+	                character: '/models/VoiceArtist.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    return VoiceArtist;
+	}(BaseCharacter_1.BaseCharacter));
+	exports.VoiceArtist = VoiceArtist;
+	//# sourceMappingURL=VoiceArtist.js.map
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(42);
+	/**
+	 * Character: Base
+	 */
+	var Debris = (function (_super) {
+	    __extends(Debris, _super);
+	    function Debris() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Debris.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    /**
+	     * Create Object
+	     *
+	     * @param models
+	     * @param material
+	     * @returns {THREE.Group}
+	     */
+	    Debris.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var debris = this.forge('debris', material, {
+	            scale: 70,
+	            position: {
+	                x: -10, y: -220, z: 5
+	            }
+	        });
+	        debris.userData.update = this.update.bind(this, debris);
+	        debris['material'].fog = false;
+	        return debris;
+	    };
+	    Debris.prototype.update = function (debris) {
+	        var height = debris.userData.meta.view.height;
+	        if (debris.position.y >= -height) {
+	            debris.position.y -= 10; //1;
+	        }
+	        else {
+	            return true;
+	        }
+	    };
+	    return Debris;
+	}(Forgable_1.Forgable));
+	exports.Debris = Debris;
+	//# sourceMappingURL=Debris.js.map
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(42);
+	/**
+	 * Tunnel
+	 */
+	var Fx = (function (_super) {
+	    __extends(Fx, _super);
+	    function Fx() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Fx.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'FXShaderMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Fx.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var group = new THREE.Group(), scaleY = 1;
+	        var bottom = this.forge('light-stroke', material, {
+	            scale: 20,
+	            rotation: {
+	                x: 90, y: 0, z: 90
+	            },
+	            position: {
+	                x: 50, y: 100, z: 100
+	            }
+	        });
+	        bottom.scale.set(50, scaleY, 1);
+	        var top = this.forge('light-stroke', material, {
+	            scale: 20,
+	            rotation: {
+	                x: 90, y: 0, z: 90
+	            },
+	            position: {
+	                x: 50, y: 0, z: 100
+	            }
+	        });
+	        top.scale.set(50, scaleY, 1);
+	        var left = this.forge('light-stroke', material, {
+	            scale: 20,
+	            rotation: {
+	                x: 90, y: 90, z: 90
+	            },
+	            position: {
+	                x: 0, y: 50, z: 100
+	            }
+	        });
+	        left.scale.set(50, scaleY, 1);
+	        var right = this.forge('light-stroke', material, {
+	            scale: 20,
+	            rotation: {
+	                x: 90, y: 90, z: 90
+	            },
+	            position: {
+	                x: 100, y: 50, z: 100
+	            }
+	        });
+	        right.scale.set(50, scaleY, 1);
+	        bottom.material['userData'].uniforms.alpha.value = 0;
+	        bottom.material['userData'].uniforms.warp.value = 5;
+	        bottom.material['userData'].uniforms.waves.value = 10;
+	        bottom.material['userData'].uniforms.frequency.value = 3;
+	        bottom.material['userData'].uniforms.speed.value = 1;
+	        console.log(bottom.material['userData'].uniforms);
+	        // bottom.position.setY(0);
+	        // top.position.setY(0);
+	        // left.position.setX(0);
+	        // right.position.setX(0);
+	        group.add(bottom);
+	        group.add(top);
+	        group.add(left);
+	        group.add(right);
+	        group.userData = {
+	            uniforms: bottom.material['userData'].uniforms,
+	            update: this.update.bind(this, group)
+	        };
+	        return group;
+	    };
+	    Fx.prototype.createGeometry = function (width, height, view, geometry) {
+	        return new THREE.PlaneGeometry(width, height, 30, 30);
+	    };
+	    Fx.prototype.update = function (group, time) {
+	        group.rotation.z += group['userData'].uniforms.speed.value;
+	        group.children.forEach(function (child) {
+	            child.scale.setX(Math.random() * 20 + 50);
+	            child.scale.setY(Math.random());
+	        });
+	        group['userData'].uniforms.angle.value += group['userData'].uniforms.frequency.value;
+	    };
+	    return Fx;
+	}(Forgable_1.Forgable));
+	exports.Fx = Fx;
+	//# sourceMappingURL=Fx.js.map
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Helpers_1 = __webpack_require__(18);
+	var Forgable_1 = __webpack_require__(42);
+	/**
+	 * Character: Base
+	 */
+	var Galaxy = (function (_super) {
+	    __extends(Galaxy, _super);
+	    function Galaxy() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Galaxy.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(Galaxy.prototype, "models", {
+	        get: function () {
+	            return {
+	                geometry: '/assets/models/Skybox.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    /**
+	     * Create Object
+	     *
+	     * @param models
+	     * @param material
+	     * @returns {THREE.Group}
+	     */
+	    Galaxy.prototype.create = function (_a, _b) {
+	        var geometry = _a.geometry;
+	        var material = _b.material;
+	        var group = new THREE.Group();
+	        var layers = material.clone();
+	        layers.side = THREE.BackSide;
+	        layers.blending = THREE.AdditiveBlending;
+	        layers.opacity = .8;
+	        layers.depthTest = false;
+	        layers.fog = false;
+	        layers['userData'] = material['userData'];
+	        var skybox = this.forge('skybox', layers, {
+	            geometry: {
+	                create: function (width, height) {
+	                    return new THREE.SphereBufferGeometry(3000, 30, 30);
+	                }
+	            },
+	            uvs: false,
+	            position: {
+	                x: 50, y: 50, z: 80
+	            }
+	        });
+	        var stars = this.forge('stars', layers, {
+	            geometry: {
+	                create: function (width, height) {
+	                    return new THREE.SphereBufferGeometry(2500, 30, 30);
+	                }
+	            },
+	            uvs: false,
+	            position: {
+	                x: 50, y: 50, z: 80
+	            }
+	        });
+	        var nebula = this.forge('nebula', layers, {
+	            geometry: geometry,
+	            uvs: false
+	        }), nebula2 = nebula.clone(), nebula3 = nebula.clone(), nebula4 = nebula.clone();
+	        nebula2.rotation.y = Helpers_1.deg2rad(90);
+	        nebula2.scale.setScalar(3);
+	        nebula3.rotation.set(Helpers_1.deg2rad(50), Helpers_1.deg2rad(45), Helpers_1.deg2rad(80));
+	        nebula3.scale.setScalar(3);
+	        nebula4.rotation.set(Helpers_1.deg2rad(25), Helpers_1.deg2rad(180), Helpers_1.deg2rad(30));
+	        nebula4.scale.setScalar(5);
+	        nebula.add(nebula2);
+	        nebula.add(nebula3);
+	        nebula.add(nebula4);
+	        var dirty = this.forge('dirty', layers, {
+	            geometry: geometry,
+	            uvs: false
+	        });
+	        var dust = this.forge('dust', layers, {
+	            geometry: geometry,
+	            uvs: false
+	        }), dust2 = dust.clone(), dust3 = dust.clone();
+	        dust2.rotation.z = Helpers_1.deg2rad(90);
+	        dust2.scale.setScalar(8);
+	        dust3.rotation.set(5, Helpers_1.deg2rad(150), 8);
+	        dust3.scale.setScalar(11);
+	        dust.add(dust2);
+	        dust.add(dust3);
+	        dust.rotation.y = Helpers_1.deg2rad(180);
+	        nebula.rotation.set(Helpers_1.deg2rad(90), Helpers_1.deg2rad(90), 0);
+	        dirty.scale.set(-1, 1, 1);
+	        dust.scale.set(-1, 1, 1);
+	        stars.scale.set(-1, 1, 1);
+	        nebula.scale.set(-1, 1, 1);
+	        dirty.scale.setScalar(20);
+	        dust.scale.setScalar(10);
+	        stars.scale.setScalar(6);
+	        nebula.scale.setScalar(9);
+	        skybox.scale.setScalar(5);
+	        // group.add(dirty);
+	        group.add(dust);
+	        // group.add(stars);
+	        // group.add(nebula);
+	        group.add(skybox);
+	        group.userData = {
+	            update: this.update.bind(this, group)
+	        };
+	        group.position.setZ(-5000);
+	        return group;
+	    };
+	    Galaxy.prototype.update = function (galaxy, time) {
+	        // galaxy.children.forEach(child => {
+	        //     child.rotation.y += child.userData.speed * 0.001
+	        // })
+	    };
+	    return Galaxy;
+	}(Forgable_1.Forgable));
+	exports.Galaxy = Galaxy;
+	//# sourceMappingURL=Galaxy.js.map
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(42);
 	var Helpers_1 = __webpack_require__(18);
 	/**
 	 * Main Particles
@@ -52068,7 +53533,7 @@
 	//# sourceMappingURL=HexParticles.js.map
 
 /***/ },
-/* 73 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52077,7 +53542,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(69);
+	var Forgable_1 = __webpack_require__(42);
 	/**
 	 * Character: Base
 	 */
@@ -52086,10 +53551,28 @@
 	    function Main() {
 	        _super.apply(this, arguments);
 	    }
+	    Object.defineProperty(Main.prototype, "models", {
+	        get: function () {
+	            return {
+	                smoke: '/assets/models/Smoke2.json',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
 	    Object.defineProperty(Main.prototype, "materials", {
 	        get: function () {
 	            return {
-	                material: 'IntroDefaultMaterial'
+	                material: 'IntroDefaultMaterial',
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(Main.prototype, "animations", {
+	        get: function () {
+	            return {
+	                animation: '/assets/models/SmokeAnim.anim'
 	            };
 	        },
 	        enumerable: true,
@@ -52102,9 +53585,11 @@
 	     * @param material
 	     * @returns {THREE.Group}
 	     */
-	    Main.prototype.create = function (models, _a) {
-	        var material = _a.material;
+	    Main.prototype.create = function (_a, _b) {
+	        var smoke = _a.smoke;
+	        var material = _b.material;
 	        var group = new THREE.Group();
+	        material.fog = false;
 	        group.add(this.forge('background', material, {
 	            widthFactor: 2.5,
 	            heightFactor: 1.5,
@@ -52131,9 +53616,32 @@
 	            widthFactor: 2.5,
 	            heightFactor: 1.5,
 	            position: {
-	                x: 50, y: 200 * 1.5, z: 0
+	                x: 50, y: 200 * 1.6, z: 0
 	            }
 	        }));
+	        var mesh = this.forge('streak', material, {
+	            mesh: THREE.SkinnedMesh,
+	            geometry: smoke,
+	            scale: 40,
+	            position: {
+	                x: 50, y: 80, z: 70
+	            }
+	        });
+	        mesh.name = 'smoke';
+	        mesh['material'].skinning = true;
+	        group.add(mesh);
+	        // let mat = new THREE.MeshBasicMaterial({
+	        //     skinning: true,
+	        //     vertexColors: THREE.VertexColors
+	        // });
+	        // let mesh = new THREE.SkinnedMesh(
+	        //     smoke, mat
+	        // );
+	        // mesh.scale.setScalar(1);
+	        // // ship.visible = false;
+	        // mesh.name = 'smoke';
+	        // console.log(mesh.userData.animations);
+	        // group.add(mesh);
 	        return group;
 	    };
 	    return Main;
@@ -52142,7 +53650,7 @@
 	//# sourceMappingURL=Main.js.map
 
 /***/ },
-/* 74 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52151,7 +53659,268 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(69);
+	var Helpers_1 = __webpack_require__(18);
+	var Forgable_1 = __webpack_require__(42);
+	/**
+	 * Character: Base
+	 */
+	var Plexus = (function (_super) {
+	    __extends(Plexus, _super);
+	    function Plexus() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Plexus.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'PointsMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(Plexus.prototype, "defaults", {
+	        get: function () {
+	            return {
+	                nodeStick: false,
+	                coreStick: false,
+	                coreRadius: 1500,
+	                coreDistance: 20,
+	                maxConnections: 2,
+	                connectionsMinDistance: 30,
+	                nodeRadius: 300,
+	                core: 50,
+	                nodes: 20,
+	                nodeDistance: 50,
+	                nodeRandom: true,
+	                nodesBag: [],
+	                coreBag: [],
+	                hexicles: 500,
+	                hexiclesRadius: 500,
+	                hexcleStick: false,
+	                hexBag: [],
+	                hex: null,
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    /**
+	     * Create Object
+	     *
+	     * @param models
+	     * @param THREE.MeshBasicMaterial material
+	     * @returns {THREE.Group}
+	     */
+	    Plexus.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var data = this.defaults, maps = material.userData;
+	        var group = new THREE.Group(), hexicles = new THREE.BufferGeometry(), hexiclePositions = new Float32Array(data.hexicles * 3), hexicleMaterial = new THREE.PointsMaterial({
+	            map: maps.hexicle,
+	            size: 10,
+	            transparent: true,
+	            alphaTest: 0.1,
+	            sizeAttenuation: true,
+	            opacity: 0.2
+	        }), cores = new THREE.BufferGeometry(), corePositions = new Float32Array(data.core * 3), coreMaterial = new THREE.PointsMaterial({
+	            map: maps.core,
+	            size: 70,
+	            transparent: true,
+	            alphaTest: 0.5,
+	            fog: false,
+	            sizeAttenuation: true,
+	            blending: THREE.AdditiveBlending
+	        }), coreLines = new THREE.BufferGeometry(), coreLinePositions = new Float32Array((data.core * data.core * data.core) * 3 - data.core * 3), coreLineMaterial = new THREE.LineBasicMaterial({
+	            color: 0xb0f8ff,
+	            transparent: true,
+	            opacity: .3
+	        });
+	        /**
+	         * Hexicles
+	         */
+	        for (var i = 0; i < data.hexicles; i++) {
+	            var vector = Helpers_1.random.vector3(0, 0, 0, data.hexiclesRadius, data.hexcleStick);
+	            hexiclePositions[i * 3] = vector.x;
+	            hexiclePositions[i * 3 + 1] = vector.y;
+	            hexiclePositions[i * 3 + 2] = vector.z;
+	            data.hexBag.push({
+	                position: vector,
+	                velocity: new THREE.Vector3(-1 + Math.random() * 2, -1 + Math.random() * 2, -1 + Math.random() * 2),
+	            });
+	        }
+	        ;
+	        /**
+	         * Core
+	         */
+	        for (var i = 0; i < data.core; i++) {
+	            /**
+	             * Regenerate each time they doesn't meet the min distance between each other
+	             */
+	            var vector = Helpers_1.random.vector3(0, 0, 0, data.coreRadius, data.coreStick);
+	            var b = 1;
+	            while (b >= 1) {
+	                for (var j = 0; j < data.coreBag.length; j++) {
+	                    var distance = data.coreBag[j].position.distanceTo(vector);
+	                    if (distance <= data.coreDistance / 100 * data.coreRadius) {
+	                        vector = Helpers_1.random.vector3(0, 0, 0, data.coreRadius, data.coreStick);
+	                        b++;
+	                    }
+	                }
+	                ;
+	                b--;
+	            }
+	            corePositions[i * 3] = vector.x;
+	            corePositions[i * 3 + 1] = vector.y;
+	            corePositions[i * 3 + 2] = vector.z;
+	            data.coreBag.push({
+	                position: vector,
+	                connections: 0
+	            });
+	        }
+	        ;
+	        /**
+	         * Nodes
+	         */
+	        var nodes = new THREE.BufferGeometry(), nodePositions = new Float32Array(3 * data.core + 3);
+	        nodes.drawRange.count = 1;
+	        nodes.drawRange.start = data.core;
+	        for (var i = 0; i < data.core; i++) {
+	            var nodeLines = new THREE.BufferGeometry(), nodeLinePositions = new Float32Array((data.nodes * 2) * 3), nodeLineMaterial = new THREE.LineDashedMaterial({
+	                color: 0xffffff,
+	                transparent: true,
+	                dashSize: 1,
+	                gapSize: 0.2,
+	                opacity: 0.5
+	            }), index = 0;
+	            for (var j = 0; j < (data.nodeRandom ? Helpers_1.random.between(1, data.nodes, true) : data.nodes); j++) {
+	                var nodeMaterial = new THREE.PointsMaterial({
+	                    size: 60,
+	                    //map: maps['point_' + (i + 1) + '_' + (j + 1)],
+	                    map: maps['point_' + Helpers_1.random.between(1, 2, true) + '_' + Helpers_1.random.between(1, 5, true)],
+	                    //map: maps.point_squad,
+	                    transparent: true,
+	                    alphaTest: 0.5,
+	                    sizeAttenuation: true,
+	                });
+	                var node = new THREE.Points(nodes, nodeMaterial), vector = Helpers_1.random.vector3(0, 0, 0, data.nodeRadius, data.nodeStick);
+	                var b = 1;
+	                while (b >= 1) {
+	                    for (var j_1 = 0; j_1 < data.nodesBag.length; j_1++) {
+	                        var distance = data.nodesBag[j_1].node.position.distanceTo(vector);
+	                        if (distance <= data.nodeDistance / 100 * data.nodeRadius) {
+	                            vector = Helpers_1.random.vector3(Helpers_1.random.between(-50, 50), Helpers_1.random.between(-50, 50), Helpers_1.random.between(-50, 50), data.nodeRadius, data.nodeStick);
+	                            b++;
+	                        }
+	                    }
+	                    ;
+	                    b--;
+	                }
+	                nodePositions[i * 3] = corePositions[i * 3] + vector.x + 50;
+	                nodePositions[i * 3 + 1] = corePositions[i * 3 + 1] + vector.y + 50;
+	                nodePositions[i * 3 + 2] = corePositions[i * 3 + 2] + vector.z + 50;
+	                node.position.set(corePositions[i * 3] + vector.x, corePositions[i * 3 + 1] + vector.y, corePositions[i * 3 + 2] + vector.z);
+	                nodes.addAttribute('position', new THREE.BufferAttribute(nodePositions, 3).setDynamic(true));
+	                nodeLinePositions[(j + index + 1) * 3] = vector.x;
+	                nodeLinePositions[(j + index + 1) * 3 + 1] = vector.y;
+	                nodeLinePositions[(j + index + 1) * 3 + 2] = vector.z;
+	                index++;
+	                /**
+	                 * Save Reference
+	                 */
+	                data.nodesBag.push({
+	                    node: node,
+	                    line: nodeLinePositions
+	                });
+	                group.add(node);
+	            }
+	            ;
+	            /**
+	             * Lines
+	             */
+	            var vertexPos = 0;
+	            for (var i_1 = 0; i_1 < data.coreBag.length; i_1++) {
+	                for (var j = 0; j < data.coreBag.length; j++) {
+	                    if (data.coreBag[i_1].connections <= data.maxConnections - 1)
+	                        if (data.coreBag[i_1].position.distanceTo(data.coreBag[j].position) <= data.connectionsMinDistance / 100 * data.coreRadius) {
+	                            coreLinePositions[vertexPos++] = corePositions[i_1 * 3];
+	                            coreLinePositions[vertexPos++] = corePositions[i_1 * 3 + 1];
+	                            coreLinePositions[vertexPos++] = corePositions[i_1 * 3 + 2];
+	                            coreLinePositions[vertexPos++] = corePositions[(j) * 3];
+	                            coreLinePositions[vertexPos++] = corePositions[(j) * 3 + 1];
+	                            coreLinePositions[vertexPos++] = corePositions[(j) * 3 + 2];
+	                            data.coreBag[i_1].connections++;
+	                            data.coreBag[j].connections++;
+	                        }
+	                }
+	                ;
+	            }
+	            ;
+	            nodeLines.addAttribute('position', new THREE.BufferAttribute(nodeLinePositions, 3).setDynamic(true));
+	            nodeLines.addAttribute('lineDistance', new THREE.BufferAttribute(nodeLinePositions, 3).setDynamic(true));
+	            var nodeLine = new THREE.LineSegments(nodeLines, nodeLineMaterial);
+	            nodeLine.position.set(corePositions[i * 3], corePositions[i * 3 + 1], corePositions[i * 3 + 2]);
+	            group.add(nodeLine);
+	        }
+	        ;
+	        hexicles.addAttribute('position', new THREE.BufferAttribute(hexiclePositions, 3).setDynamic(true));
+	        cores.addAttribute('position', new THREE.BufferAttribute(corePositions, 3).setDynamic(true));
+	        coreLines.addAttribute('position', new THREE.BufferAttribute(coreLinePositions, 3).setDynamic(true));
+	        var hexicle = data.hex = new THREE.Points(hexicles, hexicleMaterial), core = new THREE.Points(cores, coreMaterial), coreLine = new THREE.LineSegments(coreLines, coreLineMaterial);
+	        ///**
+	        // * Save Reference
+	        // */
+	        //data.coreBag.push({
+	        //    cores: core,
+	        //    lines: coreLine
+	        //});
+	        group.add(hexicle);
+	        group.add(core);
+	        group.add(coreLine);
+	        group.position.setZ(-5000);
+	        group.userData = {
+	            data: data,
+	            update: this.update.bind(this, group)
+	        };
+	        this.test(group);
+	        return group;
+	    };
+	    Plexus.prototype.createMesh = function (geometry, material) {
+	        return new THREE.Points(geometry, material);
+	    };
+	    Plexus.prototype.update = function (plexus, time) {
+	        var hex = plexus.userData.data.hex, hexBag = plexus.userData.data.hexBag, hexPositions = hex.geometry.attributes.position, distance = 1000, speed = .5;
+	        for (var i = 0; i < hexPositions.count; i++) {
+	            hexPositions.array[i * 3] += hexBag[i].velocity.x * speed;
+	            hexPositions.array[i * 3 + 1] += hexBag[i].velocity.y * speed;
+	            hexPositions.array[i * 3 + 2] += hexBag[i].velocity.z * speed;
+	            if (hexPositions.array[i * 3 + 1] < -distance || hexPositions.array[i * 3 + 1] > distance)
+	                hexBag[i].velocity.y = -hexBag[i].velocity.y;
+	            if (hexPositions.array[i * 3] < -distance || hexPositions.array[i * 3] > distance)
+	                hexBag[i].velocity.x = -hexBag[i].velocity.x;
+	            if (hexPositions.array[i * 3 + 2] < -distance || hexPositions.array[i * 3 + 2] > distance)
+	                hexBag[i].velocity.z = -hexBag[i].velocity.z;
+	        }
+	        ;
+	        hexPositions.needsUpdate = true;
+	    };
+	    Plexus.prototype.test = function (group) {
+	        group.add(new THREE.Mesh(new THREE.PlaneGeometry(100, 100)));
+	    };
+	    return Plexus;
+	}(Forgable_1.Forgable));
+	exports.Plexus = Plexus;
+	//# sourceMappingURL=Plexus.js.map
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(42);
 	var Helpers_1 = __webpack_require__(18);
 	/**
 	 * Ship
@@ -52183,6 +53952,7 @@
 	    Ship.prototype.create = function (_a, _b) {
 	        var geometry = _a.geometry;
 	        var material = _b.material, shader = _b.shader;
+	        material.fog = false;
 	        var group = new THREE.Group(), ship = this.forge('ship', material, {
 	            geometry: geometry,
 	            scale: 20,
@@ -52207,7 +53977,7 @@
 	                x: 50, y: 90, z: 80
 	            }
 	        });
-	        streak.scale.set(3, .3, 1);
+	        streak.scale.set(3, .1, 1);
 	        ship.add(streak);
 	        group.add(ship);
 	        for (var i = 0; i <= 5; i++) {
@@ -52217,24 +53987,23 @@
 	        ship.name = 'logo';
 	        streak.visible = false;
 	        streak.translateOnAxis(new THREE.Vector3(1.8, 0, 0), 20);
-	        // streak.geometry.applyMatrix(new THREE.Matrix4().setPosition(new THREE.Vector3(50, 0, 0)));
 	        group.userData = {
 	            taill: streak,
 	            uniforms: streak.material['userData'].uniforms,
 	            booster: 1,
-	            update: this.update.bind(this, group)
+	            update: this.update.bind(this, group),
 	        };
-	        console.log(group['userData'].uniforms);
 	        return group;
 	    };
 	    Ship.prototype.update = function (object, time) {
 	        var _this = this;
 	        object['userData'].uniforms.angle.value += object['userData'].uniforms.frequency.value;
+	        object['userData'].taill.rotation.y += .9;
 	        // object['userData'].streak.scale.setX(Math.sin(time));
 	        object.children.forEach(function (child, i) {
 	            if (child.name === 'logo')
 	                return;
-	            child.children[0].scale.set(Math.abs(Math.sin(time) * .3) + 2, .3, 1);
+	            child.children[0].scale.set(Math.abs(Math.sin(time) * .2) + 2, .2, 1);
 	            if (child.position.y > child.userData.respawnAt) {
 	                _this.respawn(child);
 	            }
@@ -52274,7 +54043,7 @@
 	            position: {
 	                x: Helpers_1.random.between(0, 100),
 	                y: Helpers_1.random.between(0, 100),
-	                z: 20,
+	                z: Helpers_1.random.between(1, 20),
 	            }
 	        });
 	        var height = clone.userData.meta.view.height;
@@ -52292,7 +54061,7 @@
 	//# sourceMappingURL=Ship.js.map
 
 /***/ },
-/* 75 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52301,7 +54070,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(69);
+	var Forgable_1 = __webpack_require__(42);
 	var Helpers_1 = __webpack_require__(18);
 	/**
 	 * Main Particles
@@ -52352,7 +54121,7 @@
 	         * Store Data
 	         */
 	        particles['userData'] = {
-	            velocity: []
+	            velocity: [], completed: false
 	        };
 	        /**
 	         * Add Vertices to Points
@@ -52379,7 +54148,7 @@
 	        for (var i = 0; i < positions.count; i++) {
 	            var velocity = particles.geometry.userData.velocity[i];
 	            positions.array[i * 3 + 1] -= (velocity[0] / 10) * particles.userData.speed;
-	            if (positions.array[i * 3 + 1] < -distanceY)
+	            if (positions.array[i * 3 + 1] < -distanceY && !particles.userData.completed)
 	                positions.array[i * 3 + 1] = distanceY;
 	        }
 	        positions.needsUpdate = true;
@@ -52402,7 +54171,7 @@
 	//# sourceMappingURL=Star.js.map
 
 /***/ },
-/* 76 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52411,7 +54180,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(69);
+	var Forgable_1 = __webpack_require__(42);
 	/**
 	 * Character: Base
 	 */
@@ -52467,433 +54236,7 @@
 	//# sourceMappingURL=Streak.js.map
 
 /***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Forgable_1 = __webpack_require__(69);
-	var v4 = function (x, y, z, w) { return new THREE.Vector4(x, y, z, w); };
-	var simpleVert = "\
-		varying vec2 vUv;\
-		void main() {\
-			vUv = uv;\
-			gl_Position = projectionMatrix *\
-			modelViewMatrix * vec4(position, 1.0 );\
-		}\
-	";
-	var simpleFrag5 = "\
-		precision highp float;\
-		varying vec3 vecNormal;\
-		uniform float offset;\
-		varying vec2 vUv;\
-		uniform sampler2D map;\
-		uniform sampler2D map2;\
-		void main(void) {\
-			vec4 lgts = vec4(vec3(0.0),1.0);\
-			vec4 tex = texture2D(map, vUv*7.);\
-			vec4 tex2 = texture2D(map2, vec2(offset,0)+vUv);\
-			gl_FragColor = vec4((tex2.b*vec3(.08,.0,.15))+pow(tex2.r,2.)*tex.rgb*9.*vec3(.3,.5,.9), 1.0);\
-		}\
-	";
-	var simpleMat5 = new THREE.ShaderMaterial({
-	    uniforms: {
-	        offset: { type: 'f', value: 1.0 },
-	        map: { type: "t", value: null },
-	        map2: { type: "t", value: null },
-	    },
-	    vertexShader: simpleVert,
-	    fragmentShader: simpleFrag5,
-	});
-	var facingVert2 = "\
-		varying vec2 vUv;\
-		varying vec3 wNormal;\
-		uniform float switcher;\
-		uniform float offset;\
-		uniform float warp;\
-		uniform float warpSpeed;\
-		void main() {\
-			vUv = uv;\
-			wNormal = mat3(modelMatrix[0].xyz,modelMatrix[1].xyz,modelMatrix[2].xyz)*normal;\
-			wNormal = normalize(wNormal);\
-			gl_Position = projectionMatrix *\
-			modelViewMatrix * vec4(position+vec3(cos((warpSpeed*.01)*offset+10.*vUv.x)*warp*.01,sin((warpSpeed*.01)*offset+10.*vUv.x)*warp*.01,0), 1.0 );\
-		}\
-	";
-	var facingVertTunnel = "\
-		varying vec2 vUv;\
-		uniform float switcher;\
-		uniform float offset;\
-		uniform float warp;\
-		uniform float warpSpeed;\
-		void main() {\
-			vUv = uv;\
-			gl_Position = projectionMatrix *\
-			modelViewMatrix * vec4(position+vec3(cos((warpSpeed*.01)*offset+10.*vUv.x)*warp*.01,sin((warpSpeed*.01)*offset+10.*vUv.x)*warp*.01,0), 1.0 );\
-		}\
-	";
-	//gl_Position = projectionMatrix *\
-	// modelViewMatrix * vec4(position+vec3(cos(offset*30.*vUv.x)*10.,sin(offset*30.*vUv.x)*10.,0), 1.0 );\
-	var facingFrag2 = "\
-		precision highp float;\
-		uniform mat4 camMat;\
-		uniform mat4 camMatInverse;\
-		varying vec3 wNormal;\
-		varying vec2 vUv;\
-		uniform sampler2D textureColor;\
-		uniform sampler2D textureAlpha;\
-		uniform float offset;\
-		uniform float fade;\
-		uniform float power;\
-		void main(void) {\
-			float fader = pow((1.0+(cos(   ( max(0.0,min(1.0,(fade+vUv.x))) * 3.1415*2.))  *-1.0))*.5,power)*2.;\
-			vec4 texB = texture2D(textureColor, vUv);\
-			vec4 tex = texture2D(textureColor, (texB.rg*.021)+vec2(vUv.x*.4+offset,vUv.y));\
-			vec4 texA = texture2D(textureAlpha, vUv+(.05-tex.rg*.1));\
-			vec4 camNorm = vec4(vec3(wNormal),0.) * camMat;\
-			gl_FragColor = vec4(vec3(min(1.0,max(0.0,pow(camNorm.z,1.5))))*tex.rgb*texA.a*tex.a*fader, 1.0);\
-		}\
-	";
-	var facingMat2 = new THREE.ShaderMaterial({
-	    uniforms: {
-	        offset: { type: "f", value: 1.0 },
-	        fade: { type: "f", value: 0.0 },
-	        power: { type: "f", value: 1.0 },
-	        camMat: { type: 'm4', value: new THREE.Matrix4() },
-	        textureColor: { type: "t", value: null },
-	        textureAlpha: { type: "t", value: null }
-	    },
-	    vertexShader: facingVert2,
-	    fragmentShader: facingFrag2,
-	    // side: THREE.DoubleSide,
-	    blending: THREE.AdditiveBlending,
-	    transparent: true
-	});
-	var facingFrag3 = "\
-		precision highp float;\
-		uniform mat4 camMat;\
-		uniform mat4 camMatInverse;\
-		varying vec3 wNormal;\
-		uniform vec3 Color1;\
-		uniform vec3 Color2;\
-		uniform vec3 Color3;\
-		varying vec2 vUv;\
-		uniform sampler2D textureColor;\
-		uniform sampler2D textureAlpha;\
-		uniform float offset;\
-		uniform float offsetMult;\
-		uniform float fade;\
-		uniform float power;\
-		uniform float repeat;\
-		void main(void) {\
-			float fader = pow((.5+(cos(   ( max(0.0,min(1.0,(fade+vUv.x))) * 3.1415*2.))  *-.5))*1.0,power)*2.;\
-			vec4 texA = texture2D(textureAlpha, vUv);\
-			vec4 tex = texture2D(textureColor, vec2(texA.a,0.0)*.1+vec2(vUv.x*(repeat*.01)+offset*(offsetMult*.01),vUv.y));\
-			vec3 col1 = Color1*tex.r;\
-			vec3 col2 = Color2*tex.g;\
-			vec3 col3 = Color3*tex.b;\
-			vec3 col = col1+col2+col3;\
-			vec4 camNorm = vec4(vec3(wNormal),0.) * viewMatrix;\
-			gl_FragColor = vec4(vec3(min(1.0,max(0.0,min(1.0,abs(pow(camNorm.z,3.))))))*col*col*texA.a*fader, 1.0);\
-		}\
-	";
-	//		gl_FragColor = vec4(vec3(min(1.0,max(0.0,min(1.0,camNorm.z*3.))))*col*col*texA.a*fader*10., 1.0);\
-	//		gl_FragColor = vec4(vec3(min(1.0,max(0.0,pow(camNorm.z,.1))))*col*col*texA.a*fader, 1.0);\
-	//		gl_FragColor = vec4(vec3(min(1.0,max(0.0,pow(camNorm.z,1.5))))*col*tex.a*fader, 1.0);\
-	//
-	var facingMat3 = new THREE.ShaderMaterial({
-	    uniforms: {
-	        offset: { type: "f", value: 1.0 },
-	        offsetMult: { type: "f", value: 100.0 },
-	        fade: { type: "f", value: 0.0 },
-	        power: { type: "f", value: 1.0 },
-	        warp: { type: "f", value: 0.0 },
-	        warpSpeed: { type: "f", value: 100.0 },
-	        repeat: { type: "f", value: 100.0 },
-	        camMat: { type: 'm4', value: new THREE.Matrix4() },
-	        textureColor: { type: "t", value: null },
-	        textureAlpha: { type: "t", value: null },
-	        Color1: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	        Color2: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	        Color3: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	    },
-	    vertexShader: facingVert2,
-	    fragmentShader: facingFrag3,
-	    // side: THREE.DoubleSide,
-	    blending: THREE.AdditiveBlending,
-	    transparent: true,
-	    opacity: .5
-	});
-	var facingFragtunnel = "\
-		precision highp float;\
-		uniform vec3 Color1;\
-		uniform vec3 Color2;\
-		uniform vec3 Color3;\
-		varying vec2 vUv;\
-		uniform sampler2D textureColor;\
-		uniform sampler2D textureAlpha;\
-		uniform float offset;\
-		uniform float fade;\
-		uniform float power;\
-		uniform float repeat;\
-		void main(void) {\
-			float fader = pow((.5+(cos(   ( max(0.0,min(1.0,(fade+vUv.x))) * 3.1415*2.))  *-.5))*1.0,power)*4.;\
-			vec4 texA = texture2D(textureAlpha, vUv);\
-			vec4 tex = texture2D(textureColor, vec2(texA.a,0.0)*.1+vec2(vUv.x*(repeat*.01)+offset,vUv.y));\
-			vec3 col1 = Color1*tex.r;\
-			vec3 col2 = Color2*tex.g;\
-			vec3 col3 = Color3*tex.b;\
-			vec3 col = col1+col2+col3;\
-			gl_FragColor = vec4(col*col*texA.a*fader, 1.0);\
-		}\
-	";
-	var facingMatTunnel = new THREE.ShaderMaterial({
-	    uniforms: {
-	        offset: { type: "f", value: 1.0 },
-	        offsetMult: { type: "f", value: 1.0 },
-	        fade: { type: "f", value: 0.0 },
-	        power: { type: "f", value: 1.0 },
-	        warp: { type: "f", value: 0.0 },
-	        warpSpeed: { type: "f", value: 1.0 },
-	        repeat: { type: "f", value: 1.0 },
-	        camMat: { type: 'm4', value: new THREE.Matrix4() },
-	        textureColor: { type: "t", value: null },
-	        textureAlpha: { type: "t", value: null },
-	        Color1: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	        Color2: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	        Color3: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-	    },
-	    vertexShader: facingVertTunnel,
-	    fragmentShader: facingFragtunnel,
-	    // side: THREE.DoubleSide,
-	    blending: THREE.AdditiveBlending,
-	    transparent: true,
-	    opacity: .5
-	});
-	/**
-	 * Tunnel
-	 */
-	var Tunnel = (function (_super) {
-	    __extends(Tunnel, _super);
-	    function Tunnel() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(Tunnel.prototype, "materials", {
-	        get: function () {
-	            return {
-	                material: 'ShaderMaterial'
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Tunnel.prototype.create = function (models, _a) {
-	        var material = _a.material;
-	        var tunnel = new THREE.Mesh(new THREE.PlaneBufferGeometry(100, 100), material);
-	        return tunnel;
-	    };
-	    Tunnel.prototype.update = function (tunnel, time) {
-	        // tunnel.userData.swirls.forEach(function (swirl) {
-	        // time = tunnel.userData.timer.getElapsedTime()
-	        //     curves = tunnel.userData.curves;
-	        // for (var i = 0; i < curves.numCurves; i++) {
-	        //     // scope.swirls[i].setCam(MAEVR.camera);
-	        //     swirls[i].update(1 * (time / 1000) * 30);
-	        //     if (swirls[i].isInScene)
-	        //         swirls[i].offset((i * .3) + 2 * .01 * time * -.02);
-	        // }
-	        // if (swirl.done) {
-	        //     tunnel.userData.swirl = swirl = tunnel.userData.next();
-	        //     tunnel.userData.timer = new THREE.Clock();
-	        //     time = 0;
-	        // }
-	        var swirl = tunnel.userData.swirl;
-	        if (swirl) {
-	            swirl.update(1 * (time / 1000) * 30);
-	            if (swirl.isInScene)
-	                swirl.offset((1 * .3) + 1 * .2 * time * -.02);
-	        }
-	        // })
-	    };
-	    Tunnel.prototype.curve16 = function () {
-	        var Curve_v01 = [[v4(167.76, 537.33, -987.76, 1),
-	                v4(22.13, 564.59, -938.9, 1),
-	                v4(-283.46, 712.76, -817.84, 1),
-	                v4(-391.81, 1124.27, -503.02, 1),
-	                v4(-75.92, 1268.73, -294.65, 1),
-	                v4(36.8, 1313.13, -218.74, 1),
-	            ], [v4(121.43, 292.86, -1283.11, 1),
-	                v4(-121.66, 354.17, -1258.95, 1),
-	                v4(-629.17, 632.16, -1195.93, 1),
-	                v4(-861.99, 1359.72, -812.88, 1),
-	                v4(-50.53, 1615.41, -409.23, 1),
-	                v4(-257.37, 1695.51, -261.42, 1),
-	            ]];
-	        var degree1_v01 = 1;
-	        var degree2_v01 = 5;
-	        var knots1_v01 = [0, 0, 1, 1,];
-	        var knots2_v01 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,];
-	        var nurbsSurface_v01 = new THREE.NURBSSurface(degree1_v01, degree2_v01, knots1_v01, knots2_v01, Curve_v01);
-	        return {
-	            func: function (u, v) { return nurbsSurface_v01.getPoint(v, u); },
-	            animation: [[-118, -1], [54, -0.08812329549], [2965, 0.2085208828], [3193, 1]],
-	            divisions: "|MAEmodelsPrevis|Gehry_15000_1_3_30_40_100_100_500_100_100_100_20|_40_2_1"
-	        };
-	    };
-	    Tunnel.prototype.curve = function () {
-	        var Curve_v01 = [
-	            [
-	                v4(-13.9, 11.21, 18.99, 1),
-	                v4(-21.19, 15.11, 154.25, 1),
-	                v4(-54.87, 19.93, 310.89, 1),
-	                v4(-88.46, 33.17, 458.79, 1),
-	            ], [
-	                v4(-8.41, -2.6, 18.99, 1),
-	                v4(-14.92, -6.58, 154.25, 1),
-	                v4(-41.3, -31.85, 310.89, 1),
-	                v4(-66.44, -50.55, 458.79, 1),
-	            ]
-	        ];
-	        var degree1_v01 = 1;
-	        var degree2_v01 = 3;
-	        var knots1_v01 = [0, 0, 1, 1,];
-	        var knots2_v01 = [0, 0, 0, 0, 1, 1, 1, 1,];
-	        var nurbsSurface_v01 = new THREE.NURBSSurface(degree1_v01, degree2_v01, knots1_v01, knots2_v01, Curve_v01);
-	        return {
-	            func: function (u, v) { return nurbsSurface_v01.getPoint(v, u); },
-	            animation: [[0, -1], [271, -0.4205202312], [1387, -0.01046996304], [1650, 0.951758792]],
-	            divisions: "|MAEmodelsPrevis|tunnel_1000_1_1_99_134_181_100_50_100_100_100_20|_20_5_v327"
-	        };
-	    };
-	    ;
-	    Tunnel.prototype.makeSurface = function (params) {
-	        //AtomB_5000_1_2_124_202_247_200_100_1000_100_10
-	        //name_timeOffset_rampPower_whichTexture_red_green_blue_colorMult_warp_warpSpeed_offsetMult_repeat_saturation
-	        var _this = this;
-	        var nameSplit = params.surface.divisions.split("|");
-	        var divisions = nameSplit[3].split("_");
-	        var shaderInfo = nameSplit[2].split("_");
-	        var divisionMultiplier = new THREE.Vector2(1, 1); // 3,2 for more detail
-	        var geometry = new THREE.ParametricGeometry(params.surface.func, parseInt(divisions[1]) * divisionMultiplier.x, parseInt(divisions[2]) * divisionMultiplier.y);
-	        var swirl = new THREE.Mesh(geometry, params.material === undefined ? new THREE.MeshNormalMaterial() : params.material);
-	        swirl.material.depthTest = false;
-	        swirl.material.uniforms['textureColor'].value = params.textureColor;
-	        swirl.material.uniforms['textureAlpha'].value = params.textureAlpha;
-	        swirl.material.uniforms['fade'].value = 0;
-	        swirl.material.uniforms['power'].value = 1;
-	        swirl.whichTexture = shaderInfo[3];
-	        swirl.rampPower = shaderInfo[2];
-	        swirl.colorMult = shaderInfo[7];
-	        swirl.warp = shaderInfo[8];
-	        swirl.warpSpeed = shaderInfo[9] ? shaderInfo[9] : 100;
-	        swirl.offsetMult = shaderInfo[10] ? shaderInfo[10] : 100;
-	        swirl.repeat = shaderInfo[11] ? shaderInfo[11] : 100;
-	        swirl.saturation = shaderInfo[12] ? shaderInfo[12] : 20;
-	        // console.log(swirl.warpSpeed);
-	        swirl.objName = shaderInfo[0];
-	        swirl.timeOffsetRandom = (((Math.random()) * shaderInfo[1]) / 1000) * 30;
-	        swirl.color = new THREE.Vector3(((swirl.colorMult * .01) * shaderInfo[4] / 256) + Math.random() * (swirl.saturation * .01), ((swirl.colorMult * .01) * shaderInfo[5] / 256) + Math.random() * (swirl.saturation * .01), ((swirl.colorMult * .01) * shaderInfo[6] / 256) + Math.random() * (swirl.saturation * .01));
-	        swirl.animation = params.surface.animation;
-	        for (var i = 0; i < swirl.animation.length; i++) {
-	            swirl.animation[i][0] += swirl.timeOffsetRandom;
-	        }
-	        swirl.inPoint = swirl.animation[0][0];
-	        swirl.outPoint = swirl.animation[swirl.animation.length - 1][0];
-	        swirl.isInScene = false;
-	        swirl.done = false;
-	        swirl.update = function (time) {
-	            if (time < swirl.inPoint || time > swirl.outPoint && swirl.visible) {
-	                if (swirl.isInScene) {
-	                    _this.app.scene.remove(swirl);
-	                    swirl.isInScene = false;
-	                    swirl.done = true;
-	                }
-	            }
-	            else if (time > swirl.inPoint && time < swirl.outPoint) {
-	                var getLerp = _this.findInOut(time, swirl.animation);
-	                var value = _this.remap(getLerp[0], 0, 1, swirl.animation[getLerp[1]][1], swirl.animation[getLerp[2]][1]);
-	                if (value > -1 && value < 1) {
-	                    swirl.setFade(value, swirl.rampPower);
-	                    if (!swirl.isInScene) {
-	                        _this.app.scene.add(swirl);
-	                        swirl.isInScene = true;
-	                    }
-	                }
-	                else {
-	                    if (swirl.isInScene) {
-	                        _this.app.scene.remove(swirl);
-	                        swirl.isInScene = false;
-	                    }
-	                }
-	            }
-	            _this.isInScene = swirl.isInScene;
-	            // console.log(swirl.isInScene);
-	        };
-	        swirl.next = function (cam) {
-	            this.material.uniforms['camMat'].value = cam.matrixWorld;
-	        };
-	        swirl.setCam = function (cam) {
-	            this.material.uniforms['camMat'].value = cam.matrixWorld;
-	        };
-	        swirl.offset = function (offset) {
-	            this.material.uniforms['offset'].value = offset;
-	        };
-	        swirl.setFade = function (fade, power) {
-	            this.material.uniforms['fade'].value = fade;
-	            this.material.uniforms['power'].value = power;
-	        };
-	        swirl.setUniform = function (uniform, value) {
-	            swirl.material.uniforms[uniform].value = value;
-	        };
-	        swirl.setColor = function (value) {
-	            var thisTexture = "Color" + swirl.whichTexture;
-	            swirl.material.uniforms[thisTexture].value = value;
-	        };
-	        swirl.checkIfIsInScene = function () {
-	            // console.log(swirl.isInScene);
-	            if (this.isInScene)
-	                return true;
-	            else
-	                return false;
-	        };
-	        swirl.setColor(swirl.color);
-	        swirl.setUniform("warp", swirl.warp);
-	        swirl.setUniform("warpSpeed", swirl.warpSpeed);
-	        swirl.setUniform("repeat", swirl.repeat);
-	        swirl.setUniform("offsetMult", swirl.offsetMult);
-	        return swirl;
-	    };
-	    Tunnel.prototype.findInOut = function (time, animationArray) {
-	        var tween = 0;
-	        var inPoint = 0;
-	        var outPoint = 0;
-	        for (var i = 1; i < animationArray.length; i++) {
-	            var b = animationArray[i][0];
-	            var bVal = animationArray[i][1];
-	            var a = animationArray[i - 1][0];
-	            var aVal = animationArray[i - 1][a];
-	            if (time < b && time > a) {
-	                tween = 1 - ((b - time) / (b - a));
-	                inPoint = i - 1;
-	                outPoint = i;
-	            }
-	        }
-	        return [tween, inPoint, outPoint];
-	    };
-	    Tunnel.prototype.remap = function (value, from1, to1, from2, to2) {
-	        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
-	    };
-	    return Tunnel;
-	}(Forgable_1.Forgable));
-	exports.Tunnel = Tunnel;
-	//# sourceMappingURL=Tunnel.js.map
-
-/***/ },
-/* 78 */
+/* 88 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -52929,7 +54272,7 @@
 	//# sourceMappingURL=Manager.js.map
 
 /***/ },
-/* 79 */
+/* 89 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -52941,11 +54284,14 @@
 	        this.ratio = new THREE.Vector2();
 	        this.normalized = new THREE.Vector2();
 	        this.screen = new THREE.Vector2();
+	        this.queue = [];
 	        window.addEventListener('mousemove', this.move.bind(this), false);
+	        window.addEventListener('dblclick', this.click.bind(this), false);
 	    }
 	    Mouse.prototype.boot = function (_a) {
-	        var browser = _a.browser;
+	        var browser = _a.browser, raycaster = _a.raycaster;
 	        this.browser = browser;
+	        this.raycaster = raycaster;
 	    };
 	    /**
 	     * On Screen Resize
@@ -52957,7 +54303,7 @@
 	         * Normalized
 	         * @type {number}
 	         */
-	        var x = -1 + (event.clientX / this.browser.width) * 2, y = 1 - (event.clientY / this.browser.height) * 2;
+	        var x = (event.clientX / this.browser.width) * 2 - 1, y = -(event.clientY / this.browser.height) * 2 + 1;
 	        this.normalized.set(x, y);
 	        this.ratio.x = event.clientX / this.browser.width;
 	        this.ratio.y = event.clientY / this.browser.height;
@@ -52966,10 +54312,18 @@
 	         */
 	        this.screen.set(event.clientX - this.browser.window.half.x, event.clientY - this.browser.window.half.y);
 	    };
-	    Mouse.prototype.click = function (callback) {
-	        window.addEventListener('dblclick', function (event) { return callback(); });
+	    Mouse.prototype.click = function () {
+	        this.queue.push({
+	            normalized: this.normalized.clone()
+	        });
+	    };
+	    Mouse.prototype.ray = function (object, callback) {
+	        this.raycaster.push(object, callback);
 	    };
 	    Mouse.prototype.update = function (time, delta) {
+	        while (this.queue.length) {
+	            this.raycaster.process(this.queue.shift());
+	        }
 	    };
 	    return Mouse;
 	}());
@@ -52977,7 +54331,78 @@
 	//# sourceMappingURL=Mouse.js.map
 
 /***/ },
-/* 80 */
+/* 90 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/**
+	 * Raycaster Class
+	 */
+	var Raycaster = (function (_super) {
+	    __extends(Raycaster, _super);
+	    function Raycaster() {
+	        _super.call(this);
+	        this.collection = [];
+	    }
+	    Raycaster.prototype.boot = function (_a) {
+	        var camera = _a.camera, mouse = _a.mouse, scene = _a.scene;
+	        this.camera = camera;
+	        this.mouse = mouse;
+	        this.scene = scene;
+	        this.params.Points.threshold = 10;
+	    };
+	    Raycaster.prototype.push = function (object, callback) {
+	        object.userData.raycaster = {
+	            callback: callback
+	        };
+	        this.collection.push(object);
+	    };
+	    Raycaster.prototype.process = function (mouse) {
+	        if (!this.collection.length)
+	            return;
+	        // this.params.Points.threshold = 2;
+	        this.setFromCamera(mouse.normalized, this.camera);
+	        var intersects = this.intersectObjects(this.collection, true);
+	        console.log('clicked', intersects);
+	        if (intersects.length) {
+	            intersects[0].object.userData.raycaster.callback(intersects[0].object, intersects);
+	        }
+	    };
+	    Raycaster.prototype.remove = function (object) {
+	        var _this = this;
+	        this.collection.forEach(function (item, index) {
+	            if (object === item) {
+	                _this.collection.splice(index, 1);
+	            }
+	        });
+	    };
+	    Raycaster.prototype.update = function (time, delta) {
+	        // if (!this.collection.length) return;
+	        // this.setFromCamera(this.mouse.normalized, this.camera);
+	        // let intersects = this.intersectObjects(this.collection, true);
+	        // if (intersects.length) {
+	        //     console.log(intersects)
+	        //     // console.log(intersects[0])
+	        // }
+	        // for (let i = 0; i < intersects.length; i++) {
+	        //     if (intersects[0].object instanceof THREE.Points) {
+	        //     }
+	        //     // let object = intersects[i].object.userData.raycaster;
+	        //     // object.callback();
+	        // }
+	    };
+	    return Raycaster;
+	}(THREE.Raycaster));
+	exports.Raycaster = Raycaster;
+	//# sourceMappingURL=Raycaster.js.map
+
+/***/ },
+/* 91 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53016,7 +54441,7 @@
 	//# sourceMappingURL=Renderer.js.map
 
 /***/ },
-/* 81 */
+/* 92 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53034,6 +54459,7 @@
 	        _super.call(this);
 	    }
 	    Scene.prototype.boot = function (app) {
+	        this.fog = new THREE.FogExp2(0x11121d, 0.001);
 	    };
 	    Scene.prototype.update = function (time, delta) {
 	    };

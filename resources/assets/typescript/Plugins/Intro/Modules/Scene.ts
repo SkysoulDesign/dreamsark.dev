@@ -1,5 +1,5 @@
-import {BootableInterface} from "../../../Interfaces/BootableInterface";
-import {ModulesInterface} from "../Interfaces/ModulesInterface";
+import { BootableInterface } from "../../../Interfaces/BootableInterface";
+import { ModulesInterface } from "../Interfaces/ModulesInterface";
 
 /**
  * Scene Class
@@ -11,6 +11,9 @@ export class Scene extends THREE.Scene implements BootableInterface, ModulesInte
     }
 
     boot(app) {
+
+        this.fog = <any>new THREE.FogExp2(0x11121d, 0.001)
+
     }
 
     update(time: number, delta: number): void {

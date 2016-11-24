@@ -1,4 +1,6 @@
-*.js
-*.psd
-*.map
-*.obj
+**/*.js
+**/*.psd
+**/*.png
+**/*.jpg
+**/*.map
+**/*.obj

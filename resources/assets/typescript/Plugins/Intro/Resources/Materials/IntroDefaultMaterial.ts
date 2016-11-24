@@ -6,6 +6,10 @@ export class IntroDefaultMaterial implements MaterialInterface {
         return {
             'sprite-1.png': '/assets/img/sprite-1.png',
             'sprite-2.png': '/assets/img/sprite-2.png',
+            'sprite-3.png': '/assets/img/sprite-3.png',
+            'sprite-4.png': '/assets/img/sprite-4.png',
+            'sprite-5.png': '/assets/img/sprite-5.png',
+            'sprite-6.png': '/assets/img/sprite-6.png',
         }
     }
 

@@ -45,14 +45,31 @@ var Objects = (function (_super) {
             /**
              * If Animation is set
              */
-            if (instance.hasOwnProperty('animations')) {
-                var actions = _this.app.animation.create(mesh, mesh.geometry.bones, resolutions[2]);
+            if (instance.animations) {
+                var objects_1 = [];
                 /**
-                 * Give a chance for the actions to be configurable
+                 * hacky but... if its a group.. send the bones trough the userData
                  */
-                if (Helpers_1.is.Function(instance.configAnimation))
-                    instance.configAnimation(actions);
-                mesh.userData.animations = actions;
+                if (mesh instanceof THREE.Group) {
+                    mesh.children.forEach(function (child) {
+                        if (child instanceof THREE.SkinnedMesh) {
+                            objects_1.push(child);
+                        }
+                    });
+                }
+                else {
+                    objects_1.push(mesh);
+                }
+                for (var _i = 0, objects_2 = objects_1; _i < objects_2.length; _i++) {
+                    var object = objects_2[_i];
+                    var actions = _this.app.animation.create(object, object.geometry.bones, resolutions[2]);
+                    /**
+                     * Give a chance for the actions to be configurable
+                     */
+                    if (Helpers_1.is.Function(instance.configAnimation))
+                        instance.configAnimation(actions);
+                    object.userData.animations = actions;
+                }
             }
             return mesh;
         });

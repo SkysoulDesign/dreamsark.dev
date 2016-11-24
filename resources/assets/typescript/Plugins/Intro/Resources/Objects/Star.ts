@@ -57,7 +57,7 @@ export class Star extends Forgable implements ObjectInterface {
          * Store Data
          */
         particles['userData'] = {
-            velocity: []
+            velocity: [], completed: false
         };
 
         /**
@@ -103,7 +103,7 @@ export class Star extends Forgable implements ObjectInterface {
 
             positions.array[i * 3 + 1] -= (velocity[0] / 10) * particles.userData.speed;
 
-            if (positions.array[i * 3 + 1] < -distanceY)
+            if (positions.array[i * 3 + 1] < -distanceY && !particles.userData.completed)
                 positions.array[i * 3 + 1] = distanceY
 
         }

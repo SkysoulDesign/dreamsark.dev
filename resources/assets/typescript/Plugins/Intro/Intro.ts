@@ -13,6 +13,8 @@ import { Camera } from "./Modules/Camera";
 import { Scene } from "./Modules/Scene";
 import { Mouse } from "./Modules/Mouse";
 import { Tween } from "./Modules/Tween";
+import { Controls } from "./Modules/Controls";
+import { Raycaster } from "./Modules/Raycaster";
 
 require("expose?THREE!three");
 
@@ -37,6 +39,8 @@ export class Intro extends Plugins {
     public scene: Scene;
     public mouse: Mouse;
     public tween: Tween;
+    public controls: Controls;
+    public raycaster: Raycaster;
 
     /**
      * Constructor

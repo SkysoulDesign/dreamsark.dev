@@ -32,6 +32,8 @@ export class Debris extends Forgable implements ObjectInterface {
 
         debris.userData.update = this.update.bind(this, debris);
 
+        debris['material'].fog = false;
+
         return debris;
 
     }

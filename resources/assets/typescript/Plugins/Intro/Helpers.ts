@@ -44,7 +44,7 @@ export var configureMaterial = (material: any, {x, y, width, height, sprite, uvs
 
         clone.map = texture;
 
-    } 
+    }
 
     return clone;
 }
@@ -139,8 +139,10 @@ export class random {
     /**
      * Generate random number between a given min and max
      */
-    static between(min: number, max: number): number {
-        return (Math.random() * ((max + 1) - min)) + min;
+    static between(min: number, max: number, round: boolean = false): number {
+        let result = (Math.random() * ((max + 1) - min)) + min;
+
+        return round ? Math.floor(result) : result;
     }
 
     /**

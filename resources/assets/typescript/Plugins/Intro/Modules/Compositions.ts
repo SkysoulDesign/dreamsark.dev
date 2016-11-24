@@ -1,7 +1,7 @@
-import {requireAll} from "../../../Helpers";
-import {ModulesInterface} from "../Interfaces/ModulesInterface";
-import {BootableInterface} from "../../../Interfaces/BootableInterface";
-import {Intro} from "../Intro";
+import { requireAll } from "../../../Helpers";
+import { ModulesInterface } from "../Interfaces/ModulesInterface";
+import { BootableInterface } from "../../../Interfaces/BootableInterface";
+import { Intro } from "../Intro";
 import Promise = require("bluebird");
 
 /**
@@ -78,7 +78,7 @@ export class Compositions implements BootableInterface, ModulesInterface {
 
             })
             .then(objects => {
-                this.active = {composition, objects};
+                this.active = { composition, objects };
             })
     }
 

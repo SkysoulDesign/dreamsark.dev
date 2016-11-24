@@ -13,6 +13,7 @@ var Scene = (function (_super) {
         _super.call(this);
     }
     Scene.prototype.boot = function (app) {
+        this.fog = new THREE.FogExp2(0x11121d, 0.001);
     };
     Scene.prototype.update = function (time, delta) {
     };

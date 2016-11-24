@@ -8,9 +8,21 @@ import { Forgable } from "../../Abstracts/Forgable";
  */
 export class Main extends Forgable implements ObjectInterface {
 
+    get models() {
+        return {
+            smoke: '/assets/models/Smoke2.json',
+        }
+    }
+
     get materials() {
         return {
-            material: 'IntroDefaultMaterial'
+            material: 'IntroDefaultMaterial',
+        }
+    }
+
+    get animations() {
+        return {
+            animation: '/assets/models/SmokeAnim.anim'
         }
     }
 
@@ -21,9 +33,11 @@ export class Main extends Forgable implements ObjectInterface {
      * @param material
      * @returns {THREE.Group}
      */
-    create(models, {material}) {
+    create({smoke}, {material}) {
 
         let group = new THREE.Group();
+
+        material.fog = false;
 
         group.add(this.forge('background', material, {
             widthFactor: 2.5,
@@ -54,9 +68,41 @@ export class Main extends Forgable implements ObjectInterface {
             widthFactor: 2.5,
             heightFactor: 1.5,
             position: {
-                x: 50, y: 200 * 1.5, z: 0
+                x: 50, y: 200 * 1.6, z: 0
             }
         }))
+
+        let mesh = this.forge('streak', material, {
+            mesh: THREE.SkinnedMesh,
+            geometry: smoke,
+            scale: 40,
+            position: {
+                x: 50, y: 80, z: 70
+            }
+        })
+
+        mesh.name = 'smoke';
+        mesh['material'].skinning = true;
+
+        group.add(mesh)
+
+        // let mat = new THREE.MeshBasicMaterial({
+        //     skinning: true,
+        //     vertexColors: THREE.VertexColors
+        // });
+
+        // let mesh = new THREE.SkinnedMesh(
+        //     smoke, mat
+        // );
+
+        // mesh.scale.setScalar(1);
+
+        // // ship.visible = false;
+        // mesh.name = 'smoke';
+
+        // console.log(mesh.userData.animations);
+        // group.add(mesh);
+
 
         return group;
 
