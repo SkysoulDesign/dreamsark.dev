@@ -72,8 +72,6 @@ export class Fx extends Forgable implements ObjectInterface {
         bottom.material['userData'].uniforms.frequency.value = 3;
         bottom.material['userData'].uniforms.speed.value = 1;
 
-        console.log(bottom.material['userData'].uniforms)
-
         // bottom.position.setY(0);
         // top.position.setY(0);
         // left.position.setX(0);

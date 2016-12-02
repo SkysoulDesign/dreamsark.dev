@@ -17,11 +17,12 @@ export class Star extends Forgable implements ObjectInterface {
 
         let point = <THREE.PointsMaterial>material;
 
-        point.size = 12;
+        point.size = 8;
         point.color = new THREE.Color('white');
-        point.blending = THREE.NormalBlending;
+        point.blending = THREE.AdditiveBlending;
         point.vertexColors = false;
-        point.alphaTest = .1;
+        point.alphaTest = .00001;
+        point.depthTest = false;
         point.needsUpdate = true;
         point.opacity = .2
 
@@ -37,6 +38,7 @@ export class Star extends Forgable implements ObjectInterface {
         particles.userData.vortexEnabled = false;
         particles.userData.circle = new THREE.CircleGeometry(200, 50);
         particles.userData.align = this.align.bind(this, particles);
+        particles.userData.dot = material
 
         return particles;
 

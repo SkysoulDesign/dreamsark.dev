@@ -39,9 +39,9 @@ export class Renderer extends THREE.WebGLRenderer implements BootableInterface, 
     }
 
     update(time: number, delta: number) {
-        this.render(
-            this.scene, this.camera
-        );
+        // this.render(
+        //     this.scene, this.camera
+        // );
     }
 
 }

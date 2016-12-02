@@ -1,6 +1,6 @@
 import { ObjectInterface } from "../../Interfaces/ObjectInterface";
 import { extend } from "../../../../Helpers";
-import { configureMaterial, resize, sprite, random } from "../../Helpers";
+import { configureMaterial, configureTexture, resize, random } from "../../Helpers";
 import { Forgable } from "../../Abstracts/Forgable";
 
 /**
@@ -20,13 +20,13 @@ export class Plexus extends Forgable implements ObjectInterface {
             coreStick: false,
             coreRadius: 1500,//--1500,
             coreDistance: 20, //in percentage 20
-            maxConnections: 2,
+            maxConnections: 0,
             connectionsMinDistance: 30, //in percentage
             nodeRadius: 300, //--300
             core: 50,//--50
             nodes: 20, //--20
             nodeDistance: 50, //--50 //in percentage 20
-            nodeRandom: true,
+            nodeRandom: false,
             nodesBag: [],
             coreBag: [],
             hexicles: 500,
@@ -34,6 +34,7 @@ export class Plexus extends Forgable implements ObjectInterface {
             hexcleStick: false,
             hexBag: [],
             hex: null, //instance
+            meta: require('json!../../../../../../../public/assets/movies.json')
         }
     }
 
@@ -47,26 +48,29 @@ export class Plexus extends Forgable implements ObjectInterface {
     create(models, {material}) {
 
         let data = this.defaults,
-            maps = material.userData
+            maps = material.userData,
+            nodesCount = Object.keys(data.meta).length * 10
 
         let group = new THREE.Group(),
             hexicles = new THREE.BufferGeometry(),
             hexiclePositions = new Float32Array(data.hexicles * 3),
             hexicleMaterial = new THREE.PointsMaterial({
-                map: maps.hexicle,
-                size: 10,
+                // color: 0xb9214b,
+                map: configureTexture(this.sprite, maps, 'hex'),
+                size: 5,
                 transparent: true,
-                alphaTest: 0.1,
+                alphaTest: 0.01,
+                fog: false,
                 sizeAttenuation: true,
-                opacity: 0.2
+                opacity: 0.3
             }),
             cores = new THREE.BufferGeometry(),
             corePositions = new Float32Array(data.core * 3),
             coreMaterial = new THREE.PointsMaterial({
-                map: maps.core,
+                map: configureTexture(this.sprite, maps, 'core'),
                 size: 70,
                 transparent: true,
-                alphaTest: 0.5,
+                alphaTest: 0.00001,
                 fog: false,
                 sizeAttenuation: true,
                 blending: THREE.AdditiveBlending
@@ -75,9 +79,10 @@ export class Plexus extends Forgable implements ObjectInterface {
             coreLines = new THREE.BufferGeometry(),
             coreLinePositions = new Float32Array((data.core * data.core * data.core) * 3 - data.core * 3),
             coreLineMaterial = new THREE.LineBasicMaterial({
-                color: 0xb0f8ff,
+                color: 0x18b4e2,
                 transparent: true,
-                opacity: .3
+                opacity: .3,
+                blending: THREE.AdditiveBlending
             });
 
         /**
@@ -143,33 +148,50 @@ export class Plexus extends Forgable implements ObjectInterface {
         nodes.drawRange.count = 1;
         nodes.drawRange.start = data.core;
 
+        /**
+         * Materials
+         */
+        let nodeMaterials = [];
+
+        for (let key in data.meta) {
+
+            let material = new THREE.PointsMaterial({
+                size: 60,
+                map: configureTexture(this.sprite, maps, key),
+                transparent: true,
+                alphaTest: 0.5,
+                sizeAttenuation: true,
+            })
+
+            material['userData'] = data.meta[key];
+
+            nodeMaterials.push(material);
+
+        }
+
         for (let i = 0; i < data.core; i++) {
 
+            if (!nodeMaterials.length) break;
+
             let nodeLines = new THREE.BufferGeometry(),
-                nodeLinePositions = new Float32Array((data.nodes * 2) * 3),
+                nodeLinePositions = new Float32Array((nodesCount * 2) * 3),
                 nodeLineMaterial = new THREE.LineDashedMaterial({
                     color: 0xffffff,
                     transparent: true,
                     dashSize: 1,
                     gapSize: 0.2,
-                    opacity: 0.5
+                    opacity: 0.5,
+                    blending: THREE.AdditiveBlending
                 }),
                 index = 0;
 
-            for (let j = 0; j < (data.nodeRandom ? random.between(1, data.nodes, true) : data.nodes); j++) {
+            /**
+             * If its the last core... pick all u have
+             */
+            for (let j = 0; j < Math.floor(nodesCount / data.core); j++) {
 
-                let nodeMaterial = new THREE.PointsMaterial({
-                    size: 60,
-                    //map: maps['point_' + (i + 1) + '_' + (j + 1)],
-                    map: maps['point_' + random.between(1, 2, true) + '_' + random.between(1, 5, true)],
-                    //map: maps.point_squad,
-                    transparent: true,
-                    alphaTest: 0.5,
-                    sizeAttenuation: true,
-
-                });
-
-                let node = new THREE.Points(nodes, nodeMaterial),
+                // let node = new THREE.Points(nodes, nodeMaterials.shift()),
+                let node = new THREE.Points(nodes, nodeMaterials[random.between(1, 18, true)]),
                     vector = random.vector3(0, 0, 0, data.nodeRadius, data.nodeStick);
 
                 let b = 1;
@@ -179,7 +201,7 @@ export class Plexus extends Forgable implements ObjectInterface {
                     for (let j = 0; j < data.nodesBag.length; j++) {
 
                         let distance = data.nodesBag[j].node.position.distanceTo(vector);
-                        if (distance <= data.nodeDistance / 100 * data.nodeRadius) {
+                        if (distance <= data.nodeDistance / 200 * data.nodeRadius) {
                             vector = random.vector3(random.between(-50, 50), random.between(-50, 50), random.between(-50, 50), data.nodeRadius, data.nodeStick);
                             b++;
                         }
@@ -269,13 +291,61 @@ export class Plexus extends Forgable implements ObjectInterface {
             core = new THREE.Points(cores, coreMaterial),
             coreLine = new THREE.LineSegments(coreLines, coreLineMaterial);
 
-        ///**
-        // * Save Reference
-        // */
-        //data.coreBag.push({
-        //    cores: core,
-        //    lines: coreLine
-        //});
+
+        /**
+         * Create Rings
+         */
+        let geometry = new THREE.CircleGeometry(50, 50),
+            rings = new THREE.Group()
+
+        for (let i = 0; i < 3; i++) {
+
+            let mesh = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                opacity: 0.2,
+                transparent: true
+            }))
+
+            mesh.scale.addScalar(i * i * 2);
+
+            rings.add(mesh);
+
+        }
+
+        group.add(rings);
+
+        // let geometry = new THREE.SphereBufferGeometry(10, 50, 50);
+        // let sphereMaterial = new THREE.MeshBasicMaterial({
+        //     // color: 0x2222ff,
+        //     transparent: true,
+        //     blending: THREE.AdditiveBlending,
+        //     map: maps.tunnel,
+        //     side: THREE.BackSide,
+        //     depthTest: false,
+        //     fog: false
+        // }), 
+
+        // let ringMaterial = new THREE.SpriteMaterial({
+        //     // color: 0x2222ff,
+        //     transparent: true,
+        //     blending: THREE.AdditiveBlending,
+        //     map: configureTexture(this.sprite, maps, 'ring'),
+        //     depthTest: false,
+        //     fog: false
+        // })
+
+        // for (let i = 0; i < data.core; i++) {
+
+        //     group.add(
+        //         this.createRing(
+        //             new THREE.Vector3(
+        //                 corePositions[i * 3],
+        //                 corePositions[i * 3 + 1],
+        //                 corePositions[i * 3 + 2],
+        //             ), ringMaterial
+        //         )
+        //     )
+
+        // }
 
         group.add(hexicle);
         group.add(core);
@@ -288,9 +358,26 @@ export class Plexus extends Forgable implements ObjectInterface {
             update: this.update.bind(this, group)
         }
 
-        this.test(group);
-
         return group;
+
+    }
+
+    private rings: THREE.Sprite[] = [];
+
+    private createRing(position: THREE.Vector3, ringMaterial) {
+
+        let ring = new THREE.Sprite(ringMaterial);
+
+        ring.name = 'ring'
+        ring.scale.setScalar(30)
+        ring.position.copy(position);
+
+        /**
+         * Push rings to be animated later
+         */
+        this.rings.push(ring)
+
+        return ring;
 
     }
 
@@ -325,14 +412,22 @@ export class Plexus extends Forgable implements ObjectInterface {
 
         hexPositions.needsUpdate = true;
 
-    }
+        /**
+         * Animate ring
+         */
 
+        // for (let ring of this.rings) {
 
-    public test(group: THREE.Group) {
+        //     if (ring.material.opacity <= 0) {
+        //         ring.scale.set(0, 0, 0)
+        //         ring.material.opacity = 1
+        //     } else {
+        //         ring.scale.x += 0.5;
+        //         ring.scale.y += 0.5;
+        //         ring.material.opacity -= 0.0001
+        //     }
 
-        group.add(new THREE.Mesh(
-            new THREE.PlaneGeometry(100, 100)
-        ))
+        // }
 
     }
 

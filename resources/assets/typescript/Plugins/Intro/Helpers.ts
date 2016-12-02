@@ -91,16 +91,19 @@ export var sprite = function (name: string) {
     return require('json!../../../../../public/assets/img/sprite-1.json')[name];
 }
 
-// export var configureTexture = (texture: THREE.Texture, name: string, base: number = 2048) => {
+export var configureTexture = (sprites, maps: any[], name: string, base: number = 2048) => {
 
-//     let {x, y, width, height} = sprite(name);
+    let sprite = sprites[name],
+        texture = maps[sprite.sprite.name].clone()
 
-//     texture.repeat.set(width / base, height / base);
-//     texture.offset.set(x / base, (base - (y + height)) / base);
-//     texture.needsUpdate = true;
+    let {x, y, width, height} = sprite;
 
-//     return texture;
-// }
+    texture.repeat.set(width / base, height / base);
+    texture.offset.set(x / base, (base - (y + height)) / base);
+    texture.needsUpdate = true;
+
+    return texture;
+}
 
 /**
  * Convert proportionally a given width/height

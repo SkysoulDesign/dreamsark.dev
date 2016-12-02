@@ -3,20 +3,24 @@ import { extend } from "../../../../Helpers";
 import { configureMaterial, resize, sprite } from "../../Helpers";
 import { Forgable } from "../../Abstracts/Forgable";
 
+import Matter = require("matter-js");
+
+let Engine = Matter.Engine,
+    World = Matter.World,
+    Bodies = Matter.Bodies;
+
 /**
  * Character: Base
  */
 export class Main extends Forgable implements ObjectInterface {
 
-    get models() {
-        return {
-            smoke: '/assets/models/Smoke2.json',
-        }
-    }
+    private engine = Engine.create();
 
     get materials() {
         return {
             material: 'IntroDefaultMaterial',
+            point: 'PointsMaterial',
+
         }
     }
 
@@ -33,7 +37,7 @@ export class Main extends Forgable implements ObjectInterface {
      * @param material
      * @returns {THREE.Group}
      */
-    create({smoke}, {material}) {
+    create(objects, {material, point}) {
 
         let group = new THREE.Group();
 
@@ -47,13 +51,16 @@ export class Main extends Forgable implements ObjectInterface {
             }
         }))
 
-        group.add(this.forge('platform', material, {
+        const platform = this.forge('platform', material, {
             scale: 65, position: {
                 x: 50,
                 y: 75,
                 z: 50
             }
-        }))
+        })
+
+        group.add(platform)
+
 
         group.add(this.forge('planet', material, {
             scale: 20,
@@ -72,39 +79,124 @@ export class Main extends Forgable implements ObjectInterface {
             }
         }))
 
-        let mesh = this.forge('streak', material, {
-            mesh: THREE.SkinnedMesh,
-            geometry: smoke,
-            scale: 40,
+        // let mesh = this.forge('streak', material, {
+        //     mesh: THREE.SkinnedMesh,
+        //     geometry: smoke,
+        //     scale: 40,
+        //     position: {
+        //         x: 50, y: 80, z: 70
+        //     }
+        // })
+
+        // mesh.name = 'smoke';
+        // mesh['material'].skinning = true;
+
+        // group.add(mesh)
+
+        let smoke = this.createParticles(point);
+
+        group.add(smoke);
+        group.userData = {
+            update: this.update.bind(this, smoke),
+        }
+
+        return group;
+
+    }
+
+    public update(smoke, time, delta) {
+
+        if (smoke instanceof THREE.Points)
+            smoke.userData.update(time, delta);
+
+        Engine.update(this.engine, delta);
+
+    }
+
+    public createParticles(material): THREE.Object3D {
+
+        // create an engine
+        const engine = this.engine,
+            particle = { count: 100, size: 2 },
+            bodies = [];
+
+        engine.world.gravity.y = -5;
+
+        const physics = function (positions, time) {
+
+            if (engine.world.bodies.length >= particle.count)
+                Matter.World.remove(engine.world, engine.world.bodies[1])
+            
+            engine.world.bodies.push(Bodies.circle(0, 0, particle.size))
+
+            for (let i = 0; i < engine.world.bodies.length; i++) {
+                positions.array[i * 3] = engine.world.bodies[i].position.x;
+                positions.array[i * 3 + 1] = engine.world.bodies[i].position.y;
+            }
+
+            positions.needsUpdate = true
+
+        }
+
+        let smokeMaterial = new THREE.PointsMaterial({
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            size: 150,
+            alphaTest: 0.01,
+        });
+
+        smokeMaterial['userData'] = material['userData'];
+
+        let smoke = <THREE.Points>this.forge('smoke', smokeMaterial, {
+            uvs: false,
+            mesh: THREE.Points,
+            scale: 50,
+            geometry: {
+                create: (width, height, view) => {
+
+                    let particles = new THREE.BufferGeometry(),
+                        particlePositions = new Float32Array(particle.count * 3);
+
+                    for (let i = 0; i < particle.count; i++) {
+
+                        particlePositions[i * 3] = 0;
+                        particlePositions[i * 3 + 1] = 0;
+                        particlePositions[i * 3 + 2] = 0
+
+                    }
+
+                    particles.addAttribute('position', new THREE.BufferAttribute(particlePositions, 3).setDynamic(true));
+
+                    particles['userData'] = {
+                        particle: particle,
+                        update: physics.bind(this, particles.getAttribute('position')),
+                        start: () => {
+
+                            // setInterval(function () {
+
+
+
+                            // }, 1);
+
+                        }
+                    }
+
+                    return particles;
+
+                }
+            },
             position: {
-                x: 50, y: 80, z: 70
+                x: 50, y: 50, z: 50
             }
         })
 
-        mesh.name = 'smoke';
-        mesh['material'].skinning = true;
+        smoke.userData = smoke.geometry['userData'];
 
-        group.add(mesh)
+        const ground = Bodies.rectangle(0, -80, 500, 60, { isStatic: true });
 
-        // let mat = new THREE.MeshBasicMaterial({
-        //     skinning: true,
-        //     vertexColors: THREE.VertexColors
-        // });
+        World.add(engine.world, [ground, ...bodies]);
 
-        // let mesh = new THREE.SkinnedMesh(
-        //     smoke, mat
-        // );
-
-        // mesh.scale.setScalar(1);
-
-        // // ship.visible = false;
-        // mesh.name = 'smoke';
-
-        // console.log(mesh.userData.animations);
-        // group.add(mesh);
-
-
-        return group;
+        return smoke;
 
     }
 

@@ -26,7 +26,9 @@ var Renderer = (function (_super) {
         this.setPixelRatio(this.browser.pixelRatio);
     };
     Renderer.prototype.update = function (time, delta) {
-        this.render(this.scene, this.camera);
+        // this.render(
+        //     this.scene, this.camera
+        // );
     };
     return Renderer;
 }(THREE.WebGLRenderer));

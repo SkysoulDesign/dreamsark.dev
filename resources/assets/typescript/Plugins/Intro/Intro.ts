@@ -15,6 +15,7 @@ import { Mouse } from "./Modules/Mouse";
 import { Tween } from "./Modules/Tween";
 import { Controls } from "./Modules/Controls";
 import { Raycaster } from "./Modules/Raycaster";
+import { Audio } from "./Modules/Audio";
 
 require("expose?THREE!three");
 
@@ -41,6 +42,7 @@ export class Intro extends Plugins {
     public tween: Tween;
     public controls: Controls;
     public raycaster: Raycaster;
+    public audio: Audio;
 
     /**
      * Constructor

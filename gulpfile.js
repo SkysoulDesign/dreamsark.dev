@@ -134,7 +134,13 @@ gulp.task('plugins', function () {
             },
             output: {
                 filename: "[name].js"
+            },
+
+            module: {
+                noParse: /matter.js/,
             }
+
+
         }))
         .pipe(gulp.dest('public/js/plugins/'));
 });
@@ -153,10 +159,13 @@ gulp.task('spritess', function () {
         split: true,
         prefix: 'sprite',
         cssPath: '/assets/img/',
-        dimension: [
-            {ratio: 1, dpi: 72},
-            {ratio: 2, dpi: 192}
-        ],
+        dimension: [{
+            ratio: 1,
+            dpi: 72
+        }, {
+            ratio: 2,
+            dpi: 192
+        }],
     }).pipe(
         gulpif('*.png', gulp.dest('./public/assets/img/'), gulp.dest('./resources/assets/sass/sprites'))
     )

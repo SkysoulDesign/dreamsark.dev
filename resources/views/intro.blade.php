@@ -6,19 +6,19 @@
 
     <div class="content">
 
-        <img src="http://gdj.gdj.netdna-cdn.com/wp-content/uploads/2012/10/movie+posters+16.jpg" alt="">
+        <img id="poster" alt="">
 
         <div class="meta">
 
-            <div class="title">
+            <div id="name" class="title">
                 Loopers
             </div>
 
             <div class="author">
-               <a href="#">Rafael Milewski</a>
+               <a href="#">Project Author</a>
             </div>
 
-            <div class="description">
+            <div id="description" class="description">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos commodi minima est fugiat blanditiis vitae velit voluptas perferendis assumenda. Id ullam natus labore cupiditate dignissimos neque excepturi ex obcaecati sunt.
             </div>
 
@@ -27,6 +27,8 @@
             </div>
 
         </div>
+
+        <a class="close" href="#">x</a>
 
     </div>
 
@@ -53,7 +55,10 @@ click here when you ready
 </div>
 
     <div class="intro-page__assets --background"></div>
-    <ark-animation composition="intro" :payload="[]" style="height: 100%; width: 100%; background: #18142b;//#18142b"></ark-animation>
+    <ark-animation composition="intro" :payload="[]" style="height: 100%; width: 100%; background: #18142b"></ark-animation>
+
+<div id="vignette"></div>
+
 @endsection
 
 @push('scripts')
@@ -62,6 +67,19 @@ click here when you ready
 
 @push('styles')
 <style>
+
+#vignette {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity:0;
+    pointer-events:none;
+    background: radial-gradient(ellipse, transparent 65%, #88341b 100%);
+    // display:none;
+    transition: all 2s
+}
 
 #overlay{
     position:absolute;
@@ -72,7 +90,8 @@ click here when you ready
     justify-content: center;
     align-items: center;
     color: white;
-    display:none;
+    display: none;
+    z-index:3
 }
 
 #overlay .content{
@@ -82,6 +101,26 @@ click here when you ready
     padding: 2em;
     display: flex;
     border: solid 1px white;
+}
+
+.close{
+    text-transform: uppercase;
+    color: white;
+    border: solid 1px white;
+    
+    height: 30px;
+    width: 30px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 3px;
+    opacity: 0.1
+
+}
+
+.close:hover{
+    color: red;
+    border-color: red !important;
+    opacity: 1
 }
 
 #overlay .content img{

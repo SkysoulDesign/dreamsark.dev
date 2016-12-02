@@ -3,6 +3,7 @@ import { Animator } from "../Modules/Animator";
 import { Tween } from "../Modules/Tween";
 import { is } from "../../Helpers";
 import { deg2rad } from "../Helpers";
+import { Glow } from "../Effects/Glow";
 
 /**
  * Intro Composition
@@ -15,7 +16,25 @@ export class Intro extends Composition {
     debrisCompleted: boolean = false;
     tutorialDone: boolean = false;
     open: boolean = false;
+    m_bMyTestBoolean: boolean = false;
     queue = {};
+
+    renderTarget;
+    renderTarget2;
+    renderTarget3;
+    renderTarget4;
+    bufferScene;
+    bufferScene2;
+    originalScene;
+    newCamera;
+    mirror;
+    mirror2;
+
+    /**
+     * Special Key
+     */
+    specialScene;
+    specialTarget;
 
     get objects(): string[] {
         return [
@@ -27,39 +46,190 @@ export class Intro extends Composition {
             'plexus',
             'galaxy',
             'fx',
-            'buttons'
+            'tunnel',
+            'buttons',
+            'cockpit',
+            'flare'
             // 'tunnel',
             // 'streak'
         ];
     }
 
-    public setup() {
-        // console.log('hi')
-    }
+    // public setup() {
+
+    //     let {width, height, aspect} = this.app.browser;
+
+    //     this.renderTarget = new THREE.WebGLRenderTarget(
+    //         width, height, {
+    //             depthBuffer: true
+    //         }
+    //     );
+
+    //     this.renderTarget2 = new THREE.WebGLRenderTarget(
+    //         width / 2, height / 2, {
+    //             depthBuffer: true
+    //         }
+    //     );
+
+    //     this.renderTarget3 = new THREE.WebGLRenderTarget(
+    //         width / 2, height / 2, {
+    //             depthBuffer: true
+    //         }
+    //     );
+
+    //     this.renderTarget4 = new THREE.WebGLRenderTarget(
+    //         width / 2, height / 2, {
+    //             depthBuffer: true
+    //         }
+    //     );
+
+    //     this.bufferScene = new THREE.Scene();
+    //     this.bufferScene2 = new THREE.Scene();
+    //     this.newCamera = new THREE.OrthographicCamera(0, 100, 0, -100, 0, 10000)
+
+    //     let shader = new THREE.ShaderMaterial({
+    //         vertexShader: <string>require('raw!../Resources/Shaders/Test.vert.shader'),
+    //         fragmentShader: <string>require('raw!../Resources/Shaders/Test.frag.shader'),
+    //         uniforms: {
+    //             h: { type: "f", value: 1 / height / 8 },
+    //             texture: { type: "t", value: this.renderTarget.texture },
+    //             texture2: { type: "t", value: this.renderTarget2.texture },
+    //         }
+    //     });
+
+    //     this.mirror = new THREE.Mesh(
+    //         new THREE.PlaneGeometry(100, 100), shader
+    //     )
+
+    //     this.mirror2 = new THREE.Mesh(
+    //         new THREE.PlaneGeometry(100, 100), new THREE.MeshBasicMaterial({
+    //             map: this.renderTarget.texture
+    //         })
+    //     )
+
+    //     this.mirror.position.set(50, -50, 0)
+    //     this.mirror2.position.set(50, -50, 0)
+
+    //     this.bufferScene.add(this.mirror);
+    //     this.bufferScene2.add(this.mirror2);
+
+    // }
+
+    // public render() {
+
+    //     let {width, height} = this.app.browser;
+
+    //     // // this.app.renderer.context.viewport(0,0,width, height)
+
+    //     // this.app.renderer.render(
+    //     //     this.scene, this.camera, this.renderTarget
+    //     // );
+
+
+    //     // // this.app.renderer.render(
+    //     // //     this.bufferScene, this.newCamera
+    //     // // );
+
+    //     // this.app.renderer.render(
+    //     //     this.bufferScene2, this.newCamera, this.renderTarget2
+    //     // );
+    //     // this.app.renderer.render(
+    //     //     this.bufferScene, this.newCamera
+    //     // );
+    // }
+
+    // uniforms;
+    // mesh;
+
+    // public glow(logo: THREE.Object3D) {
+
+    //     logo['geometry'].computeBoundingBox()
+
+    //     let box = logo['geometry'].boundingBox
+    //     let size = box.max.sub(box.min);
+
+    //     let elements = this.app.camera.matrix;
+
+    //     this.uniforms = {
+    //         // cameraLookAt: { type: "vec3", value: new THREE.Vector3(elements[8], elements[9], elements[10]) },
+    //         // size: { type: "vec3", value: size },
+    //         // texture: { type: "t", value: logo['material']['map'] },
+    //         // cameraViewMatrix: { type: "mat4", value: this.app.camera.modelViewMatrix },
+
+    //         glowColor: { type: "c", value: new THREE.Color('red') },
+    //         "c": { type: "f", value: 0 },
+    //         "p": { type: "f", value: 6 },
+    //         viewVector: { type: "v3", value: this.camera.position.clone() }
+    //     }
+
+    //     let shader = new THREE.ShaderMaterial({
+    //         vertexShader: <string>require('raw!../Resources/Shaders/Beta.vert.shader'),
+    //         fragmentShader: <string>require('raw!../Resources/Shaders/Beta.frag.shader'),
+    //         blending: THREE.AdditiveBlending,
+    //         transparent: true,
+    //         uniforms: this.uniforms
+    //     });
+
+    //     // console.log(this.app.camera.matrix.elements[])
+
+    //     let mesh = new THREE.Mesh(
+    //         new THREE.SphereGeometry(20, 10, 10), new THREE.MeshBasicMaterial()
+    //     )
+
+    //     // mesh.position.setX(50)
+
+    //     // let clone = mesh.clone()
+    //     // clone.scale.multiplyScalar(1.6);
+
+    //     // clone.material = shader;
+
+    //     // this.mesh = mesh;
+
+    //     // console.log(logo)
+
+    //     // this.scene.add(clone)
+    //     // this.scene.add(mesh)
+
+
+    //     shader.userData = logo['material'].userData
+
+
+    //     // let moon = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), )
+
+    //     // logo['material'] = shader;
+
+    //     // let cloneLogo = logo.clone()
+    //     //     cloneLogo['material'] = shader;
+
+    //     // cloneLogo.scale.multiplyScalar(1.1);
+
+    //     // let parent = logo.parent;
+
+    //     // let group = new THREE.Group();
+    //     //     group.add(logo)
+    //     //     group.add(cloneLogo)
+
+    //     // group.name = 'logo'
+
+    //     // parent.add(group)
+
+
+    //     // console.log(cloneLogo)
+
+    //     // moon.userData.update = function () {
+
+    //     // }
+
+    //     // this.queue['moon'] = moon;
+    //     // this.scene.add(moon);
+
+    // }
+
+    private glow: Glow;
 
     public stage(objects) {
 
         let {ship, main, hexParticles, star, tunnel, streak, plexus, galaxy, fx, buttons} = objects;
-
-        // setTimeout(() => {
-        //     this.app.loader.load('/models/Actor.json').then(function (a) {
-        //         console.log('what next', a)
-        //     })
-        // }, 5000)
-
-        // artist3d.position.x = 30;
-
-        // this.configure(ship.getChildrenByName('background'), {
-        //     scale: 30,
-        //     position: {
-        //         x: 50,
-        //         y: 50,
-        //         z: 30
-        //     }
-        // })
-
-        // this.scene.add(plexus);
-        // this.scene.add(galaxy);
 
         main.add(buttons);
 
@@ -68,19 +238,37 @@ export class Intro extends Composition {
         this.scene.add(ship);
         this.scene.add(star);
 
-        console.log(main.getObjectByName('smoke').userData.animations)
+        /**
+         * Test
+         */
 
+        // let geometry = new THREE.CircleGeometry(50, 50),
+        //     rings = new THREE.Group()
 
-        // console.log(ship.getObjectByName('logo'));
+        // for (let i = 0; i < 3; i++) {
 
-        // this.scene.add(plexus);
+        //     let mesh = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+        //         opacity: 0.01,
+        //         blending: THREE.AdditiveBlending,
+        //     }))
+
+        //     mesh.scale.addScalar(i * i * .5);
+
+        //     rings.add(mesh);
+
+        // }
+
+        // this.scene.add(rings);
+
+        /**
+         * End Test
+         */
+
         // this.scene.add(tunnel);
 
-        // this.camera
+        this.app.audio.play('ambient')
 
-        Animator
-            .from(main.getObjectByName('smoke'))
-            .play('smoke')
+        let map = star.userData.dot.userData.glow;
 
         /**
          * Queue Update
@@ -88,6 +276,11 @@ export class Intro extends Composition {
         this.queue['ship'] = ship;
         this.queue['hexParticles'] = hexParticles;
         this.queue['star'] = star;
+
+        this.glow = new Glow(this.app['browser'])
+
+        this.glow.uniforms.exposure.value = 0.3;
+        this.glow.uniforms.colorRange.value = 0.95;
 
         this.app.mouse.ray(buttons.getObjectByName('start'), data => {
             this.start(objects);
@@ -97,26 +290,11 @@ export class Intro extends Composition {
             alert('skip')
         });
 
-        // console.log(plexus)
-
-        // this.app.mouse.ray(plexus, data => {
-        //     console.log('foi')
-        // });
-
-        // console.log(this.app.raycaster)
-
-        // this.queue['galaxy'] = galaxy;
-
-        // this.camera.far = 500000;
-        // this.camera.fov = 8;
-        // this.camera.zoom = 0.1
-        // this.camera.updateProjectionMatrix();
-
     }
 
     public start(objects) {
 
-        let {ship, main, hexParticles, debris, star, streak, plexus, galaxy, fx} = objects
+        let {ship, main, hexParticles, debris, star, streak, plexus, galaxy, fx, tunnel, cockpit, flare} = objects
 
         let original = [
             ship.position.clone(),
@@ -129,17 +307,73 @@ export class Intro extends Composition {
             endTunnel = false;
 
         /**
-         * Animate Camera back to center point
+         * Transform ship
          */
         let animation = this.app.tween.animate({
-            origin: this.camera.position,
-            target: {
-                x: 0, y: 0
+            origin: {
+                camera: this.camera.position,
             },
-            duration: 1,
-            ease: Tween.SINEINOUT,
+            target: {
+                camera: {
+                    x: 0, y: 0
+                }
+            },
+            ease: Tween.EXPOINOUT,
+            duration: 3,
             before: () => {
                 this.parallex = false;
+                ship.userData.transform(this.scene, this.queue, this.glow);
+            },
+            update: () => {
+                return !ship.userData.transformDone;
+            }
+
+        })
+
+        /**
+         * Animate Camera back to center point
+         */
+        animation.then({
+            origin: {
+                particle: main.getObjectByName('smoke').userData.particle,
+                camera: this.camera.position,
+                power: 0
+            },
+            target: {
+                power: 0.01,
+                particle: {
+                    count: 20,
+                    size: 4,
+                },
+                camera: {
+                    x: 0, y: 0
+                }
+            },
+            duration: 5,
+            ease: Tween.EXPOIN,
+            before: () => {
+                this.parallex = false;
+                this.app.audio.play('takeOf');
+                this.initTakeOf(main)
+                ship.userData.taill.scale.set(5, .3, 1);
+            },
+            update: ({power}, time) => {
+
+                if (this.app.audio.get('takeOf').timer.getElapsedTime() <= 12) {
+
+                    this.camera.rotation.z = Math.random() * power.value;
+
+                    return true;
+                }
+
+                setTimeout(() => {
+                    delete this.queue['smoke'];
+                }, 2000)
+
+                this.camera.rotation.z = 0;
+
+                return;
+
             }
         })
 
@@ -155,6 +389,7 @@ export class Intro extends Composition {
                 move: 0,
                 decay: 0,
                 taill: 0,
+                glow: this.glow.uniforms
             },
             target: {
                 taill: 2,
@@ -162,16 +397,28 @@ export class Intro extends Composition {
                 booster: -3,
                 speed: 2.5,
                 ship: { z: 20 },
+                glow: {
+                    colorRange: {
+                        value: 0.7
+                    },
+                    exposure: {
+                        value: 0.5
+                    }
+                },
                 main: {
                     y: -main.getObjectByName('background').userData.meta.size.height
                 }
             },
-            duration: 2,
+            duration: .7,
             ease: Tween.EXPOIN,
             before: () => {
-
+                this.app.renderer.setClearColor(0x18142b)
             },
             update: ({booster, speed, decay, taill}, completion, elapsed) => {
+
+                let orb = ship.getObjectByName('orb');
+                orb.scale.addScalar(1.5)
+                orb.material.opacity -= 0.01;
 
                 ship.userData.booster = booster.value;
                 star.userData.speed = speed.value;
@@ -222,9 +469,10 @@ export class Intro extends Composition {
             duration: 5,
             before() {
                 star.userData.vortexEnabled = true;
+                this.mouse = false;
             },
             after: () => {
-                this.mouseInverse = true;
+                // this.mouseInverse = true;
             },
             update({align}, time, completion) {
                 star.userData.align(align)
@@ -232,17 +480,45 @@ export class Intro extends Composition {
         })
 
         /**
+        * Cockpit
+        */
+        animation.then({
+            origin: {
+                cockpit: cockpit,
+                ship: ship.position,
+            },
+            target: {
+                ship: {
+                    z: 800
+                },
+                cockpit: {
+                    material: {
+                        opacity: 1
+                    },
+                    position: {
+                        z: 200
+                    }
+                }
+            },
+            before: () => {
+                this.scene.add(cockpit)
+            },
+            ease: Tween.EXPOINOUT,
+            duration: 3
+        })
+
+        /**
          * Momentum
          */
         animation.then({
             origin: {
-                position: ship.position,
+                // position: ship.position,
                 star: star.userData,
             },
             target: {
-                position: {
-                    z: 0
-                },
+                // position: {
+                //     z: 0
+                // },
                 star: {
                     speed: star.userData.speed * 30
                 },
@@ -260,10 +536,19 @@ export class Intro extends Composition {
                 uniforms: ship.userData.uniforms,
                 position: ship.position,
                 star: star.userData,
+                flare: flare,
                 power: 0,
                 spin: 0,
             },
             target: {
+                flare: {
+                    position: {
+                        z: -500
+                    },
+                    scale: {
+                        y: 50
+                    }
+                },
                 spin: 1,
                 taill: {
                     scale: {
@@ -285,21 +570,22 @@ export class Intro extends Composition {
                         value: 5
                     }
                 },
-                position: {
-                    z: 5
-                },
+                // position: {
+                //     z: 5
+                // },
                 star: {
                     speed: 25
                 },
-                power: 0.015
+                power: 0.015,
             },
             ease: Tween.EXPOIN,
             duration: 2,
             before: () => {
-                // this.scene.add(streak)
-                // this.queue['streak'] = streak;
+
+                this.scene.add(flare)
                 this.scene.add(fx);
                 this.queue['fx'] = fx;
+                this.queue['tunnel'] = tunnel;
 
                 setTimeout(() => {
                     endTunnel = true
@@ -322,8 +608,10 @@ export class Intro extends Composition {
                 logo: ship.getObjectByName('logo'),
                 camera: camera,
                 fade: 1,
+                cockpit: cockpit.position
             },
             target: {
+                cockpit: { z: 1500 },
                 camera: {
                     far: 500000,
                     fov: 8,
@@ -378,7 +666,7 @@ export class Intro extends Composition {
         animation.then({
             origin: {
                 depth: plexus.position.z,
-                star: star.userData
+                star: star.userData,
             },
             target: {
                 star: {
@@ -390,7 +678,9 @@ export class Intro extends Composition {
             ease: Tween.EXPOOUT,
             before: () => {
 
-                setTimeout(this.initTutorial, 5000);
+                setTimeout(this.initTutorial, 4000);
+
+                document.querySelector('#vignette')['style'].opacity = 0.4;
 
                 star.userData.completed = true;
                 this.queue['plexus'] = plexus;
@@ -398,7 +688,7 @@ export class Intro extends Composition {
                 this.scene.add(galaxy);
 
             },
-            update({depth}) {
+            update({depth, star}) {
 
                 plexus.position.setZ(depth.value);
                 galaxy.position.setZ(depth.value);
@@ -414,6 +704,7 @@ export class Intro extends Composition {
                 controls.enabled = true;
 
                 let action = (object, intersects) => {
+
                     if (!this.open)
                         this.showProject(object);
                 }
@@ -429,12 +720,14 @@ export class Intro extends Composition {
 
     public update(objects, time, delta) {
 
+        // this.uniforms.cameraViewMatrix.value = this.app.camera.modelViewMatrix;
+
+        // this.uniforms.viewVector.value.subVectors(this.camera.position, this.mesh.position);
+
         let mouse = this.app.mouse,
             camera = this.camera;
 
         let {hexParticles, ship, galaxy} = objects;
-
-        // galaxy.getObjectByName('dirty').quaternion.copy(camera.quaternion);
 
         for (let property in this.queue) {
             if (this.queue[property].userData.update(time)) {
@@ -474,6 +767,9 @@ export class Intro extends Composition {
 
         }
 
+        this.glow.render(this.app)
+        // this.render();
+
     }
 
     public hexParticlesDone({ hexParticles }) {
@@ -488,6 +784,11 @@ export class Intro extends Composition {
     public initDebris(debris: THREE.Object3D) {
         this.scene.add(debris);
         this.queue['debris'] = debris;
+    }
+
+    public initTakeOf(main: THREE.Group) {
+        main.getObjectByName('smoke').userData.start();
+        this.queue['smoke'] = main;
     }
 
     public initTutorial() {
@@ -510,7 +811,14 @@ export class Intro extends Composition {
     public showProject(object) {
 
         let element = document.querySelector('#overlay'),
+            poster = document.querySelector('#poster'),
+            name = document.querySelector('#name'),
+            description = document.querySelector('#description'),
             controls = this.app.controls.instance;
+
+        poster.setAttribute('src', object.material.userData.poster)
+        name.textContent = object.material.userData.name
+        description.textContent = object.material.userData.description
 
         controls.enabled = false;
         this.open = true;
@@ -522,7 +830,7 @@ export class Intro extends Composition {
 
             element['style'].display = 'flex';
 
-            element.getElementsByClassName('button')[0].addEventListener('click', event => {
+            element.getElementsByClassName('close')[0].addEventListener('click', event => {
                 element['style'].display = 'none';
 
                 this.camera.moveTo(original, () => {
@@ -532,8 +840,6 @@ export class Intro extends Composition {
                 })
 
             }, false);
-
-            // controls.target.copy(object.position)
 
         })
 

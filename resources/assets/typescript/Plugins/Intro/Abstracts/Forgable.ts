@@ -7,7 +7,7 @@ export abstract class Forgable {
 
     public app;
     public camera;
-    private sprite = {};
+    public sprite = {};
 
     get defaults() {
         return {

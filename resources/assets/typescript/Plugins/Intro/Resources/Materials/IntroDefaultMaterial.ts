@@ -10,6 +10,13 @@ export class IntroDefaultMaterial implements MaterialInterface {
             'sprite-4.png': '/assets/img/sprite-4.png',
             'sprite-5.png': '/assets/img/sprite-5.png',
             'sprite-6.png': '/assets/img/sprite-6.png',
+            'sprite-7.png': '/assets/img/sprite-7.png',
+            'sprite-8.png': '/assets/img/sprite-8.png',
+            tunnel: '/assets/img/tunnel.jpg',
+            skybox: '/assets/img/skybox.jpg',
+            glow: '/assets/img/glow.png',
+            dot: '/assets/img/dot.png',
+
         }
     }
 
