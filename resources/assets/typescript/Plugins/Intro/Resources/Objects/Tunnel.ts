@@ -15,16 +15,18 @@ export class Tunnel extends Forgable implements ObjectInterface {
 
     create(models, {material}) {
 
-        let geometry = new THREE.SphereBufferGeometry(5000, 50, 50),
+        let distance = 5024,
+            geometry = new THREE.CylinderGeometry(500, 100, distance, 20, 100, true),
             tunnel = new THREE.Mesh(geometry,
                 new THREE.MeshBasicMaterial({
-                    transparent: true,
-                    blending: THREE.AdditiveBlending,
                     map: material.userData.tunnel,
-                    side: THREE.BackSide,
-                    depthTest: false,
-                    fog: false,
-                    opacity: 0.1
+                    transparent: true,
+                    side: THREE.DoubleSide,
+                    // blending: THREE.AdditiveBlending,
+                    // map: material.userData.tunnel,
+                    depthTest: true,
+                    fog: true,
+                    opacity: 0
                 })
             );
 
@@ -32,41 +34,61 @@ export class Tunnel extends Forgable implements ObjectInterface {
         material.userData.tunnel.repeat.set(1, 2);
 
         tunnel.rotation.x = deg2rad(90);
+        tunnel.position.z = -10000;//-5000 / 2 + 500;
 
-        tunnel.userData.update = this.update.bind(this, tunnel);
-        tunnel.userData.morph = function () {
-
-            // let positions = geometry.getAttribute('position');
-
-            // for (let i = 0; i < positions.count; i++) {
-
-
-            //     let n =Math.random() < 0.5 ? -1 : 1;
-
-            //         positions['array'][i * 3] +=  n*(Math.random() * 0.3);
-            //         positions['array'][i * 3 + 1] += n*(Math.random() * 0.3);
-            //         positions['array'][i * 3 + 2] += n*(Math.random() * 0.3);
-
-            // }
-
-            // positions['needsUpdate'] = true;
-
+        let opt = {
+            waves: 0.7,
+            width: 30,
+            height: 60,
+            speed: 0.003,
+            xSpeed: 0
         }
+
+        const anim = this.vertex(geometry, function (origin, position, delta, now) {
+
+            let l_Value1 = origin.y / distance * 360;
+            let l_Value2 = Math.floor(l_Value1) * opt.waves; //waves
+
+            position.x = origin.x + Math.sin(now / 10 * Math.PI / 180 + l_Value2 * Math.PI / 180 + origin.y / distance) * opt.width; //distance
+            position.z = origin.z + Math.cos(now / 10 * Math.PI / 180 + l_Value2 * Math.PI / 180 + origin.y / distance * 4) * opt.height;
+
+        })
+
+        tunnel.userData.update = this.update.bind(this, tunnel, anim);
+        tunnel.userData.controls = opt
 
         return tunnel;
 
     }
 
-    public createGeometry(width: number, height: number, view, geometry: any) {
-        return new THREE.CylinderGeometry(width, height, 1024, 16, 32, true)
+    public update(tunnel: THREE.Object3D, anim, time, delta) {
+
+        anim.update(delta, time);
+
+        tunnel['material'].map.offset.y = -time / 2 * tunnel.userData.controls.speed;
+        tunnel['material'].map.offset.x = -time / 6 * tunnel.userData.controls.xSpeed;
+
     }
 
-    public update(tunnel: THREE.Object3D, time) {
+    vertex(geometry: THREE.Geometry, transformFct: Function) {
 
-        tunnel['material']['map'].offset.y -= 0.003;
-        tunnel['material']['map'].offset.x -= 0.003;
+        let nVertices = geometry.vertices.length;
+        let origVertices = new Array(nVertices)
 
-        tunnel.userData.morph()
+        for (let i = 0; i < nVertices; i++) {
+            origVertices[i] = geometry.vertices[i].clone();
+        }
+
+        return {
+            update: (delta, now) => {
+                for (let i = 0; i < geometry.vertices.length; i++) {
+                    let origin = origVertices[i];
+                    let position = geometry.vertices[i];
+                    transformFct(origin, position, delta, now);
+                }
+                geometry.verticesNeedUpdate = true;
+            }
+        }
 
     }
 

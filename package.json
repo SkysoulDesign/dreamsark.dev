@@ -41,6 +41,7 @@
     "@types/three": "^0.0.24",
     "bluebird": "^3.4.3",
     "broccoli-sprite": "^0.3.0",
+    "countup.js": "^1.7.1",
     "dat.gui": "^0.6.1",
     "easy-pie-chart": "^2.1.7",
     "flatpickr": "^1.9.1",

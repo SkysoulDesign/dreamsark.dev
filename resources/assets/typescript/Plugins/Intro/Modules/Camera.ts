@@ -45,38 +45,13 @@ export class Camera extends THREE.PerspectiveCamera implements BootableInterface
         }
     }
 
-    moveTo(object: THREE.Object3D, callback:Function) {
+    moveTo(object: THREE.Object3D | THREE.Vector3, callback: Function, distance: number = 200, duration: number = 1, ease: string = Tween.CUBICIN) {
 
-        let distance = 200,
-            clone = this.clone();
+        let original = object instanceof THREE.Object3D ? object.position : object,
+            clone = this.clone()
 
-        clone.position.copy(object.position)
-        clone.translateZ(200)
-
-        // let matrix = new THREE.Matrix4();
-        // matrix.setPosition(new THREE.Vector3(0, 10, 0))
-
-        // this.position.applyMatrix4(matrix);
-
-        // this.quaternion.copy(object.quaternion)
-        // this.position.copy(object.position)
-        // this.position.addScalar(-100)
-        // this.lookAt(object.position)
-
-        // let positions = object['geometry'].attributes.position.array;
-        // let position = new THREE.Vector3(
-        //     positions[0], positions[1], positions[2]
-        // )
-
-        // clone.position.set(position.x - distance, position.y - distance, position.z - distance);
-
-        // this.lookAt(position);
-        // this.position.copy(position);
-        // this.position.z += -100
-
-        var initialQuaternion = this.quaternion.clone();
-        var endingQuaternion = object.quaternion;
-        var targetQuaternion = new THREE.Quaternion();
+        clone.position.copy(original)
+        clone.translateZ(distance)
 
         let animation = this.tween.animate({
             origin: {
@@ -86,37 +61,12 @@ export class Camera extends THREE.PerspectiveCamera implements BootableInterface
                 position: {
                     x: clone.position.x,
                     y: clone.position.y,
-                    z: clone.position.z,
+                    z: clone.position.z
                 }
             },
-            duration: 1,
-            ease: Tween.QUADINOUT,
-            after: callback,
-            update: ({position, time}) => {
-
-                // this.position.x = position.x.value
-                // this.position.y = position.y.value
-                // this.position.z = position.z.value
-
-                // this.controls.instance.target.copy(
-                //     new THREE.Vector3(
-                //         position.x.value,
-                //         position.y.value,
-                //         position.z.value,
-                //     )
-                // )
-
-                // this.position.x = position.x.value;
-                // this.position.y = position.y.value;
-                // this.position.z = position.z.value;
-
-                // THREE.Quaternion.slerp(
-                //     initialQuaternion, endingQuaternion, targetQuaternion, time.value
-                // );
-
-                // this.setRotationFromQuaternion(targetQuaternion);
-
-            }
+            duration: duration,
+            ease: ease,
+            after: callback            
         })
 
     }

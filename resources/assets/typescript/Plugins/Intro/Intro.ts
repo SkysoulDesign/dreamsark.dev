@@ -25,6 +25,8 @@ export class Intro extends Plugins {
     public canvas: HTMLCanvasElement;
     public modules: any[];
 
+    private animating: boolean = false;
+
     /**
      * Modules
      */
@@ -75,7 +77,7 @@ export class Intro extends Plugins {
         try {
             this.compositions
                 .start(composition, payload)
-                .then(() => this.animate())
+                .then(() => { if (!this.animating) this.animate() })
                 .catch(console.log);
         } catch (error) {
             console.log(error)
@@ -86,6 +88,8 @@ export class Intro extends Plugins {
      * Animation Loop
      */
     animate() {
+
+        this.animating = true;
 
         let clock = new THREE.Clock(),
             loop = time => {

@@ -211,16 +211,14 @@ export class Tween implements BootableInterface, ModulesInterface {
      */
     public update(time: number, delta: number): void {
 
-        if (!this.pool.length) {
-            return;
-        }
+        if (!this.pool.length) return;
 
         this.pool.forEach((item, index) => {
 
             let elapsed = item.clock.getElapsedTime(),
                 completion = (elapsed / item.duration) * 100;
 
-            if (!(item.done = this.analizer(item.result || null)) && completion < 100) {
+            if (!(item.done = this.analizer(item.result || null)) && completion <= 100) {
 
                 item.result = this.looper(item.origin, item.target, item.container, (o, t, c, p) => {
                     return this.process(item, o, t, c, p);

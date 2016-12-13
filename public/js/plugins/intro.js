@@ -63,6 +63,7 @@
 	     */
 	    function Intro(app, canvas) {
 	        _super.call(this);
+	        this.animating = false;
 	        if (canvas.constructor === String) {
 	            canvas = document.querySelector(canvas);
 	        }
@@ -83,7 +84,8 @@
 	        try {
 	            this.compositions
 	                .start(composition, payload)
-	                .then(function () { return _this.animate(); })
+	                .then(function () { if (!_this.animating)
+	                _this.animate(); })
 	                .catch(console.log);
 	        }
 	        catch (error) {
@@ -95,6 +97,7 @@
 	     */
 	    Intro.prototype.animate = function () {
 	        var _this = this;
+	        this.animating = true;
 	        var clock = new THREE.Clock(), loop = function (time) {
 	            var delta = clock.getDelta();
 	            requestAnimationFrame(loop);
@@ -42537,19 +42540,19 @@
 		"./Browser.js": 12,
 		"./Camera.js": 13,
 		"./Compositions.js": 16,
-		"./Controls.js": 30,
-		"./Debugger.js": 31,
-		"./Light.js": 33,
-		"./Loader.js": 34,
-		"./Loaders/Animation.js": 35,
-		"./Loaders/Material.js": 37,
-		"./Loaders/Model.js": 46,
-		"./Loaders/Objects.js": 47,
-		"./Manager.js": 106,
-		"./Mouse.js": 107,
-		"./Raycaster.js": 108,
-		"./Renderer.js": 109,
-		"./Scene.js": 110,
+		"./Controls.js": 32,
+		"./Debugger.js": 33,
+		"./Light.js": 35,
+		"./Loader.js": 36,
+		"./Loaders/Animation.js": 37,
+		"./Loaders/Material.js": 39,
+		"./Loaders/Model.js": 48,
+		"./Loaders/Objects.js": 49,
+		"./Manager.js": 112,
+		"./Mouse.js": 113,
+		"./Raycaster.js": 114,
+		"./Renderer.js": 115,
+		"./Scene.js": 116,
 		"./Tween.js": 14
 	};
 	function webpackContext(req) {
@@ -49312,28 +49315,13 @@
 	            width: width, height: height, depth: depth
 	        };
 	    };
-	    Camera.prototype.moveTo = function (object, callback) {
-	        var distance = 200, clone = this.clone();
-	        clone.position.copy(object.position);
-	        clone.translateZ(200);
-	        // let matrix = new THREE.Matrix4();
-	        // matrix.setPosition(new THREE.Vector3(0, 10, 0))
-	        // this.position.applyMatrix4(matrix);
-	        // this.quaternion.copy(object.quaternion)
-	        // this.position.copy(object.position)
-	        // this.position.addScalar(-100)
-	        // this.lookAt(object.position)
-	        // let positions = object['geometry'].attributes.position.array;
-	        // let position = new THREE.Vector3(
-	        //     positions[0], positions[1], positions[2]
-	        // )
-	        // clone.position.set(position.x - distance, position.y - distance, position.z - distance);
-	        // this.lookAt(position);
-	        // this.position.copy(position);
-	        // this.position.z += -100
-	        var initialQuaternion = this.quaternion.clone();
-	        var endingQuaternion = object.quaternion;
-	        var targetQuaternion = new THREE.Quaternion();
+	    Camera.prototype.moveTo = function (object, callback, distance, duration, ease) {
+	        if (distance === void 0) { distance = 200; }
+	        if (duration === void 0) { duration = 1; }
+	        if (ease === void 0) { ease = Tween_1.Tween.CUBICIN; }
+	        var original = object instanceof THREE.Object3D ? object.position : object, clone = this.clone();
+	        clone.position.copy(original);
+	        clone.translateZ(distance);
 	        var animation = this.tween.animate({
 	            origin: {
 	                position: this.position
@@ -49342,32 +49330,12 @@
 	                position: {
 	                    x: clone.position.x,
 	                    y: clone.position.y,
-	                    z: clone.position.z,
+	                    z: clone.position.z
 	                }
 	            },
-	            duration: 1,
-	            ease: Tween_1.Tween.QUADINOUT,
-	            after: callback,
-	            update: function (_a) {
-	                // this.position.x = position.x.value
-	                // this.position.y = position.y.value
-	                // this.position.z = position.z.value
-	                var position = _a.position, time = _a.time;
-	                // this.controls.instance.target.copy(
-	                //     new THREE.Vector3(
-	                //         position.x.value,
-	                //         position.y.value,
-	                //         position.z.value,
-	                //     )
-	                // )
-	                // this.position.x = position.x.value;
-	                // this.position.y = position.y.value;
-	                // this.position.z = position.z.value;
-	                // THREE.Quaternion.slerp(
-	                //     initialQuaternion, endingQuaternion, targetQuaternion, time.value
-	                // );
-	                // this.setRotationFromQuaternion(targetQuaternion);
-	            }
+	            duration: duration,
+	            ease: ease,
+	            after: callback
 	        });
 	    };
 	    return Camera;
@@ -49535,12 +49503,11 @@
 	     */
 	    Tween.prototype.update = function (time, delta) {
 	        var _this = this;
-	        if (!this.pool.length) {
+	        if (!this.pool.length)
 	            return;
-	        }
 	        this.pool.forEach(function (item, index) {
 	            var elapsed = item.clock.getElapsedTime(), completion = (elapsed / item.duration) * 100;
-	            if (!(item.done = _this.analizer(item.result || null)) && completion < 100) {
+	            if (!(item.done = _this.analizer(item.result || null)) && completion <= 100) {
 	                item.result = _this.looper(item.origin, item.target, item.container, function (o, t, c, p) {
 	                    return _this.process(item, o, t, c, p);
 	                });
@@ -50009,7 +49976,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Intro.js": 18
+		"./Galaxy.js": 18,
+		"./Intro.js": 22
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -50039,552 +50007,179 @@
 	var Tween_1 = __webpack_require__(14);
 	var Helpers_1 = __webpack_require__(15);
 	var Helpers_2 = __webpack_require__(20);
-	var Glow_1 = __webpack_require__(22);
 	/**
-	 * Intro Composition
+	 * Galaxy Composition
 	 */
-	var Intro = (function (_super) {
-	    __extends(Intro, _super);
-	    function Intro() {
+	var Galaxy = (function (_super) {
+	    __extends(Galaxy, _super);
+	    function Galaxy() {
 	        _super.apply(this, arguments);
-	        this.parallex = true;
-	        this.mouse = false;
-	        this.mouseInverse = false;
-	        this.debrisCompleted = false;
-	        this.tutorialDone = false;
 	        this.open = false;
-	        this.m_bMyTestBoolean = false;
-	        this.queue = {};
+	        this.tutorialDone = false;
 	    }
-	    Object.defineProperty(Intro.prototype, "objects", {
+	    Object.defineProperty(Galaxy.prototype, "objects", {
 	        get: function () {
 	            return [
-	                'main',
-	                'hexParticles',
-	                'ship',
-	                'debris',
-	                'star',
 	                'plexus',
 	                'galaxy',
-	                'fx',
-	                'tunnel',
-	                'buttons',
-	                'cockpit',
-	                'flare'
 	            ];
 	        },
 	        enumerable: true,
 	        configurable: true
 	    });
-	    Intro.prototype.stage = function (objects) {
-	        var _this = this;
-	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, star = objects.star, tunnel = objects.tunnel, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, buttons = objects.buttons;
-	        main.add(buttons);
-	        this.scene.add(main);
-	        this.scene.add(hexParticles);
-	        this.scene.add(ship);
-	        this.scene.add(star);
-	        /**
-	         * Test
-	         */
-	        // let geometry = new THREE.CircleGeometry(50, 50),
-	        //     rings = new THREE.Group()
-	        // for (let i = 0; i < 3; i++) {
-	        //     let mesh = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-	        //         opacity: 0.01,
-	        //         blending: THREE.AdditiveBlending,
-	        //     }))
-	        //     mesh.scale.addScalar(i * i * .5);
-	        //     rings.add(mesh);
-	        // }
-	        // this.scene.add(rings);
-	        /**
-	         * End Test
-	         */
-	        // this.scene.add(tunnel);
-	        this.app.audio.play('ambient');
-	        var map = star.userData.dot.userData.glow;
-	        /**
-	         * Queue Update
-	         */
-	        this.queue['ship'] = ship;
-	        this.queue['hexParticles'] = hexParticles;
-	        this.queue['star'] = star;
-	        this.glow = new Glow_1.Glow(this.app['browser']);
-	        this.glow.uniforms.exposure.value = 0.3;
-	        this.glow.uniforms.colorRange.value = 0.95;
-	        this.app.mouse.ray(buttons.getObjectByName('start'), function (data) {
-	            _this.start(objects);
-	        });
-	        this.app.mouse.ray(buttons.getObjectByName('skip'), function (data) {
-	            alert('skip');
-	        });
+	    Galaxy.prototype.setup = function (app, _a) {
+	        var glow = _a.glow, queue = _a.queue, tunnel = _a.tunnel;
+	        this.glow = glow;
+	        this.tunnel = tunnel;
+	        this.queue = queue;
+	        this.app.camera.fov = 8;
+	        this.app.camera.zoom = 0.1;
+	        this.app.camera.far = 500000;
+	        this.app.camera.rotation.z = Helpers_2.deg2rad(360);
+	        this.app.camera.updateProjectionMatrix();
+	        delete this.queue['hexParticles'];
+	        delete this.queue['ship'];
+	        delete this.queue['star'];
 	    };
-	    Intro.prototype.start = function (objects) {
+	    Galaxy.prototype.stage = function (objects) {
 	        var _this = this;
-	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, debris = objects.debris, star = objects.star, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, tunnel = objects.tunnel, cockpit = objects.cockpit, flare = objects.flare;
-	        var original = [
-	            ship.position.clone(),
-	            main.position.clone()
-	        ];
-	        var logo = ship.getObjectByName('logo'), camera = this.camera, controls = this.app.controls.instance, endTunnel = false;
+	        var plexus = objects.plexus, galaxy = objects.galaxy;
+	        var fader = document.querySelector('#fader');
 	        /**
-	         * Transform ship
+	         * Init Tutorial
 	         */
 	        var animation = this.app.tween.animate({
-	            origin: {
-	                camera: this.camera.position,
-	            },
+	            origin: { glow: this.glow.uniforms },
 	            target: {
-	                camera: {
-	                    x: 0, y: 0
-	                }
-	            },
-	            ease: Tween_1.Tween.EXPOINOUT,
-	            duration: 3,
-	            before: function () {
-	                _this.parallex = false;
-	                ship.userData.transform(_this.scene, _this.queue, _this.glow);
-	            },
-	            update: function () {
-	                return !ship.userData.transformDone;
-	            }
-	        });
-	        /**
-	         * Animate Camera back to center point
-	         */
-	        animation.then({
-	            origin: {
-	                particle: main.getObjectByName('smoke').userData.particle,
-	                camera: this.camera.position,
-	                power: 0
-	            },
-	            target: {
-	                power: 0.01,
-	                particle: {
-	                    count: 20,
-	                    size: 4,
-	                },
-	                camera: {
-	                    x: 0, y: 0
-	                }
-	            },
-	            duration: 5,
-	            ease: Tween_1.Tween.EXPOIN,
-	            before: function () {
-	                _this.parallex = false;
-	                _this.app.audio.play('takeOf');
-	                _this.initTakeOf(main);
-	                ship.userData.taill.scale.set(5, .3, 1);
-	            },
-	            update: function (_a, time) {
-	                var power = _a.power;
-	                if (_this.app.audio.get('takeOf').timer.getElapsedTime() <= 12) {
-	                    _this.camera.rotation.z = Math.random() * power.value;
-	                    return true;
-	                }
-	                setTimeout(function () {
-	                    delete _this.queue['smoke'];
-	                }, 2000);
-	                _this.camera.rotation.z = 0;
-	                return;
-	            }
-	        });
-	        /**
-	         * Animate spaceship up
-	         */
-	        animation.then({
-	            origin: {
-	                ship: logo.position,
-	                main: main.position,
-	                booster: ship.userData.booster,
-	                speed: star.userData.speed,
-	                move: 0,
-	                decay: 0,
-	                taill: 0,
-	                glow: this.glow.uniforms
-	            },
-	            target: {
-	                taill: 2,
-	                decay: 5,
-	                booster: -3,
-	                speed: 2.5,
-	                ship: { z: 20 },
 	                glow: {
-	                    colorRange: {
-	                        value: 0.7
-	                    },
 	                    exposure: {
-	                        value: 0.5
-	                    }
-	                },
-	                main: {
-	                    y: -main.getObjectByName('background').userData.meta.size.height
-	                }
-	            },
-	            duration: .7,
-	            ease: Tween_1.Tween.EXPOIN,
-	            before: function () {
-	                _this.app.renderer.setClearColor(0x18142b);
-	            },
-	            update: function (_a, completion, elapsed) {
-	                var booster = _a.booster, speed = _a.speed, decay = _a.decay, taill = _a.taill;
-	                var orb = ship.getObjectByName('orb');
-	                orb.scale.addScalar(1.5);
-	                orb.material.opacity -= 0.01;
-	                ship.userData.booster = booster.value;
-	                star.userData.speed = speed.value;
-	                star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
-	                hexParticles.userData.decay = decay.value;
-	                ship.userData.taill.visible = true;
-	                ship.userData.taill.scale.set(taill.value, .3, 1);
-	                if (taill.completion < 95)
-	                    ship.userData.taill.position.y -= taill.value;
-	                return !_this.debrisCompleted;
-	            },
-	            after: function () {
-	                _this.mouse = true;
-	                _this.initDebris(debris);
-	            }
-	        });
-	        /**
-	         * Lets go to tunnel
-	         */
-	        animation.then({
-	            origin: {
-	                rotation: ship.rotation,
-	                position: ship.position,
-	                align: 0,
-	                r: star.rotation,
-	            },
-	            target: {
-	                r: {
-	                    x: -Helpers_2.deg2rad(90)
-	                },
-	                align: 100,
-	                position: {
-	                    z: -300,
-	                    x: 0,
-	                    y: 0
-	                },
-	                rotation: {
-	                    x: -Helpers_2.deg2rad(90),
-	                    y: Helpers_2.deg2rad(360)
-	                }
-	            },
-	            ease: Tween_1.Tween.QUADINOUT,
-	            duration: 5,
-	            before: function () {
-	                star.userData.vortexEnabled = true;
-	                this.mouse = false;
-	            },
-	            after: function () {
-	                // this.mouseInverse = true;
-	            },
-	            update: function (_a, time, completion) {
-	                var align = _a.align;
-	                star.userData.align(align);
-	            }
-	        });
-	        /**
-	        * Cockpit
-	        */
-	        animation.then({
-	            origin: {
-	                cockpit: cockpit,
-	                ship: ship.position,
-	            },
-	            target: {
-	                ship: {
-	                    z: 800
-	                },
-	                cockpit: {
-	                    material: {
-	                        opacity: 1
+	                        value: 0.3
 	                    },
-	                    position: {
-	                        z: 200
+	                    colorRange: {
+	                        value: .95
 	                    }
 	                }
 	            },
+	            duration: 1,
 	            before: function () {
-	                _this.scene.add(cockpit);
-	            },
-	            ease: Tween_1.Tween.EXPOINOUT,
-	            duration: 3
-	        });
-	        /**
-	         * Momentum
-	         */
-	        animation.then({
-	            origin: {
-	                // position: ship.position,
-	                star: star.userData,
-	            },
-	            target: {
-	                // position: {
-	                //     z: 0
-	                // },
-	                star: {
-	                    speed: star.userData.speed * 30
-	                },
-	            },
-	            ease: Tween_1.Tween.EXPOINOUT,
-	            duration: 3
-	        });
-	        /**
-	         * Super Speed
-	         */
-	        animation.then({
-	            origin: {
-	                taill: ship.userData.taill,
-	                uniforms: ship.userData.uniforms,
-	                position: ship.position,
-	                star: star.userData,
-	                flare: flare,
-	                power: 0,
-	                spin: 0,
-	            },
-	            target: {
-	                flare: {
-	                    position: {
-	                        z: -500
-	                    },
-	                    scale: {
-	                        y: 50
-	                    }
-	                },
-	                spin: 1,
-	                taill: {
-	                    scale: {
-	                        x: 15, y: 1, z: 1
-	                    },
-	                    position: {
-	                        y: -400
-	                    }
-	                },
-	                uniforms: {
-	                    frequency: {
-	                        value: 10
-	                    },
-	                    waves: {
-	                        value: 2
-	                    },
-	                    warp: {
-	                        value: 5
-	                    }
-	                },
-	                // position: {
-	                //     z: 5
-	                // },
-	                star: {
-	                    speed: 25
-	                },
-	                power: 0.015,
-	            },
-	            ease: Tween_1.Tween.EXPOIN,
-	            duration: 2,
-	            before: function () {
-	                _this.scene.add(flare);
-	                _this.scene.add(fx);
-	                _this.queue['fx'] = fx;
-	                _this.queue['tunnel'] = tunnel;
-	                setTimeout(function () {
-	                    endTunnel = true;
-	                }, 10000);
-	            },
-	            update: function (_a, time) {
-	                var power = _a.power, streak = _a.streak, spin = _a.spin;
-	                camera.rotation.z += Math.sin(time) * power.value;
-	                ship.userData.taill.rotation.y += spin.value;
-	                fx.userData.uniforms.alpha.value = spin.value;
-	                return !endTunnel;
-	            }
-	        });
-	        /**
-	         * Lock and warp
-	         */
-	        animation.then({
-	            origin: {
-	                logo: ship.getObjectByName('logo'),
-	                camera: camera,
-	                fade: 1,
-	                cockpit: cockpit.position
-	            },
-	            target: {
-	                cockpit: { z: 1500 },
-	                camera: {
-	                    far: 500000,
-	                    fov: 8,
-	                    zoom: 0.1
-	                },
-	                fade: 0,
-	                logo: {
-	                    position: { x: 0, y: 0, z: 0 },
-	                    rotation: { x: 0, y: 0 },
-	                    scale: { x: 0.001, y: 0.001, z: 0.001 },
-	                }
-	            },
-	            duration: 5,
-	            ease: Tween_1.Tween.CUBICIN,
-	            before: function () {
-	                _this.mouse = false;
-	            },
-	            update: function (_a) {
-	                var fade = _a.fade;
-	                main.children.forEach(function (child) {
-	                    child.position.z += 5;
-	                    /**
-	                     * Instance of group, as buttons no need to have opacity lowered
-	                     */
-	                    if (!(child instanceof THREE.Group))
-	                        child.material.opacity = fade.value;
-	                });
-	                fx.userData.uniforms.alpha.value = fade.value;
-	                camera.updateProjectionMatrix();
-	            },
-	            after: function () {
-	                _this.scene.remove(main);
-	                _this.scene.remove(fx);
-	                delete _this.queue['fx'];
-	            }
-	        });
-	        // this.camera.far = 500000;
-	        // this.camera.fov= 8;
-	        // this.camera.zoom = 0.1
-	        // this.camera.updateProjectionMatrix();
-	        /**
-	         * Enter plexus
-	         */
-	        animation.then({
-	            origin: {
-	                depth: plexus.position.z,
-	                star: star.userData,
-	            },
-	            target: {
-	                star: {
-	                    speed: 1
-	                },
-	                depth: 0
-	            },
-	            duration: 10,
-	            ease: Tween_1.Tween.EXPOOUT,
-	            before: function () {
-	                setTimeout(_this.initTutorial, 4000);
-	                document.querySelector('#vignette')['style'].opacity = 0.4;
-	                star.userData.completed = true;
+	                _this.initTutorial();
 	                _this.queue['plexus'] = plexus;
 	                _this.scene.add(plexus);
 	                _this.scene.add(galaxy);
+	                _this.scene.fog = null;
+	                _this.scene.remove(_this.tunnel);
+	                delete _this.queue['tunnel'];
 	            },
-	            update: function (_a) {
-	                var depth = _a.depth, star = _a.star;
-	                plexus.position.setZ(depth.value);
-	                galaxy.position.setZ(depth.value);
-	                return this.tutorialDone;
+	            update: function () {
+	                return !_this.tutorialDone;
+	            }
+	        });
+	        /**
+	        * Enter plexus
+	        */
+	        animation.then({
+	            origin: {
+	                plexus: plexus,
+	                angle: this.camera.rotation,
+	                tunnel: this.tunnel,
+	            },
+	            target: {
+	                angle: {
+	                    z: 0
+	                },
+	                plexus: {
+	                    position: {
+	                        z: 0.00000001
+	                    }
+	                }
+	            },
+	            duration: 15,
+	            ease: Tween_1.Tween.EXPOIN,
+	            before: function () {
+	                fader['style'].opacity = 0;
+	                plexus.userData.materials.forEach(function (material) {
+	                    material.opacity = 1;
+	                });
+	                galaxy.userData.materials.forEach(function (material) {
+	                    material.opacity = 0.8;
+	                });
 	            },
 	            after: function () {
-	                _this.scene.remove(ship);
-	                _this.scene.remove(hexParticles);
-	                _this.scene.remove(star);
-	                controls.enabled = true;
+	                _this.app.controls.instance.enabled = true;
+	                document.querySelector('#vignette')['style'].opacity = 0.5;
 	                var action = function (object, intersects) {
 	                    if (!_this.open)
 	                        _this.showProject(object);
 	                };
-	                plexus.userData.data.nodesBag.forEach(function (node) {
-	                    _this.app.mouse.ray(node.node, action);
+	                plexus.userData.nodesBag.forEach(function (node) {
+	                    _this.app.mouse.ray(node, action);
 	                });
+	                fader['style'].display = 'none';
 	            }
 	        });
 	    };
-	    Intro.prototype.update = function (objects, time, delta) {
-	        // this.uniforms.cameraViewMatrix.value = this.app.camera.modelViewMatrix;
-	        // this.uniforms.viewVector.value.subVectors(this.camera.position, this.mesh.position);
-	        var mouse = this.app.mouse, camera = this.camera;
-	        var hexParticles = objects.hexParticles, ship = objects.ship, galaxy = objects.galaxy;
+	    Galaxy.prototype.showProject = function (object) {
+	        var _this = this;
+	        var element = document.querySelector('#overlay'), poster = document.querySelector('#poster'), name = document.querySelector('#name'), description = document.querySelector('#description'), controls = this.app.controls.instance;
+	        element['style'].display = 'flex';
+	        poster.setAttribute('src', object.material.userData.poster);
+	        name.textContent = object.material.userData.name;
+	        description.textContent = object.material.userData.description;
+	        controls.enabled = false;
+	        this.open = true;
+	        var original = this.camera.clone(), target = controls.target.clone(), plexus = object.parent.parent.parent, verticePosition = (new THREE.Vector3()).fromAttribute(object.geometry.getAttribute('position'), 1);
+	        /**
+	         * Stop Rotation
+	        */
+	        plexus.userData.rotate = false;
+	        var position = plexus.matrix.multiplyVector3(verticePosition);
+	        this.camera.moveTo(position, function () {
+	            element['style'].opacity = 1;
+	            element.firstElementChild['style'].transform = 'scale(1)';
+	            element.getElementsByClassName('close')[0].addEventListener('click', function (event) {
+	                element['style'].opacity = 0;
+	                element.firstElementChild['style'].transform = 'scale(0.1)';
+	                /**
+	                 * Restart Rotation
+	                 */
+	                plexus.userData.rotate = true;
+	                _this.camera.moveTo(original, function () {
+	                    // controls.target.copy(target)
+	                    _this.open = false;
+	                    controls.enabled = true;
+	                    element['style'].display = 'none';
+	                }, 0);
+	            }, false);
+	        });
+	    };
+	    Galaxy.prototype.initTutorial = function () {
+	        var _this = this;
+	        var element = document.querySelector('#tutorial');
+	        element['style'].display = 'flex';
+	        setTimeout(function () { return element['style'].opacity = 1; }, 100);
+	        var canvas = document.querySelector('canvas');
+	        canvas['style'].backgroundColor = 'black';
+	        element.getElementsByTagName('button')[0].addEventListener('click', function (event) {
+	            _this.tutorialDone = true;
+	            element['style'].opacity = 0;
+	            setTimeout(function () { return element['style'].display = 'none'; }, 1000);
+	        }, false);
+	    };
+	    Galaxy.prototype.update = function (objects, time, delta) {
 	        for (var property in this.queue) {
-	            if (this.queue[property].userData.update(time)) {
+	            if (this.queue[property].userData.update(time, delta)) {
 	                if (Helpers_1.is.Function(this[(property + "Done")])) {
 	                    this[(property + "Done")](objects);
 	                }
 	                delete this.queue[property];
 	            }
 	        }
-	        /**
-	        * Parallex
-	        */
-	        if (this.parallex) {
-	            camera.position.set(mouse.normalized.x * 20, mouse.normalized.y * 20, 500);
-	        }
-	        /**
-	        * Logo Follow Mouse
-	        */
-	        if (this.mouse) {
-	            var logo = ship.getObjectByName('logo');
-	            logo.position.x = mouse.screen.x * .1;
-	            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
-	            if (this.mouseInverse) {
-	                logo.rotation.x = Helpers_2.deg2rad(mouse.screen.y * .1) / Math.PI;
-	                logo.rotation.y = -Helpers_2.deg2rad(mouse.screen.x * .1) / Math.PI;
-	            }
-	        }
 	        this.glow.render(this.app);
-	        // this.render();
 	    };
-	    Intro.prototype.hexParticlesDone = function (_a) {
-	        var hexParticles = _a.hexParticles;
-	        this.scene.remove(hexParticles);
-	    };
-	    Intro.prototype.debrisDone = function (_a) {
-	        var debris = _a.debris;
-	        this.scene.remove(debris);
-	        this.debrisCompleted = true;
-	    };
-	    Intro.prototype.initDebris = function (debris) {
-	        this.scene.add(debris);
-	        this.queue['debris'] = debris;
-	    };
-	    Intro.prototype.initTakeOf = function (main) {
-	        main.getObjectByName('smoke').userData.start();
-	        this.queue['smoke'] = main;
-	    };
-	    Intro.prototype.initTutorial = function () {
-	        var _this = this;
-	        var element = document.querySelector('#tutorial');
-	        element['style'].display = 'flex';
-	        var canvas = document.querySelector('canvas');
-	        canvas['style'].backgroundColor = 'black';
-	        element.getElementsByTagName('button')[0].addEventListener('click', function (event) {
-	            _this.tutorialDone = true;
-	            element['style'].display = 'none';
-	        }, false);
-	    };
-	    Intro.prototype.showProject = function (object) {
-	        var _this = this;
-	        var element = document.querySelector('#overlay'), poster = document.querySelector('#poster'), name = document.querySelector('#name'), description = document.querySelector('#description'), controls = this.app.controls.instance;
-	        poster.setAttribute('src', object.material.userData.poster);
-	        name.textContent = object.material.userData.name;
-	        description.textContent = object.material.userData.description;
-	        controls.enabled = false;
-	        this.open = true;
-	        var original = this.camera.clone(), target = controls.target.clone();
-	        this.camera.moveTo(object, function () {
-	            element['style'].display = 'flex';
-	            element.getElementsByClassName('close')[0].addEventListener('click', function (event) {
-	                element['style'].display = 'none';
-	                _this.camera.moveTo(original, function () {
-	                    controls.target.copy(target);
-	                    _this.open = false;
-	                    controls.enabled = true;
-	                });
-	            }, false);
-	        });
-	    };
-	    return Intro;
+	    return Galaxy;
 	}(Composition_1.Composition));
-	exports.Intro = Intro;
-	//# sourceMappingURL=Intro.js.map
+	exports.Galaxy = Galaxy;
+	//# sourceMappingURL=Galaxy.js.map
 
 /***/ },
 /* 19 */
@@ -50781,8 +50376,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"background": {
-			"name": "background",
+		"dust": {
+			"name": "dust",
 			"width": 2007,
 			"height": 1318,
 			"sprite": {
@@ -50801,6 +50396,26 @@
 			"x": 0,
 			"y": 0
 		},
+		"haze": {
+			"name": "haze",
+			"width": 853,
+			"height": 703,
+			"sprite": {
+				"name": "sprite-1.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.01318359375,
+				"u2": 0.41650390625,
+				"v2": 0.3564453125,
+				"uDistance": 0.41650390625,
+				"vDistance": 0.34326171875
+			},
+			"x": 0,
+			"y": 1318
+		},
 		"platform": {
 			"name": "platform",
 			"width": 906,
@@ -50811,58 +50426,58 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0,
+				"u1": 0.41650390625,
 				"v1": 0.0654296875,
-				"u2": 0.4423828125,
+				"u2": 0.85888671875,
 				"v2": 0.3564453125,
 				"uDistance": 0.4423828125,
 				"vDistance": 0.291015625
 			},
-			"x": 0,
+			"x": 853,
 			"y": 1318
 		},
-		"nb2": {
-			"name": "nb2",
-			"width": 778,
-			"height": 525,
+		"planet": {
+			"name": "planet",
+			"width": 200,
+			"height": 189,
 			"sprite": {
 				"name": "sprite-1.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.4423828125,
-				"v1": 0.10009765625,
-				"u2": 0.822265625,
+				"u1": 0.85888671875,
+				"v1": 0.26416015625,
+				"u2": 0.95654296875,
 				"v2": 0.3564453125,
-				"uDistance": 0.3798828125,
-				"vDistance": 0.25634765625
+				"uDistance": 0.09765625,
+				"vDistance": 0.09228515625
 			},
-			"x": 906,
+			"x": 1759,
 			"y": 1318
 		},
-		"sparkle": {
-			"name": "sparkle",
-			"width": 345,
-			"height": 345,
+		"light-stroke": {
+			"name": "light-stroke",
+			"width": 233,
+			"height": 183,
 			"sprite": {
 				"name": "sprite-1.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.822265625,
-				"v1": 0.18798828125,
-				"u2": 0.99072265625,
-				"v2": 0.3564453125,
-				"uDistance": 0.16845703125,
-				"vDistance": 0.16845703125
+				"u1": 0.85888671875,
+				"v1": 0.1748046875,
+				"u2": 0.97265625,
+				"v2": 0.26416015625,
+				"uDistance": 0.11376953125,
+				"vDistance": 0.08935546875
 			},
-			"x": 1684,
-			"y": 1318
+			"x": 1759,
+			"y": 1507
 		},
-		"Iron-Man": {
-			"name": "Iron-Man",
+		"X-Men-Days-of-Future-Past": {
+			"name": "X-Men-Days-of-Future-Past",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -50871,55 +50486,35 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.822265625,
-				"v1": 0.10546875,
-				"u2": 0.90478515625,
-				"v2": 0.18798828125,
+				"u1": 0.85888671875,
+				"v1": 0.09228515625,
+				"u2": 0.94140625,
+				"v2": 0.1748046875,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1684,
-			"y": 1663
+			"x": 1759,
+			"y": 1690
 		},
-		"Avatar": {
-			"name": "Avatar",
-			"width": 169,
-			"height": 169,
+		"fast-star": {
+			"name": "fast-star",
+			"width": 26,
+			"height": 113,
 			"sprite": {
 				"name": "sprite-1.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.90478515625,
-				"v1": 0.10546875,
-				"u2": 0.9873046875,
-				"v2": 0.18798828125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
+				"u1": 0.97998046875,
+				"v1": 0.94482421875,
+				"u2": 0.99267578125,
+				"v2": 1,
+				"uDistance": 0.0126953125,
+				"vDistance": 0.05517578125
 			},
-			"x": 1853,
-			"y": 1663
-		},
-		"smoke": {
-			"name": "smoke",
-			"width": 134,
-			"height": 133,
-			"sprite": {
-				"name": "sprite-1.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.00048828125,
-				"u2": 0.0654296875,
-				"v2": 0.0654296875,
-				"uDistance": 0.0654296875,
-				"vDistance": 0.06494140625
-			},
-			"x": 0,
-			"y": 1914
+			"x": 2007,
+			"y": 0
 		},
 		"streak": {
 			"name": "streak",
@@ -50931,14 +50526,14 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.0654296875,
+				"u1": 0.41650390625,
 				"v1": 0.01318359375,
-				"u2": 0.18359375,
+				"u2": 0.53466796875,
 				"v2": 0.0654296875,
 				"uDistance": 0.1181640625,
 				"vDistance": 0.05224609375
 			},
-			"x": 134,
+			"x": 853,
 			"y": 1914
 		},
 		"skip": {
@@ -50951,14 +50546,14 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.18359375,
+				"u1": 0.53466796875,
 				"v1": 0.013671875,
-				"u2": 0.3095703125,
+				"u2": 0.66064453125,
 				"v2": 0.0654296875,
 				"uDistance": 0.1259765625,
 				"vDistance": 0.0517578125
 			},
-			"x": 376,
+			"x": 1095,
 			"y": 1914
 		},
 		"hex": {
@@ -50971,15 +50566,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.3095703125,
-				"v1": 0.02490234375,
-				"u2": 0.3466796875,
-				"v2": 0.0654296875,
+				"u1": 0.95654296875,
+				"v1": 0.31591796875,
+				"u2": 0.99365234375,
+				"v2": 0.3564453125,
 				"uDistance": 0.037109375,
 				"vDistance": 0.04052734375
 			},
-			"x": 634,
-			"y": 1914
+			"x": 1959,
+			"y": 1318
 		},
 		"star": {
 			"name": "star",
@@ -50991,20 +50586,777 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.3466796875,
-				"v1": 0.02783203125,
-				"u2": 0.38427734375,
-				"v2": 0.0654296875,
+				"u1": 0.95654296875,
+				"v1": 0.2783203125,
+				"u2": 0.994140625,
+				"v2": 0.31591796875,
 				"uDistance": 0.03759765625,
 				"vDistance": 0.03759765625
 			},
-			"x": 710,
-			"y": 1914
+			"x": 1959,
+			"y": 1401
+		},
+		"galaxy-debri": {
+			"name": "galaxy-debri",
+			"width": 53,
+			"height": 57,
+			"sprite": {
+				"name": "sprite-1.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.97265625,
+				"v1": 0.236328125,
+				"u2": 0.99853515625,
+				"v2": 0.26416015625,
+				"uDistance": 0.02587890625,
+				"vDistance": 0.02783203125
+			},
+			"x": 1992,
+			"y": 1507
 		}
 	};
 
 /***/ },
 /* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Composition_1 = __webpack_require__(19);
+	var Tween_1 = __webpack_require__(14);
+	var Helpers_1 = __webpack_require__(15);
+	var Helpers_2 = __webpack_require__(20);
+	var Glow_1 = __webpack_require__(23);
+	var CountUp = __webpack_require__(31);
+	/**
+	 * Intro Composition
+	 */
+	var Intro = (function (_super) {
+	    __extends(Intro, _super);
+	    function Intro() {
+	        _super.apply(this, arguments);
+	        this.parallex = true;
+	        this.mouse = false;
+	        this.mouseInverse = false;
+	        this.debrisCompleted = false;
+	        this.done = false;
+	        this.counter = null;
+	        this.queue = {};
+	    }
+	    Object.defineProperty(Intro.prototype, "objects", {
+	        get: function () {
+	            return [
+	                'main',
+	                'hexParticles',
+	                'ship',
+	                'debris',
+	                'star',
+	                'fx',
+	                'tunnel',
+	                'buttons',
+	                'cockpit',
+	                'flare',
+	                'protonBean',
+	            ];
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Intro.prototype.stage = function (objects) {
+	        var _this = this;
+	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, star = objects.star, tunnel = objects.tunnel, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, buttons = objects.buttons, protonBean = objects.protonBean;
+	        main.add(buttons);
+	        this.scene.add(main);
+	        this.scene.add(hexParticles);
+	        this.scene.add(ship);
+	        this.scene.add(star);
+	        // console.log(star);
+	        this.app.audio.play('ambient');
+	        protonBean.userData.position = ship.getObjectByName('logo').position;
+	        //-544.9718967856711
+	        //435.51185286729776
+	        //134.67318495564345
+	        /**
+	         * Queue Update
+	         */
+	        this.queue['ship'] = ship;
+	        this.queue['hexParticles'] = hexParticles;
+	        this.queue['star'] = star;
+	        this.queue['protonBean'] = protonBean;
+	        this.glow = new Glow_1.Glow(this.app['browser']);
+	        this.glow.uniforms.exposure.value = 0.3;
+	        this.glow.uniforms.colorRange.value = 0.95;
+	        this.app.mouse.ray(buttons.getObjectByName('start'), function (data) {
+	            // this.scene.remove(main);
+	            // this.scene.remove(tunnel);
+	            // this.scene.remove(ship);
+	            // this.scene.remove(hexParticles);
+	            // this.scene.remove(star);
+	            // this.done = true;
+	            // /**
+	            //  * Start new composition
+	            //  */
+	            // this.app.start('galaxy', {
+	            //     glow: this.glow,
+	            //     queue: this.queue
+	            // })
+	            _this.start(objects);
+	        });
+	        this.app.mouse.ray(buttons.getObjectByName('skip'), function (data) {
+	            alert('skip');
+	        });
+	    };
+	    Intro.prototype.start = function (objects) {
+	        var _this = this;
+	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, debris = objects.debris, star = objects.star, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, tunnel = objects.tunnel, cockpit = objects.cockpit, flare = objects.flare;
+	        var original = [
+	            ship.position.clone(),
+	            main.position.clone()
+	        ];
+	        var logo = ship.getObjectByName('logo'), camera = this.camera, controls = this.app.controls.instance, endTunnel = false;
+	        /**
+	         * Transform ship
+	         */
+	        var animation = this.app.tween.animate({
+	            origin: {
+	                camera: this.camera.position,
+	            },
+	            target: {
+	                camera: {
+	                    x: 0, y: 0
+	                }
+	            },
+	            ease: Tween_1.Tween.EXPOINOUT,
+	            duration: 3,
+	            before: function () {
+	                _this.parallex = false;
+	                ship.userData.transform(_this.scene, _this.queue, _this.glow);
+	            },
+	            update: function () {
+	                return !ship.userData.transformDone;
+	            }
+	        });
+	        /**
+	         * Animate Camera back to center point
+	         */
+	        animation.then({
+	            origin: {
+	                particle: main.getObjectByName('smoke').userData.particle,
+	                camera: this.camera.position,
+	                power: 0
+	            },
+	            target: {
+	                power: 0.01,
+	                particle: {
+	                    count: 20,
+	                    size: 4,
+	                },
+	                camera: {
+	                    x: 0, y: 0
+	                }
+	            },
+	            duration: 5,
+	            ease: Tween_1.Tween.EXPOIN,
+	            before: function () {
+	                _this.parallex = false;
+	                _this.app.audio.play('takeOf');
+	                _this.initTakeOf(main);
+	                ship.userData.taill.scale.set(5, .3, 1);
+	            },
+	            update: function (_a, time) {
+	                var power = _a.power;
+	                if (_this.app.audio.get('takeOf').timer.getElapsedTime() <= 12) {
+	                    _this.camera.rotation.z = Math.random() * power.value;
+	                    return true;
+	                }
+	                setTimeout(function () {
+	                    delete _this.queue['smoke'];
+	                }, 2000);
+	                _this.camera.rotation.z = 0;
+	                return;
+	            }
+	        });
+	        /**
+	         * Animate spaceship up
+	         */
+	        animation.then({
+	            origin: {
+	                ship: logo.position,
+	                main: main.position,
+	                booster: ship.userData.booster,
+	                speed: star.userData.speed,
+	                move: 0,
+	                decay: 0,
+	                taill: 0,
+	                glow: this.glow.uniforms
+	            },
+	            target: {
+	                taill: 2,
+	                decay: 5,
+	                booster: -3,
+	                speed: 5,
+	                ship: { z: 20 },
+	                glow: {
+	                    colorRange: {
+	                        value: 0.7
+	                    },
+	                    exposure: {
+	                        value: 0.5
+	                    }
+	                },
+	                main: {
+	                    y: -main.getObjectByName('background').userData.meta.size.height
+	                }
+	            },
+	            duration: .7,
+	            ease: Tween_1.Tween.EXPOIN,
+	            before: function () {
+	                _this.app.renderer.setClearColor(0x18142b);
+	            },
+	            update: function (_a, completion, elapsed) {
+	                var booster = _a.booster, speed = _a.speed, decay = _a.decay, taill = _a.taill;
+	                var orb = ship.getObjectByName('orb');
+	                orb.scale.addScalar(1.5);
+	                orb.material.opacity -= 0.01;
+	                ship.userData.booster = booster.value;
+	                star.userData.speed = speed.value;
+	                star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
+	                hexParticles.userData.decay = decay.value;
+	                // ship.userData.taill.visible = true;
+	                ship.userData.taill.scale.set(taill.value, .3, 1);
+	                if (taill.completion < 95)
+	                    ship.userData.taill.position.y -= taill.value;
+	                return !_this.debrisCompleted;
+	            },
+	            after: function () {
+	                _this.mouse = true;
+	                _this.initDebris(debris);
+	            }
+	        });
+	        /**
+	         * Lets go to tunnel
+	         */
+	        animation.then({
+	            origin: {
+	                rotation: ship.rotation,
+	                position: ship.position,
+	                align: 0,
+	                r: star.rotation,
+	            },
+	            target: {
+	                r: {
+	                    x: -Helpers_2.deg2rad(90)
+	                },
+	                align: 100,
+	                position: {
+	                    z: -300,
+	                    x: 0,
+	                    y: 0
+	                },
+	                rotation: {
+	                    x: -Helpers_2.deg2rad(90),
+	                    y: Helpers_2.deg2rad(360)
+	                }
+	            },
+	            ease: Tween_1.Tween.QUADINOUT,
+	            duration: 5,
+	            before: function () {
+	                star.userData.vortexEnabled = true;
+	                this.mouse = false;
+	            },
+	            after: function () {
+	                _this.mouseInverse = true;
+	            },
+	            update: function (_a) {
+	                var align = _a.align;
+	                star.userData.align(align);
+	            }
+	        });
+	        /**
+	        * Cockpit
+	        */
+	        // animation.then({
+	        //     origin: {
+	        //         // camera: camera,
+	        //         transition: main.getObjectByName('transition'),
+	        //         cockpit: cockpit,
+	        //         ship: ship.position,
+	        //     },
+	        //     target: {
+	        //         // camera: {
+	        //         //     far: 15000,
+	        //         // },
+	        //         transition: {
+	        //             material: {
+	        //                 opacity: 0
+	        //             },
+	        //             position: { z: 600 }
+	        //         },
+	        //         ship: {
+	        //             z: 800
+	        //         },
+	        //         cockpit: {
+	        //             material: {
+	        //                 opacity: 1
+	        //             },
+	        //             position: {
+	        //                 z: 200
+	        //             }
+	        //         }
+	        //     },
+	        //     ease: Tween.EXPOINOUT,
+	        //     duration: 3,
+	        //     before: () => {
+	        //         this.scene.add(cockpit)
+	        //     },
+	        //     after: () => {
+	        //         this.scene.remove(main)
+	        //     },
+	        //     update: () => {
+	        //         // camera.updateProjectionMatrix();
+	        //     }
+	        // })
+	        /**
+	         * Align
+	         */
+	        animation.then({
+	            origin: {
+	                transition: main.getObjectByName('transition'),
+	            },
+	            target: {
+	                transition: {
+	                    material: {
+	                        opacity: 0
+	                    },
+	                    position: { z: 600 }
+	                }
+	            },
+	            ease: Tween_1.Tween.EXPOINOUT,
+	            duration: 3,
+	            before: function () {
+	                _this.initCounter(objects);
+	            },
+	            after: function () {
+	                _this.scene.remove(main);
+	            }
+	        });
+	        /**
+	         * Enter Tunnel
+	         */
+	        animation.then({
+	            origin: {
+	                camera: camera,
+	                tunnel: tunnel,
+	            },
+	            target: {
+	                camera: {
+	                    far: 50000
+	                },
+	                tunnel: {
+	                    position: {
+	                        z: -2000
+	                    },
+	                    material: {
+	                        opacity: 1
+	                    }
+	                }
+	            },
+	            ease: Tween_1.Tween.EXPOOUT,
+	            duration: 3,
+	            before: function () {
+	                _this.scene.fog = (new THREE.Fog(0x18142b, 4000, 5000));
+	                _this.scene.add(tunnel);
+	                _this.queue['tunnel'] = tunnel;
+	            },
+	            update: function () {
+	                _this.camera.updateProjectionMatrix();
+	                if (_this.counter.frameVal >= 1000000000) {
+	                    return _this.stopCounter() || false;
+	                }
+	                return true;
+	            }
+	        });
+	        /**
+	         * Super Speed
+	         */
+	        // animation.then({
+	        //     origin: {
+	        //         taill: ship.userData.taill,
+	        //         uniforms: ship.userData.uniforms,
+	        //         position: ship.position,
+	        //         star: star.userData,
+	        //         flare: flare,
+	        //         power: 0,
+	        //         spin: 0,
+	        //     },
+	        //     target: {
+	        //         flare: {
+	        //             position: {
+	        //                 z: -500
+	        //             },
+	        //             scale: {
+	        //                 y: 50
+	        //             }
+	        //         },
+	        //         spin: 1,
+	        //         taill: {
+	        //             scale: {
+	        //                 x: 15, y: 1, z: 1
+	        //             },
+	        //             position: {
+	        //                 y: -400
+	        //             }
+	        //         },
+	        //         uniforms: {
+	        //             frequency: {
+	        //                 value: 10
+	        //             },
+	        //             waves: {
+	        //                 value: 2
+	        //             },
+	        //             warp: {
+	        //                 value: 5
+	        //             }
+	        //         },
+	        //         // position: {
+	        //         //     z: 5
+	        //         // },
+	        //         star: {
+	        //             speed: 25
+	        //         },
+	        //         power: 0.015,
+	        //     },
+	        //     ease: Tween.EXPOIN,
+	        //     duration: 2,
+	        //     before: () => {
+	        //         this.scene.add(flare)
+	        //         this.scene.add(fx);
+	        //         this.queue['fx'] = fx;
+	        //         setTimeout(() => { endTunnel = true }, 3000)
+	        //     },
+	        //     update: ({power, streak, spin}, time) => {
+	        //         camera.rotation.z += Math.sin(time) * power.value;
+	        //         ship.userData.taill.rotation.y += spin.value;
+	        //         fx.userData.uniforms.alpha.value = spin.value;
+	        //         return !endTunnel;
+	        //     }
+	        // })
+	        /**
+	         * Lock and warp
+	         */
+	        animation.then({
+	            origin: {
+	                logo: ship.getObjectByName('logo'),
+	                camera: camera,
+	                tunnel: tunnel.userData.controls,
+	                glow: this.glow.uniforms
+	            },
+	            target: {
+	                glow: {
+	                    exposure: {
+	                        value: 5
+	                    },
+	                    colorRange: {
+	                        value: .1
+	                    }
+	                },
+	                tunnel: {
+	                    waves: 0,
+	                    width: 0,
+	                    height: 0,
+	                    xSpeed: 0.00008,
+	                },
+	                // camera: {
+	                //     fov: 8,
+	                //     zoom: 0.1
+	                // },
+	                logo: {
+	                    position: { x: 0, y: 0, z: 0 },
+	                    rotation: { x: 0, y: 0 },
+	                    scale: { x: 0.001, y: 0.001, z: 0.001 },
+	                }
+	            },
+	            duration: 5,
+	            ease: Tween_1.Tween.CUBICIN,
+	            before: function () {
+	                setTimeout(function () {
+	                    document.querySelector('#fader')['style'].opacity = 1;
+	                }, 3000);
+	                _this.mouse = false;
+	            },
+	            update: function () {
+	                // main.children.forEach(child => {
+	                //     child.position.z += 5;
+	                //     /**
+	                //      * Instance of group, as buttons no need to have opacity lowered
+	                //      */
+	                //     if (!(child instanceof THREE.Group))
+	                //         child.material.opacity = fade.value
+	                // })
+	                // tunnel.rotation.z += 1
+	                // fx.userData.uniforms.alpha.value = fade.value;
+	                camera.updateProjectionMatrix();
+	                // return true;
+	            },
+	            after: function () {
+	                // this.scene.remove(main)
+	                // this.scene.remove(fx)
+	                // delete this.queue['fx'];
+	            }
+	        });
+	        /**
+	         * Enter plexus
+	         */
+	        animation.then(function () {
+	            // this.scene.remove(tunnel);
+	            _this.scene.remove(ship);
+	            _this.scene.remove(hexParticles);
+	            _this.scene.remove(star);
+	            _this.done = true;
+	            /**
+	             * Start new composition
+	             */
+	            _this.app.start('galaxy', {
+	                glow: _this.glow,
+	                tunnel: tunnel,
+	                queue: _this.queue
+	            });
+	        });
+	    };
+	    Intro.prototype.update = function (objects, time, delta) {
+	        // this.uniforms.cameraViewMatrix.value = this.app.camera.modelViewMatrix;
+	        // this.uniforms.viewVector.value.subVectors(this.camera.position, this.mesh.position);
+	        var mouse = this.app.mouse, camera = this.camera;
+	        var hexParticles = objects.hexParticles, ship = objects.ship, galaxy = objects.galaxy;
+	        for (var property in this.queue) {
+	            if (this.queue[property].userData.update(time, delta)) {
+	                if (Helpers_1.is.Function(this[(property + "Done")])) {
+	                    this[(property + "Done")](objects);
+	                }
+	                delete this.queue[property];
+	            }
+	        }
+	        /**
+	        * Parallex
+	        */
+	        if (this.parallex) {
+	            camera.position.set(mouse.normalized.x * 20, mouse.normalized.y * 20, 500);
+	        }
+	        /**
+	        * Logo Follow Mouse
+	        */
+	        if (this.mouse) {
+	            var logo = ship.getObjectByName('logo');
+	            logo.position.x = mouse.screen.x * .1;
+	            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
+	            if (this.mouseInverse) {
+	                logo.rotation.x = Helpers_2.deg2rad(mouse.screen.y * .1) / Math.PI;
+	                logo.rotation.y = -Helpers_2.deg2rad(mouse.screen.x * .1) / Math.PI;
+	            }
+	        }
+	        this.glow.render(this.app);
+	        // this.render();
+	        return this.done;
+	    };
+	    Intro.prototype.stopCounter = function () {
+	        this.counter.pauseResume();
+	        document.querySelector('#counter')['style'].opacity = 0;
+	        this.app.mouse.stateQueue = [];
+	    };
+	    Intro.prototype.initCounter = function (_a) {
+	        var _this = this;
+	        var ship = _a.ship, star = _a.star, tunnel = _a.tunnel;
+	        var options = {
+	            useEasing: true,
+	            useGrouping: true,
+	            separator: ',',
+	            decimal: '.',
+	            prefix: '',
+	            suffix: ''
+	        }, camera = this.app.camera;
+	        document.querySelector('#counter')['style'].opacity = 1;
+	        var total = 1000000000;
+	        this.counter = new CountUp('counter', 1, total, 0, 600, options);
+	        this.counter.start();
+	        var animation, original = {
+	            cameraZoom: camera.zoom,
+	            duration: this.counter.duration,
+	            shipPosition: ship.position.z,
+	            starSpeed: star.userData.speed,
+	            tunnelHeight: tunnel.userData.controls.height,
+	            tunnelWidth: tunnel.userData.controls.width,
+	            tunnelSpeed: tunnel.userData.controls.speed,
+	            taill: {
+	                scale: {
+	                    x: ship.userData.taill.scale.x,
+	                    y: ship.userData.taill.scale.y,
+	                    z: ship.userData.taill.scale.z
+	                },
+	                position: {
+	                    y: ship.userData.taill.position.y
+	                }
+	            },
+	            uniforms: {
+	                frequency: {
+	                    value: ship.userData.uniforms.frequency.value
+	                },
+	                waves: {
+	                    value: ship.userData.uniforms.waves.value
+	                },
+	                warp: {
+	                    value: ship.userData.uniforms.warp.value
+	                }
+	            }
+	        };
+	        this.app.mouse.hold(function () {
+	            animation = _this.app.tween.animate({
+	                origin: {
+	                    camera: camera, ship: ship,
+	                    counter: _this.counter,
+	                    star: star.userData,
+	                    tunnel: tunnel.userData.controls,
+	                    taill: ship.userData.taill,
+	                    uniforms: ship.userData.uniforms,
+	                    power: 0
+	                },
+	                target: {
+	                    ship: {
+	                        position: {
+	                            z: 300
+	                        },
+	                    },
+	                    camera: {
+	                        zoom: 0.3,
+	                    },
+	                    counter: {
+	                        duration: original.duration * 0.1
+	                    },
+	                    star: {
+	                        speed: original.starSpeed * 2
+	                    },
+	                    tunnel: {
+	                        height: 0,
+	                        width: 0
+	                    },
+	                    taill: {
+	                        scale: { x: 15, y: 1, z: 1 },
+	                        position: { y: -450 }
+	                    },
+	                    uniforms: {
+	                        frequency: { value: 10 },
+	                        waves: { value: 2 },
+	                        warp: { value: 5 }
+	                    },
+	                    power: 0.015,
+	                },
+	                duration: 1,
+	                ease: Tween_1.Tween.EXPOIN,
+	                before: function () {
+	                    setTimeout(function () { return tunnel.userData.controls.speed = original.tunnelSpeed * 2; }, 1000);
+	                },
+	                update: function (_a, time) {
+	                    var power = _a.power;
+	                    camera.rotation.z += Math.sin(time) * power.value;
+	                    camera.updateProjectionMatrix();
+	                    return _this.app.mouse.isHolding;
+	                }
+	            });
+	        });
+	        this.app.mouse.release(function () {
+	            if (animation)
+	                animation.then({
+	                    origin: {
+	                        ship: ship,
+	                        camera: camera,
+	                        counter: _this.counter,
+	                        star: star.userData,
+	                        tunnel: tunnel.userData.controls,
+	                        taill: ship.userData.taill,
+	                        uniforms: ship.userData.uniforms
+	                    },
+	                    target: {
+	                        ship: {
+	                            position: {
+	                                z: original.shipPosition
+	                            },
+	                        },
+	                        camera: {
+	                            zoom: original.cameraZoom,
+	                            rotation: { z: 0 }
+	                        },
+	                        counter: {
+	                            duration: original.duration
+	                        },
+	                        star: {
+	                            speed: original.starSpeed
+	                        },
+	                        tunnel: {
+	                            height: original.tunnelHeight,
+	                            width: original.tunnelWidth
+	                        },
+	                        taill: {
+	                            scale: {
+	                                x: original.taill.scale.x,
+	                                y: original.taill.scale.y,
+	                                z: original.taill.scale.z
+	                            },
+	                            position: {
+	                                y: original.taill.position.y
+	                            }
+	                        },
+	                        uniforms: {
+	                            frequency: {
+	                                value: original.uniforms.frequency.value
+	                            },
+	                            waves: {
+	                                value: original.uniforms.waves.value
+	                            },
+	                            warp: {
+	                                value: original.uniforms.warp.value
+	                            }
+	                        }
+	                    },
+	                    ease: Tween_1.Tween.EXPOOUT,
+	                    duration: 1,
+	                    before: function () {
+	                        tunnel.userData.controls.speed = original.tunnelSpeed;
+	                        _this.counter.update(_this.counter.frameVal * 2);
+	                    },
+	                    update: function () {
+	                        camera.updateProjectionMatrix();
+	                    }
+	                });
+	        });
+	    };
+	    Intro.prototype.hexParticlesDone = function (_a) {
+	        var hexParticles = _a.hexParticles;
+	        this.scene.remove(hexParticles);
+	    };
+	    Intro.prototype.debrisDone = function (_a) {
+	        var debris = _a.debris;
+	        this.scene.remove(debris);
+	        this.debrisCompleted = true;
+	    };
+	    Intro.prototype.initDebris = function (debris) {
+	        this.scene.add(debris);
+	        this.queue['debris'] = debris;
+	    };
+	    Intro.prototype.initTakeOf = function (main) {
+	        this.queue['smoke'] = main;
+	    };
+	    return Intro;
+	}(Composition_1.Composition));
+	exports.Intro = Intro;
+	//# sourceMappingURL=Intro.js.map
+
+/***/ },
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51015,20 +51367,20 @@
 	    function Glow(browser) {
 	        this.shaders = {
 	            downSample: {
-	                vert: __webpack_require__(23),
-	                frag: __webpack_require__(24)
+	                vert: __webpack_require__(24),
+	                frag: __webpack_require__(25)
 	            },
 	            blurV: {
-	                vert: __webpack_require__(25),
-	                frag: __webpack_require__(26)
-	            },
-	            blurH: {
-	                vert: __webpack_require__(25),
+	                vert: __webpack_require__(26),
 	                frag: __webpack_require__(27)
 	            },
+	            blurH: {
+	                vert: __webpack_require__(26),
+	                frag: __webpack_require__(28)
+	            },
 	            toneMapping: {
-	                vert: __webpack_require__(28),
-	                frag: __webpack_require__(29)
+	                vert: __webpack_require__(29),
+	                frag: __webpack_require__(30)
 	            }
 	        };
 	        this.orthoCamera = new THREE.OrthographicCamera(0, 100, 0, -100, 0, 10000);
@@ -51113,49 +51465,55 @@
 	//# sourceMappingURL=Glow.js.map
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform vec2 PixelOffset;//   = vec2(  0.0097656250, 0.0013020833  );// Pixel offsets ( 1 / 512, 1 / 384 )\r\nvarying vec2 PSTexcoord;\r\n\r\n\r\nvoid main()\r\n{\r\n\tgl_Position = projectionMatrix * modelViewMatrix *vec4(position,1);\r\n\tPSTexcoord = uv + ( PixelOffset * 0.5 );\r\n\r\n}"
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform sampler2D texSample;\r\nuniform float colorRange;\r\nvarying vec2 PSTexcoord;\r\n\r\n// This hack is necessary because the suppress function\r\n// seems to work only when Kd is greater than 1, even by 0.0001f!!!\r\nfloat Kd = 1.0001;\r\n\r\nvec4 SuppressLDR( vec4 c )\r\n{\r\n   if( c.r >= colorRange || c.g >= colorRange || c.b >= colorRange )\r\n      return c;\r\n   else\r\n      return vec4( 0.0, 0.0, 0.0, 0.0 );\r\n}\r\n\r\nvoid main()\r\n{\r\n\tvec4 color = texture2D( texSample, PSTexcoord ) * Kd;\r\n\tgl_FragColor = SuppressLDR( color );\r\n\t//gl_FragColor *= vec4(1.,0.,0.,1.);\r\n}"
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform vec2 PixelOffset;//   = vec2( 0.001953195, 0.00260416666 );// Pixel offsets ( 1 / 512, 1 / 384 )\r\nvarying vec2 PSTexcoord;\r\n\r\nvoid main()\r\n{\r\n\tgl_Position = projectionMatrix * modelViewMatrix *vec4(position,1);\r\n\tPSTexcoord = uv+( PixelOffset * 0.5 );\r\n\r\n}"
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform sampler2D texSample;\r\nuniform vec2 BlurOffset;//    = vec2( 0, 0.00260416666  );//1 / 384\r\nvarying vec2 PSTexcoord;\r\n\r\n\r\nvoid main()\r\n{\r\n\tgl_FragColor = texture2D(texSample, PSTexcoord);\r\n\r\n\t// Sample pixels on either side\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 0. ) ) * 0.2537;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 0. ) ) * 0.2537;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 1. ) ) * 0.2185;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 1. ) ) * 0.2185;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 2. ) ) * 0.0821;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 2. ) ) * 0.0821;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 3. ) ) * 0.0461;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 3. ) ) * 0.0461;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 4. ) ) * 0.0262;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 4. ) ) * 0.0262;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 5. ) ) * 0.0162;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 5. ) ) * 0.0162;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 6. ) ) * 0.0102;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 6. ) ) * 0.0102;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 7. ) ) * 0.0102;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 7. ) ) * 0.0102;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 8. ) ) * 0.0052;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 8. ) ) * 0.0052;\r\n\r\n}"
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform sampler2D texSample;\r\nuniform vec2 BlurOffset;//    = vec2( 0.001953195, 0 );//resolution\r\nvarying vec2 PSTexcoord;\r\n\r\nvoid main()\r\n{\r\n\tgl_FragColor = texture2D(texSample, PSTexcoord);\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 0. ) ) * 0.2537;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 0. ) ) * 0.2537;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 1. ) ) * 0.2185;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 1. ) ) * 0.2185;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 2. ) ) * 0.0821;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 2. ) ) * 0.0821;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 3. ) ) * 0.0461;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 3. ) ) * 0.0461;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 4. ) ) * 0.0262;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 4. ) ) * 0.0262;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 5. ) ) * 0.0162;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 5. ) ) * 0.0162;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 6. ) ) * 0.0102;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 6. ) ) * 0.0102;\r\n\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord + ( BlurOffset * 7. ) ) * 0.0052;\r\n\tgl_FragColor += texture2D( texSample, PSTexcoord - ( BlurOffset * 7. ) ) * 0.0052;\r\n\t\r\n}"
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform vec2 PixelOffset;//   = vec2( 0.001953195, 0.00260416666 );// Pixel offsets ( 1 / 512, 1 / 384 )\r\nvarying vec2 PSTexcoord;\r\n\r\nvoid main()\r\n{\r\n\tgl_Position = projectionMatrix * modelViewMatrix *vec4(position,1.);\r\n\tPSTexcoord = uv + ( PixelOffset * 0.5 );\r\n}"
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = "uniform float exposure;\r\nvarying vec2 PSTexcoord;\r\nuniform sampler2D tFull;\r\nuniform sampler2D tBlur;\r\n\r\n\r\nuniform float controlBlur;\r\n\r\nvec4 lerp(vec4 a, vec4 b, float w)\r\n{\r\n  return a + w*(b-a);\r\n}\r\n\r\nvoid main()\r\n{\r\n\tvec4 original = texture2D( tFull, PSTexcoord );\r\n\tvec4 blur = texture2D( tBlur, PSTexcoord );\r\n\r\n\t//vec4 color = lerp( original, blur, 0.4 );\r\n\t//vec2 hi = vec2(0.5 -PSTexcoord.x, 0.5 -PSTexcoord.y );\r\n\tgl_FragColor = original + blur * exposure * 0.5;\r\n\t//vec2 l_offset = vec2(1./1024.,1./1024.);\r\n\t// if(controlBlur == 1.){\r\n\t\t\t//float l_fSqrt = sqrt(hi.x*hi.x+hi.y*hi.y);\r\n\t\t\t// l_fSqrt *= l_fSqrt;\r\n\t\t\t// l_fSqrt -= 0.1;\r\n\r\n\t\t\t// color *= l_fSqrt;;\r\n\t\t\t//gl_FragColor = color;\r\n\t\t\t//l_fSqrt = 1.-l_fSqrt;\r\n\t\t\t//gl_FragColor += vec4(l_fSqrt,l_fSqrt,l_fSqrt,l_fSqrt)*color;\r\n\t\t\t//gl_FragColor = color*l_fSqrt+gl_FragColor;\r\n\t\t\t //gl_FragColor = lerp( color,gl_FragColor,l_fSqrt );\r\n\t\t\t//  gl_FragColor = color*vec4(l_fSqrt,l_fSqrt,l_fSqrt,l_fSqrt)*5.;\r\n\t\t\t\r\n\t\t// }\r\n\t\r\n\t// vec2 l_TempTexCord = PSTexcoord - 0.5;\r\n\t// float vignette = 1. - dot( l_TempTexCord, l_TempTexCord );\r\n\r\n\t// color *= pow( vignette, 4.0 );\r\n\t// color *= exposure;\r\n\r\n\t// gl_FragColor = pow( color,vec4( 0.55, 0.55, 0.55, 0.55) );\r\n}"
 
 /***/ },
-/* 30 */
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function(a,t){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (t), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"object"==typeof exports?module.exports=t(require,exports,module):a.CountUp=t()}(this,function(a,t,n){var e=function(a,t,n,e,i,r){for(var o=0,s=["webkit","moz","ms","o"],m=0;m<s.length&&!window.requestAnimationFrame;++m)window.requestAnimationFrame=window[s[m]+"RequestAnimationFrame"],window.cancelAnimationFrame=window[s[m]+"CancelAnimationFrame"]||window[s[m]+"CancelRequestAnimationFrame"];window.requestAnimationFrame||(window.requestAnimationFrame=function(a,t){var n=(new Date).getTime(),e=Math.max(0,16-(n-o)),i=window.setTimeout(function(){a(n+e)},e);return o=n+e,i}),window.cancelAnimationFrame||(window.cancelAnimationFrame=function(a){clearTimeout(a)});var u=this;u.options={useEasing:!0,useGrouping:!0,separator:",",decimal:".",easingFn:null,formattingFn:null};for(var l in r)r.hasOwnProperty(l)&&(u.options[l]=r[l]);""===u.options.separator&&(u.options.useGrouping=!1),u.options.prefix||(u.options.prefix=""),u.options.suffix||(u.options.suffix=""),u.d="string"==typeof a?document.getElementById(a):a,u.startVal=Number(t),u.endVal=Number(n),u.countDown=u.startVal>u.endVal,u.frameVal=u.startVal,u.decimals=Math.max(0,e||0),u.dec=Math.pow(10,u.decimals),u.duration=1e3*Number(i)||2e3,u.formatNumber=function(a){a=a.toFixed(u.decimals),a+="";var t,n,e,i;if(t=a.split("."),n=t[0],e=t.length>1?u.options.decimal+t[1]:"",i=/(\d+)(\d{3})/,u.options.useGrouping)for(;i.test(n);)n=n.replace(i,"$1"+u.options.separator+"$2");return u.options.prefix+n+e+u.options.suffix},u.easeOutExpo=function(a,t,n,e){return n*(-Math.pow(2,-10*a/e)+1)*1024/1023+t},u.easingFn=u.options.easingFn?u.options.easingFn:u.easeOutExpo,u.formattingFn=u.options.formattingFn?u.options.formattingFn:u.formatNumber,u.version=function(){return"1.7.1"},u.printValue=function(a){var t=u.formattingFn(a);"INPUT"===u.d.tagName?this.d.value=t:"text"===u.d.tagName||"tspan"===u.d.tagName?this.d.textContent=t:this.d.innerHTML=t},u.count=function(a){u.startTime||(u.startTime=a),u.timestamp=a;var t=a-u.startTime;u.remaining=u.duration-t,u.options.useEasing?u.countDown?u.frameVal=u.startVal-u.easingFn(t,0,u.startVal-u.endVal,u.duration):u.frameVal=u.easingFn(t,u.startVal,u.endVal-u.startVal,u.duration):u.countDown?u.frameVal=u.startVal-(u.startVal-u.endVal)*(t/u.duration):u.frameVal=u.startVal+(u.endVal-u.startVal)*(t/u.duration),u.countDown?u.frameVal=u.frameVal<u.endVal?u.endVal:u.frameVal:u.frameVal=u.frameVal>u.endVal?u.endVal:u.frameVal,u.frameVal=Math.round(u.frameVal*u.dec)/u.dec,u.printValue(u.frameVal),t<u.duration?u.rAF=requestAnimationFrame(u.count):u.callback&&u.callback()},u.start=function(a){return u.callback=a,u.rAF=requestAnimationFrame(u.count),!1},u.pauseResume=function(){u.paused?(u.paused=!1,delete u.startTime,u.duration=u.remaining,u.startVal=u.frameVal,requestAnimationFrame(u.count)):(u.paused=!0,cancelAnimationFrame(u.rAF))},u.reset=function(){u.paused=!1,delete u.startTime,u.startVal=t,cancelAnimationFrame(u.rAF),u.printValue(u.startVal)},u.update=function(a){cancelAnimationFrame(u.rAF),u.paused=!1,delete u.startTime,u.startVal=u.frameVal,u.endVal=Number(a),u.countDown=u.startVal>u.endVal,u.rAF=requestAnimationFrame(u.count)},u.printValue(u.startVal)};return e});
+
+/***/ },
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51172,11 +51530,20 @@
 	        this.instance = new THREE.TrackballControls(camera, renderer.domElement);
 	        this.instance.zoomSpeed = .005;
 	        this.instance.noPan = true;
-	        this.instance.maxDistance = 1500;
-	        this.instance.minxDistance = 200;
+	        this.instance.maxDistance = 3000;
+	        this.instance.minxDistance = 500;
 	        this.instance.dynamicDampingFactor = 0.05;
 	        this.instance.enabled = false;
+	        this.instance.enableDamping = true;
+	        // this.instance.minPolarAngle = deg2rad(0);
+	        // this.instance.maxPolarAngle = deg2rad(90);
 	        // this.instance.enableDamping = true;
+	        // this.instance.dampingFactor = .03;
+	        // this.instance.minDistance = 500;
+	        // this.instance.maxDistance = 3000;
+	        // this.instance.enablePan = false;
+	        // this.instance.rotateSpeed = .05;
+	        // this.instance.zoomSpeed = 0.3;
 	    };
 	    Controls.prototype.update = function (time, delta) {
 	        if (this.instance.enabled)
@@ -51188,11 +51555,11 @@
 	//# sourceMappingURL=Controls.js.map
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Stats = __webpack_require__(32);
+	var Stats = __webpack_require__(34);
 	/**
 	 * Debugger Class
 	 */
@@ -51213,7 +51580,7 @@
 	//# sourceMappingURL=Debugger.js.map
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -51224,7 +51591,7 @@
 
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -51268,7 +51635,7 @@
 	//# sourceMappingURL=Light.js.map
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51324,7 +51691,7 @@
 	//# sourceMappingURL=Loader.js.map
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51333,7 +51700,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(36);
+	var Initializable_1 = __webpack_require__(38);
 	var Helpers_1 = __webpack_require__(2);
 	/**
 	 * Animation Class
@@ -51392,7 +51759,7 @@
 	//# sourceMappingURL=Animation.js.map
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51493,7 +51860,7 @@
 	//# sourceMappingURL=Initializable.js.map
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51502,7 +51869,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(36);
+	var Initializable_1 = __webpack_require__(38);
 	var Helpers_1 = __webpack_require__(15);
 	var Promise = __webpack_require__(7);
 	/**
@@ -51516,7 +51883,7 @@
 	    }
 	    Object.defineProperty(Material.prototype, "collection", {
 	        get: function () {
-	            return __webpack_require__(38);
+	            return __webpack_require__(40);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -51536,15 +51903,15 @@
 	//# sourceMappingURL=Material.js.map
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./CharacterDefaultMaterial.js": 39,
-		"./FXShaderMaterial.js": 40,
-		"./IntroDefaultMaterial.js": 43,
-		"./PointsMaterial.js": 44,
-		"./ShaderMaterial.js": 45
+		"./CharacterDefaultMaterial.js": 41,
+		"./FXShaderMaterial.js": 42,
+		"./IntroDefaultMaterial.js": 45,
+		"./PointsMaterial.js": 46,
+		"./ShaderMaterial.js": 47
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -51557,11 +51924,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 38;
+	webpackContext.id = 40;
 
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -51593,7 +51960,7 @@
 	//# sourceMappingURL=CharacterDefaultMaterial.js.map
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51635,8 +52002,8 @@
 	        };
 	        var shader = new THREE.ShaderMaterial({
 	            uniforms: uniforms,
-	            vertexShader: __webpack_require__(41),
-	            fragmentShader: __webpack_require__(42),
+	            vertexShader: __webpack_require__(43),
+	            fragmentShader: __webpack_require__(44),
 	            blending: THREE.AdditiveBlending,
 	            side: THREE.DoubleSide,
 	            transparent: true,
@@ -51653,19 +52020,19 @@
 	//# sourceMappingURL=FXShaderMaterial.js.map
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = "\nvarying vec2 vUv;\nuniform sampler2D texture;\nuniform float waves;\nuniform float warp;\nuniform float angle;\n\nvoid main() {\n\n    vUv = uv;\n    vec3 l_Pos = position;\n\n    l_Pos.z = sin(angle+position.x/warp)*waves;\n\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(l_Pos,1);\n}\n\n"
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = "varying vec2 vUv;\nuniform sampler2D texture;\nuniform float alpha;\n\nvoid main(void) {\n    gl_FragColor = texture2D(texture, vUv);\n    gl_FragColor.a = alpha;\n}"
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -51683,7 +52050,7 @@
 	                'sprite-6.png': '/assets/img/sprite-6.png',
 	                'sprite-7.png': '/assets/img/sprite-7.png',
 	                'sprite-8.png': '/assets/img/sprite-8.png',
-	                tunnel: '/assets/img/tunnel.jpg',
+	                tunnel: '/assets/img/tunnel.png',
 	                skybox: '/assets/img/skybox.jpg',
 	                glow: '/assets/img/glow.png',
 	                dot: '/assets/img/dot.png',
@@ -51706,7 +52073,7 @@
 	//# sourceMappingURL=IntroDefaultMaterial.js.map
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -51725,7 +52092,7 @@
 	                'sprite-7.png': '/assets/img/sprite-7.png',
 	                'sprite-8.png': '/assets/img/sprite-8.png',
 	                core: '/assets/hex-assets/hex.png',
-	                tunnel: '/assets/img/tunnel.jpg',
+	                tunnel: '/assets/img/tunnel.png',
 	                // point_squad: '/assets/point-squad.png',
 	                hexicle: '/assets/hex-assets/hexicle.png',
 	            };
@@ -51736,7 +52103,7 @@
 	    PointsMaterial.prototype.create = function (textures) {
 	        var material = new THREE.PointsMaterial({
 	            color: 0x351c41,
-	            size: 30,
+	            size: 15,
 	            blending: THREE.AdditiveBlending,
 	            // map: texture,
 	            transparent: true,
@@ -51753,7 +52120,7 @@
 	//# sourceMappingURL=PointsMaterial.js.map
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51794,8 +52161,8 @@
 	        };
 	        var shader = new THREE.ShaderMaterial({
 	            uniforms: uniforms,
-	            vertexShader: __webpack_require__(41),
-	            fragmentShader: __webpack_require__(42),
+	            vertexShader: __webpack_require__(43),
+	            fragmentShader: __webpack_require__(44),
 	            blending: THREE.AdditiveBlending,
 	            side: THREE.DoubleSide,
 	            transparent: true,
@@ -51812,7 +52179,7 @@
 	//# sourceMappingURL=ShaderMaterial.js.map
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51821,7 +52188,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(36);
+	var Initializable_1 = __webpack_require__(38);
 	/**
 	 * Model Class
 	 */
@@ -51848,7 +52215,7 @@
 	//# sourceMappingURL=Model.js.map
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51857,7 +52224,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Initializable_1 = __webpack_require__(36);
+	var Initializable_1 = __webpack_require__(38);
 	var Helpers_1 = __webpack_require__(15);
 	var Promise = __webpack_require__(7);
 	/**
@@ -51871,7 +52238,7 @@
 	    }
 	    Object.defineProperty(Objects.prototype, "collection", {
 	        get: function () {
-	            return __webpack_require__(48);
+	            return __webpack_require__(50);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -51935,54 +52302,57 @@
 	//# sourceMappingURL=Objects.js.map
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Base.js": 49,
-		"./Buttons.js": 50,
-		"./Characters/Actor.js": 60,
-		"./Characters/Actress.js": 62,
-		"./Characters/Animation.js": 63,
-		"./Characters/ArtDirector.js": 64,
-		"./Characters/Artist3D.js": 65,
-		"./Characters/CameraDirector.js": 66,
-		"./Characters/ConceptArtist.js": 67,
-		"./Characters/CostumeDesigner.js": 68,
-		"./Characters/Director.js": 69,
-		"./Characters/Editor.js": 70,
-		"./Characters/Effects.js": 71,
-		"./Characters/ExecutiveProducer.js": 72,
-		"./Characters/LightingArtist.js": 73,
-		"./Characters/MakeUpArtist.js": 74,
-		"./Characters/PackagingDesigner.js": 75,
-		"./Characters/PreStageProjectCoordinator.js": 76,
-		"./Characters/ProjectCoordinator.js": 77,
-		"./Characters/Prop.js": 78,
-		"./Characters/RecordingArtist.js": 79,
-		"./Characters/RenderAndComposite.js": 80,
-		"./Characters/RiggingArtist.js": 81,
-		"./Characters/Screenwriter.js": 82,
-		"./Characters/ScriptSupervisor.js": 83,
-		"./Characters/SetDesigner.js": 84,
-		"./Characters/SoundEffect.js": 85,
-		"./Characters/StageManager.js": 86,
-		"./Characters/StoryboardArtist.js": 87,
-		"./Characters/SwingGang.js": 88,
-		"./Characters/VoiceArtist.js": 89,
-		"./Cockpit.js": 90,
-		"./Debris.js": 91,
-		"./Engine.js": 92,
-		"./Flare.js": 94,
-		"./Fx.js": 95,
-		"./Galaxy.js": 96,
-		"./HexParticles.js": 97,
-		"./Main.js": 98,
-		"./Plexus.js": 100,
-		"./Ship.js": 102,
-		"./Star.js": 103,
-		"./Streak.js": 104,
-		"./Tunnel.js": 105
+		"./Base.js": 51,
+		"./Buttons.js": 52,
+		"./Characters/Actor.js": 62,
+		"./Characters/Actress.js": 64,
+		"./Characters/Animation.js": 65,
+		"./Characters/ArtDirector.js": 66,
+		"./Characters/Artist3D.js": 67,
+		"./Characters/CameraDirector.js": 68,
+		"./Characters/ConceptArtist.js": 69,
+		"./Characters/CostumeDesigner.js": 70,
+		"./Characters/Director.js": 71,
+		"./Characters/Editor.js": 72,
+		"./Characters/Effects.js": 73,
+		"./Characters/ExecutiveProducer.js": 74,
+		"./Characters/LightingArtist.js": 75,
+		"./Characters/MakeUpArtist.js": 76,
+		"./Characters/PackagingDesigner.js": 77,
+		"./Characters/PreStageProjectCoordinator.js": 78,
+		"./Characters/ProjectCoordinator.js": 79,
+		"./Characters/Prop.js": 80,
+		"./Characters/RecordingArtist.js": 81,
+		"./Characters/RenderAndComposite.js": 82,
+		"./Characters/RiggingArtist.js": 83,
+		"./Characters/Screenwriter.js": 84,
+		"./Characters/ScriptSupervisor.js": 85,
+		"./Characters/SetDesigner.js": 86,
+		"./Characters/SoundEffect.js": 87,
+		"./Characters/StageManager.js": 88,
+		"./Characters/StoryboardArtist.js": 89,
+		"./Characters/SwingGang.js": 90,
+		"./Characters/VoiceArtist.js": 91,
+		"./Cockpit.js": 92,
+		"./Debris.js": 93,
+		"./Engine.js": 94,
+		"./Flare.js": 96,
+		"./Fx.js": 97,
+		"./Galaxy.js": 98,
+		"./HexParticles.js": 99,
+		"./Main.js": 100,
+		"./Plexus-old.js": 102,
+		"./Plexus.js": 104,
+		"./ProtonBean.js": 105,
+		"./Ship.js": 107,
+		"./Star.js": 108,
+		"./Streak.js": 109,
+		"./Tunnel-old.js": 110,
+		"./Tunnel.js": 111
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -51995,11 +52365,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 48;
+	webpackContext.id = 50;
 
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -52041,7 +52411,7 @@
 	//# sourceMappingURL=Base.js.map
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52050,7 +52420,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Buttons
 	 */
@@ -52100,7 +52470,7 @@
 	//# sourceMappingURL=Buttons.js.map
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52113,7 +52483,7 @@
 	        this.sprite = {};
 	        this.app = app;
 	        this.camera = app.camera;
-	        var sprites = Helpers_2.requireAll(__webpack_require__(52));
+	        var sprites = Helpers_2.requireAll(__webpack_require__(54));
 	        var _loop_1 = function(sprite) {
 	            Object
 	                .keys(sprites[sprite])
@@ -52264,18 +52634,18 @@
 	//# sourceMappingURL=Forgable.js.map
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
 		"./sprite-1.json": 21,
-		"./sprite-2.json": 53,
-		"./sprite-3.json": 54,
-		"./sprite-4.json": 55,
-		"./sprite-5.json": 56,
-		"./sprite-6.json": 57,
-		"./sprite-7.json": 58,
-		"./sprite-8.json": 59
+		"./sprite-2.json": 55,
+		"./sprite-3.json": 56,
+		"./sprite-4.json": 57,
+		"./sprite-5.json": 58,
+		"./sprite-6.json": 59,
+		"./sprite-7.json": 60,
+		"./sprite-8.json": 61
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -52288,11 +52658,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 52;
+	webpackContext.id = 54;
 
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52316,6 +52686,26 @@
 			"x": 0,
 			"y": 0
 		},
+		"nb2": {
+			"name": "nb2",
+			"width": 928,
+			"height": 525,
+			"sprite": {
+				"name": "sprite-2.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.10009765625,
+				"u2": 0.453125,
+				"v2": 0.3564453125,
+				"uDistance": 0.453125,
+				"vDistance": 0.25634765625
+			},
+			"x": 0,
+			"y": 1318
+		},
 		"tunnel": {
 			"name": "tunnel",
 			"width": 516,
@@ -52326,14 +52716,14 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0,
+				"u1": 0.453125,
 				"v1": 0.1044921875,
-				"u2": 0.251953125,
+				"u2": 0.705078125,
 				"v2": 0.3564453125,
 				"uDistance": 0.251953125,
 				"vDistance": 0.251953125
 			},
-			"x": 0,
+			"x": 928,
 			"y": 1318
 		},
 		"ship": {
@@ -52346,40 +52736,20 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.251953125,
+				"u1": 0.705078125,
 				"v1": 0.1103515625,
-				"u2": 0.498046875,
+				"u2": 0.951171875,
 				"v2": 0.3564453125,
 				"uDistance": 0.24609375,
 				"vDistance": 0.24609375
 			},
-			"x": 516,
+			"x": 1444,
 			"y": 1318
 		},
-		"debris": {
-			"name": "debris",
-			"width": 856,
-			"height": 496,
-			"sprite": {
-				"name": "sprite-2.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.498046875,
-				"v1": 0.1142578125,
-				"u2": 0.916015625,
-				"v2": 0.3564453125,
-				"uDistance": 0.41796875,
-				"vDistance": 0.2421875
-			},
-			"x": 1020,
-			"y": 1318
-		},
-		"planet": {
-			"name": "planet",
-			"width": 200,
-			"height": 189,
+		"blue-core": {
+			"name": "blue-core",
+			"width": 169,
+			"height": 169,
 			"sprite": {
 				"name": "sprite-2.png",
 				"width": 2048,
@@ -52387,34 +52757,94 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.01220703125,
-				"u2": 0.09765625,
-				"v2": 0.1044921875,
-				"uDistance": 0.09765625,
-				"vDistance": 0.09228515625
+				"v1": 0.017578125,
+				"u2": 0.08251953125,
+				"v2": 0.10009765625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
 			},
 			"x": 0,
-			"y": 1834
+			"y": 1843
 		},
-		"light-stroke": {
-			"name": "light-stroke",
-			"width": 233,
-			"height": 183,
+		"World-War-Z": {
+			"name": "World-War-Z",
+			"width": 169,
+			"height": 169,
 			"sprite": {
 				"name": "sprite-2.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.09765625,
-				"v1": 0.01513671875,
-				"u2": 0.21142578125,
-				"v2": 0.1044921875,
-				"uDistance": 0.11376953125,
-				"vDistance": 0.08935546875
+				"u1": 0.08251953125,
+				"v1": 0.017578125,
+				"u2": 0.1650390625,
+				"v2": 0.10009765625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
 			},
-			"x": 200,
-			"y": 1834
+			"x": 169,
+			"y": 1843
+		},
+		"TROLLS": {
+			"name": "TROLLS",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-2.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.1650390625,
+				"v1": 0.017578125,
+				"u2": 0.24755859375,
+				"v2": 0.10009765625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 338,
+			"y": 1843
+		},
+		"Thor": {
+			"name": "Thor",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-2.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.24755859375,
+				"v1": 0.017578125,
+				"u2": 0.330078125,
+				"v2": 0.10009765625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 507,
+			"y": 1843
+		},
+		"The-Avengers": {
+			"name": "The-Avengers",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-2.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.330078125,
+				"v1": 0.017578125,
+				"u2": 0.41259765625,
+				"v2": 0.10009765625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 676,
+			"y": 1843
 		},
 		"core": {
 			"name": "core",
@@ -52426,15 +52856,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.916015625,
-				"v1": 0.27392578125,
-				"u2": 0.99853515625,
-				"v2": 0.3564453125,
+				"u1": 0.41259765625,
+				"v1": 0.017578125,
+				"u2": 0.4951171875,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1876,
-			"y": 1318
+			"x": 845,
+			"y": 1843
 		},
 		"Ant-Man": {
 			"name": "Ant-Man",
@@ -52446,15 +52876,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.916015625,
-				"v1": 0.19140625,
-				"u2": 0.99853515625,
-				"v2": 0.27392578125,
+				"u1": 0.4951171875,
+				"v1": 0.017578125,
+				"u2": 0.57763671875,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1876,
-			"y": 1487
+			"x": 1014,
+			"y": 1843
 		},
 		"ARRIVAL": {
 			"name": "ARRIVAL",
@@ -52466,18 +52896,18 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.21142578125,
-				"v1": 0.02197265625,
-				"u2": 0.2939453125,
-				"v2": 0.1044921875,
+				"u1": 0.57763671875,
+				"v1": 0.017578125,
+				"u2": 0.66015625,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 433,
-			"y": 1834
+			"x": 1183,
+			"y": 1843
 		},
-		"X-Men-Days-of-Future-Past": {
-			"name": "X-Men-Days-of-Future-Past",
+		"Avatar": {
+			"name": "Avatar",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52486,15 +52916,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.2939453125,
-				"v1": 0.02197265625,
-				"u2": 0.37646484375,
-				"v2": 0.1044921875,
+				"u1": 0.66015625,
+				"v1": 0.017578125,
+				"u2": 0.74267578125,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 602,
-			"y": 1834
+			"x": 1352,
+			"y": 1843
 		},
 		"Captain-America-The-First-Avenger": {
 			"name": "Captain-America-The-First-Avenger",
@@ -52506,15 +52936,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.37646484375,
-				"v1": 0.02197265625,
-				"u2": 0.458984375,
-				"v2": 0.1044921875,
+				"u1": 0.74267578125,
+				"v1": 0.017578125,
+				"u2": 0.8251953125,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 771,
-			"y": 1834
+			"x": 1521,
+			"y": 1843
 		},
 		"Deadpool": {
 			"name": "Deadpool",
@@ -52526,15 +52956,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.458984375,
-				"v1": 0.02197265625,
-				"u2": 0.54150390625,
-				"v2": 0.1044921875,
+				"u1": 0.8251953125,
+				"v1": 0.017578125,
+				"u2": 0.90771484375,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 940,
-			"y": 1834
+			"x": 1690,
+			"y": 1843
 		},
 		"DOCTOR-STRANGE": {
 			"name": "DOCTOR-STRANGE",
@@ -52546,100 +52976,307 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.54150390625,
-				"v1": 0.02197265625,
-				"u2": 0.6240234375,
-				"v2": 0.1044921875,
+				"u1": 0.90771484375,
+				"v1": 0.017578125,
+				"u2": 0.990234375,
+				"v2": 0.10009765625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1109,
-			"y": 1834
+			"x": 1859,
+			"y": 1843
+		}
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"background": {
+			"name": "background",
+			"width": 2007,
+			"height": 1318,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.3564453125,
+				"u2": 0.97998046875,
+				"v2": 1,
+				"uDistance": 0.97998046875,
+				"vDistance": 0.6435546875
+			},
+			"x": 0,
+			"y": 0
+		},
+		"debris": {
+			"name": "debris",
+			"width": 856,
+			"height": 496,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.1142578125,
+				"u2": 0.41796875,
+				"v2": 0.3564453125,
+				"uDistance": 0.41796875,
+				"vDistance": 0.2421875
+			},
+			"x": 0,
+			"y": 1318
+		},
+		"ring": {
+			"name": "ring",
+			"width": 387,
+			"height": 387,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.41796875,
+				"v1": 0.16748046875,
+				"u2": 0.60693359375,
+				"v2": 0.3564453125,
+				"uDistance": 0.18896484375,
+				"vDistance": 0.18896484375
+			},
+			"x": 856,
+			"y": 1318
+		},
+		"nb1": {
+			"name": "nb1",
+			"width": 621,
+			"height": 351,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.60693359375,
+				"v1": 0.18505859375,
+				"u2": 0.91015625,
+				"v2": 0.3564453125,
+				"uDistance": 0.30322265625,
+				"vDistance": 0.17138671875
+			},
+			"x": 1243,
+			"y": 1318
 		},
 		"Edge-of-Tomorrow": {
 			"name": "Edge-of-Tomorrow",
 			"width": 169,
 			"height": 169,
 			"sprite": {
-				"name": "sprite-2.png",
+				"name": "sprite-3.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.6240234375,
-				"v1": 0.02197265625,
-				"u2": 0.70654296875,
-				"v2": 0.1044921875,
+				"u1": 0.91015625,
+				"v1": 0.27392578125,
+				"u2": 0.99267578125,
+				"v2": 0.3564453125,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1278,
-			"y": 1834
+			"x": 1864,
+			"y": 1318
 		},
 		"FANTASTIC-BEASTS": {
 			"name": "FANTASTIC-BEASTS",
 			"width": 169,
 			"height": 169,
 			"sprite": {
-				"name": "sprite-2.png",
+				"name": "sprite-3.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.70654296875,
-				"v1": 0.02197265625,
-				"u2": 0.7890625,
-				"v2": 0.1044921875,
+				"u1": 0.91015625,
+				"v1": 0.19140625,
+				"u2": 0.99267578125,
+				"v2": 0.27392578125,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1447,
-			"y": 1834
+			"x": 1864,
+			"y": 1487
 		},
 		"Gravity": {
 			"name": "Gravity",
 			"width": 169,
 			"height": 169,
 			"sprite": {
-				"name": "sprite-2.png",
+				"name": "sprite-3.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.7890625,
-				"v1": 0.02197265625,
-				"u2": 0.87158203125,
-				"v2": 0.1044921875,
+				"u1": 0,
+				"v1": 0.03173828125,
+				"u2": 0.08251953125,
+				"v2": 0.1142578125,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1616,
-			"y": 1834
+			"x": 0,
+			"y": 1814
 		},
 		"Guardians-of-the-Galaxy": {
 			"name": "Guardians-of-the-Galaxy",
 			"width": 169,
 			"height": 169,
 			"sprite": {
-				"name": "sprite-2.png",
+				"name": "sprite-3.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.87158203125,
-				"v1": 0.02197265625,
-				"u2": 0.9541015625,
-				"v2": 0.1044921875,
+				"u1": 0.08251953125,
+				"v1": 0.03173828125,
+				"u2": 0.1650390625,
+				"v2": 0.1142578125,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1785,
-			"y": 1834
+			"x": 169,
+			"y": 1814
+		},
+		"Iron-Man": {
+			"name": "Iron-Man",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.1650390625,
+				"v1": 0.03173828125,
+				"u2": 0.24755859375,
+				"v2": 0.1142578125,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 338,
+			"y": 1814
+		},
+		"MOANA": {
+			"name": "MOANA",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.24755859375,
+				"v1": 0.03173828125,
+				"u2": 0.330078125,
+				"v2": 0.1142578125,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 507,
+			"y": 1814
+		},
+		"Oblivion": {
+			"name": "Oblivion",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.330078125,
+				"v1": 0.03173828125,
+				"u2": 0.41259765625,
+				"v2": 0.1142578125,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 676,
+			"y": 1814
+		},
+		"Pacific-Rim": {
+			"name": "Pacific-Rim",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.41259765625,
+				"v1": 0.03173828125,
+				"u2": 0.4951171875,
+				"v2": 0.1142578125,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 845,
+			"y": 1814
+		},
+		"start": {
+			"name": "start",
+			"width": 725,
+			"height": 152,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.4951171875,
+				"v1": 0.0400390625,
+				"u2": 0.84912109375,
+				"v2": 0.1142578125,
+				"uDistance": 0.35400390625,
+				"vDistance": 0.07421875
+			},
+			"x": 1014,
+			"y": 1814
+		},
+		"smoke": {
+			"name": "smoke",
+			"width": 134,
+			"height": 133,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.84912109375,
+				"v1": 0.04931640625,
+				"u2": 0.91455078125,
+				"v2": 0.1142578125,
+				"uDistance": 0.0654296875,
+				"vDistance": 0.06494140625
+			},
+			"x": 1739,
+			"y": 1814
 		}
 	};
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52648,7 +53285,7 @@
 			"width": 1318,
 			"height": 1318,
 			"sprite": {
-				"name": "sprite-3.png",
+				"name": "sprite-4.png",
 				"width": 2048,
 				"height": 2048
 			},
@@ -52668,7 +53305,7 @@
 			"width": 1924,
 			"height": 496,
 			"sprite": {
-				"name": "sprite-3.png",
+				"name": "sprite-4.png",
 				"width": 2048,
 				"height": 2048
 			},
@@ -52683,277 +53320,50 @@
 			"x": 0,
 			"y": 1318
 		},
-		"ring": {
-			"name": "ring",
-			"width": 387,
-			"height": 387,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.6435546875,
-				"v1": 0.81103515625,
-				"u2": 0.83251953125,
-				"v2": 1,
-				"uDistance": 0.18896484375,
-				"vDistance": 0.18896484375
-			},
-			"x": 1318,
-			"y": 0
-		},
-		"nb3": {
-			"name": "nb3",
-			"width": 587,
-			"height": 342,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.6435546875,
-				"v1": 0.64404296875,
-				"u2": 0.93017578125,
-				"v2": 0.81103515625,
-				"uDistance": 0.28662109375,
-				"vDistance": 0.1669921875
-			},
-			"x": 1318,
-			"y": 387
-		},
-		"logo": {
-			"name": "logo",
-			"width": 299,
-			"height": 331,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.83251953125,
-				"v1": 0.83837890625,
-				"u2": 0.978515625,
-				"v2": 1,
-				"uDistance": 0.14599609375,
-				"vDistance": 0.16162109375
-			},
-			"x": 1705,
-			"y": 0
-		},
-		"nb1": {
-			"name": "nb1",
-			"width": 380,
-			"height": 305,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.6435546875,
-				"v1": 0.4951171875,
-				"u2": 0.8291015625,
-				"v2": 0.64404296875,
-				"uDistance": 0.185546875,
-				"vDistance": 0.14892578125
-			},
-			"x": 1318,
-			"y": 729
-		},
-		"World-War-Z": {
-			"name": "World-War-Z",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.8291015625,
-				"v1": 0.5615234375,
-				"u2": 0.91162109375,
-				"v2": 0.64404296875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1698,
-			"y": 729
-		},
-		"MOANA": {
-			"name": "MOANA",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.91162109375,
-				"v1": 0.5615234375,
-				"u2": 0.994140625,
-				"v2": 0.64404296875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1867,
-			"y": 729
-		},
-		"Oblivion": {
-			"name": "Oblivion",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.6435546875,
-				"v1": 0.41259765625,
-				"u2": 0.72607421875,
-				"v2": 0.4951171875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1318,
-			"y": 1034
-		},
-		"Pacific-Rim": {
-			"name": "Pacific-Rim",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.72607421875,
-				"v1": 0.41259765625,
-				"u2": 0.80859375,
-				"v2": 0.4951171875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1487,
-			"y": 1034
-		},
-		"The-Avengers": {
-			"name": "The-Avengers",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.80859375,
-				"v1": 0.41259765625,
-				"u2": 0.89111328125,
-				"v2": 0.4951171875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1656,
-			"y": 1034
-		},
-		"Thor": {
-			"name": "Thor",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.89111328125,
-				"v1": 0.41259765625,
-				"u2": 0.9736328125,
-				"v2": 0.4951171875,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 1825,
-			"y": 1034
-		},
-		"TROLLS": {
-			"name": "TROLLS",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.03173828125,
-				"u2": 0.08251953125,
-				"v2": 0.1142578125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 0,
-			"y": 1814
-		},
-		"start": {
-			"name": "start",
-			"width": 725,
-			"height": 152,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.08251953125,
-				"v1": 0.0400390625,
-				"u2": 0.4365234375,
-				"v2": 0.1142578125,
-				"uDistance": 0.35400390625,
-				"vDistance": 0.07421875
-			},
-			"x": 169,
-			"y": 1814
-		}
-	};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"dust": {
-			"name": "dust",
-			"width": 1494,
-			"height": 1318,
+		"sparkle": {
+			"name": "sparkle",
+			"width": 345,
+			"height": 345,
 			"sprite": {
 				"name": "sprite-4.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0,
-				"v1": 0.3564453125,
-				"u2": 0.7294921875,
+				"u1": 0.6435546875,
+				"v1": 0.83154296875,
+				"u2": 0.81201171875,
 				"v2": 1,
-				"uDistance": 0.7294921875,
-				"vDistance": 0.6435546875
+				"uDistance": 0.16845703125,
+				"vDistance": 0.16845703125
 			},
-			"x": 0,
+			"x": 1318,
+			"y": 0
+		},
+		"logo": {
+			"name": "logo",
+			"width": 299,
+			"height": 331,
+			"sprite": {
+				"name": "sprite-4.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.81201171875,
+				"v1": 0.83837890625,
+				"u2": 0.9580078125,
+				"v2": 1,
+				"uDistance": 0.14599609375,
+				"vDistance": 0.16162109375
+			},
+			"x": 1663,
 			"y": 0
 		}
 	};
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52980,13 +53390,13 @@
 	};
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = {
 		"universe": {
 			"name": "universe",
-			"width": 2007,
+			"width": 1967,
 			"height": 1131,
 			"sprite": {
 				"name": "sprite-6.png",
@@ -52996,9 +53406,9 @@
 			"uv": {
 				"u1": 0,
 				"v1": 0.44775390625,
-				"u2": 0.97998046875,
+				"u2": 0.96044921875,
 				"v2": 1,
-				"uDistance": 0.97998046875,
+				"uDistance": 0.96044921875,
 				"vDistance": 0.55224609375
 			},
 			"x": 0,
@@ -53007,7 +53417,7 @@
 	};
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -53034,7 +53444,7 @@
 	};
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -53060,8 +53470,8 @@
 		},
 		"skybox": {
 			"name": "skybox",
-			"width": 1996,
-			"height": 1006,
+			"width": 2028,
+			"height": 1014,
 			"sprite": {
 				"name": "sprite-8.png",
 				"width": 2048,
@@ -53069,11 +53479,11 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.0068359375,
-				"u2": 0.974609375,
+				"v1": 0.0029296875,
+				"u2": 0.990234375,
 				"v2": 0.498046875,
-				"uDistance": 0.974609375,
-				"vDistance": 0.4912109375
+				"uDistance": 0.990234375,
+				"vDistance": 0.4951171875
 			},
 			"x": 0,
 			"y": 1028
@@ -53081,7 +53491,7 @@
 	};
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53090,7 +53500,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Actor
 	 */
@@ -53114,7 +53524,7 @@
 	//# sourceMappingURL=Actor.js.map
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53156,7 +53566,7 @@
 	//# sourceMappingURL=BaseCharacter.js.map
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53165,7 +53575,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Actress
 	 */
@@ -53189,7 +53599,7 @@
 	//# sourceMappingURL=Actress.js.map
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53198,7 +53608,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Animation
 	 */
@@ -53222,7 +53632,7 @@
 	//# sourceMappingURL=Animation.js.map
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53231,7 +53641,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: ArtDirector
 	 */
@@ -53255,7 +53665,7 @@
 	//# sourceMappingURL=ArtDirector.js.map
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53264,7 +53674,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Artist3d
 	 */
@@ -53288,7 +53698,7 @@
 	//# sourceMappingURL=Artist3D.js.map
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53297,7 +53707,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: CameraDirector
 	 */
@@ -53321,7 +53731,7 @@
 	//# sourceMappingURL=CameraDirector.js.map
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53330,7 +53740,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: ConceptArtist
 	 */
@@ -53354,7 +53764,7 @@
 	//# sourceMappingURL=ConceptArtist.js.map
 
 /***/ },
-/* 68 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53363,7 +53773,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: CostumeDesigner
 	 */
@@ -53387,7 +53797,7 @@
 	//# sourceMappingURL=CostumeDesigner.js.map
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53396,7 +53806,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Director
 	 */
@@ -53420,7 +53830,7 @@
 	//# sourceMappingURL=Director.js.map
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53429,7 +53839,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Editor
 	 */
@@ -53453,7 +53863,7 @@
 	//# sourceMappingURL=Editor.js.map
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53462,7 +53872,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Effects
 	 */
@@ -53486,7 +53896,7 @@
 	//# sourceMappingURL=Effects.js.map
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53495,7 +53905,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: ExecutiveProducer
 	 */
@@ -53519,7 +53929,7 @@
 	//# sourceMappingURL=ExecutiveProducer.js.map
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53528,7 +53938,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: LightingArtist
 	 */
@@ -53552,7 +53962,7 @@
 	//# sourceMappingURL=LightingArtist.js.map
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53561,7 +53971,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: MakeUpArtist
 	 */
@@ -53585,7 +53995,7 @@
 	//# sourceMappingURL=MakeUpArtist.js.map
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53594,7 +54004,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: PackagingDesigner
 	 */
@@ -53618,7 +54028,7 @@
 	//# sourceMappingURL=PackagingDesigner.js.map
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53627,7 +54037,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: PreStageProjectCoordinator
 	 */
@@ -53651,7 +54061,7 @@
 	//# sourceMappingURL=PreStageProjectCoordinator.js.map
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53660,7 +54070,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: ProjectCoordinator
 	 */
@@ -53684,7 +54094,7 @@
 	//# sourceMappingURL=ProjectCoordinator.js.map
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53693,7 +54103,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Prop
 	 */
@@ -53717,7 +54127,7 @@
 	//# sourceMappingURL=Prop.js.map
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53726,7 +54136,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: RecordingArtist
 	 */
@@ -53750,7 +54160,7 @@
 	//# sourceMappingURL=RecordingArtist.js.map
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53759,7 +54169,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: RenderAndComposite
 	 */
@@ -53783,7 +54193,7 @@
 	//# sourceMappingURL=RenderAndComposite.js.map
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53792,7 +54202,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: RiggingArtist
 	 */
@@ -53816,7 +54226,7 @@
 	//# sourceMappingURL=RiggingArtist.js.map
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53825,7 +54235,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: Screenwriter
 	 */
@@ -53849,7 +54259,7 @@
 	//# sourceMappingURL=Screenwriter.js.map
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53858,7 +54268,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: ScriptSupervisor
 	 */
@@ -53882,7 +54292,7 @@
 	//# sourceMappingURL=ScriptSupervisor.js.map
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53891,7 +54301,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: SetDesigner
 	 */
@@ -53915,7 +54325,7 @@
 	//# sourceMappingURL=SetDesigner.js.map
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53924,7 +54334,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: SoundEffect
 	 */
@@ -53948,7 +54358,7 @@
 	//# sourceMappingURL=SoundEffect.js.map
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53957,7 +54367,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: StageManager
 	 */
@@ -53981,7 +54391,7 @@
 	//# sourceMappingURL=StageManager.js.map
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53990,7 +54400,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: StoryboardArtist
 	 */
@@ -54014,7 +54424,7 @@
 	//# sourceMappingURL=StoryboardArtist.js.map
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54023,7 +54433,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: SwingGang
 	 */
@@ -54047,7 +54457,7 @@
 	//# sourceMappingURL=SwingGang.js.map
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54056,7 +54466,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(61);
+	var BaseCharacter_1 = __webpack_require__(63);
 	/**
 	 * Character: VoiceArtist
 	 */
@@ -54080,7 +54490,7 @@
 	//# sourceMappingURL=VoiceArtist.js.map
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54089,7 +54499,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Engine
 	 */
@@ -54125,7 +54535,7 @@
 	//# sourceMappingURL=Cockpit.js.map
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54134,7 +54544,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Character: Base
 	 */
@@ -54174,7 +54584,7 @@
 	    Debris.prototype.update = function (debris) {
 	        var height = debris.userData.meta.view.height;
 	        if (debris.position.y >= -height) {
-	            debris.position.y -= 3; //1;
+	            debris.position.y -= 0.01; //1;
 	        }
 	        else {
 	            return true;
@@ -54186,7 +54596,7 @@
 	//# sourceMappingURL=Debris.js.map
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54195,8 +54605,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
-	__webpack_require__(93);
+	var Forgable_1 = __webpack_require__(53);
+	__webpack_require__(95);
 	/**
 	 * Engine
 	 */
@@ -54274,7 +54684,7 @@
 	//# sourceMappingURL=Engine.js.map
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports) {
 
 	/*
@@ -54787,7 +55197,7 @@
 
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54796,7 +55206,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Engine
 	 */
@@ -54833,7 +55243,7 @@
 	//# sourceMappingURL=Flare.js.map
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54842,7 +55252,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Tunnel
 	 */
@@ -54939,7 +55349,7 @@
 	//# sourceMappingURL=Fx.js.map
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54949,7 +55359,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Helpers_1 = __webpack_require__(20);
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Character: Base
 	 */
@@ -54989,60 +55399,14 @@
 	        var group = new THREE.Group();
 	        var layers = material.clone();
 	        layers.side = THREE.BackSide;
-	        layers.blending = THREE.AdditiveBlending;
+	        // layers.blending = THREE.AdditiveBlending;
 	        layers.opacity = .8;
-	        layers.depthTest = false;
+	        layers.transparent = true;
+	        layers.depthTest = true;
 	        layers.fog = false;
 	        layers['userData'] = material['userData'];
 	        layers.map = material.userData.skybox;
-	        // let skybox = this.forge('skybox', layers, {
-	        //     geometry: {
-	        //         create: (width, height) => {
-	        //             return new THREE.SphereBufferGeometry(3000, 30, 30)
-	        //         }
-	        //     },
-	        //     uvs: false,
-	        //     position: {
-	        //         x: 50, y: 50, z: 80
-	        //     }
-	        // });
-	        // let skyboxMaterial = new THREE.MeshBasicMaterial({
-	        //     map: material.userData.skybox
-	        // })
-	        var skybox = new THREE.Mesh(new THREE.SphereBufferGeometry(3000, 30, 30), layers);
-	        // skybox.position.copy(skyboxOld.position)
-	        // skybox['material'].map = material.userData.skybox;
-	        // let stars = this.forge('stars', layers, {
-	        //     geometry: {
-	        //         create: (width, height) => {
-	        //             return new THREE.SphereBufferGeometry(2500, 30, 30)
-	        //         }
-	        //     },
-	        //     uvs: false,
-	        //     position: {
-	        //         x: 50, y: 50, z: 80
-	        //     }
-	        // });
-	        // let nebula = this.forge('nebula', layers, {
-	        //     geometry: geometry,
-	        //     uvs: false
-	        // }),
-	        //     nebula2 = nebula.clone(),
-	        //     nebula3 = nebula.clone(),
-	        //     nebula4 = nebula.clone();
-	        // nebula2.rotation.y = deg2rad(90)
-	        // nebula2.scale.setScalar(3);
-	        // nebula3.rotation.set(deg2rad(50), deg2rad(45), deg2rad(80))
-	        // nebula3.scale.setScalar(3);
-	        // nebula4.rotation.set(deg2rad(25), deg2rad(180), deg2rad(30))
-	        // nebula4.scale.setScalar(5);
-	        // nebula.add(nebula2)
-	        // nebula.add(nebula3)
-	        // nebula.add(nebula4)
-	        // let dirty = this.forge('dirty', layers, {
-	        //     geometry: geometry,
-	        //     uvs: false
-	        // });
+	        var skybox = new THREE.Mesh(new THREE.SphereBufferGeometry(5000, 30, 30), layers);
 	        var nb1 = this.forge('nb1', layers, {
 	            geometry: geometry,
 	            uvs: false
@@ -55051,7 +55415,7 @@
 	            geometry: geometry,
 	            uvs: false
 	        });
-	        var nb3 = this.forge('nb3', layers, {
+	        var nb3 = this.forge('nb2', layers, {
 	            geometry: geometry,
 	            uvs: false
 	        });
@@ -55062,17 +55426,9 @@
 	        nb1.rotation.set(Helpers_1.deg2rad(0), Helpers_1.deg2rad(180), Helpers_1.deg2rad(90));
 	        nb2.rotation.set(Helpers_1.deg2rad(90), Helpers_1.deg2rad(45), Helpers_1.deg2rad(180));
 	        nb3.rotation.set(Helpers_1.deg2rad(180), Helpers_1.deg2rad(145), Helpers_1.deg2rad(270));
-	        nb1.scale.setScalar(100);
-	        nb2.scale.setScalar(150);
-	        nb3.scale.setScalar(80);
-	        console.log('nebulass');
-	        console.log(nb1);
-	        console.log(nb2);
-	        console.log(nb3);
-	        console.log('end-nebulass');
-	        group.add(nb1);
-	        group.add(nb2);
-	        group.add(nb3);
+	        nb1.scale.setScalar(5);
+	        nb2.scale.setScalar(6);
+	        nb3.scale.setScalar(7);
 	        dust2.rotation.set(Helpers_1.deg2rad(90), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
 	        dust3.rotation.set(Helpers_1.deg2rad(180), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
 	        dust4.rotation.set(Helpers_1.deg2rad(270), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
@@ -55086,22 +55442,22 @@
 	        dust.add(dust4);
 	        dust.add(dust5);
 	        dust.rotation.y = Helpers_1.deg2rad(180);
-	        // nebula.rotation.set(deg2rad(90), deg2rad(90), 0)
-	        // dirty.scale.set(-1, 1, 1)
 	        dust.scale.set(-1, 1, 1);
-	        // stars.scale.set(-1, 1, 1)
-	        // nebula.scale.set(-1, 1, 1)
-	        // dirty.scale.setScalar(20)
 	        dust.scale.setScalar(10);
-	        // stars.scale.setScalar(6)
-	        // nebula.scale.setScalar(9)
-	        skybox.scale.setScalar(5);
-	        // group.add(stars);
-	        // group.add(nebula);
-	        // group.add(dirty);
-	        group.add(dust);
+	        skybox.scale.setScalar(50);
+	        skybox.position.set(0, 0, 0);
+	        /**
+	         * Set all child to the origin
+	         */
+	        dust.children.forEach(function (child) { return child.position.set(0, 0, 0); });
+	        [nb1, nb2, nb3].forEach(function (child) { return child.position.set(0, 0, 0); });
+	        group.add(nb1);
+	        group.add(nb2);
+	        group.add(nb3);
+	        // group.add(dust);
 	        group.add(skybox);
 	        group.userData = {
+	            materials: [skybox.material, nb1['material'], nb2['material'], nb3['material']],
 	            update: this.update.bind(this, group)
 	        };
 	        group.position.setZ(-5000);
@@ -55118,7 +55474,7 @@
 	//# sourceMappingURL=Galaxy.js.map
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55127,7 +55483,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	/**
 	 * Main Particles
@@ -55148,7 +55504,7 @@
 	    });
 	    HexParticles.prototype.create = function (models, _a) {
 	        var material = _a.material;
-	        var group = new THREE.Group(), mesh = this.forge('hex', material, {
+	        var group = new THREE.Group(), mesh = this.forge('ring', material, {
 	            uvs: false,
 	            position: {
 	                x: 50, y: 50, z: 20
@@ -55188,7 +55544,7 @@
 	            /**
 	             * Randomize Opacity
 	             */
-	            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = Helpers_1.random.between(1, 100) * 0.01;
+	            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = Helpers_1.random.between(1, 70) * 0.01;
 	            for (var j = 0; j < 3; j++) {
 	                particles['userData'].velocities[j].push([
 	                    Helpers_1.random.between(-10, 10), Helpers_1.random.between(-10, 10)
@@ -55227,7 +55583,7 @@
 	//# sourceMappingURL=HexParticles.js.map
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55236,8 +55592,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
-	var Matter = __webpack_require__(99);
+	var Forgable_1 = __webpack_require__(53);
+	var Matter = __webpack_require__(101);
 	var Engine = Matter.Engine, World = Matter.World, Bodies = Matter.Bodies;
 	/**
 	 * Character: Base
@@ -55329,7 +55685,7 @@
 	    Main.prototype.update = function (smoke, time, delta) {
 	        if (smoke instanceof THREE.Points)
 	            smoke.userData.update(time, delta);
-	        Engine.update(this.engine, delta);
+	        Engine.update(this.engine);
 	    };
 	    Main.prototype.createParticles = function (material) {
 	        var _this = this;
@@ -55392,7 +55748,7 @@
 	//# sourceMappingURL=Main.js.map
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports) {
 
 	/**
@@ -65370,7 +65726,7 @@
 	});
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65380,7 +65736,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Helpers_1 = __webpack_require__(20);
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Character: Base
 	 */
@@ -65420,7 +65776,7 @@
 	                hexcleStick: false,
 	                hexBag: [],
 	                hex: null,
-	                meta: __webpack_require__(101)
+	                meta: __webpack_require__(103)
 	            };
 	        },
 	        enumerable: true,
@@ -65609,7 +65965,8 @@
 	        var geometry = new THREE.CircleGeometry(50, 50), rings = new THREE.Group();
 	        for (var i = 0; i < 3; i++) {
 	            var mesh = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-	                opacity: 0.2
+	                opacity: 0.2,
+	                transparent: true
 	            }));
 	            mesh.scale.addScalar(i * i * 2);
 	            rings.add(mesh);
@@ -65700,10 +66057,10 @@
 	    return Plexus;
 	}(Forgable_1.Forgable));
 	exports.Plexus = Plexus;
-	//# sourceMappingURL=Plexus.js.map
+	//# sourceMappingURL=Plexus-old.js.map
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -65800,7 +66157,7 @@
 	};
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65809,10 +66166,4654 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
+	var Helpers_1 = __webpack_require__(20);
+	var Helpers_2 = __webpack_require__(2);
+	/**
+	 * Plexus
+	 */
+	var Plexus = (function (_super) {
+	    __extends(Plexus, _super);
+	    function Plexus() {
+	        _super.apply(this, arguments);
+	        this.nodesBag = [];
+	        this.options = {
+	            cores: {
+	                safe: true,
+	                maxDistance: 600,
+	                amount: 15,
+	                height: 150,
+	                nodes: {
+	                    meta: __webpack_require__(103),
+	                    amount: 4,
+	                    sphere: false,
+	                    radius: 200,
+	                    safe: true,
+	                    maxDistance: 50,
+	                    line: {
+	                        material: {
+	                            color: 'white',
+	                            transparent: true,
+	                            opacity: 0.1,
+	                            linewidth: 1,
+	                            fog: true
+	                        }
+	                    },
+	                    core: {
+	                        material: {
+	                            size: 50,
+	                            fog: false
+	                        }
+	                    },
+	                    material: {
+	                        size: 50,
+	                        fog: true
+	                    }
+	                },
+	                line: {
+	                    colors: [0xe4a500, 0x3eafe4, 0x3eafe4, 0xe4a500],
+	                    material: {
+	                        // color: 0x051cf4,
+	                        linewidth: 1,
+	                        transparent: true,
+	                        opacity: 0.3,
+	                        fog: true
+	                    },
+	                    margin: {
+	                        top: 7,
+	                        bottom: 2
+	                    }
+	                },
+	                material: {
+	                    size: 50,
+	                    fog: false
+	                }
+	            },
+	            debris: {
+	                amount: 600 * 2,
+	                position: {
+	                    x: 100,
+	                    y: 100,
+	                    z: 50
+	                },
+	                material: {
+	                    size: 10,
+	                    fog: false
+	                }
+	            },
+	            particles: {
+	                amount: 500,
+	                radius: 4000,
+	                material: {
+	                    color: 'white',
+	                    size: 5,
+	                    fog: false
+	                }
+	            }
+	        };
+	    }
+	    Object.defineProperty(Plexus.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Plexus.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var group = new THREE.Group();
+	        /**
+	         * Save raw sprites
+	         */
+	        this.maps = material.userData;
+	        var geometry = this.getSpiralGeometry(), buffer = new THREE.BufferGeometry(), positions = new Float32Array((geometry.length / 2) * 3);
+	        for (var i = 0; i < geometry.length / 2; i++) {
+	            positions[i * 3 + 0] = geometry[i * 2];
+	            positions[i * 3 + 1] = 0;
+	            positions[i * 3 + 2] = geometry[i * 2 + 1];
+	        }
+	        buffer.addAttribute('position', new THREE.BufferAttribute(positions, 3).setDynamic(true));
+	        var debris = this.createDebris(positions, this.options.debris), core = this.createCores(debris.geometry['attributes'].position, this.options.cores), particles = this.createParticles(this.options.particles);
+	        var haze = this.forge('haze', material, {
+	            rotation: {
+	                x: 90, y: 0, z: 0
+	            }
+	        });
+	        haze['material'].side = THREE.DoubleSide;
+	        haze['material'].blending = THREE.AdditiveBlending;
+	        haze['material'].opacity = .025;
+	        haze['material'].transparent = true;
+	        haze['material'].depthTest = false;
+	        haze['material'].fog = true;
+	        haze.scale.setScalar(10.19);
+	        haze.position.set(0, 0, 0);
+	        var smallHaze = haze.clone();
+	        smallHaze.scale.setScalar(.19);
+	        smallHaze['material'] = haze['material'].clone();
+	        smallHaze['material'].opacity = 0.05;
+	        group.add(debris);
+	        group.add(core);
+	        group.add(haze);
+	        group.add(smallHaze);
+	        group.add(particles);
+	        group.userData = {
+	            particles: particles,
+	            materials: core.userData.materials.concat(debris.material),
+	            nodesBag: this.nodesBag,
+	            update: this.update.bind(this, group),
+	            rotate: true
+	        };
+	        group.position.setZ(-5000);
+	        return group;
+	    };
+	    Plexus.prototype.update = function (group, anim, time, delta) {
+	        if (group.userData.rotate)
+	            group.rotation.y += 0.0001;
+	        var particles = group.userData.particles, positions = particles.geometry.attributes.position, hexBag = particles.userData.bag, distance = 1000, speed = .5;
+	        for (var i = 0; i < positions.count; i++) {
+	            positions.array[i * 3] += hexBag[i].velocity.x * speed;
+	            positions.array[i * 3 + 1] += hexBag[i].velocity.y * speed;
+	            positions.array[i * 3 + 2] += hexBag[i].velocity.z * speed;
+	            if (positions.array[i * 3 + 1] < -distance || positions.array[i * 3 + 1] > distance)
+	                hexBag[i].velocity.y = -hexBag[i].velocity.y;
+	            if (positions.array[i * 3] < -distance || positions.array[i * 3] > distance)
+	                hexBag[i].velocity.x = -hexBag[i].velocity.x;
+	            if (positions.array[i * 3 + 2] < -distance || positions.array[i * 3 + 2] > distance)
+	                hexBag[i].velocity.z = -hexBag[i].velocity.z;
+	        }
+	        ;
+	        positions.needsUpdate = true;
+	    };
+	    Plexus.prototype.createNodes = function (corePosition, materials) {
+	        var _a = this.options.cores.nodes, amount = _a.amount, radius = _a.radius, sphere = _a.sphere, maxDistance = _a.maxDistance, material = _a.material, line = _a.line;
+	        var group = new THREE.Group(), segment = new THREE.BufferGeometry(), segmentPositions = new Float32Array(3 * amount * 2);
+	        var positionsBag = [{ x: 0, y: 0, z: 0 }];
+	        for (var i = 0; i < amount; i++) {
+	            var node = new THREE.BufferGeometry(), nodePositions = new Float32Array(6); // at least two points or raycaster can't detect
+	            var vector = positionsBag[i + 1] = this.getPosition(function () { return Helpers_1.random.vector3(0, 0, 0, radius, sphere); }, positionsBag, maxDistance);
+	            nodePositions[0] = segmentPositions[i * 6 + 0] = corePosition.x;
+	            nodePositions[1] = segmentPositions[i * 6 + 1] = corePosition.y;
+	            nodePositions[2] = segmentPositions[i * 6 + 2] = corePosition.z;
+	            nodePositions[3] = segmentPositions[i * 6 + 3] = vector.x + corePosition.x;
+	            nodePositions[4] = segmentPositions[i * 6 + 4] = vector.y + corePosition.y;
+	            nodePositions[5] = segmentPositions[i * 6 + 5] = vector.z + corePosition.z;
+	            node.drawRange.count = 1;
+	            node.drawRange.start = 1;
+	            node.addAttribute('position', new THREE.BufferAttribute(nodePositions, 3).setDynamic(true));
+	            group.add(new THREE.Points(node, materials[Helpers_1.random.between(0, materials.length - 1, true)]));
+	        }
+	        /**
+	         * Store every node for raytracing later
+	         */
+	        (_b = this.nodesBag).push.apply(_b, group.children);
+	        segment.addAttribute('position', new THREE.BufferAttribute(segmentPositions, 3));
+	        group.add(new THREE.LineSegments(segment, new THREE.LineBasicMaterial(Helpers_2.extend({}, line.material))));
+	        return group;
+	        var _b;
+	    };
+	    Plexus.prototype.createCores = function (positions, options) {
+	        var amount = options.amount, height = options.height, nodes = options.nodes, maxDistance = options.maxDistance, safe = options.safe;
+	        var group = new THREE.Group(), lineMaterial = new THREE.LineBasicMaterial(Helpers_2.extend({
+	            vertexColors: THREE.VertexColors
+	        }, options.line.material)), coreNodeMaterial = new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'core'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	        }, options.nodes.core.material)), coreMaterial = new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'blue-core'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	        }, options.material));
+	        /**
+	         * Parse Node Materials
+	         */
+	        var nodeMaterials = [];
+	        for (var key in nodes.meta) {
+	            var mat = new THREE.PointsMaterial(Helpers_2.extend({
+	                size: 60,
+	                map: Helpers_1.configureTexture(this.sprite, this.maps, key),
+	                transparent: true,
+	                alphaTest: 0.5,
+	                sizeAttenuation: true,
+	            }, nodes.material));
+	            mat['userData'] = nodes.meta[key];
+	            nodeMaterials.push(mat);
+	        }
+	        var core = new THREE.BufferGeometry(), corePositions = new Float32Array(amount * 3), coreNode = new THREE.BufferGeometry(), coreNodePositions = new Float32Array(amount * 3), line = new THREE.BufferGeometry(), linePositions = new Float32Array(3 * amount * 4), // 4 number of line points 2*2
+	        lineColors = new Float32Array(3 * amount * 4); // 4 number of line points 2*2
+	        var color = new THREE.Color();
+	        /**
+	         * Keep an eye on the distance of each core
+	         */
+	        var coresDistances = [];
+	        var _loop_1 = function(i) {
+	            var masterHeight = Math.random() > 0.5 ? height : -height;
+	            var position = coresDistances[i] = this_1.pickPoint(positions, coresDistances, maxDistance, safe);
+	            corePositions[i * 3 + 0] = position.x;
+	            corePositions[i * 3 + 1] = position.y + masterHeight;
+	            corePositions[i * 3 + 2] = position.z;
+	            /**
+	             * Bottom Top
+	             */
+	            linePositions[i * 12 + 0] = position.x;
+	            linePositions[i * 12 + 1] = position.y + options.line.margin.bottom;
+	            linePositions[i * 12 + 2] = position.z;
+	            linePositions[i * 12 + 3] = position.x;
+	            linePositions[i * 12 + 4] = position.y + masterHeight - options.line.margin.top;
+	            linePositions[i * 12 + 5] = position.z;
+	            /**
+	             * Top Up
+	             */
+	            linePositions[i * 12 + 6] = linePositions[i * 12 + 3];
+	            linePositions[i * 12 + 7] = position.y + masterHeight + options.line.margin.top;
+	            linePositions[i * 12 + 8] = linePositions[i * 12 + 5];
+	            linePositions[i * 12 + 9] = linePositions[i * 12 + 0];
+	            linePositions[i * 12 + 10] = position.y + masterHeight * 2;
+	            linePositions[i * 12 + 11] = linePositions[i * 12 + 2];
+	            /**
+	             * Node final position
+	             */
+	            var x = void 0, y = void 0, z = void 0;
+	            coreNodePositions[i * 3 + 0] = x = linePositions[i * 12 + 9];
+	            coreNodePositions[i * 3 + 1] = y = linePositions[i * 12 + 10];
+	            coreNodePositions[i * 3 + 2] = z = linePositions[i * 12 + 11];
+	            group.add(this_1.createNodes({ x: x, y: y, z: z }, nodeMaterials));
+	            options.line.colors.forEach(function (hex, index) {
+	                color.set(hex);
+	                lineColors[i * 12 + index * 3 + 0] = color.r;
+	                lineColors[i * 12 + index * 3 + 1] = color.g;
+	                lineColors[i * 12 + index * 3 + 2] = color.b;
+	            });
+	        };
+	        var this_1 = this;
+	        for (var i = 0; i < amount; i++) {
+	            _loop_1(i);
+	        }
+	        core.addAttribute('position', new THREE.BufferAttribute(corePositions, 3));
+	        coreNode.addAttribute('position', new THREE.BufferAttribute(coreNodePositions, 3));
+	        line.addAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+	        line.addAttribute('color', new THREE.BufferAttribute(lineColors, 3));
+	        group.add(new THREE.Points(core, coreMaterial));
+	        group.add(new THREE.Points(coreNode, coreNodeMaterial));
+	        group.add(new THREE.LineSegments(line, lineMaterial));
+	        group.userData.materials = nodeMaterials.concat(coreMaterial, coreNodeMaterial, lineMaterial);
+	        return group;
+	    };
+	    Plexus.prototype.createDebris = function (spiral, options) {
+	        var amount = options.amount, material = options.material;
+	        var positions = new Float32Array(amount * 3), geometry = new THREE.BufferGeometry();
+	        for (var i = 0; i < amount; i++) {
+	            var point = Helpers_1.random.between(0, (spiral.length / 3) - 1, true);
+	            var vector = spiral.slice(point * 3, point * 3 + 3), _a = options.position, x = _a.x, y = _a.y, z = _a.z;
+	            positions[i * 3 + 0] = vector[0] + Math.random() * Helpers_1.random.between(-x, x);
+	            positions[i * 3 + 1] = vector[1] + Math.random() * Helpers_1.random.between(-y, y);
+	            positions[i * 3 + 2] = vector[2] + Math.random() * Helpers_1.random.between(-z, z);
+	        }
+	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+	        return new THREE.Points(geometry, new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'galaxy-debri'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	            blending: THREE.AdditiveBlending,
+	            depthTest: false,
+	        }, material)));
+	    };
+	    Plexus.prototype.createParticles = function (options) {
+	        var amount = options.amount, radius = options.radius, sphere = options.sphere, material = options.material;
+	        var positions = new Float32Array(amount * 3), geometry = new THREE.BufferGeometry(), bag = [];
+	        /**
+	         * Hexicles
+	         */
+	        for (var i = 0; i < amount; i++) {
+	            var vector = Helpers_1.random.vector3(0, 0, 0, radius, sphere);
+	            positions[i * 3] = vector.x;
+	            positions[i * 3 + 1] = vector.y;
+	            positions[i * 3 + 2] = vector.z;
+	            bag.push({
+	                position: vector,
+	                velocity: new THREE.Vector3(-1 + Math.random() * 2, -1 + Math.random() * 2, -1 + Math.random() * 2),
+	            });
+	        }
+	        ;
+	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3).setDynamic(true));
+	        var particles = new THREE.Points(geometry, new THREE.PointsMaterial(Helpers_2.extend({
+	            blending: THREE.AdditiveBlending,
+	            opacity: 0.3,
+	            alphaTest: 0.001
+	        }, material)));
+	        particles.userData = {
+	            bag: bag
+	        };
+	        return particles;
+	    };
+	    /**
+	     * safe = true will decress length gradually until it can fit everything...
+	     * otherwise it will crash if not able to fit all nodes due forever loop
+	     */
+	    Plexus.prototype.pickPoint = function (positions, collection, maxDistance, safe) {
+	        return this.getPosition(function () {
+	            var point = Helpers_1.random.between(0, positions.count, true), position = point - (point % 3);
+	            return {
+	                x: positions.array[position++],
+	                y: positions.array[position++],
+	                z: positions.array[position++]
+	            };
+	        }, collection, maxDistance, safe);
+	    };
+	    Plexus.prototype.getPosition = function (destination, collection, maxDistance, safe, attemps) {
+	        if (safe === void 0) { safe = false; }
+	        if (attemps === void 0) { attemps = 0; }
+	        var origin = destination();
+	        for (var _i = 0, collection_1 = collection; _i < collection_1.length; _i++) {
+	            var item = collection_1[_i];
+	            var distance = this.distanceTo(origin, item);
+	            if (distance < maxDistance || ((origin.x === item.x) && (origin.y === item.y) && (origin.z === item.z))) {
+	                return this.getPosition(destination, collection, safe ? attemps > 50 ? maxDistance -= 1 : maxDistance : maxDistance, safe, attemps + 1);
+	            }
+	        }
+	        return origin;
+	    };
+	    Plexus.prototype.distanceTo = function (v1, v2) {
+	        var x = v2.x - v1.x, y = v2.y - v1.y, z = v2.z - v1.z;
+	        return Math.sqrt(x * x + y * y + z * z);
+	    };
+	    Plexus.prototype.getSpiralGeometry = function () {
+	        return [
+	            -0.5239, -1612.6000,
+	            -17.2049, -1609.0800,
+	            -52.4554, -1602.0300,
+	            -112.4650, -1590.2800,
+	            -195.0810, -1572.8101,
+	            -298.1500, -1548.5900,
+	            -419.5170, -1516.6100,
+	            -557.0290, -1475.8300,
+	            -704.6930, -1426.1400,
+	            -856.5130, -1367.4200,
+	            -1006.5000, -1299.5500,
+	            -1148.6500, -1222.4100,
+	            -1281.5900, -1136.8101,
+	            -1403.9301, -1043.5500,
+	            -1514.3101, -943.4260,
+	            -1611.3300, -837.2550,
+	            -1694.6000, -725.9910,
+	            -1763.6899, -610.5940,
+	            -1818.2100, -492.0230,
+	            -1857.7400, -371.2350,
+	            -1882.3700, -249.2080,
+	            -1892.1600, -126.9150,
+	            -1887.1899, -5.3321,
+	            -1867.5400, 114.5660,
+	            -1833.7300, 231.9110,
+	            -1786.2900, 345.8360,
+	            -1725.7500, 455.4700,
+	            -1652.6100, 559.9480,
+	            -1567.7800, 658.6090,
+	            -1472.1200, 750.7930,
+	            -1366.5200, 835.8410,
+	            -1251.8700, 913.0930,
+	            -1129.2700, 982.1700,
+	            -999.8350, 1042.6899,
+	            -864.6630, 1094.2800,
+	            -724.8670, 1136.5601,
+	            -581.6290, 1169.4500,
+	            -436.1310, 1192.8900,
+	            -289.5540, 1206.8101,
+	            -143.0820, 1211.1400,
+	            2.1827, 1206.1000,
+	            145.1360, 1191.9399,
+	            284.6760, 1168.8700,
+	            419.6970, 1137.1300,
+	            549.3080, 1097.2000,
+	            672.6160, 1049.5601,
+	            788.7270, 994.6940,
+	            896.7500, 933.0850,
+	            996.1030, 865.3870,
+	            1086.2000, 792.2560,
+	            1166.4700, 714.3490,
+	            1236.3101, 632.3220,
+	            1295.5200, 546.9110,
+	            1343.8700, 458.8520,
+	            1381.1300, 368.8830,
+	            1407.1000, 277.7390,
+	            1421.9000, 186.1390,
+	            1425.6899, 94.8017,
+	            1418.6000, 4.4452,
+	            1400.7700, -84.2120,
+	            1372.6801, -170.5580,
+	            1334.7700, -253.9800,
+	            1287.5200, -333.8670,
+	            1231.3800, -409.6050,
+	            1167.0500, -480.7610,
+	            1095.2200, -546.8970,
+	            1016.6100, -607.5790,
+	            931.8990, -662.3720,
+	            841.9220, -711.0550,
+	            747.5060, -753.4110,
+	            649.4790, -789.2220,
+	            548.6680, -818.2670,
+	            445.9170, -840.5550,
+	            342.0660, -856.0950,
+	            237.9590, -864.8950,
+	            134.4370, -866.9620,
+	            32.2495, -862.5120,
+	            -67.8539, -851.7600,
+	            -165.1240, -834.9210,
+	            -258.8120, -812.2090,
+	            -348.3500, -784.0000,
+	            -433.1700, -750.6710,
+	            -512.7050, -712.5960,
+	            -586.3870, -670.1530,
+	            -653.8850, -623.8140,
+	            -714.8670, -574.0530,
+	            -769.0030, -521.3450,
+	            -815.9620, -466.1640,
+	            -855.6680, -409.0100,
+	            -888.0470, -350.3860,
+	            -913.0240, -290.7930,
+	            -930.5260, -230.7320,
+	            -940.7170, -170.6660,
+	            -943.7630, -111.0560,
+	            -939.8310, -52.3651,
+	            -929.0860, 4.9447,
+	            -911.8890, 60.5077,
+	            -888.5980, 113.9580,
+	            -859.5740, 164.9290,
+	            -825.1760, 213.0560,
+	            -785.8900, 258.1050,
+	            -742.2000, 299.8450,
+	            -694.5930, 338.0400,
+	            -643.5530, 372.4600,
+	            -589.6120, 403.0200,
+	            -533.3030, 429.6360,
+	            -475.1570, 452.2240,
+	            -415.7070, 470.7000,
+	            -355.4560, 485.1220,
+	            -294.9070, 495.5490,
+	            -234.5620, 502.0380,
+	            -174.9260, 504.6480,
+	            -116.4050, 503.5540,
+	            -59.4099, 498.9300,
+	            -4.3485, 490.9520,
+	            48.3703, 479.7950,
+	            98.4751, 465.7110,
+	            145.6940, 448.9520,
+	            189.7570, 429.7700,
+	            230.3910, 408.4190,
+	            267.4820, 385.1810,
+	            300.9140, 360.3410,
+	            330.5730, 334.1830,
+	            356.3430, 306.9910,
+	            378.2590, 279.0360,
+	            396.3560, 250.5900,
+	            410.6680, 221.9240,
+	            421.2310, 193.3080,
+	            428.2010, 164.9640,
+	            431.7350, 137.1140,
+	            431.9920, 109.9770,
+	            429.1270, 83.7752,
+	            423.3770, 58.6546,
+	            414.9790, 34.7618,
+	            404.1700, 12.2431,
+	            391.1850, -8.7551,
+	            376.2920, -28.1707,
+	            359.7570, -45.9413,
+	            341.8460, -62.0048,
+	            322.8260, -76.2989,
+	            302.9470, -88.8400,
+	            282.4590, -99.6445,
+	            261.6110, -108.7290,
+	            240.6530, -116.1090,
+	            219.7800, -121.8630,
+	            199.1880, -126.0670,
+	            179.0710, -128.7990,
+	            159.6240, -130.1360,
+	            140.9660, -130.1900,
+	            123.2170, -129.0720,
+	            106.4940, -126.8940,
+	            90.9170, -123.7690,
+	            76.5228, -119.8130,
+	            63.3495, -115.1450,
+	            51.4348, -109.8810,
+	            40.8164, -104.1410,
+	            31.4631, -98.0206,
+	            23.3435, -91.6187,
+	            16.4264, -85.0327,
+	            10.6805, -78.3605,
+	            6.0285, -71.6618,
+	            2.3933, -64.9966,
+	            -0.3022, -58.4247,
+	            -2.1354, -52.0059,
+	            -3.0648, -45.8599,
+	            -3.0493, -40.1063,
+	            -2.0475, -34.8646,
+	            -0.0183, -30.2545,
+	            1.9460, -25.5600,
+	            2.7531, -20.0652,
+	            3.9163, -5.0067,
+	            5.3605, 9.5420,
+	            11.4895, 23.8015,
+	            15.2296, 29.1418,
+	            20.3424, 32.5867,
+	            25.7009, 35.8236,
+	            30.1781, 40.5399,
+	            33.7460, 46.4715,
+	            36.3762, 53.3538,
+	            38.0407, 60.9227,
+	            38.7111, 68.9138,
+	            38.2707, 77.2634,
+	            36.6026, 85.9076,
+	            33.5900, 94.7827,
+	            29.1161, 103.8250,
+	            23.1146, 112.9180,
+	            15.5192, 121.9470,
+	            6.2637, 130.7940,
+	            -4.7182, 139.3460,
+	            -17.4120, 147.4530,
+	            -31.8032, 154.9680,
+	            -47.8771, 161.7440,
+	            -65.6193, 167.6340,
+	            -84.9171, 172.4890,
+	            -105.6580, 176.1600,
+	            -127.7290, 178.4990,
+	            -151.0180, 179.3580,
+	            -175.3150, 178.6200,
+	            -200.4120, 176.1710,
+	            -226.0990, 171.8950,
+	            -252.1680, 165.6780,
+	            -278.3360, 157.4680,
+	            -304.3180, 147.2180,
+	            -329.8330, 134.8750,
+	            -354.5970, 120.3920,
+	            -378.2930, 103.8060,
+	            -400.6060, 85.1566,
+	            -421.2190, 64.4827,
+	            -439.8150, 41.8233,
+	            -456.0980, 17.3157,
+	            -469.7720, -8.9026,
+	            -480.5390, -36.6943,
+	            -488.1040, -65.9220,
+	            -492.2470, -96.3570,
+	            -492.7470, -127.7710,
+	            -489.3860, -159.9350,
+	            -481.9450, -192.6210,
+	            -470.3300, -225.5330,
+	            -454.4520, -258.3760,
+	            -434.2190, -290.8560,
+	            -409.5390, -322.6770,
+	            -380.4850, -353.5160,
+	            -347.1300, -383.0520,
+	            -309.5460, -410.9610,
+	            -267.8070, -436.9230,
+	            -222.1620, -460.6360,
+	            -172.8590, -481.8000,
+	            -120.1500, -500.1150,
+	            -64.2822, -515.2800,
+	            -5.6683, -527.0690,
+	            55.2807, -535.2540,
+	            118.1530, -539.6100,
+	            182.5380, -539.9080,
+	            247.9050, -536.0420,
+	            313.7230, -527.9050,
+	            379.4630, -515.3870,
+	            444.5920, -498.3830,
+	            508.5300, -476.9360,
+	            570.6930, -451.0900,
+	            630.4980, -420.8890,
+	            687.3620, -386.3760,
+	            740.7330, -347.7600,
+	            790.0580, -305.2480,
+	            834.7830, -259.0460,
+	            874.3570, -209.3630,
+	            908.3420, -156.5580,
+	            936.3020, -100.9890,
+	            957.8000, -43.0153,
+	            972.3990, 17.0034,
+	            979.8580, 78.5928,
+	            979.9330, 141.2780,
+	            972.3820, 204.5850,
+	            956.9620, 268.0390,
+	            933.6810, 331.1060,
+	            902.5470, 393.2530,
+	            863.5660, 453.9470,
+	            816.7480, 512.6540,
+	            762.3730, 568.8550,
+	            700.7260, 622.0260,
+	            632.0880, 671.6490,
+	            556.7420, 717.2010,
+	            475.2320, 758.2510,
+	            388.1010, 794.3650,
+	            295.8950, 825.1110,
+	            199.1560, 850.0550,
+	            98.6384, 868.9230,
+	            -4.9058, 881.4410,
+	            -110.7230, 887.3330,
+	            -218.0610, 886.3250,
+	            -326.0450, 878.3520,
+	            -433.7990, 863.3510,
+	            -540.4500, 841.2580,
+	            -645.1220, 812.0080,
+	            -746.9320, 775.7760,
+	            -844.9930, 732.7360,
+	            -938.4210, 683.0630,
+	            -1026.3300, 626.9290,
+	            -1107.9500, 564.7440,
+	            -1182.5100, 496.9150,
+	            -1249.2300, 423.8500,
+	            -1307.3400, 345.9580,
+	            -1356.3000, 263.8410,
+	            -1395.5601, 178.1060,
+	            -1424.5800, 89.3544,
+	            -1442.8101, -1.8081,
+	            -1450.0300, -94.6493,
+	            -1446.0000, -188.4370,
+	            -1430.5200, -282.4380,
+	            -1403.3500, -375.9200,
+	            -1364.6400, -468.1140,
+	            -1314.5400, -558.2480,
+	            -1253.2100, -645.5530,
+	            -1180.7900, -729.2580,
+	            -1097.8199, -808.6580,
+	            -1004.8300, -883.0470,
+	            -902.3400, -951.7190,
+	            -790.8950, -1013.9700,
+	            -671.3580, -1069.2600,
+	            -544.5970, -1117.0400,
+	            -411.4790, -1156.7800,
+	            -272.8720, -1187.9301,
+	            -129.8850, -1210.2000,
+	            16.3737, -1223.3101,
+	            164.7960, -1226.9500,
+	            314.2720, -1220.8400,
+	            463.5880, -1204.9900,
+	            611.5260, -1179.4100,
+	            756.8710, -1144.1200,
+	            898.4070, -1099.1200,
+	            1034.9700, -1044.7600,
+	            1165.3900, -981.3600,
+	            1288.5000, -909.2660,
+	            1403.1300, -828.8070,
+	            1508.3300, -740.6180,
+	            1603.1400, -645.3280,
+	            1686.6100, -543.5710,
+	            1757.7600, -435.9780,
+	            1816.0000, -323.4100,
+	            1860.7200, -206.7290,
+	            1891.3101, -86.7970,
+	            1907.1600, 35.5243,
+	            1908.1100, 159.2450,
+	            1894.0000, 283.3750,
+	            1864.6801, 406.9230,
+	            1819.9900, 528.9010,
+	            1760.2700, 648.3140,
+	            1685.8500, 764.1680,
+	            1597.0800, 875.4710,
+	            1494.3000, 981.2280,
+	            1378.5699, 1080.5800,
+	            1250.9800, 1172.6700,
+	            1112.6000, 1256.6300,
+	            964.4970, 1331.6000,
+	            811.5610, 1397.3700,
+	            658.6710, 1453.7000,
+	            510.7100, 1500.3500,
+	            372.5590, 1537.1200,
+	            249.5990, 1565.0900,
+	            147.2110, 1585.3800,
+	            70.7723, 1599.0800,
+	            25.6649, 1607.3000,
+	            4.0555, 1611.4100,
+	            -1.8886, 1612.7800
+	        ];
+	    };
+	    return Plexus;
+	}(Forgable_1.Forgable));
+	exports.Plexus = Plexus;
+	//# sourceMappingURL=Plexus.js.map
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(53);
+	var Helpers_1 = __webpack_require__(20);
+	var Proton = __webpack_require__(106);
+	/**
+	 * Proton
+	 */
+	var ProtonBean = (function (_super) {
+	    __extends(ProtonBean, _super);
+	    function ProtonBean() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ProtonBean.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    ProtonBean.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        /**
+	         * Save raw sprites
+	         */
+	        this.maps = material.userData;
+	        var proton = new Proton();
+	        var emitter = new Proton.Emitter();
+	        //setRate
+	        emitter.rate = new Proton.Rate(new Proton.Span(5, 7), new Proton.Span(.01, .02));
+	        //addInitialize
+	        emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, 10, 7)));
+	        emitter.addInitialize(new Proton.Mass(1));
+	        emitter.addInitialize(new Proton.Life(0.5, 1));
+	        emitter.addInitialize(new Proton.Body(this.createSprite()));
+	        emitter.addInitialize(new Proton.Radius(40, 1));
+	        // emitter.addInitialize(new Proton.V(45, new Proton.Vector3D(0, -10, 0), 0));
+	        // emitter.addInitialize(new Proton.Velocity(3, 1, 'polar'));
+	        console.log(emitter);
+	        //addBehaviour
+	        // emitter.addBehaviour(new Proton.Alpha(1, 0));
+	        // emitter.addBehaviour(new Proton.Scale([1,2], [.3,1]));
+	        emitter.addBehaviour(new Proton.Force(0, -1.5, 0));
+	        var color1 = new THREE.Color('#4F1500');
+	        var color2 = new THREE.Color('#0029FF');
+	        var colorBehaviour = new Proton.Color(color1, color2);
+	        emitter.addBehaviour(colorBehaviour);
+	        emitter.emit();
+	        //add emitter
+	        proton.addEmitter(emitter);
+	        //add renderer
+	        proton.addRender(new Proton.SpriteRender(this.app.scene));
+	        proton.userData = {
+	            position: new THREE.Vector3(),
+	            update: this.update.bind(this, proton, emitter)
+	        };
+	        return proton;
+	    };
+	    ProtonBean.prototype.update = function (proton, emitter, time, delta) {
+	        proton.update();
+	        emitter.p.x = proton.userData.position.x;
+	        emitter.p.y = proton.userData.position.y;
+	        emitter.p.z = proton.userData.position.z;
+	    };
+	    ProtonBean.prototype.createSprite = function () {
+	        var material = new THREE.SpriteMaterial({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'star'),
+	            color: 0xff0000,
+	            blending: THREE.AdditiveBlending,
+	        });
+	        return new THREE.Sprite(material);
+	    };
+	    return ProtonBean;
+	}(Forgable_1.Forgable));
+	exports.ProtonBean = ProtonBean;
+	//# sourceMappingURL=ProtonBean.js.map
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * three.proton v0.1.2
+	 * https://github.com/a-jie/three.proton
+	 *
+	 * Copyright 2011-2016, A-JIE
+	 * Licensed under the MIT license
+	 * http://www.opensource.org/licenses/mit-license
+	 *
+	 */
+	(function (root, factory) {
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object') {
+	        module.exports = factory();
+	    } else {
+	        root.Proton = factory();
+	    }
+	}(this, function () {
+
+
+	    //the max particle number in pool
+	    Proton.POOL_MAX = 500;
+	    Proton.TIME_STEP = 60;
+	    Proton.PI = 3.142;
+	    Proton.DR = Proton.PI / 180;
+
+	    //1:100
+	    Proton.MEASURE = 100;
+	    Proton.EULER = 'euler';
+	    Proton.RK2 = 'runge-kutta2';
+	    Proton.RK4 = 'runge-kutta4';
+	    Proton.VERLET = 'verlet';
+
+	    Proton.PARTICLE_CREATED = 'partilcleCreated';
+	    Proton.PARTICLE_UPDATE = 'partilcleUpdate';
+	    Proton.PARTICLE_SLEEP = 'particleSleep';
+	    Proton.PARTICLE_DEAD = 'partilcleDead';
+	    Proton.PROTON_UPDATE = 'protonUpdate';
+	    Proton.PROTON_UPDATE_AFTER = 'protonUpdateAfter';
+	    Proton.EMITTER_ADDED = 'emitterAdded';
+	    Proton.EMITTER_REMOVED = 'emitterRemoved';
+
+	    Proton.bindEmtterEvent = false;
+
+	    /**
+	     * @name Proton is a particle engine for three.js
+	     *
+	     * @class Proton
+	     * @param {number} preParticles input any number
+	     * @param {number} integrationType input any number
+	     * @example var proton = new Proton(200);
+	     */
+
+	    function Proton(preParticles, integrationType) {
+	        this.preParticles = Proton.Util.initValue(preParticles, Proton.POOL_MAX);
+	        this.integrationType = Proton.Util.initValue(integrationType, Proton.EULER);
+
+	        this.emitters = [];
+	        this.renderers = [];
+
+	        this.pool = new Proton.Pool();
+	        Proton.integrator = new Proton.Integration(this.integrationType);
+	    }
+
+
+	    Proton.prototype = {
+	        /**
+	         * @name add a type of Renderer
+	         *
+	         * @method addRender
+	         * @param {Renderer} render
+	         */
+	        addRender: function(renderer) {
+	            this.renderers.push(renderer);
+	            renderer.init(this);
+	        },
+
+	        /**
+	         * @name add a type of Renderer
+	         *
+	         * @method addRender
+	         * @param {Renderer} render
+	         */
+	        removeRender: function(renderer) {
+	            this.renderers.splice(this.renderers.indexOf(renderer), 1);
+	            renderer.remove(this);
+	        },
+
+	        /**
+	         * add the Emitter
+	         *
+	         * @method addEmitter
+	         * @param {Emitter} emitter
+	         */
+	        addEmitter: function(emitter) {
+	            this.emitters.push(emitter);
+	            emitter.parent = this;
+	            this.dispatchEvent("EMITTER_ADDED", emitter);
+	        },
+
+	        removeEmitter: function(emitter) {
+	            if (emitter.parent != this) return;
+
+	            this.emitters.splice(this.emitters.indexOf(emitter), 1);
+	            emitter.parent = null;
+	            this.dispatchEvent("EMITTER_REMOVED", emitter);
+	        },
+
+	        update: function($delta) {
+	            this.dispatchEvent("PROTON_UPDATE", this);
+
+	            var delta = $delta || 0.0167;
+	            if (delta > 0) {
+	                var i = this.emitters.length;
+	                while (i--) this.emitters[i].update(delta);
+	            }
+
+	            this.dispatchEvent("PROTON_UPDATE_AFTER", this);
+	        },
+
+	        /**
+	         * getCount
+	         * @name get the count of particle
+	         * @return (number) particles count
+	         */
+	        getCount: function() {
+	            var total = 0;
+	            var i, length = this.emitters.length;
+	            for (i = 0; i < length; i++) total += this.emitters[i].particles.length;
+	            return total;
+	        },
+
+	        /**
+	         * destroy
+	         * @name destroy the proton
+	         */
+	        destroy: function() {
+	            var i = 0,
+	                length = this.emitters.length;
+
+	            for (i; i < length; i++) {
+	                this.emitters[i].destroy();
+	                delete this.emitters[i];
+	            }
+
+	            this.emitters.length = 0;
+	            this.particlePool.destroy();
+	        }
+	    };
+
+	    
+
+
+	/*
+	 * EventDispatcher
+	 * Visit http://createjs.com/ for documentation, updates and examples.
+	 *
+	 **/
+
+
+	    function EventDispatcher() {
+	        this.initialize();
+	    };
+
+	    EventDispatcher.initialize = function(target) {
+	        target.addEventListener = p.addEventListener;
+	        target.removeEventListener = p.removeEventListener;
+	        target.removeAllEventListeners = p.removeAllEventListeners;
+	        target.hasEventListener = p.hasEventListener;
+	        target.dispatchEvent = p.dispatchEvent;
+	    };
+
+	    var p = EventDispatcher.prototype;
+
+	    p._listeners = null;
+
+	    p.initialize = function() {};
+	    p.addEventListener = function(type, listener) {
+	        if (!this._listeners) {
+	            this._listeners = {};
+	        } else {
+	            this.removeEventListener(type, listener);
+	        }
+
+	        if (!this._listeners[type]) this._listeners[type] = []
+	        this._listeners[type].push(listener);
+
+	        return listener;
+	    };
+
+	    p.removeEventListener = function(type, listener) {
+	        if (!this._listeners) return;
+	        if (!this._listeners[type]) return;
+
+	        var arr = this._listeners[type];
+	        for (var i = 0, l = arr.length; i < l; i++) {
+	            if (arr[i] == listener) {
+	                if (l == 1) {
+	                    delete(this._listeners[type]);
+	                }
+	                // allows for faster checks.
+	                else {
+	                    arr.splice(i, 1);
+	                }
+	                break;
+	            }
+	        }
+	    };
+
+	    p.removeAllEventListeners = function(type) {
+	        if (!type)
+	            this._listeners = null;
+	        else if (this._listeners)
+	            delete(this._listeners[type]);
+	    };
+
+	    p.dispatchEvent = function(eventName, eventTarget) {
+	        var ret = false,
+	            listeners = this._listeners;
+
+	        if (eventName && listeners) {
+	            var arr = listeners[eventName];
+	            if (!arr) return ret;
+
+	            arr = arr.slice();
+	            // to avoid issues with items being removed or added during the dispatch
+
+	            var handler, i = arr.length;
+	            while (i--) {
+	                var handler = arr[i];
+	                ret = ret || handler(eventTarget);
+	            }
+	            
+	        }
+
+	        return !!ret;
+	    };
+
+	    p.hasEventListener = function(type) {
+	        var listeners = this._listeners;
+	        return !!(listeners && listeners[type]);
+	    };
+
+	    EventDispatcher.initialize(Proton.prototype);
+	    Proton.EventDispatcher = EventDispatcher;
+
+
+
+	    var Util = Util || {
+	        initValue: function(value, defaults) {
+	            var value = (value != null && value != undefined) ? value : defaults;
+	            return value;
+	        },
+
+	        isArray: function(value) {
+	            return Object.prototype.toString.call(value) === '[object Array]';
+	        },
+
+	        destroyArray: function(array) {
+	            array.length = 0;
+	        },
+
+	        destroyObject: function(obj) {
+	            for (var o in obj) delete obj[o];
+	        },
+
+	        isUndefined: function() {
+	            for (var id in arguments) {
+	                var arg = arguments[id];
+	                if (arg !== undefined)
+	                    return false;
+	            }
+
+	            return true;
+	        },
+
+	        setVectorByObj: function(target, pOBJ) {
+	            if (pOBJ["x"] !== undefined) target.p.x = pOBJ["x"];
+	            if (pOBJ["y"] !== undefined) target.p.y = pOBJ["y"];
+	            if (pOBJ["z"] !== undefined) target.p.z = pOBJ["z"];
+
+	            if (pOBJ["vx"] !== undefined) target.v.x = pOBJ["vx"];
+	            if (pOBJ["vy"] !== undefined) target.v.y = pOBJ["vy"];
+	            if (pOBJ["vz"] !== undefined) target.v.z = pOBJ["vz"];
+
+	            if (pOBJ["ax"] !== undefined) target.a.x = pOBJ["ax"];
+	            if (pOBJ["ay"] !== undefined) target.a.y = pOBJ["ay"];
+	            if (pOBJ["az"] !== undefined) target.a.z = pOBJ["az"];
+
+	            if (pOBJ["p"] !== undefined) target.p.copy(pOBJ["p"]);
+	            if (pOBJ["v"] !== undefined) target.v.copy(pOBJ["v"]);
+	            if (pOBJ["a"] !== undefined) target.a.copy(pOBJ["a"]);
+
+	            if (pOBJ["position"] !== undefined) target.p.copy(pOBJ["position"]);
+	            if (pOBJ["velocity"] !== undefined) target.v.copy(pOBJ["velocity"]);
+	            if (pOBJ["accelerate"] !== undefined) target.a.copy(pOBJ["accelerate"]);
+	        },
+
+	        //set prototype
+	        setPrototypeByObj: function(target, proObj, filters) {
+	            for (var key in proObj) {
+	                if (target.hasOwnProperty(key)) {
+	                    if (filters) {
+	                        if (filters.indexOf(key) < 0) target[key] = Util._getValue(proObj[key]);
+	                    } else {
+	                        target[key] = Util._getValue(proObj[key]);
+	                    }
+	                }
+	            }
+
+	            return target;
+	        },
+
+	        _getValue: function(pan) {
+	            if (pan instanceof Span)
+	                return pan.getValue();
+	            else
+	                return pan;
+	        },
+
+	        inherits: function(subClass, superClass) {
+	            subClass._super_ = superClass;
+	            if (Object['create']) {
+	                subClass.prototype = Object.create(superClass.prototype, {
+	                    constructor: { value: subClass }
+	                });
+	            } else {
+	                var F = function() {};
+	                F.prototype = superClass.prototype;
+	                subClass.prototype = new F();
+	                subClass.prototype.constructor = subClass;
+	            }
+	        }
+	    };
+
+	    Proton.Util = Util;
+
+
+
+	    var ColorUtil = ColorUtil || {
+	        getRGB: function(color) {
+	            var rgb = {};
+	            if (typeof color === 'number') {
+	                hex = Math.floor(color);
+	                rgb.r = (color >> 16 & 255) / 255;
+	                rgb.g = (color >> 8 & 255) / 255;
+	                rgb.b = (color & 255) / 255;
+	            } else if (typeof color === 'string') {
+	                var m;
+	                if (m = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(color)) {
+	                    rgb.r = Math.min(255, parseInt(m[1], 10)) / 255;
+	                    rgb.g = Math.min(255, parseInt(m[2], 10)) / 255;
+	                    rgb.b = Math.min(255, parseInt(m[3], 10)) / 255;
+	                } else if (m = /^\#([A-Fa-f0-9]+)$/.exec(color)) {
+	                    var hex = m[1];
+	                    rgb.r = parseInt(hex.charAt(0) + hex.charAt(1), 16) / 255;
+	                    rgb.g = parseInt(hex.charAt(2) + hex.charAt(3), 16) / 255;
+	                    rgb.b = parseInt(hex.charAt(4) + hex.charAt(5), 16) / 255;
+	                }
+	            } else if (color instanceof THREE.Color) {
+	                rgb.r = color.r;
+	                rgb.g = color.g;
+	                rgb.b = color.b;
+	            }
+
+	            return rgb;
+	        }
+	    };
+
+
+	    Proton.ColorUtil = ColorUtil;
+
+
+
+	    var THREEUtil = {
+	        toScreenPos: function() {
+	            var vector = new THREE.Vector3();
+
+	            return function(pos, camera, canvas) {
+	                vector.copy(pos);
+	                // map to normalized device coordinate (NDC) space
+	                vector.project(camera);
+	                // map to 2D screen space
+	                vector.x = Math.round((vector.x + 1) * canvas.width / 2);
+	                vector.y = Math.round((-vector.y + 1) * canvas.height / 2);
+	                vector.z = 0;
+
+	                return vector;
+	            }
+	        }(),
+
+	        toSpacePos: function() {
+	            var vector = new THREE.Vector3(),
+	                dir = new THREE.Vector3(),
+	                distance;
+
+	            return function(pos, camera, canvas) {
+	                vector.set((pos.x / canvas.width) * 2 - 1, -(pos.y / canvas.height) * 2 + 1, 0.5);
+	                vector.unproject(camera);
+
+	                dir.copy(vector.sub(camera.position).normalize());
+	                distance = -camera.position.z / dir.z;
+	                vector.copy(camera.position);
+	                vector.add(dir.multiplyScalar(distance));
+	                return vector;
+	            }
+	        }(),
+
+	        getTexture: function() {
+	            var store = {};
+
+	            return function(img) {
+	                if (img instanceof THREE.Texture) {
+	                    return img;
+	                } else if (typeof img == "string") {
+	                    var id = Proton.PUID.hash(img);
+	                    if (!store[id]) store[id] = new THREE.Texture(img);;
+	                    return store[id];
+	                } else if (img instanceof Image) {
+	                    var id = Proton.PUID.hash(img.src);
+	                    if (!store[id]) store[id] = new THREE.Texture(img);;
+	                    return store[id];
+	                }
+	            }
+	        }()
+	    };
+
+	    Proton.THREEUtil = THREEUtil;
+
+
+
+	    var PUID = PUID || {
+	        _id: 0,
+	        _uids: {},
+	        id: function(obj) {
+	            for (var id in this._uids) {
+	                if (this._uids[id] == obj) return id;
+	            }
+
+	            var nid = "PUID_" + (this._id++);
+	            this._uids[nid] = obj;
+	            return nid;
+	        },
+
+	        hash: function(str) {
+	            return;
+	        }
+	    }
+
+	    Proton.PUID = PUID;
+
+
+
+
+	    Particle.ID = 0;
+
+	    /**
+	     * the Particle class
+	     * @param {Number} pObj - the parameters of particle config;
+	     * @example 
+	     * var p = new Proton.Particle({life:3,dead:false});
+	     * or
+	     * var p = new Proton.Particle({mass:1,radius:100});
+	     * @constructor
+	     */
+	    function Particle(pOBJ) {
+	        /**
+	         * @property {Number}  id               - The particle's id
+	         */
+	        this.id = 'particle_' + Particle.ID++;
+	        this.name = 'Particle';
+	        this.reset("init");
+	        Proton.Util.setPrototypeByObj(this, pOBJ);
+	    }
+
+	    Particle.prototype = {
+	        getDirection: function() {
+	            return Math.atan2(this.v.x, -this.v.y) * (180 / Proton.PI);
+	        },
+
+	        /**
+	         * @property {Number}  life               - The particle's life
+	         * @property {Number}  age               - The particle's age
+	         * @property {Number}  energy               - The particle's energy loss
+	         * @property {Boolean}  dead               - The particle is dead?
+	         * @property {Boolean}  sleep               - The particle is sleep?
+	         * @property {Object}  target               - The particle's target
+	         * @property {Object}  body               - The particle's body
+	         * @property {Number}  mass               - The particle's mass
+	         * @property {Number}  radius               - The particle's radius
+	         * @property {Number}  alpha               - The particle's alpha
+	         * @property {Number}  scale               - The particle's scale
+	         * @property {Number}  rotation               - The particle's rotation
+	         * @property {String|Number}  color               - The particle's color
+	         * @property {Function}  easing               - The particle's easing
+	         * @property {Proton.Vector3D}  p               - The particle's position
+	         * @property {Proton.Vector3D}  v               - The particle's velocity
+	         * @property {Proton.Vector3D}  a               - The particle's acceleration
+	         * @property {Array}  behaviours               - The particle's behaviours array
+	         * @property {Object}  transform               - The particle's transform collection
+	         */
+	        reset: function(init) {
+	            this.life = Infinity;
+	            this.age = 0;
+	            //energy loss
+	            this.energy = 1;
+	            this.dead = false;
+	            this.sleep = false;
+	            this.body = null;
+	            this.parent = null;
+	            this.mass = 1;
+	            this.radius = 10;
+
+	            this.alpha = 1;
+	            this.scale = 1;
+
+	            this.useColor = false;
+	            this.useAlpha = false;
+
+	            this.easing = Proton.ease.setEasingByName(Proton.ease.easeLinear);
+
+	            if (init) {
+	                this.p = new Proton.Vector3D();
+	                this.v = new Proton.Vector3D();
+	                this.a = new Proton.Vector3D();
+	                this.old = {};
+	                this.old.p = this.p.clone();
+	                this.old.v = this.v.clone();
+	                this.old.a = this.a.clone();
+
+	                this.behaviours = [];
+	                this.transform = {};
+	                this.color = { r: 0, g: 0, b: 0 };
+	                this.rotation = new Proton.Vector3D;
+	            } else {
+	                this.p.set(0, 0, 0);
+	                this.v.set(0, 0, 0);
+	                this.a.set(0, 0, 0);
+	                this.old.p.set(0, 0, 0);
+	                this.old.v.set(0, 0, 0);
+	                this.old.a.set(0, 0, 0);
+
+	                this.color.r = 0;
+	                this.color.g = 0;
+	                this.color.b = 0;
+
+	                this.rotation.clear();
+
+	                Proton.Util.destroyObject(this.transform);
+	                this.removeAllBehaviours();
+	            }
+
+	            return this;
+	        },
+
+	        update: function(time, index) {
+	            if (!this.sleep) {
+	                this.age += time;
+
+	                var i = this.behaviours.length;
+	                while (i--) {
+	                    this.behaviours[i] && this.behaviours[i].applyBehaviour(this, time, index)
+	                }
+	            } else {
+	                //sleep
+	            }
+
+	            if (this.age >= this.life) {
+	                this.destroy();
+	            } else {
+	                var scale = this.easing(this.age / this.life);
+	                this.energy = Math.max(1 - scale, 0);
+	            }
+
+	        },
+
+	        addBehaviour: function(behaviour) {
+	            this.behaviours.push(behaviour);
+	            behaviour.initialize(this);
+	        },
+
+	        addBehaviours: function(behaviours) {
+	            var i = behaviours.length;
+	            while (i--) {
+	                this.addBehaviour(behaviours[i]);
+	            }
+	        },
+
+	        removeBehaviour: function(behaviour) {
+	            var index = this.behaviours.indexOf(behaviour);
+	            if (index > -1) {
+	                this.behaviours.splice(index, 1);
+	            }
+	        },
+
+	        removeAllBehaviours: function() {
+	            Proton.Util.destroyArray(this.behaviours);
+	        },
+
+	        /**
+	         * Destory this particle
+	         * @method destroy
+	         */
+	        destroy: function() {
+	            this.removeAllBehaviours();
+	            this.energy = 0;
+	            this.dead = true;
+	            this.parent = null;
+	        }
+	    };
+
+	    Proton.Particle = Particle;
+
+
+
+
+	    function Pool() {
+	        this.cID = 0;
+	        this.list = {};
+	    }
+
+	    Pool.prototype = {
+	        create: function(obj) {
+	            this.cID++;
+
+	            if (typeof obj == "function")
+	                return new obj;
+	            else
+	                return obj.clone();
+	        },
+
+	        getCount: function() {
+	            var count = 0;
+	            for (var id in this.list)
+	                count += this.list[id].length;
+
+	            return count++;;
+	        },
+
+	        get: function(obj) {
+	            var p, puid = obj.__puid || Proton.PUID.id(obj);
+	            if (this.list[puid] && this.list[puid].length > 0)
+	                p = this.list[puid].pop();
+	            else
+	                p = this.create(obj);
+
+	            p.__puid = obj.__puid || puid;
+	            return p;
+	        },
+
+	        expire: function(obj) {
+	            return this._getList(obj.__puid).push(obj);
+	        },
+
+	        destroy: function() {
+	            for (var id in this.list) {
+	                this.list[id].length = 0;
+	                delete this.list[id];
+	            }
+	        },
+
+	        _getList: function(uid) {
+	            uid = uid || "default";
+	            if (!this.list[uid]) this.list[uid] = [];
+	            return this.list[uid];
+	        }
+	    }
+
+	    Proton.Pool = Pool;
+
+
+
+
+	    var MathUtils = {
+	        randomAToB: function(a, b, INT) {
+	            if (!INT)
+	                return a + Math.random() * (b - a);
+	            else
+	                return ((Math.random() * (b - a)) >> 0) + a;
+	        },
+	        randomFloating: function(center, f, INT) {
+	            return MathUtils.randomAToB(center - f, center + f, INT);
+	        },
+
+	        randomZone: function(display) {
+
+	        },
+
+	        degreeTransform: function(a) {
+	            return a * Proton.PI / 180;
+	        },
+
+	        toColor16: function getRGB(num) {
+	            return "#" + num.toString(16);
+	        },
+
+	        randomColor: function() {
+	            return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+	        },
+
+	        lerp: function(a, b, energy) {
+	            return b + (a - b) * energy
+	        },
+
+	        getNormal: function(v, n) {
+	            if (v.x == 0 && v.y == 0) {
+	                if (v.z == 0)
+	                    n.set(1, 0, 1);
+	                else
+	                    n.set(1, 1, -v.y / v.z);
+	            } else {
+	                if (v.x == 0)
+	                    n.set(1, 0, 1);
+	                else
+	                    n.set(-v.y / v.x, 1, 1);
+	            }
+
+	            return n.normalize();
+	        },
+
+	        /** 
+	         * Rodrigues' Rotation Formula 
+	         * https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+	         * v′ = vcos(θ) + k(k⋅v)(1−cos(θ)) + (k*v)sin(θ)
+	         */
+	        axisRotate: function(v0, v, k, tha) {
+	            var cos = Math.cos(tha);
+	            var sin = Math.sin(tha);
+	            var p = k.dot(v) * (1 - cos);
+
+	            v0.copy(k);
+	            v0.cross(v).scalar(sin);
+	            v0.addValue(v.x * cos, v.y * cos, v.z * cos);
+	            v0.addValue(k.x * p, k.y * p, k.z * p);
+	        }
+	    }
+
+	    Proton.MathUtils = MathUtils;
+
+
+	//数值积分
+
+	    var Integration = function(type) {
+	        this.type = Proton.Util.initValue(type, Proton.EULER);
+	    }
+
+	    Integration.prototype = {
+	        integrate: function(particles, time, damping) {
+	            this.euler(particles, time, damping);
+	        },
+
+	        euler: function(particle, time, damping) {
+	            if (!particle.sleep) {
+	                particle.old.p.copy(particle.p);
+	                particle.old.v.copy(particle.v);
+	                particle.a.scalar(1 / particle.mass);
+	                particle.v.add(particle.a.scalar(time));
+	                particle.p.add(particle.old.v.scalar(time));
+	                damping && particle.v.scalar(damping);
+	                particle.a.clear();
+	            }
+	        }
+	    }
+
+	    Proton.Integration = Integration;
+
+
+	//@author mrdoob / http://mrdoob.com/
+
+	    var Vector3D = function(x, y, z) {
+	        this.x = x || 0;
+	        this.y = y || 0;
+	        this.z = z || 0;
+	    }
+
+	    Vector3D.prototype = {
+	        set: function(x, y, z) {
+	            this.x = x;
+	            this.y = y;
+	            this.z = z;
+	            return this;
+	        },
+
+	        setX: function(x) {
+	            this.x = x;
+	            return this;
+	        },
+
+	        setY: function(y) {
+	            this.y = y;
+	            return this;
+	        },
+
+	        setZ: function(z) {
+	            this.z = z;
+	            return this;
+	        },
+
+	        getGradient: function() {
+	            if (this.x != 0)
+	                return Math.atan2(this.y, this.x);
+	            else if (this.y > 0)
+	                return Proton.PI / 2;
+	            else if (this.y < 0)
+	                return -Proton.PI / 2;
+	        },
+
+	        copy: function(v) {
+	            this.x = v.x;
+	            this.y = v.y;
+	            this.z = v.z;
+	            return this;
+	        },
+
+	        add: function(v, w) {
+	            if (w !== undefined) return this.addVectors(v, w);
+
+	            this.x += v.x;
+	            this.y += v.y;
+	            this.z += v.z;
+
+	            return this;
+
+	        },
+
+	        addValue: function(a, b, c) {
+	            this.x += a;
+	            this.y += b;
+	            this.z += c;
+
+	            return this;
+
+	        },
+
+	        addVectors: function(a, b) {
+	            this.x = a.x + b.x;
+	            this.y = a.y + b.y;
+	            this.z = a.z + b.z;
+
+	            return this;
+	        },
+
+	        addScalar: function(s) {
+	            this.x += s;
+	            this.y += s;
+	            this.z += s;
+
+	            return this;
+	        },
+
+	        sub: function(v, w) {
+	            if (w !== undefined) return this.subVectors(v, w);
+
+	            this.x -= v.x;
+	            this.y -= v.y;
+	            this.z -= v.z;
+
+	            return this;
+	        },
+
+	        subVectors: function(a, b) {
+	            this.x = a.x - b.x;
+	            this.y = a.y - b.y;
+	            this.z = a.z - b.z;
+	            return this;
+	        },
+
+	        scalar: function(s) {
+	            this.x *= s;
+	            this.y *= s;
+	            this.z *= s;
+
+	            return this;
+	        },
+
+	        divideScalar: function(s) {
+	            if (s !== 0) {
+	                this.x /= s;
+	                this.y /= s;
+	                this.z /= s;
+	            } else {
+	                this.set(0, 0, 0);
+	            }
+
+	            return this;
+	        },
+
+	        negate: function() {
+	            return this.scalar(-1);
+	        },
+
+	        dot: function(v) {
+	            return this.x * v.x + this.y * v.y + this.z * v.z;
+	        },
+
+	        cross: function(v) {
+	            var x = this.x,
+	                y = this.y,
+	                z = this.z;
+
+	            this.x = y * v.z - z * v.y;
+	            this.y = z * v.x - x * v.z;
+	            this.z = x * v.y - y * v.x;
+
+	            return this;
+	        },
+
+	        lengthSq: function() {
+	            return this.x * this.x + this.y * this.y + this.z * this.z;
+	        },
+
+	        length: function() {
+	            return Math.sqrt(this.lengthSq());
+	        },
+
+	        normalize: function() {
+	            return this.divideScalar(this.length());
+	        },
+
+	        distanceTo: function(v) {
+	            return Math.sqrt(this.distanceToSquared(v));
+	        },
+
+	        crossVectors: function(a, b) {
+
+	            var ax = a.x,
+	                ay = a.y,
+	                az = a.z;
+	            var bx = b.x,
+	                by = b.y,
+	                bz = b.z;
+
+	            this.x = ay * bz - az * by;
+	            this.y = az * bx - ax * bz;
+	            this.z = ax * by - ay * bx;
+
+	            return this;
+
+	        },
+
+	        // eulerFromDir: function() {
+	        //     var quaternion, dir, up;
+
+	        //     return function rotateFromDir(direction) {
+	        //         if (quaternion === undefined) quaternion = new Proton.Quaternion();
+	        //         if (dir === undefined) dir = new Proton.Vector3D;
+	        //         if (up === undefined) up = new Proton.Vector3D(0, 0, 1);
+
+	        //         //quaternion.setFromUnitVectors(up, dir.copy(direction).normalize());
+	        //         console.log(quaternion.setFromUnitVectors(up, dir.copy(direction).normalize()));
+
+	        //         this.applyQuaternion(quaternion.setFromUnitVectors(up, dir.copy(direction).normalize()));
+	        //             console.log(this);
+	        //         return this;
+	        //     };
+	        // }(),
+
+	        eulerFromDir: function(dir) {
+	            
+	        },
+
+	        applyEuler: function() {
+	            var quaternion;
+
+	            return function applyEuler(euler) {
+	                if (quaternion === undefined) quaternion = new Proton.Quaternion();
+	                this.applyQuaternion(quaternion.setFromEuler(euler));
+	                return this;
+	            };
+	        }(),
+
+	        applyAxisAngle: function() {
+	            var quaternion;
+	            return function applyAxisAngle(axis, angle) {
+	                if (quaternion === undefined) quaternion = new Proton.Quaternion();
+	                this.applyQuaternion(quaternion.setFromAxisAngle(axis, angle));
+	                return this;
+	            };
+	        }(),
+
+	        applyQuaternion: function(q) {
+	            var x = this.x;
+	            var y = this.y;
+	            var z = this.z;
+
+	            var qx = q.x;
+	            var qy = q.y;
+	            var qz = q.z;
+	            var qw = q.w;
+
+	            // calculate quat * vector
+
+	            var ix = qw * x + qy * z - qz * y;
+	            var iy = qw * y + qz * x - qx * z;
+	            var iz = qw * z + qx * y - qy * x;
+	            var iw = -qx * x - qy * y - qz * z;
+
+	            // calculate result * inverse quat
+	            this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+	            this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+	            this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+	            return this;
+	        },
+
+	        distanceToSquared: function(v) {
+	            var dx = this.x - v.x,
+	                dy = this.y - v.y,
+	                dz = this.z - v.z;
+
+	            return dx * dx + dy * dy + dz * dz;
+	        },
+
+	        lerp: function(v, alpha) {
+	            this.x += (v.x - this.x) * alpha;
+	            this.y += (v.y - this.y) * alpha;
+	            this.z += (v.z - this.z) * alpha;
+	            return this;
+	        },
+
+	        equals: function(v) {
+	            return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
+	        },
+
+	        clear: function() {
+	            this.x = 0.0;
+	            this.y = 0.0;
+	            this.z = 0.0;
+	            return this;
+	        },
+
+	        clone: function() {
+	            return new Proton.Vector3D(this.x, this.y, this.z);
+	        },
+
+	        toString: function() {
+	            return "x:" + this.x + "y:" + this.y + "z:" + this.z;
+	        }
+	    };
+
+	    Proton.Vector3D = Vector3D;
+
+
+
+	    var Polar3D = function(radius, theta, phi) {
+	        this.radius = radius || 1;
+	        this.phi = phi || 0;
+	        this.theta = theta || 0;
+	    }
+
+	    Polar3D.prototype = {
+	        set: function(radius, theta, phi) {
+	            this.radius = radius || 1;
+	            this.phi = phi || 0;
+	            this.theta = theta || 0;
+
+	            return this;
+	        },
+
+	        setRadius: function(radius) {
+	            this.radius = radius;
+	            return this;
+	        },
+
+	        setPhi: function(phi) {
+	            this.phi = phi;
+	            return this;
+	        },
+
+	        setTheta: function(theta) {
+	            this.theta = theta;
+	            return this;
+	        },
+
+	        copy: function(p) {
+	            this.radius = p.radius;
+	            this.phi = p.phi;
+	            this.theta = p.theta;
+	            return this;
+	        },
+
+	        toVector3D: function() {
+	            return new Proton.Vector3D(this.getX(), this.getY(), this.getZ());
+	        },
+
+	        getX: function() {
+	            return this.radius * Math.sin(this.theta) * Math.cos(this.phi);
+	        },
+
+	        getY: function() {
+	            return -this.radius * Math.sin(this.theta) * Math.sin(this.phi);
+	        },
+
+	        getZ: function() {
+	            return this.radius * Math.cos(this.theta);
+	        },
+
+	        normalize: function() {
+	            this.radius = 1;
+	            return this;
+	        },
+
+	        equals: function(v) {
+	            return ((v.radius === this.radius) && (v.phi === this.phi) && (v.theta === this.theta));
+	        },
+
+	        clear: function() {
+	            this.radius = 0.0;
+	            this.phi = 0.0;
+	            this.theta = 0.0;
+	            return this;
+	        },
+
+	        clone: function() {
+	            return new Polar3D(this.radius, this.phi, this.theta);
+	        }
+	    };
+
+
+	    Proton.Polar3D = Polar3D;
+
+
+
+	    /**
+	     * Span Class. Get a random Number from a to b. Or from c-a to c+b
+	     * @param {Number|Array} a - min number
+	     * @param {Number} b - max number
+	     * @param {Number} center - the center's z value  
+	     * @example 
+	     * var span = new Proton.Span(0,30);
+	     * or
+	     * var span = new Proton.Span(["#fff","#ff0","#000"]);
+	     * or
+	     * var span = new Proton.Span(5,1,"center");
+	     * @extends {Zone}
+	     * @constructor
+	     */
+	    function Span(a, b, center) {
+	        this._isArray = false;
+
+	        if (Proton.Util.isArray(a)) {
+	            this._isArray = true;
+	            this.a = a;
+	        } else {
+	            this.a = Proton.Util.initValue(a, 1);
+	            this.b = Proton.Util.initValue(b, this.a);
+	            this._center = Proton.Util.initValue(center, false);
+	        }
+	    }
+
+	    /**
+	     * Span.getValue function
+	     * @name get a random Number from a to b. Or get a random Number from c-a to c+b
+	     * @param {number} INT or int
+	     * @return {number} a random Number
+	     */
+	    Span.prototype = {
+	        getValue: function(INT) {
+	            if (this._isArray) {
+	                return this.a[(this.a.length * Math.random()) >> 0];
+	            } else {
+	                if (!this._center)
+	                    return Proton.MathUtils.randomAToB(this.a, this.b, INT);
+	                else
+	                    return Proton.MathUtils.randomFloating(this.a, this.b, INT);
+	            }
+	        }
+	    }
+
+	    /**
+	     * Proton.createSpan function
+	     * @name get a instance of Span
+	     * @param {number} a min number
+	     * @param {number} b max number
+	     * @param {number} c center number
+	     * @return {number} return a instance of Span
+	     */
+	    Proton.createSpan = function(a, b, c) {
+	        if (a instanceof Span) return a;
+
+	        if (b === undefined) {
+	            return new Span(a);
+	        } else {
+	            if (c === undefined)
+	                return new Span(a, b);
+	            else
+	                return new Span(a, b, c);
+	        }
+	    }
+
+	    Proton.Span = Span;
+
+
+
+	    /**
+	     * ArraySpan name get a random Color from a colors array
+	     * @param {String|Array} colors - colors array
+	     * @example 
+	     * var span = new Proton.ArraySpan(["#fff","#ff0","#000"]);
+	     * or
+	     * var span = new Proton.ArraySpan("#ff0");
+	     * @extends {Proton.Span}
+	     * @constructor
+	     */
+
+	    function ArraySpan(colors) {
+	        this._arr = Proton.Util.isArray(colors) ? colors : [colors];
+	    }
+
+	    Proton.Util.inherits(ArraySpan, Proton.Span);
+
+	    /**
+	     * getValue function
+	     * @name get a random Color
+	     * @return {string} a hex color
+	     */
+	    ArraySpan.prototype.getValue = function() {
+	        var color = this._arr[(this._arr.length * Math.random()) >> 0];
+	        
+	        if (color == 'random' || color == 'Random')
+	            return Proton.MathUtils.randomColor();
+	        else
+	            return color;
+	    }
+
+	    /**
+	     * Proton.createArraySpan function
+	     * @name get a instance of Span
+	     * @param {number} a min number
+	     * @param {number} b max number
+	     * @param {number} c center number
+	     * @return {number} return a instance of Span
+	     */
+	    Proton.createArraySpan = function(arr) {
+	        if (!arr) return null;
+	        if (arr instanceof Proton.ArraySpan)
+	            return arr;
+	        else 
+	            return new Proton.ArraySpan(arr);
+	    }
+
+	    Proton.ArraySpan = ArraySpan;
+
+
+
+
+
+	    var Quaternion = function(x, y, z, w) {
+	        this.x = x || 0;
+	        this.y = y || 0;
+	        this.z = z || 0;
+	        this.w = (w !== undefined) ? w : 1;
+	    };
+
+	    Quaternion.prototype = {
+	        set: function(x, y, z, w) {
+	            this.x = x;
+	            this.y = y;
+	            this.z = z;
+	            this.w = w;
+	            return this;
+	        },
+
+	        clone: function() {
+	            return new Proton.Quaternion(this.x, this.y, this.z, this.w);
+	        },
+
+	        copy: function(quaternion) {
+	            this.x = quaternion.x;
+	            this.y = quaternion.y;
+	            this.z = quaternion.z;
+	            this.w = quaternion.w;
+	            return this;
+	        },
+
+	        setFromEuler: function(euler) {
+	            // http://www.mathworks.com/matlabcentral/fileexchange/
+	            //  20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
+	            //  content/SpinCalc.m
+
+	            var c1 = Math.cos(euler.x / 2);
+	            var c2 = Math.cos(euler.y / 2);
+	            var c3 = Math.cos(euler.z / 2);
+	            var s1 = Math.sin(euler.x / 2);
+	            var s2 = Math.sin(euler.y / 2);
+	            var s3 = Math.sin(euler.z / 2);
+
+	            this.x = s1 * c2 * c3 + c1 * s2 * s3;
+	            this.y = c1 * s2 * c3 - s1 * c2 * s3;
+	            this.z = c1 * c2 * s3 + s1 * s2 * c3;
+	            this.w = c1 * c2 * c3 - s1 * s2 * s3;
+
+	            return this;
+
+	        },
+
+	        setFromAxisAngle: function(axis, angle) {
+	            // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+	            // assumes axis is normalized
+	            var halfAngle = angle / 2,
+	                s = Math.sin(halfAngle);
+	            this.x = axis.x * s;
+	            this.y = axis.y * s;
+	            this.z = axis.z * s;
+	            this.w = Math.cos(halfAngle);
+
+	            return this;
+	        },
+
+	        // setFromUnitVectors: function() {
+	        //     var v1, r;
+	        //     var EPS = 0.000001;
+
+	        //     return function(vFrom, vTo) {
+	        //         if (v1 === undefined) v1 = new Proton.Vector3D();
+
+	        //         r = vFrom.dot(vTo) + 1;
+	        //         if (r < EPS) {
+	        //             r = 0;
+	        //             if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
+	        //                 v1.set(-vFrom.y, vFrom.x, 0);
+	        //             } else {
+	        //                 v1.set(0, -vFrom.z, vFrom.y);
+	        //             }
+	        //         } else {
+	        //             v1.crossVectors(vFrom, vTo);
+	        //         }
+
+	        //         this.x = v1.x;
+	        //         this.y = v1.y;
+	        //         this.z = v1.z;
+	        //         this.w = r;
+	        //         return this.normalize();
+	        //     };
+	        // }(),
+
+	        normalize: function() {
+
+	            var l = this.length();
+
+	            if (l === 0) {
+
+	                this.x = 0;
+	                this.y = 0;
+	                this.z = 0;
+	                this.w = 1;
+
+	            } else {
+	                l = 1 / l;
+	                this.x *= l;
+	                this.y *= l;
+	                this.z *= l;
+	                this.w *= l;
+
+	            }
+	            return this;
+	        },
+
+	        length: function() {
+
+	            return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+
+	        },
+
+	        dot: function(v) {
+	            return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
+	        }
+	    };
+
+	    Proton.Quaternion = Quaternion;
+
+
+
+	    function Box(x, y, z, w, h, d) {
+	        this.x = x;
+	        this.y = y;
+	        this.z = z;
+	        this.width = w;
+	        this.height = h;
+	        this.depth = d;
+	        this.bottom = this.y + this.height;
+	        this.right = this.x + this.width;
+	        this.right = this.x + this.width;
+	    }
+
+
+	    Box.prototype = {
+	        contains: function(x, y, z) {
+	            if (
+	                x <= this.right &&
+	                x >= this.x &&
+	                y <= this.bottom &&
+	                y >= this.y &&
+	                z <= this.depth &&
+	                z >= this.z
+	            )
+	                return true
+	            else
+	                return false
+	        }
+	    }
+
+	    Proton.Box = Box;
+
+
+
+	    /**
+	     * The Behaviour class is the base for the other Behaviour
+	     *
+	     * @class Behaviour
+	     * @constructor
+	     */
+	    function Behaviour(life, easing) {
+	        /**
+	         * The behaviour's id;
+	         * @property id
+	         * @type {String} id
+	         */
+	        this.id = 'Behaviour_' + Behaviour.id++;
+	        this.life = Proton.Util.initValue(life, Infinity);
+
+	        /**
+	         * The behaviour's decaying trend, for example Proton.easeOutQuart;
+	         * @property easing
+	         * @type {String}
+	         * @default Proton.easeLinear
+	         */
+	        this.easing = Proton.Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+	        this.age = 0;
+	        this.energy = 1;
+	        /**
+	         * The behaviour is Dead;
+	         * @property dead
+	         * @type {Boolean}
+	         */
+	        this.dead = false;
+
+	        /**
+	         * The behaviour name;
+	         * @property name
+	         * @type {string}
+	         */
+
+	        this.name = 'Behaviour';
+	    }
+
+	    Behaviour.id = 0;
+
+
+	    Behaviour.prototype = {
+	        /**
+	         * Reset this behaviour's parameters
+	         *
+	         * @method reset
+	         * @param {Number} this behaviour's life
+	         * @param {String} this behaviour's easing
+	         */
+	        reset: function(life, easing) {
+	            this.life = Proton.Util.initValue(life, Infinity);
+	            this.easing = Proton.Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+	        },
+	        /**
+	         * Normalize a force by 1:100;
+	         *
+	         * @method normalizeForce
+	         * @param {Proton.Vector2D} force 
+	         */
+	        normalizeForce: function(force) {
+	            return force.scalar(Proton.MEASURE);
+	        },
+
+	        /**
+	         * Normalize a value by 1:100;
+	         *
+	         * @method normalizeValue
+	         * @param {Number} value
+	         */
+	        normalizeValue: function(value) {
+	            return value * Proton.MEASURE;
+	        },
+
+	        /**
+	         * Initialize the behaviour's parameters for all particles
+	         *
+	         * @method initialize
+	         * @param {Proton.Particle} particle
+	         */
+	        initialize: function(particle) {},
+
+	        /**
+	         * Apply this behaviour for all particles every time
+	         *
+	         * @method applyBehaviour
+	         * @param {Proton.Particle} particle
+	         * @param {Number} the integrate time 1/ms
+	         * @param {Int} the particle index
+	         */
+	        applyBehaviour: function(particle, time, index) {
+	            if (this.dead) return;
+
+	            this.age += time;
+	            if (this.age >= this.life) {
+	                this.energy = 0;
+	                this.dead = true;
+	                return;
+	            }
+
+	            var scale = this.easing(particle.age / particle.life);
+	            this.energy = Math.max(1 - scale, 0);
+	        },
+
+	        /**
+	         * Destory this behaviour
+	         * @method destroy
+	         */
+	        destroy: function() {
+
+	        }
+	    };
+
+	    Proton.Behaviour = Behaviour;
+
+
+
+	    /**
+	     * The number of particles per second emission (a [particle]/b [s]);
+	     * @class Proton.Rate
+	     * @constructor
+	     * @param {Array or Number or Proton.Span} numPan the number of each emission;
+	     * @param {Array or Number or Proton.Span} timePan the time of each emission;
+	     * for example: new Proton.Rate(new Proton.Span(10, 20), new Proton.Span(.1, .25));
+	     */
+	     
+	    function Rate(numPan, timePan) {
+	        this.numPan = Proton.createSpan(Proton.Util.initValue(numPan, 1));
+	        this.timePan = Proton.createSpan(Proton.Util.initValue(timePan, 1));
+
+	        this.startTime = 0;
+	        this.nextTime = 0;
+	        this.init();
+	    }
+
+	    Rate.prototype = {
+	        init: function() {
+	            this.startTime = 0;
+	            this.nextTime = this.timePan.getValue();
+	        },
+
+	        getValue: function(time) {
+	            this.startTime += time;
+
+	            if (this.startTime >= this.nextTime) {
+	                this.init();
+
+	                if (this.numPan.b == 1) {
+	                    if (this.numPan.getValue("Float") > 0.5)
+	                        return 1;
+	                    else
+	                        return 0;
+	                } else {
+	                    return this.numPan.getValue("Int");
+	                }
+	            }
+
+	            return 0;
+	        }
+	    }
+
+	    Proton.Rate = Rate;
+
+
+
+	    function Initialize() {
+	        this.name = "Initialize";
+	    }
+
+
+	    Initialize.prototype.reset = function() {
+
+	    }
+
+	    Initialize.prototype.init = function(emitter, particle) {
+	        if (particle) {
+	            this.initialize(particle);
+	        } else {
+	            this.initialize(emitter);
+	        }
+	    };
+
+	    ///sub class init
+	    Initialize.prototype.initialize = function(target) {};
+	    Proton.Initialize = Initialize;
+
+
+
+	    var InitializeUtil = {
+
+	        initialize: function(emitter, particle, initializes) {
+	            var i = initializes.length;
+	            while (i--) {
+	                var initialize = initializes[i];
+	                if (initialize instanceof Proton.Initialize)
+	                    initialize.init(emitter, particle);
+	                else
+	                    InitializeUtil.init(emitter, particle, initialize);
+	            }
+
+	            InitializeUtil.bindEmitter(emitter, particle);
+	        },
+
+	        //////////////////////init//////////////////////
+	        init: function(emitter, particle, initialize) {
+	            Proton.Util.setPrototypeByObj(particle, initialize);
+	            Proton.Util.setVectorByObj(particle, initialize);
+	        },
+
+	        bindEmitter: function(emitter, particle) {
+	            if (emitter.bindEmitter) {
+	                particle.p.add(emitter.p);
+	                particle.v.add(emitter.v);
+	                particle.a.add(emitter.a);
+	                particle.v.applyEuler(emitter.rotation);
+	            }
+	        }
+	    }
+
+	    Proton.InitializeUtil = InitializeUtil;
+
+
+
+	    /**
+	     * Life is init particle's Life
+	     * @param {Number} a - the Life's start point
+	     * @param {Number} b - the Life's end point  
+	     * @param {String} c - span's center 
+	     * @example 
+	     * var life = new Proton.Life(3,5);
+	     * or
+	     * var life = new Proton.Life(Infinity);
+	     * @extends {Initialize}
+	     * @constructor
+	     */
+	    function Life(a, b, c) {
+	        Life._super_.call(this);
+	        this.lifePan = Proton.createSpan(a, b, c);
+	    }
+
+
+	    Proton.Util.inherits(Life, Proton.Initialize);
+	    Life.prototype.initialize = function(target) {
+	        if (this.lifePan.a == Infinity || this.lifePan.a == "infi")
+	            target.life = Infinity;
+	        else
+	            target.life = this.lifePan.getValue();
+	    };
+
+
+	    Proton.Life = Life;
+
+
+
+	    /**
+	     * Position is init particle's Position
+	     * @param {Zone} zone - the Position zone
+	     * @example 
+	     * var Position = new Proton.Position(new Proton.PointZone(30,100,0));
+	     * or
+	     * var Position = new Proton.Position(Infinity);
+	     * @extends {Proton.Initialize}
+	     * @constructor
+	     */
+	    function Position() {
+	        Position._super_.call(this);
+	        this.reset.apply(this, arguments);
+	    }
+
+
+	    Proton.Util.inherits(Position, Proton.Initialize);
+	    Position.prototype.reset = function() {
+	        if (!this.zones) this.zones = [];
+	        else this.zones.length = 0;
+
+	        var args = Array.prototype.slice.call(arguments);
+	        this.zones = this.zones.concat(args);
+	    };
+
+	    Position.prototype.addZone = function() {
+	        var args = Array.prototype.slice.call(arguments);
+	        this.zones = this.zones.concat(args);
+	    };
+
+	    Position.prototype.initialize = function() {
+	        var zone;
+	        return function(target) {
+	            var zone = this.zones[(Math.random() * this.zones.length) >> 0];
+	            zone.getPosition();
+
+	            target.p.x = zone.vector.x;
+	            target.p.y = zone.vector.y;
+	            target.p.z = zone.vector.z;
+	        }
+	    }();
+
+
+	    Proton.Position = Position;
+	    Proton.P = Position;
+
+
+
+
+	    /**
+	     * Velocity is init particle's Velocity
+	     * @param {Number} a - the Life's start point
+	     * @param {Number} b - the Life's end point  
+	     * @param {String} c - span's center 
+	     * @example 
+	     * var life = new Proton.Life(3,5);
+	     * or
+	     * var life = new Proton.Life(Infinity);
+	     * @extends {Initialize}
+	     * @constructor
+	     */
+	    //radius and tha
+	    function Velocity(a, b, c) {
+	        Velocity._super_.call(this);
+	        this.reset(a, b, c);
+	        this.dirVec = new Proton.Vector3D(0, 0, 0);
+
+	        this.name = "Velocity";
+	    }
+
+	    Proton.Util.inherits(Velocity, Proton.Initialize);
+
+	    Velocity.prototype.reset = function(a, b, c) {
+	        //[vector,tha]
+	        if (a instanceof Proton.Vector3D) {
+	            this.radiusPan = Proton.createSpan(1);
+	            this.dir = a.clone();
+	            this.tha = b * Proton.DR;
+	            this._useV = true;
+	        }
+
+	        //[polar,tha]
+	        else if (a instanceof Proton.Polar3D) {
+	            this.tha = b * Proton.DR;
+	            this.dirVec = a.toVector3D();
+	            this._useV = false;
+	        }
+
+	        //[radius,vector,tha]
+	        else {
+	            this.radiusPan = Proton.createSpan(a);
+	            this.dir = b.clone().normalize();
+	            this.tha = c * Proton.DR;
+	            this._useV = true;
+	        }
+	    };
+
+	    Velocity.prototype.normalize = function(vr) {
+	        return vr * Proton.MEASURE;
+	    }
+
+	    Velocity.prototype.initialize = function() {
+	        var tha;
+	        var normal = new Proton.Vector3D(0, 0, 1);
+	        var v = new Proton.Vector3D(0, 0, 0);
+
+	        return function initialize(target) {
+	            tha = this.tha * Math.random();
+	            this._useV && this.dirVec.copy(this.dir).scalar(this.radiusPan.getValue());
+
+	            Proton.MathUtils.getNormal(this.dirVec, normal);
+	            v.copy(this.dirVec).applyAxisAngle(normal, tha);
+	            v.applyAxisAngle(this.dirVec.normalize(), Math.random() * Proton.PI * 2);
+
+	            //use  axisRotate methods
+	            //Proton.MathUtils.axisRotate(this.v1, this.dirVec, normal, tha);
+	            //Proton.MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * Proton.PI * 2);
+	            target.v.copy(v);
+	            return this;
+	        };
+	    }()
+
+	    Proton.Velocity = Velocity;
+	    Proton.V = Velocity;
+
+
+
+	    /**
+	     * Mass is init particle's Mass
+	     * @param {Number} a - the Mass's start point
+	     * @param {Number} b - the Mass's end point  
+	     * @param {String} c - span's center 
+	     * @example 
+	     * var Mass = new Proton.Mass(3,5);
+	     * or
+	     * var Mass = new Proton.Mass(Infinity);
+	     * @extends {Initialize}
+	     * @constructor
+	     */
+	    function Mass(a, b, c) {
+	        Mass._super_.call(this);
+	        this.massPan = Proton.createSpan(a, b, c);
+	    }
+
+
+	    Proton.Util.inherits(Mass, Proton.Initialize);
+	    Mass.prototype.initialize = function(target) {
+	        target.mass = this.massPan.getValue();
+	    };
+
+	    Proton.Mass = Mass;
+
+
+
+
+	    /**
+	     * Radius is init particle's Radius
+	     * @param {Number} a - the Radius's start point
+	     * @param {Number} b - the Radius's end point  
+	     * @param {String} c - span's center 
+	     * @example 
+	     * var Radius = new Proton.Radius(3,5);
+	     * or
+	     * var Radius = new Proton.Radius(3,1,"center");
+	     * @extends {Initialize}
+	     * @constructor
+	     */
+	    function Radius(a, b, c) {
+	        Radius._super_.call(this);
+	        this.radius = Proton.createSpan(a, b, c);
+	    }
+
+
+	    Proton.Util.inherits(Radius, Proton.Initialize);
+	    Radius.prototype.reset = function(a, b, c) {
+	        this.radius = Proton.createSpan(a, b, c);
+	    };
+
+	    Radius.prototype.initialize = function(particle) {
+	        particle.radius = this.radius.getValue();
+	        particle.transform.oldRadius = particle.radius;
+	    };
+
+	    Proton.Radius = Radius;
+
+
+
+	    function Body(body, w, h) {
+	        Body._super_.call(this);
+	        this.body = Proton.createArraySpan(body);
+	        this.w = w;
+	        this.h = Proton.Util.initValue(h, this.w);
+	    }
+
+	    Proton.Util.inherits(Body, Proton.Initialize);
+
+	    Body.prototype.initialize = function(particle) {
+	        var body = this.body.getValue();
+	        if (!!this.w) {
+	            particle.body = {
+	                width: this.w,
+	                height: this.h,
+	                body: body
+	            };
+	        } else {
+	            particle.body = body;
+	        }
+	    };
+
+	    Proton.Body = Body;
+
+
+
+
+	    /**
+	     * The Behaviour class is the base for the other Behaviour
+	     *
+	     * @class Behaviour
+	     * @constructor
+	     */
+	    function Force(fx, fy, fz, life, easing) {
+	        Force._super_.call(this, life, easing);
+	        Force.prototype.reset.call(this, fx, fy, fz);
+	        this.name = "Force";
+	    }
+
+	    Proton.Util.inherits(Force, Proton.Behaviour);
+	    Force.prototype.reset = function(fx, fy, fz) {
+	        this.force = this.normalizeForce(new Proton.Vector3D(fx, fy, fz));
+	        this.force.id = Math.random();
+	    }
+
+	    Force.prototype.applyBehaviour = function(particle, time, index) {
+	        Force._super_.prototype.applyBehaviour.call(this, particle, time, index);
+	        particle.a.add(this.force);
+	    };
+
+	    Proton.F = Proton.Force = Force;
+
+
+
+		function Attraction(targetPosition, force, radius, life, easing) {
+			Attraction._super_.call(this, life, easing);
+			this.targetPosition = Proton.Util.initValue(targetPosition, new Proton.Vector3D);
+			this.radius = Proton.Util.initValue(radius, 1000);
+			this.force = Proton.Util.initValue(this.normalizeValue(force), 100);
+			this.radiusSq = this.radius * this.radius
+			this.attractionForce = new Proton.Vector3D();
+			this.lengthSq = 0;
+			this.name = "Attraction";
+		}
+
+
+		Proton.Util.inherits(Attraction, Proton.Behaviour);
+		Attraction.prototype.reset = function(targetPosition, force, radius, life, easing) {
+			this.targetPosition = Proton.Util.initValue(targetPosition, new Proton.Vector3D);
+			this.radius = Proton.Util.initValue(radius, 1000);
+			this.force = Proton.Util.initValue(this.normalizeValue(force), 100);
+			this.radiusSq = this.radius * this.radius
+			this.attractionForce = new Proton.Vector3D();
+			this.lengthSq = 0;
+			if (life)
+				Attraction._super_.prototype.reset.call(this, life, easing);
+		}
+
+		Attraction.prototype.applyBehaviour = function(particle, time, index) {
+			Attraction._super_.prototype.applyBehaviour.call(this, particle, time, index);
+			this.attractionForce.copy(this.targetPosition);
+			this.attractionForce.sub(particle.p);
+			this.lengthSq = this.attractionForce.lengthSq();
+			if (this.lengthSq > 0.000004 && this.lengthSq < this.radiusSq) {
+				this.attractionForce.normalize();
+				this.attractionForce.scalar(1 - this.lengthSq / this.radiusSq);
+				this.attractionForce.scalar(this.force);
+				particle.a.add(this.attractionForce);
+			}
+		};
+
+		Proton.Attraction = Attraction;
+
+
+
+
+	    /**
+	     * The Behaviour class is the base for the other Behaviour
+	     *
+	     * @class Behaviour
+	     * @constructor
+	     */
+	    function RandomDrift(driftX, driftY, driftZ, delay, life, easing) {
+	        RandomDrift._super_.call(this, life, easing);
+	        this.reset(driftX, driftY, driftZ, delay);
+	        this.time = 0;
+	        this.name = "RandomDrift";
+	    }
+
+
+	    Proton.Util.inherits(RandomDrift, Proton.Behaviour);
+	    RandomDrift.prototype.reset = function(driftX, driftY, driftZ, delay, life, easing) {
+	        this.randomFoce = this.normalizeForce(new Proton.Vector3D(driftX, driftY, driftZ));
+	        this.delayPan = Proton.createSpan(delay || .03);
+	        this.time = 0;
+	        life && RandomDrift._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    RandomDrift.prototype.applyBehaviour = function(particle, time, index) {
+	        RandomDrift._super_.prototype.applyBehaviour.call(this, particle, time, index);
+
+	        this.time += time;
+	        if (this.time >= this.delayPan.getValue()) {
+	            var ax = Proton.MathUtils.randomAToB(-this.randomFoce.x, this.randomFoce.x);
+	            var ay = Proton.MathUtils.randomAToB(-this.randomFoce.y, this.randomFoce.y);
+	            var az = Proton.MathUtils.randomAToB(-this.randomFoce.z, this.randomFoce.z);
+	            particle.a.addValue(ax, ay, az);
+	            this.time = 0;
+	        };
+	    };
+
+	    Proton.RandomDrift = RandomDrift;
+
+
+
+		function Repulsion(targetPosition, force, radius, life, easing) {
+			Repulsion._super_.call(this, targetPosition, force, radius, life, easing);
+			this.force *= -1;
+			this.name = "Repulsion";
+		}
+
+
+		Proton.Util.inherits(Repulsion, Proton.Attraction);
+		Repulsion.prototype.reset = function(targetPosition, force, radius, life, easing) {
+			Repulsion._super_.prototype.reset.call(this, targetPosition, force, radius, life, easing);
+			this.force *= -1;
+		}
+		Proton.Repulsion = Repulsion;
+
+
+
+
+	    function Gravity(g, life, easing) {
+	        Gravity._super_.call(this, 0, -g, 0, life, easing);
+	        this.name = "Gravity";
+	    }
+
+	    Proton.Util.inherits(Gravity, Proton.Force);
+
+	    Gravity.prototype.reset = function(g, life, easing) {
+	        Gravity._super_.prototype.reset.call(this, 0, -g, 0, life, easing);
+	    }
+
+	    Proton.Gravity = Gravity;
+	    Proton.G = Gravity;
+
+
+
+	    /**
+	     * The Scale class is the base for the other Proton.Behaviour
+	     *
+	     * @class Proton.Behaviour
+	     * @constructor
+	     */
+	    //can use Collision(emitter,true,function(){}) or Collision();
+	    function Collision(emitter, useMass, callback, life, easing) {
+	        Collision._super_.call(this, life, easing);
+	        this.reset(emitter, useMass, callback);
+	        this.name = "Collision";
+	    }
+
+	    Proton.Util.inherits(Collision, Proton.Behaviour);
+	    Collision.prototype.reset = function(emitter, useMass, callback, life, easing) {
+	        this.emitter = emitter;
+	        this.useMass = useMass;
+	        this.callback = callback;
+	        this.particles = [];
+	        this.delta = new Proton.Vector3D();
+	        life && Collision._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    Collision.prototype.applyBehaviour = function(particle, time, index) {
+	        var particles = this.emitter ? this.emitter.particles.slice(index) : this.particles.slice(index);
+	        var otherParticle, lengthSq, overlap, distance;
+	        var averageMass1, averageMass2;
+	        
+	        var i = particles.length;
+	        while (i--) {
+	            otherParticle = particles[i];
+	            if (otherParticle == particle) continue;
+	            
+	            this.delta.copy(otherParticle.p).sub(particle.p);
+	            lengthSq = this.delta.lengthSq();
+	            distance = particle.radius + otherParticle.radius;
+
+	            if (lengthSq <= distance * distance) {
+	                overlap = distance - Math.sqrt(lengthSq);
+	                overlap += 0.5;
+
+	                averageMass1 = this._getAverageMass(particle, otherParticle);
+	                averageMass2 = this._getAverageMass(otherParticle, particle);
+
+	                particle.p.add(this.delta.clone().normalize().scalar(overlap * -averageMass1));
+	                otherParticle.p.add(this.delta.normalize().scalar(overlap * averageMass2));
+
+	                this.callback && this.callback(particle, otherParticle);
+	            }
+	        }
+	    };
+
+	    Collision.prototype._getAverageMass = function(aPartcile, bParticle) {
+	        return this.useMass ? bParticle.mass / (aPartcile.mass + bParticle.mass) : 0.5;
+	    }
+
+	    Proton.Collision = Collision;
+
+
+
+
+	    function CrossZone(a, b, life, easing) {
+	        CrossZone._super_.call(this, life, easing);
+	        this.reset(a, b);
+	        ///dead /bound /cross
+	        this.name = "CrossZone";
+	    }
+
+
+	    Proton.Util.inherits(CrossZone, Proton.Behaviour);
+	    CrossZone.prototype.reset = function(a, b, life, easing) {
+	        var zone, crossType;
+	        if (typeof a == "string") {
+	            crossType = a;
+	            zone = b;
+	        } else {
+	            crossType = b;
+	            zone = a;
+	        }
+	        
+	        this.zone = zone;
+	        this.zone.crossType = Proton.Util.initValue(crossType, "dead");
+	        if (life)
+	            CrossZone._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    CrossZone.prototype.applyBehaviour = function(particle, time, index) {
+	        CrossZone._super_.prototype.applyBehaviour.call(this, particle, time, index);
+	        this.zone.crossing.call(this.zone, particle);
+	    };
+
+	    Proton.CrossZone = CrossZone;
+
+
+
+
+	    /**
+	     * The Alpha class is the base for the other Proton.Behaviour
+	     *
+	     * @class Proton.Behaviour
+	     * @constructor
+	     */
+
+	    function Alpha(a, b, life, easing) {
+	        Alpha._super_.call(this, life, easing);
+	        this.reset(a, b);
+	        /**
+	         * The Proton.Behaviour name;
+	         * @property name
+	         * @type {string}
+	         */
+	        this.name = "Alpha";
+	    }
+
+
+	    Proton.Util.inherits(Alpha, Proton.Behaviour);
+	    Alpha.prototype.reset = function(a, b, life, easing) {
+	        if (b == null || b == undefined)
+	            this._same = true;
+	        else
+	            this._same = false;
+
+	        this.a = Proton.createSpan(Proton.Util.initValue(a, 1));
+	        this.b = Proton.createSpan(b);
+	        life && Alpha._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    Alpha.prototype.initialize = function(particle) {
+	        particle.useAlpha = true;
+	        particle.transform.alphaA = this.a.getValue();
+	        if (this._same)
+	            particle.transform.alphaB = particle.transform.alphaA;
+	        else
+	            particle.transform.alphaB = this.b.getValue();
+	    };
+
+	    Alpha.prototype.applyBehaviour = function(particle, time, index) {
+	        Alpha._super_.prototype.applyBehaviour.call(this, particle, time, index);
+
+	        particle.alpha = Proton.MathUtils.lerp(particle.transform.alphaA, particle.transform.alphaB, this.energy);
+	        if (particle.alpha < 0.002) particle.alpha = 0;
+	    };
+
+	    Proton.Alpha = Alpha;
+
+
+
+	    /**
+	     * The Scale class is the base for the other Behaviour
+	     *
+	     * @class Behaviour
+	     * @constructor
+	     */
+
+	    function Scale(a, b, life, easing) {
+	        Scale._super_.call(this, life, easing);
+	        this.reset(a, b);
+	        this.name = "Scale";
+	    }
+
+
+	    Proton.Util.inherits(Scale, Proton.Behaviour);
+	    Scale.prototype.reset = function(a, b, life, easing) {
+	        if (b == null || b == undefined)
+	            this._same = true;
+	        else
+	            this._same = false;
+
+	        this.a = Proton.createSpan(Proton.Util.initValue(a, 1));
+	        this.b = Proton.createSpan(b);
+
+	        life && Scale._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    Scale.prototype.initialize = function(particle) {
+	        particle.transform.scaleA = this.a.getValue();
+	        particle.transform.oldRadius = particle.radius;
+	        if (this._same)
+	            particle.transform.scaleB = particle.transform.scaleA;
+	        else
+	            particle.transform.scaleB = this.b.getValue();
+
+	    };
+
+	    Scale.prototype.applyBehaviour = function(particle, time, index) {
+	        Scale._super_.prototype.applyBehaviour.call(this, particle, time, index);
+	        particle.scale = Proton.MathUtils.lerp(particle.transform.scaleA, particle.transform.scaleB, this.energy);
+
+	        if (particle.scale < 0.0005) particle.scale = 0;
+	        particle.radius = particle.transform.oldRadius * particle.scale;
+	    };
+
+	    Proton.Scale = Scale;
+
+
+
+
+	    /* The Rotate class is the base
+	     * for the other Behaviour
+	     *
+	     * @class Behaviour * @constructor 
+	     * @example new Proton.Rotate(Proton.createSpan(-1,1),Proton.createSpan(-1,1),Proton.createSpan(-1,1)); 
+	     * @example new Proton.Rotate(); 
+	     * @example new Proton.Rotate("random"); 
+	     */
+
+	    function Rotate(x, y, z, life, easing) {
+	        Rotate._super_.call(this, life, easing);
+	        this.reset(x, y, z);
+	        this.name = "Rotate";
+	    }
+
+	    Proton.Util.inherits(Rotate, Proton.Behaviour);
+	    Rotate.prototype.reset = function(a, b, c, life, easing) {
+	        this.a = a || 0;
+	        this.b = b || 0;
+	        this.c = c || 0;
+
+	        if (a === undefined || a == "same") {
+	            this._type = "same";
+	        } else if (b == undefined) {
+	            this._type = "set";
+	        } else if (c === undefined) {
+	            this._type = "to";
+	        } else {
+	            this._type = "add";
+	            this.a = Proton.createSpan(this.a * Proton.DR);
+	            this.b = Proton.createSpan(this.b * Proton.DR);
+	            this.c = Proton.createSpan(this.c * Proton.DR);
+	        }
+
+	        life && Rotate._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    Rotate.prototype.initialize = function(particle) {
+	        switch (this._type) {
+	            case "same":
+	                break;
+
+	            case "set":
+	                this._setRotation(particle.rotation, this.a);
+	                break;
+
+	            case "to":
+	                particle.transform.fR = particle.transform.fR || new Proton.Vector3D;
+	                particle.transform.tR = particle.transform.tR || new Proton.Vector3D;
+	                this._setRotation(particle.transform.fR, this.a);
+	                this._setRotation(particle.transform.tR, this.b);
+	                break;
+
+	            case "add":
+	                particle.transform.addR = new Proton.Vector3D(this.a.getValue(), this.b.getValue(), this.c.getValue());
+	                break;
+	        }
+	    };
+
+	    Rotate.prototype._setRotation = function(vec3, value) {
+	        vec3 = vec3 || new Proton.Vector3D;
+	        if (value == "random") {
+	            var x = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
+	            var y = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
+	            var z = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
+	            vec3.set(x, y, z);
+	        } else if (value instanceof Proton.Vector3D) {
+	            vec3.copy(value);
+	        }
+	    };
+
+	    Rotate.prototype.applyBehaviour = function(particle, time, index) {
+	        Rotate._super_.prototype.applyBehaviour.call(this, particle, time, index);
+
+	        switch (this._type) {
+	            case "same":
+	                if (!particle.rotation) particle.rotation = new Proton.Vector3D;
+	                particle.rotation.eulerFromDir(particle.v);
+	                //http://stackoverflow.com/questions/21622956/how-to-convert-direction-vector-to-euler-angles
+	                //console.log(particle.rotation);
+	                break;
+
+	            case "set":
+	                //
+	                break;
+
+	            case "to":
+	                particle.rotation.x = Proton.MathUtils.lerp(particle.transform.fR.x, particle.transform.tR.x, this.energy);
+	                particle.rotation.y = Proton.MathUtils.lerp(particle.transform.fR.y, particle.transform.tR.y, this.energy);
+	                particle.rotation.z = Proton.MathUtils.lerp(particle.transform.fR.z, particle.transform.tR.z, this.energy);
+	                break;
+
+	            case "add":
+	                particle.rotation.add(particle.transform.addR);
+	                break;
+	        }
+	    };
+
+	    Proton.Rotate = Rotate;
+
+
+
+	    /**
+	     * The Scale class is the base for the other Proton.Behaviour
+	     *
+	     * @class Proton.Behaviour
+	     * @constructor
+	     */
+	    function Color(a, b, life, easing) {
+	        Color._super_.call(this, life, easing);
+	        this.reset(a, b);
+	        this.name = "Color";
+	    }
+
+
+	    Proton.Util.inherits(Color, Proton.Behaviour);
+	    Color.prototype.reset = function(a, b, life, easing) {
+	        if (b == null || b == undefined)
+	            this._same = true;
+	        else
+	            this._same = false;
+
+	        this.a = Proton.createArraySpan(a);
+	        this.b = Proton.createArraySpan(b);
+	        life && Color._super_.prototype.reset.call(this, life, easing);
+	    }
+
+	    Color.prototype.initialize = function(particle) {
+	        particle.transform.colorA = Proton.ColorUtil.getRGB(this.a.getValue());
+
+	        particle.useColor = true;
+	        if (this._same)
+	            particle.transform.colorB = particle.transform.colorA;
+	        else
+	            particle.transform.colorB = Proton.ColorUtil.getRGB(this.b.getValue());
+	    };
+
+	    Color.prototype.applyBehaviour = function(particle, time, index) {
+	        Color._super_.prototype.applyBehaviour.call(this, particle, time, index);
+
+	        if (!this._same) {
+	            particle.color.r = Proton.MathUtils.lerp(particle.transform.colorA.r, particle.transform.colorB.r, this.energy) ;
+	            particle.color.g = Proton.MathUtils.lerp(particle.transform.colorA.g, particle.transform.colorB.g, this.energy) ;
+	            particle.color.b = Proton.MathUtils.lerp(particle.transform.colorA.b, particle.transform.colorB.b, this.energy) ;
+	        } else {
+	            particle.color.r = particle.transform.colorA.r;
+	            particle.color.g = particle.transform.colorA.g;
+	            particle.color.b = particle.transform.colorA.b;
+	        }
+	    };
+
+
+	    Proton.Color = Color;
+
+
+
+	    /**
+	     * The Behaviour class is the base for the other Behaviour
+	     *
+	     * @class Behaviour
+	     * @constructor
+	     */
+	    function Spring(x, y, z, spring, friction, life, easing) {
+	        Spring._super_.call(this, life, easing);
+	        Spring.prototype.reset(x, y, z, spring, friction);
+	        this.name = "Spring";
+	    }
+
+	    Proton.Util.inherits(Spring, Proton.Behaviour);
+	    Spring.prototype.reset = function(x, y, z, spring, friction) {
+	        if (!this.pos)
+	            this.pos = new Proton.Vector3D(x, y, z);
+	        else
+	            this.pos.set(x, y, z);
+	        this.spring = spring || .1;
+	        this.friction = friction || .98;
+	    }
+
+	    Spring.prototype.applyBehaviour = function(particle, time, index) {
+	        Spring._super_.prototype.applyBehaviour.call(this, particle, time, index);
+
+	        particle.v.x += (this.pos.x - particle.p.x) * this.spring;
+	        particle.v.y += (this.pos.y - particle.p.y) * this.spring;
+	        particle.v.z += (this.pos.z - particle.p.z) * this.spring;
+
+	    };
+
+
+	    Proton.Spring = Spring;
+
+
+
+	    function Emitter(pObj) {
+	        this.initializes = [];
+	        this.particles = [];
+	        this.behaviours = [];
+	        this.currentEmitTime = 0;
+	        this.totalEmitTimes = -1;
+
+	        /**
+	         * @property {Number} damping -The friction coefficient for all particle emit by This;
+	         * @default 0.006
+	         */
+	        this.damping = .006;
+	        /**
+	         * If bindEmitter the particles can bind this emitter's property;
+	         * @property bindEmitter
+	         * @type {Boolean}
+	         * @default true
+	         */
+	        this.bindEmitter = true;
+	        /**
+	         * The number of particles per second emit (a [particle]/b [s]);
+	         * @property rate
+	         * @type {Rate}
+	         * @default Rate(1, .1)
+	         */
+	        this.rate = new Proton.Rate(1, .1);
+	        Emitter._super_.call(this, pObj);
+	        /**
+	         * The emitter's id;
+	         * @property id
+	         * @type {String} id
+	         */
+	        this.id = 'emitter_' + Emitter.ID++;
+	        this.cID = 0;
+	        this.name = 'Emitter';
+	    };
+	    Emitter.ID = 0;
+
+	    Proton.Util.inherits(Emitter, Proton.Particle);
+	    Proton.EventDispatcher.initialize(Emitter.prototype);
+
+	    /**
+	     * start emit particle
+	     * @method emit
+	     * @param {Number} totalEmitTimes total emit times;
+	     * @param {String} life the life of this emitter
+	     */
+	    Emitter.prototype.emit = function(totalEmitTimes, life) {
+	        this.currentEmitTime = 0;
+	        this.totalEmitTimes = Proton.Util.initValue(totalEmitTimes, Infinity);
+
+	        if (life == true || life == 'life' || life == 'destroy') {
+	            this.life = totalEmitTimes == 'once' ? 1 : this.totalEmitTimes;
+	        } else if (!isNaN(life)) {
+	            this.life = life;
+	        }
+
+	        this.rate.init();
+	    };
+
+	    /**
+	     * stop emiting
+	     * @method stopEmit
+	     */
+	    Emitter.prototype.stopEmit = function() {
+	        this.totalEmitTimes = -1;
+	        this.currentEmitTime = 0;
+	    };
+
+	    /**
+	     * remove current all particles
+	     * @method removeAllParticles
+	     */
+	    Emitter.prototype.removeAllParticles = function() {
+	        var i = this.particles.length;
+	        while (i--) this.particles[i].dead = true;
+	    };
+
+	    /**
+	     * create single particle;
+	     * 
+	     * can use emit({x:10},new Gravity(10),{'particleUpdate',fun}) or emit([{x:10},new Initialize],new Gravity(10),{'particleUpdate',fun})
+	     * @method removeAllParticles
+	     */
+	    Emitter.prototype.createParticle = function(initialize, behaviour) {
+	        var particle = this.parent.pool.get(Proton.Particle);
+	        this.setupParticle(particle, initialize, behaviour);
+	        this.parent && this.parent.dispatchEvent("PARTICLE_CREATED", particle);
+	        Proton.bindEmtterEvent && this.dispatchEvent("PARTICLE_CREATED", particle);
+
+	        return particle;
+	    };
+	    /**
+	     * add initialize to this emitter
+	     * @method addSelfInitialize
+	     */
+	    Emitter.prototype.addSelfInitialize = function(pObj) {
+	        if (pObj['init']) {
+	            pObj.init(this);
+	        } else {
+	            this.initAll();
+	        }
+	    };
+
+
+	    /**
+	     * add the Initialize to particles;
+	     * 
+	     * you can use initializes array:for example emitter.addInitialize(initialize1,initialize2,initialize3);
+	     * @method addInitialize
+	     * @param {Initialize} initialize like this new Radius(1, 12)
+	     */
+	    Emitter.prototype.addInitialize = function() {
+	        var i = arguments.length;
+	        while (i--) this.initializes.push(arguments[i]);
+	    };
+
+
+	    /**
+	     * remove the Initialize
+	     * @method removeInitialize
+	     * @param {Initialize} initialize a initialize
+	     */
+	    Emitter.prototype.removeInitialize = function(initializer) {
+	        var index = this.initializes.indexOf(initializer);
+	        if (index > -1) this.initializes.splice(index, 1);
+	    };
+
+	    /**
+	     * remove all Initializes
+	     * @method removeInitializers
+	     */
+	    Emitter.prototype.removeInitializers = function() {
+	        Proton.Util.destroyArray(this.initializes);
+	    };
+	    /**
+	     * add the Behaviour to particles;
+	     * 
+	     * you can use Behaviours array:emitter.addBehaviour(Behaviour1,Behaviour2,Behaviour3);
+	     * @method addBehaviour
+	     * @param {Behaviour} behaviour like this new Color('random')
+	     */
+	    Emitter.prototype.addBehaviour = function() {
+	        var i = arguments.length;
+	        while (i--) this.behaviours.push(arguments[i]);
+	    };
+	    /**
+	     * remove the Behaviour
+	     * @method removeBehaviour
+	     * @param {Behaviour} behaviour a behaviour
+	     */
+	    Emitter.prototype.removeBehaviour = function(behaviour) {
+	        var index = this.behaviours.indexOf(behaviour);
+	        if (index > -1) this.behaviours.splice(index, 1);
+	    };
+	    /**
+	     * remove all behaviours
+	     * @method removeAllBehaviours
+	     */
+	    Emitter.prototype.removeAllBehaviours = function() {
+	        Proton.Util.destroyArray(this.behaviours);
+	    };
+
+	    Emitter.prototype.integrate = function(time) {
+	        var damping = 1 - this.damping;
+	        Proton.integrator.integrate(this, time, damping);
+
+	        var i = this.particles.length;
+	        while (i--) {
+	            var particle = this.particles[i];
+	            particle.update(time, i);
+	            Proton.integrator.integrate(particle, time, damping);
+
+	            this.parent && this.parent.dispatchEvent("PARTICLE_UPDATE", particle);
+	            Proton.bindEmtterEvent && this.dispatchEvent("PARTICLE_UPDATE", particle);
+	        }
+	    };
+
+	    Emitter.prototype.emitting = function(time) {
+	        if (this.totalEmitTimes == 'once') {
+	            var i = this.rate.getValue(99999);
+	            if (i > 0) this.cID = i;
+	            while (i--) this.createParticle();
+	            this.totalEmitTimes = 'none';
+
+	        } else if (!isNaN(this.totalEmitTimes)) {
+	            this.currentEmitTime += time;
+	            if (this.currentEmitTime < this.totalEmitTimes) {
+	                var i = this.rate.getValue(time);
+	                if (i > 0) this.cID = i;
+	                while (i--) this.createParticle();
+	            }
+	        }
+	    }
+
+	    Emitter.prototype.update = function(time) {
+	        this.age += time;
+	        if (this.dead || this.age >= this.life) {
+	            this.destroy();
+	        }
+
+	        this.emitting(time);
+	        this.integrate(time);
+
+	        var particle, i = this.particles.length;
+	        while (i--) {
+	            particle = this.particles[i];
+	            if (particle.dead) {
+	                this.parent && this.parent.dispatchEvent("PARTICLE_DEAD", particle);
+	                Proton.bindEmtterEvent && this.dispatchEvent("PARTICLE_DEAD", particle);
+
+	                this.parent.pool.expire(particle.reset());
+	                this.particles.splice(i, 1);
+	            }
+	        }
+	    };
+
+	    Emitter.prototype.setupParticle = function(particle, initialize, behaviour) {
+	        var initializes = this.initializes;
+	        var behaviours = this.behaviours;
+
+	        if (initialize) {
+	            if (Proton.Util.isArray(initialize))
+	                initializes = initialize;
+	            else
+	                initializes = [initialize];
+	        }
+
+	        if (behaviour) {
+	            if (Proton.Util.isArray(behaviour))
+	                behaviours = behaviour;
+	            else
+	                behaviours = [behaviour];
+	        }
+
+	        Proton.InitializeUtil.initialize(this, particle, initializes);
+	        particle.addBehaviours(behaviours);
+	        particle.parent = this;
+	        this.particles.push(particle);
+	    };
+
+	    /**
+	     * Destory this Emitter
+	     * @method destroy
+	     */
+	    Emitter.prototype.destroy = function() {
+	        this.dead = true;
+	        this.energy = 0;
+	        this.totalEmitTimes = -1;
+
+	        if (this.particles.length == 0) {
+	            this.removeInitializers();
+	            this.removeAllBehaviours();
+
+	            this.parent && this.parent.removeEmitter(this);
+	        }
+	    }
+
+
+	    Proton.Emitter = Emitter;
+
+
+
+	    /**
+	     * The BehaviourEmitter class inherits from Proton.Emitter
+	     *
+	     * use the BehaviourEmitter you can add behaviours to self;
+	     * @class Proton.BehaviourEmitter
+	     * @constructor
+	     * @param {Object} pObj the parameters object;
+	     */
+	    function BehaviourEmitter(pObj) {
+	        this.selfBehaviours = [];
+	        BehaviourEmitter._super_.call(this, pObj);
+	    };
+
+	    Proton.Util.inherits(BehaviourEmitter, Proton.Emitter);
+	    /**
+	     * add the Behaviour to emitter;
+	     *
+	     * you can use Behaviours array:emitter.addSelfBehaviour(Behaviour1,Behaviour2,Behaviour3);
+	     * @method addSelfBehaviour
+	     * @param {Proton.Behaviour} behaviour like this new Proton.Color('random')
+	     */
+	    BehaviourEmitter.prototype.addSelfBehaviour = function() {
+	        var length = arguments.length,
+	            i;
+	        for (i = 0; i < length; i++) {
+	            this.selfBehaviours.push(arguments[i]);
+	        }
+	    };
+	    /**
+	     * remove the Behaviour for self
+	     * @method removeSelfBehaviour
+	     * @param {Proton.Behaviour} behaviour a behaviour
+	     */
+	    BehaviourEmitter.prototype.removeSelfBehaviour = function(behaviour) {
+	        var index = this.selfBehaviours.indexOf(behaviour);
+	        if (index > -1) this.selfBehaviours.splice(index, 1);
+	    };
+
+	    BehaviourEmitter.prototype.update = function(time) {
+	        BehaviourEmitter._super_.prototype.update.call(this, time);
+
+	        if (!this.sleep) {
+	            var length = this.selfBehaviours.length,
+	                i;
+	            for (i = 0; i < length; i++) {
+	                this.selfBehaviours[i].applyBehaviour(this, time, i)
+	            }
+	        }
+	    }
+
+	    Proton.BehaviourEmitter = BehaviourEmitter;
+
+
+
+	    /**
+	     * The FollowEmitter class inherits from Proton.Emitter
+	     *
+	     * use the FollowEmitter will emit particle when mousemoving
+	     *
+	     * @class Proton.FollowEmitter
+	     * @constructor
+	     * @param {Element} mouseTarget mouseevent's target;
+	     * @param {Number} ease the easing of following speed;
+	     * @default 0.7
+	     * @param {Object} pObj the parameters object;
+	     */
+	    function FollowEmitter(mouseTarget, ease, pObj) {
+	        this.mouseTarget = Proton.Util.initValue(mouseTarget, window);
+	        this.ease = Proton.Util.initValue(ease, .7);
+	        this._allowEmitting = false;
+	        this.initEventHandler();
+	        FollowEmitter._super_.call(this, pObj);
+	    };
+
+	    Proton.Util.inherits(FollowEmitter, Proton.Emitter);
+	    FollowEmitter.prototype.initEventHandler = function() {
+	        var self = this;
+	        this.mousemoveHandler = function(e) {
+	            self.mousemove.call(self, e);
+	        };
+
+	        this.mousedownHandler = function(e) {
+	            self.mousedown.call(self, e);
+	        };
+
+	        this.mouseupHandler = function(e) {
+	            self.mouseup.call(self, e);
+	        };
+	        
+	        this.mouseTarget.addEventListener('mousemove', this.mousemoveHandler, false);
+	    }
+
+	    /**
+	     * start emit particle
+	     * @method emit
+	     */
+	    FollowEmitter.prototype.emit = function() {
+	        this._allowEmitting = true;
+	    }
+
+	    /**
+	     * stop emiting
+	     * @method stopEmit
+	     */
+	    FollowEmitter.prototype.stopEmit = function() {
+	        this._allowEmitting = false;
+	    }
+
+	    FollowEmitter.prototype.setCameraAndCanvas = function(camera, canvas) {
+	        this.camera = camera;
+	        this.canvas = canvas;
+	    }
+
+	    FollowEmitter.prototype.mousemove = function(e) {
+	        if (e.layerX || e.layerX == 0) {
+	            this.p.x += (e.layerX - this.p.x) * this.ease;
+	            this.p.y += (e.layerY - this.p.y) * this.ease;
+	        } else if (e.offsetX || e.offsetX == 0) {
+	            this.p.x += (e.offsetX - this.p.x) * this.ease;
+	            this.p.y += (e.offsetY - this.p.y) * this.ease;
+	        }
+
+	        this.p.copy(Proton.THREEUtil.toSpacePos(this.p, this.camera, this.canvas));
+
+	        if (this._allowEmitting)
+	            FollowEmitter._super_.prototype.emit.call(this, 'once');
+	    };
+
+	    /**
+	     * Destory this Emitter
+	     * @method destroy
+	     */
+	    FollowEmitter.prototype.destroy = function() {
+	        FollowEmitter._super_.prototype.destroy.call(this);
+	        this.mouseTarget.removeEventListener('mousemove', this.mousemoveHandler, false);
+	    }
+
+	    Proton.FollowEmitter = FollowEmitter;
+
+
+
+	    /**
+	     * The Ease class provides a collection of easing functions for use with Proton
+	     */
+	    var ease = ease || {
+	        easeLinear: function(value) {
+	            return value;
+	        },
+
+	        easeInQuad: function(value) {
+	            return Math.pow(value, 2);
+	        },
+
+	        easeOutQuad: function(value) {
+	            return -(Math.pow((value - 1), 2) - 1);
+	        },
+
+	        easeInOutQuad: function(value) {
+	            if ((value /= 0.5) < 1)
+	                return 0.5 * Math.pow(value, 2);
+	            return -0.5 * ((value -= 2) * value - 2);
+	        },
+
+	        easeInCubic: function(value) {
+	            return Math.pow(value, 3);
+	        },
+
+	        easeOutCubic: function(value) {
+	            return (Math.pow((value - 1), 3) + 1);
+	        },
+
+	        easeInOutCubic: function(value) {
+	            if ((value /= 0.5) < 1)
+	                return 0.5 * Math.pow(value, 3);
+	            return 0.5 * (Math.pow((value - 2), 3) + 2);
+	        },
+
+	        easeInQuart: function(value) {
+	            return Math.pow(value, 4);
+	        },
+
+	        easeOutQuart: function(value) {
+	            return -(Math.pow((value - 1), 4) - 1);
+	        },
+
+	        easeInOutQuart: function(value) {
+	            if ((value /= 0.5) < 1)
+	                return 0.5 * Math.pow(value, 4);
+	            return -0.5 * ((value -= 2) * Math.pow(value, 3) - 2);
+	        },
+
+	        easeInSine: function(value) {
+	            return -Math.cos(value * (Proton.PI / 2)) + 1;
+	        },
+
+	        easeOutSine: function(value) {
+	            return Math.sin(value * (Proton.PI / 2));
+	        },
+
+	        easeInOutSine: function(value) {
+	            return (-0.5 * (Math.cos(Proton.PI * value) - 1));
+	        },
+
+	        easeInExpo: function(value) {
+	            return (value === 0) ? 0 : Math.pow(2, 10 * (value - 1));
+	        },
+
+	        easeOutExpo: function(value) {
+	            return (value === 1) ? 1 : -Math.pow(2, -10 * value) + 1;
+	        },
+
+	        easeInOutExpo: function(value) {
+	            if (value === 0)
+	                return 0;
+	            if (value === 1)
+	                return 1;
+	            if ((value /= 0.5) < 1)
+	                return 0.5 * Math.pow(2, 10 * (value - 1));
+	            return 0.5 * (-Math.pow(2, -10 * --value) + 2);
+	        },
+
+	        easeInCirc: function(value) {
+	            return -(Math.sqrt(1 - (value * value)) - 1);
+	        },
+
+	        easeOutCirc: function(value) {
+	            return Math.sqrt(1 - Math.pow((value - 1), 2));
+	        },
+
+	        easeInOutCirc: function(value) {
+	            if ((value /= 0.5) < 1)
+	                return -0.5 * (Math.sqrt(1 - value * value) - 1);
+	            return 0.5 * (Math.sqrt(1 - (value -= 2) * value) + 1);
+	        },
+
+	        easeInBack: function(value) {
+	            var s = 1.70158;
+	            return (value) * value * ((s + 1) * value - s);
+	        },
+
+	        easeOutBack: function(value) {
+	            var s = 1.70158;
+	            return (value = value - 1) * value * ((s + 1) * value + s) + 1;
+	        },
+
+	        easeInOutBack: function(value) {
+	            var s = 1.70158;
+	            if ((value /= 0.5) < 1)
+	                return 0.5 * (value * value * (((s *= (1.525)) + 1) * value - s));
+	            return 0.5 * ((value -= 2) * value * (((s *= (1.525)) + 1) * value + s) + 2);
+	        },
+
+	        setEasingByName: function(easeName) {
+	            if (!!ease[easeName])
+	                return ease[easeName];
+	            else
+	                return ease.easeLinear;
+	        }
+	    }
+
+
+	    for (var id in ease) {
+	        if (id != "setEasingByName") Proton[id] = ease[id];
+	    }
+
+	    Proton.ease = ease;
+
+
+
+
+
+	    function BaseRender() { this.name = "BaseRender"; }
+
+	    BaseRender.prototype = {
+	        init: function(proton) {
+	            var self = this;
+	            this.proton = proton;
+	            
+	            this.proton.addEventListener("PROTON_UPDATE", function(proton) {
+	                self.onProtonUpdate.call(self, proton);
+	            });
+
+	            this.proton.addEventListener("PARTICLE_CREATED", function(particle) {
+	                self.onParticleCreated.call(self, particle);
+	            });
+
+	            this.proton.addEventListener("PARTICLE_UPDATE", function(particle) {
+	                self.onParticleUpdate.call(self, particle);
+	            });
+
+	            this.proton.addEventListener("PARTICLE_DEAD", function(particle) {
+	                self.onParticleDead.call(self, particle);
+	            });
+	        },
+
+	        remove: function(proton) {
+	            // this.proton.removeEventListener("PROTON_UPDATE", this.onProtonUpdate);
+	            // this.proton.removeEventListener("PARTICLE_CREATED", this.onParticleCreated);
+	            // this.proton.removeEventListener("PARTICLE_UPDATE", this.onParticleUpdate);
+	            // this.proton.removeEventListener("PARTICLE_DEAD", this.onParticleDead);
+	            this.proton = null;
+	        },
+
+	        onParticleCreated: function(particle) {
+
+	        },
+
+	        onParticleUpdate: function(particle) {
+
+	        },
+
+	        onParticleDead: function(particle) {
+
+	        },
+
+	        onProtonUpdate: function(proton) {
+
+	        }
+	    }
+
+	    Proton.BaseRender = BaseRender;
+
+
+
+
+	    function MeshRender(container) {
+	        MeshRender._super_.call(this);
+	        this.container = container;
+
+	        this._targetPool = new Proton.Pool();
+	        this._materialPool = new Proton.Pool();
+	        this._body = new THREE.Mesh(
+	            new THREE.BoxGeometry(50, 50, 50),
+	            new THREE.MeshLambertMaterial({ color: "#ff0000" })
+	        );
+	        
+	        this.name = "MeshRender";
+	    }
+
+	    Proton.Util.inherits(MeshRender, Proton.BaseRender);
+
+	    MeshRender.prototype.onProtonUpdate = function() {};
+
+	    MeshRender.prototype.onParticleCreated = function(particle) {
+	        if (!particle.target) {
+	            //set target
+	            if (!particle.body) particle.body = this._body;
+	            particle.target = this._targetPool.get(particle.body);
+	            
+	            //set material
+	            if (particle.useAlpha || particle.useColor) {
+	                particle.target.material.__puid = Proton.PUID.id(particle.body.material);;
+	                particle.target.material = this._materialPool.get(particle.target.material);
+	            }
+	        }
+
+	        if (particle.target) {
+	            particle.target.position.copy(particle.p);
+	            this.container.add(particle.target);
+	        }
+	    };
+
+	    MeshRender.prototype.onParticleUpdate = function(particle) {
+	        if (particle.target) {
+	            particle.target.position.copy(particle.p);
+	            particle.target.rotation.set(particle.rotation.x, particle.rotation.y, particle.rotation.z);
+	            this.scale(particle);
+
+	            if (particle.useAlpha) {
+	                particle.target.material.opacity = particle.alpha;
+	                particle.target.material.transparent = true;
+	            }
+
+	            if (particle.useColor) {
+	                particle.target.material.color.copy(particle.color);
+	            }
+	        }
+	    };
+
+	    MeshRender.prototype.scale = function(particle) {
+	        particle.target.scale.set(particle.scale, particle.scale, particle.scale);
+	    }
+
+	    MeshRender.prototype.onParticleDead = function(particle) {
+	        if (particle.target) {
+	            if (particle.useAlpha || particle.useColor)
+	                this._materialPool.expire(particle.target.material);
+
+	            this._targetPool.expire(particle.target);
+	            this.container.remove(particle.target);
+	            particle.target = null;
+	        }
+	    };
+
+	    Proton.MeshRender = MeshRender;
+
+
+
+
+	    function PointsRender(ps) {
+	        PointsRender._super_.call(this);
+	        this.points = ps;
+	        this.name = "PointsRender";
+	    }
+
+	    Proton.Util.inherits(PointsRender, Proton.BaseRender);
+
+	    PointsRender.prototype.onProtonUpdate = function() {
+	        
+	    };
+
+	    PointsRender.prototype.onParticleCreated = function(particle) {
+	        if (!particle.target) {
+	            particle.target = new THREE.Vector3();
+	        }
+
+	        particle.target.copy(particle.p);
+	        this.points.geometry.vertices.push(particle.target);
+	    };
+
+	    PointsRender.prototype.onParticleUpdate = function(particle) {
+	        if (particle.target) {
+	            particle.target.copy(particle.p);
+	        }
+	    };
+
+	    PointsRender.prototype.onParticleDead = function(particle) {
+	        if (particle.target) {
+	            var index = this.points.geometry.vertices.indexOf(particle.target);
+	            if (index > -1)
+	                this.points.geometry.vertices.splice(index, 1);
+	            
+	            particle.target = null;
+	        }
+	    };
+
+	    Proton.PointsRender = PointsRender;
+
+
+
+
+	    function SpriteRender(container) {
+	        SpriteRender._super_.call(this, container);
+
+	        this._body = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0xffffff }));
+	        this.name = "SpriteRender";
+	    }
+
+	    Proton.Util.inherits(SpriteRender, Proton.MeshRender);
+
+	    SpriteRender.prototype.scale = function(particle) {
+	        particle.target.scale.set(particle.scale * particle.radius, particle.scale * particle.radius, 1);
+	    };
+
+	    Proton.SpriteRender = SpriteRender;
+
+
+
+
+	    function CustomRender() {
+	        CustomRender._super_.call(this);
+	        this.targetPool = new Proton.Pool();
+	        this.materialPool = new Proton.Pool();
+	        
+	        this.name = "CustomRender";
+	    }
+
+	    Proton.Util.inherits(CustomRender, Proton.BaseRender);
+
+	    CustomRender.prototype.onProtonUpdate = function() {};
+
+	    CustomRender.prototype.onParticleCreated = function(particle) {
+	        
+	    };
+
+	    CustomRender.prototype.onParticleUpdate = function(particle) {
+	        
+	    };
+
+	    CustomRender.prototype.onParticleDead = function(particle) {
+	        
+	    };
+
+	    Proton.CustomRender = CustomRender;
+
+
+
+	    /**
+	     * Zone is a base class.
+	     * @constructor
+	     */
+	    function Zone() {
+	        this.vector = new Proton.Vector3D(0, 0, 0);
+	        this.random = 0;
+	        this.crossType = "dead";
+	        this.log = true;
+	    }
+
+	    Zone.prototype = {
+	        getPosition: function() {
+	            return null;
+	        },
+
+	        crossing: function(particle) {
+	            switch (this.crossType) {
+	                case "bound":
+	                    this._bound(particle);
+	                    break;
+
+	                case "cross":
+	                    this._cross(particle);
+	                    break;
+
+	                case "dead":
+	                    this._dead(particle);
+	                    break;
+	            }
+	        },
+
+	        _dead: function(particle) {},
+	        _bound: function(particle) {},
+	        _cross: function(particle) {},
+	    };
+
+	    Proton.Zone = Zone;
+
+
+
+	    /**
+	     * LineZone is a 3d line zone
+	     * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object
+	     * @param {Number|Vector3D} y1 - the line's start point of y value or a Vector3D Object
+	     * @param {Number} z1 - the line's start point of z value 
+	     * @param {Number} x2 - the line's end point of x value 
+	     * @param {Number} y2 - the line's end point of y value 
+	     * @param {Number} z2 - the line's end point of z value 
+	     * @example 
+	     * var lineZone = new Proton.LineZone(0,0,0,100,100,0);
+	     * or
+	     * var lineZone = new Proton.LineZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
+	     * @extends {Zone}
+	     * @constructor
+	     */
+	    function LineZone(x1, y1, z1, x2, y2, z2) {
+	        LineZone._super_.call(this);
+	        if (x1 instanceof Proton.Vector3D) {
+	            this.x1 = x1.x;
+	            this.y1 = x1.y;
+	            this.z1 = x1.z;
+
+	            this.x2 = x2.x;
+	            this.y2 = x2.y;
+	            this.z2 = x2.z;
+	        } else {
+	            this.x1 = x1;
+	            this.y1 = y1;
+	            this.z1 = z1;
+
+	            this.x2 = x2;
+	            this.y2 = y2;
+	            this.z2 = z2;
+	        }
+	    }
+
+
+	    Proton.Util.inherits(LineZone, Proton.Zone);
+	    LineZone.prototype.getPosition = function() {
+	        this.random = Math.random();
+	        this.vector.x = this.x1 + this.random * (this.x2 - this.x1);
+	        this.vector.y = this.y1 + this.random * (this.y2 - this.y1);
+	        this.vector.z = this.z1 + this.random * (this.z2 - this.z1);
+	        return this.vector;
+	    }
+
+	    LineZone.prototype.crossing = function(particle) {
+	        if (this.log) {
+	            console.error('Sorry LineZone does not support crossing method');
+	            this.log = false;
+	        }
+	    }
+
+	    Proton.LineZone = LineZone;
+
+
+
+	    /**
+	     * SphereZone is a sphere zone
+	     * @param {Number|Vector3D} x - the center's x value or a Vector3D Object
+	     * @param {Number} y - the center's y value or the Sphere's radius 
+	     * @param {Number} z - the center's z value 
+	     * @param {Number} r - the Sphere's radius 
+	     * @example 
+	     * var sphereZone = new Proton.SphereZone(0,0,0,100);
+	     * var sphereZone = new Proton.SphereZone(new Proton.Vector3D(0,0,0),100);
+	     * @extends {Proton.Zone}
+	     * @constructor
+	     */
+	    function SphereZone(a, b, c, d) {
+	        var x, y, z, r;
+	        SphereZone._super_.call(this);
+	        if (Proton.Util.isUndefined(b, c, d)) {
+	            x = y = z = 0;
+	            r = (a || 100);
+	        } else {
+	            x = a;
+	            y = b;
+	            z = c;
+	            r = d;
+	        }
+
+	        this.x = x;
+	        this.y = x;
+	        this.z = x;
+	        this.radius = r;
+	        this.the = this.phi = 0;
+	    }
+
+	    Proton.Util.inherits(SphereZone, Proton.Zone);
+	    SphereZone.prototype.getPosition = function() {
+	        var the, phi, r;
+	        return function() {
+	            this.random = Math.random();
+
+	            r = this.random * this.radius;
+	            tha = Proton.PI * Math.random(); //[0-pi]
+	            phi = Proton.PI * 2 * Math.random(); //[0-2pi]
+
+	            this.vector.x = this.x + r * Math.sin(tha) * Math.cos(phi);
+	            this.vector.y = this.y + r * Math.sin(phi) * Math.sin(tha);
+	            this.vector.z = this.z + r * Math.cos(tha);
+
+	            return this.vector;
+	        }
+	    }();
+
+	    SphereZone.prototype._dead = function(particle) {
+	        var d = particle.p.distanceTo(this);
+	        if (d - particle.radius > this.radius) particle.dead = true;
+	    }
+
+	    SphereZone.prototype._bound = function() {
+	        var normal = new Proton.Vector3D,
+	            v = new Proton.Vector3D,
+	            k;
+
+	        return function(particle) {
+	            var d = particle.p.distanceTo(this);
+	            if (d + particle.radius >= this.radius) {
+	                normal.copy(particle.p).sub(this).normalize();
+	                v.copy(particle.v);
+	                k = 2 * v.dot(normal);
+	                particle.v.sub(normal.scalar(k));
+	            }
+	        }
+	    }();
+
+	    SphereZone.prototype._cross = function(particle) {
+	        if (this.log) {
+	            console.error('Sorry SphereZone does not support _cross method');
+	            this.log = false;
+	        }
+	    }
+
+	    Proton.SphereZone = SphereZone;
+
+
+
+
+	    /**
+	     * MeshZone is a threejs mesh zone
+	     * @param {Geometry|Mesh} geometry - a THREE.Geometry or THREE.Mesh object
+	     * @example 
+	     * var geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+	     * var cylinder = new THREE.Mesh( geometry, material );
+	     * var meshZone = new Proton.MeshZone(geometry);
+	     * or
+	     * var meshZone = new Proton.MeshZone(cylinder);
+	     * @extends {Proton.Zone}
+	     * @constructor
+	     */
+
+	    function MeshZone(geometry, scale) {
+	        MeshZone._super_.call(this);
+	        if (geometry instanceof THREE.Geometry) {
+	            this.geometry = geometry;
+	        } else {
+	            this.geometry = geometry.geometry;
+	        }
+
+	        this.scale = scale || 1;
+	    }
+
+	    Proton.Util.inherits(MeshZone, Proton.Zone);
+	    MeshZone.prototype.getPosition = function() {
+	        var vertices = this.geometry.vertices;
+	        var rVector = vertices[(vertices.length * Math.random()) >> 0];
+	        this.vector.x = rVector.x * this.scale;
+	        this.vector.y = rVector.y * this.scale;
+	        this.vector.z = rVector.z * this.scale;
+	        return this.vector;
+	    }
+
+	    MeshZone.prototype.crossing = function(particle) {
+	        if (this.log) {
+	            console.error('Sorry MeshZone does not support crossing method');
+	            this.log = false;
+	        }
+	    }
+
+	    Proton.MeshZone = MeshZone;
+
+
+
+	    /**
+	     * PointZone is a point zone
+	     * @param {Number|Vector3D} x - the center's x value or a Vector3D Object
+	     * @param {Number} y - the center's y value
+	     * @param {Number} z - the center's z value  
+	     * @example 
+	     * var pointZone = new Proton.PointZone(0,30,10);
+	     * or
+	     * var pointZone = new Proton.PointZone(new Proton.Vector3D(0,30,10));
+	     * @extends {Zone}
+	     * @constructor
+	     */
+	    function PointZone(a, b, c) {
+	        var x, y, z;
+	        PointZone._super_.call(this);
+
+	        if (Proton.Util.isUndefined(a, b, c)) {
+	            x = y = z = 0;
+	        } else {
+	            x = a;
+	            y = b;
+	            z = c;
+	        }
+
+	        this.x = x;
+	        this.y = x;
+	        this.z = x;
+	    }
+
+	    Proton.Util.inherits(PointZone, Proton.Zone);
+	    PointZone.prototype.getPosition = function() {
+	        this.vector.x = this.x;
+	        this.vector.y = this.y;
+	        this.vector.z = this.z;
+	        return this.vector;
+	    }
+
+	    PointZone.prototype.crossing = function(particle) {
+	        if (this.log) {
+	            console.error('Sorry PointZone does not support crossing method');
+	            this.log = false;
+	        }
+	    }
+
+	    Proton.PointZone = PointZone;
+
+
+
+	    /**
+	     * BoxZone is a box zone
+	     * @param {Number|Proton.Vector3D} x - the position's x value or a Proton.Vector3D Object
+	     * @param {Number} y - the position's y value 
+	     * @param {Number} z - the position's z value 
+	     * @param {Number} w - the Box's width 
+	     * @param {Number} h - the Box's height 
+	     * @param {Number} d - the Box's depth 
+	     * @example 
+	     * var boxZone = new Proton.BoxZone(0,0,0,50,50,50);
+	     * or
+	     * var boxZone = new Proton.BoxZone(new Proton.Proton.Vector3D(0,0,0), 50, 50, 50);
+	     * @extends {Proton.Zone}
+	     * @constructor
+	     */
+	    function BoxZone(a, b, c, d, e, f) {
+	        var x, y, z, w, h, d;
+	        BoxZone._super_.call(this);
+
+	        if (Proton.Util.isUndefined(b, c, d, e, f)) {
+	            x = y = z = 0;
+	            w = h = d = (a || 100);
+	        } else if (Proton.Util.isUndefined(d, e, f)) {
+	            x = y = z = 0;
+	            w = a;
+	            h = b;
+	            d = c;
+	        } else {
+	            x = a;
+	            y = b;
+	            z = c;
+	            w = d;
+	            h = e;
+	            d = f;
+	        }
+
+	        this.x = x;
+	        this.y = y;
+	        this.z = z;
+	        this.width = w;
+	        this.height = h;
+	        this.depth = d;
+
+	        //
+	        this.friction = 0.85;
+	        this.max = 6;
+	    }
+
+	    Proton.Util.inherits(BoxZone, Proton.Zone);
+	    BoxZone.prototype.getPosition = function() {
+	        this.vector.x = this.x + Proton.MathUtils.randomAToB(-.5, .5) * this.width;
+	        this.vector.y = this.y + Proton.MathUtils.randomAToB(-.5, .5) * this.height;
+	        this.vector.z = this.z + Proton.MathUtils.randomAToB(-.5, .5) * this.depth;
+	        return this.vector;
+	    }
+
+	    BoxZone.prototype._dead = function(particle) {
+	        if (particle.p.x + particle.radius < this.x - this.width / 2)
+	            particle.dead = true;
+	        else if (particle.p.x - particle.radius > this.x + this.width / 2)
+	            particle.dead = true;
+
+	        if (particle.p.y + particle.radius < this.y - this.height / 2)
+	            particle.dead = true;
+	        else if (particle.p.y - particle.radius > this.y + this.height / 2)
+	            particle.dead = true;
+
+	        if (particle.p.z + particle.radius < this.z - this.depth / 2)
+	            particle.dead = true;
+	        else if (particle.p.z - particle.radius > this.z + this.depth / 2)
+	            particle.dead = true;
+	    }
+
+	    BoxZone.prototype._bound = function(particle) {
+	        if (particle.p.x - particle.radius < this.x - this.width / 2) {
+	            particle.p.x = this.x - this.width / 2 + particle.radius;
+	            particle.v.x *= -this.friction;
+	            this._static(particle, "x");
+	        } else if (particle.p.x + particle.radius > this.x + this.width / 2) {
+	            particle.p.x = this.x + this.width / 2 - particle.radius;
+	            particle.v.x *= -this.friction;
+	            this._static(particle, "x");
+	        }
+
+	        if (particle.p.y - particle.radius < this.y - this.height / 2) {
+	            particle.p.y = this.y - this.height / 2 + particle.radius;
+	            particle.v.y *= -this.friction;
+	            this._static(particle, "y");
+	        } else if (particle.p.y + particle.radius > this.y + this.height / 2) {
+	            particle.p.y = this.y + this.height / 2 - particle.radius;
+	            particle.v.y *= -this.friction;
+	            this._static(particle, "y");
+	        }
+
+	        if (particle.p.z - particle.radius < this.z - this.depth / 2) {
+	            particle.p.z = this.z - this.depth / 2 + particle.radius;
+	            particle.v.z *= -this.friction;
+	            this._static(particle, "z");
+	        } else if (particle.p.z + particle.radius > this.z + this.depth / 2) {
+	            particle.p.z = this.z + this.depth / 2 - particle.radius;
+	            particle.v.z *= -this.friction;
+	            this._static(particle, "z");
+	        }
+	    }
+
+	    BoxZone.prototype._static = function(particle, axis) {
+	        if (particle.v[axis] * particle.a[axis] > 0) return;
+	        if (Math.abs(particle.v[axis]) < Math.abs(particle.a[axis]) * 0.0167 * this.max) {
+	            particle.v[axis] = 0;
+	            particle.a[axis] = 0;
+	        }
+	    }
+
+	    BoxZone.prototype._cross = function(particle) {
+	        if (particle.p.x + particle.radius < this.x - this.width / 2 && particle.v.x <= 0)
+	            particle.p.x = this.x + this.width / 2 + particle.radius;
+	        else if (particle.p.x - particle.radius > this.x + this.width / 2 && particle.v.x >= 0)
+	            particle.p.x = this.x - this.width / 2 - particle.radius;
+
+	        if (particle.p.y + particle.radius < this.y - this.height / 2 && particle.v.y <= 0)
+	            particle.p.y = this.y + this.height / 2 + particle.radius;
+	        else if (particle.p.y - particle.radius > this.y + this.height / 2 && particle.v.y >= 0)
+	            particle.p.y = this.y - this.height / 2 - particle.radius;
+
+	        if (particle.p.z + particle.radius < this.z - this.depth / 2 && particle.v.z <= 0)
+	            particle.p.z = this.z + this.depth / 2 + particle.radius;
+	        else if (particle.p.z - particle.radius > this.z + this.depth / 2 && particle.v.z >= 0)
+	            particle.p.z = this.z - this.depth / 2 - particle.radius;
+	    }
+
+	    Proton.BoxZone = BoxZone;
+
+
+
+	    /**
+	     * ScreenZone is a 3d line zone
+	     * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object
+	     * @param {Number|Vector3D} y1 - the line's start point of y value or a Vector3D Object
+	     * @param {Number} z1 - the line's start point of z value 
+	     * @param {Number} x2 - the line's end point of x value 
+	     * @param {Number} y2 - the line's end point of y value 
+	     * @param {Number} z2 - the line's end point of z value 
+	     * @example 
+	     * var lineZone = new Proton.ScreenZone(0,0,0,100,100,0);
+	     * or
+	     * var lineZone = new Proton.ScreenZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
+	     * @extends {Zone}
+	     * @constructor
+	     */
+	    function ScreenZone(camera, renderer, dis, dir) {
+	        ScreenZone._super_.call(this);
+
+	        this.camera = camera;
+	        this.renderer = renderer;
+	        this.dis = dis || 20;
+	        dir = dir || "1234";
+	        for (var i = 1; i < 5; i++)
+	            this["d" + i] = dir.indexOf(i + "") >= 0;
+
+	        this.name = "ScreenZone";
+	    }
+
+
+	    Proton.Util.inherits(ScreenZone, Proton.Zone);
+	    ScreenZone.prototype.getPosition = function() {
+	        var vec2 = new Proton.Vector3D,
+	            canvas;
+
+	        return function() {
+	            canvas = this.renderer.domElement;
+	            vec2.x = Math.random() * canvas.width;
+	            vec2.y = Math.random() * canvas.height;
+	            this.vector.copy(Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas));
+	            return this.vector;
+	        }
+	    }();
+
+	    ScreenZone.prototype._dead = function(particle) {
+	        var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+	        var canvas = this.renderer.domElement;
+
+	        if ((pos.y + particle.radius < -this.dis) && this.d1) {
+	            particle.dead = true;
+	        } else if ((pos.y - particle.radius > canvas.height + this.dis) && this.d3) {
+	            particle.dead = true;
+	        }
+
+	        if ((pos.x + particle.radius < -this.dis) && this.d4) {
+	            particle.dead = true;
+	        } else if ((pos.x - particle.radius > canvas.width + this.dis) && this.d2) {
+	            particle.dead = true;
+	        }
+	    }
+
+	    ScreenZone.prototype._cross = function() {
+	        var vec2 = new Proton.Vector3D;
+	        return function(particle) {
+	            var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+	            var canvas = this.renderer.domElement;
+
+	            if (pos.y + particle.radius < -this.dis) {
+	                vec2.x = pos.x;
+	                vec2.y = canvas.height + this.dis + particle.radius;
+	                particle.p.y = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
+	            } else if (pos.y - particle.radius > canvas.height + this.dis) {
+	                vec2.x = pos.x;
+	                vec2.y = -this.dis - particle.radius;
+	                particle.p.y = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
+	            }
+
+	            if (pos.x + particle.radius < -this.dis) {
+	                vec2.y = pos.y;
+	                vec2.x = canvas.width + this.dis + particle.radius;
+	                particle.p.x = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
+	            } else if (pos.x - particle.radius > canvas.width + this.dis) {
+	                vec2.y = pos.y;
+	                vec2.x = -this.dis - particle.radius;
+	                particle.p.x = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
+	            }
+	        }
+	    }();
+
+	    ScreenZone.prototype._bound = function(particle) {
+	        var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+	        var canvas = this.renderer.domElement;
+
+	        if (pos.y + particle.radius < -this.dis) {
+	            particle.v.y *= -1;
+	        } else if (pos.y - particle.radius > canvas.height + this.dis) {
+	            particle.v.y *= -1;
+	        }
+
+	        if (pos.x + particle.radius < -this.dis) {
+	            particle.v.y *= -1;
+	        } else if (pos.x - particle.radius > canvas.width + this.dis) {
+	            particle.v.y *= -1;
+	        }
+	    }
+
+	    Proton.ScreenZone = ScreenZone;
+
+
+	/**
+	 * You can use this emit particles.
+	 *
+	 * This method will console.log the fixed number of your info  in updata or requestAnimationFrame
+	 * 
+	 * use like this Proton.log('+12',mc); log 12 times
+	 *
+	 * @class Proton.log
+	 * @constructor
+	 * @param {*} logInfo;
+	 */
+
+	    var log = function() {
+	        if (window.console && window.console.trace) {
+	            var arg = Array.prototype.slice.call(arguments);
+	            var s1 = arguments[0] + "";
+	            if (s1.indexOf('+') == 0) {
+	                var n = parseInt(arguments[0]);
+	                if (log.once < n) {
+	                    arg.shift();
+	                    console.trace.apply(console, arg);
+	                    log.once++;
+	                }
+	            } else {
+	                arg.unshift("+15");
+	                log.apply(console, arg);
+	            }
+	        }
+	    }
+
+	    log.once = 0;
+	    Proton.log = log;
+
+
+
+	    var Debug = Debug || {
+	        addEventListener: function(proton, fun) {
+	            proton.addEventListener("PROTON_UPDATE", function(e) {
+	                fun(e);
+	            });
+	        },
+
+	        drawZone: function(proton, container, zone) {
+	            var geometry, material, mesh;
+
+	            if (zone instanceof Proton.PointZone) {
+	                geometry = new THREE.SphereGeometry(15);
+	            } else if (zone instanceof Proton.LineZone) {
+
+	            } else if (zone instanceof Proton.BoxZone) {
+	                geometry = new THREE.BoxGeometry(zone.width, zone.height, zone.depth);
+	            } else if (zone instanceof Proton.SphereZone) {
+	                geometry = new THREE.SphereGeometry(zone.radius, 10, 10);
+	            } else if (zone instanceof Proton.MeshZone) {
+	                if (zone.geometry instanceof THREE.Geometry)
+	                    geometry = zone.geometry;
+	                else
+	                    geometry = zone.geometry.geometry;
+
+	                geometry = new THREE.SphereGeometry(zone.radius, 10, 10);
+	            }
+
+	            material = new THREE.MeshBasicMaterial({ color: "#2194ce", wireframe: true });
+	            mesh = new THREE.Mesh(geometry, material);
+	            container.add(mesh);
+
+	            this.addEventListener(proton, function(e) {
+	                mesh.position.set(zone.x, zone.y, zone.z);
+	            });
+	        },
+
+	        drawEmitter: function(proton, container, emitter, color) {
+	            var geometry = new THREE.OctahedronGeometry(15);
+	            var material = new THREE.MeshBasicMaterial({ color: color || "#aaa", wireframe: true });
+	            var mesh = new THREE.Mesh(geometry, material);
+	            container.add(mesh);
+
+	            this.addEventListener(proton, function() {
+	                mesh.position.copy(emitter.p);
+	                mesh.rotation.set(emitter.rotation.x, emitter.rotation.y, emitter.rotation.z);
+	            });
+	        },
+
+	        renderInfo: function() {
+	            function getCreatedNumber(type) {
+	                var pool = type == "material" ? "_materialPool" : "_targetPool";
+	                var renderer = proton.renderers[0];
+	                return renderer[pool].cID;
+	            }
+
+	            function getEmitterPos(proton) {
+	                var e = proton.emitters[0];
+	                return Math.round(e.p.x) + "," + Math.round(e.p.y) + "," + Math.round(e.p.z);
+	            }
+
+	            return function(proton, style) {
+	                this.addInfo(style);
+	                var str = "";
+	                switch (this._infoType) {
+	                    case 2:
+	                        str += "emitter:" + proton.emitters.length + "<br>";
+	                        str += "em speed:" + proton.emitters[0].cID + "<br>";
+	                        str += "pos:" + getEmitterPos(proton);
+	                        break;
+
+	                    case 3:
+	                        str += proton.renderers[0].name + "<br>";
+	                        str += "target:" + getCreatedNumber("target") + "<br>";
+	                        str += "material:" + getCreatedNumber("material");
+	                        break;
+
+	                    default:
+	                        str += "particles:" + proton.getCount() + "<br>";
+	                        str += "pool:" + proton.pool.getCount() + "<br>";
+	                        str += "total:" + (proton.getCount() + proton.pool.getCount());
+	                }
+	                this._infoCon.innerHTML = str;
+	            }
+	        }(),
+
+	        addInfo: function() {
+	            return function(style) {
+	                var self = this;
+	                if (!this._infoCon) {
+	                    this._infoCon = document.createElement('div');
+	                    this._infoCon.style.cssText = [
+	                        'position:fixed;bottom:0px;left:0;cursor:pointer;',
+	                        'opacity:0.9;z-index:10000;padding:10px;font-size:12px;',
+	                        'width:120px;height:50px;background-color:#002;color:#0ff;'
+	                    ].join('');
+
+	                    this._infoType = 1;
+	                    this._infoCon.addEventListener('click', function(event) {
+	                        self._infoType++;
+	                        if (self._infoType > 3) self._infoType = 1;
+	                    }, false);
+
+	                    var bg, color;
+	                    switch (style) {
+	                        case 2:
+	                            bg = "#201";
+	                            color = "#f08";
+	                            break;
+
+	                        case 3:
+	                            bg = "#020";
+	                            color = "#0f0";
+	                            break;
+
+	                        default:
+	                            bg = "#002";
+	                            color = "#0ff";
+	                    }
+
+	                    this._infoCon.style["background-color"] = bg;
+	                    this._infoCon.style["color"] = color;
+	                }
+
+	                if (!this._infoCon.parentNode) document.body.appendChild(this._infoCon);
+	            }
+	        }()
+	    }
+
+	    Proton.Debug = Debug;
+
+	    return Proton;
+	}));
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	var Tween_1 = __webpack_require__(14);
-	__webpack_require__(93);
+	__webpack_require__(95);
 	/**
 	 * Ship
 	 */
@@ -65939,9 +70940,8 @@
 	            orb.rotation.y += orb.userData.velocity;
 	            // orb.rotation.z += 0.0033
 	            orb['material']['map'].offset.y -= 0.003;
-	            orb['material']['map'].offset.x -= 0.003;
+	            // orb['material']['map'].offset.x -= 0.003;
 	        };
-	        console.log(dreamsark);
 	        queue['orb'] = orb;
 	        queue['particles'] = particles;
 	        group.add(orb);
@@ -66110,7 +71110,7 @@
 	            width: width,
 	            height: height,
 	            widthFactor: 2,
-	            scale: 15,
+	            scale: 2,
 	            position: {
 	                x: Helpers_1.random.between(0, 100),
 	                y: up ? 100 : 0,
@@ -66124,9 +71124,10 @@
 	        return object;
 	    };
 	    Ship.prototype.clone = function (object) {
+	        object.material['fog'] = true;
 	        var clone = this.setup(object.clone(), {
-	            scale: 8,
-	            widthFactor: 2,
+	            scale: 5,
+	            // widthFactor: 2,
 	            uvs: false,
 	            position: {
 	                x: Helpers_1.random.between(0, 100),
@@ -66149,7 +71150,7 @@
 	//# sourceMappingURL=Ship.js.map
 
 /***/ },
-/* 103 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66158,7 +71159,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	/**
 	 * Main Particles
@@ -66261,7 +71262,7 @@
 	//# sourceMappingURL=Star.js.map
 
 /***/ },
-/* 104 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66270,7 +71271,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Character: Base
 	 */
@@ -66326,7 +71327,7 @@
 	//# sourceMappingURL=Streak.js.map
 
 /***/ },
-/* 105 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66335,7 +71336,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Forgable_1 = __webpack_require__(51);
+	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	/**
 	 * Tunnel
@@ -66392,10 +71393,99 @@
 	    return Tunnel;
 	}(Forgable_1.Forgable));
 	exports.Tunnel = Tunnel;
+	//# sourceMappingURL=Tunnel-old.js.map
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(53);
+	var Helpers_1 = __webpack_require__(20);
+	/**
+	 * Tunnel
+	 */
+	var Tunnel = (function (_super) {
+	    __extends(Tunnel, _super);
+	    function Tunnel() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(Tunnel.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Tunnel.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var distance = 5024, geometry = new THREE.CylinderGeometry(500, 100, distance, 20, 100, true), tunnel = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+	            map: material.userData.tunnel,
+	            transparent: true,
+	            side: THREE.DoubleSide,
+	            // blending: THREE.AdditiveBlending,
+	            // map: material.userData.tunnel,
+	            depthTest: true,
+	            fog: true,
+	            opacity: 0
+	        }));
+	        material.userData.tunnel.wrapT = material.userData.tunnel.wrapS = THREE.RepeatWrapping;
+	        material.userData.tunnel.repeat.set(1, 2);
+	        tunnel.rotation.x = Helpers_1.deg2rad(90);
+	        tunnel.position.z = -10000; //-5000 / 2 + 500;
+	        var opt = {
+	            waves: 0.7,
+	            width: 30,
+	            height: 60,
+	            speed: 0.003,
+	            xSpeed: 0
+	        };
+	        var anim = this.vertex(geometry, function (origin, position, delta, now) {
+	            var l_Value1 = origin.y / distance * 360;
+	            var l_Value2 = Math.floor(l_Value1) * opt.waves; //waves
+	            position.x = origin.x + Math.sin(now / 10 * Math.PI / 180 + l_Value2 * Math.PI / 180 + origin.y / distance) * opt.width; //distance
+	            position.z = origin.z + Math.cos(now / 10 * Math.PI / 180 + l_Value2 * Math.PI / 180 + origin.y / distance * 4) * opt.height;
+	        });
+	        tunnel.userData.update = this.update.bind(this, tunnel, anim);
+	        tunnel.userData.controls = opt;
+	        return tunnel;
+	    };
+	    Tunnel.prototype.update = function (tunnel, anim, time, delta) {
+	        anim.update(delta, time);
+	        tunnel['material'].map.offset.y = -time / 2 * tunnel.userData.controls.speed;
+	        tunnel['material'].map.offset.x = -time / 6 * tunnel.userData.controls.xSpeed;
+	    };
+	    Tunnel.prototype.vertex = function (geometry, transformFct) {
+	        var nVertices = geometry.vertices.length;
+	        var origVertices = new Array(nVertices);
+	        for (var i = 0; i < nVertices; i++) {
+	            origVertices[i] = geometry.vertices[i].clone();
+	        }
+	        return {
+	            update: function (delta, now) {
+	                for (var i = 0; i < geometry.vertices.length; i++) {
+	                    var origin = origVertices[i];
+	                    var position = geometry.vertices[i];
+	                    transformFct(origin, position, delta, now);
+	                }
+	                geometry.verticesNeedUpdate = true;
+	            }
+	        };
+	    };
+	    return Tunnel;
+	}(Forgable_1.Forgable));
+	exports.Tunnel = Tunnel;
 	//# sourceMappingURL=Tunnel.js.map
 
 /***/ },
-/* 106 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66431,7 +71521,7 @@
 	//# sourceMappingURL=Manager.js.map
 
 /***/ },
-/* 107 */
+/* 113 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66440,12 +71530,22 @@
 	 */
 	var Mouse = (function () {
 	    function Mouse(app) {
+	        var _this = this;
 	        this.ratio = new THREE.Vector2();
 	        this.normalized = new THREE.Vector2();
 	        this.screen = new THREE.Vector2();
 	        this.queue = [];
+	        this.stateQueue = [];
+	        this.isHolding = null;
 	        window.addEventListener('mousemove', this.move.bind(this), false);
 	        window.addEventListener('dblclick', this.click.bind(this), false);
+	        window.addEventListener('mousedown', function (event) { return _this.isHolding = true; }, false);
+	        window.addEventListener('mouseup', function (event) { return _this.isHolding = false; }, false);
+	        // document.body.addEventListener('mouseout', (e) => {
+	        //     if (e.relatedTarget === document.querySelector('html')) {
+	        //         this.isHolding = null
+	        //     }
+	        // });
 	    }
 	    Mouse.prototype.boot = function (_a) {
 	        var browser = _a.browser, raycaster = _a.raycaster;
@@ -66476,12 +71576,50 @@
 	            normalized: this.normalized.clone()
 	        });
 	    };
+	    Mouse.prototype.hold = function (callback) {
+	        this.stateQueue.push({
+	            type: 'hold',
+	            called: false,
+	            callback: callback,
+	        });
+	    };
+	    Mouse.prototype.release = function (callback) {
+	        this.stateQueue.push({
+	            type: 'release',
+	            called: false,
+	            callback: callback,
+	        });
+	    };
 	    Mouse.prototype.ray = function (object, callback) {
 	        this.raycaster.push(object, callback);
 	    };
 	    Mouse.prototype.update = function (time, delta) {
+	        var _this = this;
 	        while (this.queue.length) {
 	            this.raycaster.process(this.queue.shift());
+	        }
+	        this.stateQueue.forEach(function (element) {
+	            if (_this.isHolding === true) {
+	                if (!element.called && element.type === 'hold') {
+	                    element.callback();
+	                    element.called = true;
+	                }
+	            }
+	            else if (_this.isHolding === false) {
+	                if (!element.called && element.type === 'release') {
+	                    element.callback();
+	                    element.called = true;
+	                }
+	            }
+	            else {
+	                element.called = false;
+	            }
+	        });
+	        /**
+	         * If not holding anymore... then set null
+	         */
+	        if (this.isHolding !== true) {
+	            this.isHolding = null;
 	        }
 	    };
 	    return Mouse;
@@ -66490,7 +71628,7 @@
 	//# sourceMappingURL=Mouse.js.map
 
 /***/ },
-/* 108 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66561,7 +71699,7 @@
 	//# sourceMappingURL=Raycaster.js.map
 
 /***/ },
-/* 109 */
+/* 115 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66602,7 +71740,7 @@
 	//# sourceMappingURL=Renderer.js.map
 
 /***/ },
-/* 110 */
+/* 116 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66620,7 +71758,7 @@
 	        _super.call(this);
 	    }
 	    Scene.prototype.boot = function (app) {
-	        this.fog = new THREE.FogExp2(0x11121d, 0.001);
+	        // this.fog = <any>new THREE.FogExp2(0x11121d, 0.0008)
 	    };
 	    Scene.prototype.update = function (time, delta) {
 	    };

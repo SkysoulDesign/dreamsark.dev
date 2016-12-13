@@ -13,7 +13,7 @@ export class PointsMaterial implements MaterialInterface {
             'sprite-7.png': '/assets/img/sprite-7.png',
             'sprite-8.png': '/assets/img/sprite-8.png',
             core: '/assets/hex-assets/hex.png',
-            tunnel: '/assets/img/tunnel.jpg',
+            tunnel: '/assets/img/tunnel.png',
 
             // point_squad: '/assets/point-squad.png',
             hexicle: '/assets/hex-assets/hexicle.png',
@@ -24,7 +24,7 @@ export class PointsMaterial implements MaterialInterface {
 
         let material = new THREE.PointsMaterial({
             color: 0x351c41,
-            size: 30,
+            size: 15,
             blending: THREE.AdditiveBlending,
             // map: texture,
             transparent: true,

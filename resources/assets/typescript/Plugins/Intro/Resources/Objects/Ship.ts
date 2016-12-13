@@ -151,11 +151,9 @@ export class Ship extends Forgable implements ObjectInterface {
             orb.rotation.y += orb.userData.velocity
             // orb.rotation.z += 0.0033
             orb['material']['map'].offset.y -= 0.003;
-            orb['material']['map'].offset.x -= 0.003;
+            // orb['material']['map'].offset.x -= 0.003;
 
         };
-
-        console.log(dreamsark)
 
         queue['orb'] = orb;
         queue['particles'] = particles;
@@ -371,7 +369,7 @@ export class Ship extends Forgable implements ObjectInterface {
                 width: width,
                 height: height,
                 widthFactor: 2,
-                scale: 15,
+                scale: 2,
                 position: {
                     x: random.between(0, 100),
                     y: up ? 100 : 0,
@@ -392,11 +390,13 @@ export class Ship extends Forgable implements ObjectInterface {
 
     }
 
-    private clone(object: THREE.Object3D): THREE.Object3D {
+    private clone(object: THREE.Mesh): THREE.Object3D {
+
+        object.material['fog'] = true
 
         const clone = this.setup(object.clone(), {
-            scale: 8,
-            widthFactor: 2,
+            scale: 5,
+            // widthFactor: 2,
             uvs: false,
             position: {
                 x: random.between(0, 100),

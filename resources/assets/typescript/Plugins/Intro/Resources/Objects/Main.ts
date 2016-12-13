@@ -109,7 +109,7 @@ export class Main extends Forgable implements ObjectInterface {
         if (smoke instanceof THREE.Points)
             smoke.userData.update(time, delta);
 
-        Engine.update(this.engine, delta);
+        Engine.update(this.engine);
 
     }
 
@@ -126,7 +126,7 @@ export class Main extends Forgable implements ObjectInterface {
 
             if (engine.world.bodies.length >= particle.count)
                 Matter.World.remove(engine.world, engine.world.bodies[1])
-            
+
             engine.world.bodies.push(Bodies.circle(0, 0, particle.size))
 
             for (let i = 0; i < engine.world.bodies.length; i++) {

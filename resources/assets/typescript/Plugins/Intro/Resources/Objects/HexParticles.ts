@@ -17,7 +17,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
     create(models, {material}) {
 
         let group = new THREE.Group(),
-            mesh = <THREE.Points>this.forge('hex', material, {
+            mesh = <THREE.Points>this.forge('ring', material, {
                 uvs: false,
                 position: {
                     x: 50, y: 50, z: 20
@@ -80,7 +80,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
             /**
              * Randomize Opacity
              */
-            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = random.between(1, 100) * 0.01;
+            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = random.between(1, 70) * 0.01;
 
             for (let j = 0; j < 3; j++) {
                 particles['userData'].velocities[j].push([

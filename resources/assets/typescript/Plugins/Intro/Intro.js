@@ -17,6 +17,7 @@ var Intro = (function (_super) {
      */
     function Intro(app, canvas) {
         _super.call(this);
+        this.animating = false;
         if (canvas.constructor === String) {
             canvas = document.querySelector(canvas);
         }
@@ -37,7 +38,8 @@ var Intro = (function (_super) {
         try {
             this.compositions
                 .start(composition, payload)
-                .then(function () { return _this.animate(); })
+                .then(function () { if (!_this.animating)
+                _this.animate(); })
                 .catch(console.log);
         }
         catch (error) {
@@ -49,6 +51,7 @@ var Intro = (function (_super) {
      */
     Intro.prototype.animate = function () {
         var _this = this;
+        this.animating = true;
         var clock = new THREE.Clock(), loop = function (time) {
             var delta = clock.getDelta();
             requestAnimationFrame(loop);
