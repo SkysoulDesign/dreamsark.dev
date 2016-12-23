@@ -16,9 +16,10 @@ export class FXShaderMaterial implements MaterialInterface {
             'sprite-3.png': '/assets/img/sprite-3.png',
             'sprite-4.png': '/assets/img/sprite-4.png',
             'sprite-5.png': '/assets/img/sprite-5.png',
-            'sprite-6.png': '/assets/img/sprite-6.png',
-            'sprite-7.png': '/assets/img/sprite-7.png',
-            'sprite-8.png': '/assets/img/sprite-8.png',
+            // 'sprite-6.png': '/assets/img/sprite-6.png',
+            // 'sprite-7.png': '/assets/img/sprite-7.png',
+            // 'sprite-8.png': '/assets/img/sprite-8.png',
+            // 'sprite-9.png': '/assets/img/sprite-9.png',
         }
     }
 

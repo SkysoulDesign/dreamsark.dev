@@ -39,6 +39,7 @@
   "dependencies": {
     "@types/matter-js": "^0.9.31",
     "@types/three": "^0.0.24",
+    "@types/videojs": "^0.0.31",
     "bluebird": "^3.4.3",
     "broccoli-sprite": "^0.3.0",
     "countup.js": "^1.7.1",

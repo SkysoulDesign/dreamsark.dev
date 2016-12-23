@@ -139,6 +139,10 @@ export var deg2rad = function (degrees: number) {
  */
 export class random {
 
+    static pick(object: any[]) {
+        return object[random.between(0, object.length - 1, true)]
+    }
+
     /**
      * Generate random number between a given min and max
      */

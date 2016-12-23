@@ -43,7 +43,7 @@ export class Debris extends Forgable implements ObjectInterface {
         let {height} = debris.userData.meta.view;
 
         if (debris.position.y >= -height) {
-            debris.position.y -= 0.01;//1;
+            debris.position.y -= 3;//1;
         } else {
             return true;
         }

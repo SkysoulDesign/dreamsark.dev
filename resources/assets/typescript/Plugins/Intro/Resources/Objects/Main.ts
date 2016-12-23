@@ -59,17 +59,33 @@ export class Main extends Forgable implements ObjectInterface {
             }
         })
 
+        // platform['material'].alphaTest = .4;
+
         group.add(platform)
 
-
-        group.add(this.forge('planet', material, {
+        let planet = this.forge('planet', material, {
             scale: 20,
             position: {
                 x: 10,
                 y: 10,
-                z: 50
+                z: 20
             }
-        }))
+        });
+
+        group.add(planet)
+
+        let uranus = this.forge('uranus', material, {
+            scale: 50,
+            position: {
+                x: 100,
+                y: 20,
+                z: 1
+            }
+        });
+
+        group.add(uranus)
+
+        // planet['material'].alphaTest = .1;
 
         group.add(this.forge('transition', material, {
             widthFactor: 2.5,
@@ -98,6 +114,7 @@ export class Main extends Forgable implements ObjectInterface {
         group.add(smoke);
         group.userData = {
             update: this.update.bind(this, smoke),
+            start: smoke.userData.start.bind(this)
         }
 
         return group;
@@ -142,6 +159,7 @@ export class Main extends Forgable implements ObjectInterface {
             blending: THREE.AdditiveBlending,
             transparent: true,
             size: 150,
+            opacity: 0,
             alphaTest: 0.01,
         });
 
@@ -171,13 +189,7 @@ export class Main extends Forgable implements ObjectInterface {
                         particle: particle,
                         update: physics.bind(this, particles.getAttribute('position')),
                         start: () => {
-
-                            // setInterval(function () {
-
-
-
-                            // }, 1);
-
+                            smoke.material.opacity = 1;
                         }
                     }
 
@@ -186,7 +198,7 @@ export class Main extends Forgable implements ObjectInterface {
                 }
             },
             position: {
-                x: 50, y: 50, z: 50
+                x: 50, y: 45, z: 50
             }
         })
 

@@ -17,10 +17,10 @@ export class HexParticles extends Forgable implements ObjectInterface {
     create(models, {material}) {
 
         let group = new THREE.Group(),
-            mesh = <THREE.Points>this.forge('ring', material, {
+            mesh = <THREE.Points>this.forge('star', material, {
                 uvs: false,
                 position: {
-                    x: 50, y: 50, z: 20
+                    x: 50, y: 50, z: 1
                 }
             })
 
@@ -30,8 +30,10 @@ export class HexParticles extends Forgable implements ObjectInterface {
         let lilasMaterial = <THREE.PointsMaterial>mesh.material.clone(),
             lilas = this.createMesh(mesh.geometry.clone(), lilasMaterial);
 
-        pinkMaterial.color.setHex(0x7a1762);
-        lilasMaterial.color.setHex(0xb505ce);
+        pinkMaterial.color.setHex(0xff00c1);
+        lilasMaterial.color.setHex(0xc90ae4);
+        pinkMaterial.size = 10;
+        lilasMaterial.size = 10;
 
         group.add(pink);
         group.add(lilas);
@@ -51,8 +53,8 @@ export class HexParticles extends Forgable implements ObjectInterface {
 
     public createGeometry(width, height, view) {
 
-        let maxParticleCount = 100,
-            radius = view.width * 1.5,
+        let maxParticleCount = 1000,
+            radius = view.width / 2,
             particles = new THREE.BufferGeometry(),
             particlePositions = new Float32Array(maxParticleCount * 3),
             colors = new Float32Array(maxParticleCount * 3);
@@ -69,7 +71,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
          */
         for (let i = 0; i < maxParticleCount; i++) {
 
-            let vector = random.vector3(0, 0, 0, radius, false);
+            let vector = random.vector3(0, 0, 0, radius, true);
 
             particlePositions[i * 3] = vector.x + Math.random();
             particlePositions[i * 3 + 1] = vector.y + Math.random();
@@ -80,7 +82,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
             /**
              * Randomize Opacity
              */
-            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = random.between(1, 70) * 0.01;
+            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = random.between(5, 30, true) * 0.01;
 
             for (let j = 0; j < 3; j++) {
                 particles['userData'].velocities[j].push([
@@ -102,7 +104,7 @@ export class HexParticles extends Forgable implements ObjectInterface {
         let userData = particles.userData,
             distanceX = userData.view.width / 2,
             distanceY = userData.view.height / 2,
-            speed = 30;
+            speed = 100;
 
         if (userData.decay !== 0) {
 

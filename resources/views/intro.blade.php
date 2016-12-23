@@ -1,12 +1,17 @@
 @extends('layouts.master', ['class' => 'intro-page', 'container' => false, 'footer' => false])
 
+@push('scripts')
+<link href="//vjs.zencdn.net/5.11/video-js.min.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/5.11/video.min.js"></script>
+@endpush
+
 @section('content')
 
 <div id="overlay">
 
     <div class="content">
 
-        <img id="poster" alt="">
+        <video id="poster" controls></video>
 
         <div class="meta">
 
@@ -23,7 +28,7 @@
             </div>
 
             <div class="actions">
-                <a class="button" href="#">View Project</a>
+                <a class="button" target="_blank" href="http://www.dreamsark.com/">View Project</a>
             </div>
 
         </div>
@@ -76,22 +81,22 @@
     top: 0;
     height: 100%;
     width: 100%;
-    background:radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(255,255,255,0.02) 500%);
+    background:radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(255,255,255,0.02) 500%) white;
     transition: all 2s;
     opacity:0;
-     pointer-events:none;
+    pointer-events:none;
 }
 
 #counter {
     position: absolute;
     top: 0;
-    height: 100%;
     width: 100%;
     pointer-events:none;
-    text-align: center;
-    margin-top: 10%;
-    font-size: 5em;
-    // display:none;
+    text-align: right;
+    margin-top: 5%;
+    font-weight: 100;
+    padding-right: 10%;
+    font-size: 3em;
     opacity:0;
     transition: all 1s;
     color:white;
@@ -104,9 +109,10 @@
     height: 100%;
     width: 100%;
     z-index: 1;
-    opacity:0;
+    opacity: .39;
     pointer-events:none;
-    background: radial-gradient(ellipse, transparent 65%, #88341b 100%);
+    //background: radial-gradient(ellipse, transparent 65%, #88341b 100%);
+    background: radial-gradient(ellipse, transparent 65%, #11649e 100%);
     // display:none;
     transition: all 2s
 }
@@ -147,7 +153,7 @@
     line-height: 28px;
     text-align: center;
     border-radius: 3px;
-    opacity: 0.1
+    opacity: 0.5
 
 }
 
@@ -157,7 +163,7 @@
     opacity: 1
 }
 
-#overlay .content img{
+#overlay .content video{
     height:400px;
     width: 600px;
     object-fit: cover;
@@ -172,6 +178,10 @@
 .title{
     font-size: 2em;
     line-height:1em
+}
+
+body{
+    overflow-y: hidden;
 }
 
 .description{
@@ -237,6 +247,7 @@ button:focus, .button:focus{
     color: white !important;
     background: green !important;
 }
+
 
 </style>
 @endpush

@@ -1,6 +1,6 @@
 import { ObjectInterface } from "../../Interfaces/ObjectInterface";
 import { extend } from "../../../../Helpers";
-import { configureMaterial, resize, sprite, deg2rad } from "../../Helpers";
+import { configureMaterial, resize, sprite, deg2rad, configureTexture } from "../../Helpers";
 import { Forgable } from "../../Abstracts/Forgable";
 
 /**
@@ -31,87 +31,64 @@ export class Galaxy extends Forgable implements ObjectInterface {
 
         let group = new THREE.Group();
 
-        let layers: THREE.MeshBasicMaterial = material.clone();
+        let layers: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+            map: material.userData.cubeSpace,
+            side: THREE.BackSide
+        });
 
-        layers.side = THREE.BackSide;
-        // layers.blending = THREE.AdditiveBlending;
-        layers.opacity = .8;
-        layers.transparent = true;
-        layers.depthTest = true;
-        layers.fog = false;
+        // layers.side = ;
+        // layers.blending = THREE.NormalBlending;
+        // layers.opacity = 1;
+        // layers.transparent = true;
+        // layers.depthTest = false;
+        // layers.alphaTest = 0.01;
+        // layers.fog = false;
         layers['userData'] = material['userData'];
-        layers.map = material.userData.skybox;
+        // layers.map = material.userData.universe
+        // layers.map =
+        // layers.map = configureTexture(this.sprite, material.userData, 'universe-square');
 
-        let skybox = new THREE.Mesh(
-            new THREE.SphereBufferGeometry(5000, 30, 30), layers
+        // let skybox = new THREE.Mesh(
+        //     new THREE.CubeGeometry(10000, 10000, 10000, 1, 1, 1), layers
+        // )
+
+        let nebulaFarMaterial = layers.clone()
+        nebulaFarMaterial.map = material.userData['nebula-far'];
+        nebulaFarMaterial.blending = THREE.AdditiveBlending;
+        nebulaFarMaterial.transparent = true;
+
+        let nebulaNearMaterial = nebulaFarMaterial.clone()
+        nebulaFarMaterial.map = material.userData['nebula-near'];
+
+
+        let nebulaFar = new THREE.Mesh(
+            new THREE.SphereBufferGeometry(6000, 30, 30), nebulaFarMaterial
         )
 
-        let nb1 = this.forge('nb1', layers, {
-            geometry: geometry,
-            uvs: false
-        })
+        let nebulaNear = new THREE.Mesh(
+            new THREE.SphereBufferGeometry(6000, 30, 30), nebulaNearMaterial
+        )
 
-        let nb2 = this.forge('nb2', layers, {
-            geometry: geometry,
-            uvs: false
-        })
+        nebulaFar.scale.setScalar(30 * 30)
+        nebulaFar.position.set(0, 0, 0)
+        nebulaFar.material['fog'] = false;
 
-        let nb3 = this.forge('nb2', layers, {
-            geometry: geometry,
-            uvs: false
-        })
+        nebulaFar.userData.velocity = .008
 
-        let dust = this.forge('dust', layers, {
-            geometry: geometry,
-            uvs: false
-        }),
-            dust2 = dust.clone(),
-            dust3 = dust.clone(),
-            dust4 = dust.clone(),
-            dust5 = dust.clone();
+        nebulaNear.scale.setScalar(30 * 5)
+        nebulaNear.position.set(0, 0, 0)
+        nebulaNear.material['fog'] = false;
 
-        nb1.rotation.set(deg2rad(0), deg2rad(180), deg2rad(90))
-        nb2.rotation.set(deg2rad(90), deg2rad(45), deg2rad(180))
-        nb3.rotation.set(deg2rad(180), deg2rad(145), deg2rad(270))
+        nebulaNear.userData.velocity = .005
 
-        nb1.scale.setScalar(5);
-        nb2.scale.setScalar(6);
-        nb3.scale.setScalar(7);
+        console.log(nebulaNear)
+        console.log(nebulaFar)
 
-        dust2.rotation.set(deg2rad(90), deg2rad(0), deg2rad(0))
-        dust3.rotation.set(deg2rad(180), deg2rad(0), deg2rad(0))
-        dust4.rotation.set(deg2rad(270), deg2rad(0), deg2rad(0))
-        dust5.rotation.set(deg2rad(270), deg2rad(90), deg2rad(60))
-        dust2.scale.setScalar(8);
-        dust3.scale.setScalar(11);
-        dust4.scale.setScalar(7);
-        dust5.scale.setScalar(11);
-        dust.add(dust2)
-        dust.add(dust3)
-        dust.add(dust4)
-        dust.add(dust5)
 
-        dust.rotation.y = deg2rad(180)
-
-        dust.scale.set(-1, 1, 1)
-        dust.scale.setScalar(10)
-        skybox.scale.setScalar(50)
-        skybox.position.set(0, 0, 0)
-
-        /**
-         * Set all child to the origin 
-         */
-        dust.children.forEach(child => child.position.set(0, 0, 0));
-        [nb1, nb2, nb3].forEach(child => child.position.set(0, 0, 0));
-
-        group.add(nb1);
-        group.add(nb2);
-        group.add(nb3);
-        // group.add(dust);
-        group.add(skybox);
+        group.add(nebulaFar);
+        group.add(nebulaNear);
 
         group.userData = {
-            materials: [skybox.material, nb1['material'], nb2['material'], nb3['material']],
             update: this.update.bind(this, group)
         }
 
@@ -123,9 +100,9 @@ export class Galaxy extends Forgable implements ObjectInterface {
 
     update(galaxy: THREE.Group, time) {
 
-        // galaxy.children.forEach(child => {
-        //     child.rotation.y += child.userData.speed * 0.001
-        // })
+        galaxy.children.forEach(child => {
+            child.rotation.y += (0.001 + child.userData.velocity) * 0.05
+        })
 
     }
 

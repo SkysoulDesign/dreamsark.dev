@@ -12,6 +12,7 @@ export class Galaxy extends Composition {
     private open: boolean = false;
     private glow: Glow;
     private tunnel;
+    private protonBean;
     private queue;
     private tutorialDone: boolean = false;
 
@@ -22,28 +23,53 @@ export class Galaxy extends Composition {
         ];
     }
 
-    public setup(app, {glow, queue, tunnel}) {
+    public setup(app, {glow, queue, tunnel, protonBean}) {
 
         this.glow = glow;
         this.tunnel = tunnel;
+        this.protonBean = protonBean;
         this.queue = queue;
         this.app.camera.fov = 8;
         this.app.camera.zoom = 0.1;
-        this.app.camera.far = 500000;
+        this.app.camera.far = 500000 * 50;
         this.app.camera.rotation.z = deg2rad(360);
         this.app.camera.updateProjectionMatrix();
 
         delete this.queue['hexParticles'];
         delete this.queue['ship'];
         delete this.queue['star'];
+        delete this.queue['tunnel'];
+        this.app.renderer.setClearColor(0x000000)
+
+        // this.scene.fog = new THREE.Fog(0x000000, 0, 4500);
+        // console.log(this.scene.fog)
+
+        /**
+         * Wait it totally fades then remove
+         */
+        protonBean.userData.emitter.stopEmit();
+
+        setTimeout(() => delete this.queue['protonBean'], 5000)
+
+        this.scene.remove(this.tunnel);
+        // this.scene.fog = null;
 
     }
 
     public stage(objects) {
 
-        let { plexus, galaxy } = objects;
+        let { plexus, galaxy} = objects,
+            fader = document.querySelector('#fader');
 
-        let fader = document.querySelector('#fader');
+        /**
+         * Rotate Galaxy
+         */
+        this.queue['galaxy'] = galaxy;
+
+        /**
+         * Create Protons
+         */
+        plexus.userData.createProtons(this.protonBean);
 
         /**
          * Init Tutorial
@@ -68,10 +94,6 @@ export class Galaxy extends Composition {
                 this.queue['plexus'] = plexus;
                 this.scene.add(plexus);
                 this.scene.add(galaxy);
-
-                this.scene.fog = null;
-                this.scene.remove(this.tunnel);
-                delete this.queue['tunnel'];
 
             },
             update: () => {
@@ -100,25 +122,25 @@ export class Galaxy extends Composition {
                 }
             },
             duration: 15,
-            ease: Tween.EXPOIN,
+            ease: Tween.EXPOOUT,
             before: () => {
 
                 fader['style'].opacity = 0;
 
-                plexus.userData.materials.forEach((material: THREE.Material) => {
-                    material.opacity = 1;
-                })
+                // plexus.userData.materials.forEach((material: THREE.Material) => {
+                //     material.opacity = 1;
+                // })
 
-                galaxy.userData.materials.forEach((material: THREE.Material) => {
-                    material.opacity = 0.8;
-                })
+                // galaxy.userData.materials.forEach((material: THREE.Material) => {
+                //     material.opacity = 0.8;
+                // })
 
             },
             after: () => {
 
                 this.app.controls.instance.enabled = true;
 
-                document.querySelector('#vignette')['style'].opacity = 0.5;
+                document.querySelector('#vignette')['style'].opacity = 0.3;
 
                 const action = (object, intersects) => {
 
@@ -146,8 +168,13 @@ export class Galaxy extends Composition {
             controls = this.app.controls.instance;
 
         element['style'].display = 'flex';
+        console.log(poster)
+        // let options = { "controls": true, "autoplay": false, "preload": "auto", poster: object.material.userData.poster };
+        // let player = videojs('#poster', options);
 
-        poster.setAttribute('src', object.material.userData.poster)
+        poster.setAttribute('src', '/assets/videos/video.mp4')
+        poster.setAttribute('poster', object.material.userData.poster)
+
         name.textContent = object.material.userData.name
         description.textContent = object.material.userData.description
 
@@ -166,7 +193,7 @@ export class Galaxy extends Composition {
         */
         plexus.userData.rotate = false;
 
-        let position: THREE.Object3D = plexus.matrix.multiplyVector3(verticePosition)
+        let position: THREE.Vector3 = verticePosition.applyMatrix4(plexus.matrix)
 
         this.camera.moveTo(position, () => {
 

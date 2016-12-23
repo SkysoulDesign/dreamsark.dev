@@ -19,6 +19,7 @@ export class Intro extends Composition {
     done: boolean = false;
     glow: Glow;
     counter: any = null;
+    distance: number = 1000000000;
 
     queue = {};
 
@@ -47,20 +48,22 @@ export class Intro extends Composition {
 
         main.add(buttons);
 
-        this.scene.add(main);
         this.scene.add(hexParticles);
         this.scene.add(ship);
         this.scene.add(star);
+        this.scene.add(main);
+
+        console.log(this.scene);
+
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode === 32)
+                document.documentElement.webkitRequestFullScreen()
+        }, false);
+
+        // ship.userData.initProtonOnClones(protonBean)
 
         // console.log(star);
-
         this.app.audio.play('ambient')
-
-        protonBean.userData.position = ship.getObjectByName('logo').position;
-
-        //-544.9718967856711
-        //435.51185286729776
-        //134.67318495564345
 
         /**
          * Queue Update
@@ -68,7 +71,6 @@ export class Intro extends Composition {
         this.queue['ship'] = ship;
         this.queue['hexParticles'] = hexParticles;
         this.queue['star'] = star;
-        this.queue['protonBean'] = protonBean;
 
         this.glow = new Glow(this.app['browser'])
 
@@ -77,20 +79,24 @@ export class Intro extends Composition {
 
         this.app.mouse.ray(buttons.getObjectByName('start'), data => {
 
-            // this.scene.remove(main);
             // this.scene.remove(tunnel);
+            // this.scene.remove(main);
             // this.scene.remove(ship);
             // this.scene.remove(hexParticles);
             // this.scene.remove(star);
             // this.done = true;
+
+            // protonBean.userData.emitter.stopEmit();
 
             // /**
             //  * Start new composition
             //  */
             // this.app.start('galaxy', {
             //     glow: this.glow,
-            //     queue: this.queue
-            // })
+            //     tunnel: tunnel,
+            //     queue: this.queue,
+            //     protonBean: protonBean
+            // });
 
             this.start(objects);
 
@@ -104,7 +110,7 @@ export class Intro extends Composition {
 
     public start(objects) {
 
-        let {ship, main, hexParticles, debris, star, streak, plexus, galaxy, fx, tunnel, cockpit, flare} = objects
+        let {ship, main, hexParticles, debris, star, streak, plexus, galaxy, fx, tunnel, cockpit, flare, protonBean} = objects
 
         let original = [
             ship.position.clone(),
@@ -114,7 +120,8 @@ export class Intro extends Composition {
         let logo = ship.getObjectByName('logo'),
             camera = this.camera,
             controls = this.app.controls.instance,
-            endTunnel = false;
+            endTunnel = false,
+            vignette = document.querySelector('#vignette');
 
         /**
          * Transform ship
@@ -132,7 +139,7 @@ export class Intro extends Composition {
             duration: 3,
             before: () => {
                 this.parallex = false;
-                ship.userData.transform(this.scene, this.queue, this.glow);
+                ship.userData.transform(protonBean, this.scene, this.queue, this.glow);
             },
             update: () => {
                 return !ship.userData.transformDone;
@@ -164,7 +171,7 @@ export class Intro extends Composition {
                 this.parallex = false;
                 this.app.audio.play('takeOf');
                 this.initTakeOf(main)
-                ship.userData.taill.scale.set(5, .3, 1);
+                // ship.userData.taill.scale.set(5, .3, 1);
             },
             update: ({power}, time) => {
 
@@ -197,11 +204,12 @@ export class Intro extends Composition {
                 speed: star.userData.speed,
                 move: 0,
                 decay: 0,
-                taill: 0,
+                // taill: 0,
                 glow: this.glow.uniforms
+
             },
             target: {
-                taill: 2,
+                // taill: 2,
                 decay: 5,
                 booster: -3,
                 speed: 5,
@@ -221,13 +229,20 @@ export class Intro extends Composition {
             duration: .7,
             ease: Tween.EXPOIN,
             before: () => {
+                ship.userData.go = true;
+                protonBean.userData.emitter.rate.numPan.a = 10
+                protonBean.userData.emitter.rate.numPan.b = 15
+                protonBean.userData.object = ship.getObjectByName('logo');
+                this.queue['protonBean'] = protonBean;
+                protonBean.userData.proton.addEmitter(protonBean.userData.emitter)
+                protonBean.userData.emitter.emit()
                 this.app.renderer.setClearColor(0x18142b)
             },
-            update: ({booster, speed, decay, taill}, completion, elapsed) => {
+            update: ({booster, speed, decay}, completion, elapsed) => {
 
-                let orb = ship.getObjectByName('orb');
-                orb.scale.addScalar(1.5)
-                orb.material.opacity -= 0.01;
+                // let orb = ship.getObjectByName('orb');
+                // orb.scale.addScalar(1.5)
+                // orb.material.opacity -= 0.01;
 
                 ship.userData.booster = booster.value;
                 star.userData.speed = speed.value;
@@ -235,10 +250,10 @@ export class Intro extends Composition {
                 hexParticles.userData.decay = decay.value;
 
                 // ship.userData.taill.visible = true;
-                ship.userData.taill.scale.set(taill.value, .3, 1);
+                // ship.userData.taill.scale.set(taill.value, .3, 1);
 
-                if (taill.completion < 95)
-                    ship.userData.taill.position.y -= taill.value;
+                // if (taill.completion < 95)
+                // ship.userData.taill.position.y -= taill.value;
 
                 return !this.debrisCompleted;
 
@@ -258,8 +273,21 @@ export class Intro extends Composition {
                 position: ship.position,
                 align: 0,
                 r: star.rotation,
+                protonForce: protonBean.userData.emitter.behaviours[0].force,
+                protonVelocity: protonBean.userData.emitter.initializes[5].dir,
+                protonPosition: protonBean.userData,
             },
             target: {
+                protonForce: {
+                    z: 5000,
+                    y: 0
+                },
+                protonVelocity: {
+                    y: 0
+                },
+                protonPosition: {
+                    ajust: 0
+                },
                 r: {
                     x: -deg2rad(90)
                 },
@@ -275,65 +303,20 @@ export class Intro extends Composition {
                 }
             },
             ease: Tween.QUADINOUT,
-            duration: 5,
+            duration: 2,
             before() {
                 star.userData.vortexEnabled = true;
                 this.mouse = false;
+
             },
             after: () => {
                 this.mouseInverse = true;
+                protonBean.userData.inverse = true;
             },
             update({align}) {
                 star.userData.align(align)
             }
         })
-
-        /**
-        * Cockpit
-        */
-        // animation.then({
-        //     origin: {
-        //         // camera: camera,
-        //         transition: main.getObjectByName('transition'),
-        //         cockpit: cockpit,
-        //         ship: ship.position,
-        //     },
-        //     target: {
-        //         // camera: {
-        //         //     far: 15000,
-        //         // },
-        //         transition: {
-        //             material: {
-        //                 opacity: 0
-        //             },
-        //             position: { z: 600 }
-        //         },
-        //         ship: {
-        //             z: 800
-        //         },
-        //         cockpit: {
-        //             material: {
-        //                 opacity: 1
-        //             },
-        //             position: {
-        //                 z: 200
-        //             }
-        //         }
-        //     },
-        //     ease: Tween.EXPOINOUT,
-        //     duration: 3,
-        //     before: () => {
-        //         this.scene.add(cockpit)
-
-        //     },
-        //     after: () => {
-        //         this.scene.remove(main)
-        //     },
-        //     update: () => {
-        //         // camera.updateProjectionMatrix();
-        //     }
-
-        // })
 
         /**
          * Align
@@ -351,7 +334,7 @@ export class Intro extends Composition {
                 }
             },
             ease: Tween.EXPOINOUT,
-            duration: 3,
+            duration: 1,
             before: () => {
                 this.initCounter(objects);
             },
@@ -382,17 +365,25 @@ export class Intro extends Composition {
                 }
             },
             ease: Tween.EXPOOUT,
-            duration: 3,
+            duration: 2,
             before: () => {
                 this.scene.fog = <any>(new THREE.Fog(0x18142b, 4000, 5000));
                 this.scene.add(tunnel);
                 this.queue['tunnel'] = tunnel;
+
+                vignette['style'].opacity = 0;
+
+                setTimeout(() => {
+                    vignette['style'].background = 'radial-gradient(ellipse, transparent 65%, #e4ff00 100%)';
+                    vignette['style'].opacity = 0.16;
+                }, 2000);
+
             },
             update: () => {
 
                 this.camera.updateProjectionMatrix();
 
-                if (this.counter.frameVal >= 1000000000) {
+                if (this.counter.frameVal >= this.distance) {
                     return this.stopCounter() || false;
                 }
 
@@ -400,75 +391,6 @@ export class Intro extends Composition {
 
             }
         })
-
-        /**
-         * Super Speed
-         */
-        // animation.then({
-        //     origin: {
-        //         taill: ship.userData.taill,
-        //         uniforms: ship.userData.uniforms,
-        //         position: ship.position,
-        //         star: star.userData,
-        //         flare: flare,
-        //         power: 0,
-        //         spin: 0,
-        //     },
-        //     target: {
-        //         flare: {
-        //             position: {
-        //                 z: -500
-        //             },
-        //             scale: {
-        //                 y: 50
-        //             }
-        //         },
-        //         spin: 1,
-        //         taill: {
-        //             scale: {
-        //                 x: 15, y: 1, z: 1
-        //             },
-        //             position: {
-        //                 y: -400
-        //             }
-        //         },
-        //         uniforms: {
-        //             frequency: {
-        //                 value: 10
-        //             },
-        //             waves: {
-        //                 value: 2
-        //             },
-        //             warp: {
-        //                 value: 5
-        //             }
-        //         },
-        //         // position: {
-        //         //     z: 5
-        //         // },
-        //         star: {
-        //             speed: 25
-        //         },
-        //         power: 0.015,
-        //     },
-        //     ease: Tween.EXPOIN,
-        //     duration: 2,
-        //     before: () => {
-
-        //         this.scene.add(flare)
-        //         this.scene.add(fx);
-        //         this.queue['fx'] = fx;
-
-        //         setTimeout(() => { endTunnel = true }, 3000)
-
-        //     },
-        //     update: ({power, streak, spin}, time) => {
-        //         camera.rotation.z += Math.sin(time) * power.value;
-        //         ship.userData.taill.rotation.y += spin.value;
-        //         fx.userData.uniforms.alpha.value = spin.value;
-        //         return !endTunnel;
-        //     }
-        // })
 
         /**
          * Lock and warp
@@ -514,6 +436,7 @@ export class Intro extends Composition {
                 }, 3000)
 
                 this.mouse = false;
+
             },
             update: () => {
 
@@ -555,13 +478,20 @@ export class Intro extends Composition {
             this.scene.remove(star);
             this.done = true;
 
+            vignette['style'].opacity = 0;
+
+            setTimeout(() => {
+                vignette['style'].background = 'radial-gradient(ellipse, transparent 65%, #88341b 100%)';
+            }, 2000);
+
             /**
              * Start new composition
              */
             this.app.start('galaxy', {
                 glow: this.glow,
                 tunnel: tunnel,
-                queue: this.queue
+                queue: this.queue,
+                protonBean: protonBean
             });
 
         })
@@ -577,7 +507,7 @@ export class Intro extends Composition {
         let mouse = this.app.mouse,
             camera = this.camera;
 
-        let {hexParticles, ship, galaxy} = objects;
+        let {hexParticles, ship, galaxy, protonBean} = objects;
 
         for (let property in this.queue) {
             if (this.queue[property].userData.update(time, delta)) {
@@ -605,17 +535,26 @@ export class Intro extends Composition {
         */
         if (this.mouse) {
 
-            let logo = ship.getObjectByName('logo');
+            let logo = ship.getObjectByName('logo'),
+                axis = this.mouseInverse ? 'z' : 'y';
 
-            logo.position.x = mouse.screen.x * .1;
-            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
+            logo.position.x = mouse.screen.x * .15;
+            logo.position[axis] = -mouse.screen.y * .15;
 
-            if (this.mouseInverse) {
+            let customMouseY = mouse.screen.y;
 
-                logo.rotation.x = deg2rad(mouse.screen.y * .1) / Math.PI
-                logo.rotation.y = -deg2rad(mouse.screen.x * .1) / Math.PI
-
+            if (customMouseY <= 800) {
+                customMouseY = 800;
             }
+
+            logo.rotation.y = -Math.atan2(customMouseY, mouse.screen.x) - Math.PI / 2;
+
+            // if (this.mouseInverse) {
+
+            //     logo.rotation.x = deg2rad(mouse.screen.y * .1) / Math.PI
+            //     logo.rotation.y = -deg2rad(mouse.screen.x * .1) / Math.PI
+
+            // }
 
         }
 
@@ -632,7 +571,7 @@ export class Intro extends Composition {
         this.app.mouse.stateQueue = [];
     }
 
-    private initCounter({ship, star, tunnel}) {
+    private initCounter({ship, star, tunnel, protonBean}) {
 
         const options = {
             useEasing: true,
@@ -640,65 +579,112 @@ export class Intro extends Composition {
             separator: ',',
             decimal: '.',
             prefix: '',
-            suffix: ''
+            suffix: ' km/h'
         },
-            camera = this.app.camera
+            camera = this.app.camera,
+            logo = ship.getObjectByName('logo')
 
         document.querySelector('#counter')['style'].opacity = 1;
 
-        let total = 1000000000;
-
-        this.counter = new CountUp('counter', 1, total, 0, 600, options);
+        this.counter = new CountUp('counter', 1, this.distance, 0, 600, options);
         this.counter.start();
 
         let animation,
             original = {
                 cameraZoom: camera.zoom,
                 duration: this.counter.duration,
-                shipPosition: ship.position.z,
+                logoPosition: logo.position.y,
                 starSpeed: star.userData.speed,
                 tunnelHeight: tunnel.userData.controls.height,
                 tunnelWidth: tunnel.userData.controls.width,
                 tunnelSpeed: tunnel.userData.controls.speed,
-                taill: {
-                    scale: {
-                        x: ship.userData.taill.scale.x,
-                        y: ship.userData.taill.scale.y,
-                        z: ship.userData.taill.scale.z
-                    },
-                    position: {
-                        y: ship.userData.taill.position.y
-                    }
+                protonOffset: protonBean.userData.offset,
+                protonMass: {
+                    a: protonBean.userData.emitter.initializes[1].massPan.a,
+                    b: protonBean.userData.emitter.initializes[1].massPan.b,
                 },
-                uniforms: {
-                    frequency: {
-                        value: ship.userData.uniforms.frequency.value
+                protonRadius: {
+                    a: protonBean.userData.emitter.initializes[4].radius.a,
+                    b: protonBean.userData.emitter.initializes[4].radius.b,
+                },
+                protonColors: {
+                    a: {
+                        r: protonBean.userData.colors.a.r,
+                        g: protonBean.userData.colors.a.g,
+                        b: protonBean.userData.colors.a.b,
                     },
-                    waves: {
-                        value: ship.userData.uniforms.waves.value
-                    },
-                    warp: {
-                        value: ship.userData.uniforms.warp.value
+                    b: {
+                        r: protonBean.userData.colors.b.r,
+                        g: protonBean.userData.colors.b.g,
+                        b: protonBean.userData.colors.b.b,
                     }
                 }
+                // taill: {
+                //     scale: {
+                //         x: logo.userData.taill.scale.x,
+                //         y: logo.userData.taill.scale.y,
+                //         z: logo.userData.taill.scale.z
+                //     },
+                //     position: {
+                //         y: logo.userData.taill.position.y
+                //     }
+                // },
+                // uniforms: {
+                //     frequency: {
+                //         value: logo.userData.uniforms.frequency.value
+                //     },
+                //     waves: {
+                //         value: logo.userData.uniforms.waves.value
+                //     },
+                //     warp: {
+                //         value: logo.userData.uniforms.warp.value
+                //     }
+                // }
             };
 
         this.app.mouse.hold(() => {
 
             animation = this.app.tween.animate({
                 origin: {
-                    camera, ship,
+                    camera, logo,
                     counter: this.counter,
                     star: star.userData,
                     tunnel: tunnel.userData.controls,
-                    taill: ship.userData.taill,
-                    uniforms: ship.userData.uniforms,
-                    power: 0
+                    // taill: logo.userData.taill,
+                    // uniforms: logo.userData.uniforms,
+                    power: 0,
+                    protonOffset: protonBean.userData,
+                    protonMass: protonBean.userData.emitter.initializes[1].massPan,
+                    protonRadius: protonBean.userData.emitter.initializes[4].radius,
+                    protonColors: protonBean.userData.colors,
                 },
                 target: {
-                    ship: {
+                    protonOffset: {
+                        offset: 230
+                    },
+                    protonMass: {
+                        a: 5,
+                        b: .5
+                    },
+                    protonRadius: {
+                        a: 50,
+                        b: 10
+                    },
+                    protonColors: {
+                        a: { //yellow
+                            r: 1,
+                            g: 1,
+                            b: 0,
+                        },
+                        b: { //blue
+                            r: 0,
+                            g: 0,
+                            b: 1,
+                        }
+                    },
+                    logo: {
                         position: {
-                            z: 300
+                            y: -500
                         },
                     },
                     camera: {
@@ -714,15 +700,15 @@ export class Intro extends Composition {
                         height: 0,
                         width: 0
                     },
-                    taill: {
-                        scale: { x: 15, y: 1, z: 1 },
-                        position: { y: -450 }
-                    },
-                    uniforms: {
-                        frequency: { value: 10 },
-                        waves: { value: 2 },
-                        warp: { value: 5 }
-                    },
+                    // taill: {
+                    //     scale: { x: 15, y: 1, z: 1 },
+                    //     position: { y: -450 }
+                    // },
+                    // uniforms: {
+                    //     frequency: { value: 10 },
+                    //     waves: { value: 2 },
+                    //     warp: { value: 5 }
+                    // },
                     power: 0.015,
                 },
                 duration: 1,
@@ -740,22 +726,48 @@ export class Intro extends Composition {
         })
 
         this.app.mouse.release(() => {
-
             if (animation)
                 animation.then({
                     origin: {
-                        ship: ship,
+                        logo: logo,
                         camera: camera,
                         counter: this.counter,
                         star: star.userData,
                         tunnel: tunnel.userData.controls,
-                        taill: ship.userData.taill,
-                        uniforms: ship.userData.uniforms
+                        // taill: logo.userData.taill,
+                        // uniforms: logo.userData.uniforms,
+                        protonOffset: protonBean.userData,
+                        protonMass: protonBean.userData.emitter.initializes[1].massPan,
+                        protonRadius: protonBean.userData.emitter.initializes[4].radius,
+                        protonColors: protonBean.userData.colors,
                     },
                     target: {
-                        ship: {
+                        protonOffset: {
+                            offset: original.protonOffset
+                        },
+                        protonMass: {
+                            a: original.protonMass.a,
+                            b: original.protonMass.b,
+                        },
+                        protonRadius: {
+                            a: original.protonRadius.a,
+                            b: original.protonRadius.b
+                        },
+                        protonColors: {
+                            a: {
+                                r: original.protonColors.a.r,
+                                g: original.protonColors.a.g,
+                                b: original.protonColors.a.b,
+                            },
+                            b: {
+                                r: original.protonColors.b.r,
+                                g: original.protonColors.b.g,
+                                b: original.protonColors.b.b,
+                            }
+                        },
+                        logo: {
                             position: {
-                                z: original.shipPosition
+                                y: original.logoPosition
                             },
                         },
                         camera: {
@@ -772,29 +784,29 @@ export class Intro extends Composition {
                             height: original.tunnelHeight,
                             width: original.tunnelWidth
                         },
-                        taill: {
-                            scale: {
-                                x: original.taill.scale.x,
-                                y: original.taill.scale.y,
-                                z: original.taill.scale.z
-                            },
-                            position: {
-                                y: original.taill.position.y
-                            }
-                        },
-                        uniforms: {
-                            frequency: {
-                                value: original.uniforms.frequency.value
-                            },
-                            waves: {
-                                value: original.uniforms.waves.value
-                            },
-                            warp: {
-                                value: original.uniforms.warp.value
-                            }
-                        }
+                        // taill: {
+                        //     scale: {
+                        //         x: original.taill.scale.x,
+                        //         y: original.taill.scale.y,
+                        //         z: original.taill.scale.z
+                        //     },
+                        //     position: {
+                        //         y: original.taill.position.y
+                        //     }
+                        // },
+                        // uniforms: {
+                        //     frequency: {
+                        //         value: original.uniforms.frequency.value
+                        //     },
+                        //     waves: {
+                        //         value: original.uniforms.waves.value
+                        //     },
+                        //     warp: {
+                        //         value: original.uniforms.warp.value
+                        //     }
+                        // }
                     },
-                    ease: Tween.EXPOOUT,
+                    ease: Tween.CIRCOUT,
                     duration: 1,
                     before: () => {
                         tunnel.userData.controls.speed = original.tunnelSpeed;
@@ -825,6 +837,7 @@ export class Intro extends Composition {
 
     public initTakeOf(main: THREE.Group) {
         this.queue['smoke'] = main;
+        main.userData.start()
     }
 
 }

@@ -42548,11 +42548,11 @@
 		"./Loaders/Material.js": 39,
 		"./Loaders/Model.js": 48,
 		"./Loaders/Objects.js": 49,
-		"./Manager.js": 112,
-		"./Mouse.js": 113,
-		"./Raycaster.js": 114,
-		"./Renderer.js": 115,
-		"./Scene.js": 116,
+		"./Manager.js": 110,
+		"./Mouse.js": 111,
+		"./Raycaster.js": 112,
+		"./Renderer.js": 113,
+		"./Scene.js": 114,
 		"./Tween.js": 14
 	};
 	function webpackContext(req) {
@@ -50028,23 +50028,43 @@
 	        configurable: true
 	    });
 	    Galaxy.prototype.setup = function (app, _a) {
-	        var glow = _a.glow, queue = _a.queue, tunnel = _a.tunnel;
+	        var _this = this;
+	        var glow = _a.glow, queue = _a.queue, tunnel = _a.tunnel, protonBean = _a.protonBean;
 	        this.glow = glow;
 	        this.tunnel = tunnel;
+	        this.protonBean = protonBean;
 	        this.queue = queue;
 	        this.app.camera.fov = 8;
 	        this.app.camera.zoom = 0.1;
-	        this.app.camera.far = 500000;
+	        this.app.camera.far = 500000 * 50;
 	        this.app.camera.rotation.z = Helpers_2.deg2rad(360);
 	        this.app.camera.updateProjectionMatrix();
 	        delete this.queue['hexParticles'];
 	        delete this.queue['ship'];
 	        delete this.queue['star'];
+	        delete this.queue['tunnel'];
+	        this.app.renderer.setClearColor(0x000000);
+	        // this.scene.fog = new THREE.Fog(0x000000, 0, 4500);
+	        // console.log(this.scene.fog)
+	        /**
+	         * Wait it totally fades then remove
+	         */
+	        protonBean.userData.emitter.stopEmit();
+	        setTimeout(function () { return delete _this.queue['protonBean']; }, 5000);
+	        this.scene.remove(this.tunnel);
+	        // this.scene.fog = null;
 	    };
 	    Galaxy.prototype.stage = function (objects) {
 	        var _this = this;
-	        var plexus = objects.plexus, galaxy = objects.galaxy;
-	        var fader = document.querySelector('#fader');
+	        var plexus = objects.plexus, galaxy = objects.galaxy, fader = document.querySelector('#fader');
+	        /**
+	         * Rotate Galaxy
+	         */
+	        this.queue['galaxy'] = galaxy;
+	        /**
+	         * Create Protons
+	         */
+	        plexus.userData.createProtons(this.protonBean);
 	        /**
 	         * Init Tutorial
 	         */
@@ -50066,9 +50086,6 @@
 	                _this.queue['plexus'] = plexus;
 	                _this.scene.add(plexus);
 	                _this.scene.add(galaxy);
-	                _this.scene.fog = null;
-	                _this.scene.remove(_this.tunnel);
-	                delete _this.queue['tunnel'];
 	            },
 	            update: function () {
 	                return !_this.tutorialDone;
@@ -50094,19 +50111,19 @@
 	                }
 	            },
 	            duration: 15,
-	            ease: Tween_1.Tween.EXPOIN,
+	            ease: Tween_1.Tween.EXPOOUT,
 	            before: function () {
 	                fader['style'].opacity = 0;
-	                plexus.userData.materials.forEach(function (material) {
-	                    material.opacity = 1;
-	                });
-	                galaxy.userData.materials.forEach(function (material) {
-	                    material.opacity = 0.8;
-	                });
+	                // plexus.userData.materials.forEach((material: THREE.Material) => {
+	                //     material.opacity = 1;
+	                // })
+	                // galaxy.userData.materials.forEach((material: THREE.Material) => {
+	                //     material.opacity = 0.8;
+	                // })
 	            },
 	            after: function () {
 	                _this.app.controls.instance.enabled = true;
-	                document.querySelector('#vignette')['style'].opacity = 0.5;
+	                document.querySelector('#vignette')['style'].opacity = 0.3;
 	                var action = function (object, intersects) {
 	                    if (!_this.open)
 	                        _this.showProject(object);
@@ -50122,7 +50139,11 @@
 	        var _this = this;
 	        var element = document.querySelector('#overlay'), poster = document.querySelector('#poster'), name = document.querySelector('#name'), description = document.querySelector('#description'), controls = this.app.controls.instance;
 	        element['style'].display = 'flex';
-	        poster.setAttribute('src', object.material.userData.poster);
+	        console.log(poster);
+	        // let options = { "controls": true, "autoplay": false, "preload": "auto", poster: object.material.userData.poster };
+	        // let player = videojs('#poster', options);
+	        poster.setAttribute('src', '/assets/videos/video.mp4');
+	        poster.setAttribute('poster', object.material.userData.poster);
 	        name.textContent = object.material.userData.name;
 	        description.textContent = object.material.userData.description;
 	        controls.enabled = false;
@@ -50132,7 +50153,7 @@
 	         * Stop Rotation
 	        */
 	        plexus.userData.rotate = false;
-	        var position = plexus.matrix.multiplyVector3(verticePosition);
+	        var position = verticePosition.applyMatrix4(plexus.matrix);
 	        this.camera.moveTo(position, function () {
 	            element['style'].opacity = 1;
 	            element.firstElementChild['style'].transform = 'scale(1)';
@@ -50336,6 +50357,9 @@
 	var random = (function () {
 	    function random() {
 	    }
+	    random.pick = function (object) {
+	        return object[random.between(0, object.length - 1, true)];
+	    };
 	    /**
 	     * Generate random number between a given min and max
 	     */
@@ -50376,8 +50400,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"dust": {
-			"name": "dust",
+		"background": {
+			"name": "background",
 			"width": 2007,
 			"height": 1318,
 			"sprite": {
@@ -50476,8 +50500,8 @@
 			"x": 1759,
 			"y": 1507
 		},
-		"X-Men-Days-of-Future-Past": {
-			"name": "X-Men-Days-of-Future-Past",
+		"FANTASTIC-BEASTS": {
+			"name": "FANTASTIC-BEASTS",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -50647,6 +50671,7 @@
 	        this.debrisCompleted = false;
 	        this.done = false;
 	        this.counter = null;
+	        this.distance = 1000000000;
 	        this.queue = {};
 	    }
 	    Object.defineProperty(Intro.prototype, "objects", {
@@ -50672,40 +50697,44 @@
 	        var _this = this;
 	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, star = objects.star, tunnel = objects.tunnel, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, buttons = objects.buttons, protonBean = objects.protonBean;
 	        main.add(buttons);
-	        this.scene.add(main);
 	        this.scene.add(hexParticles);
 	        this.scene.add(ship);
 	        this.scene.add(star);
+	        this.scene.add(main);
+	        console.log(this.scene);
+	        document.addEventListener("keydown", function (e) {
+	            if (e.keyCode === 32)
+	                document.documentElement.webkitRequestFullScreen();
+	        }, false);
+	        // ship.userData.initProtonOnClones(protonBean)
 	        // console.log(star);
 	        this.app.audio.play('ambient');
-	        protonBean.userData.position = ship.getObjectByName('logo').position;
-	        //-544.9718967856711
-	        //435.51185286729776
-	        //134.67318495564345
 	        /**
 	         * Queue Update
 	         */
 	        this.queue['ship'] = ship;
 	        this.queue['hexParticles'] = hexParticles;
 	        this.queue['star'] = star;
-	        this.queue['protonBean'] = protonBean;
 	        this.glow = new Glow_1.Glow(this.app['browser']);
 	        this.glow.uniforms.exposure.value = 0.3;
 	        this.glow.uniforms.colorRange.value = 0.95;
 	        this.app.mouse.ray(buttons.getObjectByName('start'), function (data) {
-	            // this.scene.remove(main);
 	            // this.scene.remove(tunnel);
+	            // this.scene.remove(main);
 	            // this.scene.remove(ship);
 	            // this.scene.remove(hexParticles);
 	            // this.scene.remove(star);
 	            // this.done = true;
+	            // protonBean.userData.emitter.stopEmit();
 	            // /**
 	            //  * Start new composition
 	            //  */
 	            // this.app.start('galaxy', {
 	            //     glow: this.glow,
-	            //     queue: this.queue
-	            // })
+	            //     tunnel: tunnel,
+	            //     queue: this.queue,
+	            //     protonBean: protonBean
+	            // });
 	            _this.start(objects);
 	        });
 	        this.app.mouse.ray(buttons.getObjectByName('skip'), function (data) {
@@ -50714,12 +50743,12 @@
 	    };
 	    Intro.prototype.start = function (objects) {
 	        var _this = this;
-	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, debris = objects.debris, star = objects.star, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, tunnel = objects.tunnel, cockpit = objects.cockpit, flare = objects.flare;
+	        var ship = objects.ship, main = objects.main, hexParticles = objects.hexParticles, debris = objects.debris, star = objects.star, streak = objects.streak, plexus = objects.plexus, galaxy = objects.galaxy, fx = objects.fx, tunnel = objects.tunnel, cockpit = objects.cockpit, flare = objects.flare, protonBean = objects.protonBean;
 	        var original = [
 	            ship.position.clone(),
 	            main.position.clone()
 	        ];
-	        var logo = ship.getObjectByName('logo'), camera = this.camera, controls = this.app.controls.instance, endTunnel = false;
+	        var logo = ship.getObjectByName('logo'), camera = this.camera, controls = this.app.controls.instance, endTunnel = false, vignette = document.querySelector('#vignette');
 	        /**
 	         * Transform ship
 	         */
@@ -50736,7 +50765,7 @@
 	            duration: 3,
 	            before: function () {
 	                _this.parallex = false;
-	                ship.userData.transform(_this.scene, _this.queue, _this.glow);
+	                ship.userData.transform(protonBean, _this.scene, _this.queue, _this.glow);
 	            },
 	            update: function () {
 	                return !ship.userData.transformDone;
@@ -50767,7 +50796,7 @@
 	                _this.parallex = false;
 	                _this.app.audio.play('takeOf');
 	                _this.initTakeOf(main);
-	                ship.userData.taill.scale.set(5, .3, 1);
+	                // ship.userData.taill.scale.set(5, .3, 1);
 	            },
 	            update: function (_a, time) {
 	                var power = _a.power;
@@ -50793,11 +50822,11 @@
 	                speed: star.userData.speed,
 	                move: 0,
 	                decay: 0,
-	                taill: 0,
+	                // taill: 0,
 	                glow: this.glow.uniforms
 	            },
 	            target: {
-	                taill: 2,
+	                // taill: 2,
 	                decay: 5,
 	                booster: -3,
 	                speed: 5,
@@ -50817,21 +50846,28 @@
 	            duration: .7,
 	            ease: Tween_1.Tween.EXPOIN,
 	            before: function () {
+	                ship.userData.go = true;
+	                protonBean.userData.emitter.rate.numPan.a = 10;
+	                protonBean.userData.emitter.rate.numPan.b = 15;
+	                protonBean.userData.object = ship.getObjectByName('logo');
+	                _this.queue['protonBean'] = protonBean;
+	                protonBean.userData.proton.addEmitter(protonBean.userData.emitter);
+	                protonBean.userData.emitter.emit();
 	                _this.app.renderer.setClearColor(0x18142b);
 	            },
 	            update: function (_a, completion, elapsed) {
-	                var booster = _a.booster, speed = _a.speed, decay = _a.decay, taill = _a.taill;
-	                var orb = ship.getObjectByName('orb');
-	                orb.scale.addScalar(1.5);
-	                orb.material.opacity -= 0.01;
+	                // let orb = ship.getObjectByName('orb');
+	                // orb.scale.addScalar(1.5)
+	                // orb.material.opacity -= 0.01;
+	                var booster = _a.booster, speed = _a.speed, decay = _a.decay;
 	                ship.userData.booster = booster.value;
 	                star.userData.speed = speed.value;
 	                star.material.opacity = speed.value > .8 ? .8 : speed.value < .2 ? .2 : speed.value;
 	                hexParticles.userData.decay = decay.value;
 	                // ship.userData.taill.visible = true;
-	                ship.userData.taill.scale.set(taill.value, .3, 1);
-	                if (taill.completion < 95)
-	                    ship.userData.taill.position.y -= taill.value;
+	                // ship.userData.taill.scale.set(taill.value, .3, 1);
+	                // if (taill.completion < 95)
+	                // ship.userData.taill.position.y -= taill.value;
 	                return !_this.debrisCompleted;
 	            },
 	            after: function () {
@@ -50848,8 +50884,21 @@
 	                position: ship.position,
 	                align: 0,
 	                r: star.rotation,
+	                protonForce: protonBean.userData.emitter.behaviours[0].force,
+	                protonVelocity: protonBean.userData.emitter.initializes[5].dir,
+	                protonPosition: protonBean.userData,
 	            },
 	            target: {
+	                protonForce: {
+	                    z: 5000,
+	                    y: 0
+	                },
+	                protonVelocity: {
+	                    y: 0
+	                },
+	                protonPosition: {
+	                    ajust: 0
+	                },
 	                r: {
 	                    x: -Helpers_2.deg2rad(90)
 	                },
@@ -50865,63 +50914,20 @@
 	                }
 	            },
 	            ease: Tween_1.Tween.QUADINOUT,
-	            duration: 5,
+	            duration: 2,
 	            before: function () {
 	                star.userData.vortexEnabled = true;
 	                this.mouse = false;
 	            },
 	            after: function () {
 	                _this.mouseInverse = true;
+	                protonBean.userData.inverse = true;
 	            },
 	            update: function (_a) {
 	                var align = _a.align;
 	                star.userData.align(align);
 	            }
 	        });
-	        /**
-	        * Cockpit
-	        */
-	        // animation.then({
-	        //     origin: {
-	        //         // camera: camera,
-	        //         transition: main.getObjectByName('transition'),
-	        //         cockpit: cockpit,
-	        //         ship: ship.position,
-	        //     },
-	        //     target: {
-	        //         // camera: {
-	        //         //     far: 15000,
-	        //         // },
-	        //         transition: {
-	        //             material: {
-	        //                 opacity: 0
-	        //             },
-	        //             position: { z: 600 }
-	        //         },
-	        //         ship: {
-	        //             z: 800
-	        //         },
-	        //         cockpit: {
-	        //             material: {
-	        //                 opacity: 1
-	        //             },
-	        //             position: {
-	        //                 z: 200
-	        //             }
-	        //         }
-	        //     },
-	        //     ease: Tween.EXPOINOUT,
-	        //     duration: 3,
-	        //     before: () => {
-	        //         this.scene.add(cockpit)
-	        //     },
-	        //     after: () => {
-	        //         this.scene.remove(main)
-	        //     },
-	        //     update: () => {
-	        //         // camera.updateProjectionMatrix();
-	        //     }
-	        // })
 	        /**
 	         * Align
 	         */
@@ -50938,7 +50944,7 @@
 	                }
 	            },
 	            ease: Tween_1.Tween.EXPOINOUT,
-	            duration: 3,
+	            duration: 1,
 	            before: function () {
 	                _this.initCounter(objects);
 	            },
@@ -50968,85 +50974,25 @@
 	                }
 	            },
 	            ease: Tween_1.Tween.EXPOOUT,
-	            duration: 3,
+	            duration: 2,
 	            before: function () {
 	                _this.scene.fog = (new THREE.Fog(0x18142b, 4000, 5000));
 	                _this.scene.add(tunnel);
 	                _this.queue['tunnel'] = tunnel;
+	                vignette['style'].opacity = 0;
+	                setTimeout(function () {
+	                    vignette['style'].background = 'radial-gradient(ellipse, transparent 65%, #e4ff00 100%)';
+	                    vignette['style'].opacity = 0.16;
+	                }, 2000);
 	            },
 	            update: function () {
 	                _this.camera.updateProjectionMatrix();
-	                if (_this.counter.frameVal >= 1000000000) {
+	                if (_this.counter.frameVal >= _this.distance) {
 	                    return _this.stopCounter() || false;
 	                }
 	                return true;
 	            }
 	        });
-	        /**
-	         * Super Speed
-	         */
-	        // animation.then({
-	        //     origin: {
-	        //         taill: ship.userData.taill,
-	        //         uniforms: ship.userData.uniforms,
-	        //         position: ship.position,
-	        //         star: star.userData,
-	        //         flare: flare,
-	        //         power: 0,
-	        //         spin: 0,
-	        //     },
-	        //     target: {
-	        //         flare: {
-	        //             position: {
-	        //                 z: -500
-	        //             },
-	        //             scale: {
-	        //                 y: 50
-	        //             }
-	        //         },
-	        //         spin: 1,
-	        //         taill: {
-	        //             scale: {
-	        //                 x: 15, y: 1, z: 1
-	        //             },
-	        //             position: {
-	        //                 y: -400
-	        //             }
-	        //         },
-	        //         uniforms: {
-	        //             frequency: {
-	        //                 value: 10
-	        //             },
-	        //             waves: {
-	        //                 value: 2
-	        //             },
-	        //             warp: {
-	        //                 value: 5
-	        //             }
-	        //         },
-	        //         // position: {
-	        //         //     z: 5
-	        //         // },
-	        //         star: {
-	        //             speed: 25
-	        //         },
-	        //         power: 0.015,
-	        //     },
-	        //     ease: Tween.EXPOIN,
-	        //     duration: 2,
-	        //     before: () => {
-	        //         this.scene.add(flare)
-	        //         this.scene.add(fx);
-	        //         this.queue['fx'] = fx;
-	        //         setTimeout(() => { endTunnel = true }, 3000)
-	        //     },
-	        //     update: ({power, streak, spin}, time) => {
-	        //         camera.rotation.z += Math.sin(time) * power.value;
-	        //         ship.userData.taill.rotation.y += spin.value;
-	        //         fx.userData.uniforms.alpha.value = spin.value;
-	        //         return !endTunnel;
-	        //     }
-	        // })
 	        /**
 	         * Lock and warp
 	         */
@@ -51119,13 +51065,18 @@
 	            _this.scene.remove(hexParticles);
 	            _this.scene.remove(star);
 	            _this.done = true;
+	            vignette['style'].opacity = 0;
+	            setTimeout(function () {
+	                vignette['style'].background = 'radial-gradient(ellipse, transparent 65%, #88341b 100%)';
+	            }, 2000);
 	            /**
 	             * Start new composition
 	             */
 	            _this.app.start('galaxy', {
 	                glow: _this.glow,
 	                tunnel: tunnel,
-	                queue: _this.queue
+	                queue: _this.queue,
+	                protonBean: protonBean
 	            });
 	        });
 	    };
@@ -51133,7 +51084,7 @@
 	        // this.uniforms.cameraViewMatrix.value = this.app.camera.modelViewMatrix;
 	        // this.uniforms.viewVector.value.subVectors(this.camera.position, this.mesh.position);
 	        var mouse = this.app.mouse, camera = this.camera;
-	        var hexParticles = objects.hexParticles, ship = objects.ship, galaxy = objects.galaxy;
+	        var hexParticles = objects.hexParticles, ship = objects.ship, galaxy = objects.galaxy, protonBean = objects.protonBean;
 	        for (var property in this.queue) {
 	            if (this.queue[property].userData.update(time, delta)) {
 	                if (Helpers_1.is.Function(this[(property + "Done")])) {
@@ -51152,13 +51103,14 @@
 	        * Logo Follow Mouse
 	        */
 	        if (this.mouse) {
-	            var logo = ship.getObjectByName('logo');
-	            logo.position.x = mouse.screen.x * .1;
-	            logo.position[this.mouseInverse ? 'z' : 'y'] = -mouse.screen.y * .1;
-	            if (this.mouseInverse) {
-	                logo.rotation.x = Helpers_2.deg2rad(mouse.screen.y * .1) / Math.PI;
-	                logo.rotation.y = -Helpers_2.deg2rad(mouse.screen.x * .1) / Math.PI;
+	            var logo = ship.getObjectByName('logo'), axis = this.mouseInverse ? 'z' : 'y';
+	            logo.position.x = mouse.screen.x * .15;
+	            logo.position[axis] = -mouse.screen.y * .15;
+	            var customMouseY = mouse.screen.y;
+	            if (customMouseY <= 800) {
+	                customMouseY = 800;
 	            }
+	            logo.rotation.y = -Math.atan2(customMouseY, mouse.screen.x) - Math.PI / 2;
 	        }
 	        this.glow.render(this.app);
 	        // this.render();
@@ -51171,64 +51123,90 @@
 	    };
 	    Intro.prototype.initCounter = function (_a) {
 	        var _this = this;
-	        var ship = _a.ship, star = _a.star, tunnel = _a.tunnel;
+	        var ship = _a.ship, star = _a.star, tunnel = _a.tunnel, protonBean = _a.protonBean;
 	        var options = {
 	            useEasing: true,
 	            useGrouping: true,
 	            separator: ',',
 	            decimal: '.',
 	            prefix: '',
-	            suffix: ''
-	        }, camera = this.app.camera;
+	            suffix: ' km/h'
+	        }, camera = this.app.camera, logo = ship.getObjectByName('logo');
 	        document.querySelector('#counter')['style'].opacity = 1;
-	        var total = 1000000000;
-	        this.counter = new CountUp('counter', 1, total, 0, 600, options);
+	        this.counter = new CountUp('counter', 1, this.distance, 0, 600, options);
 	        this.counter.start();
 	        var animation, original = {
 	            cameraZoom: camera.zoom,
 	            duration: this.counter.duration,
-	            shipPosition: ship.position.z,
+	            logoPosition: logo.position.y,
 	            starSpeed: star.userData.speed,
 	            tunnelHeight: tunnel.userData.controls.height,
 	            tunnelWidth: tunnel.userData.controls.width,
 	            tunnelSpeed: tunnel.userData.controls.speed,
-	            taill: {
-	                scale: {
-	                    x: ship.userData.taill.scale.x,
-	                    y: ship.userData.taill.scale.y,
-	                    z: ship.userData.taill.scale.z
-	                },
-	                position: {
-	                    y: ship.userData.taill.position.y
-	                }
+	            protonOffset: protonBean.userData.offset,
+	            protonMass: {
+	                a: protonBean.userData.emitter.initializes[1].massPan.a,
+	                b: protonBean.userData.emitter.initializes[1].massPan.b,
 	            },
-	            uniforms: {
-	                frequency: {
-	                    value: ship.userData.uniforms.frequency.value
+	            protonRadius: {
+	                a: protonBean.userData.emitter.initializes[4].radius.a,
+	                b: protonBean.userData.emitter.initializes[4].radius.b,
+	            },
+	            protonColors: {
+	                a: {
+	                    r: protonBean.userData.colors.a.r,
+	                    g: protonBean.userData.colors.a.g,
+	                    b: protonBean.userData.colors.a.b,
 	                },
-	                waves: {
-	                    value: ship.userData.uniforms.waves.value
-	                },
-	                warp: {
-	                    value: ship.userData.uniforms.warp.value
+	                b: {
+	                    r: protonBean.userData.colors.b.r,
+	                    g: protonBean.userData.colors.b.g,
+	                    b: protonBean.userData.colors.b.b,
 	                }
 	            }
 	        };
 	        this.app.mouse.hold(function () {
 	            animation = _this.app.tween.animate({
 	                origin: {
-	                    camera: camera, ship: ship,
+	                    camera: camera, logo: logo,
 	                    counter: _this.counter,
 	                    star: star.userData,
 	                    tunnel: tunnel.userData.controls,
-	                    taill: ship.userData.taill,
-	                    uniforms: ship.userData.uniforms,
-	                    power: 0
+	                    // taill: logo.userData.taill,
+	                    // uniforms: logo.userData.uniforms,
+	                    power: 0,
+	                    protonOffset: protonBean.userData,
+	                    protonMass: protonBean.userData.emitter.initializes[1].massPan,
+	                    protonRadius: protonBean.userData.emitter.initializes[4].radius,
+	                    protonColors: protonBean.userData.colors,
 	                },
 	                target: {
-	                    ship: {
+	                    protonOffset: {
+	                        offset: 230
+	                    },
+	                    protonMass: {
+	                        a: 5,
+	                        b: .5
+	                    },
+	                    protonRadius: {
+	                        a: 50,
+	                        b: 10
+	                    },
+	                    protonColors: {
+	                        a: {
+	                            r: 1,
+	                            g: 1,
+	                            b: 0,
+	                        },
+	                        b: {
+	                            r: 0,
+	                            g: 0,
+	                            b: 1,
+	                        }
+	                    },
+	                    logo: {
 	                        position: {
-	                            z: 300
+	                            y: -500
 	                        },
 	                    },
 	                    camera: {
@@ -51244,15 +51222,15 @@
 	                        height: 0,
 	                        width: 0
 	                    },
-	                    taill: {
-	                        scale: { x: 15, y: 1, z: 1 },
-	                        position: { y: -450 }
-	                    },
-	                    uniforms: {
-	                        frequency: { value: 10 },
-	                        waves: { value: 2 },
-	                        warp: { value: 5 }
-	                    },
+	                    // taill: {
+	                    //     scale: { x: 15, y: 1, z: 1 },
+	                    //     position: { y: -450 }
+	                    // },
+	                    // uniforms: {
+	                    //     frequency: { value: 10 },
+	                    //     waves: { value: 2 },
+	                    //     warp: { value: 5 }
+	                    // },
 	                    power: 0.015,
 	                },
 	                duration: 1,
@@ -51272,18 +51250,45 @@
 	            if (animation)
 	                animation.then({
 	                    origin: {
-	                        ship: ship,
+	                        logo: logo,
 	                        camera: camera,
 	                        counter: _this.counter,
 	                        star: star.userData,
 	                        tunnel: tunnel.userData.controls,
-	                        taill: ship.userData.taill,
-	                        uniforms: ship.userData.uniforms
+	                        // taill: logo.userData.taill,
+	                        // uniforms: logo.userData.uniforms,
+	                        protonOffset: protonBean.userData,
+	                        protonMass: protonBean.userData.emitter.initializes[1].massPan,
+	                        protonRadius: protonBean.userData.emitter.initializes[4].radius,
+	                        protonColors: protonBean.userData.colors,
 	                    },
 	                    target: {
-	                        ship: {
+	                        protonOffset: {
+	                            offset: original.protonOffset
+	                        },
+	                        protonMass: {
+	                            a: original.protonMass.a,
+	                            b: original.protonMass.b,
+	                        },
+	                        protonRadius: {
+	                            a: original.protonRadius.a,
+	                            b: original.protonRadius.b
+	                        },
+	                        protonColors: {
+	                            a: {
+	                                r: original.protonColors.a.r,
+	                                g: original.protonColors.a.g,
+	                                b: original.protonColors.a.b,
+	                            },
+	                            b: {
+	                                r: original.protonColors.b.r,
+	                                g: original.protonColors.b.g,
+	                                b: original.protonColors.b.b,
+	                            }
+	                        },
+	                        logo: {
 	                            position: {
-	                                z: original.shipPosition
+	                                y: original.logoPosition
 	                            },
 	                        },
 	                        camera: {
@@ -51300,29 +51305,8 @@
 	                            height: original.tunnelHeight,
 	                            width: original.tunnelWidth
 	                        },
-	                        taill: {
-	                            scale: {
-	                                x: original.taill.scale.x,
-	                                y: original.taill.scale.y,
-	                                z: original.taill.scale.z
-	                            },
-	                            position: {
-	                                y: original.taill.position.y
-	                            }
-	                        },
-	                        uniforms: {
-	                            frequency: {
-	                                value: original.uniforms.frequency.value
-	                            },
-	                            waves: {
-	                                value: original.uniforms.waves.value
-	                            },
-	                            warp: {
-	                                value: original.uniforms.warp.value
-	                            }
-	                        }
 	                    },
-	                    ease: Tween_1.Tween.EXPOOUT,
+	                    ease: Tween_1.Tween.CIRCOUT,
 	                    duration: 1,
 	                    before: function () {
 	                        tunnel.userData.controls.speed = original.tunnelSpeed;
@@ -51349,6 +51333,7 @@
 	    };
 	    Intro.prototype.initTakeOf = function (main) {
 	        this.queue['smoke'] = main;
+	        main.userData.start();
 	    };
 	    return Intro;
 	}(Composition_1.Composition));
@@ -51976,9 +51961,6 @@
 	                'sprite-3.png': '/assets/img/sprite-3.png',
 	                'sprite-4.png': '/assets/img/sprite-4.png',
 	                'sprite-5.png': '/assets/img/sprite-5.png',
-	                'sprite-6.png': '/assets/img/sprite-6.png',
-	                'sprite-7.png': '/assets/img/sprite-7.png',
-	                'sprite-8.png': '/assets/img/sprite-8.png',
 	            };
 	        },
 	        enumerable: true,
@@ -52047,13 +52029,23 @@
 	                'sprite-3.png': '/assets/img/sprite-3.png',
 	                'sprite-4.png': '/assets/img/sprite-4.png',
 	                'sprite-5.png': '/assets/img/sprite-5.png',
-	                'sprite-6.png': '/assets/img/sprite-6.png',
-	                'sprite-7.png': '/assets/img/sprite-7.png',
-	                'sprite-8.png': '/assets/img/sprite-8.png',
+	                // 'sprite-6.png': '/assets/img/sprite-6.png',
+	                // 'sprite-7.png': '/assets/img/sprite-7.png',
+	                // 'sprite-8.png': '/assets/img/sprite-8.png',
+	                // 'sprite-9.png': '/assets/img/sprite-9.png',
 	                tunnel: '/assets/img/tunnel.png',
 	                skybox: '/assets/img/skybox.jpg',
+	                universe: '/assets/img/universe-map.jpg',
+	                cubeSpace: '/assets/img/universe-square.jpg',
+	                'nebula-far': '/assets/img/nebula-far.png',
+	                'nebula-near': '/assets/img/nebula-near.png',
 	                glow: '/assets/img/glow.png',
 	                dot: '/assets/img/dot.png',
+	                lens0: '/assets/img/lensflare0.png',
+	                lens1: '/assets/img/lensflare1.png',
+	                lens2: '/assets/img/lensflare2.png',
+	                lens3: '/assets/img/lensflare3.png',
+	                'flare-ring': '/assets/img/flare-ring.png'
 	            };
 	        },
 	        enumerable: true,
@@ -52088,9 +52080,10 @@
 	                'sprite-3.png': '/assets/img/sprite-3.png',
 	                'sprite-4.png': '/assets/img/sprite-4.png',
 	                'sprite-5.png': '/assets/img/sprite-5.png',
-	                'sprite-6.png': '/assets/img/sprite-6.png',
-	                'sprite-7.png': '/assets/img/sprite-7.png',
-	                'sprite-8.png': '/assets/img/sprite-8.png',
+	                // 'sprite-6.png': '/assets/img/sprite-6.png',
+	                // 'sprite-7.png': '/assets/img/sprite-7.png',
+	                // 'sprite-8.png': '/assets/img/sprite-8.png',
+	                // 'sprite-9.png': '/assets/img/sprite-9.png',
 	                core: '/assets/hex-assets/hex.png',
 	                tunnel: '/assets/img/tunnel.png',
 	                // point_squad: '/assets/point-squad.png',
@@ -52136,9 +52129,6 @@
 	                'sprite-3.png': '/assets/img/sprite-3.png',
 	                'sprite-4.png': '/assets/img/sprite-4.png',
 	                'sprite-5.png': '/assets/img/sprite-5.png',
-	                'sprite-6.png': '/assets/img/sprite-6.png',
-	                'sprite-7.png': '/assets/img/sprite-7.png',
-	                'sprite-8.png': '/assets/img/sprite-8.png',
 	            };
 	        },
 	        enumerable: true,
@@ -52308,51 +52298,52 @@
 	var map = {
 		"./Base.js": 51,
 		"./Buttons.js": 52,
-		"./Characters/Actor.js": 62,
-		"./Characters/Actress.js": 64,
-		"./Characters/Animation.js": 65,
-		"./Characters/ArtDirector.js": 66,
-		"./Characters/Artist3D.js": 67,
-		"./Characters/CameraDirector.js": 68,
-		"./Characters/ConceptArtist.js": 69,
-		"./Characters/CostumeDesigner.js": 70,
-		"./Characters/Director.js": 71,
-		"./Characters/Editor.js": 72,
-		"./Characters/Effects.js": 73,
-		"./Characters/ExecutiveProducer.js": 74,
-		"./Characters/LightingArtist.js": 75,
-		"./Characters/MakeUpArtist.js": 76,
-		"./Characters/PackagingDesigner.js": 77,
-		"./Characters/PreStageProjectCoordinator.js": 78,
-		"./Characters/ProjectCoordinator.js": 79,
-		"./Characters/Prop.js": 80,
-		"./Characters/RecordingArtist.js": 81,
-		"./Characters/RenderAndComposite.js": 82,
-		"./Characters/RiggingArtist.js": 83,
-		"./Characters/Screenwriter.js": 84,
-		"./Characters/ScriptSupervisor.js": 85,
-		"./Characters/SetDesigner.js": 86,
-		"./Characters/SoundEffect.js": 87,
-		"./Characters/StageManager.js": 88,
-		"./Characters/StoryboardArtist.js": 89,
-		"./Characters/SwingGang.js": 90,
-		"./Characters/VoiceArtist.js": 91,
-		"./Cockpit.js": 92,
-		"./Debris.js": 93,
-		"./Engine.js": 94,
-		"./Flare.js": 96,
-		"./Fx.js": 97,
-		"./Galaxy.js": 98,
-		"./HexParticles.js": 99,
-		"./Main.js": 100,
-		"./Plexus-old.js": 102,
-		"./Plexus.js": 104,
-		"./ProtonBean.js": 105,
-		"./Ship.js": 107,
-		"./Star.js": 108,
-		"./Streak.js": 109,
-		"./Tunnel-old.js": 110,
-		"./Tunnel.js": 111
+		"./Characters/Actor.js": 59,
+		"./Characters/Actress.js": 61,
+		"./Characters/Animation.js": 62,
+		"./Characters/ArtDirector.js": 63,
+		"./Characters/Artist3D.js": 64,
+		"./Characters/CameraDirector.js": 65,
+		"./Characters/ConceptArtist.js": 66,
+		"./Characters/CostumeDesigner.js": 67,
+		"./Characters/Director.js": 68,
+		"./Characters/Editor.js": 69,
+		"./Characters/Effects.js": 70,
+		"./Characters/ExecutiveProducer.js": 71,
+		"./Characters/LightingArtist.js": 72,
+		"./Characters/MakeUpArtist.js": 73,
+		"./Characters/PackagingDesigner.js": 74,
+		"./Characters/PreStageProjectCoordinator.js": 75,
+		"./Characters/ProjectCoordinator.js": 76,
+		"./Characters/Prop.js": 77,
+		"./Characters/RecordingArtist.js": 78,
+		"./Characters/RenderAndComposite.js": 79,
+		"./Characters/RiggingArtist.js": 80,
+		"./Characters/Screenwriter.js": 81,
+		"./Characters/ScriptSupervisor.js": 82,
+		"./Characters/SetDesigner.js": 83,
+		"./Characters/SoundEffect.js": 84,
+		"./Characters/StageManager.js": 85,
+		"./Characters/StoryboardArtist.js": 86,
+		"./Characters/SwingGang.js": 87,
+		"./Characters/VoiceArtist.js": 88,
+		"./Cockpit.js": 89,
+		"./Debris.js": 90,
+		"./Engine.js": 91,
+		"./Flare.js": 93,
+		"./Fx.js": 94,
+		"./Galaxy.js": 95,
+		"./HexParticles.js": 96,
+		"./Main.js": 97,
+		"./Plexus-old.js": 99,
+		"./Plexus.js": 101,
+		"./Plexus.temp.js": 103,
+		"./ProtonBean.js": 104,
+		"./Ship.js": 105,
+		"./Star.js": 106,
+		"./Streak.js": 107,
+		"./Tunnel-old.js": 108,
+		"./Tunnel.js": 109
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -52642,10 +52633,7 @@
 		"./sprite-2.json": 55,
 		"./sprite-3.json": 56,
 		"./sprite-4.json": 57,
-		"./sprite-5.json": 58,
-		"./sprite-6.json": 59,
-		"./sprite-7.json": 60,
-		"./sprite-8.json": 61
+		"./sprite-5.json": 58
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -52726,8 +52714,8 @@
 			"x": 928,
 			"y": 1318
 		},
-		"ship": {
-			"name": "ship",
+		"ship-tunned": {
+			"name": "ship-tunned",
 			"width": 504,
 			"height": 504,
 			"sprite": {
@@ -52746,8 +52734,8 @@
 			"x": 1444,
 			"y": 1318
 		},
-		"blue-core": {
-			"name": "blue-core",
+		"Avatar": {
+			"name": "Avatar",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52766,8 +52754,8 @@
 			"x": 0,
 			"y": 1843
 		},
-		"World-War-Z": {
-			"name": "World-War-Z",
+		"blue-core": {
+			"name": "blue-core",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52786,8 +52774,8 @@
 			"x": 169,
 			"y": 1843
 		},
-		"TROLLS": {
-			"name": "TROLLS",
+		"X-Men-Days-of-Future-Past": {
+			"name": "X-Men-Days-of-Future-Past",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52806,8 +52794,8 @@
 			"x": 338,
 			"y": 1843
 		},
-		"Thor": {
-			"name": "Thor",
+		"World-War-Z": {
+			"name": "World-War-Z",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52826,8 +52814,8 @@
 			"x": 507,
 			"y": 1843
 		},
-		"The-Avengers": {
-			"name": "The-Avengers",
+		"core": {
+			"name": "core",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52846,8 +52834,8 @@
 			"x": 676,
 			"y": 1843
 		},
-		"core": {
-			"name": "core",
+		"TROLLS": {
+			"name": "TROLLS",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52906,8 +52894,8 @@
 			"x": 1183,
 			"y": 1843
 		},
-		"Avatar": {
-			"name": "Avatar",
+		"Thor": {
+			"name": "Thor",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -52993,10 +52981,10 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"background": {
-			"name": "background",
-			"width": 2007,
-			"height": 1318,
+		"universe": {
+			"name": "universe",
+			"width": 1967,
+			"height": 1131,
 			"sprite": {
 				"name": "sprite-3.png",
 				"width": 2048,
@@ -53004,14 +52992,34 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.3564453125,
-				"u2": 0.97998046875,
+				"v1": 0.44775390625,
+				"u2": 0.96044921875,
 				"v2": 1,
-				"uDistance": 0.97998046875,
-				"vDistance": 0.6435546875
+				"uDistance": 0.96044921875,
+				"vDistance": 0.55224609375
 			},
 			"x": 0,
 			"y": 0
+		},
+		"ship": {
+			"name": "ship",
+			"width": 504,
+			"height": 504,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0,
+				"v1": 0.20166015625,
+				"u2": 0.24609375,
+				"v2": 0.44775390625,
+				"uDistance": 0.24609375,
+				"vDistance": 0.24609375
+			},
+			"x": 0,
+			"y": 1131
 		},
 		"debris": {
 			"name": "debris",
@@ -53023,15 +53031,35 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0,
-				"v1": 0.1142578125,
-				"u2": 0.41796875,
-				"v2": 0.3564453125,
+				"u1": 0.24609375,
+				"v1": 0.20556640625,
+				"u2": 0.6640625,
+				"v2": 0.44775390625,
 				"uDistance": 0.41796875,
 				"vDistance": 0.2421875
 			},
-			"x": 0,
-			"y": 1318
+			"x": 504,
+			"y": 1131
+		},
+		"uranus": {
+			"name": "uranus",
+			"width": 338,
+			"height": 427,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.6640625,
+				"v1": 0.2392578125,
+				"u2": 0.8291015625,
+				"v2": 0.44775390625,
+				"uDistance": 0.1650390625,
+				"vDistance": 0.20849609375
+			},
+			"x": 1360,
+			"y": 1131
 		},
 		"ring": {
 			"name": "ring",
@@ -53043,15 +53071,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.41796875,
-				"v1": 0.16748046875,
-				"u2": 0.60693359375,
-				"v2": 0.3564453125,
+				"u1": 0,
+				"v1": 0.0126953125,
+				"u2": 0.18896484375,
+				"v2": 0.20166015625,
 				"uDistance": 0.18896484375,
 				"vDistance": 0.18896484375
 			},
-			"x": 856,
-			"y": 1318
+			"x": 0,
+			"y": 1635
 		},
 		"nb1": {
 			"name": "nb1",
@@ -53063,15 +53091,55 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.60693359375,
-				"v1": 0.18505859375,
-				"u2": 0.91015625,
-				"v2": 0.3564453125,
+				"u1": 0.18896484375,
+				"v1": 0.0302734375,
+				"u2": 0.4921875,
+				"v2": 0.20166015625,
 				"uDistance": 0.30322265625,
 				"vDistance": 0.17138671875
 			},
-			"x": 1243,
-			"y": 1318
+			"x": 387,
+			"y": 1635
+		},
+		"sparkle": {
+			"name": "sparkle",
+			"width": 345,
+			"height": 345,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.8291015625,
+				"v1": 0.279296875,
+				"u2": 0.99755859375,
+				"v2": 0.44775390625,
+				"uDistance": 0.16845703125,
+				"vDistance": 0.16845703125
+			},
+			"x": 1698,
+			"y": 1131
+		},
+		"logo": {
+			"name": "logo",
+			"width": 299,
+			"height": 331,
+			"sprite": {
+				"name": "sprite-3.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.4921875,
+				"v1": 0.0400390625,
+				"u2": 0.63818359375,
+				"v2": 0.20166015625,
+				"uDistance": 0.14599609375,
+				"vDistance": 0.16162109375
+			},
+			"x": 1008,
+			"y": 1635
 		},
 		"Edge-of-Tomorrow": {
 			"name": "Edge-of-Tomorrow",
@@ -53083,18 +53151,18 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.91015625,
-				"v1": 0.27392578125,
-				"u2": 0.99267578125,
-				"v2": 0.3564453125,
+				"u1": 0.63818359375,
+				"v1": 0.119140625,
+				"u2": 0.720703125,
+				"v2": 0.20166015625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1864,
-			"y": 1318
+			"x": 1307,
+			"y": 1635
 		},
-		"FANTASTIC-BEASTS": {
-			"name": "FANTASTIC-BEASTS",
+		"The-Avengers": {
+			"name": "The-Avengers",
 			"width": 169,
 			"height": 169,
 			"sprite": {
@@ -53103,15 +53171,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.91015625,
-				"v1": 0.19140625,
-				"u2": 0.99267578125,
-				"v2": 0.27392578125,
+				"u1": 0.720703125,
+				"v1": 0.119140625,
+				"u2": 0.80322265625,
+				"v2": 0.20166015625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 1864,
-			"y": 1487
+			"x": 1476,
+			"y": 1635
 		},
 		"Gravity": {
 			"name": "Gravity",
@@ -53123,15 +53191,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0,
-				"v1": 0.03173828125,
-				"u2": 0.08251953125,
-				"v2": 0.1142578125,
+				"u1": 0.80322265625,
+				"v1": 0.119140625,
+				"u2": 0.8857421875,
+				"v2": 0.20166015625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 0,
-			"y": 1814
+			"x": 1645,
+			"y": 1635
 		},
 		"Guardians-of-the-Galaxy": {
 			"name": "Guardians-of-the-Galaxy",
@@ -53143,95 +53211,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.08251953125,
-				"v1": 0.03173828125,
-				"u2": 0.1650390625,
-				"v2": 0.1142578125,
+				"u1": 0.8857421875,
+				"v1": 0.119140625,
+				"u2": 0.96826171875,
+				"v2": 0.20166015625,
 				"uDistance": 0.08251953125,
 				"vDistance": 0.08251953125
 			},
-			"x": 169,
-			"y": 1814
-		},
-		"Iron-Man": {
-			"name": "Iron-Man",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.1650390625,
-				"v1": 0.03173828125,
-				"u2": 0.24755859375,
-				"v2": 0.1142578125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 338,
-			"y": 1814
-		},
-		"MOANA": {
-			"name": "MOANA",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.24755859375,
-				"v1": 0.03173828125,
-				"u2": 0.330078125,
-				"v2": 0.1142578125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 507,
-			"y": 1814
-		},
-		"Oblivion": {
-			"name": "Oblivion",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.330078125,
-				"v1": 0.03173828125,
-				"u2": 0.41259765625,
-				"v2": 0.1142578125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 676,
-			"y": 1814
-		},
-		"Pacific-Rim": {
-			"name": "Pacific-Rim",
-			"width": 169,
-			"height": 169,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.41259765625,
-				"v1": 0.03173828125,
-				"u2": 0.4951171875,
-				"v2": 0.1142578125,
-				"uDistance": 0.08251953125,
-				"vDistance": 0.08251953125
-			},
-			"x": 845,
-			"y": 1814
+			"x": 1814,
+			"y": 1635
 		},
 		"start": {
 			"name": "start",
@@ -53243,35 +53231,15 @@
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.4951171875,
-				"v1": 0.0400390625,
-				"u2": 0.84912109375,
-				"v2": 0.1142578125,
+				"u1": 0.63818359375,
+				"v1": 0.044921875,
+				"u2": 0.9921875,
+				"v2": 0.119140625,
 				"uDistance": 0.35400390625,
 				"vDistance": 0.07421875
 			},
-			"x": 1014,
-			"y": 1814
-		},
-		"smoke": {
-			"name": "smoke",
-			"width": 134,
-			"height": 133,
-			"sprite": {
-				"name": "sprite-3.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0.84912109375,
-				"v1": 0.04931640625,
-				"u2": 0.91455078125,
-				"v2": 0.1142578125,
-				"uDistance": 0.0654296875,
-				"vDistance": 0.06494140625
-			},
-			"x": 1739,
-			"y": 1814
+			"x": 1307,
+			"y": 1804
 		}
 	};
 
@@ -53280,10 +53248,10 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"stars": {
-			"name": "stars",
-			"width": 1318,
-			"height": 1318,
+		"cockpit": {
+			"name": "cockpit",
+			"width": 1924,
+			"height": 1084,
 			"sprite": {
 				"name": "sprite-4.png",
 				"width": 2048,
@@ -53291,11 +53259,11 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.3564453125,
-				"u2": 0.6435546875,
+				"v1": 0.470703125,
+				"u2": 0.939453125,
 				"v2": 1,
-				"uDistance": 0.6435546875,
-				"vDistance": 0.6435546875
+				"uDistance": 0.939453125,
+				"vDistance": 0.529296875
 			},
 			"x": 0,
 			"y": 0
@@ -53311,54 +53279,114 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.1142578125,
+				"v1": 0.228515625,
 				"u2": 0.939453125,
-				"v2": 0.3564453125,
+				"v2": 0.470703125,
 				"uDistance": 0.939453125,
 				"vDistance": 0.2421875
 			},
 			"x": 0,
-			"y": 1318
+			"y": 1084
 		},
-		"sparkle": {
-			"name": "sparkle",
-			"width": 345,
-			"height": 345,
+		"Iron-Man": {
+			"name": "Iron-Man",
+			"width": 169,
+			"height": 169,
 			"sprite": {
 				"name": "sprite-4.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.6435546875,
-				"v1": 0.83154296875,
-				"u2": 0.81201171875,
-				"v2": 1,
-				"uDistance": 0.16845703125,
-				"vDistance": 0.16845703125
+				"u1": 0,
+				"v1": 0.14599609375,
+				"u2": 0.08251953125,
+				"v2": 0.228515625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
 			},
-			"x": 1318,
-			"y": 0
+			"x": 0,
+			"y": 1580
 		},
-		"logo": {
-			"name": "logo",
-			"width": 299,
-			"height": 331,
+		"MOANA": {
+			"name": "MOANA",
+			"width": 169,
+			"height": 169,
 			"sprite": {
 				"name": "sprite-4.png",
 				"width": 2048,
 				"height": 2048
 			},
 			"uv": {
-				"u1": 0.81201171875,
-				"v1": 0.83837890625,
-				"u2": 0.9580078125,
-				"v2": 1,
-				"uDistance": 0.14599609375,
-				"vDistance": 0.16162109375
+				"u1": 0.08251953125,
+				"v1": 0.14599609375,
+				"u2": 0.1650390625,
+				"v2": 0.228515625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
 			},
-			"x": 1663,
-			"y": 0
+			"x": 169,
+			"y": 1580
+		},
+		"Oblivion": {
+			"name": "Oblivion",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-4.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.1650390625,
+				"v1": 0.14599609375,
+				"u2": 0.24755859375,
+				"v2": 0.228515625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 338,
+			"y": 1580
+		},
+		"Pacific-Rim": {
+			"name": "Pacific-Rim",
+			"width": 169,
+			"height": 169,
+			"sprite": {
+				"name": "sprite-4.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.24755859375,
+				"v1": 0.14599609375,
+				"u2": 0.330078125,
+				"v2": 0.228515625,
+				"uDistance": 0.08251953125,
+				"vDistance": 0.08251953125
+			},
+			"x": 507,
+			"y": 1580
+		},
+		"smoke": {
+			"name": "smoke",
+			"width": 134,
+			"height": 133,
+			"sprite": {
+				"name": "sprite-4.png",
+				"width": 2048,
+				"height": 2048
+			},
+			"uv": {
+				"u1": 0.330078125,
+				"v1": 0.16357421875,
+				"u2": 0.3955078125,
+				"v2": 0.228515625,
+				"uDistance": 0.0654296875,
+				"vDistance": 0.06494140625
+			},
+			"x": 676,
+			"y": 1580
 		}
 	};
 
@@ -53367,10 +53395,10 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"nebula": {
-			"name": "nebula",
-			"width": 1301,
-			"height": 1301,
+		"skybox": {
+			"name": "skybox",
+			"width": 2021,
+			"height": 1014,
 			"sprite": {
 				"name": "sprite-5.png",
 				"width": 2048,
@@ -53378,11 +53406,11 @@
 			},
 			"uv": {
 				"u1": 0,
-				"v1": 0.36474609375,
-				"u2": 0.63525390625,
+				"v1": 0.5048828125,
+				"u2": 0.98681640625,
 				"v2": 1,
-				"uDistance": 0.63525390625,
-				"vDistance": 0.63525390625
+				"uDistance": 0.98681640625,
+				"vDistance": 0.4951171875
 			},
 			"x": 0,
 			"y": 0
@@ -53391,107 +53419,6 @@
 
 /***/ },
 /* 59 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"universe": {
-			"name": "universe",
-			"width": 1967,
-			"height": 1131,
-			"sprite": {
-				"name": "sprite-6.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.44775390625,
-				"u2": 0.96044921875,
-				"v2": 1,
-				"uDistance": 0.96044921875,
-				"vDistance": 0.55224609375
-			},
-			"x": 0,
-			"y": 0
-		}
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"cockpit": {
-			"name": "cockpit",
-			"width": 1924,
-			"height": 1084,
-			"sprite": {
-				"name": "sprite-7.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.470703125,
-				"u2": 0.939453125,
-				"v2": 1,
-				"uDistance": 0.939453125,
-				"vDistance": 0.529296875
-			},
-			"x": 0,
-			"y": 0
-		}
-	};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"dirty": {
-			"name": "dirty",
-			"width": 1028,
-			"height": 1028,
-			"sprite": {
-				"name": "sprite-8.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.498046875,
-				"u2": 0.501953125,
-				"v2": 1,
-				"uDistance": 0.501953125,
-				"vDistance": 0.501953125
-			},
-			"x": 0,
-			"y": 0
-		},
-		"skybox": {
-			"name": "skybox",
-			"width": 2028,
-			"height": 1014,
-			"sprite": {
-				"name": "sprite-8.png",
-				"width": 2048,
-				"height": 2048
-			},
-			"uv": {
-				"u1": 0,
-				"v1": 0.0029296875,
-				"u2": 0.990234375,
-				"v2": 0.498046875,
-				"uDistance": 0.990234375,
-				"vDistance": 0.4951171875
-			},
-			"x": 0,
-			"y": 1028
-		}
-	};
-
-/***/ },
-/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53500,7 +53427,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Actor
 	 */
@@ -53524,7 +53451,7 @@
 	//# sourceMappingURL=Actor.js.map
 
 /***/ },
-/* 63 */
+/* 60 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53566,7 +53493,7 @@
 	//# sourceMappingURL=BaseCharacter.js.map
 
 /***/ },
-/* 64 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53575,7 +53502,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Actress
 	 */
@@ -53599,7 +53526,7 @@
 	//# sourceMappingURL=Actress.js.map
 
 /***/ },
-/* 65 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53608,7 +53535,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Animation
 	 */
@@ -53632,7 +53559,7 @@
 	//# sourceMappingURL=Animation.js.map
 
 /***/ },
-/* 66 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53641,7 +53568,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: ArtDirector
 	 */
@@ -53665,7 +53592,7 @@
 	//# sourceMappingURL=ArtDirector.js.map
 
 /***/ },
-/* 67 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53674,7 +53601,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Artist3d
 	 */
@@ -53698,7 +53625,7 @@
 	//# sourceMappingURL=Artist3D.js.map
 
 /***/ },
-/* 68 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53707,7 +53634,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: CameraDirector
 	 */
@@ -53731,7 +53658,7 @@
 	//# sourceMappingURL=CameraDirector.js.map
 
 /***/ },
-/* 69 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53740,7 +53667,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: ConceptArtist
 	 */
@@ -53764,7 +53691,7 @@
 	//# sourceMappingURL=ConceptArtist.js.map
 
 /***/ },
-/* 70 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53773,7 +53700,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: CostumeDesigner
 	 */
@@ -53797,7 +53724,7 @@
 	//# sourceMappingURL=CostumeDesigner.js.map
 
 /***/ },
-/* 71 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53806,7 +53733,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Director
 	 */
@@ -53830,7 +53757,7 @@
 	//# sourceMappingURL=Director.js.map
 
 /***/ },
-/* 72 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53839,7 +53766,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Editor
 	 */
@@ -53863,7 +53790,7 @@
 	//# sourceMappingURL=Editor.js.map
 
 /***/ },
-/* 73 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53872,7 +53799,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Effects
 	 */
@@ -53896,7 +53823,7 @@
 	//# sourceMappingURL=Effects.js.map
 
 /***/ },
-/* 74 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53905,7 +53832,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: ExecutiveProducer
 	 */
@@ -53929,7 +53856,7 @@
 	//# sourceMappingURL=ExecutiveProducer.js.map
 
 /***/ },
-/* 75 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53938,7 +53865,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: LightingArtist
 	 */
@@ -53962,7 +53889,7 @@
 	//# sourceMappingURL=LightingArtist.js.map
 
 /***/ },
-/* 76 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53971,7 +53898,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: MakeUpArtist
 	 */
@@ -53995,7 +53922,7 @@
 	//# sourceMappingURL=MakeUpArtist.js.map
 
 /***/ },
-/* 77 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54004,7 +53931,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: PackagingDesigner
 	 */
@@ -54028,7 +53955,7 @@
 	//# sourceMappingURL=PackagingDesigner.js.map
 
 /***/ },
-/* 78 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54037,7 +53964,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: PreStageProjectCoordinator
 	 */
@@ -54061,7 +53988,7 @@
 	//# sourceMappingURL=PreStageProjectCoordinator.js.map
 
 /***/ },
-/* 79 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54070,7 +53997,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: ProjectCoordinator
 	 */
@@ -54094,7 +54021,7 @@
 	//# sourceMappingURL=ProjectCoordinator.js.map
 
 /***/ },
-/* 80 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54103,7 +54030,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Prop
 	 */
@@ -54127,7 +54054,7 @@
 	//# sourceMappingURL=Prop.js.map
 
 /***/ },
-/* 81 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54136,7 +54063,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: RecordingArtist
 	 */
@@ -54160,7 +54087,7 @@
 	//# sourceMappingURL=RecordingArtist.js.map
 
 /***/ },
-/* 82 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54169,7 +54096,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: RenderAndComposite
 	 */
@@ -54193,7 +54120,7 @@
 	//# sourceMappingURL=RenderAndComposite.js.map
 
 /***/ },
-/* 83 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54202,7 +54129,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: RiggingArtist
 	 */
@@ -54226,7 +54153,7 @@
 	//# sourceMappingURL=RiggingArtist.js.map
 
 /***/ },
-/* 84 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54235,7 +54162,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: Screenwriter
 	 */
@@ -54259,7 +54186,7 @@
 	//# sourceMappingURL=Screenwriter.js.map
 
 /***/ },
-/* 85 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54268,7 +54195,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: ScriptSupervisor
 	 */
@@ -54292,7 +54219,7 @@
 	//# sourceMappingURL=ScriptSupervisor.js.map
 
 /***/ },
-/* 86 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54301,7 +54228,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: SetDesigner
 	 */
@@ -54325,7 +54252,7 @@
 	//# sourceMappingURL=SetDesigner.js.map
 
 /***/ },
-/* 87 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54334,7 +54261,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: SoundEffect
 	 */
@@ -54358,7 +54285,7 @@
 	//# sourceMappingURL=SoundEffect.js.map
 
 /***/ },
-/* 88 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54367,7 +54294,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: StageManager
 	 */
@@ -54391,7 +54318,7 @@
 	//# sourceMappingURL=StageManager.js.map
 
 /***/ },
-/* 89 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54400,7 +54327,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: StoryboardArtist
 	 */
@@ -54424,7 +54351,7 @@
 	//# sourceMappingURL=StoryboardArtist.js.map
 
 /***/ },
-/* 90 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54433,7 +54360,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: SwingGang
 	 */
@@ -54457,7 +54384,7 @@
 	//# sourceMappingURL=SwingGang.js.map
 
 /***/ },
-/* 91 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54466,7 +54393,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseCharacter_1 = __webpack_require__(63);
+	var BaseCharacter_1 = __webpack_require__(60);
 	/**
 	 * Character: VoiceArtist
 	 */
@@ -54490,7 +54417,7 @@
 	//# sourceMappingURL=VoiceArtist.js.map
 
 /***/ },
-/* 92 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54535,7 +54462,7 @@
 	//# sourceMappingURL=Cockpit.js.map
 
 /***/ },
-/* 93 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54584,7 +54511,7 @@
 	    Debris.prototype.update = function (debris) {
 	        var height = debris.userData.meta.view.height;
 	        if (debris.position.y >= -height) {
-	            debris.position.y -= 0.01; //1;
+	            debris.position.y -= 3; //1;
 	        }
 	        else {
 	            return true;
@@ -54596,7 +54523,7 @@
 	//# sourceMappingURL=Debris.js.map
 
 /***/ },
-/* 94 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54606,7 +54533,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Forgable_1 = __webpack_require__(53);
-	__webpack_require__(95);
+	__webpack_require__(92);
 	/**
 	 * Engine
 	 */
@@ -54684,7 +54611,7 @@
 	//# sourceMappingURL=Engine.js.map
 
 /***/ },
-/* 95 */
+/* 92 */
 /***/ function(module, exports) {
 
 	/*
@@ -55197,7 +55124,7 @@
 
 
 /***/ },
-/* 96 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55243,7 +55170,7 @@
 	//# sourceMappingURL=Flare.js.map
 
 /***/ },
-/* 97 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55349,7 +55276,7 @@
 	//# sourceMappingURL=Fx.js.map
 
 /***/ },
-/* 98 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55358,7 +55285,6 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Helpers_1 = __webpack_require__(20);
 	var Forgable_1 = __webpack_require__(53);
 	/**
 	 * Character: Base
@@ -55397,76 +55323,54 @@
 	        var geometry = _a.geometry;
 	        var material = _b.material;
 	        var group = new THREE.Group();
-	        var layers = material.clone();
-	        layers.side = THREE.BackSide;
-	        // layers.blending = THREE.AdditiveBlending;
-	        layers.opacity = .8;
-	        layers.transparent = true;
-	        layers.depthTest = true;
-	        layers.fog = false;
+	        var layers = new THREE.MeshBasicMaterial({
+	            map: material.userData.cubeSpace,
+	            side: THREE.BackSide
+	        });
+	        // layers.side = ;
+	        // layers.blending = THREE.NormalBlending;
+	        // layers.opacity = 1;
+	        // layers.transparent = true;
+	        // layers.depthTest = false;
+	        // layers.alphaTest = 0.01;
+	        // layers.fog = false;
 	        layers['userData'] = material['userData'];
-	        layers.map = material.userData.skybox;
-	        var skybox = new THREE.Mesh(new THREE.SphereBufferGeometry(5000, 30, 30), layers);
-	        var nb1 = this.forge('nb1', layers, {
-	            geometry: geometry,
-	            uvs: false
-	        });
-	        var nb2 = this.forge('nb2', layers, {
-	            geometry: geometry,
-	            uvs: false
-	        });
-	        var nb3 = this.forge('nb2', layers, {
-	            geometry: geometry,
-	            uvs: false
-	        });
-	        var dust = this.forge('dust', layers, {
-	            geometry: geometry,
-	            uvs: false
-	        }), dust2 = dust.clone(), dust3 = dust.clone(), dust4 = dust.clone(), dust5 = dust.clone();
-	        nb1.rotation.set(Helpers_1.deg2rad(0), Helpers_1.deg2rad(180), Helpers_1.deg2rad(90));
-	        nb2.rotation.set(Helpers_1.deg2rad(90), Helpers_1.deg2rad(45), Helpers_1.deg2rad(180));
-	        nb3.rotation.set(Helpers_1.deg2rad(180), Helpers_1.deg2rad(145), Helpers_1.deg2rad(270));
-	        nb1.scale.setScalar(5);
-	        nb2.scale.setScalar(6);
-	        nb3.scale.setScalar(7);
-	        dust2.rotation.set(Helpers_1.deg2rad(90), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
-	        dust3.rotation.set(Helpers_1.deg2rad(180), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
-	        dust4.rotation.set(Helpers_1.deg2rad(270), Helpers_1.deg2rad(0), Helpers_1.deg2rad(0));
-	        dust5.rotation.set(Helpers_1.deg2rad(270), Helpers_1.deg2rad(90), Helpers_1.deg2rad(60));
-	        dust2.scale.setScalar(8);
-	        dust3.scale.setScalar(11);
-	        dust4.scale.setScalar(7);
-	        dust5.scale.setScalar(11);
-	        dust.add(dust2);
-	        dust.add(dust3);
-	        dust.add(dust4);
-	        dust.add(dust5);
-	        dust.rotation.y = Helpers_1.deg2rad(180);
-	        dust.scale.set(-1, 1, 1);
-	        dust.scale.setScalar(10);
-	        skybox.scale.setScalar(50);
-	        skybox.position.set(0, 0, 0);
-	        /**
-	         * Set all child to the origin
-	         */
-	        dust.children.forEach(function (child) { return child.position.set(0, 0, 0); });
-	        [nb1, nb2, nb3].forEach(function (child) { return child.position.set(0, 0, 0); });
-	        group.add(nb1);
-	        group.add(nb2);
-	        group.add(nb3);
-	        // group.add(dust);
-	        group.add(skybox);
+	        // layers.map = material.userData.universe
+	        // layers.map =
+	        // layers.map = configureTexture(this.sprite, material.userData, 'universe-square');
+	        // let skybox = new THREE.Mesh(
+	        //     new THREE.CubeGeometry(10000, 10000, 10000, 1, 1, 1), layers
+	        // )
+	        var nebulaFarMaterial = layers.clone();
+	        nebulaFarMaterial.map = material.userData['nebula-far'];
+	        nebulaFarMaterial.blending = THREE.AdditiveBlending;
+	        nebulaFarMaterial.transparent = true;
+	        var nebulaNearMaterial = nebulaFarMaterial.clone();
+	        nebulaFarMaterial.map = material.userData['nebula-near'];
+	        var nebulaFar = new THREE.Mesh(new THREE.SphereBufferGeometry(6000, 30, 30), nebulaFarMaterial);
+	        var nebulaNear = new THREE.Mesh(new THREE.SphereBufferGeometry(6000, 30, 30), nebulaNearMaterial);
+	        nebulaFar.scale.setScalar(30 * 30);
+	        nebulaFar.position.set(0, 0, 0);
+	        nebulaFar.material['fog'] = false;
+	        nebulaFar.userData.velocity = .008;
+	        nebulaNear.scale.setScalar(30 * 5);
+	        nebulaNear.position.set(0, 0, 0);
+	        nebulaNear.material['fog'] = false;
+	        nebulaNear.userData.velocity = .005;
+	        console.log(nebulaNear);
+	        console.log(nebulaFar);
+	        group.add(nebulaFar);
+	        group.add(nebulaNear);
 	        group.userData = {
-	            materials: [skybox.material, nb1['material'], nb2['material'], nb3['material']],
 	            update: this.update.bind(this, group)
 	        };
 	        group.position.setZ(-5000);
 	        return group;
 	    };
 	    Galaxy.prototype.update = function (galaxy, time) {
-	        // galaxy.children.forEach(child => {
-	        //     child.rotation.y += child.userData.speed * 0.001
-	        // })
+	        galaxy.children.forEach(function (child) {
+	            child.rotation.y += (0.001 + child.userData.velocity) * 0.05;
+	        });
 	    };
 	    return Galaxy;
 	}(Forgable_1.Forgable));
@@ -55474,7 +55378,7 @@
 	//# sourceMappingURL=Galaxy.js.map
 
 /***/ },
-/* 99 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55504,16 +55408,18 @@
 	    });
 	    HexParticles.prototype.create = function (models, _a) {
 	        var material = _a.material;
-	        var group = new THREE.Group(), mesh = this.forge('ring', material, {
+	        var group = new THREE.Group(), mesh = this.forge('star', material, {
 	            uvs: false,
 	            position: {
-	                x: 50, y: 50, z: 20
+	                x: 50, y: 50, z: 1
 	            }
 	        });
 	        var pinkMaterial = mesh.material.clone(), pink = this.createMesh(mesh.geometry.clone(), pinkMaterial);
 	        var lilasMaterial = mesh.material.clone(), lilas = this.createMesh(mesh.geometry.clone(), lilasMaterial);
-	        pinkMaterial.color.setHex(0x7a1762);
-	        lilasMaterial.color.setHex(0xb505ce);
+	        pinkMaterial.color.setHex(0xff00c1);
+	        lilasMaterial.color.setHex(0xc90ae4);
+	        pinkMaterial.size = 10;
+	        lilasMaterial.size = 10;
 	        group.add(pink);
 	        group.add(lilas);
 	        group.add(mesh);
@@ -55526,7 +55432,7 @@
 	        return new THREE.Points(geometry, material);
 	    };
 	    HexParticles.prototype.createGeometry = function (width, height, view) {
-	        var maxParticleCount = 100, radius = view.width * 1.5, particles = new THREE.BufferGeometry(), particlePositions = new Float32Array(maxParticleCount * 3), colors = new Float32Array(maxParticleCount * 3);
+	        var maxParticleCount = 1000, radius = view.width / 2, particles = new THREE.BufferGeometry(), particlePositions = new Float32Array(maxParticleCount * 3), colors = new Float32Array(maxParticleCount * 3);
 	        /**
 	         * Store Data
 	         */
@@ -55537,14 +55443,14 @@
 	         * Add Vertices to Points
 	         */
 	        for (var i = 0; i < maxParticleCount; i++) {
-	            var vector = Helpers_1.random.vector3(0, 0, 0, radius, false);
+	            var vector = Helpers_1.random.vector3(0, 0, 0, radius, true);
 	            particlePositions[i * 3] = vector.x + Math.random();
 	            particlePositions[i * 3 + 1] = vector.y + Math.random();
 	            particlePositions[i * 3 + 2] = Helpers_1.random.between(this.camera.position.z / 4, this.camera.position.z);
 	            /**
 	             * Randomize Opacity
 	             */
-	            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = Helpers_1.random.between(1, 70) * 0.01;
+	            colors[i * 3] = colors[i * 3 + 1] = colors[i * 3 + 2] = Helpers_1.random.between(5, 30, true) * 0.01;
 	            for (var j = 0; j < 3; j++) {
 	                particles['userData'].velocities[j].push([
 	                    Helpers_1.random.between(-10, 10), Helpers_1.random.between(-10, 10)
@@ -55556,7 +55462,7 @@
 	        return particles;
 	    };
 	    HexParticles.prototype.update = function (particles) {
-	        var userData = particles.userData, distanceX = userData.view.width / 2, distanceY = userData.view.height / 2, speed = 30;
+	        var userData = particles.userData, distanceX = userData.view.width / 2, distanceY = userData.view.height / 2, speed = 100;
 	        if (userData.decay !== 0) {
 	            particles.position.y -= userData.decay;
 	            if (particles.position.y <= -userData.view.height * 3) {
@@ -55583,7 +55489,7 @@
 	//# sourceMappingURL=HexParticles.js.map
 
 /***/ },
-/* 100 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55593,7 +55499,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Forgable_1 = __webpack_require__(53);
-	var Matter = __webpack_require__(101);
+	var Matter = __webpack_require__(98);
 	var Engine = Matter.Engine, World = Matter.World, Bodies = Matter.Bodies;
 	/**
 	 * Character: Base
@@ -55648,15 +55554,27 @@
 	                z: 50
 	            }
 	        });
+	        // platform['material'].alphaTest = .4;
 	        group.add(platform);
-	        group.add(this.forge('planet', material, {
+	        var planet = this.forge('planet', material, {
 	            scale: 20,
 	            position: {
 	                x: 10,
 	                y: 10,
-	                z: 50
+	                z: 20
 	            }
-	        }));
+	        });
+	        group.add(planet);
+	        var uranus = this.forge('uranus', material, {
+	            scale: 50,
+	            position: {
+	                x: 100,
+	                y: 20,
+	                z: 1
+	            }
+	        });
+	        group.add(uranus);
+	        // planet['material'].alphaTest = .1;
 	        group.add(this.forge('transition', material, {
 	            widthFactor: 2.5,
 	            heightFactor: 1.5,
@@ -55679,6 +55597,7 @@
 	        group.add(smoke);
 	        group.userData = {
 	            update: this.update.bind(this, smoke),
+	            start: smoke.userData.start.bind(this)
 	        };
 	        return group;
 	    };
@@ -55706,6 +55625,7 @@
 	            blending: THREE.AdditiveBlending,
 	            transparent: true,
 	            size: 150,
+	            opacity: 0,
 	            alphaTest: 0.01,
 	        });
 	        smokeMaterial['userData'] = material['userData'];
@@ -55726,15 +55646,14 @@
 	                        particle: particle,
 	                        update: physics.bind(_this, particles.getAttribute('position')),
 	                        start: function () {
-	                            // setInterval(function () {
-	                            // }, 1);
+	                            smoke.material.opacity = 1;
 	                        }
 	                    };
 	                    return particles;
 	                }
 	            },
 	            position: {
-	                x: 50, y: 50, z: 50
+	                x: 50, y: 45, z: 50
 	            }
 	        });
 	        smoke.userData = smoke.geometry['userData'];
@@ -55748,7 +55667,7 @@
 	//# sourceMappingURL=Main.js.map
 
 /***/ },
-/* 101 */
+/* 98 */
 /***/ function(module, exports) {
 
 	/**
@@ -65726,7 +65645,7 @@
 	});
 
 /***/ },
-/* 102 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65776,7 +65695,7 @@
 	                hexcleStick: false,
 	                hexBag: [],
 	                hex: null,
-	                meta: __webpack_require__(103)
+	                meta: __webpack_require__(100)
 	            };
 	        },
 	        enumerable: true,
@@ -66060,7 +65979,7 @@
 	//# sourceMappingURL=Plexus-old.js.map
 
 /***/ },
-/* 103 */
+/* 100 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -66157,7 +66076,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66169,6 +66088,7 @@
 	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	var Helpers_2 = __webpack_require__(2);
+	var Proton = __webpack_require__(102);
 	/**
 	 * Plexus
 	 */
@@ -66177,24 +66097,43 @@
 	    function Plexus() {
 	        _super.apply(this, arguments);
 	        this.nodesBag = [];
+	        this.coresBag = [];
 	        this.options = {
 	            cores: {
 	                safe: true,
 	                maxDistance: 600,
-	                amount: 15,
-	                height: 150,
+	                amount: 20,
+	                height: [100, 500],
+	                rings: {
+	                    amount: 3,
+	                    radius: 100,
+	                    expo: 0.8,
+	                    segments: 100,
+	                    haze: {
+	                        material: {
+	                            color: 0x00ffd8,
+	                            opacity: 0.02,
+	                            transparent: true,
+	                        }
+	                    },
+	                    material: {
+	                        color: 0x00ffd8,
+	                        opacity: 0.3,
+	                        transparent: true,
+	                    }
+	                },
 	                nodes: {
-	                    meta: __webpack_require__(103),
-	                    amount: 4,
-	                    sphere: false,
-	                    radius: 200,
+	                    meta: __webpack_require__(100),
+	                    amount: 8,
+	                    sphere: true,
+	                    radius: 120,
 	                    safe: true,
 	                    maxDistance: 50,
 	                    line: {
 	                        material: {
-	                            color: 'white',
+	                            color: '#12d3ff',
 	                            transparent: true,
-	                            opacity: 0.1,
+	                            opacity: 0.2,
 	                            linewidth: 1,
 	                            fog: true
 	                        }
@@ -66202,7 +66141,7 @@
 	                    core: {
 	                        material: {
 	                            size: 50,
-	                            fog: false
+	                            fog: true
 	                        }
 	                    },
 	                    material: {
@@ -66211,34 +66150,35 @@
 	                    }
 	                },
 	                line: {
-	                    colors: [0xe4a500, 0x3eafe4, 0x3eafe4, 0xe4a500],
+	                    colors: [0x0068ff, 0x00ffd8],
 	                    material: {
 	                        // color: 0x051cf4,
-	                        linewidth: 1,
+	                        linewidth: 3,
 	                        transparent: true,
-	                        opacity: 0.3,
+	                        opacity: 1,
 	                        fog: true
 	                    },
 	                    margin: {
-	                        top: 7,
-	                        bottom: 2
+	                        top: 0,
+	                        bottom: 0
 	                    }
 	                },
 	                material: {
 	                    size: 50,
-	                    fog: false
+	                    fog: true
 	                }
 	            },
 	            debris: {
-	                amount: 600 * 2,
+	                amount: 600 * 10,
 	                position: {
-	                    x: 100,
-	                    y: 100,
+	                    x: 80,
+	                    y: 80,
 	                    z: 50
 	                },
 	                material: {
 	                    size: 10,
-	                    fog: false
+	                    fog: true,
+	                    opacity: 0.8,
 	                }
 	            },
 	            particles: {
@@ -66247,7 +66187,7 @@
 	                material: {
 	                    color: 'white',
 	                    size: 5,
-	                    fog: false
+	                    fog: true
 	                }
 	            }
 	        };
@@ -66268,47 +66208,99 @@
 	         * Save raw sprites
 	         */
 	        this.maps = material.userData;
-	        var geometry = this.getSpiralGeometry(), buffer = new THREE.BufferGeometry(), positions = new Float32Array((geometry.length / 2) * 3);
+	        var geometry = this.getSpiralGeometry(), positions = new Float32Array((geometry.length / 2) * 3);
 	        for (var i = 0; i < geometry.length / 2; i++) {
 	            positions[i * 3 + 0] = geometry[i * 2];
 	            positions[i * 3 + 1] = 0;
 	            positions[i * 3 + 2] = geometry[i * 2 + 1];
 	        }
-	        buffer.addAttribute('position', new THREE.BufferAttribute(positions, 3).setDynamic(true));
-	        var debris = this.createDebris(positions, this.options.debris), core = this.createCores(debris.geometry['attributes'].position, this.options.cores), particles = this.createParticles(this.options.particles);
-	        var haze = this.forge('haze', material, {
+	        var debris = this.createDebris(positions, this.options.debris), core = this.createCores(debris.geometry['attributes'].position, this.options.cores), particles = this.createParticles(this.options.particles), lensFlareA = this.createLensFlare(new THREE.Vector3(0, 0, -50000)), lensFlareB = this.createLensFlare(new THREE.Vector3(0, 0, 50000));
+	        var haze = this.forge('ring', material, {
 	            rotation: {
 	                x: 90, y: 0, z: 0
 	            }
 	        });
 	        haze['material'].side = THREE.DoubleSide;
 	        haze['material'].blending = THREE.AdditiveBlending;
-	        haze['material'].opacity = .025;
+	        haze['material'].opacity = 0.2;
 	        haze['material'].transparent = true;
 	        haze['material'].depthTest = false;
 	        haze['material'].fog = true;
-	        haze.scale.setScalar(10.19);
+	        haze.scale.setScalar(.05);
 	        haze.position.set(0, 0, 0);
-	        var smallHaze = haze.clone();
-	        smallHaze.scale.setScalar(.19);
-	        smallHaze['material'] = haze['material'].clone();
-	        smallHaze['material'].opacity = 0.05;
+	        var smallHaze = this.forge('haze', material, {
+	            rotation: {
+	                x: 90, y: 0, z: 0
+	            }
+	        });
+	        smallHaze['material'].side = THREE.DoubleSide;
+	        smallHaze['material'].blending = THREE.AdditiveBlending;
+	        smallHaze['material'].opacity = 0.1;
+	        smallHaze['material'].transparent = true;
+	        smallHaze['material'].depthTest = false;
+	        smallHaze['material'].fog = true;
+	        smallHaze.scale.setScalar(.0039);
+	        smallHaze.position.set(0, 0, 0);
+	        console.log('this', smallHaze);
+	        // smallHaze['material'].opacity = 0.04
 	        group.add(debris);
 	        group.add(core);
 	        group.add(haze);
 	        group.add(smallHaze);
 	        group.add(particles);
+	        group.add(lensFlareA);
+	        group.add(lensFlareB);
+	        // group.add(ui)
 	        group.userData = {
 	            particles: particles,
 	            materials: core.userData.materials.concat(debris.material),
 	            nodesBag: this.nodesBag,
 	            update: this.update.bind(this, group),
-	            rotate: true
+	            rotate: true,
+	            createProtons: this.createProtons.bind(this, group, core.userData.coreNode.attributes.position)
 	        };
 	        group.position.setZ(-5000);
 	        return group;
 	    };
+	    Plexus.prototype.createLensFlare = function (position, size, lens, opacity, rings) {
+	        if (size === void 0) { size = 700; }
+	        if (lens === void 0) { lens = 'lens0'; }
+	        if (opacity === void 0) { opacity = 0.7; }
+	        if (rings === void 0) { rings = true; }
+	        var flareColor = new THREE.Color(0xffffff), lensFlare = new THREE.LensFlare(this.maps[lens], size, 0.0, THREE.AdditiveBlending, flareColor);
+	        // lensFlare.add(this.maps.lens2, 512, 0.0, THREE.AdditiveBlending);
+	        // lensFlare.add(this.maps.lens2, 512, 0.0, THREE.AdditiveBlending);
+	        // lensFlare.add(this.maps.lens2, 512, 0.0, THREE.AdditiveBlending);
+	        if (rings) {
+	            lensFlare.add(this.maps.lens3, 60, 0.6, THREE.AdditiveBlending);
+	            lensFlare.add(this.maps.lens3, 70, 0.7, THREE.AdditiveBlending);
+	            lensFlare.add(this.maps.lens3, 120, 0.9, THREE.AdditiveBlending);
+	            lensFlare.add(this.maps.lens3, 70, 1.0, THREE.AdditiveBlending);
+	            lensFlare.customUpdateCallback = this.lensFlareUpdateCallback;
+	        }
+	        lensFlare.position.copy(position);
+	        lensFlare.lensFlares[0].opacity = opacity;
+	        lensFlare.lensFlares[0].scale = 2;
+	        return lensFlare;
+	    };
+	    Plexus.prototype.lensFlareUpdateCallback = function (object) {
+	        var f, fl = object.lensFlares.length, flare, vecX = -object.positionScreen.x * 2, vecY = -object.positionScreen.y * 2;
+	        for (f = 0; f < fl; f++) {
+	            flare = object.lensFlares[f];
+	            flare.x = object.positionScreen.x + vecX * flare.distance;
+	            flare.y = object.positionScreen.y + vecY * flare.distance;
+	            flare.rotation = 0;
+	        }
+	        object.lensFlares[2].y += 0.025;
+	        object.lensFlares[3].rotation = object.positionScreen.x * 0.5 + Helpers_1.deg2rad(45);
+	    };
 	    Plexus.prototype.update = function (group, anim, time, delta) {
+	        if (group.userData.proton) {
+	            group.userData.proton.update();
+	            group.userData.emitters.forEach(function (emitter) {
+	                emitter.userData.update();
+	            });
+	        }
 	        if (group.userData.rotate)
 	            group.rotation.y += 0.0001;
 	        var particles = group.userData.particles, positions = particles.geometry.attributes.position, hexBag = particles.userData.bag, distance = 1000, speed = .5;
@@ -66326,35 +66318,66 @@
 	        ;
 	        positions.needsUpdate = true;
 	    };
-	    Plexus.prototype.createNodes = function (corePosition, materials) {
-	        var _a = this.options.cores.nodes, amount = _a.amount, radius = _a.radius, sphere = _a.sphere, maxDistance = _a.maxDistance, material = _a.material, line = _a.line;
-	        var group = new THREE.Group(), segment = new THREE.BufferGeometry(), segmentPositions = new Float32Array(3 * amount * 2);
-	        var positionsBag = [{ x: 0, y: 0, z: 0 }];
+	    Plexus.prototype.createNodes = function (_a, materials) {
+	        var x = _a.x, y = _a.y, z = _a.z;
+	        var _b = this.options.cores.nodes, amount = _b.amount, radius = _b.radius, sphere = _b.sphere, maxDistance = _b.maxDistance, material = _b.material, line = _b.line;
+	        var ringsOptions = this.options.cores.rings;
+	        var group = new THREE.Group(), rings = new THREE.Group(), segment = new THREE.BufferGeometry(), circleGeometry = new THREE.CircleGeometry(ringsOptions.radius, ringsOptions.segments), ringMaterial = new THREE.LineBasicMaterial(Helpers_2.extend({ blending: THREE.AdditiveBlending }, ringsOptions.material));
+	        group.add(this.createLensFlare(new THREE.Vector3(x, y, z), 80, 'flare-ring', .2, false));
+	        circleGeometry
+	            .applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2)) // Rotate on X
+	            .vertices.shift(); // Remove The nonsence middle Point
+	        var positionsBag = [{ x: 1, y: 1, z: 1 }];
+	        var _loop_1 = function(i) {
+	            var ringGeometry = new THREE.BufferGeometry(), positions = new Float32Array(circleGeometry.vertices.length * 3);
+	            circleGeometry.vertices.forEach(function (vertice, index) {
+	                positions[index * 3 + 0] = vertice.x * ((i * ringsOptions.expo) + 1);
+	                positions[index * 3 + 1] = vertice.y * ((i * ringsOptions.expo) + 1);
+	                positions[index * 3 + 2] = vertice.z * ((i * ringsOptions.expo) + 1);
+	            });
+	            ringGeometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+	            var material_1 = ringMaterial.clone(), ring = new THREE.Line(ringGeometry, material_1);
+	            material_1.opacity = (i + 1) * .1;
+	            ring.position.set(x, y, z);
+	            rings.add(ring);
+	        };
+	        for (var i = 0; i < ringsOptions.amount; i++) {
+	            _loop_1(i);
+	        }
 	        for (var i = 0; i < amount; i++) {
 	            var node = new THREE.BufferGeometry(), nodePositions = new Float32Array(6); // at least two points or raycaster can't detect
-	            var vector = positionsBag[i + 1] = this.getPosition(function () { return Helpers_1.random.vector3(0, 0, 0, radius, sphere); }, positionsBag, maxDistance);
-	            nodePositions[0] = segmentPositions[i * 6 + 0] = corePosition.x;
-	            nodePositions[1] = segmentPositions[i * 6 + 1] = corePosition.y;
-	            nodePositions[2] = segmentPositions[i * 6 + 2] = corePosition.z;
-	            nodePositions[3] = segmentPositions[i * 6 + 3] = vector.x + corePosition.x;
-	            nodePositions[4] = segmentPositions[i * 6 + 4] = vector.y + corePosition.y;
-	            nodePositions[5] = segmentPositions[i * 6 + 5] = vector.z + corePosition.z;
+	            var vector = positionsBag[i + 1] = this.getPosition(function () {
+	                var child = Helpers_1.random.pick(rings.children), positions = child['geometry'].attributes.position, point = Helpers_1.random.between(0, positions.count * 3 - 1, true), position = point - (point % 3);
+	                return {
+	                    x: positions.array[position++],
+	                    y: positions.array[position++],
+	                    z: positions.array[position++]
+	                };
+	            }, positionsBag, maxDistance, true);
+	            nodePositions[3] = vector.x + (nodePositions[0] = x);
+	            nodePositions[4] = vector.y + (nodePositions[1] = y);
+	            nodePositions[5] = vector.z + (nodePositions[2] = z);
 	            node.drawRange.count = 1;
 	            node.drawRange.start = 1;
-	            node.addAttribute('position', new THREE.BufferAttribute(nodePositions, 3).setDynamic(true));
+	            node.addAttribute('position', new THREE.BufferAttribute(nodePositions, 3));
 	            group.add(new THREE.Points(node, materials[Helpers_1.random.between(0, materials.length - 1, true)]));
 	        }
 	        /**
 	         * Store every node for raytracing later
 	         */
-	        (_b = this.nodesBag).push.apply(_b, group.children);
-	        segment.addAttribute('position', new THREE.BufferAttribute(segmentPositions, 3));
-	        group.add(new THREE.LineSegments(segment, new THREE.LineBasicMaterial(Helpers_2.extend({}, line.material))));
+	        // this.nodesBag.push(...group.children);
+	        // segment.addAttribute('position', new THREE.BufferAttribute(segmentPositions, 3));
+	        // group.add(new THREE.LineSegments(
+	        //     segment, new THREE.LineBasicMaterial(extend({}, line.material)))
+	        // );
+	        rings.name = 'rings';
+	        (_c = this.nodesBag).push.apply(_c, group.children);
+	        group.add(rings);
 	        return group;
-	        var _b;
+	        var _c;
 	    };
 	    Plexus.prototype.createCores = function (positions, options) {
-	        var amount = options.amount, height = options.height, nodes = options.nodes, maxDistance = options.maxDistance, safe = options.safe;
+	        var amount = options.amount, nodes = options.nodes, height = options.height, maxDistance = options.maxDistance, safe = options.safe;
 	        var group = new THREE.Group(), lineMaterial = new THREE.LineBasicMaterial(Helpers_2.extend({
 	            vertexColors: THREE.VertexColors
 	        }, options.line.material)), coreNodeMaterial = new THREE.PointsMaterial(Helpers_2.extend({
@@ -66362,10 +66385,12 @@
 	            alphaTest: 0.00001,
 	            transparent: true,
 	        }, options.nodes.core.material)), coreMaterial = new THREE.PointsMaterial(Helpers_2.extend({
-	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'blue-core'),
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'core'),
 	            alphaTest: 0.00001,
 	            transparent: true,
-	        }, options.material));
+	        }, options.material)), ringHazeMaterial = new THREE.MeshBasicMaterial(Helpers_2.extend({
+	            side: THREE.DoubleSide,
+	        }, options.rings.haze.material));
 	        /**
 	         * Parse Node Materials
 	         */
@@ -66381,64 +66406,66 @@
 	            mat['userData'] = nodes.meta[key];
 	            nodeMaterials.push(mat);
 	        }
-	        var core = new THREE.BufferGeometry(), corePositions = new Float32Array(amount * 3), coreNode = new THREE.BufferGeometry(), coreNodePositions = new Float32Array(amount * 3), line = new THREE.BufferGeometry(), linePositions = new Float32Array(3 * amount * 4), // 4 number of line points 2*2
-	        lineColors = new Float32Array(3 * amount * 4); // 4 number of line points 2*2
+	        var core = new THREE.BufferGeometry(), corePositions = new Float32Array(amount * 3), coreNode = new THREE.BufferGeometry(), coreNodePositions = new Float32Array(amount * 3), line = new THREE.BufferGeometry(), linePositions = new Float32Array(3 * amount * 2), // 2 number of line points 2*2
+	        lineColors = new Float32Array(3 * amount * 2), // 2 number of line points 2*2
+	        ringHazeBuffer = new THREE.RingBufferGeometry(options.rings.radius, options.rings.radius * options.rings.amount * options.rings.expo, options.rings.segments);
 	        var color = new THREE.Color();
 	        /**
 	         * Keep an eye on the distance of each core
+	         * to control the distance between cores
 	         */
 	        var coresDistances = [];
-	        var _loop_1 = function(i) {
-	            var masterHeight = Math.random() > 0.5 ? height : -height;
+	        var _loop_2 = function(i) {
 	            var position = coresDistances[i] = this_1.pickPoint(positions, coresDistances, maxDistance, safe);
 	            corePositions[i * 3 + 0] = position.x;
-	            corePositions[i * 3 + 1] = position.y + masterHeight;
+	            corePositions[i * 3 + 1] = position.y;
 	            corePositions[i * 3 + 2] = position.z;
 	            /**
 	             * Bottom Top
 	             */
-	            linePositions[i * 12 + 0] = position.x;
-	            linePositions[i * 12 + 1] = position.y + options.line.margin.bottom;
-	            linePositions[i * 12 + 2] = position.z;
-	            linePositions[i * 12 + 3] = position.x;
-	            linePositions[i * 12 + 4] = position.y + masterHeight - options.line.margin.top;
-	            linePositions[i * 12 + 5] = position.z;
-	            /**
-	             * Top Up
-	             */
-	            linePositions[i * 12 + 6] = linePositions[i * 12 + 3];
-	            linePositions[i * 12 + 7] = position.y + masterHeight + options.line.margin.top;
-	            linePositions[i * 12 + 8] = linePositions[i * 12 + 5];
-	            linePositions[i * 12 + 9] = linePositions[i * 12 + 0];
-	            linePositions[i * 12 + 10] = position.y + masterHeight * 2;
-	            linePositions[i * 12 + 11] = linePositions[i * 12 + 2];
+	            linePositions[i * 6 + 0] = position.x;
+	            linePositions[i * 6 + 1] = position.y + options.line.margin.bottom;
+	            linePositions[i * 6 + 2] = position.z;
+	            var height1 = (Array.isArray(height) ? Helpers_1.random.between(height[0], height[1], true) : height), heightRandom = Helpers_1.random.pick([height1, -height1]);
+	            linePositions[i * 6 + 3] = position.x;
+	            linePositions[i * 6 + 4] = position.y + heightRandom;
+	            linePositions[i * 6 + 5] = position.z;
 	            /**
 	             * Node final position
 	             */
 	            var x = void 0, y = void 0, z = void 0;
-	            coreNodePositions[i * 3 + 0] = x = linePositions[i * 12 + 9];
-	            coreNodePositions[i * 3 + 1] = y = linePositions[i * 12 + 10];
-	            coreNodePositions[i * 3 + 2] = z = linePositions[i * 12 + 11];
+	            coreNodePositions[i * 3 + 0] = x = linePositions[i * 6 + 3];
+	            coreNodePositions[i * 3 + 1] = y = linePositions[i * 6 + 4] + options.line.margin.top;
+	            coreNodePositions[i * 3 + 2] = z = linePositions[i * 6 + 5];
 	            group.add(this_1.createNodes({ x: x, y: y, z: z }, nodeMaterials));
+	            /**
+	             * Create ring haze
+	             */
+	            var ringHaze = new THREE.Mesh(ringHazeBuffer, ringHazeMaterial);
+	            ringHaze.rotateX(Math.PI / 2);
+	            ringHaze.position.set(x, y, z);
+	            group.add(ringHaze);
 	            options.line.colors.forEach(function (hex, index) {
 	                color.set(hex);
-	                lineColors[i * 12 + index * 3 + 0] = color.r;
-	                lineColors[i * 12 + index * 3 + 1] = color.g;
-	                lineColors[i * 12 + index * 3 + 2] = color.b;
+	                lineColors[i * 6 + index * 3 + 0] = color.r;
+	                lineColors[i * 6 + index * 3 + 1] = color.g;
+	                lineColors[i * 6 + index * 3 + 2] = color.b;
 	            });
 	        };
 	        var this_1 = this;
 	        for (var i = 0; i < amount; i++) {
-	            _loop_1(i);
+	            _loop_2(i);
 	        }
+	        // console.log('lines', linePositions)
 	        core.addAttribute('position', new THREE.BufferAttribute(corePositions, 3));
 	        coreNode.addAttribute('position', new THREE.BufferAttribute(coreNodePositions, 3));
 	        line.addAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 	        line.addAttribute('color', new THREE.BufferAttribute(lineColors, 3));
 	        group.add(new THREE.Points(core, coreMaterial));
-	        group.add(new THREE.Points(coreNode, coreNodeMaterial));
+	        group.add(new THREE.Points(coreNode)); //, coreNodeMaterial));
 	        group.add(new THREE.LineSegments(line, lineMaterial));
 	        group.userData.materials = nodeMaterials.concat(coreMaterial, coreNodeMaterial, lineMaterial);
+	        group.userData.coreNode = coreNode;
 	        return group;
 	    };
 	    Plexus.prototype.createDebris = function (spiral, options) {
@@ -66477,7 +66504,7 @@
 	            });
 	        }
 	        ;
-	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3).setDynamic(true));
+	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
 	        var particles = new THREE.Points(geometry, new THREE.PointsMaterial(Helpers_2.extend({
 	            blending: THREE.AdditiveBlending,
 	            opacity: 0.3,
@@ -66494,7 +66521,7 @@
 	     */
 	    Plexus.prototype.pickPoint = function (positions, collection, maxDistance, safe) {
 	        return this.getPosition(function () {
-	            var point = Helpers_1.random.between(0, positions.count, true), position = point - (point % 3);
+	            var point = Helpers_1.random.between(0, positions.count * 3 - 1, true), position = point - (point % 3);
 	            return {
 	                x: positions.array[position++],
 	                y: positions.array[position++],
@@ -66515,10 +66542,66 @@
 	        }
 	        return origin;
 	    };
+	    Plexus.prototype.createSprite = function () {
+	        var material = new THREE.SpriteMaterial({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'star'),
+	            color: 0xff0000,
+	            blending: THREE.AdditiveBlending,
+	        });
+	        return new THREE.Sprite(material);
+	    };
+	    Plexus.prototype.createProtons = function (plexus, cores, protonBean) {
+	        var proton = protonBean.userData.proton, colorA = new THREE.Color(0x340d01), colorB = new THREE.Color(0xef3b04);
+	        var life = new Proton.Life(0.4, .3), body = new Proton.Body(this.createSprite()), radius = new Proton.Radius(50, 30), velocity = new Proton.V([10, 30], new Proton.Vector3D(1, 1, 1), 50), mass = new Proton.Mass(5), 
+	        // rate = new Proton.Rate(new Proton.Span(3, 7), new Proton.Span(.001, .002)),
+	        rate = new Proton.Rate(0), scale = new Proton.Scale([1, .9], [.8, 1]), colorBehaviour = new Proton.Color(colorA, colorB);
+	        var emitters = [];
+	        setTimeout(function () {
+	            rate.numPan.a = 3;
+	            rate.numPan.b = 7;
+	            rate.timePan.a = 0.001;
+	            rate.timePan.b = 0.002;
+	        }, 15000);
+	        var _loop_3 = function(i) {
+	            var emitter = new Proton.Emitter();
+	            //setRate
+	            emitter.rate = rate;
+	            // emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, -32, 7)));
+	            emitter.addInitialize(mass);
+	            emitter.addInitialize(life);
+	            emitter.addInitialize(body);
+	            emitter.addInitialize(radius);
+	            emitter.addInitialize(velocity);
+	            emitter.addBehaviour(scale);
+	            emitter.addBehaviour(colorBehaviour);
+	            emitter.userData = {
+	                update: function () {
+	                    var core = new THREE.Vector3(cores.array[i * 3 + 0], cores.array[i * 3 + 1], cores.array[i * 3 + 2]);
+	                    var position = core.applyMatrix4(plexus.matrix);
+	                    emitter.p.x = position.x;
+	                    emitter.p.y = position.y;
+	                    emitter.p.z = position.z;
+	                }
+	            };
+	            emitter.userData.update();
+	            emitter.emit();
+	            emitters.push(emitter);
+	            proton.addEmitter(emitter);
+	        };
+	        for (var i = 0; i < cores.count; i++) {
+	            _loop_3(i);
+	        }
+	        console.log(emitters);
+	        plexus.userData.proton = proton;
+	        plexus.userData.emitters = emitters;
+	    };
 	    Plexus.prototype.distanceTo = function (v1, v2) {
 	        var x = v2.x - v1.x, y = v2.y - v1.y, z = v2.z - v1.z;
 	        return Math.sqrt(x * x + y * y + z * z);
 	    };
+	    /**
+	     * X,Z
+	     */
 	    Plexus.prototype.getSpiralGeometry = function () {
 	        return [
 	            -0.5239, -1612.6000,
@@ -66872,94 +66955,7 @@
 	//# sourceMappingURL=Plexus.js.map
 
 /***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Forgable_1 = __webpack_require__(53);
-	var Helpers_1 = __webpack_require__(20);
-	var Proton = __webpack_require__(106);
-	/**
-	 * Proton
-	 */
-	var ProtonBean = (function (_super) {
-	    __extends(ProtonBean, _super);
-	    function ProtonBean() {
-	        _super.apply(this, arguments);
-	    }
-	    Object.defineProperty(ProtonBean.prototype, "materials", {
-	        get: function () {
-	            return {
-	                material: 'IntroDefaultMaterial'
-	            };
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    ProtonBean.prototype.create = function (models, _a) {
-	        var material = _a.material;
-	        /**
-	         * Save raw sprites
-	         */
-	        this.maps = material.userData;
-	        var proton = new Proton();
-	        var emitter = new Proton.Emitter();
-	        //setRate
-	        emitter.rate = new Proton.Rate(new Proton.Span(5, 7), new Proton.Span(.01, .02));
-	        //addInitialize
-	        emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, 10, 7)));
-	        emitter.addInitialize(new Proton.Mass(1));
-	        emitter.addInitialize(new Proton.Life(0.5, 1));
-	        emitter.addInitialize(new Proton.Body(this.createSprite()));
-	        emitter.addInitialize(new Proton.Radius(40, 1));
-	        // emitter.addInitialize(new Proton.V(45, new Proton.Vector3D(0, -10, 0), 0));
-	        // emitter.addInitialize(new Proton.Velocity(3, 1, 'polar'));
-	        console.log(emitter);
-	        //addBehaviour
-	        // emitter.addBehaviour(new Proton.Alpha(1, 0));
-	        // emitter.addBehaviour(new Proton.Scale([1,2], [.3,1]));
-	        emitter.addBehaviour(new Proton.Force(0, -1.5, 0));
-	        var color1 = new THREE.Color('#4F1500');
-	        var color2 = new THREE.Color('#0029FF');
-	        var colorBehaviour = new Proton.Color(color1, color2);
-	        emitter.addBehaviour(colorBehaviour);
-	        emitter.emit();
-	        //add emitter
-	        proton.addEmitter(emitter);
-	        //add renderer
-	        proton.addRender(new Proton.SpriteRender(this.app.scene));
-	        proton.userData = {
-	            position: new THREE.Vector3(),
-	            update: this.update.bind(this, proton, emitter)
-	        };
-	        return proton;
-	    };
-	    ProtonBean.prototype.update = function (proton, emitter, time, delta) {
-	        proton.update();
-	        emitter.p.x = proton.userData.position.x;
-	        emitter.p.y = proton.userData.position.y;
-	        emitter.p.z = proton.userData.position.z;
-	    };
-	    ProtonBean.prototype.createSprite = function () {
-	        var material = new THREE.SpriteMaterial({
-	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'star'),
-	            color: 0xff0000,
-	            blending: THREE.AdditiveBlending,
-	        });
-	        return new THREE.Sprite(material);
-	    };
-	    return ProtonBean;
-	}(Forgable_1.Forgable));
-	exports.ProtonBean = ProtonBean;
-	//# sourceMappingURL=ProtonBean.js.map
-
-/***/ },
-/* 106 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -70801,7 +70797,886 @@
 	}));
 
 /***/ },
-/* 107 */
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(53);
+	var Helpers_1 = __webpack_require__(20);
+	var Helpers_2 = __webpack_require__(2);
+	var Proton = __webpack_require__(102);
+	/**
+	 * Plexus
+	 */
+	var PlexusTemp = (function (_super) {
+	    __extends(PlexusTemp, _super);
+	    function PlexusTemp() {
+	        _super.apply(this, arguments);
+	        this.nodesBag = [];
+	        this.coresBag = [];
+	        this.options = {
+	            cores: {
+	                safe: true,
+	                maxDistance: 600,
+	                amount: 20,
+	                height: 150,
+	                nodes: {
+	                    meta: __webpack_require__(100),
+	                    amount: 8,
+	                    sphere: true,
+	                    radius: 120,
+	                    safe: true,
+	                    maxDistance: 50,
+	                    line: {
+	                        material: {
+	                            color: '#12d3ff',
+	                            transparent: true,
+	                            opacity: 0.2,
+	                            linewidth: 1,
+	                            fog: true
+	                        }
+	                    },
+	                    core: {
+	                        material: {
+	                            size: 50,
+	                            fog: true
+	                        }
+	                    },
+	                    material: {
+	                        size: 50,
+	                        fog: true
+	                    }
+	                },
+	                line: {
+	                    colors: [0xe4a500, 0x3eafe4, 0x3eafe4, 0xe4a500],
+	                    material: {
+	                        // color: 0x051cf4,
+	                        linewidth: 1,
+	                        transparent: true,
+	                        opacity: 0.2,
+	                        fog: true
+	                    },
+	                    margin: {
+	                        top: 7,
+	                        bottom: 2
+	                    }
+	                },
+	                material: {
+	                    size: 50,
+	                    fog: true
+	                }
+	            },
+	            debris: {
+	                amount: 600 * 10,
+	                position: {
+	                    x: 80,
+	                    y: 80,
+	                    z: 50
+	                },
+	                material: {
+	                    size: 10,
+	                    fog: true,
+	                    opacity: 0.3,
+	                }
+	            },
+	            particles: {
+	                amount: 500,
+	                radius: 4000,
+	                material: {
+	                    color: 'white',
+	                    size: 5,
+	                    fog: true
+	                }
+	            }
+	        };
+	    }
+	    Object.defineProperty(PlexusTemp.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    PlexusTemp.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        var group = new THREE.Group();
+	        /**
+	         * Save raw sprites
+	         */
+	        this.maps = material.userData;
+	        var geometry = this.getSpiralGeometry(), positions = new Float32Array((geometry.length / 2) * 3);
+	        for (var i = 0; i < geometry.length / 2; i++) {
+	            positions[i * 3 + 0] = geometry[i * 2];
+	            positions[i * 3 + 1] = 0;
+	            positions[i * 3 + 2] = geometry[i * 2 + 1];
+	        }
+	        var debris = this.createDebris(positions, this.options.debris), core = this.createCores(debris.geometry['attributes'].position, this.options.cores), particles = this.createParticles(this.options.particles);
+	        var haze = this.forge('haze', material, {
+	            rotation: {
+	                x: 90, y: 0, z: 0
+	            }
+	        });
+	        haze['material'].side = THREE.DoubleSide;
+	        haze['material'].blending = THREE.AdditiveBlending;
+	        haze['material'].opacity = 0.080;
+	        haze['material'].transparent = true;
+	        haze['material'].depthTest = false;
+	        haze['material'].fog = true;
+	        haze.scale.setScalar(.19);
+	        haze.position.set(0, 0, 0);
+	        var smallHaze = haze.clone();
+	        smallHaze.scale.setScalar(.004);
+	        smallHaze['material'] = haze['material'].clone();
+	        smallHaze['material'].opacity = 0.05;
+	        group.add(debris);
+	        group.add(core);
+	        group.add(haze);
+	        group.add(smallHaze);
+	        group.add(particles);
+	        // group.add(ui)
+	        group.userData = {
+	            particles: particles,
+	            materials: core.userData.materials.concat(debris.material),
+	            nodesBag: this.nodesBag,
+	            update: this.update.bind(this, group),
+	            rotate: true,
+	            createProtons: this.createProtons.bind(this, group, core.userData.coreNode.attributes.position)
+	        };
+	        group.position.setZ(-5000);
+	        return group;
+	    };
+	    PlexusTemp.prototype.update = function (group, anim, time, delta) {
+	        if (group.userData.proton) {
+	            group.userData.proton.update();
+	            group.userData.emitters.forEach(function (emitter) {
+	                emitter.userData.update();
+	            });
+	        }
+	        if (group.userData.rotate)
+	            group.rotation.y += 0.0001;
+	        var particles = group.userData.particles, positions = particles.geometry.attributes.position, hexBag = particles.userData.bag, distance = 1000, speed = .5;
+	        for (var i = 0; i < positions.count; i++) {
+	            positions.array[i * 3] += hexBag[i].velocity.x * speed;
+	            positions.array[i * 3 + 1] += hexBag[i].velocity.y * speed;
+	            positions.array[i * 3 + 2] += hexBag[i].velocity.z * speed;
+	            if (positions.array[i * 3 + 1] < -distance || positions.array[i * 3 + 1] > distance)
+	                hexBag[i].velocity.y = -hexBag[i].velocity.y;
+	            if (positions.array[i * 3] < -distance || positions.array[i * 3] > distance)
+	                hexBag[i].velocity.x = -hexBag[i].velocity.x;
+	            if (positions.array[i * 3 + 2] < -distance || positions.array[i * 3 + 2] > distance)
+	                hexBag[i].velocity.z = -hexBag[i].velocity.z;
+	        }
+	        ;
+	        positions.needsUpdate = true;
+	    };
+	    PlexusTemp.prototype.createNodes = function (corePosition, materials) {
+	        var _a = this.options.cores.nodes, amount = _a.amount, radius = _a.radius, sphere = _a.sphere, maxDistance = _a.maxDistance, material = _a.material, line = _a.line;
+	        var group = new THREE.Group(), segment = new THREE.BufferGeometry(), segmentPositions = new Float32Array(3 * amount * 2);
+	        var positionsBag = [{ x: 0, y: 0, z: 0 }];
+	        for (var i = 0; i < amount; i++) {
+	            var node = new THREE.BufferGeometry(), nodePositions = new Float32Array(6); // at least two points or raycaster can't detect
+	            var vector = positionsBag[i + 1] = this.getPosition(function () { return Helpers_1.random.vector3(0, 0, 0, radius, sphere); }, positionsBag, maxDistance);
+	            nodePositions[0] = segmentPositions[i * 6 + 0] = corePosition.x;
+	            nodePositions[1] = segmentPositions[i * 6 + 1] = corePosition.y;
+	            nodePositions[2] = segmentPositions[i * 6 + 2] = corePosition.z;
+	            nodePositions[3] = segmentPositions[i * 6 + 3] = vector.x + corePosition.x;
+	            nodePositions[4] = segmentPositions[i * 6 + 4] = vector.y + corePosition.y;
+	            nodePositions[5] = segmentPositions[i * 6 + 5] = vector.z + corePosition.z;
+	            node.drawRange.count = 1;
+	            node.drawRange.start = 1;
+	            node.addAttribute('position', new THREE.BufferAttribute(nodePositions, 3).setDynamic(true));
+	            group.add(new THREE.Points(node, materials[Helpers_1.random.between(0, materials.length - 1, true)]));
+	        }
+	        /**
+	         * Store every node for raytracing later
+	         */
+	        (_b = this.nodesBag).push.apply(_b, group.children);
+	        segment.addAttribute('position', new THREE.BufferAttribute(segmentPositions, 3));
+	        group.add(new THREE.LineSegments(segment, new THREE.LineBasicMaterial(Helpers_2.extend({}, line.material))));
+	        return group;
+	        var _b;
+	    };
+	    PlexusTemp.prototype.createCores = function (positions, options) {
+	        var amount = options.amount, height = options.height, nodes = options.nodes, maxDistance = options.maxDistance, safe = options.safe;
+	        var group = new THREE.Group(), lineMaterial = new THREE.LineBasicMaterial(Helpers_2.extend({
+	            vertexColors: THREE.VertexColors
+	        }, options.line.material)), coreNodeMaterial = new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'core'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	        }, options.nodes.core.material)), coreMaterial = new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'blue-core'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	        }, options.material));
+	        /**
+	         * Parse Node Materials
+	         */
+	        var nodeMaterials = [];
+	        for (var key in nodes.meta) {
+	            var mat = new THREE.PointsMaterial(Helpers_2.extend({
+	                size: 60,
+	                map: Helpers_1.configureTexture(this.sprite, this.maps, key),
+	                transparent: true,
+	                alphaTest: 0.5,
+	                sizeAttenuation: true,
+	            }, nodes.material));
+	            mat['userData'] = nodes.meta[key];
+	            nodeMaterials.push(mat);
+	        }
+	        var core = new THREE.BufferGeometry(), corePositions = new Float32Array(amount * 3), coreNode = new THREE.BufferGeometry(), coreNodePositions = new Float32Array(amount * 3), line = new THREE.BufferGeometry(), linePositions = new Float32Array(3 * amount * 4), // 4 number of line points 2*2
+	        lineColors = new Float32Array(3 * amount * 4); // 4 number of line points 2*2
+	        var color = new THREE.Color();
+	        /**
+	         * Keep an eye on the distance of each core
+	         */
+	        var coresDistances = [];
+	        var _loop_1 = function(i) {
+	            var masterHeight = Math.random() > 0.5 ? height : -height;
+	            var position = coresDistances[i] = this_1.pickPoint(positions, coresDistances, maxDistance, safe);
+	            corePositions[i * 3 + 0] = position.x;
+	            corePositions[i * 3 + 1] = position.y + masterHeight;
+	            corePositions[i * 3 + 2] = position.z;
+	            /**
+	             * Bottom Top
+	             */
+	            linePositions[i * 12 + 0] = position.x;
+	            linePositions[i * 12 + 1] = position.y + options.line.margin.bottom;
+	            linePositions[i * 12 + 2] = position.z;
+	            linePositions[i * 12 + 3] = position.x;
+	            linePositions[i * 12 + 4] = position.y + masterHeight - options.line.margin.top;
+	            linePositions[i * 12 + 5] = position.z;
+	            /**
+	             * Top Up
+	             */
+	            linePositions[i * 12 + 6] = linePositions[i * 12 + 3];
+	            linePositions[i * 12 + 7] = position.y + masterHeight + options.line.margin.top;
+	            linePositions[i * 12 + 8] = linePositions[i * 12 + 5];
+	            linePositions[i * 12 + 9] = linePositions[i * 12 + 0];
+	            linePositions[i * 12 + 10] = position.y + masterHeight * 2;
+	            linePositions[i * 12 + 11] = linePositions[i * 12 + 2];
+	            /**
+	             * Node final position
+	             */
+	            var x = void 0, y = void 0, z = void 0;
+	            coreNodePositions[i * 3 + 0] = x = linePositions[i * 12 + 9];
+	            coreNodePositions[i * 3 + 1] = y = linePositions[i * 12 + 10];
+	            coreNodePositions[i * 3 + 2] = z = linePositions[i * 12 + 11];
+	            group.add(this_1.createNodes({ x: x, y: y, z: z }, nodeMaterials));
+	            options.line.colors.forEach(function (hex, index) {
+	                color.set(hex);
+	                lineColors[i * 12 + index * 3 + 0] = color.r;
+	                lineColors[i * 12 + index * 3 + 1] = color.g;
+	                lineColors[i * 12 + index * 3 + 2] = color.b;
+	            });
+	        };
+	        var this_1 = this;
+	        for (var i = 0; i < amount; i++) {
+	            _loop_1(i);
+	        }
+	        core.addAttribute('position', new THREE.BufferAttribute(corePositions, 3));
+	        coreNode.addAttribute('position', new THREE.BufferAttribute(coreNodePositions, 3));
+	        line.addAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+	        line.addAttribute('color', new THREE.BufferAttribute(lineColors, 3));
+	        group.add(new THREE.Points(core, coreMaterial));
+	        group.add(new THREE.Points(coreNode)); //, coreNodeMaterial));
+	        group.add(new THREE.LineSegments(line, lineMaterial));
+	        group.userData.materials = nodeMaterials.concat(coreMaterial, coreNodeMaterial, lineMaterial);
+	        group.userData.coreNode = coreNode;
+	        return group;
+	    };
+	    PlexusTemp.prototype.createDebris = function (spiral, options) {
+	        var amount = options.amount, material = options.material;
+	        var positions = new Float32Array(amount * 3), geometry = new THREE.BufferGeometry();
+	        for (var i = 0; i < amount; i++) {
+	            var point = Helpers_1.random.between(0, (spiral.length / 3) - 1, true);
+	            var vector = spiral.slice(point * 3, point * 3 + 3), _a = options.position, x = _a.x, y = _a.y, z = _a.z;
+	            positions[i * 3 + 0] = vector[0] + Math.random() * Helpers_1.random.between(-x, x);
+	            positions[i * 3 + 1] = vector[1] + Math.random() * Helpers_1.random.between(-y, y);
+	            positions[i * 3 + 2] = vector[2] + Math.random() * Helpers_1.random.between(-z, z);
+	        }
+	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+	        return new THREE.Points(geometry, new THREE.PointsMaterial(Helpers_2.extend({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'galaxy-debri'),
+	            alphaTest: 0.00001,
+	            transparent: true,
+	            blending: THREE.AdditiveBlending,
+	            depthTest: false,
+	        }, material)));
+	    };
+	    PlexusTemp.prototype.createParticles = function (options) {
+	        var amount = options.amount, radius = options.radius, sphere = options.sphere, material = options.material;
+	        var positions = new Float32Array(amount * 3), geometry = new THREE.BufferGeometry(), bag = [];
+	        /**
+	         * Hexicles
+	         */
+	        for (var i = 0; i < amount; i++) {
+	            var vector = Helpers_1.random.vector3(0, 0, 0, radius, sphere);
+	            positions[i * 3] = vector.x;
+	            positions[i * 3 + 1] = vector.y;
+	            positions[i * 3 + 2] = vector.z;
+	            bag.push({
+	                position: vector,
+	                velocity: new THREE.Vector3(-1 + Math.random() * 2, -1 + Math.random() * 2, -1 + Math.random() * 2),
+	            });
+	        }
+	        ;
+	        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3).setDynamic(true));
+	        var particles = new THREE.Points(geometry, new THREE.PointsMaterial(Helpers_2.extend({
+	            blending: THREE.AdditiveBlending,
+	            opacity: 0.3,
+	            alphaTest: 0.001
+	        }, material)));
+	        particles.userData = {
+	            bag: bag
+	        };
+	        return particles;
+	    };
+	    /**
+	     * safe = true will decress length gradually until it can fit everything...
+	     * otherwise it will crash if not able to fit all nodes due forever loop
+	     */
+	    PlexusTemp.prototype.pickPoint = function (positions, collection, maxDistance, safe) {
+	        return this.getPosition(function () {
+	            var point = Helpers_1.random.between(0, positions.count, true), position = point - (point % 3);
+	            return {
+	                x: positions.array[position++],
+	                y: positions.array[position++],
+	                z: positions.array[position++]
+	            };
+	        }, collection, maxDistance, safe);
+	    };
+	    PlexusTemp.prototype.getPosition = function (destination, collection, maxDistance, safe, attemps) {
+	        if (safe === void 0) { safe = false; }
+	        if (attemps === void 0) { attemps = 0; }
+	        var origin = destination();
+	        for (var _i = 0, collection_1 = collection; _i < collection_1.length; _i++) {
+	            var item = collection_1[_i];
+	            var distance = this.distanceTo(origin, item);
+	            if (distance < maxDistance || ((origin.x === item.x) && (origin.y === item.y) && (origin.z === item.z))) {
+	                return this.getPosition(destination, collection, safe ? attemps > 50 ? maxDistance -= 1 : maxDistance : maxDistance, safe, attemps + 1);
+	            }
+	        }
+	        return origin;
+	    };
+	    PlexusTemp.prototype.createSprite = function () {
+	        var material = new THREE.SpriteMaterial({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'star'),
+	            color: 0xff0000,
+	            blending: THREE.AdditiveBlending,
+	        });
+	        return new THREE.Sprite(material);
+	    };
+	    PlexusTemp.prototype.createProtons = function (plexus, cores, protonBean) {
+	        var proton = protonBean.userData.proton, color = new THREE.Color('#12d3ff');
+	        var life = new Proton.Life(0.4, .3), body = new Proton.Body(this.createSprite()), radius = new Proton.Radius(50, 30), velocity = new Proton.V([10, 30], new Proton.Vector3D(1, 1, 1), 50), mass = new Proton.Mass(5), rate = new Proton.Rate(new Proton.Span(3, 7), new Proton.Span(.001, .002)), scale = new Proton.Scale([1, .9], [.8, 1]), colorBehaviour = new Proton.Color(color);
+	        console.dir(color, radius);
+	        var emitters = [];
+	        var _loop_2 = function(i) {
+	            var emitter = new Proton.Emitter();
+	            //setRate
+	            emitter.rate = rate;
+	            // emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, -32, 7)));
+	            emitter.addInitialize(mass);
+	            emitter.addInitialize(life);
+	            emitter.addInitialize(body);
+	            emitter.addInitialize(radius);
+	            emitter.addInitialize(velocity);
+	            emitter.addBehaviour(scale);
+	            emitter.addBehaviour(colorBehaviour);
+	            emitter.userData = {
+	                update: function () {
+	                    var core = new THREE.Vector3(cores.array[i * 3 + 0], cores.array[i * 3 + 1], cores.array[i * 3 + 2]);
+	                    var position = core.applyMatrix4(plexus.matrix);
+	                    emitter.p.x = position.x;
+	                    emitter.p.y = position.y;
+	                    emitter.p.z = position.z;
+	                }
+	            };
+	            emitter.userData.update();
+	            emitter.emit();
+	            emitters.push(emitter);
+	            proton.addEmitter(emitter);
+	        };
+	        for (var i = 0; i < cores.count; i++) {
+	            _loop_2(i);
+	        }
+	        plexus.userData.proton = proton;
+	        plexus.userData.emitters = emitters;
+	    };
+	    PlexusTemp.prototype.distanceTo = function (v1, v2) {
+	        var x = v2.x - v1.x, y = v2.y - v1.y, z = v2.z - v1.z;
+	        return Math.sqrt(x * x + y * y + z * z);
+	    };
+	    /**
+	     * X,Z
+	     */
+	    PlexusTemp.prototype.getSpiralGeometry = function () {
+	        return [
+	            -0.5239, -1612.6000,
+	            -17.2049, -1609.0800,
+	            -52.4554, -1602.0300,
+	            -112.4650, -1590.2800,
+	            -195.0810, -1572.8101,
+	            -298.1500, -1548.5900,
+	            -419.5170, -1516.6100,
+	            -557.0290, -1475.8300,
+	            -704.6930, -1426.1400,
+	            -856.5130, -1367.4200,
+	            -1006.5000, -1299.5500,
+	            -1148.6500, -1222.4100,
+	            -1281.5900, -1136.8101,
+	            -1403.9301, -1043.5500,
+	            -1514.3101, -943.4260,
+	            -1611.3300, -837.2550,
+	            -1694.6000, -725.9910,
+	            -1763.6899, -610.5940,
+	            -1818.2100, -492.0230,
+	            -1857.7400, -371.2350,
+	            -1882.3700, -249.2080,
+	            -1892.1600, -126.9150,
+	            -1887.1899, -5.3321,
+	            -1867.5400, 114.5660,
+	            -1833.7300, 231.9110,
+	            -1786.2900, 345.8360,
+	            -1725.7500, 455.4700,
+	            -1652.6100, 559.9480,
+	            -1567.7800, 658.6090,
+	            -1472.1200, 750.7930,
+	            -1366.5200, 835.8410,
+	            -1251.8700, 913.0930,
+	            -1129.2700, 982.1700,
+	            -999.8350, 1042.6899,
+	            -864.6630, 1094.2800,
+	            -724.8670, 1136.5601,
+	            -581.6290, 1169.4500,
+	            -436.1310, 1192.8900,
+	            -289.5540, 1206.8101,
+	            -143.0820, 1211.1400,
+	            2.1827, 1206.1000,
+	            145.1360, 1191.9399,
+	            284.6760, 1168.8700,
+	            419.6970, 1137.1300,
+	            549.3080, 1097.2000,
+	            672.6160, 1049.5601,
+	            788.7270, 994.6940,
+	            896.7500, 933.0850,
+	            996.1030, 865.3870,
+	            1086.2000, 792.2560,
+	            1166.4700, 714.3490,
+	            1236.3101, 632.3220,
+	            1295.5200, 546.9110,
+	            1343.8700, 458.8520,
+	            1381.1300, 368.8830,
+	            1407.1000, 277.7390,
+	            1421.9000, 186.1390,
+	            1425.6899, 94.8017,
+	            1418.6000, 4.4452,
+	            1400.7700, -84.2120,
+	            1372.6801, -170.5580,
+	            1334.7700, -253.9800,
+	            1287.5200, -333.8670,
+	            1231.3800, -409.6050,
+	            1167.0500, -480.7610,
+	            1095.2200, -546.8970,
+	            1016.6100, -607.5790,
+	            931.8990, -662.3720,
+	            841.9220, -711.0550,
+	            747.5060, -753.4110,
+	            649.4790, -789.2220,
+	            548.6680, -818.2670,
+	            445.9170, -840.5550,
+	            342.0660, -856.0950,
+	            237.9590, -864.8950,
+	            134.4370, -866.9620,
+	            32.2495, -862.5120,
+	            -67.8539, -851.7600,
+	            -165.1240, -834.9210,
+	            -258.8120, -812.2090,
+	            -348.3500, -784.0000,
+	            -433.1700, -750.6710,
+	            -512.7050, -712.5960,
+	            -586.3870, -670.1530,
+	            -653.8850, -623.8140,
+	            -714.8670, -574.0530,
+	            -769.0030, -521.3450,
+	            -815.9620, -466.1640,
+	            -855.6680, -409.0100,
+	            -888.0470, -350.3860,
+	            -913.0240, -290.7930,
+	            -930.5260, -230.7320,
+	            -940.7170, -170.6660,
+	            -943.7630, -111.0560,
+	            -939.8310, -52.3651,
+	            -929.0860, 4.9447,
+	            -911.8890, 60.5077,
+	            -888.5980, 113.9580,
+	            -859.5740, 164.9290,
+	            -825.1760, 213.0560,
+	            -785.8900, 258.1050,
+	            -742.2000, 299.8450,
+	            -694.5930, 338.0400,
+	            -643.5530, 372.4600,
+	            -589.6120, 403.0200,
+	            -533.3030, 429.6360,
+	            -475.1570, 452.2240,
+	            -415.7070, 470.7000,
+	            -355.4560, 485.1220,
+	            -294.9070, 495.5490,
+	            -234.5620, 502.0380,
+	            -174.9260, 504.6480,
+	            -116.4050, 503.5540,
+	            -59.4099, 498.9300,
+	            -4.3485, 490.9520,
+	            48.3703, 479.7950,
+	            98.4751, 465.7110,
+	            145.6940, 448.9520,
+	            189.7570, 429.7700,
+	            230.3910, 408.4190,
+	            267.4820, 385.1810,
+	            300.9140, 360.3410,
+	            330.5730, 334.1830,
+	            356.3430, 306.9910,
+	            378.2590, 279.0360,
+	            396.3560, 250.5900,
+	            410.6680, 221.9240,
+	            421.2310, 193.3080,
+	            428.2010, 164.9640,
+	            431.7350, 137.1140,
+	            431.9920, 109.9770,
+	            429.1270, 83.7752,
+	            423.3770, 58.6546,
+	            414.9790, 34.7618,
+	            404.1700, 12.2431,
+	            391.1850, -8.7551,
+	            376.2920, -28.1707,
+	            359.7570, -45.9413,
+	            341.8460, -62.0048,
+	            322.8260, -76.2989,
+	            302.9470, -88.8400,
+	            282.4590, -99.6445,
+	            261.6110, -108.7290,
+	            240.6530, -116.1090,
+	            219.7800, -121.8630,
+	            199.1880, -126.0670,
+	            179.0710, -128.7990,
+	            159.6240, -130.1360,
+	            140.9660, -130.1900,
+	            123.2170, -129.0720,
+	            106.4940, -126.8940,
+	            90.9170, -123.7690,
+	            76.5228, -119.8130,
+	            63.3495, -115.1450,
+	            51.4348, -109.8810,
+	            40.8164, -104.1410,
+	            31.4631, -98.0206,
+	            23.3435, -91.6187,
+	            16.4264, -85.0327,
+	            10.6805, -78.3605,
+	            6.0285, -71.6618,
+	            2.3933, -64.9966,
+	            -0.3022, -58.4247,
+	            -2.1354, -52.0059,
+	            -3.0648, -45.8599,
+	            -3.0493, -40.1063,
+	            -2.0475, -34.8646,
+	            -0.0183, -30.2545,
+	            1.9460, -25.5600,
+	            2.7531, -20.0652,
+	            3.9163, -5.0067,
+	            5.3605, 9.5420,
+	            11.4895, 23.8015,
+	            15.2296, 29.1418,
+	            20.3424, 32.5867,
+	            25.7009, 35.8236,
+	            30.1781, 40.5399,
+	            33.7460, 46.4715,
+	            36.3762, 53.3538,
+	            38.0407, 60.9227,
+	            38.7111, 68.9138,
+	            38.2707, 77.2634,
+	            36.6026, 85.9076,
+	            33.5900, 94.7827,
+	            29.1161, 103.8250,
+	            23.1146, 112.9180,
+	            15.5192, 121.9470,
+	            6.2637, 130.7940,
+	            -4.7182, 139.3460,
+	            -17.4120, 147.4530,
+	            -31.8032, 154.9680,
+	            -47.8771, 161.7440,
+	            -65.6193, 167.6340,
+	            -84.9171, 172.4890,
+	            -105.6580, 176.1600,
+	            -127.7290, 178.4990,
+	            -151.0180, 179.3580,
+	            -175.3150, 178.6200,
+	            -200.4120, 176.1710,
+	            -226.0990, 171.8950,
+	            -252.1680, 165.6780,
+	            -278.3360, 157.4680,
+	            -304.3180, 147.2180,
+	            -329.8330, 134.8750,
+	            -354.5970, 120.3920,
+	            -378.2930, 103.8060,
+	            -400.6060, 85.1566,
+	            -421.2190, 64.4827,
+	            -439.8150, 41.8233,
+	            -456.0980, 17.3157,
+	            -469.7720, -8.9026,
+	            -480.5390, -36.6943,
+	            -488.1040, -65.9220,
+	            -492.2470, -96.3570,
+	            -492.7470, -127.7710,
+	            -489.3860, -159.9350,
+	            -481.9450, -192.6210,
+	            -470.3300, -225.5330,
+	            -454.4520, -258.3760,
+	            -434.2190, -290.8560,
+	            -409.5390, -322.6770,
+	            -380.4850, -353.5160,
+	            -347.1300, -383.0520,
+	            -309.5460, -410.9610,
+	            -267.8070, -436.9230,
+	            -222.1620, -460.6360,
+	            -172.8590, -481.8000,
+	            -120.1500, -500.1150,
+	            -64.2822, -515.2800,
+	            -5.6683, -527.0690,
+	            55.2807, -535.2540,
+	            118.1530, -539.6100,
+	            182.5380, -539.9080,
+	            247.9050, -536.0420,
+	            313.7230, -527.9050,
+	            379.4630, -515.3870,
+	            444.5920, -498.3830,
+	            508.5300, -476.9360,
+	            570.6930, -451.0900,
+	            630.4980, -420.8890,
+	            687.3620, -386.3760,
+	            740.7330, -347.7600,
+	            790.0580, -305.2480,
+	            834.7830, -259.0460,
+	            874.3570, -209.3630,
+	            908.3420, -156.5580,
+	            936.3020, -100.9890,
+	            957.8000, -43.0153,
+	            972.3990, 17.0034,
+	            979.8580, 78.5928,
+	            979.9330, 141.2780,
+	            972.3820, 204.5850,
+	            956.9620, 268.0390,
+	            933.6810, 331.1060,
+	            902.5470, 393.2530,
+	            863.5660, 453.9470,
+	            816.7480, 512.6540,
+	            762.3730, 568.8550,
+	            700.7260, 622.0260,
+	            632.0880, 671.6490,
+	            556.7420, 717.2010,
+	            475.2320, 758.2510,
+	            388.1010, 794.3650,
+	            295.8950, 825.1110,
+	            199.1560, 850.0550,
+	            98.6384, 868.9230,
+	            -4.9058, 881.4410,
+	            -110.7230, 887.3330,
+	            -218.0610, 886.3250,
+	            -326.0450, 878.3520,
+	            -433.7990, 863.3510,
+	            -540.4500, 841.2580,
+	            -645.1220, 812.0080,
+	            -746.9320, 775.7760,
+	            -844.9930, 732.7360,
+	            -938.4210, 683.0630,
+	            -1026.3300, 626.9290,
+	            -1107.9500, 564.7440,
+	            -1182.5100, 496.9150,
+	            -1249.2300, 423.8500,
+	            -1307.3400, 345.9580,
+	            -1356.3000, 263.8410,
+	            -1395.5601, 178.1060,
+	            -1424.5800, 89.3544,
+	            -1442.8101, -1.8081,
+	            -1450.0300, -94.6493,
+	            -1446.0000, -188.4370,
+	            -1430.5200, -282.4380,
+	            -1403.3500, -375.9200,
+	            -1364.6400, -468.1140,
+	            -1314.5400, -558.2480,
+	            -1253.2100, -645.5530,
+	            -1180.7900, -729.2580,
+	            -1097.8199, -808.6580,
+	            -1004.8300, -883.0470,
+	            -902.3400, -951.7190,
+	            -790.8950, -1013.9700,
+	            -671.3580, -1069.2600,
+	            -544.5970, -1117.0400,
+	            -411.4790, -1156.7800,
+	            -272.8720, -1187.9301,
+	            -129.8850, -1210.2000,
+	            16.3737, -1223.3101,
+	            164.7960, -1226.9500,
+	            314.2720, -1220.8400,
+	            463.5880, -1204.9900,
+	            611.5260, -1179.4100,
+	            756.8710, -1144.1200,
+	            898.4070, -1099.1200,
+	            1034.9700, -1044.7600,
+	            1165.3900, -981.3600,
+	            1288.5000, -909.2660,
+	            1403.1300, -828.8070,
+	            1508.3300, -740.6180,
+	            1603.1400, -645.3280,
+	            1686.6100, -543.5710,
+	            1757.7600, -435.9780,
+	            1816.0000, -323.4100,
+	            1860.7200, -206.7290,
+	            1891.3101, -86.7970,
+	            1907.1600, 35.5243,
+	            1908.1100, 159.2450,
+	            1894.0000, 283.3750,
+	            1864.6801, 406.9230,
+	            1819.9900, 528.9010,
+	            1760.2700, 648.3140,
+	            1685.8500, 764.1680,
+	            1597.0800, 875.4710,
+	            1494.3000, 981.2280,
+	            1378.5699, 1080.5800,
+	            1250.9800, 1172.6700,
+	            1112.6000, 1256.6300,
+	            964.4970, 1331.6000,
+	            811.5610, 1397.3700,
+	            658.6710, 1453.7000,
+	            510.7100, 1500.3500,
+	            372.5590, 1537.1200,
+	            249.5990, 1565.0900,
+	            147.2110, 1585.3800,
+	            70.7723, 1599.0800,
+	            25.6649, 1607.3000,
+	            4.0555, 1611.4100,
+	            -1.8886, 1612.7800
+	        ];
+	    };
+	    return PlexusTemp;
+	}(Forgable_1.Forgable));
+	exports.PlexusTemp = PlexusTemp;
+	//# sourceMappingURL=Plexus.temp.js.map
+
+/***/ },
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Forgable_1 = __webpack_require__(53);
+	var Helpers_1 = __webpack_require__(20);
+	var Proton = __webpack_require__(102);
+	/**
+	 * Proton
+	 */
+	var ProtonBean = (function (_super) {
+	    __extends(ProtonBean, _super);
+	    function ProtonBean() {
+	        _super.apply(this, arguments);
+	    }
+	    Object.defineProperty(ProtonBean.prototype, "materials", {
+	        get: function () {
+	            return {
+	                material: 'IntroDefaultMaterial'
+	            };
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    ProtonBean.prototype.create = function (models, _a) {
+	        var material = _a.material;
+	        /**
+	         * Save raw sprites
+	         */
+	        this.maps = material.userData;
+	        var proton = new Proton(), emitter = new Proton.Emitter(), sprite = this.createSprite();
+	        //setRate
+	        emitter.rate = new Proton.Rate(new Proton.Span(1, 4), 0);
+	        //addInitialize
+	        emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, -32, 7)));
+	        emitter.addInitialize(new Proton.Mass(1));
+	        emitter.addInitialize(new Proton.Life(0.5, 1));
+	        emitter.addInitialize(new Proton.Body(sprite));
+	        emitter.addInitialize(new Proton.Radius(30, 1));
+	        emitter.addInitialize(new Proton.V(45, new Proton.Vector3D(0, -50, 0), 0));
+	        // emitter.addInitialize(new Proton.Velocity(3, new Proton.Vector3D(0, -10, 0), 5));
+	        // console.log(emitter)
+	        // console.log(proton)
+	        //addBehaviour
+	        // emitter.addBehaviour(new Proton.Alpha(1, 0));
+	        // emitter.addBehaviour(new Proton.Scale([1,2], [.3,1]));
+	        emitter.addBehaviour(new Proton.Force(0, -5, 0));
+	        var color1 = new THREE.Color('#4F1500');
+	        var color2 = new THREE.Color('#0029FF');
+	        var colorBehaviour = new Proton.Color(color1, color2);
+	        emitter.addBehaviour(colorBehaviour);
+	        // emitter.emit();
+	        //add emitter
+	        // proton.addEmitter(emitter);
+	        console.log(emitter);
+	        //add renderer
+	        proton.addRender(new Proton.SpriteRender(this.app.scene));
+	        proton.userData = {
+	            emitter: emitter,
+	            proton: proton,
+	            colors: {
+	                a: color1,
+	                b: color2
+	            },
+	            offset: -200,
+	            ajust: 32,
+	            inverse: false,
+	            sprite: sprite,
+	            object: new THREE.Object3D,
+	            update: this.update.bind(this, proton, emitter)
+	        };
+	        return proton;
+	    };
+	    ProtonBean.prototype.update = function (proton, emitter, time, delta) {
+	        proton.update();
+	        var position = proton.userData.object.getWorldPosition();
+	        emitter.p.x = position.x;
+	        if (!proton.userData.inverse) {
+	            emitter.p.y = position.y - proton.userData.ajust;
+	            emitter.p.z = position.z;
+	        }
+	        else {
+	            emitter.p.y = position.y;
+	            emitter.p.z = proton.userData.offset;
+	        }
+	    };
+	    ProtonBean.prototype.createSprite = function () {
+	        var material = new THREE.SpriteMaterial({
+	            map: Helpers_1.configureTexture(this.sprite, this.maps, 'star'),
+	            color: 0xff0000,
+	            blending: THREE.AdditiveBlending,
+	        });
+	        return new THREE.Sprite(material);
+	    };
+	    return ProtonBean;
+	}(Forgable_1.Forgable));
+	exports.ProtonBean = ProtonBean;
+	//# sourceMappingURL=ProtonBean.js.map
+
+/***/ },
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70813,7 +71688,8 @@
 	var Forgable_1 = __webpack_require__(53);
 	var Helpers_1 = __webpack_require__(20);
 	var Tween_1 = __webpack_require__(14);
-	__webpack_require__(95);
+	// require('../../../../../../../public/js/GPUParticleSystem.js');
+	var Proton = __webpack_require__(102);
 	/**
 	 * Ship
 	 */
@@ -70821,6 +71697,7 @@
 	    __extends(Ship, _super);
 	    function Ship() {
 	        _super.apply(this, arguments);
+	        this.maps = [];
 	    }
 	    Object.defineProperty(Ship.prototype, "models", {
 	        get: function () {
@@ -70845,9 +71722,10 @@
 	        var geometry = _a.geometry;
 	        var material = _b.material, shader = _b.shader;
 	        material.fog = false;
+	        this.maps = material.userData;
 	        var group = new THREE.Group(), ship = this.forge('ship', material, {
 	            geometry: geometry,
-	            scale: 20,
+	            scale: 15,
 	            uvs: false,
 	            position: {
 	                x: 50,
@@ -70858,7 +71736,7 @@
 	        var streak = this.forge('streak', shader, {
 	            geometry: {
 	                create: function (width, height) {
-	                    return new THREE.PlaneGeometry(width, height, 30, 30);
+	                    return new THREE.PlaneGeometry(width, height, 5, 5);
 	                }
 	            },
 	            scale: 20,
@@ -70869,15 +71747,22 @@
 	                x: 50, y: 90, z: 80
 	            }
 	        });
-	        streak.scale.set(3, .1, 1);
+	        streak.scale.set(1, .1, 1);
+	        streak.position.setY(-40);
 	        ship.add(streak);
+	        var tunnedMaterial = ship['material'].clone();
+	        tunnedMaterial.map = Helpers_1.configureTexture(this.sprite, material.userData, 'ship-tunned');
 	        group.add(ship);
+	        console.log(group);
 	        for (var i = 0; i <= 5; i++) {
 	            clones.push(this.clone(ship));
 	        }
-	        clones.forEach(function (clone) { return group.add(clone); });
+	        clones.forEach(function (clone) {
+	            clone.material = tunnedMaterial;
+	            group.add(clone);
+	        });
 	        ship.name = 'logo';
-	        ship.visible = false;
+	        ship.visible = true;
 	        var dreamsark = this.forge('logo', material, {
 	            scale: 18,
 	            position: {
@@ -70885,212 +71770,232 @@
 	            }
 	        });
 	        dreamsark.name = 'dreamsark';
+	        dreamsark.visible = false;
 	        group.add(dreamsark);
-	        // let glow = new THREE.Sprite(
-	        //     new THREE.SpriteMaterial({
-	        //         map: material.userData.glow,
-	        //         color: 0x0000ff,
-	        //         transparent: false,
-	        //         blending: THREE.AdditiveBlending
-	        //     })
-	        // )
-	        // ship.add(glow);
-	        // console.log(ship.position.z)
-	        // glow.scale.setScalar(200);
-	        // glow.position.x = ship.position.x
-	        // glow.position.y = ship.position.y
-	        // glow.position.z = ship.position.z
-	        // console.log(glow)
 	        streak.visible = false;
-	        streak.translateOnAxis(new THREE.Vector3(1.8, 0, 0), 20);
 	        group.userData = {
-	            taill: streak,
-	            uniforms: streak.material['userData'].uniforms,
+	            // taill: streak,
+	            // uniforms: streak.material['userData'].uniforms,
 	            booster: 1,
 	            update: this.update.bind(this, group),
 	            transform: this.transform.bind(this, group, material),
 	            transformDone: false,
+	            go: false,
+	            proton: null,
+	            emitter: null,
+	            swap: this.swap.bind(this, ship, tunnedMaterial)
 	        };
 	        return group;
 	    };
-	    Ship.prototype.transform = function (group, material, scene, queue) {
-	        var dreamsark = group.getObjectByName('dreamsark');
-	        var logo = group.getObjectByName('logo');
-	        var geometry = new THREE.SphereBufferGeometry(10, 50, 50);
-	        var sphereMaterial = new THREE.MeshBasicMaterial({
-	            // color: 0x2222ff,
-	            transparent: true,
-	            blending: THREE.AdditiveBlending,
-	            map: material.userData.tunnel,
-	            // side: THREE.BackSide,
-	            depthTest: false,
-	            fog: false,
-	            opacity: 0
+	    Ship.prototype.swap = function (ship, material) {
+	        ship.material['map'] = material.map;
+	    };
+	    Ship.prototype.initProtonOnClones = function (group, clones, protonBean) {
+	        group.userData.proton = protonBean.userData.proton;
+	        var life = new Proton.Life(0.4, .3), body = new Proton.Body(protonBean.userData.sprite), radius = new Proton.Radius(20, 1), velocity = new Proton.V(45, new Proton.Vector3D(0, -50, 0), 10), mass = new Proton.Mass(1), rate = new Proton.Rate(new Proton.Span(3, 7), new Proton.Span(.001, .002)), scale = new Proton.Scale([1, .9], [.8, 1]);
+	        clones.forEach(function (clone) {
+	            var emitter = new Proton.Emitter();
+	            //setRate
+	            emitter.rate = rate;
+	            // emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, -32, 7)));
+	            emitter.addInitialize(mass);
+	            emitter.addInitialize(life);
+	            emitter.addInitialize(body);
+	            emitter.addInitialize(radius);
+	            emitter.addInitialize(velocity);
+	            emitter.addBehaviour(scale);
+	            emitter.emit();
+	            clone.userData.update = function () {
+	                emitter.p.x = clone.position.x;
+	                emitter.p.y = clone.position.y;
+	                emitter.p.z = clone.position.z;
+	            };
+	            protonBean.userData.proton.addEmitter(emitter);
 	        });
-	        var particles = this.createParticles(), orb = new THREE.Mesh(geometry, sphereMaterial);
-	        particles.position.copy(dreamsark.position);
-	        orb.position.copy(dreamsark.position);
-	        material.userData.tunnel.wrapT = material.userData.tunnel.wrapS = THREE.RepeatWrapping;
-	        material.userData.tunnel.repeat.set(1, 2);
-	        // orb.rotation.x = deg2rad(90);
-	        orb.name = 'orb';
-	        orb.userData.velocity = 0.5;
-	        orb.userData.update = function () {
-	            // orb.rotation.x += 0.053
-	            orb.rotation.y += orb.userData.velocity;
-	            // orb.rotation.z += 0.0033
-	            orb['material']['map'].offset.y -= 0.003;
-	            // orb['material']['map'].offset.x -= 0.003;
+	    };
+	    Ship.prototype.createProtons = function (protonBean) {
+	        var proton = protonBean.userData.proton;
+	        var life = new Proton.Life(0.5, 1), body = new Proton.Body(protonBean.userData.sprite), radius = new Proton.Radius(0, 0), velocity = new Proton.V([8, 15], new Proton.Vector3D(0, 0, -100), 0), mass = new Proton.Mass(1), rate = new Proton.Rate(new Proton.Span(5, 7), 0), scale = new Proton.Scale([1, .9], [.8, 1]), colorBehaviour = new Proton.Color(new THREE.Color('#4F1500'), new THREE.Color('#0029FF')), alpha = new Proton.Alpha(1);
+	        var emitter = new Proton.Emitter();
+	        velocity.dir.z = -10;
+	        emitter.p.z = 50;
+	        console.log(emitter);
+	        //setRate
+	        emitter.rate = rate;
+	        // emitter.addInitialize(new Proton.Position(new Proton.PointZone(0, -32, 7)));
+	        emitter.addInitialize(mass);
+	        emitter.addInitialize(life);
+	        emitter.addInitialize(body);
+	        emitter.addInitialize(radius);
+	        emitter.addInitialize(velocity);
+	        // emitter.addBehaviour(colorBehaviour);
+	        emitter.addBehaviour(new Proton.Color('random'));
+	        emitter.addBehaviour(alpha);
+	        // emitter.addBehaviour(new Proton.RandomDrift(10, 10, .05));
+	        // emitter.p.x = 50
+	        // emitter.p.y = -50
+	        emitter.emit();
+	        emitter.userData = {
+	            radius: radius,
+	            alpha: alpha,
+	            velocity: velocity,
+	            scale: 0,
+	            speed: .5,
+	            offsetY: -25,
+	            update: function (time) {
+	                emitter.p.x = Math.sin(time * emitter.userData.speed) * emitter.userData.scale;
+	                emitter.p.y = Math.cos(time * emitter.userData.speed) * emitter.userData.scale + emitter.userData.offsetY;
+	            }
 	        };
-	        queue['orb'] = orb;
-	        queue['particles'] = particles;
-	        group.add(orb);
-	        scene.add(particles);
+	        proton.addEmitter(emitter);
+	        return emitter;
+	    };
+	    Ship.prototype.transform = function (group, material, protonBean, scene, queue) {
+	        var _this = this;
+	        var emitter = this.createProtons(protonBean), dreamsark = group.getObjectByName('dreamsark'), logo = group.getObjectByName('logo');
 	        var animation = this.app.tween.animate({
 	            origin: {
-	                orb: orb,
+	                radius: emitter.userData.radius.radius,
+	                emitter: emitter.userData,
+	                logo: logo,
 	            },
 	            target: {
-	                orb: {
-	                    userData: {
-	                        velocity: 0.0083
-	                    },
-	                    material: {
-	                        opacity: 1
-	                    },
-	                    scale: {
-	                        x: 4.5, y: 4.5, z: 4.5
-	                    }
-	                }
-	            },
-	            ease: Tween_1.Tween.EXPOOUT,
-	            duration: 1.5,
-	            before: function () {
-	            },
-	            update: function () {
-	            }
-	        });
-	        animation.then({
-	            origin: {
-	                orb: orb,
-	            },
-	            target: {
-	                orb: {
-	                    userData: {
-	                        velocity: 0.3
-	                    },
-	                    scale: {
-	                        x: 50, y: 50, z: 50
-	                    }
-	                }
-	            },
-	            ease: Tween_1.Tween.QUADIN,
-	            duration: 3,
-	            after: function () {
-	                dreamsark.visible = false;
-	                logo.visible = true;
-	            }
-	        });
-	        animation.then({
-	            origin: {
-	                orb: orb,
-	                particles: particles.userData
-	            },
-	            target: {
-	                particles: {
-	                    spawnerOptions: {
-	                        spawnRate: 0
+	                logo: {
+	                    rotation: {
+	                        y: Math.PI * 10,
 	                    }
 	                },
-	                orb: {
-	                    // material: {
-	                    //     opacity: 0
-	                    // },
-	                    userData: {
-	                        velocity: 0.5
-	                    },
-	                    scale: {
-	                        x: 3, y: 3, z: 3
+	                // emitter: {
+	                //     offsetY: 8,
+	                //     scale: 8,
+	                // },
+	                radius: {
+	                    a: 0,
+	                    b: 1
+	                }
+	            },
+	            ease: Tween_1.Tween.EXPOIN,
+	            duration: 5
+	        });
+	        // animation.then({
+	        //     origin: {
+	        //         radius: emitter.userData.radius.radius,
+	        //     },
+	        //     target: {
+	        //         radius: {
+	        //             a: 30,
+	        //             b: 40
+	        //         }
+	        //     },
+	        //     ease: Tween.CIRCIN,
+	        //     duration: 1,
+	        //     after: () => {
+	        //         dreamsark.visible = false;
+	        //         logo.visible = true;
+	        //     }
+	        // });
+	        animation.then({
+	            origin: {
+	                alpha: emitter.userData.alpha.a,
+	                radius: emitter.userData.radius.radius,
+	                emitter: emitter.userData
+	            },
+	            target: {
+	                emitter: {
+	                    offsetY: -10,
+	                    // scale: 60,
+	                    speed: 0.04,
+	                    velocity: {
+	                        dir: {
+	                            z: -100,
+	                            y: 50
+	                        }
 	                    }
+	                },
+	                radius: {
+	                    a: 120,
+	                    b: 100,
+	                },
+	                alpha: {
+	                    a: 0.01,
+	                    b: 0.009,
 	                }
 	            },
 	            ease: Tween_1.Tween.EXPOOUT,
-	            duration: 1
-	        });
-	        /**
-	         * Clean Up
-	         */
-	        animation.then(function () {
-	            group.userData.transformDone = true;
-	            // delete queue['orb']
-	            setTimeout(function () {
-	                delete queue['particles'];
-	                scene.remove(particles);
-	            }, 3000);
-	            // scene.remove(orb)
-	        });
-	    };
-	    Ship.prototype.createParticles = function () {
-	        var particleSystem = new THREE.GPUParticleSystem({
-	            maxParticles: 250000
-	        });
-	        var clock = new THREE.Clock(), tick = 0, spawnerOptions = {
-	            spawnRate: 15000,
-	            horizontalSpeed: 5,
-	            verticalSpeed: 4,
-	            timeScale: 0.8,
-	            x: Math.cos,
-	            y: Math.sin,
-	            z: Math.sin
-	        }, options = {
-	            position: new THREE.Vector3(),
-	            positionRandomness: 1,
-	            velocity: new THREE.Vector3(),
-	            velocityRandomness: 1,
-	            color: 0xaa88ff,
-	            colorRandomness: .2,
-	            turbulence: .5,
-	            lifetime: 5,
-	            size: 1,
-	            sizeRandomness: 10
-	        };
-	        console.log(spawnerOptions);
-	        console.log(options);
-	        particleSystem.userData = {
-	            spawnerOptions: spawnerOptions,
-	            options: options,
-	            update: function (time) {
-	                var delta = clock.getDelta() * spawnerOptions.timeScale;
-	                tick += delta;
-	                if (tick < 0)
-	                    tick = 0;
-	                if (delta > 0) {
-	                    options.position.x = spawnerOptions['x'](tick * spawnerOptions.horizontalSpeed) * 50;
-	                    options.position.y = spawnerOptions['y'](tick * spawnerOptions.verticalSpeed) * 50;
-	                    options.position.z = spawnerOptions['z'](tick * spawnerOptions.horizontalSpeed) * 50;
-	                    ;
-	                    for (var x = 0; x < spawnerOptions.spawnRate * delta; x++) {
-	                        // let opt = options;
-	                        // options.lifetime = random.between(0, 2);
-	                        // Yep, that's really it.	Spawning particles is super cheap, and once you spawn them, the rest of
-	                        // their lifecycle is handled entirely on the GPU, driven by a time uniform updated below
-	                        particleSystem.spawnParticle(options);
+	            duration: 1,
+	            before: function () {
+	                setTimeout(function () { return group.userData.swap(); }, 100);
+	                /**
+	                 * Rotate Logo
+	                 */
+	                _this.app.tween.animate({
+	                    origin: {
+	                        logo: logo,
+	                    },
+	                    target: {
+	                        logo: {
+	                            rotation: {
+	                                y: Helpers_1.deg2rad(360 * 10),
+	                            }
+	                        }
+	                    },
+	                    ease: Tween_1.Tween.CIRCOUT,
+	                    duration: 10,
+	                    before: function () {
+	                        group.userData.transformDone = true;
+	                    },
+	                    update: function () {
+	                        return !group.userData.go;
 	                    }
-	                }
-	                particleSystem.update(tick);
+	                }).then({
+	                    origin: {
+	                        alpha: emitter.userData.alpha.a,
+	                        emitter: emitter.userData,
+	                        radius: emitter.userData.radius.radius,
+	                    },
+	                    target: {
+	                        emitter: {
+	                            // scale: 200,
+	                            velocity: {
+	                                dir: {
+	                                    z: 100,
+	                                    y: -50
+	                                }
+	                            }
+	                        },
+	                        radius: {
+	                            a: 20,
+	                            b: 30,
+	                        },
+	                        alpha: { a: 1, b: 1 }
+	                    },
+	                    ease: Tween_1.Tween.EXPOIN,
+	                    duration: .2
+	                }).then(function () {
+	                    group.userData.emitter.stopEmit();
+	                    setTimeout(function () {
+	                        group.userData.proton.removeEmitter(group.userData.emitter);
+	                        group.userData.proton = null;
+	                    }, 1000);
+	                });
 	            }
-	        };
-	        return particleSystem;
+	        });
+	        group.userData.proton = protonBean.userData.proton;
+	        group.userData.emitter = emitter;
 	    };
 	    Ship.prototype.update = function (object, time, delta) {
+	        // object['userData'].uniforms.angle.value += object['userData'].uniforms.frequency.value;
+	        // object['userData'].taill.rotation.y += .9;
 	        var _this = this;
-	        object['userData'].uniforms.angle.value += object['userData'].uniforms.frequency.value;
-	        object['userData'].taill.rotation.y += .9;
+	        if (object['userData'].proton) {
+	            object['userData'].proton.update();
+	            object['userData'].emitter.userData.update(time);
+	        }
 	        // object['userData'].streak.scale.setX(Math.sin(time));
 	        object.children.forEach(function (child, i) {
 	            if (child.name === 'logo' || child.name === 'dreamsark' || child.name === 'orb')
 	                return;
-	            child.children[0].scale.set(Math.abs(Math.sin(time) * .2) + 2, .2, 1);
+	            child.children[0].scale.set(Math.abs(Math.sin(time) * .2) + 1, .05, 1);
 	            if (child.position.y > child.userData.respawnAt) {
 	                _this.respawn(child);
 	            }
@@ -71098,6 +72003,7 @@
 	                _this.respawn(child, false);
 	            }
 	            child.position.y += child.userData.velocity * object.userData.booster;
+	            // child.userData.update()
 	        });
 	        // console.log(this.engine.world.bodies[0].position.y)
 	    };
@@ -71124,9 +72030,9 @@
 	        return object;
 	    };
 	    Ship.prototype.clone = function (object) {
-	        object.material['fog'] = true;
+	        object['material'].fog = true;
 	        var clone = this.setup(object.clone(), {
-	            scale: 5,
+	            scale: 2,
 	            // widthFactor: 2,
 	            uvs: false,
 	            position: {
@@ -71150,7 +72056,7 @@
 	//# sourceMappingURL=Ship.js.map
 
 /***/ },
-/* 108 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71262,7 +72168,7 @@
 	//# sourceMappingURL=Star.js.map
 
 /***/ },
-/* 109 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71327,7 +72233,7 @@
 	//# sourceMappingURL=Streak.js.map
 
 /***/ },
-/* 110 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71396,7 +72302,7 @@
 	//# sourceMappingURL=Tunnel-old.js.map
 
 /***/ },
-/* 111 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71485,7 +72391,7 @@
 	//# sourceMappingURL=Tunnel.js.map
 
 /***/ },
-/* 112 */
+/* 110 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71521,7 +72427,7 @@
 	//# sourceMappingURL=Manager.js.map
 
 /***/ },
-/* 113 */
+/* 111 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71628,7 +72534,7 @@
 	//# sourceMappingURL=Mouse.js.map
 
 /***/ },
-/* 114 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71699,7 +72605,7 @@
 	//# sourceMappingURL=Raycaster.js.map
 
 /***/ },
-/* 115 */
+/* 113 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71740,7 +72646,7 @@
 	//# sourceMappingURL=Renderer.js.map
 
 /***/ },
-/* 116 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
